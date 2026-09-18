@@ -8,7 +8,7 @@ from pathlib import Path
 
 import httpx
 
-from . import alignment, audio, library, mastering, timeline
+from . import alignment, audio, audioqa, library, mastering, timeline
 from .config import (
     FISH_TTS_URL,
     TMP_DIR,
@@ -358,6 +358,39 @@ def _synthesize_source(
     return duration, seg_count, bool(dialogue), tts_mode, align_segments
 
 
+def _synthesize_with_qa(
+    src: str,
+    out_path: Path,
+    settings: dict,
+    force_monologue: bool = False,
+) -> tuple[tuple, dict, str]:
+    """合成 + QA 门禁：异常音频隔离（.rejected.mp3）、去违规标签重试一次。
+
+    返回 (合成结果元组, QA 报告, 实际使用的源文本)。
+    """
+    dry = not real_api_key(settings) or bool(settings.get("dry_run"))
+    result = _synthesize_source(src, out_path, settings, force_monologue)
+    effective_src = src
+    # 时长必须探测最终产物（母带/外部因素可能改变它），不能用合成时的返回值
+    report = audioqa.run_qa(out_path, src, duration_sec=None, skip_vad=dry)
+    if report["verdict"] == "retry":
+        # 恢复路径：剥离全部标签（含白名单内的 [chuckle]——失控笑声最常见来源）
+        cleaned, removed = audioqa.strip_all_tags(src)
+        if removed and cleaned.strip() and cleaned != src:
+            logger.warning("QA 不通过，隔离并去标签重试: %s removed=%s", out_path.name, removed)
+            quarantine = out_path.with_suffix(".rejected.mp3")
+            out_path.replace(quarantine)
+            try:
+                result = _synthesize_source(cleaned, out_path, settings, force_monologue)
+                effective_src = cleaned
+                report = audioqa.run_qa(out_path, cleaned, duration_sec=None, skip_vad=dry)
+            except Exception:
+                # 重试失败：恢复被隔离的原始音频，记录但不再阻断
+                quarantine.replace(out_path)
+                report["retry_error"] = "重试合成失败，已恢复原始音频"
+    return result, report, effective_src
+
+
 def _save_track_outputs(
     ipath: Path,
     track: str,
@@ -417,12 +450,17 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
         src_mono, field_mono = library.get_track_source_text(full, "monologue")
         if src_mono:
             out_mono = ipath / "audio_monologue.mp3"
-            dur, segs, is_diag, mode, seg_spans = _synthesize_source(
+            (dur, segs, is_diag, mode, seg_spans), qa_report, eff_src = _synthesize_with_qa(
                 src_mono, out_mono, settings, force_monologue=True
             )
             meta_updates["duration_sec_monologue"] = round(dur, 2)
-            results["monologue"] = {"duration_sec": round(dur, 2), "segments": segs, "mode": mode}
-            _save_track_outputs(ipath, "monologue", src_mono, out_mono, dur, seg_spans)
+            meta_updates["qa_monologue"] = qa_report["verdict"]
+            audioqa.save_qa_report(qa_report, ipath / "qa_monologue.json")
+            results["monologue"] = {
+                "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
+                "qa": qa_report["verdict"],
+            }
+            _save_track_outputs(ipath, "monologue", eff_src, out_mono, dur, seg_spans)
             # 如果没有主 audio.mp3，拷贝一份（连 alignment 一起）
             if not (ipath / "audio.mp3").exists():
                 shutil.copy2(out_mono, ipath / "audio.mp3")
@@ -436,12 +474,17 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
         src_pod, field_pod = library.get_track_source_text(full, "podcast")
         if src_pod:
             out_pod = ipath / "audio_podcast.mp3"
-            dur, segs, is_diag, mode, seg_spans = _synthesize_source(
+            (dur, segs, is_diag, mode, seg_spans), qa_report, eff_src = _synthesize_with_qa(
                 src_pod, out_pod, settings, force_monologue=False
             )
             meta_updates["duration_sec_podcast"] = round(dur, 2)
-            results["podcast"] = {"duration_sec": round(dur, 2), "segments": segs, "mode": mode}
-            _save_track_outputs(ipath, "podcast", src_pod, out_pod, dur, seg_spans)
+            meta_updates["qa_podcast"] = qa_report["verdict"]
+            audioqa.save_qa_report(qa_report, ipath / "qa_podcast.json")
+            results["podcast"] = {
+                "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
+                "qa": qa_report["verdict"],
+            }
+            _save_track_outputs(ipath, "podcast", eff_src, out_pod, dur, seg_spans)
             if not (ipath / "audio.mp3").exists() and "monologue" not in results:
                 shutil.copy2(out_pod, ipath / "audio.mp3")
                 meta_updates["duration_sec"] = round(dur, 2)
@@ -454,14 +497,21 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
             library.update_item_meta(topic_id, item_id, error="没有可合成的文本")
             raise TTSError("没有可合成的文本")
         out_def = ipath / "audio.mp3"
-        dur, segs, is_diag, mode, seg_spans = _synthesize_source(src_def, out_def, settings)
+        (dur, segs, is_diag, mode, seg_spans), qa_report, eff_src = _synthesize_with_qa(
+            src_def, out_def, settings
+        )
         meta_updates["duration_sec"] = round(dur, 2)
         meta_updates["tts_source"] = field_def
         meta_updates["dialogue"] = is_diag
         meta_updates["tts_mode"] = mode
-        results["default"] = {"duration_sec": round(dur, 2), "segments": segs, "mode": mode}
+        meta_updates["qa_default"] = qa_report["verdict"]
+        audioqa.save_qa_report(qa_report, ipath / "qa_default.json")
+        results["default"] = {
+            "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
+            "qa": qa_report["verdict"],
+        }
         track_key = "podcast" if is_diag else "monologue"
-        _save_track_outputs(ipath, track_key, src_def, out_def, dur, seg_spans)
+        _save_track_outputs(ipath, track_key, eff_src, out_def, dur, seg_spans)
 
     library.update_item_meta(topic_id, item_id, **meta_updates)
     return {

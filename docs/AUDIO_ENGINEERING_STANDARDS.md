@@ -47,10 +47,13 @@ Layer 4: 活力音色基准库 (College-Age Conversational Reference)
 ## 第二层：韵律与副语言标记规范 (Paralinguistic Tags)
 
 1. **声学物理动作标记**：
-   - `[chuckle]`：轻笑、调侃。
    - `[sigh]`：自嘲、无奈、反思。
    - `[slight pause]`：思考时的自然呼吸顿挫（约 200~300ms）。
    - `[speaking slightly faster]`：情绪高涨、吐槽时的语速突变。
+   - `[chuckle]`：⚠️ **高危标签，仅在 Fish Script 表演层谨慎使用**。Fish TTS 偶发
+     5~6 秒失控长笑（已发生过真实事故）。系统 QA 门禁（`server/audioqa.py`）会检测
+     时长比与 VAD 非语音孤岛，失控自动隔离并剥离全部标签重试一次。
+     三份生成类 prompt 一律禁止源头产出该标签（幽默感用词句传达）。
 2. **标点符号隐式驱动**：
    - 破折号 `—`：用于**截断急停（Abrupt Stop）**或**思维跳跃**。
    - 省略号 `...`：用于句尾拖音或寻找词汇时的犹豫。

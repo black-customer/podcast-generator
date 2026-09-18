@@ -25,7 +25,8 @@
    - 说话者也是普通人，说话时会有真实的自然卡顿、寻找词汇时的口头禅（*you know, I mean, like, honestly, the thing is, kind of*）、轻微的自我修正（self-correction: *"well, not really X, but more like Y"*）以及连读弱读节奏。
    - 句子长度有长有短，符合呼吸与思维流动的节奏。
 4. **配音就绪（TTS Ready）**：
-   - 可在关键节奏点加入极少量的轻度语音停顿标记（如 `...`、破折号 `—`、或 `[slight pause]`、`[chuckle]` 等），增强音频渲染的真人感。
+   - 可在关键节奏点加入极少量的轻度语音停顿标记（如 `...`、破折号 `—`、或 `[slight pause]` 等），增强音频渲染的真人感。
+   - **不要使用 `[chuckle]`、`[laughter]` 等笑声类标签**：Fish TTS 遇到它们偶发 5~6 秒失控长笑破坏音画同步（系统有 QA 门禁会自动剔除重试，但源头不用最好）。幽默感用词句本身传达。
 
 ---
 

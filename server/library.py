@@ -441,6 +441,10 @@ def get_item_full(topic_id: str, item_id: str) -> dict:
             "has_audio": has_mono or has_pod or has_legacy,
             "has_audio_monologue": has_mono or (has_legacy and not meta.get("dialogue")),
             "has_audio_podcast": has_pod or (has_legacy and meta.get("dialogue")),
+            "tts_mode": meta.get("tts_mode") or "",
+            "qa_monologue": meta.get("qa_monologue"),
+            "qa_podcast": meta.get("qa_podcast"),
+            "qa_default": meta.get("qa_default"),
         }
 
 
