@@ -1,146 +1,4 @@
 {
-  "c61e21d2726e": {
-    "id": "c61e21d2726e",
-    "kind": "generate",
-    "topic_id": "01-e2e",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-q",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:07:08",
-    "finished_at": "2026-09-19T01:07:08"
-  },
-  "8886eea2bce2": {
-    "id": "8886eea2bce2",
-    "kind": "assemble",
-    "topic_id": "01-e2e",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 0,
-    "current": "",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:07:09",
-    "finished_at": "2026-09-19T01:07:09",
-    "result": {
-      "topic_id": "01-e2e",
-      "topic_name": "E2E",
-      "track": "podcast",
-      "file": "01-e2e_podcast.mp3",
-      "total_sec": 1.93,
-      "item_count": 1,
-      "generated_at": "2026-09-19T01:07:09",
-      "items": [
-        {
-          "id": "001-q",
-          "title": "Q?",
-          "duration_sec": 1.93
-        }
-      ]
-    }
-  },
-  "c59b780b4428": {
-    "id": "c59b780b4428",
-    "kind": "generate",
-    "topic_id": "02-sleep-healthy-eating",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-sleep-and-healthy-eating-dialogue",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:07:38",
-    "finished_at": "2026-09-19T01:08:38"
-  },
-  "2cf29e21ed78": {
-    "id": "2cf29e21ed78",
-    "kind": "generate",
-    "topic_id": "01-my-studies",
-    "track": "all",
-    "state": "done",
-    "total": 3,
-    "done": 3,
-    "current": "003-do-you-like-your-major",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:09:03",
-    "finished_at": "2026-09-19T01:10:48"
-  },
-  "5da3bd30bb64": {
-    "id": "5da3bd30bb64",
-    "kind": "assemble",
-    "topic_id": "01-my-studies",
-    "track": "default",
-    "state": "done",
-    "total": 1,
-    "done": 0,
-    "current": "",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:10:49",
-    "finished_at": "2026-09-19T01:10:51",
-    "result": {
-      "topic_id": "01-my-studies",
-      "topic_name": "My studies",
-      "track": "default",
-      "file": "01-my-studies.mp3",
-      "total_sec": 86.87,
-      "item_count": 3,
-      "generated_at": "2026-09-19T01:10:51",
-      "items": [
-        {
-          "id": "001-do-you-work-or-are-you-a-student",
-          "title": "Do you work or are you a student?",
-          "duration_sec": 42.04
-        },
-        {
-          "id": "002-where-is-your-hometown",
-          "title": "Where is your hometown?",
-          "duration_sec": 20.61
-        },
-        {
-          "id": "003-do-you-like-your-major",
-          "title": "Do you like your major?",
-          "duration_sec": 23.01
-        }
-      ]
-    }
-  },
-  "e52d74c11a77": {
-    "id": "e52d74c11a77",
-    "kind": "assemble",
-    "topic_id": "02-sleep-healthy-eating",
-    "track": "default",
-    "state": "done",
-    "total": 1,
-    "done": 0,
-    "current": "",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:10:49",
-    "finished_at": "2026-09-19T01:10:51",
-    "result": {
-      "topic_id": "02-sleep-healthy-eating",
-      "topic_name": "Sleep & Healthy Eating",
-      "track": "default",
-      "file": "02-sleep-healthy-eating.mp3",
-      "total_sec": 108.04,
-      "item_count": 1,
-      "generated_at": "2026-09-19T01:10:51",
-      "items": [
-        {
-          "id": "001-sleep-and-healthy-eating-dialogue",
-          "title": "Sleep and healthy eating (A/B dialogue)",
-          "duration_sec": 108.04
-        }
-      ]
-    }
-  },
   "1d31e93d5a68": {
     "id": "1d31e93d5a68",
     "kind": "assemble",
@@ -913,6 +771,108 @@
           "duration_sec": 1.93,
           "offset_sec": 0.0,
           "generated_at": "2026-09-19T01:49:52.924"
+        }
+      ]
+    }
+  },
+  "c19d427d4841": {
+    "id": "c19d427d4841",
+    "kind": "generate",
+    "topic_id": "01-align",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:58:00.534",
+    "finished_at": "2026-09-19T01:58:01.449"
+  },
+  "542a49852dfd": {
+    "id": "542a49852dfd",
+    "kind": "generate",
+    "topic_id": "01-inval",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:58:01.784",
+    "finished_at": "2026-09-19T01:58:02.649"
+  },
+  "2612499ed683": {
+    "id": "2612499ed683",
+    "kind": "generate",
+    "topic_id": "01-mono",
+    "track": "monologue",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:58:02.761",
+    "finished_at": "2026-09-19T01:58:03.585"
+  },
+  "d9a49b1259cc": {
+    "id": "d9a49b1259cc",
+    "kind": "generate",
+    "topic_id": "01-qa",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:58:04.363",
+    "finished_at": "2026-09-19T01:58:06.392"
+  },
+  "1269b0200ab0": {
+    "id": "1269b0200ab0",
+    "kind": "generate",
+    "topic_id": "01-e2e",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-q",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:58:06.874",
+    "finished_at": "2026-09-19T01:58:07.527"
+  },
+  "fe4b60301681": {
+    "id": "fe4b60301681",
+    "kind": "assemble",
+    "topic_id": "01-e2e",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:58:07.802",
+    "finished_at": "2026-09-19T01:58:07.948",
+    "result": {
+      "topic_id": "01-e2e",
+      "topic_name": "E2E",
+      "track": "podcast",
+      "file": "01-e2e_podcast.mp3",
+      "total_sec": 1.93,
+      "item_count": 1,
+      "generated_at": "2026-09-19T01:58:07.946",
+      "items": [
+        {
+          "id": "001-q",
+          "title": "Q?",
+          "duration_sec": 1.93,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T01:58:06.882"
         }
       ]
     }

@@ -2,11 +2,11 @@
 import re
 from typing import Literal
 
-from fastapi import APIRouter, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, field_validator
 
-from . import assemble, audio, exports, jobs, library, timeline, tts
+from . import assemble, audio, exports, exports_media, jobs, library, timeline, tts
 from .config import (
     DATA_DIR,
     FISH_MODELS,
@@ -420,14 +420,34 @@ def api_download_export(filename: str):
     return FileResponse(path, media_type=media, filename=filename)
 
 
+@router.post("/topics/{topic_id}/items/{item_id}/export/vtt")
+def api_export_vtt(topic_id: str, item_id: str, track: TrackParam = "podcast"):
+    try:
+        return exports_media.export_vtt(topic_id, item_id, track=track)
+    except (FileNotFoundError, RuntimeError) as e:
+        raise _err(400, str(e)) from e
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/export/lrc")
+def api_export_lrc(topic_id: str, item_id: str, track: TrackParam = "podcast"):
+    try:
+        return exports_media.export_lrc(topic_id, item_id, track=track)
+    except (FileNotFoundError, RuntimeError) as e:
+        raise _err(400, str(e)) from e
+
+
 @router.post("/topics/{topic_id}/items/{item_id}/export/srt")
 def api_export_srt(topic_id: str, item_id: str, track: TrackParam = "podcast"):
     try:
-        return exports.export_srt(topic_id, item_id, track=track)
-    except FileNotFoundError as e:
-        raise _err(404, str(e)) from e
-    except RuntimeError as e:
+        return exports_media.export_srt(topic_id, item_id, track=track)
+    except (FileNotFoundError, RuntimeError) as e:
         raise _err(400, str(e)) from e
+
+
+@router.get("/rss.xml")
+def api_rss(request: Request):
+    base = str(request.base_url).rstrip("/")
+    return Response(content=exports_media.build_rss(base), media_type="application/xml")
 
 
 # ---------------------------------------------------------------- rewrite request

@@ -1,7 +1,6 @@
 """M11 导出：整集 MP3 → 带 ffmetadata 章节的 M4B（供任意播放器/每日英语听力导入）。"""
 import subprocess
 
-from . import library
 from .assemble import episode_path, load_manifest
 from .config import EPISODES_DIR, atomic_write_text
 
@@ -76,47 +75,3 @@ def export_m4b(topic_id: str, track: str = "podcast") -> dict:
         "size": out.stat().st_size,
         "item_count": manifest.get("item_count"),
     }
-
-
-def export_srt(topic_id: str, item_id: str, track: str = "podcast") -> dict:
-    """导出条目句级 SRT 字幕（基于 alignment）。"""
-    from . import alignment
-
-    ipath = library.item_path(topic_id, item_id)
-    doc = alignment.load_alignment(
-        ipath / f"alignment_{track}.json",
-        expect_audio=ipath / f"audio_{track}.mp3",
-    )
-    if not doc and (ipath / "audio.mp3").exists():
-        alt_track = "podcast" if track != "podcast" else "monologue"
-        doc = alignment.load_alignment(
-            ipath / f"alignment_{alt_track}.json",
-            expect_audio=ipath / "audio.mp3",
-        )
-    if not doc:
-        raise RuntimeError("没有可用的对齐数据（请先生成音频）")
-
-    def _fmt_srt_time(sec: float) -> str:
-        ms = int(round(sec * 1000))
-        h, ms = divmod(ms, 3600000)
-        m, ms = divmod(ms, 60000)
-        s, ms = divmod(ms, 1000)
-        return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
-
-    blocks = []
-    for i, seg in enumerate(doc["segments"], start=1):
-        import re as _re
-
-        text = _re.sub(r"\[[^\]]*\]", "", seg.get("text", "")).strip()
-        if not text:
-            continue
-        blocks.append(
-            f"{i}\n{_fmt_srt_time(seg['start'])} --> {_fmt_srt_time(seg['end'])}\n{text}\n"
-        )
-    content = "\n".join(blocks)
-
-    out_dir = EPISODES_DIR.parent / "exports"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / f"{topic_id}_{item_id}_{track}.srt"
-    atomic_write_text(out, content)
-    return {"file": str(out), "lines": len(blocks)}
