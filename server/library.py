@@ -1,8 +1,10 @@
 """数据层：话题 / 条目的扫描与 CRUD。存储为纯文本文件 + meta.json。"""
 import json
+import os
 import re
 import shutil
 import threading
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -106,6 +108,81 @@ def item_dirs(tpath: Path) -> list[Path]:
     return sorted(dirs, key=_numeric_order_key)
 
 
+# 条目摘要缓存（M17）：TTL 内直接命中；过期后用 scandir 签名（单次目录枚举）判变化，
+# 只有签名变化才重读文本。500 条目热路径 <5ms，变化重算 ~200ms。
+_SUMMARY_CACHE: dict[str, tuple[tuple, dict, float]] = {}
+
+_SUMMARY_TTL_SEC = 2.0
+
+_SUMMARY_FILES = (
+    "meta.json", "question.txt", "chinese.txt", "natural_english.txt",
+    "fish_script.txt", "monologue_text.txt", "monologue_script.txt",
+    "podcast_text.txt", "podcast_script.txt", "audio.mp3",
+    "audio_monologue.mp3", "audio_podcast.mp3",
+)
+
+
+def _item_signature(d: Path) -> tuple:
+    """单次 scandir 收集条目内全部文件的 (名称, mtime_ns, size) 作为签名。"""
+    sig = []
+    try:
+        with os.scandir(d) as it:
+            for e in it:
+                try:
+                    st = e.stat()
+                    sig.append((e.name, st.st_mtime_ns, st.st_size))
+                except OSError:
+                    continue
+    except OSError:
+        return ("missing",)
+    return tuple(sorted(sig))
+
+
+def item_summary(d: Path) -> dict:
+    """条目摘要（标题/状态/轨道标志/时长），TTL + 签名两级缓存。"""
+    now = time.monotonic()
+    cached = _SUMMARY_CACHE.get(str(d))
+    if cached and now - cached[2] < _SUMMARY_TTL_SEC:
+        return cached[1]
+
+    sig = _item_signature(d)
+    if cached and cached[0] == sig:
+        _SUMMARY_CACHE[str(d)] = (sig, cached[1], now)
+        return cached[1]
+
+    meta = load_meta(d)
+    texts = read_item_texts(d)
+    mono = d / "audio_monologue.mp3"
+    pod = d / "audio_podcast.mp3"
+    has_legacy = (d / "audio.mp3").exists() and (d / "audio.mp3").stat().st_size > 0
+    is_diag = bool(meta.get("dialogue"))
+    status = compute_status(d, texts)
+    entry = {
+        "id": d.name,
+        "title": item_title(texts, d.name),
+        "status": status,
+        "error": meta.get("error") or "",
+        "stale": bool(meta.get("stale")),
+        "duration_sec": meta.get("duration_sec"),
+        "duration_sec_monologue": meta.get("duration_sec_monologue"),
+        "duration_sec_podcast": meta.get("duration_sec_podcast"),
+        "has_monologue": (mono.exists() and mono.stat().st_size > 0) or (
+            has_legacy and not is_diag
+        ),
+        "has_podcast": (pod.exists() and pod.stat().st_size > 0) or (has_legacy and is_diag),
+        "qa_podcast": meta.get("qa_podcast"),
+        "qa_monologue": meta.get("qa_monologue"),
+        "generated_at": meta.get("generated_at") or "",
+        "updated_at": meta.get("updated_at") or "",
+    }
+    _SUMMARY_CACHE[str(d)] = (sig, entry, now)
+    return entry
+
+
+def invalidate_item_cache(d: Path) -> None:
+    _SUMMARY_CACHE.pop(str(d), None)
+
+
 def list_topics() -> list[dict]:
     with LIB_LOCK:
         result = []
@@ -119,7 +196,8 @@ def list_topics() -> list[dict]:
             for d in item_dirs(tpath):
                 stats["total"] += 1
                 meta = load_meta(d)
-                status = compute_status(d)  # 动态计算，兼容直接改文件
+                entry = item_summary(d)
+                status = entry["status"]
                 if meta.get("error"):
                     stats["error"] += 1
                 stats[status if status in ("empty", "ready", "generated") else "empty"] += 1
@@ -190,34 +268,7 @@ def get_topic(topic_id: str) -> dict:
         tpath = topic_dir(topic_id)
         if not tpath.exists():
             raise FileNotFoundError("话题不存在")
-        items = []
-        for d in item_dirs(tpath):
-            meta = load_meta(d)
-            texts = read_item_texts(d)
-            mono = d / "audio_monologue.mp3"
-            pod = d / "audio_podcast.mp3"
-            has_legacy = (d / "audio.mp3").exists() and (d / "audio.mp3").stat().st_size > 0
-            is_diag = bool(meta.get("dialogue"))
-            items.append(
-                {
-                    "id": d.name,
-                    "title": item_title(texts, d.name),
-                    "status": compute_status(d, texts),  # 动态计算，兼容直接改文件
-                    "error": meta.get("error") or "",
-                    "stale": bool(meta.get("stale")),
-                    "duration_sec": meta.get("duration_sec"),
-                    "duration_sec_monologue": meta.get("duration_sec_monologue"),
-                    "duration_sec_podcast": meta.get("duration_sec_podcast"),
-                    "has_monologue": (mono.exists() and mono.stat().st_size > 0)
-                    or (has_legacy and not is_diag),
-                    "has_podcast": (pod.exists() and pod.stat().st_size > 0)
-                    or (has_legacy and is_diag),
-                    "qa_podcast": meta.get("qa_podcast"),
-                    "qa_monologue": meta.get("qa_monologue"),
-                    "generated_at": meta.get("generated_at") or "",
-                    "updated_at": meta.get("updated_at") or "",
-                }
-            )
+        items = [item_summary(d) for d in item_dirs(tpath)]
         return {"id": tpath.name, "name": load_topic_name(tpath), "items": items}
 
 
@@ -409,6 +460,7 @@ def create_item(topic_id: str, fields: dict) -> dict:
             "generated_at": None,
         }
         save_meta(d, meta)
+        invalidate_item_cache(d)
         return {"id": d.name}
 
 
@@ -441,6 +493,7 @@ def update_item_texts(topic_id: str, item_id: str, fields: dict) -> dict:
         if meta["status"] != "generated":
             meta["stale"] = False
         save_meta(d, meta)
+        invalidate_item_cache(d)
         return {"id": d.name, "status": meta["status"]}
 
 
@@ -451,6 +504,7 @@ def update_item_meta(topic_id: str, item_id: str, **updates) -> None:
         meta.update(updates)
         meta["status"] = compute_status(d)
         save_meta(d, meta)
+        invalidate_item_cache(d)
 
 
 def delete_item(topic_id: str, item_id: str) -> None:

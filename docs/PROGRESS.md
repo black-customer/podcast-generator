@@ -76,9 +76,16 @@
 - 注意：e2e/手工调试会在 data/ 留下测试话题（e2e-manage-*/debug-*），定期清理；
   check.sh 的冒烟服务起停会短暂占用 8765
 
+## M17 已完成（性能）
+
+- item_summary：条目摘要缓存（TTL 2s + scandir 单次枚举签名）
+- 500 条目压测：首扫 1085ms / TTL 热查 110ms / 过期重算 30ms → AC(<300ms) 达标
+- 写路径统一失效缓存（update_item_texts/meta/create_item）
+- 注意：staleness 判定依赖缓存失效正确性（test_episode 覆盖）
+
 ## 下一步（按序，接着跑完 M11-M20）
 
-1. M17 性能：list_topics O(n×files) 优化；500 条压测
+1. M09：截图审查（用子代理对 6 视图截图）；es modules 评估（可降级为文档决策）
 2. M09 UI 质感：截图审查（子代理）；es modules 评估
 3. M18 测试矩阵收口；M19 README/打包；M20 验收 sweep + BASELINE
 2. M12 字幕导出（alignment→SRT/VTT/LRC）+ 局域网 RSS（enclosure 绝对 URL）
