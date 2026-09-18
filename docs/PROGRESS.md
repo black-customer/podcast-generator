@@ -50,9 +50,16 @@
 - item_title 增强：英文轨文本首行（剥 A:/B: 前缀）可作标题
 - 测试：tests/test_exports.py（ffprobe 章节 AC + SRT 内容）
 
+## M12 已完成（tag m12）
+
+- server/exports_media.py：export_vtt（词级 cue 288 条）/export_lrc/export_srt/build_rss
+- API：/api/rss.xml（局域网订阅，enclosure 绝对 URL）、
+  POST .../export/vtt、/export/lrc、/export/srt
+- 测试 tests/test_media_export.py（VTT 格式/LRC 时间标签/RSS 条目）
+
 ## 下一步（按序，接着跑完 M11-M20）
 
-1. M12 剩余：VTT/LRC 导出 + 局域网 RSS（SRT 已在 M11 完成）
+1. M13 PWA：manifest+SW+Media Session+移动布局+配对二维码
 2. M12 字幕导出（alignment→SRT/VTT/LRC）+ 局域网 RSS（enclosure 绝对 URL）
 3. M13 PWA（manifest+SW+Media Session+移动布局+配对二维码）
 4. M09 UI 质感（设计令牌/空错态/截图审查子代理；es modules 拆分评估）
