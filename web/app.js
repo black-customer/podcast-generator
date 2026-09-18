@@ -932,11 +932,11 @@ async function VoicesShowcaseView(token) {
         <div>
           <button class="voice-btn" onclick="previewVoice('${esc(v.reference_id)}', this)" title="播放该音色的试听样本">▶ 试听</button>
           ${v.gender === 'male' ? `
-            <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'male', '${esc(v.name)}')">
+            <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'male', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
               ${isCurA ? "✓ 当前默认男声" : "设为默认男声 (Speaker A)"}
             </button>
           ` : `
-            <button class="voice-btn ${isCurB ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'female', '${esc(v.name)}')">
+            <button class="voice-btn ${isCurB ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'female', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
               ${isCurB ? "✓ 当前默认女声" : "设为默认女声 (Speaker B)"}
             </button>
           `}
@@ -987,20 +987,19 @@ window.previewVoice = function(referenceId, btn) {
   });
 };
 
-window.applyVoicePreset = async function(referenceId, gender, voiceName) {
+window.applyVoicePreset = async function(referenceId, gender, voiceName, speed, temperature) {
   try {
     const payload = {};
     if (gender === "male") {
       payload.reference_id = referenceId;
-      if (referenceId === "078eaa5208ca42a1909d2e6fac9c93f7") {
-        payload.speed = 1.05;
-        payload.temperature = 0.88;
-      }
     } else {
       payload.reference_id_b = referenceId;
     }
+    // 音色自带表演参数（voices.json 为唯一真源）
+    if (speed && speed !== 1.0) payload.speed = speed;
+    if (temperature != null) payload.temperature = temperature;
     await api("PUT", "/api/settings", payload);
-    toast(`已成功将【${voiceName}】设为首选音色！`);
+    toast(`已将【${voiceName}】设为${gender === "male" ? "男声 A" : "女声 B"}`);
     VoicesShowcaseView();
   } catch (e) {
     toast(`设置失败：${e.message}`);

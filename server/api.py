@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, field_validator
 
-from . import assemble, audio, exports, exports_media, jobs, library, timeline, tts
+from . import assemble, audio, exports, exports_media, jobs, library, production, timeline, tts
 from .config import (
     DATA_DIR,
     FISH_MODELS,
@@ -407,6 +407,66 @@ def api_export_m4b(topic_id: str, track: TrackParam = "podcast"):
         raise _err(404, str(e)) from e
     except (RuntimeError, audio.FFmpegError) as e:
         raise _err(400, str(e)) from e
+
+
+@router.post("/import-batch")
+def api_import_batch(body: dict):
+    """批量导入任务包（Markdown），返回 lint 报告。"""
+    text = (body or {}).get("text", "")
+    try:
+        return production.import_batch((body or {}).get("topic", "未命名话题"), text)
+    except (FileNotFoundError, RuntimeError) as e:
+        raise _err(400, str(e)) from e
+
+
+@router.post("/lint-script")
+def api_lint_script(body: dict):
+    text = (body or {}).get("text", "")
+    return production.lint_script(text)
+
+
+@router.get("/stats")
+def api_stats():
+    topics = library.list_topics()
+    total_items = sum(t["stats"]["total"] for t in topics)
+    generated = sum(t["stats"]["generated"] for t in topics)
+    return {
+        "topics": len(topics),
+        "items": total_items,
+        "generated": generated,
+        "ready": sum(t["stats"]["ready"] for t in topics),
+        "empty": sum(t["stats"]["empty"] for t in topics),
+        "error": sum(t["stats"]["error"] for t in topics),
+        "audio_sec": round(sum(t["total_sec"] for t in topics), 1),
+    }
+
+
+@router.get("/search")
+def api_search(q: str = ""):
+    """全库搜索：标题/问题/中文/英文子串匹配。"""
+    if not q.strip():
+        return {"results": []}
+    q_lower = q.strip().lower()
+    results = []
+    for t in library.list_topics():
+        for it in (library.get_topic(t["id"]).get("items") or []):
+            full = library.get_item_full(t["id"], it["id"])
+            fields = ("title", "question", "chinese", "natural_english", "monologue_text")
+            blob = " ".join((full.get(f, "") or "") for f in fields).lower()
+            if q_lower in blob:
+                results.append({
+                    "topic_id": t["id"], "topic_name": t["name"],
+                    "item_id": it["id"], "title": it["title"], "status": it["status"],
+                })
+    return {"results": results}
+
+
+@router.get("/topics/{topic_id}/drafts")
+def api_content_drafts(topic_id: str):
+    try:
+        return production.content_drafts(topic_id)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
 
 
 @router.get("/exports/{filename}")
