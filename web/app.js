@@ -72,6 +72,19 @@ function toast(msg) {
 }
 
 /* ---------------- 全局播放器驱动 ---------------- */
+
+// 顶层作用域（playItem 经 setTimeout 调用，函数必须可全局解析——曾因作用域问题截断播放链）
+function updateMediaSession() {
+  if (!("mediaSession" in navigator) || !PlayerState.currentItem) return;
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: PlayerState.currentItem.title || "未命名曲目",
+      artist: "Bruce English Corpus",
+      album: (PlayerState.currentTopic && PlayerState.currentTopic.name) || "English Corpus",
+    });
+  } catch (_) { /* ignore */ }
+}
+
 function initGlobalPlayer() {
   const $playBtn = document.getElementById("gp-play");
   const $prevBtn = document.getElementById("gp-prev");
@@ -101,6 +114,29 @@ function initGlobalPlayer() {
     const pb = document.getElementById("gp-play");
     if (pb) pb.textContent = "▶";
   };
+
+  if ("mediaSession" in navigator) {
+    try {
+      navigator.mediaSession.setActionHandler("play", () => $audio.play().catch(() => {}));
+      navigator.mediaSession.setActionHandler("pause", () => $audio.pause());
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        if (PlayerState.playlist.length && PlayerState.currentIndex > 0) {
+          playItem(PlayerState.currentTopic.id, PlayerState.playlist[PlayerState.currentIndex - 1]);
+        }
+      });
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        if (PlayerState.playlist.length && PlayerState.currentIndex < PlayerState.playlist.length - 1) {
+          playItem(PlayerState.currentTopic.id, PlayerState.playlist[PlayerState.currentIndex + 1]);
+        }
+      });
+      navigator.mediaSession.setActionHandler("seekbackward", () => {
+        if ($audio.duration) $audio.currentTime = Math.max(0, $audio.currentTime - 15);
+      });
+      navigator.mediaSession.setActionHandler("seekforward", () => {
+        if ($audio.duration) $audio.currentTime = Math.min($audio.duration, $audio.currentTime + 15);
+      });
+    } catch (_) { /* 浏览器不支持则忽略 */ }
+  }
 
   $audio.onplay = () => {
     PlayerState.isPlaying = true;
@@ -389,6 +425,7 @@ async function playItem(topicId, item, autoPlay = true) {
   }
 
   document.getElementById("gp-title").textContent = item.title || "未命名曲目";
+  setTimeout(updateMediaSession, 0);
   document.getElementById("gp-sub").textContent = track === "podcast"
     ? "🎙️ 双人对话播客版"
     : "🎧 纯英母语独白版";

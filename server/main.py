@@ -19,3 +19,16 @@ app.mount("/static", StaticFiles(directory=str(WEB_DIR)), name="static")
 @app.get("/")
 def index():
     return FileResponse(WEB_DIR / "index.html")
+
+
+@app.get("/sw.js")
+def service_worker():
+    # SW 必须部署在根作用域才能控制全站请求
+    return FileResponse(WEB_DIR / "sw.js", media_type="application/javascript")
+
+
+@app.get("/manifest.webmanifest")
+def webmanifest():
+    return FileResponse(
+        WEB_DIR / "manifest.webmanifest", media_type="application/manifest+json"
+    )
