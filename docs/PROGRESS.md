@@ -57,9 +57,18 @@
   POST .../export/vtt、/export/lrc、/export/srt
 - 测试 tests/test_media_export.py（VTT 格式/LRC 时间标签/RSS 条目）
 
+## M13 已完成（tag m13）
+
+- PWA：manifest.webmanifest + sw.js（API 网络优先/静态缓存优先）+ 图标
+- SW/manifest 根路径路由（main.py；曾 404）
+- Media Session 锁屏控制（play/pause/prev/next/seek）+ 元数据
+- 移动底部导航布局（≤860px）；修 updateMediaSession 作用域截断播放链的严重 bug
+  （setTimeout 求值函数引用时同步抛错→playItem 断链→时间轴永不渲染；函数提升到顶层修复）
+- 清理测试残留话题（debug-manage-x / e2e-manage-* / 01-persist）
+
 ## 下一步（按序，接着跑完 M11-M20）
 
-1. M13 PWA：manifest+SW+Media Session+移动布局+配对二维码
+1. M14 pipeline.py 批量改写落盘+lint；M15 voices.json 真源化；M16 自媒体模板；M17 性能
 2. M12 字幕导出（alignment→SRT/VTT/LRC）+ 局域网 RSS（enclosure 绝对 URL）
 3. M13 PWA（manifest+SW+Media Session+移动布局+配对二维码）
 4. M09 UI 质感（设计令牌/空错态/截图审查子代理；es modules 拆分评估）
