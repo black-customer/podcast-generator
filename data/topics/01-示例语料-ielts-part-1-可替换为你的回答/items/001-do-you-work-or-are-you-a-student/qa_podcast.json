@@ -1,0 +1,28 @@
+{
+  "checked_at": "2026-09-19T03:00:00",
+  "duration_sec": 15.14,
+  "verdict": "pass",
+  "issues": [],
+  "checks": [
+    {
+      "kind": "duration_ratio",
+      "ok": true,
+      "expected_sec": 15.14,
+      "actual_sec": 15.14,
+      "ratio": 1.0,
+      "severity": "high"
+    },
+    {
+      "kind": "silence_island",
+      "ok": true,
+      "islands": [],
+      "severity": "low"
+    },
+    {
+      "kind": "clipping",
+      "ok": true,
+      "peak_db": -10.346161,
+      "severity": "medium"
+    }
+  ]
+}

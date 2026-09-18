@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Occasionally, yeah.",
+    "start": 0.0,
+    "end": 1.47,
+    "duration": 1.47,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But I am working on fixing my sleep schedule, so I try to be in bed before midnight now.",
+    "start": 1.47,
+    "end": 7.71,
+    "duration": 6.24,
+    "mode": "measured"
+  }
+]

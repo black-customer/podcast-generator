@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Honestly, probably too much.",
+    "start": 0.0,
+    "end": 2.11,
+    "duration": 2.11,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I am trying to cut down on short videos though, so I mostly use it for messaging and a bit of reading.",
+    "start": 2.11,
+    "end": 9.36,
+    "duration": 7.25,
+    "mode": "measured"
+  }
+]

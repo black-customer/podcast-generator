@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Videos, mostly, because they are easier to consume.",
+    "start": 0.0,
+    "end": 3.74,
+    "duration": 3.74,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But books go so much deeper on a topic, so I try to read when I really want to understand something.",
+    "start": 3.74,
+    "end": 10.86,
+    "duration": 7.12,
+    "mode": "measured"
+  }
+]

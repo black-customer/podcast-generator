@@ -1,0 +1,32 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Once or twice a week, I guess.",
+    "start": 0.0,
+    "end": 2.01,
+    "duration": 2.01,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "We usually play games together or grab something to eat.",
+    "start": 2.01,
+    "end": 6.2,
+    "duration": 4.19,
+    "mode": "measured"
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Nothing fancy, just hanging out.",
+    "start": 6.2,
+    "end": 8.57,
+    "duration": 2.37,
+    "mode": "measured"
+  }
+]

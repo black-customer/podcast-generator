@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "a3b28cf5417901f1",
+  "audio_signature": "205680:1789758005",
+  "created_at": "2026-09-19T03:00:06",
+  "segments": [
+    {
+      "text": "In my free time I play video games, watch American shows, and go for a run now and then.",
+      "start": 0.0,
+      "end": 6.33,
+      "duration": 6.33
+    },
+    {
+      "text": "It depends on my mood, really.",
+      "start": 6.33,
+      "end": 8.5,
+      "duration": 2.17
+    }
+  ]
+}

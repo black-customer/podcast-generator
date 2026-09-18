@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "5c685970af06de54",
+  "audio_signature": "207560:1789758004",
+  "created_at": "2026-09-19T03:00:05",
+  "segments": [
+    {
+      "text": "Once or twice a week, I guess.",
+      "start": 0.0,
+      "end": 2.01,
+      "duration": 2.01
+    },
+    {
+      "text": "We usually play games together or grab something to eat.",
+      "start": 2.01,
+      "end": 6.2,
+      "duration": 4.19
+    },
+    {
+      "text": "Nothing fancy, just hanging out.",
+      "start": 6.2,
+      "end": 8.57,
+      "duration": 2.37
+    }
+  ]
+}

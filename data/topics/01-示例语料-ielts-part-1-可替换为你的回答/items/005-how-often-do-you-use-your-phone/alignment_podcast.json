@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "6a2ace537b0fe98b",
+  "audio_signature": "226369:1789758003",
+  "created_at": "2026-09-19T03:00:03",
+  "segments": [
+    {
+      "text": "Honestly, probably too much.",
+      "start": 0.0,
+      "end": 2.11,
+      "duration": 2.11
+    },
+    {
+      "text": "I am trying to cut down on short videos though, so I mostly use it for messaging and a bit of reading.",
+      "start": 2.11,
+      "end": 9.36,
+      "duration": 7.25
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I am from a pretty small city, you know.",
+    "start": 0.0,
+    "end": 2.84,
+    "duration": 2.84,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It is not one of those huge megacities, but the food is amazing and the pace of life is so much slower, in a good way.",
+    "start": 2.84,
+    "end": 11.36,
+    "duration": 8.52,
+    "mode": "measured"
+  }
+]

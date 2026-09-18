@@ -1,0 +1,151 @@
+{
+  "topic_id": "01-示例语料-ielts-part-1-可替换为你的回答",
+  "topic_name": "示例语料 · IELTS Part 1（可替换为你的回答）",
+  "track": "podcast",
+  "file": "01-示例语料-ielts-part-1-可替换为你的回答_podcast.mp3",
+  "total_sec": 192.11,
+  "item_count": 20,
+  "generated_at": "2026-09-19T03:00:19.529",
+  "items": [
+    {
+      "id": "001-do-you-work-or-are-you-a-student",
+      "title": "Do you work or are you a student?",
+      "duration_sec": 15.14,
+      "offset_sec": 0.0,
+      "generated_at": "2026-09-19T02:59:59.419"
+    },
+    {
+      "id": "002-where-is-your-hometown",
+      "title": "Where is your hometown?",
+      "duration_sec": 11.36,
+      "offset_sec": 15.74,
+      "generated_at": "2026-09-19T03:00:00.364"
+    },
+    {
+      "id": "003-do-you-like-your-major",
+      "title": "Do you like your major?",
+      "duration_sec": 12.0,
+      "offset_sec": 27.7,
+      "generated_at": "2026-09-19T03:00:01.229"
+    },
+    {
+      "id": "004-do-you-prefer-mornings-or-evenings",
+      "title": "Do you prefer mornings or evenings?",
+      "duration_sec": 8.93,
+      "offset_sec": 40.3,
+      "generated_at": "2026-09-19T03:00:02.113"
+    },
+    {
+      "id": "005-how-often-do-you-use-your-phone",
+      "title": "How often do you use your phone?",
+      "duration_sec": 9.36,
+      "offset_sec": 49.83,
+      "generated_at": "2026-09-19T03:00:02.910"
+    },
+    {
+      "id": "006-do-you-like-cooking",
+      "title": "Do you like cooking?",
+      "duration_sec": 8.64,
+      "offset_sec": 59.79,
+      "generated_at": "2026-09-19T03:00:03.695"
+    },
+    {
+      "id": "007-do-you-often-hang-out-with-friends",
+      "title": "Do you often hang out with friends?",
+      "duration_sec": 8.57,
+      "offset_sec": 69.03,
+      "generated_at": "2026-09-19T03:00:04.485"
+    },
+    {
+      "id": "008-what-do-you-do-in-your-free-time",
+      "title": "What do you do in your free time?",
+      "duration_sec": 8.5,
+      "offset_sec": 78.2,
+      "generated_at": "2026-09-19T03:00:05.267"
+    },
+    {
+      "id": "009-do-you-like-traveling",
+      "title": "Do you like traveling?",
+      "duration_sec": 8.57,
+      "offset_sec": 87.3,
+      "generated_at": "2026-09-19T03:00:06.061"
+    },
+    {
+      "id": "010-do-you-prefer-reading-books-or-watching-videos",
+      "title": "Do you prefer reading books or watching videos?",
+      "duration_sec": 10.86,
+      "offset_sec": 96.47,
+      "generated_at": "2026-09-19T03:00:06.852"
+    },
+    {
+      "id": "011-is-your-city-a-good-place-to-live",
+      "title": "Is your city a good place to live?",
+      "duration_sec": 9.0,
+      "offset_sec": 107.93,
+      "generated_at": "2026-09-19T03:00:07.695"
+    },
+    {
+      "id": "012-do-you-like-the-weather-in-your-city",
+      "title": "Do you like the weather in your city?",
+      "duration_sec": 7.43,
+      "offset_sec": 117.53,
+      "generated_at": "2026-09-19T03:00:08.523"
+    },
+    {
+      "id": "013-how-do-you-usually-spend-your-weekends",
+      "title": "How do you usually spend your weekends?",
+      "duration_sec": 8.36,
+      "offset_sec": 125.56,
+      "generated_at": "2026-09-19T03:00:09.291"
+    },
+    {
+      "id": "014-what-kind-of-music-do-you-like",
+      "title": "What kind of music do you like?",
+      "duration_sec": 8.21,
+      "offset_sec": 134.52,
+      "generated_at": "2026-09-19T03:00:10.088"
+    },
+    {
+      "id": "015-do-you-think-you-are-a-good-friend",
+      "title": "Do you think you are a good friend?",
+      "duration_sec": 7.5,
+      "offset_sec": 143.33,
+      "generated_at": "2026-09-19T03:00:10.869"
+    },
+    {
+      "id": "016-do-you-often-stay-up-late",
+      "title": "Do you often stay up late?",
+      "duration_sec": 7.71,
+      "offset_sec": 151.43,
+      "generated_at": "2026-09-19T03:00:11.627"
+    },
+    {
+      "id": "017-do-you-like-shopping",
+      "title": "Do you like shopping?",
+      "duration_sec": 7.14,
+      "offset_sec": 159.74,
+      "generated_at": "2026-09-19T03:00:12.390"
+    },
+    {
+      "id": "018-what-food-did-you-like-as-a-child",
+      "title": "What food did you like as a child?",
+      "duration_sec": 7.79,
+      "offset_sec": 167.48,
+      "generated_at": "2026-09-19T03:00:13.150"
+    },
+    {
+      "id": "019-do-you-like-plants",
+      "title": "Do you like plants?",
+      "duration_sec": 7.07,
+      "offset_sec": 175.87,
+      "generated_at": "2026-09-19T03:00:13.907"
+    },
+    {
+      "id": "020-would-you-like-to-work-abroad-in-the-future",
+      "title": "Would you like to work abroad in the future?",
+      "duration_sec": 8.57,
+      "offset_sec": 183.54,
+      "generated_at": "2026-09-19T03:00:14.648"
+    }
+  ]
+}

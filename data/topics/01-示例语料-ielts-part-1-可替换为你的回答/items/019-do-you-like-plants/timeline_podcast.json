@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I like looking at them, but I am terrible at keeping them alive.",
+    "start": 0.0,
+    "end": 4.59,
+    "duration": 4.59,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Anything I plant just dies, sadly.",
+    "start": 4.59,
+    "end": 7.07,
+    "duration": 2.48,
+    "mode": "measured"
+  }
+]

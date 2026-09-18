@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "06568e8505462b71",
+  "audio_signature": "171198:1789758014",
+  "created_at": "2026-09-19T03:00:14",
+  "segments": [
+    {
+      "text": "I like looking at them, but I am terrible at keeping them alive.",
+      "start": 0.0,
+      "end": 4.59,
+      "duration": 4.59
+    },
+    {
+      "text": "Anything I plant just dies, sadly.",
+      "start": 4.59,
+      "end": 7.07,
+      "duration": 2.48
+    }
+  ]
+}

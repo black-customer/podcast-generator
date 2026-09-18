@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "dfa81c3bfeb23594",
+  "audio_signature": "274016:1789758000",
+  "created_at": "2026-09-19T03:00:01",
+  "segments": [
+    {
+      "text": "I am from a pretty small city, you know.",
+      "start": 0.0,
+      "end": 2.84,
+      "duration": 2.84
+    },
+    {
+      "text": "It is not one of those huge megacities, but the food is amazing and the pace of life is so much slower, in a good way.",
+      "start": 2.84,
+      "end": 11.36,
+      "duration": 8.52
+    }
+  ]
+}

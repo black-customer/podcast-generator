@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "f7619d7a18790b88",
+  "audio_signature": "207560:1789758006",
+  "created_at": "2026-09-19T03:00:06",
+  "segments": [
+    {
+      "text": "I love it, even though I have not been to that many places.",
+      "start": 0.0,
+      "end": 4.15,
+      "duration": 4.15
+    },
+    {
+      "text": "Every trip I have taken was pretty memorable in its own way.",
+      "start": 4.15,
+      "end": 8.57,
+      "duration": 4.42
+    }
+  ]
+}

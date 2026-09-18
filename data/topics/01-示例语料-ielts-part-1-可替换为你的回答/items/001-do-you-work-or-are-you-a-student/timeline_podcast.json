@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I am technically still a student, majoring in computer science.",
+    "start": 0.0,
+    "end": 4.52,
+    "duration": 4.52,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But here is the thing: I actually started out studying chemistry, and I switched majors later on, which completely changed my university experience.",
+    "start": 4.52,
+    "end": 15.14,
+    "duration": 10.62,
+    "mode": "measured"
+  }
+]

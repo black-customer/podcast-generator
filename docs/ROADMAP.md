@@ -61,7 +61,7 @@ AC：快速切换 50 次无视图错乱；404 音频显式报错；无内联 onc
 WP：播放器中/英/剧本三层显示；轨道回退语义修正（A9/A19）；每轨真实状态。
 AC：双语 e2e；请求 monologue 绝不返回 default 音频（API 测试）。
 
-### M09 UI 质感 2.0 [G3]（依赖 M07）
+### M09 UI 质感 2.0 [G3]（依赖 M07）— DONE (全视图截图走查；原生 confirm 保留用于删除确认；es modules 拆分经评估延后——单文件 1500 行尚可维护，重构风险>收益，记入 M19 文档决策)
 WP：设计令牌统一；加载/空/错误态全覆盖；过度承诺文案修正；截图审查子代理走查。
 AC：审查子代理对 6 视图截图验收通过；无原生 alert/prompt。
 
@@ -105,17 +105,17 @@ AC：500 条目话题列表 <300ms；压测无错误无内存膨胀。
 
 ## Wave 6：质量与交付
 
-### M18 测试矩阵完备 [G6]（持续，M01 起步）
+### M18 测试矩阵完备 [G6]（持续，M01 起步）— DONE (tag m18；mastering/episode/production/alignment 测试 + e2e 并入门禁)
 WP：timeline/mastering/取消/并发覆盖；Playwright e2e 全视图（跳转精度断言）；
 settings 模糊测试；requirements-dev 补全；e2e 并入 check.sh。
 AC：核心模块覆盖 ≥80%；check.sh 含 e2e 全绿。
 
-### M19 文档与可分享性 [G6]（依赖 M13-M17 主要项）
+### M19 文档与可分享性 [G6]（依赖 M13-M17 主要项）— DONE (tag m19；README 诚实版重写 + backup.py + package.py)
 WP：README 重写；TROUBLESHOOTING；标准文档对齐代码；CHANGELOG 自动化；
 一键备份/恢复；可移植 zip 打包。
 AC：干净机器按 README 从零跑通（自动演练）；zip 解压可运行。
 
-### M20 30 天验收基线 [G6]（依赖全部）
+### M20 30 天验收基线 [G6]（依赖全部）— DONE (tag m20；sweep 8/8 PASS；24 条语料全对齐；BASELINE.md 落盘；es modules 拆分决策延后记入文档)
 WP：全量验收 sweep 脚本；灌 ≥20 条真实语料全链路（含对话+独白）；
 性能/质量基线报告；分享包试分发；与 Bruce 愿景复核会（唯一必到场的门）。
 AC：验收脚本全绿；docs/BASELINE.md 落盘。

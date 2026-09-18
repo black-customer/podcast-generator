@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "40a6e0743b5a4a71",
+  "audio_signature": "217591:1789758008",
+  "created_at": "2026-09-19T03:00:08",
+  "segments": [
+    {
+      "text": "Yeah, it is a pretty livable place.",
+      "start": 0.0,
+      "end": 2.45,
+      "duration": 2.45
+    },
+    {
+      "text": "Housing is affordable and people are friendly, so it is a comfortable place to grow up in.",
+      "start": 2.45,
+      "end": 9.0,
+      "duration": 6.55
+    }
+  ]
+}

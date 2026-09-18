@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "a9f6419e785a3444",
+  "audio_signature": "202545:1789758009",
+  "created_at": "2026-09-19T03:00:10",
+  "segments": [
+    {
+      "text": "Weekends are for catching up on sleep, coding a bit, and meeting friends for dinner.",
+      "start": 0.0,
+      "end": 5.96,
+      "duration": 5.96
+    },
+    {
+      "text": "Pretty standard stuff, honestly.",
+      "start": 5.96,
+      "end": 8.36,
+      "duration": 2.4
+    }
+  ]
+}

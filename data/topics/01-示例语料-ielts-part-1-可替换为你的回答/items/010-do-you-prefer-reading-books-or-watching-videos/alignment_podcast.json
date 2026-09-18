@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "ecfcd0c5f5ad0ee7",
+  "audio_signature": "262104:1789758007",
+  "created_at": "2026-09-19T03:00:07",
+  "segments": [
+    {
+      "text": "Videos, mostly, because they are easier to consume.",
+      "start": 0.0,
+      "end": 3.74,
+      "duration": 3.74
+    },
+    {
+      "text": "But books go so much deeper on a topic, so I try to read when I really want to understand something.",
+      "start": 3.74,
+      "end": 10.86,
+      "duration": 7.12
+    }
+  ]
+}

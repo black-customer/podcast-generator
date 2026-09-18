@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "382dcb427aabb7d9",
+  "audio_signature": "208814:1789758004",
+  "created_at": "2026-09-19T03:00:04",
+  "segments": [
+    {
+      "text": "I can cook a few basic things, so simple meals are fine.",
+      "start": 0.0,
+      "end": 3.91,
+      "duration": 3.91
+    },
+    {
+      "text": "But anything complicated and I just order takeout, to be honest.",
+      "start": 3.91,
+      "end": 8.64,
+      "duration": 4.73
+    }
+  ]
+}

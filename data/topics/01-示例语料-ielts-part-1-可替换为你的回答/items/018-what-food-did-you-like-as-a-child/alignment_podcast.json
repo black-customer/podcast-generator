@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "13e4eeba3141326f",
+  "audio_signature": "188752:1789758013",
+  "created_at": "2026-09-19T03:00:13",
+  "segments": [
+    {
+      "text": "As a kid I was obsessed with fried chicken.",
+      "start": 0.0,
+      "end": 3.01,
+      "duration": 3.01
+    },
+    {
+      "text": "Looking back now, that was probably not the healthiest obsession.",
+      "start": 3.01,
+      "end": 7.79,
+      "duration": 4.78
+    }
+  ]
+}

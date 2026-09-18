@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "In my free time I play video games, watch American shows, and go for a run now and then.",
+    "start": 0.0,
+    "end": 6.33,
+    "duration": 6.33,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It depends on my mood, really.",
+    "start": 6.33,
+    "end": 8.5,
+    "duration": 2.17,
+    "mode": "measured"
+  }
+]

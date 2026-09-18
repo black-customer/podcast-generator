@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I can cook a few basic things, so simple meals are fine.",
+    "start": 0.0,
+    "end": 3.91,
+    "duration": 3.91,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But anything complicated and I just order takeout, to be honest.",
+    "start": 3.91,
+    "end": 8.64,
+    "duration": 4.73,
+    "mode": "measured"
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "96d882115bdae30b",
+  "audio_signature": "173079:1789758012",
+  "created_at": "2026-09-19T03:00:13",
+  "segments": [
+    {
+      "text": "I am pretty indifferent, to be honest.",
+      "start": 0.0,
+      "end": 2.78,
+      "duration": 2.78
+    },
+    {
+      "text": "I only buy what I need.",
+      "start": 2.78,
+      "end": 4.36,
+      "duration": 1.58
+    },
+    {
+      "text": "Window shopping is just not my thing.",
+      "start": 4.36,
+      "end": 7.14,
+      "duration": 2.78
+    }
+  ]
+}

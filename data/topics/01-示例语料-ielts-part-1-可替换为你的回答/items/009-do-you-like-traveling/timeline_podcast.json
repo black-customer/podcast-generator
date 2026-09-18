@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I love it, even though I have not been to that many places.",
+    "start": 0.0,
+    "end": 4.15,
+    "duration": 4.15,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Every trip I have taken was pretty memorable in its own way.",
+    "start": 4.15,
+    "end": 8.57,
+    "duration": 4.42,
+    "mode": "measured"
+  }
+]
