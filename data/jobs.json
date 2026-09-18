@@ -1,74 +1,4 @@
 {
-  "710f24886789": {
-    "id": "710f24886789",
-    "kind": "generate",
-    "topic_id": "01-align",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T00:51:33",
-    "finished_at": "2026-09-19T00:51:34"
-  },
-  "8d49192fad1c": {
-    "id": "8d49192fad1c",
-    "kind": "generate",
-    "topic_id": "01-inval",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T00:51:34",
-    "finished_at": "2026-09-19T00:51:35"
-  },
-  "ae22c99dcdf7": {
-    "id": "ae22c99dcdf7",
-    "kind": "generate",
-    "topic_id": "01-mono",
-    "track": "monologue",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T00:51:35",
-    "finished_at": "2026-09-19T00:51:36"
-  },
-  "0a4cc8ba1642": {
-    "id": "0a4cc8ba1642",
-    "kind": "generate",
-    "topic_id": "01-qa",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T00:51:36",
-    "finished_at": "2026-09-19T00:51:38"
-  },
-  "ac76694db5fd": {
-    "id": "ac76694db5fd",
-    "kind": "generate",
-    "topic_id": "01-e2e",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-q",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T00:51:39",
-    "finished_at": "2026-09-19T00:51:39"
-  },
   "5d79596bbf46": {
     "id": "5d79596bbf46",
     "kind": "assemble",
@@ -891,6 +821,108 @@
           "duration_sec": 1.93,
           "offset_sec": 0.0,
           "generated_at": "2026-09-19T01:39:25.499"
+        }
+      ]
+    }
+  },
+  "64bf339b16a1": {
+    "id": "64bf339b16a1",
+    "kind": "generate",
+    "topic_id": "01-align",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:40:00.106",
+    "finished_at": "2026-09-19T01:40:00.992"
+  },
+  "4fd9cfde6669": {
+    "id": "4fd9cfde6669",
+    "kind": "generate",
+    "topic_id": "01-inval",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:40:01.061",
+    "finished_at": "2026-09-19T01:40:01.922"
+  },
+  "313fece3677e": {
+    "id": "313fece3677e",
+    "kind": "generate",
+    "topic_id": "01-mono",
+    "track": "monologue",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:40:02.031",
+    "finished_at": "2026-09-19T01:40:02.766"
+  },
+  "fc6e482e56cb": {
+    "id": "fc6e482e56cb",
+    "kind": "generate",
+    "topic_id": "01-qa",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:40:03.590",
+    "finished_at": "2026-09-19T01:40:05.583"
+  },
+  "d45297069dc4": {
+    "id": "d45297069dc4",
+    "kind": "generate",
+    "topic_id": "01-e2e",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-q",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:40:06.082",
+    "finished_at": "2026-09-19T01:40:06.720"
+  },
+  "b5dc29a8ae88": {
+    "id": "b5dc29a8ae88",
+    "kind": "assemble",
+    "topic_id": "01-e2e",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T01:40:07.008",
+    "finished_at": "2026-09-19T01:40:07.162",
+    "result": {
+      "topic_id": "01-e2e",
+      "topic_name": "E2E",
+      "track": "podcast",
+      "file": "01-e2e_podcast.mp3",
+      "total_sec": 1.93,
+      "item_count": 1,
+      "generated_at": "2026-09-19T01:40:07.160",
+      "items": [
+        {
+          "id": "001-q",
+          "title": "Q?",
+          "duration_sec": 1.93,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T01:40:06.090"
         }
       ]
     }

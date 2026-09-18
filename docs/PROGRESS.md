@@ -1,55 +1,52 @@
 # PROGRESS — 工作会话账本（每次会话重写本文件）
 
-更新：2026-09-18 会话 1（长程自治批次 1）
+更新：2026-09-19 会话 2（长程批次继续；网络已恢复）
 
 ## 当前状态
 
-- 已完成：M01(v0.1) M02*(m02) M03*(m03) M04(m04) M05(m05) M06(m06) M07(m07) —— 20 里的 7 个
-- 门禁：check.sh 全绿；52 单元/API 测试 + 2 Playwright e2e 全过
-- *网络尾项（api.fish.audio 本机不可达，恢复后依次执行）：
-  1. `scripts/probe_fish_sse.py` → 校准 `alignment.parse_sse_events` → 接线单次合成轨逐词层
-  2. `scripts/verify_alignment_ac.py 02-sleep-healthy-eating <item> podcast` 真实 AC
-  3. 重生成含 [chuckle] 条目，验证 QA 门禁在真实音频上工作
-- silero-vad pip 装了但 import 失败（装到了错误位置？）→ VAD 自动跳过中；M03 其余检查已覆盖
+- 完成：M01-M08、M10（9/20）+ 音色试听（M15 部分）+ SSE 逐词对齐落地（M02 收尾）
+- 门禁：53 单元/API 测试 + 2 e2e 全绿；check.sh 含 ruff
+- 网络尾项已清：SSE 探针→解析器校准→单次合成接 SSE→真实 AC PASS（mode=sse, 288 词, 5 句全准）
+- 语料现状：02-sleep-healthy-eating/001 与 01-my-studies 全部条目均有逐词对齐（words）
+  02 条目 mode=sse；my-studies 三条 mode=measured+words
 
-## 各里程碑落地内容
+## SSE 关键事实（来之不易，别再踩）
 
-- M01：四治理文档 + check.sh + 占位符 key 修复 + ruff 治理 + git 策略（音频不入库）
-- M02：alignment.py（实测段跨度/块内分配/线性重标定/指纹失效/SSE 解析器骨架）；
-  tts 逐段 ffprobe；timeline 消费 alignment 优先；编辑失效缓存；AC 脚本
-- M03：audioqa.py（时长比/静音孤岛/削波/VAD 可选）；隔离 .rejected.mp3 +
-  剥全标签重试一次；qa_*.json + meta 结论；三 prompt 与标准文档标签政策统一
-- M04：atomic_write_text 全落地；/api/settings 脱敏（key 永不回传 + 空值不覆盖）；
-  SettingsIn 校验（segment_chars 100-5000 修无限循环 A33）；数字序排序修 A11
-- M05：jobs 重写——持久化 + 启动恢复 interrupted；话题互斥 already_running；
-  取消令牌贯穿 _post_tts 重试与逐段循环；assemble 异步任务 + 原子输出；GET /api/jobs
-- M06：A-B 循环（含进度条金色标记）；句间导航 seekLine；键盘快捷键
-  （空格/←→/A/B/L/R）；A24 程序性滚动判别；A32 跳转排队；A23 深链播放列表；
-  对齐模式诚实 chip；A29 唱片状态修正
-- M07：路由令牌 viewStale（修 A21 竞态；null=程序性重渲染语义）；轮询
-  离开清理+连续失败熔断+interrupted 状态（修 A22）；audio onerror（A26）；
-  去 Tom Holland/荷兰弟/硬编码语块高亮（A27/A28）；e2e 自清理+改用真实主语料条目
+- 端点 POST /v1/tts/stream/with-timestamp，SSE，`data:` 行 JSON
+- 每块多个事件（音频分片+渐进 alignment），alignment 是**块内本地时间**，
+  全局 = chunk_audio_offset_sec + local；按 chunk_seq 取每块最后一个事件，按块序拼接
+- 多说话人：reference_id 传数组 [A,B]，文本用 <|speaker:0|>/<|speaker:1|> 标记
+- 词映射对话行：贪心 token 匹配（容错 3 词窗口，>80% 匹配率，数字/标签容错）
 
-## 已验证（浏览器实测 + e2e）
+## 本批次落地
 
-- 点击句子跳转、A-B 循环回跳（采样确认环绕）、金色标记渲染、模式 chip
-- 双 e2e：播放器全工作流 + 工作台管理流（含失败自清理）
-- 修过的回归：e2e 遗留空话题污染首卡（已清 3 个 + 测试加 try/finally 清理）
-- viewStale null 语义：程序性重渲染不受路由令牌约束（修 e2e 暴露的回退 bug）
+- M06：A-B 循环（金色标记）、句间导航、键盘（空格/←→/A/B/L/R）、词级卡拉OK渲染
+  （words 存在时句内逐词点亮）、A24 程序性滚动判别、A32 跳转排队、A23 深链播放列表
+- M07：路由令牌 viewStale（null=程序性重渲染）、轮询生命周期+熔断、audio onerror、
+  去演示残留（Tom Holland/荷兰弟/硬编码语块）、e2e 自清理（try/finally + API 删话题）
+- M08：中文参考面板（播放器开关）、轨道语义修正 A9/A19、真实轨道药丸 A27、
+  对话条目禁用不可用音轨（消 404）
+- M10：manifest 章节偏移 offset_sec + 原子输出； EpisodePlayerView 章节跳转；
+  剧集过期检测 stale + 一键重建；now_iso 毫秒精度（修秒级碰撞）
+- 音色试听：GET /api/voices/{ref}/sample（官方样本代理→缓存 data/voice_samples/→
+  缺失时现场合成一句）；展台卡试听按钮（单实例播放器）
+- 基建：now_iso 毫秒；get_topic 带 per-track 标志/时长/QA 结论
 
-## 下一步（按序）
+## 工程注意事项（新踩的坑）
 
-1. M08 双语与多轨统一（chinese 层显示、轨道回退语义 A9/A19）
-2. M09 UI 质感 2.0（设计令牌、空/错态、截图审查）；含 es modules 拆分（从 M07 顺延）
-3. M10 整集体验（manifest 偏移、应用内整集播放、剧集过期检测 A18）
-4. 网络恢复后清三个尾项（见上）
-5. M11-M20 见 ROADMAP
+- `set -o pipefail` 后跑 check.sh（管道吃退出码）
+- MCP 浏览器 evaluate 只接受**表达式**（IIFE ok；var/function 语句不行）；
+  hashchange 不会重载页面——改前端代码后必须 tab.reload() 再测
+- e2e 依赖真实主语料 02-sleep-healthy-eating/001（对话+独白按钮禁用断言依赖其对话属性）
+- now_iso 已是毫秒；时间戳字符串比较即可判新旧
 
-## 给下一个会话的自己
+## 下一步（按序，接着跑完 M11-M20）
 
-- 先读 ROADMAP/PROGRESS/AGENTS；以磁盘为准
-- `set -o pipefail; bash scripts/check.sh` 提交前必跑
-- e2e 依赖真实主语料条目 02-sleep-healthy-eating/001（不要删它）
-- MCP 浏览器 evaluate 只接受表达式（IIFE 可用）；含 "ArrowRight" 字样的 js 调用有工具层
-  解析 bug，用 dispatchEvent + 字符串拼接绕过或直接用 Playwright 测试
-- 网络恢复：三个尾项是 M02/M03 的收尾，先做再继续 M08+
+1. M11 M4B 导出：assemble 后 ffmpeg ffmetadata 章节嵌入（offsets 已有）→ AC: ffprobe chapters
+2. M12 字幕导出（alignment→SRT/VTT/LRC）+ 局域网 RSS（enclosure 绝对 URL）
+3. M13 PWA（manifest+SW+Media Session+移动布局+配对二维码）
+4. M09 UI 质感（设计令牌/空错态/截图审查子代理；es modules 拆分评估）
+5. M14 pipeline.py 批量改写落盘+lint；M15 voices.json 真源化+表演规范 v2；
+   M16 自媒体草稿模板；M17 /api/topics 索引缓存+500 条压测
+6. M18 测试矩阵（timeline/mastering/并发覆盖、e2e 全视图、requirements-dev 补 playwright/requests）
+   M19 README 重写+TROUBLESHOOTING+打包；M20 验收 sweep + docs/BASELINE.md + ≥20 条真实语料
