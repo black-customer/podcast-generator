@@ -1,55 +1,55 @@
 # PROGRESS — 工作会话账本（每次会话重写本文件）
 
-更新：2026-09-18 会话 1（长程自治批次 1，进行中）
+更新：2026-09-18 会话 1（长程自治批次 1）
 
 ## 当前状态
 
-- 已完成：M01（v0.1）/ M02*（m02）/ M03*（m03）/ M04（m04）/ M05（m05）
-- 门禁：`bash scripts/check.sh` 全绿（ruff + 52 测试 + 导入/启动冒烟）
-- *号 = 待网络恢复的尾项（api.fish.audio 当前从本机不可达，PyPI 正常）：
-  1. 跑 `scripts/probe_fish_sse.py` 实测 SSE 格式 → 校准 `alignment.parse_sse_events` →
-     接线到单次合成轨（现在单次合成用 estimated 时间轴）
-  2. `scripts/verify_alignment_ac.py <topic> <item> podcast` 跑真实音频 AC（<150ms）
-  3. 重生成 02-sleep-healthy-eating 验证 [chuckle] 不再失控
-- silero-vad 安装异常（exit 0 但 import 失败）→ VAD 检查自动跳过中，非阻塞
+- 已完成：M01(v0.1) M02*(m02) M03*(m03) M04(m04) M05(m05) M06(m06) M07(m07) —— 20 里的 7 个
+- 门禁：check.sh 全绿；52 单元/API 测试 + 2 Playwright e2e 全过
+- *网络尾项（api.fish.audio 本机不可达，恢复后依次执行）：
+  1. `scripts/probe_fish_sse.py` → 校准 `alignment.parse_sse_events` → 接线单次合成轨逐词层
+  2. `scripts/verify_alignment_ac.py 02-sleep-healthy-eating <item> podcast` 真实 AC
+  3. 重生成含 [chuckle] 条目，验证 QA 门禁在真实音频上工作
+- silero-vad pip 装了但 import 失败（装到了错误位置？）→ VAD 自动跳过中；M03 其余检查已覆盖
 
-## 本会话做了什么（按序）
+## 各里程碑落地内容
 
-1. M01：git 治理、四份治理文档、check.sh 门禁、占位符 key 误判 live 修复
-   （config.real_api_key + tts 6 调用点）、ruff 全量治理（45→0）、tmp 残骸清理、v0.1
-2. M02：alignment.py（段级实测跨度/块内比例分配/线性重标定/指纹失效/SSE 容错解析器）；
-   tts 逐段 ffprobe 实测；timeline 消费 alignment 优先；编辑文本双保险失效（修 A2）；
-   AC 脚本 scripts/verify_alignment_ac.py（dry-run 条件下已 PASS）
-3. M03：audioqa.py（时长比 0.45–2.3 / 静音孤岛 ≥2.5s / 削波 / VAD 可选）；
-   隔离 .rejected.mp3 + 剥全部标签重试一次；qa_*.json 报告 + meta 结论；
-   三 prompt 与标准文档标签政策统一（chuckle 高危，QA 兜底）；AC e2e 测试过
-4. M04：atomic_write_text 全面落地（meta/settings/timeline/alignment/qa/manifest/topic.json）；
-   GET /api/settings 脱敏（key 永不回传，fish_api_key_set 标志）；
-   SettingsIn 校验（segment_chars 100–5000 等，修 A33 无限循环）；
-   话题/条目按前导数字排序（修 A11 >100 断裂）；前端设置页适配脱敏
-5. M05：jobs 重写——持久化 data/jobs.json + 启动恢复 interrupted；
-   话题互斥（双击返回 already_running）；取消令牌 threading.Event 贯穿
-   _post_tts 重试睡眠/逐段循环；assemble 异步任务 + 按钮禁用状态 + 原子输出；
-   GET /api/jobs 历史；6 项新测试
+- M01：四治理文档 + check.sh + 占位符 key 修复 + ruff 治理 + git 策略（音频不入库）
+- M02：alignment.py（实测段跨度/块内分配/线性重标定/指纹失效/SSE 解析器骨架）；
+  tts 逐段 ffprobe；timeline 消费 alignment 优先；编辑失效缓存；AC 脚本
+- M03：audioqa.py（时长比/静音孤岛/削波/VAD 可选）；隔离 .rejected.mp3 +
+  剥全标签重试一次；qa_*.json + meta 结论；三 prompt 与标准文档标签政策统一
+- M04：atomic_write_text 全落地；/api/settings 脱敏（key 永不回传 + 空值不覆盖）；
+  SettingsIn 校验（segment_chars 100-5000 修无限循环 A33）；数字序排序修 A11
+- M05：jobs 重写——持久化 + 启动恢复 interrupted；话题互斥 already_running；
+  取消令牌贯穿 _post_tts 重试与逐段循环；assemble 异步任务 + 原子输出；GET /api/jobs
+- M06：A-B 循环（含进度条金色标记）；句间导航 seekLine；键盘快捷键
+  （空格/←→/A/B/L/R）；A24 程序性滚动判别；A32 跳转排队；A23 深链播放列表；
+  对齐模式诚实 chip；A29 唱片状态修正
+- M07：路由令牌 viewStale（修 A21 竞态；null=程序性重渲染语义）；轮询
+  离开清理+连续失败熔断+interrupted 状态（修 A22）；audio onerror（A26）；
+  去 Tom Holland/荷兰弟/硬编码语块高亮（A27/A28）；e2e 自清理+改用真实主语料条目
 
-## 发现与决策记录
+## 已验证（浏览器实测 + e2e）
 
-- 管道退出码陷阱：`bash x | tail` 会吃掉非零退出 → 提交前用 `set -o pipefail`（已执行）
-- dry-run 正弦音不是语音 → VAD 检查在 dry-run 跳过（skip_vad）
-- 单次合成的对齐估算模式已在 alignment.json 标记 mode=estimated，前端可据此降级提示
-- 旧 M 编号并入说明见 ROADMAP 头部
+- 点击句子跳转、A-B 循环回跳（采样确认环绕）、金色标记渲染、模式 chip
+- 双 e2e：播放器全工作流 + 工作台管理流（含失败自清理）
+- 修过的回归：e2e 遗留空话题污染首卡（已清 3 个 + 测试加 try/finally 清理）
+- viewStale null 语义：程序性重渲染不受路由令牌约束（修 e2e 暴露的回退 bug）
 
-## 下一步（按优先级）
+## 下一步（按序）
 
-1. M06 播放器精准交互：消费 timeline 的 mode 标志；词级卡拉OK 骨架（数据就绪时）；
-   A-B 循环、单句重播、键盘、修滚动跟读自禁用（A24：scrollIntoView 触发 onscroll
-   → userIsScrolling 抑制下一帧，用 sentinel/超时判别程序性滚动）
-2. M07 前端架构治理：路由令牌（每视图闭包携带 token，过期即弃写）；
-   ManageState.pollTimer 路由离开清理；app.js 拆 ES modules；去 Tom Holland/魔法 id
-3. M08-M20 见 ROADMAP
+1. M08 双语与多轨统一（chinese 层显示、轨道回退语义 A9/A19）
+2. M09 UI 质感 2.0（设计令牌、空/错态、截图审查）；含 es modules 拆分（从 M07 顺延）
+3. M10 整集体验（manifest 偏移、应用内整集播放、剧集过期检测 A18）
+4. 网络恢复后清三个尾项（见上）
+5. M11-M20 见 ROADMAP
 
 ## 给下一个会话的自己
 
-- 先读 ROADMAP/PROGRESS/AGENTS；以磁盘为准，别信记忆
-- 提交前 `set -o pipefail; bash scripts/check.sh`
-- 网络恢复后优先清三个尾项（见上）
+- 先读 ROADMAP/PROGRESS/AGENTS；以磁盘为准
+- `set -o pipefail; bash scripts/check.sh` 提交前必跑
+- e2e 依赖真实主语料条目 02-sleep-healthy-eating/001（不要删它）
+- MCP 浏览器 evaluate 只接受表达式（IIFE 可用）；含 "ArrowRight" 字样的 js 调用有工具层
+  解析 bug，用 dispatchEvent + 字符串拼接绕过或直接用 Playwright 测试
+- 网络恢复：三个尾项是 M02/M03 的收尾，先做再继续 M08+

@@ -31,7 +31,7 @@ silencedetect+astats 削波；异常自动隔离+去标签重试；生成附质�
 AC：注入伪造 5s 笑声被检出并触发重试（测试）；每条音频有质量报告；
 现有含 [chuckle] 条目重生成后无超长非语音段。
 
-### M04 数据模型 v2 [G2]（依赖 M02）
+### M04 数据模型 v2 [G2]（依赖 M02）— DONE (tag m04)
 价值：数据是产品本体。
 WP：原子写（tmp+rename）；meta schema 版本化+迁移；话题排序 >100 修复；
 compute_status 轨道盲区与 stale 误判修复；GET /api/settings 脱敏（key 不再回传）；
@@ -39,7 +39,7 @@ CJK 目录 ffmpeg concat 验证；.tmp 生命周期治理；settings 参数服�
 AC：并发写测试无损坏；旧 meta 迁移回归测试；100+ 话题排序正确；
 `GET /api/settings` 不含明文 key；segment_chars<=0 被 422 拒绝。
 
-### M05 任务系统加固 [G1/G2]（依赖 M01，可并行）
+### M05 任务系统加固 [G1/G2]（依赖 M01，可并行）— DONE (tag m05)
 价值：批量生产语料时不炸。
 WP：任务持久化（重启不孤儿）；同话题互斥锁（修双击双任务）；取消令牌（Fish 重试间可中断）；
 assemble 异步化+原子输出；任务历史 API。
@@ -47,12 +47,12 @@ AC：双击生成只产生一个任务；重启后轮询不悬死；合成中取
 
 ## Wave 3：播放体验
 
-### M06 播放器精准交互 [G3]（依赖 M02）
+### M06 播放器精准交互 [G3]（依赖 M02）— DONE (tag m06；词级卡拉OK待 SSE 数据)
 WP：词级卡拉OK（消费 M02 数据）；点句/点词跳转；A-B 循环；单句重播；键盘快捷键；
 逐句语速；修滚动跟读自禁用（A24）。
 AC：Playwright 断言点击第 k 句后 currentTime 落在句 span ±150ms；连续 30 句高亮无卡顿。
 
-### M07 前端架构治理 [G3]（依赖 M01，可与 M06 并行）
+### M07 前端架构治理 [G3]（依赖 M01，可与 M06 并行）— DONE (tag m07；es modules 拆分顺延至 M09 一并做)
 WP：路由令牌防竞态（A21）；轮询定时器生命周期（A22）；audio onerror（A26）；
 app.js 拆 ES modules；清除演示残留（Tom Holland 文案/假药丸/魔法 id，A27/A28/A31）。
 AC：快速切换 50 次无视图错乱；404 音频显式报错；无内联 onclick。
