@@ -1236,6 +1236,8 @@ async function mgLoadTopic(topicId, keepEditorClosed = false, token = null) {
     <div class="mg-inline">
       <button class="mg-btn" id="mg-ep-pod">🎬 合成播客整集</button>
       <button class="mg-btn" id="mg-ep-mono">🎬 合成独白整集</button>
+      <button class="mg-btn" id="mg-export-pod-m4b">📚 导出 M4B（播客）</button>
+      <button class="mg-btn" id="mg-export-srt">🎞 导出 SRT 字幕（当前条目）</button>
     </div>
     <div id="mg-job-box"></div>
     <div class="mg-divider"></div>
@@ -1263,6 +1265,22 @@ async function mgLoadTopic(topicId, keepEditorClosed = false, token = null) {
     }
   };
   document.getElementById("mg-ep-pod").onclick = () => mgAssemble(topicId, "podcast");
+  document.getElementById("mg-export-pod-m4b").onclick = async () => {
+    try {
+      const r = await api("POST", `/api/topics/${encodeURIComponent(topicId)}/export/m4b?track=podcast`);
+      toast(`M4B 已导出（${Math.round(r.size / 1024)} KB）→ data/exports/`);
+    } catch (e) { toast("导出失败：" + e.message); }
+  };
+  document.getElementById("mg-export-srt").onclick = async () => {
+    const iid = ManageState.topicId && document.querySelector("#mg-item-list [data-edit]");
+    if (!iid) { toast("请先选择条目（编辑其一）"); return; }
+    try {
+      const cur = ManageState.editingItemId;
+      if (!cur) { toast("请先打开某条目的编辑器"); return; }
+      const r = await api("POST", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(cur)}/export/srt?track=podcast`);
+      toast(`SRT 已导出 → ${r.file}`);
+    } catch (e) { toast("导出失败：" + e.message); }
+  };
   document.getElementById("mg-ep-mono").onclick = () => mgAssemble(topicId, "monologue");
 
   document.getElementById("mg-create-item").onclick = async () => {
@@ -1335,6 +1353,7 @@ async function mgLoadTopic(topicId, keepEditorClosed = false, token = null) {
 }
 
 async function mgOpenEditor(topicId, itemId) {
+  ManageState.editingItemId = itemId;
   const $editor = document.getElementById("mg-editor");
   if (!$editor) return;
   $editor.innerHTML = `<p class="mg-hint">加载条目中…</p>`;

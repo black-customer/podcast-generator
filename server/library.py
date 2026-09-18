@@ -242,9 +242,16 @@ def item_title(texts: dict, fallback: str = "") -> str:
     zh = (texts.get("chinese") or "").strip()
     if zh:
         return zh.splitlines()[0].strip()[:40] or fallback
-    en = (texts.get("natural_english") or "").strip()
-    if en:
-        return en.splitlines()[0].strip()[:40] or fallback
+    # 英文轨道文本也可作标题（对话/独白脚本首行），让仅有英文稿的条目有可读标题
+    en_fields = ("natural_english", "monologue_text", "podcast_text",
+                 "monologue_script", "podcast_script", "fish_script")
+    for field in en_fields:
+        v = (texts.get(field) or "").strip()
+        if v:
+            first = re.sub(
+                r"^\s*(?:person\s*)?[ab]\s*[:：]", "", v.splitlines()[0], flags=re.IGNORECASE
+            ).strip()
+            return (first or v.splitlines()[0].strip())[:60] or fallback
     return fallback
 
 

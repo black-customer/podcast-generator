@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, field_validator
 
-from . import assemble, audio, jobs, library, timeline, tts
+from . import assemble, audio, exports, jobs, library, timeline, tts
 from .config import (
     DATA_DIR,
     FISH_MODELS,
@@ -393,6 +393,41 @@ def api_test_settings():
         "ffmpeg": {"ok": ff_ok, "message": ff_msg},
         "fish": tts.test_connection(s),
     }
+
+
+# ---------------------------------------------------------------- exports
+
+@router.post("/topics/{topic_id}/export/m4b")
+def api_export_m4b(topic_id: str, track: TrackParam = "podcast"):
+    if track == "all":
+        raise _err(400, "导出请指定 podcast 或 monologue 轨道")
+    try:
+        return exports.export_m4b(topic_id, track=track)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    except (RuntimeError, audio.FFmpegError) as e:
+        raise _err(400, str(e)) from e
+
+
+@router.get("/exports/{filename}")
+def api_download_export(filename: str):
+    if "/" in filename or "\\" in filename or ".." in filename:
+        raise _err(400, "非法文件名")
+    path = DATA_DIR / "exports" / filename
+    if not path.exists():
+        raise _err(404, "导出文件不存在")
+    media = "audio/mp4" if filename.endswith(".m4b") else "application/octet-stream"
+    return FileResponse(path, media_type=media, filename=filename)
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/export/srt")
+def api_export_srt(topic_id: str, item_id: str, track: TrackParam = "podcast"):
+    try:
+        return exports.export_srt(topic_id, item_id, track=track)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    except RuntimeError as e:
+        raise _err(400, str(e)) from e
 
 
 # ---------------------------------------------------------------- rewrite request
