@@ -2,7 +2,7 @@
 import json
 
 from . import audio, library
-from .config import EPISODES_DIR, load_settings
+from .config import EPISODES_DIR, atomic_write_text, load_settings
 
 
 def episode_path(topic_id: str, track: str = "default"):
@@ -58,8 +58,9 @@ def assemble_episode(topic_id: str, track: str = "default") -> dict:
             for it in items
         ],
     }
-    episode_manifest_path(topic_id, track=track).write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
+    atomic_write_text(
+        episode_manifest_path(topic_id, track=track),
+        json.dumps(manifest, ensure_ascii=False, indent=2),
     )
     return manifest
 

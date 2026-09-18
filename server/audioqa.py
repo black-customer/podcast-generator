@@ -232,4 +232,6 @@ def strip_all_tags(text: str) -> tuple[str, list[str]]:
 
 
 def save_qa_report(report: dict, file_path: Path) -> None:
-    file_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    from .config import atomic_write_text
+
+    atomic_write_text(file_path, json.dumps(report, ensure_ascii=False, indent=2))

@@ -154,9 +154,9 @@ def build_alignment_doc(
 
 
 def save_alignment(doc: dict, file_path: Path) -> None:
-    file_path.write_text(
-        json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    from .config import atomic_write_text
+
+    atomic_write_text(file_path, json.dumps(doc, ensure_ascii=False, indent=2))
 
 
 def load_alignment(

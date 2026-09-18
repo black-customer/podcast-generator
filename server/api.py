@@ -3,7 +3,7 @@ from typing import Literal
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from . import assemble, audio, jobs, library, timeline, tts
 from .config import (
@@ -12,6 +12,7 @@ from .config import (
     PROMPTS_DIR,
     is_dry_run,
     load_settings,
+    real_api_key,
     save_settings,
 )
 
@@ -55,6 +56,35 @@ class SettingsIn(BaseModel):
     episode_gap_ms: float | None = None
     dry_run: bool | None = None
     temperature: float | None = None
+
+    @field_validator("speed")
+    @classmethod
+    def _v_speed(cls, v: float | None) -> float | None:
+        if v is not None and not 0.5 <= v <= 2.0:
+            raise ValueError("speed 必须在 0.5–2.0")
+        return v
+
+    @field_validator("temperature")
+    @classmethod
+    def _v_temperature(cls, v: float | None) -> float | None:
+        if v is not None and not 0.0 <= v <= 1.0:
+            raise ValueError("temperature 必须在 0–1")
+        return v
+
+    @field_validator("segment_chars")
+    @classmethod
+    def _v_segment_chars(cls, v: int | None) -> int | None:
+        if v is not None and not 100 <= v <= 5000:
+            # <=0 会让 split_text 陷入无限循环；过小则碎片化
+            raise ValueError("segment_chars 必须在 100–5000")
+        return v
+
+    @field_validator("gap_ms", "episode_gap_ms")
+    @classmethod
+    def _v_gap(cls, v: float | None) -> float | None:
+        if v is not None and not 0 <= v <= 10000:
+            raise ValueError("停顿毫秒必须在 0–10000")
+        return v
 
 
 def _err(status: int, message: str) -> HTTPException:
@@ -266,19 +296,29 @@ def api_get_voices():
 
 # ---------------------------------------------------------------- settings
 
+
+def _masked_settings(s: dict) -> dict:
+    """对外脱敏：永不回传明文 API key（含 models 列表）。"""
+    out = dict(s)
+    out["fish_api_key"] = ""
+    out["fish_api_key_set"] = bool(real_api_key(s))
+    out["models"] = FISH_MODELS
+    return out
+
+
 @router.get("/settings")
 def api_get_settings():
-    s = load_settings()
-    s["models"] = FISH_MODELS
-    return s
+    return _masked_settings(load_settings())
 
 
 @router.put("/settings")
 def api_put_settings(body: SettingsIn):
     update = {k: v for k, v in body.model_dump().items() if v is not None}
+    # 空 key 不覆盖已存 key（脱敏模式下前端回传空串属正常）
+    if "fish_api_key" in update and not (update["fish_api_key"] or "").strip():
+        update.pop("fish_api_key")
     saved = save_settings(update)
-    saved["models"] = FISH_MODELS
-    return saved
+    return _masked_settings(saved)
 
 
 @router.post("/settings/test")

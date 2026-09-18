@@ -6,7 +6,7 @@ import threading
 from datetime import datetime
 from pathlib import Path
 
-from .config import DATA_DIR, EPISODES_DIR, TOPICS_DIR
+from .config import DATA_DIR, EPISODES_DIR, TOPICS_DIR, atomic_write_text
 
 LIB_LOCK = threading.RLock()
 
@@ -69,7 +69,7 @@ def _read_text(path: Path) -> str:
 
 
 def _write_text(path: Path, content: str) -> None:
-    path.write_text((content or "").strip() + "\n", encoding="utf-8")
+    atomic_write_text(path, (content or "").strip() + "\n")
 
 
 # ---------------------------------------------------------------- topics
@@ -91,11 +91,18 @@ def load_topic_name(tpath: Path) -> str:
     return tpath.name
 
 
+def _numeric_order_key(p: Path) -> tuple:
+    """按名称前导数字排序（2/3 位序号混存时字典序断裂，审计 A11）。"""
+    m = re.match(r"(\d+)", p.name)
+    return (int(m.group(1)) if m else 10**9, p.name)
+
+
 def item_dirs(tpath: Path) -> list[Path]:
     items = tpath / "items"
     if not items.exists():
         return []
-    return sorted([d for d in items.iterdir() if d.is_dir() and not d.name.startswith(".")])
+    dirs = [d for d in items.iterdir() if d.is_dir() and not d.name.startswith(".")]
+    return sorted(dirs, key=_numeric_order_key)
 
 
 def list_topics() -> list[dict]:
@@ -103,7 +110,7 @@ def list_topics() -> list[dict]:
         result = []
         if not TOPICS_DIR.exists():
             return result
-        for tpath in sorted(TOPICS_DIR.iterdir()):
+        for tpath in sorted(TOPICS_DIR.iterdir(), key=_numeric_order_key):
             if not tpath.is_dir() or tpath.name.startswith("."):
                 continue
             stats = {"total": 0, "empty": 0, "ready": 0, "generated": 0, "error": 0}
@@ -140,9 +147,9 @@ def create_topic(name: str) -> dict:
         tpath = TOPICS_DIR / dirname
         tpath.mkdir(parents=True)
         (tpath / "items").mkdir()
-        (tpath / "topic.json").write_text(
+        atomic_write_text(
+            tpath / "topic.json",
             json.dumps({"name": name, "created_at": now_iso()}, ensure_ascii=False, indent=2),
-            encoding="utf-8",
         )
         return {"id": dirname, "name": name}
 
@@ -160,7 +167,7 @@ def rename_topic(topic_id: str, name: str) -> None:
             except (json.JSONDecodeError, OSError):
                 meta = {}
         meta["name"] = (name or "").strip() or tpath.name
-        meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        atomic_write_text(meta_file, json.dumps(meta, ensure_ascii=False, indent=2))
 
 
 def delete_topic(topic_id: str) -> None:
@@ -281,7 +288,7 @@ def load_meta(d: Path) -> dict:
 
 def save_meta(d: Path, meta: dict) -> None:
     meta_file = d / "meta.json"
-    meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_text(meta_file, json.dumps(meta, ensure_ascii=False, indent=2))
 
 
 def read_voices() -> list:

@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 
 from .audio import probe_duration
+from .config import atomic_write_text
 
 
 def generate_timeline_for_dialogue(
@@ -143,7 +144,7 @@ def generate_timeline_for_monologue(
 
 
 def save_timeline(timeline: list[dict], file_path: Path) -> None:
-    file_path.write_text(json.dumps(timeline, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_text(file_path, json.dumps(timeline, ensure_ascii=False, indent=2))
 
 
 def load_timeline(file_path: Path) -> list[dict]:

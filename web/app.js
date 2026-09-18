@@ -727,8 +727,8 @@ async function ManageView() {
         <div class="mg-card">
           <h3>⚙️ 设置</h3>
           <form id="mg-settings-form">
-            <label class="mg-label">fish.audio API Key
-              <input class="mg-input" type="password" id="mg-s-key" value="${esc(settings.fish_api_key || "")}" placeholder="留空即 dry-run 模式" autocomplete="off">
+            <label class="mg-label">fish.audio API Key ${settings.fish_api_key_set ? '<span class="mg-chip">已配置（留空 = 不变）</span>' : ""}
+              <input class="mg-input" type="password" id="mg-s-key" value="" placeholder="${settings.fish_api_key_set ? "已保存（输入新值可替换）" : "留空即 dry-run 模式"}" autocomplete="off">
             </label>
             <label class="mg-label">音色 A Reference ID（独白 / 对话中的 A 声）
               <input class="mg-input" id="mg-s-refa" value="${esc(settings.reference_id || "")}">

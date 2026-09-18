@@ -1,5 +1,6 @@
 """路径常量与 settings.json 读写。"""
 import json
+import os
 import shutil
 import threading
 import time
@@ -8,7 +9,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 WEB_DIR = BASE_DIR / "web"
 PROMPTS_DIR = BASE_DIR / "prompts"
-DATA_DIR = BASE_DIR / "data"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 TOPICS_DIR = DATA_DIR / "topics"
 EPISODES_DIR = DATA_DIR / "episodes"
 TMP_DIR = DATA_DIR / ".tmp"
@@ -16,6 +17,17 @@ TMP_DIR = DATA_DIR / ".tmp"
 SETTINGS_FILE = DATA_DIR / "settings.json"
 
 SETTINGS_LOCK = threading.Lock()
+
+
+def atomic_write_text(path: Path, content: str) -> None:
+    """原子写：先写临时文件再 os.replace，进程崩溃不留半截文件。
+
+    适用于所有元数据/缓存 JSON 与语料 txt（data/ 是产品本体）。
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(path.name + ".tmp~")
+    tmp.write_text(content, encoding="utf-8")
+    os.replace(tmp, path)
 
 DEFAULT_SETTINGS = {
     "fish_api_key": "",
@@ -94,9 +106,7 @@ def save_settings(update: dict) -> dict:
         for k, v in update.items():
             if k in current:
                 current[k] = v
-        SETTINGS_FILE.write_text(
-            json.dumps(current, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
+        atomic_write_text(SETTINGS_FILE, json.dumps(current, ensure_ascii=False, indent=2))
         return current
 
 
