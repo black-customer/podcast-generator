@@ -1,5 +1,4 @@
 """M04 数据模型 v2 测试：原子写 / settings 脱敏 / 排序>100 / 参数校验。"""
-import subprocess
 import sys
 import threading
 from pathlib import Path
