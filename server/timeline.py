@@ -156,29 +156,47 @@ def load_timeline(file_path: Path) -> list[dict]:
 
 
 def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") -> list[dict]:
-    """时间轴端点的主入口：优先读预存缓存，缺失时基于音频与剧本文本按权重估算生成并缓存。"""
-    from . import library
+    """时间轴端点主入口。
+
+    优先级：alignment_{track}.json（带文本/音频指纹校验，M02 实测数据）
+    → 旧版 timeline 缓存 → 按权重估算生成并缓存。
+    """
+    from . import alignment, library
 
     ipath = library.item_path(topic_id, item_id)
     full = library.get_item_full(topic_id, item_id)
 
-    if track in ("monologue", "podcast"):
-        cache = ipath / f"timeline_{track}.json"
-    else:
-        cache = ipath / "timeline_podcast.json"
+    cache = (
+        ipath / f"timeline_{track}.json"
+        if track in ("monologue", "podcast")
+        else ipath / "timeline_podcast.json"
+    )
+
+    audio_path = library.resolve_audio_file(ipath, track)
+    src, _ = library.get_track_source_text(full, track)
+    if not src:
+        src, _ = library.get_track_source_text(full, "default")
+
+    # 1) 实测 alignment（指纹不匹配 = 文本或音频已变 → 自动失效）
+    if src and audio_path:
+        align_file = (
+            ipath / f"alignment_{track}.json"
+            if track in ("monologue", "podcast")
+            else ipath / "alignment_podcast.json"
+        )
+        doc = alignment.load_alignment(align_file, expect_text=src, expect_audio=audio_path)
+        if doc:
+            return alignment.derive_timeline(doc)
+
+    # 2) 旧版缓存
     cached = load_timeline(cache)
     if cached:
         return cached
 
-    audio_path = library.resolve_audio_file(ipath, track)
-    if not audio_path:
-        return []
-    src, _ = library.get_track_source_text(full, track)
-    if not src:
-        src, _ = library.get_track_source_text(full, "default")
-    if not src:
+    if not audio_path or not src:
         return []
 
+    # 3) 估算回退
     if track == "monologue":
         tl = generate_timeline_for_monologue(src, audio_path)
     else:

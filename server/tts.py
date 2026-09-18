@@ -8,7 +8,7 @@ from pathlib import Path
 
 import httpx
 
-from . import audio, library, mastering, timeline
+from . import alignment, audio, library, mastering, timeline
 from .config import (
     FISH_TTS_URL,
     TMP_DIR,
@@ -239,9 +239,11 @@ def _synthesize_source(
     out_path: Path,
     settings: dict,
     force_monologue: bool = False,
-) -> tuple[float, int, bool, str]:
+) -> tuple[float, int, bool, str, list[dict] | None]:
     """核心合成函数：处理文本分段/多说话人合成并输出到 out_path。
-    返回: (duration_sec, seg_count, is_dialogue, tts_mode)
+    返回: (duration_sec, seg_count, is_dialogue, tts_mode, alignment_segments)
+
+    alignment_segments：逐段实测的句级/行级跨度（单次合成模式为 None，由上层降级估算）。
     """
     dry = not real_api_key(settings) or bool(settings.get("dry_run"))
     try:
@@ -258,27 +260,28 @@ def _synthesize_source(
 
     single_pass_bytes: bytes | None = None
     plan: list[tuple[str, str, float]] = []
+    line_map: list[int] = []  # 每个计划段属于哪个对话行（独白为空）
     if dialogue and not dry:
         try:
             single_pass_bytes = fish_tts_dialogue(dialogue, settings)
         except TTSError:
             single_pass_bytes = None
-    elif dialogue and dry:
-        single_pass_bytes = None
 
+    align_segments: list[dict] | None = None
     if dialogue and single_pass_bytes is None:
         prev_speaker = None
-        for speaker, line in dialogue:
+        for li, (speaker, line) in enumerate(dialogue):
             for j, seg in enumerate(split_text(line, seg_chars)):
                 gap = 0.0
                 if j > 0:
                     gap = gap_ms / 1000.0
                 elif prev_speaker is not None:
-                    gap = gap_ms / 1000.0 * 1.3
+                    gap = gap_ms / 1000.0 * 1.3  # 换人说话稍微多停一点
                 plan.append((seg, _speaker_ref(settings, speaker), gap))
+                line_map.append(li)
                 prev_speaker = speaker
         seg_count = len(plan)
-    else:
+    elif single_pass_bytes is None:
         segments = split_text(src, seg_chars)
         plan = [(seg, "", gap_ms / 1000.0 if i else 0.0) for i, seg in enumerate(segments)]
         seg_count = len(segments)
@@ -291,21 +294,47 @@ def _synthesize_source(
             full_path.write_bytes(single_pass_bytes)
             entries = [{"path": full_path, "gap_before": 0.0}]
             seg_count = 1
+            # 单次合成的逐词对齐依赖 SSE 时间戳端点（网络恢复后启用）；
+            # 此处留 None，由上层降级为估算并标记 mode。
         else:
             entries = []
+            seg_durations: list[float] = []
             for idx, (seg, ref, gap) in enumerate(plan):
                 seg_path = work / f"seg-{idx:03d}.mp3"
                 if dry:
                     audio.make_tone(estimate_seconds(seg), seg_path)
                 else:
                     seg_path.write_bytes(fish_tts_segment(seg, settings, ref))
+                seg_durations.append(audio.probe_duration(seg_path))
                 entries.append({"path": seg_path, "gap_before": gap})
             seg_count = len(entries)
+
+            # 实测跨度：段边界精确，段内句子按口语权重分配（误差不跨段累积）
+            gaps = [e["gap_before"] for e in entries]
+            spans = alignment.spans_from_measured_segments(seg_durations, gaps)
+            if dialogue:
+                line_spans = alignment.aggregate_dialogue_lines(line_map, spans)
+                align_segments = [
+                    {"text": body, "speaker": spk, **sp}
+                    for (spk, body), sp in zip(dialogue, line_spans, strict=False)
+                ]
+            else:
+                align_segments = []
+                for (seg_text, _, _), sp in zip(plan, spans, strict=False):
+                    align_segments.extend(
+                        alignment.distribute_sentences_within_segment(
+                            alignment.split_sentences(seg_text), sp["start"], sp["end"]
+                        )
+                    )
         out_path.parent.mkdir(parents=True, exist_ok=True)
         audio.concat_mp3(entries, out_path)
         duration = audio.probe_duration(out_path)
         if duration <= 0:
             raise TTSError("生成的音频时长为 0，可能合成失败")
+
+        # mp3 拼接帧填充近似线性累积 → 线性重标定到最终总时长
+        if align_segments:
+            align_segments = alignment.rescale_spans(align_segments, duration)
 
         # 广播级母带处理：Room Tone 注入 + 录音棚温暖 EQ + 动态压缩 + 立体声场展宽
         try:
@@ -326,7 +355,41 @@ def _synthesize_source(
         if not dialogue
         else ("dialogue_single_pass" if single_pass_bytes is not None else "dialogue_per_line")
     )
-    return duration, seg_count, bool(dialogue), tts_mode
+    return duration, seg_count, bool(dialogue), tts_mode, align_segments
+
+
+def _save_track_outputs(
+    ipath: Path,
+    track: str,
+    src: str,
+    out_audio: Path,
+    dur: float,
+    align_segments: list[dict] | None,
+    speaker_a: str = "Alex",
+    speaker_b: str = "Mia",
+) -> list[dict]:
+    """写 alignment_{track}.json（真实或估算标记）+ timeline_{track}.json（前端兼容形状）。"""
+    audio_for_align = out_audio
+    if align_segments:
+        doc = alignment.build_alignment_doc(
+            mode="measured", source_text=src, audio_path=audio_for_align,
+            segments=align_segments, track=track,
+        )
+    else:
+        # 单次合成轨：暂无逐词数据，用旧估算器生成并明确标记 estimated
+        if parse_dialogue(src):
+            est = timeline.generate_timeline_for_dialogue(src, out_audio, speaker_a, speaker_b)
+            est = est or timeline.generate_timeline_for_monologue(src, out_audio, speaker_a)
+        else:
+            est = timeline.generate_timeline_for_monologue(src, out_audio, speaker_a)
+        doc = alignment.build_alignment_doc(
+            mode="estimated", source_text=src, audio_path=audio_for_align,
+            segments=est, track=track,
+        )
+    alignment.save_alignment(doc, ipath / f"alignment_{track}.json")
+    tl = alignment.derive_timeline(doc, speaker_a, speaker_b)
+    timeline.save_timeline(tl, ipath / f"timeline_{track}.json")
+    return tl
 
 
 def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> dict:
@@ -354,19 +417,18 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
         src_mono, field_mono = library.get_track_source_text(full, "monologue")
         if src_mono:
             out_mono = ipath / "audio_monologue.mp3"
-            dur, segs, is_diag, mode = _synthesize_source(
+            dur, segs, is_diag, mode, seg_spans = _synthesize_source(
                 src_mono, out_mono, settings, force_monologue=True
             )
             meta_updates["duration_sec_monologue"] = round(dur, 2)
             results["monologue"] = {"duration_sec": round(dur, 2), "segments": segs, "mode": mode}
-            # 生成时间轴
-            tl = timeline.generate_timeline_for_monologue(src_mono, out_mono)
-            timeline.save_timeline(tl, ipath / "timeline_monologue.json")
-            # 如果没有主 audio.mp3，拷贝一份
+            _save_track_outputs(ipath, "monologue", src_mono, out_mono, dur, seg_spans)
+            # 如果没有主 audio.mp3，拷贝一份（连 alignment 一起）
             if not (ipath / "audio.mp3").exists():
                 shutil.copy2(out_mono, ipath / "audio.mp3")
                 meta_updates["duration_sec"] = round(dur, 2)
-                timeline.save_timeline(tl, ipath / "timeline_podcast.json")
+                shutil.copy2(ipath / "alignment_monologue.json", ipath / "alignment_podcast.json")
+                shutil.copy2(ipath / "timeline_monologue.json", ipath / "timeline_podcast.json")
         elif track == "monologue":
             raise TTSError("没有可合成的独白文本（需 monologue_script 或 monologue_text）")
 
@@ -374,14 +436,12 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
         src_pod, field_pod = library.get_track_source_text(full, "podcast")
         if src_pod:
             out_pod = ipath / "audio_podcast.mp3"
-            dur, segs, is_diag, mode = _synthesize_source(
+            dur, segs, is_diag, mode, seg_spans = _synthesize_source(
                 src_pod, out_pod, settings, force_monologue=False
             )
             meta_updates["duration_sec_podcast"] = round(dur, 2)
             results["podcast"] = {"duration_sec": round(dur, 2), "segments": segs, "mode": mode}
-            # 生成时间轴
-            tl = timeline.generate_timeline_for_dialogue(src_pod, out_pod)
-            timeline.save_timeline(tl, ipath / "timeline_podcast.json")
+            _save_track_outputs(ipath, "podcast", src_pod, out_pod, dur, seg_spans)
             if not (ipath / "audio.mp3").exists() and "monologue" not in results:
                 shutil.copy2(out_pod, ipath / "audio.mp3")
                 meta_updates["duration_sec"] = round(dur, 2)
@@ -394,18 +454,14 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
             library.update_item_meta(topic_id, item_id, error="没有可合成的文本")
             raise TTSError("没有可合成的文本")
         out_def = ipath / "audio.mp3"
-        dur, segs, is_diag, mode = _synthesize_source(src_def, out_def, settings)
+        dur, segs, is_diag, mode, seg_spans = _synthesize_source(src_def, out_def, settings)
         meta_updates["duration_sec"] = round(dur, 2)
         meta_updates["tts_source"] = field_def
         meta_updates["dialogue"] = is_diag
         meta_updates["tts_mode"] = mode
         results["default"] = {"duration_sec": round(dur, 2), "segments": segs, "mode": mode}
-        if is_diag:
-            tl = timeline.generate_timeline_for_dialogue(src_def, out_def)
-            timeline.save_timeline(tl, ipath / "timeline_podcast.json")
-        else:
-            tl = timeline.generate_timeline_for_monologue(src_def, out_def)
-            timeline.save_timeline(tl, ipath / "timeline_monologue.json")
+        track_key = "podcast" if is_diag else "monologue"
+        _save_track_outputs(ipath, track_key, src_def, out_def, dur, seg_spans)
 
     library.update_item_meta(topic_id, item_id, **meta_updates)
     return {

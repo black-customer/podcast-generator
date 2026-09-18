@@ -379,9 +379,16 @@ def update_item_texts(topic_id: str, item_id: str, fields: dict) -> dict:
         for field, fname in FIELD_FILES.items():
             _write_text(d / fname, texts[field])
         meta = load_meta(d)
+        source_changed = any(texts[f] != texts_before[f] for f in STALE_TEXT_FIELDS)
+        if source_changed:
+            # 文本变了：时间轴/对齐缓存立即失效（指纹校验之外的双保险，修审计 A2）
+            for p in d.glob("timeline_*.json"):
+                p.unlink(missing_ok=True)
+            for p in d.glob("alignment_*.json"):
+                p.unlink(missing_ok=True)
         # 只有轨道源文本真的变化时，旧音频才视为过期
         if meta.get("status") == "generated":
-            if any(texts[f] != texts_before[f] for f in STALE_TEXT_FIELDS):
+            if source_changed:
                 meta["stale"] = True
         meta["status"] = compute_status(d, texts)
         meta["updated_at"] = now_iso()
