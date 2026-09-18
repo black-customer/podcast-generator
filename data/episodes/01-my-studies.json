@@ -1,0 +1,25 @@
+{
+  "topic_id": "01-my-studies",
+  "topic_name": "My studies",
+  "file": "01-my-studies.mp3",
+  "total_sec": 86.87,
+  "item_count": 3,
+  "generated_at": "2026-09-18T09:27:16",
+  "items": [
+    {
+      "id": "001-do-you-work-or-are-you-a-student",
+      "title": "Do you work or are you a student?",
+      "duration_sec": 42.04
+    },
+    {
+      "id": "002-where-is-your-hometown",
+      "title": "Where is your hometown?",
+      "duration_sec": 20.61
+    },
+    {
+      "id": "003-do-you-like-your-major",
+      "title": "Do you like your major?",
+      "duration_sec": 23.01
+    }
+  ]
+}

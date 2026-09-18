@@ -1,0 +1,46 @@
+[
+  {
+    "id": "tom_holland_vibe",
+    "name": "Peter Parker (荷兰弟少年感)",
+    "gender": "male",
+    "accent": "American",
+    "tag": "高能少年 · 碎碎念 · 语速轻快",
+    "description": "极具活力、语调跳跃、说话带气声与好奇心，完全不沉闷的年轻少年感",
+    "reference_id": "078eaa5208ca42a1909d2e6fac9c93f7",
+    "speed": 1.08,
+    "temperature": 0.88
+  },
+  {
+    "id": "alex_young_adult",
+    "name": "Alex (加州大学极客)",
+    "gender": "male",
+    "accent": "American",
+    "tag": "阳光松弛 · 幽默日常",
+    "description": "加州大学本科生日常 Vlog 风格，清亮松弛，带自然少年感",
+    "reference_id": "ef3a6f9897314ec3ba0819c905ab21bd",
+    "speed": 1.0,
+    "temperature": 0.82
+  },
+  {
+    "id": "london_scholar",
+    "name": "Arthur (英伦阳光青年)",
+    "gender": "male",
+    "accent": "British",
+    "tag": "英音青年 · 自信从容",
+    "description": "伦敦年轻大学学者风格，发音考究但毫无距离感",
+    "reference_id": "4aee64c0c03c47288fa04f0b6d240a19",
+    "speed": 1.0,
+    "temperature": 0.80
+  },
+  {
+    "id": "mia_bilingual",
+    "name": "Mia (灵动双语搭档)",
+    "gender": "female",
+    "accent": "Bilingual (US/CN)",
+    "tag": "思维敏捷 · 中英无缝",
+    "description": "灵动亲和的母语级中英双语主播，擅长互动吐槽与深度复盘",
+    "reference_id": "570b8ac5c3ff4e46849b0763a60b86b7",
+    "speed": 1.0,
+    "temperature": 0.80
+  }
+]

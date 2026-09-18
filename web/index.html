@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bruce Audio Hub · 个人高质感英语媒体库</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="spotify-theme">
+  <div class="app-shell">
+    <!-- 左侧 Spotify 风格侧边栏 -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">🎙️</span>
+        <div class="brand-text">
+          <div class="brand-title">Audio Hub</div>
+          <div class="brand-sub">Bruce Corpus</div>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <div class="menu-label">媒体库</div>
+        <a href="#/topics" class="nav-item active" data-filter="all">
+          <span class="icon">📻</span> 全部专辑
+        </a>
+        <a href="#/topics?cat=ielts" class="nav-item" data-filter="ielts">
+          <span class="icon">🎯</span> 雅思专项
+        </a>
+        <a href="#/topics?cat=daily" class="nav-item" data-filter="daily">
+          <span class="icon">☕</span> 日常闲聊
+        </a>
+        <div class="menu-label">声学系统</div>
+        <a href="#/voices" class="nav-item" data-filter="voices">
+          <span class="icon">🎭</span> 荷兰弟音色展台
+        </a>
+        <a href="#/manage" class="nav-item" data-filter="manage">
+          <span class="icon">🛠️</span> 工作台管理
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="mastering-badge">
+          <span class="status-dot"></span>
+          <span>广播级母带处理链路</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 主展示区 -->
+    <main class="main-content" id="app">
+      <!-- 动态视图注入 -->
+    </main>
+  </div>
+
+  <!-- 全局固定底部播放器 (Mini Player) -->
+  <footer class="global-player" id="global-player" style="display:none">
+    <div class="player-left">
+      <div class="player-cover" id="gp-cover">🎧</div>
+      <div class="player-info">
+        <div class="player-title" id="gp-title">未选择曲目</div>
+        <div class="player-sub" id="gp-sub">双轨英语媒体库</div>
+      </div>
+    </div>
+    <div class="player-center">
+      <div class="player-controls">
+        <button class="ctrl-btn" id="gp-prev" title="上一首">⏮</button>
+        <button class="ctrl-btn ctrl-skip" id="gp-rewind" title="快退 15 秒">⏪ 15s</button>
+        <button class="ctrl-btn play-btn" id="gp-play" title="播放/暂停">▶</button>
+        <button class="ctrl-btn ctrl-skip" id="gp-forward" title="快进 15 秒">15s ⏩</button>
+        <button class="ctrl-btn" id="gp-next" title="下一首">⏭</button>
+        <button class="speed-toggle-btn" id="gp-speed" title="切换播放倍速 (0.8x / 1.0x / 1.2x / 1.5x)">1.0x</button>
+      </div>
+      <div class="progress-bar-wrap">
+        <span class="time-label" id="gp-cur-time">0:00</span>
+        <div class="progress-track" id="gp-progress-track">
+          <div class="progress-fill" id="gp-progress-fill"></div>
+        </div>
+        <span class="time-label" id="gp-total-time">0:00</span>
+      </div>
+    </div>
+    <div class="player-right">
+      <button class="track-switch-pill" id="gp-track-switch">切换为播客版</button>
+      <a class="download-link" id="gp-download" href="#" download title="下载高音质 MP3">⬇</a>
+    </div>
+    <audio id="core-audio" preload="auto"></audio>
+  </footer>
+
+  <div id="toast-root"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

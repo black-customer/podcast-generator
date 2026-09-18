@@ -1,0 +1,56 @@
+{
+  "updated_at": "2026-09-18T19:35:00",
+  "current_batch": "Batch 1: Autonomous Harness, Core Alignment & Monologue Parity",
+  "milestones": [
+    {
+      "id": "M01",
+      "name": "Playwright E2E 无头浏览器自动化测试预言机",
+      "status": "RUNNING",
+      "work_packages": [
+        {"id": "WP01.1", "desc": "Playwright 依赖与测试环境夹具", "status": "RUNNING"},
+        {"id": "WP01.2", "desc": "播放器全状态交互自动化测试", "status": "PENDING"},
+        {"id": "WP01.3", "desc": "双轨歌词卡拉OK联动断言", "status": "PENDING"},
+        {"id": "WP01.4", "desc": "前端控制台异常拦截预言机", "status": "PENDING"}
+      ]
+    },
+    {
+      "id": "M02",
+      "name": "本地音频强制对齐时间轴引擎与零漂移算法",
+      "status": "PENDING",
+      "work_packages": [
+        {"id": "WP02.1", "desc": "确定性声学时间对齐器重构", "status": "PENDING"},
+        {"id": "WP02.2", "desc": "物理基准 timeline_podcast.json 与 timeline_monologue.json 产出", "status": "PENDING"},
+        {"id": "WP02.3", "desc": "对齐精度断言（误差 <150ms）", "status": "PENDING"}
+      ]
+    },
+    {
+      "id": "M03",
+      "name": "自治长程执行器与任务状态机（Task Ledger）",
+      "status": "RUNNING",
+      "work_packages": [
+        {"id": "WP03.1", "desc": "持久化任务状态账本 data/task_ledger.json", "status": "RESOLVED"},
+        {"id": "WP03.2", "desc": "自动化重试与自愈闭环脚本", "status": "PENDING"}
+      ]
+    },
+    {
+      "id": "M04",
+      "name": "剧本源头提示词规范与失控长笑消除",
+      "status": "PENDING",
+      "work_packages": [
+        {"id": "WP04.1", "desc": "清洗 promptB_voice_direct.md 与 prompt_podcast_bilingual.md", "status": "PENDING"},
+        {"id": "WP04.2", "desc": "TTS 情感标记语法重塑与温度控制", "status": "PENDING"},
+        {"id": "WP04.3", "desc": "重合第一期样板播客音频消除异常长笑", "status": "PENDING"}
+      ]
+    },
+    {
+      "id": "M07",
+      "name": "独白版呼吸意群断句与全量实时歌词对齐",
+      "status": "PENDING",
+      "work_packages": [
+        {"id": "WP07.1", "desc": "长难句听觉意群语法切分器", "status": "PENDING"},
+        {"id": "WP07.2", "desc": "独白 timeline_monologue.json 生成与持久化", "status": "PENDING"},
+        {"id": "WP07.3", "desc": "前端独白模式大字跟随、平滑居中与毫秒级跳转", "status": "PENDING"}
+      ]
+    }
+  ]
+}

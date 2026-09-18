@@ -1,0 +1,43 @@
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# Sensitive Configuration & API Keys
+data/settings.json
+.env
+.env.*
+*.key
+*.pem
+
+# Test & Coverage Outputs
+.pytest_cache/
+.coverage
+htmlcov/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Local Temporary & Scratch Files
+data/.tmp/
+tmp/
+*.tmp
+*.log
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs & Editor configs
+.idea/
+.vscode/
+.zcode/

@@ -1,0 +1,12 @@
+{
+  "fish_api_key": "YOUR_FISH_API_KEY_HERE",
+  "reference_id": "078eaa5208ca42a1909d2e6fac9c93f7",
+  "reference_id_b": "570b8ac5c3ff4e46849b0763a60b86b7",
+  "model": "s2.1-pro-free",
+  "speed": 1.05,
+  "segment_chars": 700,
+  "gap_ms": 350,
+  "episode_gap_ms": 600,
+  "dry_run": false,
+  "temperature": 0.88
+}
