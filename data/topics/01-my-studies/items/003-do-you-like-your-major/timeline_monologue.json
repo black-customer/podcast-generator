@@ -1,0 +1,52 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, I do like my major, although it is kind of complicated, you know?",
+    "start": 0.0,
+    "end": 4.4,
+    "duration": 4.4,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like, I chose computer science partly out of genuine interest, and partly because, well, job prospects.",
+    "start": 4.4,
+    "end": 11.17,
+    "duration": 6.77,
+    "mode": "measured"
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Some courses are honestly a bit dry, all theory and no practice.",
+    "start": 11.17,
+    "end": 15.33,
+    "duration": 4.16,
+    "mode": "measured"
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But the moment you build something that actually works, that feeling is unbeatable.",
+    "start": 15.33,
+    "end": 20.96,
+    "duration": 5.63,
+    "mode": "measured"
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So overall, yeah, I would say I like it.",
+    "start": 20.96,
+    "end": 23.33,
+    "duration": 2.37,
+    "mode": "measured"
+  }
+]

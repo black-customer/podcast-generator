@@ -76,11 +76,11 @@ def test_generation_writes_measured_alignment(gen_env):
     assert segs[0]["start"] == 0.0
     assert segs[0]["end"] <= segs[1]["start"]  # 换行 gap > 0
     assert segs[1]["speaker"] == "b"
-    # 时间轴端点消费 alignment（前端兼容形状）
+    # 时间轴端点消费 alignment（载荷含 lines/words/mode）
     tl = gen_env.get(f"/api/topics/{tid}/items/{iid}/timeline/podcast").json()
-    assert len(tl) == 2
-    assert tl[0]["start"] == segs[0]["start"] and tl[0]["speaker"] == "A"
-    assert all("mode" in t for t in tl)
+    assert len(tl["lines"]) == 2
+    assert tl["lines"][0]["start"] == segs[0]["start"] and tl["lines"][0]["speaker"] == "A"
+    assert tl["mode"] == "measured"
 
 
 def test_text_edit_invalidates_alignment(gen_env):

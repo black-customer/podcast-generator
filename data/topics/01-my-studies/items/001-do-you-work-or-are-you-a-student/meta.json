@@ -4,11 +4,14 @@
   "duration_sec": 42.04,
   "created_at": "2026-09-18T08:34:10",
   "updated_at": "2026-09-18T16:52:14",
-  "generated_at": "2026-09-18T16:51:55",
+  "generated_at": "2026-09-19T01:09:03",
   "stale": false,
   "chars": 765,
   "tts_source": "natural_english",
   "dry_run": false,
   "dialogue": false,
-  "duration_sec_podcast": 41.88
+  "duration_sec_podcast": 43.16,
+  "duration_sec_monologue": 43.37,
+  "qa_monologue": "pass",
+  "qa_podcast": "pass"
 }

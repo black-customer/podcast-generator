@@ -1,4 +1,6 @@
 """TTS：Fish Audio 客户端 + dry-run 占位 + 长文分段 + 双人对话 + 重试，产出条目 audio.mp3。"""
+import base64
+import json
 import logging
 import re
 import shutil
@@ -176,6 +178,105 @@ def _post_tts(
     raise TTSError(f"重试 4 次仍失败。{last_err}")
 
 
+FISH_TTS_SSE_URL = "https://api.fish.audio/v1/tts/stream/with-timestamp"
+
+
+def fish_tts_sse(
+    text: str,
+    settings: dict,
+    reference_id: str = "",
+    cancel: threading.Event | None = None,
+    is_dialogue: bool = False,
+) -> tuple[bytes, list[dict]]:
+    """流式合成并取逐词时间戳。返回 (audio_bytes, words)。
+
+    words 来自最后一个 SSE 事件的 alignment（实测为全局时间戳、累积词表）。
+    任何解析失败都返回 words=[]（上层回退到估算），音频本身照常可用。
+    """
+    headers = {
+        "Authorization": f"Bearer {real_api_key(settings)}",
+        "model": settings.get("model") or "s2.1-pro-free",
+        "Content-Type": "application/json",
+    }
+    payload: dict = {"text": text, "format": "mp3", "mp3_bitrate": 128,
+                     "latency": "normal", "normalize": True, "chunk_length": 200}
+    ref = (reference_id or "").strip()
+    if ref:
+        payload["reference_id"] = ref
+    elif is_dialogue:
+        va = (settings.get("reference_id") or "").strip()
+        vb = (settings.get("reference_id_b") or "").strip()
+        if va and vb:
+            payload["reference_id"] = [va, vb]
+    try:
+        temperature = settings.get("temperature")
+        if temperature is not None and temperature != "":
+            payload["temperature"] = max(0.0, min(1.0, float(temperature)))
+    except (TypeError, ValueError):
+        pass
+
+    last_err = ""
+    for attempt in range(3):
+        if cancel is not None and cancel.is_set():
+            raise TTSCancelled("已取消")
+        if attempt:
+            time.sleep([2, 5][attempt - 1])
+        audio = bytearray()
+        words: list[dict] = []
+        try:
+            with httpx.stream("POST", FISH_TTS_SSE_URL, headers=headers, json=payload,
+                              timeout=httpx.Timeout(300, connect=30)) as resp:
+                if resp.status_code in (429, 500, 502, 503, 504):
+                    last_err = f"Fish SSE {resp.status_code}"
+                    resp.read()
+                    continue
+                if resp.status_code != 200:
+                    body = resp.read().decode("utf-8", "ignore")[:300]
+                    raise TTSError(f"Fish SSE {resp.status_code}: {body}")
+                chunk_align: dict[int, dict] = {}  # seq -> {offset, words}（块内本地时间）
+                chunk_order: list[int] = []
+                for line in resp.iter_lines():
+                    if cancel is not None and cancel.is_set():
+                        raise TTSCancelled("已取消")
+                    if not line.startswith("data:"):
+                        continue
+                    try:
+                        data = json.loads(line[5:].strip())
+                    except json.JSONDecodeError:
+                        continue
+                    audio += base64.b64decode(data.get("audio_base64") or "")
+                    align = (data.get("alignment") or {}).get("segments") or []
+                    if align:
+                        seq = int(data.get("chunk_seq") or 0)
+                        if seq not in chunk_align:
+                            chunk_order.append(seq)
+                        chunk_align[seq] = {
+                            "offset": float(data.get("chunk_audio_offset_sec") or 0.0),
+                            "words": align,
+                        }
+                # 全局词表 = 每块最后事件的对齐 + 块偏移（实测：块内时间为本地时间）
+                for seq in chunk_order:
+                    off = chunk_align[seq]["offset"]
+                    for w in chunk_align[seq]["words"]:
+                        t = w.get("text", "")
+                        if not t:
+                            continue
+                        try:
+                            ws, we = float(w.get("start") or 0.0), float(w.get("end") or 0.0)
+                        except (TypeError, ValueError):
+                            continue
+                        words.append(
+                            {"text": t, "start": round(off + ws, 3), "end": round(off + we, 3)}
+                        )
+        except httpx.HTTPError as exc:
+            last_err = f"网络错误: {exc}"
+            continue
+        if audio:
+            return bytes(audio), words
+        last_err = last_err or "空音频"
+    raise TTSError(f"SSE 流式合成失败。{last_err}")
+
+
 def fish_tts_segment(
     text: str,
     settings: dict,
@@ -262,9 +363,9 @@ def _synthesize_source(
     settings: dict,
     force_monologue: bool = False,
     cancel: threading.Event | None = None,
-) -> tuple[float, int, bool, str, list[dict] | None]:
+) -> tuple[float, int, bool, str, list[dict] | None, list[dict]]:
     """核心合成函数：处理文本分段/多说话人合成并输出到 out_path。
-    返回: (duration_sec, seg_count, is_dialogue, tts_mode, alignment_segments)
+    返回: (duration_sec, seg_count, is_dialogue, tts_mode, align_segments, align_words)
 
     alignment_segments：逐段实测的句级/行级跨度（单次合成模式为 None，由上层降级估算）。
     """
@@ -282,15 +383,23 @@ def _synthesize_source(
     dialogue = parse_dialogue(src) if (voice_b and not force_monologue) else None
 
     single_pass_bytes: bytes | None = None
+    single_pass_words: list[dict] = []
     plan: list[tuple[str, str, float]] = []
     line_map: list[int] = []  # 每个计划段属于哪个对话行（独白为空）
     if dialogue and not dry:
         try:
-            single_pass_bytes = fish_tts_dialogue(dialogue, settings, cancel=cancel)
+            tagged = "\n".join(
+                f"<|speaker:{0 if spk == 'a' else 1}|>{body}" for spk, body in dialogue
+            )
+            single_pass_bytes, single_pass_words = fish_tts_sse(
+                tagged, settings, is_dialogue=True, cancel=cancel
+            )
         except TTSError:
             single_pass_bytes = None
 
     align_segments: list[dict] | None = None
+    align_words: list[dict] = []
+    seg_words_map: dict[int, list[dict]] = {}
     if dialogue and single_pass_bytes is None:
         prev_speaker = None
         for li, (speaker, line) in enumerate(dialogue):
@@ -317,8 +426,15 @@ def _synthesize_source(
             full_path.write_bytes(single_pass_bytes)
             entries = [{"path": full_path, "gap_before": 0.0}]
             seg_count = 1
-            # 单次合成的逐词对齐依赖 SSE 时间戳端点（网络恢复后启用）；
-            # 此处留 None，由上层降级为估算并标记 mode。
+            if single_pass_words and dialogue:
+                mapped = alignment.map_words_to_lines(dialogue, single_pass_words)
+                if mapped:
+                    align_segments = [
+                        {"text": body, "speaker": spk, "start": sp[0], "end": sp[1]}
+                        for (spk, body), sp in zip(dialogue, mapped, strict=False)
+                        if sp is not None
+                    ]
+                    align_words = single_pass_words
         else:
             entries = []
             seg_durations: list[float] = []
@@ -329,7 +445,10 @@ def _synthesize_source(
                 if dry:
                     audio.make_tone(estimate_seconds(seg), seg_path)
                 else:
-                    seg_path.write_bytes(fish_tts_segment(seg, settings, ref, cancel=cancel))
+                    seg_bytes, seg_words = fish_tts_sse(seg, settings, ref, cancel=cancel)
+                    seg_path.write_bytes(seg_bytes)
+                    if seg_words:
+                        seg_words_map[idx] = seg_words
                 seg_durations.append(audio.probe_duration(seg_path))
                 entries.append({"path": seg_path, "gap_before": gap})
             seg_count = len(entries)
@@ -345,12 +464,18 @@ def _synthesize_source(
                 ]
             else:
                 align_segments = []
-                for (seg_text, _, _), sp in zip(plan, spans, strict=False):
+                for idx, ((seg_text, _, _), sp) in enumerate(zip(plan, spans, strict=False)):
                     align_segments.extend(
                         alignment.distribute_sentences_within_segment(
                             alignment.split_sentences(seg_text), sp["start"], sp["end"]
                         )
                     )
+                    for w in seg_words_map.get(idx, []):
+                        align_words.append(
+                            {"text": w["text"],
+                             "start": round(sp["start"] + w["start"], 3),
+                             "end": round(sp["start"] + w["end"], 3)}
+                        )
         out_path.parent.mkdir(parents=True, exist_ok=True)
         audio.concat_mp3(entries, out_path)
         duration = audio.probe_duration(out_path)
@@ -380,7 +505,7 @@ def _synthesize_source(
         if not dialogue
         else ("dialogue_single_pass" if single_pass_bytes is not None else "dialogue_per_line")
     )
-    return duration, seg_count, bool(dialogue), tts_mode, align_segments
+    return duration, seg_count, bool(dialogue), tts_mode, align_segments, align_words
 
 
 def _synthesize_with_qa(
@@ -389,14 +514,16 @@ def _synthesize_with_qa(
     settings: dict,
     force_monologue: bool = False,
     cancel: threading.Event | None = None,
-) -> tuple[tuple, dict, str]:
+) -> tuple[tuple, dict, str, list[dict]]:
     """合成 + QA 门禁：异常音频隔离（.rejected.mp3）、去违规标签重试一次。
+    追加返回 align_words。
 
     返回 (合成结果元组, QA 报告, 实际使用的源文本)。
     """
     dry = not real_api_key(settings) or bool(settings.get("dry_run"))
     result = _synthesize_source(src, out_path, settings, force_monologue, cancel=cancel)
     effective_src = src
+    align_words = result[5] or []
     # 时长必须探测最终产物（母带/外部因素可能改变它），不能用合成时的返回值
     report = audioqa.run_qa(out_path, src, duration_sec=None, skip_vad=dry)
     if report["verdict"] == "retry":
@@ -411,12 +538,13 @@ def _synthesize_with_qa(
                     cleaned, out_path, settings, force_monologue, cancel=cancel
                 )
                 effective_src = cleaned
+                align_words = result[5] or []
                 report = audioqa.run_qa(out_path, cleaned, duration_sec=None, skip_vad=dry)
             except Exception:
                 # 重试失败：恢复被隔离的原始音频，记录但不再阻断
                 quarantine.replace(out_path)
                 report["retry_error"] = "重试合成失败，已恢复原始音频"
-    return result, report, effective_src
+    return result, report, effective_src, align_words
 
 
 def _save_track_outputs(
@@ -426,15 +554,17 @@ def _save_track_outputs(
     out_audio: Path,
     dur: float,
     align_segments: list[dict] | None,
+    words: list[dict] | None = None,
     speaker_a: str = "Alex",
     speaker_b: str = "Mia",
+    mode: str = "measured",
 ) -> list[dict]:
-    """写 alignment_{track}.json（真实或估算标记）+ timeline_{track}.json（前端兼容形状）。"""
+    """写 alignment_{track}.json（真实/估算标记 + 可选逐词）+ timeline_{track}.json。"""
     audio_for_align = out_audio
     if align_segments:
         doc = alignment.build_alignment_doc(
-            mode="measured", source_text=src, audio_path=audio_for_align,
-            segments=align_segments, track=track,
+            mode=mode, source_text=src, audio_path=audio_for_align,
+            segments=align_segments, track=track, words=words,
         )
     else:
         # 单次合成轨：暂无逐词数据，用旧估算器生成并明确标记 estimated
@@ -483,9 +613,10 @@ def generate_item_audio(
         src_mono, field_mono = library.get_track_source_text(full, "monologue")
         if src_mono:
             out_mono = ipath / "audio_monologue.mp3"
-            (dur, segs, is_diag, mode, seg_spans), qa_report, eff_src = _synthesize_with_qa(
+            res = _synthesize_with_qa(
                 src_mono, out_mono, settings, force_monologue=True, cancel=cancel
             )
+            (dur, segs, is_diag, mode, seg_spans, seg_words), qa_report, eff_src, align_words = res
             meta_updates["duration_sec_monologue"] = round(dur, 2)
             meta_updates["qa_monologue"] = qa_report["verdict"]
             audioqa.save_qa_report(qa_report, ipath / "qa_monologue.json")
@@ -493,7 +624,7 @@ def generate_item_audio(
                 "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
                 "qa": qa_report["verdict"],
             }
-            _save_track_outputs(ipath, "monologue", eff_src, out_mono, dur, seg_spans)
+            _save_track_outputs(ipath, "monologue", eff_src, out_mono, dur, seg_spans, seg_words)
             # 如果没有主 audio.mp3，拷贝一份（连 alignment 一起）
             if not (ipath / "audio.mp3").exists():
                 shutil.copy2(out_mono, ipath / "audio.mp3")
@@ -507,9 +638,10 @@ def generate_item_audio(
         src_pod, field_pod = library.get_track_source_text(full, "podcast")
         if src_pod:
             out_pod = ipath / "audio_podcast.mp3"
-            (dur, segs, is_diag, mode, seg_spans), qa_report, eff_src = _synthesize_with_qa(
+            res = _synthesize_with_qa(
                 src_pod, out_pod, settings, force_monologue=False, cancel=cancel
             )
+            (dur, segs, is_diag, mode, seg_spans, seg_words), qa_report, eff_src, align_words = res
             meta_updates["duration_sec_podcast"] = round(dur, 2)
             meta_updates["qa_podcast"] = qa_report["verdict"]
             audioqa.save_qa_report(qa_report, ipath / "qa_podcast.json")
@@ -517,7 +649,10 @@ def generate_item_audio(
                 "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
                 "qa": qa_report["verdict"],
             }
-            _save_track_outputs(ipath, "podcast", eff_src, out_pod, dur, seg_spans)
+            pod_mode = "sse" if (mode == "dialogue_single_pass" and seg_words) else "measured"
+            _save_track_outputs(
+                ipath, "podcast", eff_src, out_pod, dur, seg_spans, seg_words, mode=pod_mode
+            )
             if not (ipath / "audio.mp3").exists() and "monologue" not in results:
                 shutil.copy2(out_pod, ipath / "audio.mp3")
                 meta_updates["duration_sec"] = round(dur, 2)
@@ -530,9 +665,8 @@ def generate_item_audio(
             library.update_item_meta(topic_id, item_id, error="没有可合成的文本")
             raise TTSError("没有可合成的文本")
         out_def = ipath / "audio.mp3"
-        (dur, segs, is_diag, mode, seg_spans), qa_report, eff_src = _synthesize_with_qa(
-            src_def, out_def, settings, cancel=cancel
-        )
+        res = _synthesize_with_qa(src_def, out_def, settings, cancel=cancel)
+        (dur, segs, is_diag, mode, seg_spans, seg_words), qa_report, eff_src, align_words = res
         meta_updates["duration_sec"] = round(dur, 2)
         meta_updates["tts_source"] = field_def
         meta_updates["dialogue"] = is_diag
@@ -544,7 +678,10 @@ def generate_item_audio(
             "qa": qa_report["verdict"],
         }
         track_key = "podcast" if is_diag else "monologue"
-        _save_track_outputs(ipath, track_key, eff_src, out_def, dur, seg_spans)
+        def_mode = "sse" if (mode == "dialogue_single_pass" and align_words) else "measured"
+        _save_track_outputs(
+            ipath, track_key, eff_src, out_def, dur, seg_spans, align_words, mode=def_mode
+        )
 
     library.update_item_meta(topic_id, item_id, **meta_updates)
     return {

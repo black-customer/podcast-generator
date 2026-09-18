@@ -1,4 +1,5 @@
 """HTTP API 路由。"""
+import re
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException
@@ -298,6 +299,63 @@ def api_episode_audio(topic_id: str, track: TrackParam = "default"):
 @router.get("/voices")
 def api_get_voices():
     return library.read_voices()
+
+
+@router.get("/voices/{ref_id}/sample")
+def api_voice_sample(ref_id: str):
+    """音色试听：优先返回缓存样本；否则取 fish.audio 官方样本（零 TTS 成本）。
+
+    官方样本缺失时才用本模型现场合成一句（代价 1 次免费调用），同样落缓存。
+    """
+    import logging
+
+    import httpx
+
+    from server.config import FISH_MODELS_URL, real_api_key
+
+    logger = logging.getLogger(__name__)
+    ref_id = ref_id.strip()
+    if not re.fullmatch(r"[0-9a-f]{16,64}", ref_id):
+        raise _err(400, "非法的音色 id")
+
+    cache = DATA_DIR / "voice_samples" / f"{ref_id}.mp3"
+    if cache.exists() and cache.stat().st_size > 1000:
+        return FileResponse(cache, media_type="audio/mpeg")
+
+    s = load_settings()
+    key = real_api_key(s)
+    headers = {"Authorization": f"Bearer {key}"} if key else {}
+
+    # 1) 官方样本
+    try:
+        detail = httpx.get(f"{FISH_MODELS_URL}/{ref_id}", headers=headers, timeout=30)
+        if detail.status_code == 200:
+            samples = detail.json().get("samples") or []
+            if samples:
+                url = samples[0].get("audio")
+                if url:
+                    up = httpx.get(url, timeout=60, follow_redirects=True)
+                    if up.status_code == 200 and len(up.content) > 1000:
+                        cache.parent.mkdir(parents=True, exist_ok=True)
+                        cache.write_bytes(up.content)
+                        return FileResponse(cache, media_type="audio/mpeg")
+    except httpx.HTTPError:
+        logger.warning("拉取官方样本失败，回退现场合成", exc_info=True)
+
+    # 2) 现场合成一句（缓存）
+    if not key or is_dry_run(s):
+        raise _err(503, "无法获取官方样本且当前为 dry-run 模式，无法现场合成试听")
+    try:
+        audio_bytes = tts.fish_tts_segment(
+            "Hi there! This is a short preview of my voice. Pretty natural, right?",
+            s,
+            reference_id=ref_id,
+        )
+    except tts.TTSError as e:
+        raise _err(502, f"试听生成失败: {e}") from e
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    cache.write_bytes(audio_bytes)
+    return FileResponse(cache, media_type="audio/mpeg")
 
 
 # ---------------------------------------------------------------- settings

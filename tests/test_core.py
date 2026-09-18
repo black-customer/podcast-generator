@@ -231,10 +231,12 @@ def test_dry_run_generate_and_assemble(client, lib_env):
     assert r_audio.status_code == 200
     assert len(r_audio.content) > 1000
 
-    # 时间轴端点（按对话权重生成）
+    # 时间轴端点（dry-run 逐段实测 + 指纹校验；载荷含 lines/words/mode）
     tl = client.get(f"/api/topics/{tid}/items/{iid}/timeline/podcast").json()
-    assert len(tl) == 2
-    assert tl[0]["start"] == 0 and tl[-1]["end"] >= tl[-1]["start"]
+    assert len(tl["lines"]) == 2
+    assert tl["lines"][0]["start"] == 0
+    assert tl["lines"][-1]["end"] >= tl["lines"][-1]["start"]
+    assert tl["mode"] == "measured"
 
     # 合成整集（后台任务，M05）+ 清单
     m = client.post(f"/api/topics/{tid}/episode?track=podcast")

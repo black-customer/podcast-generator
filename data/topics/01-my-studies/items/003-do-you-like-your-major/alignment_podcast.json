@@ -1,0 +1,362 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "93beb403f1e7c827",
+  "audio_signature": "573693:1789751447",
+  "created_at": "2026-09-19T01:10:48",
+  "segments": [
+    {
+      "text": "Yeah, I do like my major, although it is kind of complicated, you know?",
+      "start": 0.0,
+      "end": 4.5,
+      "duration": 4.5
+    },
+    {
+      "text": "Like, I chose computer science partly out of genuine interest, and partly because, well, job prospects.",
+      "start": 4.5,
+      "end": 11.42,
+      "duration": 6.92
+    },
+    {
+      "text": "Some courses are honestly a bit dry, all theory and no practice.",
+      "start": 11.42,
+      "end": 15.67,
+      "duration": 4.25
+    },
+    {
+      "text": "But the moment you build something that actually works, that feeling is unbeatable.",
+      "start": 15.67,
+      "end": 21.42,
+      "duration": 5.75
+    },
+    {
+      "text": "So overall, yeah, I would say I like it.",
+      "start": 21.42,
+      "end": 23.85,
+      "duration": 2.43
+    }
+  ],
+  "words": [
+    {
+      "text": "Yeah",
+      "start": 0.0,
+      "end": 0.32
+    },
+    {
+      "text": "I",
+      "start": 0.64,
+      "end": 0.8
+    },
+    {
+      "text": "do",
+      "start": 0.8,
+      "end": 0.96
+    },
+    {
+      "text": "like",
+      "start": 0.96,
+      "end": 1.28
+    },
+    {
+      "text": "my",
+      "start": 1.28,
+      "end": 1.44
+    },
+    {
+      "text": "major",
+      "start": 1.44,
+      "end": 2.0
+    },
+    {
+      "text": "although",
+      "start": 2.24,
+      "end": 2.72
+    },
+    {
+      "text": "it",
+      "start": 2.72,
+      "end": 2.88
+    },
+    {
+      "text": "is",
+      "start": 2.88,
+      "end": 3.12
+    },
+    {
+      "text": "kind",
+      "start": 3.12,
+      "end": 3.36
+    },
+    {
+      "text": "of",
+      "start": 3.36,
+      "end": 3.52
+    },
+    {
+      "text": "complicated",
+      "start": 3.52,
+      "end": 4.24
+    },
+    {
+      "text": "you",
+      "start": 4.32,
+      "end": 4.48
+    },
+    {
+      "text": "know",
+      "start": 4.48,
+      "end": 4.8
+    },
+    {
+      "text": "Like",
+      "start": 5.12,
+      "end": 5.36
+    },
+    {
+      "text": "I",
+      "start": 5.44,
+      "end": 5.6
+    },
+    {
+      "text": "chose",
+      "start": 5.6,
+      "end": 5.92
+    },
+    {
+      "text": "computer",
+      "start": 5.92,
+      "end": 6.32
+    },
+    {
+      "text": "science",
+      "start": 6.32,
+      "end": 6.72
+    },
+    {
+      "text": "partly",
+      "start": 6.72,
+      "end": 7.2
+    },
+    {
+      "text": "out",
+      "start": 7.2,
+      "end": 7.28
+    },
+    {
+      "text": "of",
+      "start": 7.28,
+      "end": 7.44
+    },
+    {
+      "text": "genuine",
+      "start": 7.44,
+      "end": 7.84
+    },
+    {
+      "text": "interest",
+      "start": 7.84,
+      "end": 8.32
+    },
+    {
+      "text": "and",
+      "start": 8.64,
+      "end": 8.8
+    },
+    {
+      "text": "partly",
+      "start": 8.8,
+      "end": 9.12
+    },
+    {
+      "text": "because",
+      "start": 9.12,
+      "end": 9.6
+    },
+    {
+      "text": "well",
+      "start": 9.68,
+      "end": 10.08
+    },
+    {
+      "text": "job",
+      "start": 10.32,
+      "end": 10.72
+    },
+    {
+      "text": "prospects",
+      "start": 10.72,
+      "end": 11.36
+    },
+    {
+      "text": "Some",
+      "start": 11.68,
+      "end": 12.0
+    },
+    {
+      "text": "courses",
+      "start": 12.0,
+      "end": 12.4
+    },
+    {
+      "text": "are",
+      "start": 12.4,
+      "end": 12.56
+    },
+    {
+      "text": "honestly",
+      "start": 12.56,
+      "end": 12.96
+    },
+    {
+      "text": "a",
+      "start": 12.96,
+      "end": 13.04
+    },
+    {
+      "text": "bit",
+      "start": 13.04,
+      "end": 13.28
+    },
+    {
+      "text": "dry",
+      "start": 13.28,
+      "end": 13.76
+    },
+    {
+      "text": "all",
+      "start": 14.0,
+      "end": 14.24
+    },
+    {
+      "text": "theory",
+      "start": 14.24,
+      "end": 14.72
+    },
+    {
+      "text": "and",
+      "start": 14.72,
+      "end": 14.88
+    },
+    {
+      "text": "no",
+      "start": 14.88,
+      "end": 15.04
+    },
+    {
+      "text": "practice",
+      "start": 15.04,
+      "end": 15.68
+    },
+    {
+      "text": "But",
+      "start": 16.295,
+      "end": 16.535
+    },
+    {
+      "text": "the",
+      "start": 16.535,
+      "end": 16.615
+    },
+    {
+      "text": "moment",
+      "start": 16.615,
+      "end": 16.935
+    },
+    {
+      "text": "you",
+      "start": 16.935,
+      "end": 17.095
+    },
+    {
+      "text": "build",
+      "start": 17.095,
+      "end": 17.335
+    },
+    {
+      "text": "something",
+      "start": 17.335,
+      "end": 17.735
+    },
+    {
+      "text": "that",
+      "start": 17.735,
+      "end": 17.895
+    },
+    {
+      "text": "actually",
+      "start": 17.895,
+      "end": 18.295
+    },
+    {
+      "text": "works",
+      "start": 18.295,
+      "end": 18.775
+    },
+    {
+      "text": "that",
+      "start": 19.015,
+      "end": 19.175
+    },
+    {
+      "text": "feeling",
+      "start": 19.175,
+      "end": 19.655
+    },
+    {
+      "text": "is",
+      "start": 19.655,
+      "end": 19.815
+    },
+    {
+      "text": "unbeatable",
+      "start": 19.815,
+      "end": 20.535
+    },
+    {
+      "text": "So",
+      "start": 20.775,
+      "end": 21.015
+    },
+    {
+      "text": "overall",
+      "start": 21.015,
+      "end": 21.735
+    },
+    {
+      "text": "yeah",
+      "start": 21.895,
+      "end": 22.375
+    },
+    {
+      "text": "I",
+      "start": 22.535,
+      "end": 22.695
+    },
+    {
+      "text": "would",
+      "start": 22.695,
+      "end": 22.855
+    },
+    {
+      "text": "say",
+      "start": 22.855,
+      "end": 23.015
+    },
+    {
+      "text": "I",
+      "start": 23.015,
+      "end": 23.175
+    },
+    {
+      "text": "like",
+      "start": 23.175,
+      "end": 23.415
+    },
+    {
+      "text": "it",
+      "start": 23.415,
+      "end": 23.655
+    }
+  ]
+}

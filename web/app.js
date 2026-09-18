@@ -14,8 +14,10 @@ const PlayerState = {
   playlist: [],
   currentIndex: -1,
   timeline: [],
-  timelineMode: "", // measured | estimated | ""
+  words: [],           // 逐词时间戳（SSE 数据可用时非空）
+  timelineMode: "", // measured | estimated | sse | ""
   activeLineIndex: -1,
+  activeWordIndex: -1,
   playbackRate: 1.0,
   userIsScrolling: false,
   programmaticScrollUntil: 0, // 程序性滚动窗口：期间 onscroll 不视为用户翻阅
@@ -168,6 +170,7 @@ function initGlobalPlayer() {
       const idx = PlayerState.timeline.findIndex(l => cur >= l.start && cur < l.end);
       if (idx !== -1 && idx !== PlayerState.activeLineIndex) {
         PlayerState.activeLineIndex = idx;
+        PlayerState.activeWordIndex = -1;
         const line = PlayerState.timeline[idx];
 
         document.querySelectorAll(".dialogue-bubble.active, .monologue-line.active").forEach(el => {
@@ -182,6 +185,23 @@ function initGlobalPlayer() {
             // 标记程序性滚动窗口：scrollIntoView 触发的 onscroll 不是用户翻阅（修 A24）
             PlayerState.programmaticScrollUntil = Date.now() + 900;
             activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }
+      }
+
+      // 词级卡拉OK：当前句内逐词点亮（words 数据可用时）
+      if (PlayerState.words.length && PlayerState.activeLineIndex >= 0) {
+        const line = PlayerState.timeline[PlayerState.activeLineIndex];
+        if (cur >= line.start && cur < line.end) {
+          const wi = PlayerState.words.findIndex(w => cur >= w.start && cur < w.end);
+          if (wi !== PlayerState.activeWordIndex) {
+            PlayerState.activeWordIndex = wi;
+            const prefix = PlayerState.track === "podcast" ? "pod-word-" : "mono-word-";
+            document.querySelectorAll(".karaoke-word.on").forEach(el => el.classList.remove("on"));
+            if (wi !== -1) {
+              const el = document.getElementById(`${prefix}${wi}`);
+              if (el) el.classList.add("on");
+            }
           }
         }
       }
@@ -382,18 +402,20 @@ async function playItem(topicId, item, autoPlay = true) {
   await loadTimeline(topicId, item.id, track);
 }
 
-// 获取并渲染实时时间轴数据
+// 获取并渲染实时时间轴数据（lines=句级，words=逐词可选，mode=数据可信度）
 async function loadTimeline(topicId, itemId, track) {
   PlayerState.timeline = [];
+  PlayerState.words = [];
   PlayerState.activeLineIndex = -1;
   PlayerState.timelineMode = "";
 
   const emptyHtml = `<p style="color:var(--text-sub);padding:20px;">该条目暂无${track === "podcast" ? "播客" : "独白"}音频或剧本，可在工作台先生成。</p>`;
   try {
     const data = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/timeline/${track}`);
-    if (Array.isArray(data) && data.length > 0) {
-      PlayerState.timeline = data;
-      PlayerState.timelineMode = (data[0] && data[0].mode) || "estimated";
+    if (data && Array.isArray(data.lines) && data.lines.length > 0) {
+      PlayerState.timeline = data.lines;
+      PlayerState.words = Array.isArray(data.words) ? data.words : [];
+      PlayerState.timelineMode = data.mode || "estimated";
       renderLiveTimelineUI();
       return;
     }
@@ -411,6 +433,21 @@ async function loadTimeline(topicId, itemId, track) {
 function formatBodyText(raw) {
   return esc(raw)
     .replace(/(\[[^\]]+\])/gi, '<em style="color:var(--text-muted);font-size:12px;font-style:italic;">$1</em>');
+}
+
+// 句文本渲染：有逐词数据时拆成词 span（供卡拉OK逐词点亮）
+function renderLineText(line, lineIndex) {
+  const words = PlayerState.words;
+  const prefix = PlayerState.track === "podcast" ? "pod-word-" : "mono-word-";
+  if (!words.length) return formatBodyText(line.text);
+  const inLine = words
+    .map((w, i) => ({ ...w, i }))
+    .filter(w => w.start >= line.start - 0.01 && w.end <= line.end + 0.01);
+  if (inLine.length < 2) return formatBodyText(line.text);
+  // 用词表重建句子（词表即模型实际读出的文本）
+  return inLine
+    .map(w => `<span class="karaoke-word" id="${prefix}${w.i}">${esc(w.text)}</span>`)
+    .join(" ");
 }
 
 // 渲染实时同步歌词流
@@ -445,7 +482,7 @@ function renderLiveTimelineUI() {
               <span class="time-tag">${fmtDur(line.start)} - ${fmtDur(line.end)}</span>
               <span class="play-hint">▶ 点击跳播此句</span>
             </div>
-            <div style="font-size:14.5px;line-height:1.65;">${formatBodyText(line.text)}</div>
+            <div style="font-size:14.5px;line-height:1.65;">${renderLineText(line, line.id)}</div>
           </div>
         </div>
       `;
@@ -459,7 +496,7 @@ function renderLiveTimelineUI() {
           <span class="time-tag">${fmtDur(line.start)} - ${fmtDur(line.end)}</span>
           <span class="play-hint">▶ 点击跳播</span>
         </div>
-        <div style="font-size:15px;line-height:1.8;">${formatBodyText(line.text)}</div>
+        <div style="font-size:15px;line-height:1.8;">${renderLineText(line, line.id)}</div>
       </div>
     `).join("");
     monoStream.style.display = "block";
@@ -747,6 +784,7 @@ async function VoicesShowcaseView(token) {
           <span>温度: ${v.temperature}</span>
         </div>
         <div>
+          <button class="voice-btn" onclick="previewVoice('${esc(v.reference_id)}', this)" title="播放该音色的试听样本">▶ 试听</button>
           ${v.gender === 'male' ? `
             <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'male', '${esc(v.name)}')">
               ${isCurA ? "✓ 当前默认男声" : "设为默认男声 (Speaker A)"}
@@ -776,6 +814,32 @@ async function VoicesShowcaseView(token) {
     </div>
   `;
 }
+
+window.previewVoice = function(referenceId, btn) {
+  // 单例试听：同一时间只播一个样本；再次点击停止
+  let player = window.__voicePreview;
+  if (player && !player.paused && player.dataset.ref === referenceId) {
+    player.pause();
+    return;
+  }
+  if (player) { player.pause(); }
+  player = new Audio(`/api/voices/${encodeURIComponent(referenceId)}/sample`);
+  player.dataset.ref = referenceId;
+  window.__voicePreview = player;
+  if (btn) {
+    btn.textContent = "⏳ 加载中…";
+    btn.disabled = true;
+    player.addEventListener("canplay", () => { btn.textContent = "⏸ 停止"; btn.disabled = false; }, { once: true });
+  }
+  player.play().catch(() => {
+    toast("试听加载失败，稍后再试");
+    if (btn) { btn.textContent = "▶ 试听"; btn.disabled = false; }
+  });
+  player.addEventListener("ended", () => {
+    const cards = document.querySelectorAll(".voice-btn");
+    cards.forEach(b => { if (b.textContent === "⏸ 停止") b.textContent = "▶ 试听"; });
+  });
+};
 
 window.applyVoicePreset = async function(referenceId, gender, voiceName) {
   try {

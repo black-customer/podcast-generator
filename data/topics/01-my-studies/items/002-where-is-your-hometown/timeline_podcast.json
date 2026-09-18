@@ -1,0 +1,52 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I am actually from a pretty small city, you know.",
+    "start": 0.0,
+    "end": 2.99,
+    "duration": 2.99,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It is not one of those huge megacities, but it has got everything I need.",
+    "start": 2.99,
+    "end": 7.48,
+    "duration": 4.49,
+    "mode": "measured"
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "The food is amazing, especially the street food near my old school.",
+    "start": 7.48,
+    "end": 11.73,
+    "duration": 4.25,
+    "mode": "measured"
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And honestly, the pace of life there is so much slower, in a good way.",
+    "start": 11.73,
+    "end": 15.9,
+    "duration": 4.17,
+    "mode": "measured"
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Whenever I go back, I just feel this sense of relief, like time slows down a little.",
+    "start": 15.9,
+    "end": 21.03,
+    "duration": 5.13,
+    "mode": "measured"
+  }
+]

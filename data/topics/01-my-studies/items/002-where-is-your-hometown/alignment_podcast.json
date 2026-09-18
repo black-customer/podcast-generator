@@ -1,0 +1,387 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "f3e4ca636e53d1e4",
+  "audio_signature": "505983:1789751420",
+  "created_at": "2026-09-19T01:10:20",
+  "segments": [
+    {
+      "text": "I am actually from a pretty small city, you know.",
+      "start": 0.0,
+      "end": 2.99,
+      "duration": 2.99
+    },
+    {
+      "text": "It is not one of those huge megacities, but it has got everything I need.",
+      "start": 2.99,
+      "end": 7.48,
+      "duration": 4.49
+    },
+    {
+      "text": "The food is amazing, especially the street food near my old school.",
+      "start": 7.48,
+      "end": 11.73,
+      "duration": 4.25
+    },
+    {
+      "text": "And honestly, the pace of life there is so much slower, in a good way.",
+      "start": 11.73,
+      "end": 15.9,
+      "duration": 4.17
+    },
+    {
+      "text": "Whenever I go back, I just feel this sense of relief, like time slows down a little.",
+      "start": 15.9,
+      "end": 21.03,
+      "duration": 5.13
+    }
+  ],
+  "words": [
+    {
+      "text": "I",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "am",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "actually",
+      "start": 0.32,
+      "end": 0.64
+    },
+    {
+      "text": "from",
+      "start": 0.64,
+      "end": 0.88
+    },
+    {
+      "text": "a",
+      "start": 0.88,
+      "end": 0.96
+    },
+    {
+      "text": "pretty",
+      "start": 0.96,
+      "end": 1.2
+    },
+    {
+      "text": "small",
+      "start": 1.28,
+      "end": 1.6
+    },
+    {
+      "text": "city",
+      "start": 1.6,
+      "end": 2.0
+    },
+    {
+      "text": "you",
+      "start": 2.0,
+      "end": 2.24
+    },
+    {
+      "text": "know",
+      "start": 2.24,
+      "end": 2.56
+    },
+    {
+      "text": "It",
+      "start": 2.8,
+      "end": 2.96
+    },
+    {
+      "text": "is",
+      "start": 2.96,
+      "end": 3.12
+    },
+    {
+      "text": "not",
+      "start": 3.12,
+      "end": 3.36
+    },
+    {
+      "text": "one",
+      "start": 3.36,
+      "end": 3.52
+    },
+    {
+      "text": "of",
+      "start": 3.52,
+      "end": 3.6
+    },
+    {
+      "text": "those",
+      "start": 3.6,
+      "end": 3.84
+    },
+    {
+      "text": "huge",
+      "start": 3.84,
+      "end": 4.16
+    },
+    {
+      "text": "megacities",
+      "start": 4.16,
+      "end": 4.96
+    },
+    {
+      "text": "but",
+      "start": 5.28,
+      "end": 5.36
+    },
+    {
+      "text": "it",
+      "start": 5.36,
+      "end": 5.52
+    },
+    {
+      "text": "has",
+      "start": 5.52,
+      "end": 5.76
+    },
+    {
+      "text": "got",
+      "start": 5.76,
+      "end": 5.92
+    },
+    {
+      "text": "everything",
+      "start": 5.92,
+      "end": 6.4
+    },
+    {
+      "text": "I",
+      "start": 6.4,
+      "end": 6.48
+    },
+    {
+      "text": "need",
+      "start": 6.48,
+      "end": 6.88
+    },
+    {
+      "text": "The",
+      "start": 7.2,
+      "end": 7.28
+    },
+    {
+      "text": "food",
+      "start": 7.28,
+      "end": 7.6
+    },
+    {
+      "text": "is",
+      "start": 7.6,
+      "end": 7.76
+    },
+    {
+      "text": "amazing",
+      "start": 7.76,
+      "end": 8.32
+    },
+    {
+      "text": "especially",
+      "start": 8.56,
+      "end": 9.12
+    },
+    {
+      "text": "the",
+      "start": 9.12,
+      "end": 9.28
+    },
+    {
+      "text": "street",
+      "start": 9.28,
+      "end": 9.6
+    },
+    {
+      "text": "food",
+      "start": 9.6,
+      "end": 9.84
+    },
+    {
+      "text": "near",
+      "start": 9.84,
+      "end": 10.08
+    },
+    {
+      "text": "my",
+      "start": 10.08,
+      "end": 10.24
+    },
+    {
+      "text": "old",
+      "start": 10.24,
+      "end": 10.48
+    },
+    {
+      "text": "school",
+      "start": 10.48,
+      "end": 10.96
+    },
+    {
+      "text": "And",
+      "start": 11.28,
+      "end": 11.44
+    },
+    {
+      "text": "honestly",
+      "start": 11.44,
+      "end": 12.08
+    },
+    {
+      "text": "the",
+      "start": 12.24,
+      "end": 12.32
+    },
+    {
+      "text": "pace",
+      "start": 12.32,
+      "end": 12.64
+    },
+    {
+      "text": "of",
+      "start": 12.64,
+      "end": 12.8
+    },
+    {
+      "text": "life",
+      "start": 12.8,
+      "end": 13.12
+    },
+    {
+      "text": "there",
+      "start": 13.12,
+      "end": 13.36
+    },
+    {
+      "text": "is",
+      "start": 13.36,
+      "end": 13.44
+    },
+    {
+      "text": "so",
+      "start": 13.44,
+      "end": 13.6
+    },
+    {
+      "text": "much",
+      "start": 13.6,
+      "end": 13.92
+    },
+    {
+      "text": "slower",
+      "start": 13.92,
+      "end": 14.4
+    },
+    {
+      "text": "in",
+      "start": 14.56,
+      "end": 14.72
+    },
+    {
+      "text": "a",
+      "start": 14.72,
+      "end": 14.72
+    },
+    {
+      "text": "good",
+      "start": 14.72,
+      "end": 14.96
+    },
+    {
+      "text": "way",
+      "start": 14.96,
+      "end": 15.36
+    },
+    {
+      "text": "Whenever",
+      "start": 15.877,
+      "end": 16.277
+    },
+    {
+      "text": "I",
+      "start": 16.277,
+      "end": 16.357
+    },
+    {
+      "text": "go",
+      "start": 16.437,
+      "end": 16.597
+    },
+    {
+      "text": "back",
+      "start": 16.597,
+      "end": 16.997
+    },
+    {
+      "text": "I",
+      "start": 17.157,
+      "end": 17.317
+    },
+    {
+      "text": "just",
+      "start": 17.317,
+      "end": 17.557
+    },
+    {
+      "text": "feel",
+      "start": 17.557,
+      "end": 17.797
+    },
+    {
+      "text": "this",
+      "start": 17.797,
+      "end": 17.957
+    },
+    {
+      "text": "sense",
+      "start": 17.957,
+      "end": 18.277
+    },
+    {
+      "text": "of",
+      "start": 18.277,
+      "end": 18.437
+    },
+    {
+      "text": "relief",
+      "start": 18.437,
+      "end": 18.917
+    },
+    {
+      "text": "like",
+      "start": 19.157,
+      "end": 19.397
+    },
+    {
+      "text": "time",
+      "start": 19.397,
+      "end": 19.637
+    },
+    {
+      "text": "slows",
+      "start": 19.637,
+      "end": 20.037
+    },
+    {
+      "text": "down",
+      "start": 20.037,
+      "end": 20.357
+    },
+    {
+      "text": "a",
+      "start": 20.357,
+      "end": 20.357
+    },
+    {
+      "text": "little",
+      "start": 20.357,
+      "end": 20.757
+    }
+  ]
+}

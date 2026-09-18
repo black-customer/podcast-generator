@@ -156,10 +156,10 @@ def load_timeline(file_path: Path) -> list[dict]:
     return []
 
 
-def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") -> list[dict]:
-    """时间轴端点主入口。
+def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") -> dict:
+    """时间轴端点主入口。返回 {"lines", "words", "mode"}。
 
-    优先级：alignment_{track}.json（带文本/音频指纹校验，M02 实测数据）
+    优先级：alignment_{track}.json（带文本/音频指纹校验，M02 实测数据 + SSE 逐词）
     → 旧版 timeline 缓存 → 按权重估算生成并缓存。
     """
     from . import alignment, library
@@ -187,15 +187,19 @@ def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") 
         )
         doc = alignment.load_alignment(align_file, expect_text=src, expect_audio=audio_path)
         if doc:
-            return alignment.derive_timeline(doc)
+            return {
+                "lines": alignment.derive_timeline(doc),
+                "words": doc.get("words") or [],
+                "mode": doc.get("mode") or "measured",
+            }
 
     # 2) 旧版缓存
     cached = load_timeline(cache)
     if cached:
-        return cached
+        return {"lines": cached, "words": [], "mode": "estimated"}
 
     if not audio_path or not src:
-        return []
+        return {"lines": [], "words": [], "mode": "estimated"}
 
     # 3) 估算回退
     if track == "monologue":
@@ -205,4 +209,4 @@ def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") 
         tl = tl or generate_timeline_for_monologue(src, audio_path)
     if tl:
         save_timeline(tl, cache)
-    return tl
+    return {"lines": tl, "words": [], "mode": "estimated"}

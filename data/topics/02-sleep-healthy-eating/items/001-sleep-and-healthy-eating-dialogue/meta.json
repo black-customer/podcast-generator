@@ -3,10 +3,12 @@
   "error": "",
   "stale": false,
   "duration_sec": 108.04,
-  "generated_at": "2026-09-18T10:01:02",
+  "generated_at": "2026-09-19T01:07:38",
   "chars": 1658,
   "tts_source": "fish_script",
   "dry_run": false,
   "dialogue": true,
-  "tts_mode": "dialogue_single_pass"
+  "tts_mode": "dialogue_single_pass",
+  "duration_sec_podcast": 114.49,
+  "qa_podcast": "pass"
 }

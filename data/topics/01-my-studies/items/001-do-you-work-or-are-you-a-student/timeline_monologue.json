@@ -1,0 +1,82 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Well, I mean, I am technically still a student, majoring in computer science.",
+    "start": 0.0,
+    "end": 4.46,
+    "duration": 4.46,
+    "mode": "measured"
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But here is the thing: I actually started out studying chemistry, and I switched majors later on, which kind of changed my whole university experience.",
+    "start": 4.46,
+    "end": 13.46,
+    "duration": 9.0,
+    "mode": "measured"
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "[slight pause] And you know, going through that taught me something important: you have to keep asking yourself what you really want.",
+    "start": 13.46,
+    "end": 20.49,
+    "duration": 7.03,
+    "mode": "measured"
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like, actually want, not just what sounds good on paper.",
+    "start": 20.49,
+    "end": 23.71,
+    "duration": 3.22,
+    "mode": "measured"
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It was a bit scary at the time, honestly, because I had already spent over a year in chemistry.",
+    "start": 23.71,
+    "end": 29.13,
+    "duration": 5.42,
+    "mode": "measured"
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But I just was not into it, so I made up my mind and switched to computer science.",
+    "start": 29.13,
+    "end": 33.74,
+    "duration": 4.61,
+    "mode": "measured"
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And looking back now, it was probably one of the best decisions I made in college.",
+    "start": 33.74,
+    "end": 38.5,
+    "duration": 4.76,
+    "mode": "measured"
+  },
+  {
+    "id": 7,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So yeah, that is where I am now, and I am pretty happy with how things turned out.",
+    "start": 38.85,
+    "end": 43.37,
+    "duration": 4.52,
+    "mode": "measured"
+  }
+]

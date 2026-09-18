@@ -1,0 +1,755 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "measured",
+  "text_fingerprint": "3b4aa56189fe0f99",
+  "audio_signature": "1037627:1789751394",
+  "created_at": "2026-09-19T01:09:54",
+  "segments": [
+    {
+      "text": "Well, I mean, I am technically still a student, majoring in computer science.",
+      "start": 0.0,
+      "end": 4.37,
+      "duration": 4.37
+    },
+    {
+      "text": "But here is the thing: I actually started out studying chemistry, and I switched majors later on, which kind of changed my whole university experience.",
+      "start": 4.37,
+      "end": 13.17,
+      "duration": 8.8
+    },
+    {
+      "text": "[slight pause] And you know, going through that taught me something important: you have to keep asking yourself what you really want.",
+      "start": 13.17,
+      "end": 20.04,
+      "duration": 6.87
+    },
+    {
+      "text": "Like, actually want, not just what sounds good on paper.",
+      "start": 20.04,
+      "end": 23.19,
+      "duration": 3.15
+    },
+    {
+      "text": "It was a bit scary at the time, honestly, because I had already spent over a year in chemistry.",
+      "start": 23.19,
+      "end": 28.49,
+      "duration": 5.3
+    },
+    {
+      "text": "But I just was not into it, so I made up my mind and switched to computer science.",
+      "start": 28.49,
+      "end": 33.0,
+      "duration": 4.51
+    },
+    {
+      "text": "And looking back now, it was probably one of the best decisions I made in college.",
+      "start": 33.0,
+      "end": 37.64,
+      "duration": 4.64
+    },
+    {
+      "text": "So yeah, that is where I am now, and I am pretty happy with how things turned out.",
+      "start": 37.99,
+      "end": 43.16,
+      "duration": 5.17
+    }
+  ],
+  "words": [
+    {
+      "text": "Well",
+      "start": 0.0,
+      "end": 0.48
+    },
+    {
+      "text": "I",
+      "start": 0.64,
+      "end": 0.8
+    },
+    {
+      "text": "mean",
+      "start": 0.8,
+      "end": 1.04
+    },
+    {
+      "text": "I",
+      "start": 1.28,
+      "end": 1.52
+    },
+    {
+      "text": "am",
+      "start": 1.52,
+      "end": 1.6
+    },
+    {
+      "text": "technically",
+      "start": 1.6,
+      "end": 2.16
+    },
+    {
+      "text": "still",
+      "start": 2.16,
+      "end": 2.56
+    },
+    {
+      "text": "a",
+      "start": 2.56,
+      "end": 2.64
+    },
+    {
+      "text": "student",
+      "start": 2.64,
+      "end": 3.2
+    },
+    {
+      "text": "majoring",
+      "start": 3.2,
+      "end": 3.68
+    },
+    {
+      "text": "in",
+      "start": 3.68,
+      "end": 3.84
+    },
+    {
+      "text": "computer",
+      "start": 3.84,
+      "end": 4.16
+    },
+    {
+      "text": "science",
+      "start": 4.16,
+      "end": 4.8
+    },
+    {
+      "text": "But",
+      "start": 5.12,
+      "end": 5.28
+    },
+    {
+      "text": "here",
+      "start": 5.28,
+      "end": 5.52
+    },
+    {
+      "text": "is",
+      "start": 5.52,
+      "end": 5.68
+    },
+    {
+      "text": "the",
+      "start": 5.68,
+      "end": 5.76
+    },
+    {
+      "text": "thing",
+      "start": 5.76,
+      "end": 6.16
+    },
+    {
+      "text": "I",
+      "start": 6.56,
+      "end": 6.72
+    },
+    {
+      "text": "actually",
+      "start": 6.72,
+      "end": 6.96
+    },
+    {
+      "text": "started",
+      "start": 6.96,
+      "end": 7.36
+    },
+    {
+      "text": "out",
+      "start": 7.36,
+      "end": 7.52
+    },
+    {
+      "text": "studying",
+      "start": 7.52,
+      "end": 7.92
+    },
+    {
+      "text": "chemistry",
+      "start": 7.92,
+      "end": 8.64
+    },
+    {
+      "text": "and",
+      "start": 8.88,
+      "end": 8.96
+    },
+    {
+      "text": "I",
+      "start": 8.96,
+      "end": 9.12
+    },
+    {
+      "text": "switched",
+      "start": 9.12,
+      "end": 9.44
+    },
+    {
+      "text": "majors",
+      "start": 9.44,
+      "end": 9.92
+    },
+    {
+      "text": "later",
+      "start": 9.92,
+      "end": 10.16
+    },
+    {
+      "text": "on",
+      "start": 10.16,
+      "end": 10.56
+    },
+    {
+      "text": "which",
+      "start": 10.8,
+      "end": 10.96
+    },
+    {
+      "text": "kind",
+      "start": 10.96,
+      "end": 11.2
+    },
+    {
+      "text": "of",
+      "start": 11.2,
+      "end": 11.28
+    },
+    {
+      "text": "changed",
+      "start": 11.28,
+      "end": 11.6
+    },
+    {
+      "text": "my",
+      "start": 11.6,
+      "end": 11.76
+    },
+    {
+      "text": "whole",
+      "start": 11.76,
+      "end": 12.0
+    },
+    {
+      "text": "university",
+      "start": 12.0,
+      "end": 12.64
+    },
+    {
+      "text": "experience",
+      "start": 12.64,
+      "end": 13.44
+    },
+    {
+      "text": "And",
+      "start": 13.8,
+      "end": 14.04
+    },
+    {
+      "text": "you",
+      "start": 14.04,
+      "end": 14.12
+    },
+    {
+      "text": "know",
+      "start": 14.12,
+      "end": 14.44
+    },
+    {
+      "text": "going",
+      "start": 14.44,
+      "end": 14.84
+    },
+    {
+      "text": "through",
+      "start": 14.84,
+      "end": 15.08
+    },
+    {
+      "text": "that",
+      "start": 15.08,
+      "end": 15.24
+    },
+    {
+      "text": "taught",
+      "start": 15.24,
+      "end": 15.48
+    },
+    {
+      "text": "me",
+      "start": 15.48,
+      "end": 15.64
+    },
+    {
+      "text": "something",
+      "start": 15.64,
+      "end": 15.88
+    },
+    {
+      "text": "important",
+      "start": 15.96,
+      "end": 16.6
+    },
+    {
+      "text": "you",
+      "start": 16.84,
+      "end": 16.92
+    },
+    {
+      "text": "have",
+      "start": 16.92,
+      "end": 17.16
+    },
+    {
+      "text": "to",
+      "start": 17.16,
+      "end": 17.24
+    },
+    {
+      "text": "keep",
+      "start": 17.24,
+      "end": 17.48
+    },
+    {
+      "text": "asking",
+      "start": 17.48,
+      "end": 17.88
+    },
+    {
+      "text": "yourself",
+      "start": 17.88,
+      "end": 18.28
+    },
+    {
+      "text": "what",
+      "start": 18.28,
+      "end": 18.44
+    },
+    {
+      "text": "you",
+      "start": 18.44,
+      "end": 18.6
+    },
+    {
+      "text": "really",
+      "start": 18.6,
+      "end": 18.84
+    },
+    {
+      "text": "want",
+      "start": 18.84,
+      "end": 19.24
+    },
+    {
+      "text": "Like",
+      "start": 19.56,
+      "end": 19.88
+    },
+    {
+      "text": "actually",
+      "start": 19.88,
+      "end": 20.28
+    },
+    {
+      "text": "want",
+      "start": 20.28,
+      "end": 20.68
+    },
+    {
+      "text": "not",
+      "start": 20.92,
+      "end": 21.16
+    },
+    {
+      "text": "just",
+      "start": 21.16,
+      "end": 21.4
+    },
+    {
+      "text": "what",
+      "start": 21.4,
+      "end": 21.56
+    },
+    {
+      "text": "sounds",
+      "start": 21.56,
+      "end": 21.88
+    },
+    {
+      "text": "good",
+      "start": 21.88,
+      "end": 22.04
+    },
+    {
+      "text": "on",
+      "start": 22.04,
+      "end": 22.2
+    },
+    {
+      "text": "paper",
+      "start": 22.2,
+      "end": 22.76
+    },
+    {
+      "text": "It",
+      "start": 23.0,
+      "end": 23.08
+    },
+    {
+      "text": "was",
+      "start": 23.08,
+      "end": 23.24
+    },
+    {
+      "text": "a",
+      "start": 23.24,
+      "end": 23.32
+    },
+    {
+      "text": "bit",
+      "start": 23.32,
+      "end": 23.48
+    },
+    {
+      "text": "scary",
+      "start": 23.48,
+      "end": 23.96
+    },
+    {
+      "text": "at",
+      "start": 23.96,
+      "end": 24.04
+    },
+    {
+      "text": "the",
+      "start": 24.04,
+      "end": 24.12
+    },
+    {
+      "text": "time",
+      "start": 24.12,
+      "end": 24.44
+    },
+    {
+      "text": "honestly",
+      "start": 24.44,
+      "end": 25.08
+    },
+    {
+      "text": "because",
+      "start": 25.32,
+      "end": 25.56
+    },
+    {
+      "text": "I",
+      "start": 25.56,
+      "end": 25.72
+    },
+    {
+      "text": "had",
+      "start": 25.72,
+      "end": 25.8
+    },
+    {
+      "text": "already",
+      "start": 25.8,
+      "end": 26.2
+    },
+    {
+      "text": "spent",
+      "start": 26.2,
+      "end": 26.52
+    },
+    {
+      "text": "over",
+      "start": 26.52,
+      "end": 26.76
+    },
+    {
+      "text": "a",
+      "start": 26.76,
+      "end": 26.76
+    },
+    {
+      "text": "year",
+      "start": 26.76,
+      "end": 27.08
+    },
+    {
+      "text": "in",
+      "start": 27.08,
+      "end": 27.16
+    },
+    {
+      "text": "chemistry",
+      "start": 27.16,
+      "end": 27.8
+    },
+    {
+      "text": "But",
+      "start": 28.512,
+      "end": 28.672
+    },
+    {
+      "text": "I",
+      "start": 28.672,
+      "end": 28.832
+    },
+    {
+      "text": "just",
+      "start": 28.832,
+      "end": 29.152
+    },
+    {
+      "text": "was",
+      "start": 29.152,
+      "end": 29.312
+    },
+    {
+      "text": "not",
+      "start": 29.312,
+      "end": 29.552
+    },
+    {
+      "text": "into",
+      "start": 29.552,
+      "end": 29.872
+    },
+    {
+      "text": "it",
+      "start": 29.872,
+      "end": 30.032
+    },
+    {
+      "text": "so",
+      "start": 30.272,
+      "end": 30.432
+    },
+    {
+      "text": "I",
+      "start": 30.432,
+      "end": 30.512
+    },
+    {
+      "text": "made",
+      "start": 30.512,
+      "end": 30.672
+    },
+    {
+      "text": "up",
+      "start": 30.672,
+      "end": 30.832
+    },
+    {
+      "text": "my",
+      "start": 30.832,
+      "end": 30.992
+    },
+    {
+      "text": "mind",
+      "start": 30.992,
+      "end": 31.392
+    },
+    {
+      "text": "and",
+      "start": 31.552,
+      "end": 31.712
+    },
+    {
+      "text": "switched",
+      "start": 31.712,
+      "end": 32.112
+    },
+    {
+      "text": "to",
+      "start": 32.112,
+      "end": 32.192
+    },
+    {
+      "text": "computer",
+      "start": 32.192,
+      "end": 32.592
+    },
+    {
+      "text": "science",
+      "start": 32.592,
+      "end": 33.152
+    },
+    {
+      "text": "And",
+      "start": 33.392,
+      "end": 33.552
+    },
+    {
+      "text": "looking",
+      "start": 33.552,
+      "end": 33.792
+    },
+    {
+      "text": "back",
+      "start": 33.792,
+      "end": 34.032
+    },
+    {
+      "text": "now",
+      "start": 34.032,
+      "end": 34.512
+    },
+    {
+      "text": "it",
+      "start": 34.672,
+      "end": 34.752
+    },
+    {
+      "text": "was",
+      "start": 34.752,
+      "end": 34.912
+    },
+    {
+      "text": "probably",
+      "start": 34.912,
+      "end": 35.392
+    },
+    {
+      "text": "one",
+      "start": 35.392,
+      "end": 35.552
+    },
+    {
+      "text": "of",
+      "start": 35.552,
+      "end": 35.632
+    },
+    {
+      "text": "the",
+      "start": 35.632,
+      "end": 35.712
+    },
+    {
+      "text": "best",
+      "start": 35.712,
+      "end": 35.952
+    },
+    {
+      "text": "decisions",
+      "start": 35.952,
+      "end": 36.432
+    },
+    {
+      "text": "I",
+      "start": 36.432,
+      "end": 36.512
+    },
+    {
+      "text": "made",
+      "start": 36.512,
+      "end": 36.752
+    },
+    {
+      "text": "in",
+      "start": 36.752,
+      "end": 36.832
+    },
+    {
+      "text": "college",
+      "start": 36.832,
+      "end": 37.392
+    },
+    {
+      "text": "So",
+      "start": 37.99,
+      "end": 38.15
+    },
+    {
+      "text": "yeah",
+      "start": 38.15,
+      "end": 38.55
+    },
+    {
+      "text": "that",
+      "start": 38.79,
+      "end": 38.95
+    },
+    {
+      "text": "is",
+      "start": 38.95,
+      "end": 39.11
+    },
+    {
+      "text": "where",
+      "start": 39.11,
+      "end": 39.27
+    },
+    {
+      "text": "I",
+      "start": 39.27,
+      "end": 39.51
+    },
+    {
+      "text": "am",
+      "start": 39.51,
+      "end": 39.67
+    },
+    {
+      "text": "now",
+      "start": 39.67,
+      "end": 40.15
+    },
+    {
+      "text": "and",
+      "start": 40.31,
+      "end": 40.47
+    },
+    {
+      "text": "I",
+      "start": 40.47,
+      "end": 40.63
+    },
+    {
+      "text": "am",
+      "start": 40.63,
+      "end": 40.79
+    },
+    {
+      "text": "pretty",
+      "start": 40.79,
+      "end": 41.03
+    },
+    {
+      "text": "happy",
+      "start": 41.03,
+      "end": 41.51
+    },
+    {
+      "text": "with",
+      "start": 41.59,
+      "end": 41.75
+    },
+    {
+      "text": "how",
+      "start": 41.75,
+      "end": 41.99
+    },
+    {
+      "text": "things",
+      "start": 41.99,
+      "end": 42.31
+    },
+    {
+      "text": "turned",
+      "start": 42.31,
+      "end": 42.63
+    },
+    {
+      "text": "out",
+      "start": 42.63,
+      "end": 42.95
+    }
+  ]
+}

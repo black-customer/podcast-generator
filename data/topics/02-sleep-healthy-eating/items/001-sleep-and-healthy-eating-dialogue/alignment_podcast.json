@@ -1,0 +1,1566 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "6c9e871e04c0c135",
+  "audio_signature": "2749170:1789751317",
+  "created_at": "2026-09-19T01:08:38",
+  "segments": [
+    {
+      "text": "Hey. Guess what time I got up today. Six thirty. A.M.",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 4.57
+    },
+    {
+      "text": "Wait— six thirty? You? The guy who goes to bed at seven... in the morning?",
+      "speaker": "b",
+      "start": 4.73,
+      "end": 12.25
+    },
+    {
+      "text": "Hey, that was one time. [chuckle] But yeah, I'm really trying to adjust my sleep schedule. And honestly? Waking up early makes me feel like my life is just... full of possibilities.",
+      "speaker": "a",
+      "start": 12.81,
+      "end": 23.71
+    },
+    {
+      "text": "No, I get that. It's a great feeling. Okay so— what else have you been thinking about?",
+      "speaker": "b",
+      "start": 23.87,
+      "end": 30.11
+    },
+    {
+      "text": "Food, actually. Like, a lot. I want to eat low-calorie meals, but still make them delicious, you know?",
+      "speaker": "a",
+      "start": 30.68,
+      "end": 37.16
+    },
+    {
+      "text": "Okay, so give me an example. What's a meal you like?",
+      "speaker": "b",
+      "start": 37.32,
+      "end": 40.77
+    },
+    {
+      "text": "Alright, so— brown rice, chicken, veggies... and a little sesame sauce on top.",
+      "speaker": "a",
+      "start": 40.93,
+      "end": 47.17
+    },
+    {
+      "text": "Ooh, that's a solid combo. Because brown rice is a whole grain, chicken breast is low in fat, high in protein... that's a great base, right there.",
+      "speaker": "b",
+      "start": 47.46,
+      "end": 57.39
+    },
+    {
+      "text": "Right? And don't forget the mushrooms. Dietary fiber, baby.",
+      "speaker": "a",
+      "start": 57.63,
+      "end": 61.55
+    },
+    {
+      "text": "[chuckle] Exactly. And if you throw in broccoli and carrots— low in calories, high in fiber and vitamins. You're basically set.",
+      "speaker": "b",
+      "start": 62.15,
+      "end": 69.2
+    },
+    {
+      "text": "Okay, but what about the sesame sauce, though? Is that actually healthy? Be honest.",
+      "speaker": "a",
+      "start": 69.36,
+      "end": 74.32
+    },
+    {
+      "text": "Well... it has some healthy fats, but it's also really calorie-dense.",
+      "speaker": "b",
+      "start": 74.75,
+      "end": 79.64
+    },
+    {
+      "text": "So just a little then?",
+      "speaker": "a",
+      "start": 79.72,
+      "end": 81.24
+    },
+    {
+      "text": "Just a little. A little sesame sauce for flavor, since it's so high in calories.",
+      "speaker": "b",
+      "start": 81.48,
+      "end": 86.6
+    },
+    {
+      "text": "Got it, got it. So basically— if I want food that's low calorie but still tasty, I just use spices.",
+      "speaker": "a",
+      "start": 87.01,
+      "end": 93.82
+    },
+    {
+      "text": "Yes. Spices, herbs, vinegar, lemon juice... small amounts of strong sauces. That's the whole trick.",
+      "speaker": "b",
+      "start": 93.98,
+      "end": 101.19
+    },
+    {
+      "text": "Okay, so I can say: I use spices, and just a little sauce, to add flavor without too many calories.",
+      "speaker": "a",
+      "start": 101.63,
+      "end": 108.52
+    },
+    {
+      "text": "Perfectly said. Nailed it.",
+      "speaker": "b",
+      "start": 108.68,
+      "end": 110.84
+    },
+    {
+      "text": "Ha! Nice. That's what I want to practice saying.",
+      "speaker": "a",
+      "start": 111.29,
+      "end": 114.49
+    }
+  ],
+  "words": [
+    {
+      "text": "Hey",
+      "start": 0.0,
+      "end": 0.48
+    },
+    {
+      "text": "Guess",
+      "start": 0.8,
+      "end": 1.12
+    },
+    {
+      "text": "what",
+      "start": 1.12,
+      "end": 1.28
+    },
+    {
+      "text": "time",
+      "start": 1.28,
+      "end": 1.52
+    },
+    {
+      "text": "I",
+      "start": 1.52,
+      "end": 1.6
+    },
+    {
+      "text": "got",
+      "start": 1.6,
+      "end": 1.84
+    },
+    {
+      "text": "up",
+      "start": 1.84,
+      "end": 2.0
+    },
+    {
+      "text": "today",
+      "start": 2.0,
+      "end": 2.48
+    },
+    {
+      "text": "Six",
+      "start": 2.72,
+      "end": 3.04
+    },
+    {
+      "text": "thirty",
+      "start": 3.04,
+      "end": 3.6
+    },
+    {
+      "text": "A",
+      "start": 3.84,
+      "end": 4.08
+    },
+    {
+      "text": "M",
+      "start": 4.08,
+      "end": 4.56
+    },
+    {
+      "text": "Wait",
+      "start": 4.72,
+      "end": 5.2
+    },
+    {
+      "text": "six",
+      "start": 5.76,
+      "end": 6.4
+    },
+    {
+      "text": "thirty",
+      "start": 6.4,
+      "end": 6.88
+    },
+    {
+      "text": "You",
+      "start": 7.76,
+      "end": 8.24
+    },
+    {
+      "text": "The",
+      "start": 8.96,
+      "end": 9.04
+    },
+    {
+      "text": "guy",
+      "start": 9.04,
+      "end": 9.28
+    },
+    {
+      "text": "who",
+      "start": 9.28,
+      "end": 9.44
+    },
+    {
+      "text": "goes",
+      "start": 9.44,
+      "end": 9.68
+    },
+    {
+      "text": "to",
+      "start": 9.68,
+      "end": 9.76
+    },
+    {
+      "text": "bed",
+      "start": 9.76,
+      "end": 10.08
+    },
+    {
+      "text": "at",
+      "start": 10.08,
+      "end": 10.32
+    },
+    {
+      "text": "seven",
+      "start": 10.32,
+      "end": 11.04
+    },
+    {
+      "text": "in",
+      "start": 11.36,
+      "end": 11.52
+    },
+    {
+      "text": "the",
+      "start": 11.52,
+      "end": 11.6
+    },
+    {
+      "text": "morning",
+      "start": 11.6,
+      "end": 12.24
+    },
+    {
+      "text": "Hey",
+      "start": 12.799,
+      "end": 13.279
+    },
+    {
+      "text": "that",
+      "start": 13.519,
+      "end": 13.679
+    },
+    {
+      "text": "was",
+      "start": 13.679,
+      "end": 13.839
+    },
+    {
+      "text": "one",
+      "start": 13.839,
+      "end": 14.079
+    },
+    {
+      "text": "time",
+      "start": 14.079,
+      "end": 14.559
+    },
+    {
+      "text": "But",
+      "start": 15.439,
+      "end": 15.599
+    },
+    {
+      "text": "yeah",
+      "start": 15.599,
+      "end": 15.999
+    },
+    {
+      "text": "I'm",
+      "start": 16.079,
+      "end": 16.319
+    },
+    {
+      "text": "really",
+      "start": 16.319,
+      "end": 16.559
+    },
+    {
+      "text": "trying",
+      "start": 16.559,
+      "end": 16.799
+    },
+    {
+      "text": "to",
+      "start": 16.879,
+      "end": 16.959
+    },
+    {
+      "text": "adjust",
+      "start": 16.959,
+      "end": 17.359
+    },
+    {
+      "text": "my",
+      "start": 17.359,
+      "end": 17.519
+    },
+    {
+      "text": "sleep",
+      "start": 17.519,
+      "end": 17.839
+    },
+    {
+      "text": "schedule",
+      "start": 17.839,
+      "end": 18.399
+    },
+    {
+      "text": "And",
+      "start": 18.559,
+      "end": 18.719
+    },
+    {
+      "text": "honestly",
+      "start": 18.719,
+      "end": 19.359
+    },
+    {
+      "text": "Waking",
+      "start": 19.599,
+      "end": 19.919
+    },
+    {
+      "text": "up",
+      "start": 19.919,
+      "end": 20.079
+    },
+    {
+      "text": "early",
+      "start": 20.079,
+      "end": 20.399
+    },
+    {
+      "text": "makes",
+      "start": 20.399,
+      "end": 20.639
+    },
+    {
+      "text": "me",
+      "start": 20.639,
+      "end": 20.799
+    },
+    {
+      "text": "feel",
+      "start": 20.799,
+      "end": 20.959
+    },
+    {
+      "text": "like",
+      "start": 20.959,
+      "end": 21.119
+    },
+    {
+      "text": "my",
+      "start": 21.119,
+      "end": 21.279
+    },
+    {
+      "text": "life",
+      "start": 21.279,
+      "end": 21.599
+    },
+    {
+      "text": "is",
+      "start": 21.599,
+      "end": 21.759
+    },
+    {
+      "text": "just",
+      "start": 21.759,
+      "end": 22.079
+    },
+    {
+      "text": "full",
+      "start": 22.319,
+      "end": 22.559
+    },
+    {
+      "text": "of",
+      "start": 22.559,
+      "end": 22.639
+    },
+    {
+      "text": "possibilities",
+      "start": 22.639,
+      "end": 23.679
+    },
+    {
+      "text": "No",
+      "start": 23.839,
+      "end": 24.399
+    },
+    {
+      "text": "I",
+      "start": 24.719,
+      "end": 24.799
+    },
+    {
+      "text": "get",
+      "start": 24.799,
+      "end": 25.119
+    },
+    {
+      "text": "that",
+      "start": 25.119,
+      "end": 25.519
+    },
+    {
+      "text": "It's",
+      "start": 25.839,
+      "end": 25.999
+    },
+    {
+      "text": "a",
+      "start": 25.999,
+      "end": 25.999
+    },
+    {
+      "text": "great",
+      "start": 25.999,
+      "end": 26.399
+    },
+    {
+      "text": "feeling",
+      "start": 26.399,
+      "end": 26.879
+    },
+    {
+      "text": "Okay",
+      "start": 27.279,
+      "end": 27.599
+    },
+    {
+      "text": "so",
+      "start": 27.599,
+      "end": 28.159
+    },
+    {
+      "text": "what",
+      "start": 28.639,
+      "end": 28.799
+    },
+    {
+      "text": "else",
+      "start": 28.799,
+      "end": 28.959
+    },
+    {
+      "text": "have",
+      "start": 28.959,
+      "end": 29.039
+    },
+    {
+      "text": "you",
+      "start": 29.039,
+      "end": 29.119
+    },
+    {
+      "text": "been",
+      "start": 29.119,
+      "end": 29.279
+    },
+    {
+      "text": "thinking",
+      "start": 29.279,
+      "end": 29.599
+    },
+    {
+      "text": "about",
+      "start": 29.599,
+      "end": 30.079
+    },
+    {
+      "text": "Food",
+      "start": 30.639,
+      "end": 31.039
+    },
+    {
+      "text": "actually",
+      "start": 31.119,
+      "end": 31.759
+    },
+    {
+      "text": "Like",
+      "start": 31.999,
+      "end": 32.399
+    },
+    {
+      "text": "a",
+      "start": 32.559,
+      "end": 32.639
+    },
+    {
+      "text": "lot",
+      "start": 32.639,
+      "end": 33.119
+    },
+    {
+      "text": "I",
+      "start": 33.359,
+      "end": 33.439
+    },
+    {
+      "text": "want",
+      "start": 33.439,
+      "end": 33.679
+    },
+    {
+      "text": "to",
+      "start": 33.679,
+      "end": 33.759
+    },
+    {
+      "text": "eat",
+      "start": 33.759,
+      "end": 33.919
+    },
+    {
+      "text": "low",
+      "start": 33.919,
+      "end": 34.159
+    },
+    {
+      "text": "calorie",
+      "start": 34.159,
+      "end": 34.559
+    },
+    {
+      "text": "meals",
+      "start": 34.559,
+      "end": 35.039
+    },
+    {
+      "text": "but",
+      "start": 35.039,
+      "end": 35.199
+    },
+    {
+      "text": "still",
+      "start": 35.199,
+      "end": 35.519
+    },
+    {
+      "text": "make",
+      "start": 35.519,
+      "end": 35.759
+    },
+    {
+      "text": "them",
+      "start": 35.759,
+      "end": 35.919
+    },
+    {
+      "text": "delicious",
+      "start": 35.919,
+      "end": 36.639
+    },
+    {
+      "text": "you",
+      "start": 36.639,
+      "end": 36.799
+    },
+    {
+      "text": "know",
+      "start": 36.799,
+      "end": 37.119
+    },
+    {
+      "text": "Okay",
+      "start": 37.279,
+      "end": 37.599
+    },
+    {
+      "text": "so",
+      "start": 37.599,
+      "end": 37.839
+    },
+    {
+      "text": "give",
+      "start": 37.839,
+      "end": 37.919
+    },
+    {
+      "text": "me",
+      "start": 37.919,
+      "end": 38.079
+    },
+    {
+      "text": "an",
+      "start": 38.079,
+      "end": 38.159
+    },
+    {
+      "text": "example",
+      "start": 38.159,
+      "end": 38.879
+    },
+    {
+      "text": "What's",
+      "start": 39.279,
+      "end": 39.519
+    },
+    {
+      "text": "a",
+      "start": 39.599,
+      "end": 39.599
+    },
+    {
+      "text": "meal",
+      "start": 39.599,
+      "end": 39.999
+    },
+    {
+      "text": "you",
+      "start": 40.079,
+      "end": 40.239
+    },
+    {
+      "text": "like",
+      "start": 40.239,
+      "end": 40.719
+    },
+    {
+      "text": "Alright",
+      "start": 40.879,
+      "end": 41.439
+    },
+    {
+      "text": "so",
+      "start": 41.599,
+      "end": 42.159
+    },
+    {
+      "text": "brown",
+      "start": 42.399,
+      "end": 42.799
+    },
+    {
+      "text": "rice",
+      "start": 42.799,
+      "end": 43.359
+    },
+    {
+      "text": "chicken",
+      "start": 43.519,
+      "end": 44.079
+    },
+    {
+      "text": "veggies",
+      "start": 44.239,
+      "end": 44.959
+    },
+    {
+      "text": "and",
+      "start": 45.199,
+      "end": 45.359
+    },
+    {
+      "text": "a",
+      "start": 45.359,
+      "end": 45.359
+    },
+    {
+      "text": "little",
+      "start": 45.359,
+      "end": 45.599
+    },
+    {
+      "text": "sesame",
+      "start": 45.599,
+      "end": 46.159
+    },
+    {
+      "text": "sauce",
+      "start": 46.159,
+      "end": 46.479
+    },
+    {
+      "text": "on",
+      "start": 46.479,
+      "end": 46.719
+    },
+    {
+      "text": "top",
+      "start": 46.719,
+      "end": 47.119
+    },
+    {
+      "text": "Ooh",
+      "start": 47.4,
+      "end": 47.96
+    },
+    {
+      "text": "that's",
+      "start": 48.44,
+      "end": 48.68
+    },
+    {
+      "text": "a",
+      "start": 48.68,
+      "end": 48.76
+    },
+    {
+      "text": "solid",
+      "start": 48.76,
+      "end": 49.24
+    },
+    {
+      "text": "combo",
+      "start": 49.24,
+      "end": 49.88
+    },
+    {
+      "text": "Because",
+      "start": 50.04,
+      "end": 50.36
+    },
+    {
+      "text": "brown",
+      "start": 50.6,
+      "end": 50.84
+    },
+    {
+      "text": "rice",
+      "start": 50.84,
+      "end": 51.16
+    },
+    {
+      "text": "is",
+      "start": 51.16,
+      "end": 51.24
+    },
+    {
+      "text": "a",
+      "start": 51.24,
+      "end": 51.32
+    },
+    {
+      "text": "whole",
+      "start": 51.32,
+      "end": 51.56
+    },
+    {
+      "text": "grain",
+      "start": 51.56,
+      "end": 52.12
+    },
+    {
+      "text": "chicken",
+      "start": 52.36,
+      "end": 52.68
+    },
+    {
+      "text": "breast",
+      "start": 52.68,
+      "end": 53.0
+    },
+    {
+      "text": "is",
+      "start": 53.0,
+      "end": 53.16
+    },
+    {
+      "text": "low",
+      "start": 53.16,
+      "end": 53.4
+    },
+    {
+      "text": "in",
+      "start": 53.4,
+      "end": 53.56
+    },
+    {
+      "text": "fat",
+      "start": 53.56,
+      "end": 54.04
+    },
+    {
+      "text": "high",
+      "start": 54.28,
+      "end": 54.52
+    },
+    {
+      "text": "in",
+      "start": 54.52,
+      "end": 54.6
+    },
+    {
+      "text": "protein",
+      "start": 54.6,
+      "end": 55.24
+    },
+    {
+      "text": "that's",
+      "start": 55.4,
+      "end": 55.64
+    },
+    {
+      "text": "a",
+      "start": 55.64,
+      "end": 55.64
+    },
+    {
+      "text": "great",
+      "start": 55.64,
+      "end": 55.96
+    },
+    {
+      "text": "base",
+      "start": 55.96,
+      "end": 56.52
+    },
+    {
+      "text": "right",
+      "start": 56.68,
+      "end": 56.92
+    },
+    {
+      "text": "there",
+      "start": 57.0,
+      "end": 57.32
+    },
+    {
+      "text": "Right",
+      "start": 57.56,
+      "end": 57.96
+    },
+    {
+      "text": "And",
+      "start": 58.2,
+      "end": 58.36
+    },
+    {
+      "text": "don't",
+      "start": 58.36,
+      "end": 58.52
+    },
+    {
+      "text": "forget",
+      "start": 58.52,
+      "end": 58.84
+    },
+    {
+      "text": "the",
+      "start": 58.84,
+      "end": 58.92
+    },
+    {
+      "text": "mushrooms",
+      "start": 58.92,
+      "end": 59.8
+    },
+    {
+      "text": "Dietary",
+      "start": 59.8,
+      "end": 60.44
+    },
+    {
+      "text": "fiber",
+      "start": 60.44,
+      "end": 60.92
+    },
+    {
+      "text": "baby",
+      "start": 60.92,
+      "end": 61.48
+    },
+    {
+      "text": "Exactly",
+      "start": 62.075,
+      "end": 62.715
+    },
+    {
+      "text": "And",
+      "start": 63.035,
+      "end": 63.195
+    },
+    {
+      "text": "if",
+      "start": 63.195,
+      "end": 63.195
+    },
+    {
+      "text": "you",
+      "start": 63.195,
+      "end": 63.355
+    },
+    {
+      "text": "throw",
+      "start": 63.355,
+      "end": 63.515
+    },
+    {
+      "text": "in",
+      "start": 63.515,
+      "end": 63.675
+    },
+    {
+      "text": "broccoli",
+      "start": 63.675,
+      "end": 64.075
+    },
+    {
+      "text": "and",
+      "start": 64.075,
+      "end": 64.235
+    },
+    {
+      "text": "carrots",
+      "start": 64.235,
+      "end": 64.875
+    },
+    {
+      "text": "low",
+      "start": 65.195,
+      "end": 65.435
+    },
+    {
+      "text": "in",
+      "start": 65.435,
+      "end": 65.595
+    },
+    {
+      "text": "calories",
+      "start": 65.595,
+      "end": 66.235
+    },
+    {
+      "text": "high",
+      "start": 66.395,
+      "end": 66.635
+    },
+    {
+      "text": "in",
+      "start": 66.635,
+      "end": 66.715
+    },
+    {
+      "text": "fiber",
+      "start": 66.715,
+      "end": 67.115
+    },
+    {
+      "text": "and",
+      "start": 67.115,
+      "end": 67.195
+    },
+    {
+      "text": "vitamins",
+      "start": 67.195,
+      "end": 67.915
+    },
+    {
+      "text": "You're",
+      "start": 68.155,
+      "end": 68.235
+    },
+    {
+      "text": "basically",
+      "start": 68.315,
+      "end": 68.715
+    },
+    {
+      "text": "set",
+      "start": 68.715,
+      "end": 69.115
+    },
+    {
+      "text": "Okay",
+      "start": 69.275,
+      "end": 69.835
+    },
+    {
+      "text": "but",
+      "start": 69.915,
+      "end": 70.075
+    },
+    {
+      "text": "what",
+      "start": 70.075,
+      "end": 70.235
+    },
+    {
+      "text": "about",
+      "start": 70.235,
+      "end": 70.475
+    },
+    {
+      "text": "the",
+      "start": 70.475,
+      "end": 70.555
+    },
+    {
+      "text": "sesame",
+      "start": 70.555,
+      "end": 71.035
+    },
+    {
+      "text": "sauce",
+      "start": 71.035,
+      "end": 71.435
+    },
+    {
+      "text": "though",
+      "start": 71.435,
+      "end": 71.835
+    },
+    {
+      "text": "Is",
+      "start": 71.915,
+      "end": 72.155
+    },
+    {
+      "text": "that",
+      "start": 72.155,
+      "end": 72.315
+    },
+    {
+      "text": "actually",
+      "start": 72.315,
+      "end": 72.715
+    },
+    {
+      "text": "healthy",
+      "start": 72.715,
+      "end": 73.275
+    },
+    {
+      "text": "Be",
+      "start": 73.435,
+      "end": 73.675
+    },
+    {
+      "text": "honest",
+      "start": 73.675,
+      "end": 74.235
+    },
+    {
+      "text": "Well",
+      "start": 74.661,
+      "end": 75.221
+    },
+    {
+      "text": "it",
+      "start": 75.781,
+      "end": 75.861
+    },
+    {
+      "text": "has",
+      "start": 75.861,
+      "end": 76.101
+    },
+    {
+      "text": "some",
+      "start": 76.101,
+      "end": 76.181
+    },
+    {
+      "text": "healthy",
+      "start": 76.181,
+      "end": 76.501
+    },
+    {
+      "text": "fats",
+      "start": 76.501,
+      "end": 77.141
+    },
+    {
+      "text": "but",
+      "start": 77.381,
+      "end": 77.541
+    },
+    {
+      "text": "it's",
+      "start": 77.541,
+      "end": 77.701
+    },
+    {
+      "text": "also",
+      "start": 77.701,
+      "end": 78.101
+    },
+    {
+      "text": "really",
+      "start": 78.101,
+      "end": 78.501
+    },
+    {
+      "text": "calorie",
+      "start": 78.501,
+      "end": 78.901
+    },
+    {
+      "text": "dense",
+      "start": 78.901,
+      "end": 79.541
+    },
+    {
+      "text": "So",
+      "start": 79.621,
+      "end": 80.021
+    },
+    {
+      "text": "just",
+      "start": 80.021,
+      "end": 80.341
+    },
+    {
+      "text": "a",
+      "start": 80.341,
+      "end": 80.421
+    },
+    {
+      "text": "little",
+      "start": 80.421,
+      "end": 80.741
+    },
+    {
+      "text": "then",
+      "start": 80.741,
+      "end": 81.141
+    },
+    {
+      "text": "Just",
+      "start": 81.381,
+      "end": 81.781
+    },
+    {
+      "text": "a",
+      "start": 81.781,
+      "end": 81.781
+    },
+    {
+      "text": "little",
+      "start": 81.781,
+      "end": 82.341
+    },
+    {
+      "text": "A",
+      "start": 82.901,
+      "end": 82.981
+    },
+    {
+      "text": "little",
+      "start": 82.981,
+      "end": 83.221
+    },
+    {
+      "text": "sesame",
+      "start": 83.221,
+      "end": 83.701
+    },
+    {
+      "text": "sauce",
+      "start": 83.701,
+      "end": 83.941
+    },
+    {
+      "text": "for",
+      "start": 83.941,
+      "end": 84.101
+    },
+    {
+      "text": "flavor",
+      "start": 84.101,
+      "end": 84.581
+    },
+    {
+      "text": "since",
+      "start": 84.901,
+      "end": 85.061
+    },
+    {
+      "text": "it's",
+      "start": 85.061,
+      "end": 85.221
+    },
+    {
+      "text": "so",
+      "start": 85.221,
+      "end": 85.541
+    },
+    {
+      "text": "high",
+      "start": 85.541,
+      "end": 85.781
+    },
+    {
+      "text": "in",
+      "start": 85.781,
+      "end": 85.861
+    },
+    {
+      "text": "calories",
+      "start": 85.861,
+      "end": 86.501
+    },
+    {
+      "text": "Got",
+      "start": 86.909,
+      "end": 87.309
+    },
+    {
+      "text": "it",
+      "start": 87.309,
+      "end": 87.469
+    },
+    {
+      "text": "got",
+      "start": 87.549,
+      "end": 87.869
+    },
+    {
+      "text": "it",
+      "start": 87.869,
+      "end": 88.109
+    },
+    {
+      "text": "So",
+      "start": 88.269,
+      "end": 88.509
+    },
+    {
+      "text": "basically",
+      "start": 88.509,
+      "end": 89.229
+    },
+    {
+      "text": "if",
+      "start": 89.389,
+      "end": 89.549
+    },
+    {
+      "text": "I",
+      "start": 89.549,
+      "end": 89.629
+    },
+    {
+      "text": "want",
+      "start": 89.629,
+      "end": 89.869
+    },
+    {
+      "text": "food",
+      "start": 89.869,
+      "end": 90.189
+    },
+    {
+      "text": "that's",
+      "start": 90.189,
+      "end": 90.349
+    },
+    {
+      "text": "low",
+      "start": 90.349,
+      "end": 90.669
+    },
+    {
+      "text": "calorie",
+      "start": 90.669,
+      "end": 91.149
+    },
+    {
+      "text": "but",
+      "start": 91.149,
+      "end": 91.309
+    },
+    {
+      "text": "still",
+      "start": 91.309,
+      "end": 91.629
+    },
+    {
+      "text": "tasty",
+      "start": 91.629,
+      "end": 92.269
+    },
+    {
+      "text": "I",
+      "start": 92.349,
+      "end": 92.509
+    },
+    {
+      "text": "just",
+      "start": 92.509,
+      "end": 92.749
+    },
+    {
+      "text": "use",
+      "start": 92.749,
+      "end": 92.909
+    },
+    {
+      "text": "spices",
+      "start": 92.909,
+      "end": 93.709
+    },
+    {
+      "text": "Yes",
+      "start": 93.869,
+      "end": 94.509
+    },
+    {
+      "text": "Spices",
+      "start": 94.829,
+      "end": 95.629
+    },
+    {
+      "text": "herbs",
+      "start": 95.629,
+      "end": 96.029
+    },
+    {
+      "text": "vinegar",
+      "start": 96.109,
+      "end": 96.749
+    },
+    {
+      "text": "lemon",
+      "start": 96.829,
+      "end": 97.149
+    },
+    {
+      "text": "juice",
+      "start": 97.149,
+      "end": 97.629
+    },
+    {
+      "text": "small",
+      "start": 97.949,
+      "end": 98.269
+    },
+    {
+      "text": "amounts",
+      "start": 98.269,
+      "end": 98.509
+    },
+    {
+      "text": "of",
+      "start": 98.509,
+      "end": 98.589
+    },
+    {
+      "text": "strong",
+      "start": 98.589,
+      "end": 98.989
+    },
+    {
+      "text": "sauces",
+      "start": 98.989,
+      "end": 99.629
+    },
+    {
+      "text": "That's",
+      "start": 99.949,
+      "end": 100.269
+    },
+    {
+      "text": "the",
+      "start": 100.269,
+      "end": 100.349
+    },
+    {
+      "text": "whole",
+      "start": 100.349,
+      "end": 100.509
+    },
+    {
+      "text": "trick",
+      "start": 100.509,
+      "end": 101.069
+    },
+    {
+      "text": "Okay",
+      "start": 101.513,
+      "end": 102.153
+    },
+    {
+      "text": "so",
+      "start": 102.233,
+      "end": 102.473
+    },
+    {
+      "text": "I",
+      "start": 102.473,
+      "end": 102.553
+    },
+    {
+      "text": "can",
+      "start": 102.553,
+      "end": 102.713
+    },
+    {
+      "text": "say",
+      "start": 102.713,
+      "end": 103.273
+    },
+    {
+      "text": "I",
+      "start": 103.433,
+      "end": 103.593
+    },
+    {
+      "text": "use",
+      "start": 103.593,
+      "end": 103.833
+    },
+    {
+      "text": "spices",
+      "start": 103.833,
+      "end": 104.553
+    },
+    {
+      "text": "and",
+      "start": 104.633,
+      "end": 104.793
+    },
+    {
+      "text": "just",
+      "start": 104.793,
+      "end": 105.033
+    },
+    {
+      "text": "a",
+      "start": 105.033,
+      "end": 105.033
+    },
+    {
+      "text": "little",
+      "start": 105.033,
+      "end": 105.433
+    },
+    {
+      "text": "sauce",
+      "start": 105.433,
+      "end": 105.913
+    },
+    {
+      "text": "to",
+      "start": 106.073,
+      "end": 106.073
+    },
+    {
+      "text": "add",
+      "start": 106.073,
+      "end": 106.393
+    },
+    {
+      "text": "flavor",
+      "start": 106.393,
+      "end": 106.793
+    },
+    {
+      "text": "without",
+      "start": 106.793,
+      "end": 107.193
+    },
+    {
+      "text": "too",
+      "start": 107.193,
+      "end": 107.353
+    },
+    {
+      "text": "many",
+      "start": 107.353,
+      "end": 107.593
+    },
+    {
+      "text": "calories",
+      "start": 107.593,
+      "end": 108.393
+    },
+    {
+      "text": "Perfectly",
+      "start": 108.553,
+      "end": 109.033
+    },
+    {
+      "text": "said",
+      "start": 109.033,
+      "end": 109.433
+    },
+    {
+      "text": "Nailed",
+      "start": 109.913,
+      "end": 110.393
+    },
+    {
+      "text": "it",
+      "start": 110.393,
+      "end": 110.713
+    },
+    {
+      "text": "Ha",
+      "start": 111.159,
+      "end": 111.479
+    },
+    {
+      "text": "Nice",
+      "start": 111.719,
+      "end": 112.359
+    },
+    {
+      "text": "That's",
+      "start": 112.599,
+      "end": 112.839
+    },
+    {
+      "text": "what",
+      "start": 112.839,
+      "end": 112.999
+    },
+    {
+      "text": "I",
+      "start": 112.999,
+      "end": 113.079
+    },
+    {
+      "text": "want",
+      "start": 113.079,
+      "end": 113.319
+    },
+    {
+      "text": "to",
+      "start": 113.319,
+      "end": 113.319
+    },
+    {
+      "text": "practice",
+      "start": 113.319,
+      "end": 113.799
+    },
+    {
+      "text": "saying",
+      "start": 113.799,
+      "end": 114.359
+    }
+  ]
+}

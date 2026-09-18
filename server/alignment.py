@@ -131,6 +131,52 @@ def aggregate_dialogue_lines(line_map: list[int], spans: list[dict]) -> list[dic
     return lines
 
 
+def _norm_token(w: str) -> str:
+    return re.sub(r"[^a-z0-9']", "", w.lower())
+
+
+def _tokens_of(text: str) -> list[str]:
+    clean = _TAG_RE.sub("", text or "")
+    return re.findall(r"[A-Za-z0-9']+", clean.lower())
+
+
+def map_words_to_lines(dialogue: list, words: list[dict]) -> list | None:
+    """把 SSE 全局词表按顺序映射回对话行。
+
+    返回与 dialogue 等长的 [start, end] 列表（未匹配行为 None）；
+    匹配率 < 80% 或行不齐视为失败返回 None（调用方回退估算）。
+    """
+    ref: list[tuple[str, int]] = []
+    for li, (_spk, body) in enumerate(dialogue):
+        for tok in _tokens_of(body):
+            ref.append((tok, li))
+
+    if not ref or not words:
+        return None
+
+    spans: dict[int, list[float]] = {}
+    wi = 0
+    matched = 0
+    for tok, li in ref:
+        # 容错：往前看 3 个词找一个匹配（模型偶发拆词/连词）
+        found = -1
+        for k in range(wi, min(wi + 3, len(words))):
+            if _norm_token(words[k]["text"]) == tok:
+                found = k
+                break
+        if found == -1:
+            continue
+        w = words[found]
+        spans.setdefault(li, [w["start"], w["end"]])
+        spans[li][1] = w["end"]
+        wi = found + 1
+        matched += 1
+
+    if matched < len(ref) * 0.8 or len(spans) < len(dialogue):
+        return None
+    return [spans.get(li) for li in range(len(dialogue))]
+
+
 # ---------------------------------------------------------------- 文档模型
 
 def build_alignment_doc(
