@@ -1,0 +1,18 @@
+{
+  "topic_id": "02-sleep-healthy-eating",
+  "topic_name": "Sleep & Healthy Eating",
+  "track": "podcast",
+  "file": "02-sleep-healthy-eating_podcast.mp3",
+  "total_sec": 114.49,
+  "item_count": 1,
+  "generated_at": "2026-09-19T01:27:13",
+  "items": [
+    {
+      "id": "001-sleep-and-healthy-eating-dialogue",
+      "title": "Sleep and healthy eating (A/B dialogue)",
+      "duration_sec": 114.49,
+      "offset_sec": 0.0,
+      "generated_at": "2026-09-19T01:07:38"
+    }
+  ]
+}

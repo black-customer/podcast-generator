@@ -43,7 +43,8 @@ FIELD_FILES = {
 
 
 def now_iso() -> str:
-    return datetime.now().isoformat(timespec="seconds")
+    # 毫秒精度：剧集过期检测需要区分同一秒内的合成与重生成
+    return datetime.now().isoformat(timespec="milliseconds")
 
 
 def slugify(text: str, fallback: str = "untitled", limit: int = 60) -> str:
@@ -213,6 +214,7 @@ def get_topic(topic_id: str) -> dict:
                     or (has_legacy and is_diag),
                     "qa_podcast": meta.get("qa_podcast"),
                     "qa_monologue": meta.get("qa_monologue"),
+                    "generated_at": meta.get("generated_at") or "",
                     "updated_at": meta.get("updated_at") or "",
                 }
             )
@@ -504,6 +506,7 @@ def generated_items(topic_id: str, track: str = "default") -> list[dict]:
                         "title": item_title(texts, d.name),
                         "audio": audio_target,
                         "duration_sec": dur,
+                        "generated_at": meta.get("generated_at") or "",
                         "question": texts["question"],
                         "chinese": texts["chinese"],
                         "natural_english": texts["natural_english"],

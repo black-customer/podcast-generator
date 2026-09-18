@@ -233,8 +233,16 @@ function initGlobalPlayer() {
     }
   };
 
-  $trackSwitch.onclick = () => {
+  $trackSwitch.onclick = async () => {
     const nextTrack = PlayerState.track === "podcast" ? "monologue" : "podcast";
+    // 守卫：目标音轨不存在时提示（修 404 静默失败）
+    if (PlayerState.currentTopic && PlayerState.currentItem) {
+      try {
+        const full = await api("GET", `/api/topics/${encodeURIComponent(PlayerState.currentTopic.id)}/items/${encodeURIComponent(PlayerState.currentItem.id)}`);
+        const ok = nextTrack === "monologue" ? full.has_audio_monologue : full.has_audio_podcast;
+        if (!ok) { toast("该条目没有另一条音轨"); return; }
+      } catch (_) { /* 查询失败则照常尝试切换 */ }
+    }
     setTrack(nextTrack);
   };
 
@@ -623,12 +631,14 @@ async function TopicDetailView(topicId, token) {
 
     <div class="action-bar">
       ${manifestPod ? `
-        <button class="btn-round-play" id="btn-play-all-pod" title="整集连播播客版">▶</button>
-        <span style="font-weight:700;font-size:15px;color:#fff;">连播播客合辑 (${fmtDur(manifestPod.total_sec)})</span>
-        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=podcast" download>⬇ 下载播客合辑 MP3</a>
+        <a class="btn-round-play" id="btn-play-all-pod" title="打开整集播放器" href="#/episode/${encodeURIComponent(topicId)}/podcast" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">▶</a>
+        <span style="font-weight:700;font-size:15px;color:#fff;">播客整集 (${fmtDur(manifestPod.total_sec)})${manifestPod.stale ? ' <span class="track-pill" style="color:var(--warn)">条目已更新，建议重建</span>' : ""}</span>
+        <a class="btn-pill" href="#/episode/${encodeURIComponent(topicId)}/podcast">▶ 章节播放</a>
+        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=podcast" download>⬇ MP3</a>
       ` : ""}
       ${manifestMono ? `
-        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=monologue" download>⬇ 下载独白合辑 MP3 (${fmtDur(manifestMono.total_sec)})</a>
+        <a class="btn-pill" href="#/episode/${encodeURIComponent(topicId)}/monologue">🎧 独白整集 (${fmtDur(manifestMono.total_sec)})${manifestMono.stale ? " ⚠️已过期" : ""}</a>
+        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=monologue" download>⬇ MP3</a>
       ` : ""}
     </div>
 
@@ -644,13 +654,6 @@ async function TopicDetailView(topicId, token) {
     </div>
   `;
 
-  const btnPlayAll = document.getElementById("btn-play-all-pod");
-  if (btnPlayAll && PlayerState.playlist.length) {
-    btnPlayAll.onclick = () => {
-      setTrack("podcast");
-      playItem(topicId, PlayerState.playlist[0]);
-    };
-  }
 }
 
 // 3. 沉浸式单曲播放与卡拉OK实时剧本页
@@ -684,8 +687,10 @@ async function TrackPlayerView(topicId, itemId, token) {
         <div class="song-artist">Bruce English Corpus · 工业级母带版</div>
 
         <div class="track-toggle-group">
-          <button class="track-toggle-btn ${PlayerState.track === 'podcast' ? 'active' : ''}" id="btn-tab-pod">🎙️ 双人精讲播客</button>
-          <button class="track-toggle-btn ${PlayerState.track === 'monologue' ? 'active' : ''}" id="btn-tab-mono">🎧 纯英母语独白</button>
+          <button class="track-toggle-btn ${PlayerState.track === 'podcast' ? 'active' : ''}" id="btn-tab-pod"
+            ${item.has_audio_podcast ? "" : 'disabled title="该条目没有播客轨音频"'}>🎙️ 播客</button>
+          <button class="track-toggle-btn ${PlayerState.track === 'monologue' ? 'active' : ''}" id="btn-tab-mono"
+            ${item.has_audio_monologue ? "" : 'disabled title="该条目没有独白轨音频"'}>🎧 独白</button>
         </div>
 
         <div style="width:100%;display:flex;flex-direction:column;gap:10px;">
@@ -755,6 +760,91 @@ async function TrackPlayerView(topicId, itemId, token) {
 
   // 自动开始播放当前曲目并载入时间轴
   playItem(topicId, item, true);
+}
+
+// 3.5 整集章节播放器（M10）：单文件连播 + 章节跳转 + 过期重建
+async function EpisodePlayerView(topicId, track) {
+  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载整集中…</p>`;
+  const tr = encodeURIComponent(track);
+  let manifest, topic;
+  try {
+    topic = await api("GET", `/api/topics/${encodeURIComponent(topicId)}`);
+    manifest = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/episode?track=${tr}`);
+  } catch (e) {
+    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">整集尚未合成：${esc(e.message)}</p>`;
+    return;
+  }
+  if (viewStale(+ (location.hash.match(/__t=(\d+)/) || [0, routeToken])[1])) { /* noop */ }
+
+  const staleBanner = manifest.stale
+    ? `<div class="episode-stale">⚠️ 条目在合成后有更新，本集内容可能已过期。
+         <button class="mg-btn tiny primary" id="ep-rebuild">🎬 一键重建</button></div>`
+    : "";
+
+  $app.innerHTML = `
+    <a class="back-link" href="#/topic/${encodeURIComponent(topicId)}">← ${esc(manifest.topic_name)}</a>
+    <div class="album-header">
+      <div class="header-art">🎬</div>
+      <div class="header-details">
+        <div class="header-tag">整集 · ${track === "podcast" ? "播客版" : "独白版"}</div>
+        <div class="header-title">${esc(manifest.topic_name)}</div>
+        <div class="header-meta"><span>${manifest.item_count} 条 · ${fmtDur(manifest.total_sec)}</span></div>
+      </div>
+    </div>
+    ${staleBanner}
+    <div class="player-detail-container" style="grid-template-columns:1fr;">
+      <div class="lyrics-panel">
+        <div class="lyrics-header"><span>章节</span>
+          <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=${tr}" download>⬇ 下载整集</a>
+        </div>
+        <div id="ep-chapters">
+          ${manifest.items.map((it, i) => `
+            <div class="ep-chapter" data-offset="${it.offset_sec}" data-i="${i}">
+              <span class="track-num">${i + 1}</span>
+              <span style="flex:1;">${esc(it.title)}</span>
+              <span class="time-tag">${it.offset_sec != null ? fmtDur(it.offset_sec) : ""}</span>
+            </div>`).join("")}
+        </div>
+      </div>
+    </div>
+    <audio id="ep-audio" style="display:block;width:100%;margin-top:14px;" controls preload="auto"
+      src="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=${tr}"></audio>
+  `;
+
+  const audio = document.getElementById("ep-audio");
+  const chapters = Array.from(document.querySelectorAll(".ep-chapter"));
+  function highlight() {
+    const cur = audio.currentTime;
+    let active = 0;
+    chapters.forEach((ch, i) => {
+      const off = parseFloat(ch.dataset.offset) || 0;
+      if (cur >= off - 0.01) active = i;
+    });
+    chapters.forEach((ch, i) => ch.classList.toggle("active", i === active));
+    const el = chapters[active];
+    if (el && !PlayerState.userIsScrolling) el.scrollIntoView({ block: "nearest" });
+  }
+  audio.addEventListener("timeupdate", highlight);
+  chapters.forEach(ch => {
+    ch.onclick = () => {
+      audio.currentTime = parseFloat(ch.dataset.offset) || 0;
+      audio.play().catch(() => {});
+    };
+  });
+  const rebuild = document.getElementById("ep-rebuild");
+  if (rebuild) rebuild.onclick = async () => {
+    rebuild.disabled = true; rebuild.textContent = "重建中…";
+    try {
+      const r = await api("POST", `/api/topics/${encodeURIComponent(topicId)}/episode?track=${tr}`);
+      toast("重建任务已开始，完成后刷新本页");
+      const timer = setInterval(async () => {
+        try {
+          const j = await api("GET", `/api/jobs/${r.job_id}`);
+          if (j.state !== "running") { clearInterval(timer); EpisodePlayerView(topicId, track); }
+        } catch (_) { clearInterval(timer); }
+      }, 1500);
+    } catch (e) { toast("重建失败：" + e.message); rebuild.disabled = false; }
+  };
 }
 
 // 4. 音色展台
@@ -1451,6 +1541,14 @@ function route() {
   if (hash.startsWith("#/manage")) {
     ManageView(token);
     return;
+  }
+
+  if (hash.startsWith("#/episode/")) {
+    const parts = hash.slice(10).split("/");
+    if (parts.length >= 2) {
+      EpisodePlayerView(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]));
+      return;
+    }
   }
 
   if (hash.startsWith("#/play/")) {

@@ -92,10 +92,8 @@ def test_full_player_workflow():
         )
         assert space_pause["wasPaused"] != space_pause["nowPaused"], "空格应切换播放/暂停"
 
-        # 9. 切换独白轨 → 时间轴渲染
-        page.locator("#btn-tab-mono").click()
-        page.wait_for_timeout(600)
-        assert page.locator("#tl-mode-chip").inner_text() != ""
+        # 9. 对话条目没有独白音轨 → 独白切换按钮应禁用（避免 404）
+        assert page.locator("#btn-tab-mono").is_disabled(), "对话条目的独白按钮应禁用"
 
         # 10. 音色展台视图（去演示文案后仍可用）
         page.goto(f"{BASE_URL}/#/voices")
