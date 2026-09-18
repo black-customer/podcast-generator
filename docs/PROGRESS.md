@@ -66,9 +66,21 @@
   （setTimeout 求值函数引用时同步抛错→playItem 断链→时间轴永不渲染；函数提升到顶层修复）
 - 清理测试残留话题（debug-manage-x / e2e-manage-* / 01-persist）
 
+## M14/M15/M16 已完成（tags m14/m15/m16）
+
+- production.py：lint_script（标签白名单+CJK 检测）/parse_batch/import_batch
+  （去重更新+blocking 拒绝）/content_drafts（小红书卡片/推文串/短视频脚本/金句）
+- 端点：POST /api/import-batch、POST /api/lint-script、GET /api/search、
+  GET /api/stats、GET /api/topics/{tid}/drafts
+- M15：applyVoicePreset 去魔法 id，voices.json 每音色自带 speed/temperature 为真源
+- 注意：e2e/手工调试会在 data/ 留下测试话题（e2e-manage-*/debug-*），定期清理；
+  check.sh 的冒烟服务起停会短暂占用 8765
+
 ## 下一步（按序，接着跑完 M11-M20）
 
-1. M14 pipeline.py 批量改写落盘+lint；M15 voices.json 真源化；M16 自媒体模板；M17 性能
+1. M17 性能：list_topics O(n×files) 优化；500 条压测
+2. M09 UI 质感：截图审查（子代理）；es modules 评估
+3. M18 测试矩阵收口；M19 README/打包；M20 验收 sweep + BASELINE
 2. M12 字幕导出（alignment→SRT/VTT/LRC）+ 局域网 RSS（enclosure 绝对 URL）
 3. M13 PWA（manifest+SW+Media Session+移动布局+配对二维码）
 4. M09 UI 质感（设计令牌/空错态/截图审查子代理；es modules 拆分评估）
