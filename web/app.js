@@ -14,9 +14,13 @@ const PlayerState = {
   playlist: [],
   currentIndex: -1,
   timeline: [],
+  timelineMode: "", // measured | estimated | ""
   activeLineIndex: -1,
   playbackRate: 1.0,
   userIsScrolling: false,
+  programmaticScrollUntil: 0, // 程序性滚动窗口：期间 onscroll 不视为用户翻阅
+  loopA: null,
+  loopB: null,
 };
 
 /* ---------------- 基础工具 ---------------- */
@@ -134,7 +138,7 @@ function initGlobalPlayer() {
     };
   }
 
-  // 核心时间轴驱动：进度更新与卡拉OK歌词高亮居中平滑跟随
+  // 核心时间轴驱动：进度更新、A-B 循环与卡拉OK歌词高亮居中平滑跟随
   $audio.ontimeupdate = () => {
     if (!$audio.duration) return;
     const cur = $audio.currentTime;
@@ -142,6 +146,14 @@ function initGlobalPlayer() {
     $progressFill.style.width = `${pct}%`;
     $curTime.textContent = fmtDur(cur);
     $totalTime.textContent = fmtDur($audio.duration);
+
+    // A-B 循环：到 B 点回跳 A 点
+    if (PlayerState.loopA !== null && PlayerState.loopB !== null && PlayerState.loopB > PlayerState.loopA) {
+      if (cur >= PlayerState.loopB - 0.03) {
+        $audio.currentTime = PlayerState.loopA;
+        return;
+      }
+    }
 
     // 同步高亮 Live Transcript
     if (PlayerState.timeline && PlayerState.timeline.length > 0) {
@@ -159,6 +171,8 @@ function initGlobalPlayer() {
         if (activeEl) {
           activeEl.classList.add("active");
           if (!PlayerState.userIsScrolling) {
+            // 标记程序性滚动窗口：scrollIntoView 触发的 onscroll 不是用户翻阅（修 A24）
+            PlayerState.programmaticScrollUntil = Date.now() + 900;
             activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
           }
         }
@@ -195,6 +209,103 @@ function initGlobalPlayer() {
     const nextTrack = PlayerState.track === "podcast" ? "monologue" : "podcast";
     setTrack(nextTrack);
   };
+
+  // ---- A-B 循环与句子导航（M06）----
+  const $loopA = document.getElementById("gp-loop-a");
+  const $loopB = document.getElementById("gp-loop-b");
+  const $loopClear = document.getElementById("gp-loop-clear");
+  const $replayBtn = document.getElementById("gp-replay-line");
+
+  function renderLoopUI() {
+    const track = document.getElementById("gp-progress-track");
+    if ($loopA) $loopA.classList.toggle("active-speed", PlayerState.loopA !== null);
+    if ($loopB) $loopB.classList.toggle("active-speed", PlayerState.loopB !== null);
+    if ($loopClear) $loopClear.style.display = (PlayerState.loopA !== null || PlayerState.loopB !== null) ? "" : "none";
+    for (const [id, val] of [["gp-loop-a-mark", PlayerState.loopA], ["gp-loop-b-mark", PlayerState.loopB]]) {
+      const mark = document.getElementById(id);
+      if (!mark || !$audio.duration) { if (mark) mark.style.display = "none"; continue; }
+      if (val === null) { mark.style.display = "none"; continue; }
+      mark.style.display = "block";
+      mark.style.left = `${(val / $audio.duration) * 100}%`;
+    }
+    if (track) track.classList.toggle("has-loop", PlayerState.loopA !== null && PlayerState.loopB !== null);
+  }
+
+  window.setLoopPoint = function(which) {
+    if (!$audio.duration) { toast("尚未加载音频"); return; }
+    const t = Math.min(Math.max(0, $audio.currentTime), $audio.duration - 0.05);
+    if (which === "a") {
+      PlayerState.loopA = t;
+      toast(`循环起点 A = ${fmtDur(t)}${PlayerState.loopB !== null ? "，循环生效" : "（再按 B 设终点）"}`);
+    } else {
+      if (PlayerState.loopA === null) { toast("请先设置循环起点 A"); return; }
+      if (t <= PlayerState.loopA + 0.2) { toast("B 点需晚于 A 点"); return; }
+      PlayerState.loopB = t;
+      toast(`A-B 循环生效：${fmtDur(PlayerState.loopA)} → ${fmtDur(t)}`);
+    }
+    renderLoopUI();
+  };
+
+  window.clearLoop = function() {
+    PlayerState.loopA = null;
+    PlayerState.loopB = null;
+    renderLoopUI();
+    toast("已清除 A-B 循环");
+  };
+
+  window.replayCurrentLine = function() {
+    const idx = PlayerState.activeLineIndex;
+    if (idx === -1 || !PlayerState.timeline[idx]) { toast("当前没有高亮句子"); return; }
+    seekToTime(PlayerState.timeline[idx].start);
+    toast("🔁 重播当前句");
+  };
+
+  window.seekLine = function(delta) {
+    const tl = PlayerState.timeline;
+    if (!tl || !tl.length) {
+      if ($audio.duration) $audio.currentTime = Math.min(Math.max(0, $audio.currentTime + delta * 5), $audio.duration);
+      return;
+    }
+    const cur = $audio.currentTime;
+    let target;
+    if (delta > 0) {
+      target = tl.find(l => l.start > cur + 0.05);
+    } else {
+      const before = tl.filter(l => l.start < cur - 0.4);
+      target = before[before.length - 1];
+    }
+    if (!target) target = delta > 0 ? tl[tl.length - 1] : tl[0];
+    seekToTime(target.start);
+  };
+
+  if ($loopA) $loopA.onclick = () => window.setLoopPoint("a");
+  if ($loopB) $loopB.onclick = () => window.setLoopPoint("b");
+  if ($loopClear) $loopClear.onclick = () => window.clearLoop();
+  if ($replayBtn) $replayBtn.onclick = () => window.replayCurrentLine();
+  $audio.addEventListener("loadedmetadata", renderLoopUI);
+
+  // ---- 键盘快捷键（输入框内不拦截）----
+  document.addEventListener("keydown", (e) => {
+    if (e.target && ["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) return;
+    if (e.code === "Space") {
+      e.preventDefault();
+      if ($audio.src) $audio.paused ? $audio.play().catch(() => {}) : $audio.pause();
+    } else if (e.code === "ArrowRight") {
+      e.preventDefault();
+      window.seekLine(1);
+    } else if (e.code === "ArrowLeft") {
+      e.preventDefault();
+      window.seekLine(-1);
+    } else if (e.code === "KeyA") {
+      window.setLoopPoint("a");
+    } else if (e.code === "KeyB") {
+      window.setLoopPoint("b");
+    } else if (e.code === "KeyL") {
+      window.clearLoop();
+    } else if (e.code === "KeyR") {
+      window.replayCurrentLine();
+    }
+  });
 }
 
 function setTrack(newTrack) {
@@ -267,12 +378,14 @@ async function playItem(topicId, item, autoPlay = true) {
 async function loadTimeline(topicId, itemId, track) {
   PlayerState.timeline = [];
   PlayerState.activeLineIndex = -1;
+  PlayerState.timelineMode = "";
 
   const emptyHtml = `<p style="color:var(--text-sub);padding:20px;">该条目暂无${track === "podcast" ? "播客" : "独白"}音频或剧本，可在工作台先生成。</p>`;
   try {
     const data = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/timeline/${track}`);
     if (Array.isArray(data) && data.length > 0) {
       PlayerState.timeline = data;
+      PlayerState.timelineMode = (data[0] && data[0].mode) || "estimated";
       renderLiveTimelineUI();
       return;
     }
@@ -301,6 +414,14 @@ function renderLiveTimelineUI() {
 
   const timeline = PlayerState.timeline;
   if (!timeline || timeline.length === 0) return;
+
+  // 对齐模式标志：诚实显示数据可信度（measured=实测 / estimated=估算）
+  const chip = document.getElementById("tl-mode-chip");
+  if (chip) {
+    const measured = PlayerState.timelineMode === "measured";
+    chip.textContent = measured ? "🎯 实测对齐" : "≈ 估算对齐（重生成后升级为实测）";
+    chip.style.color = measured ? "var(--ok, #34c37e)" : "var(--text-muted, #8b93a5)";
+  }
 
   if (PlayerState.track === "podcast" && podStream) {
     podStream.innerHTML = timeline.map(line => {
@@ -339,14 +460,18 @@ function renderLiveTimelineUI() {
   }
 }
 
-// 点击句子精准跳转
+// 点击句子精准跳转（元数据未就绪时排队等待，修 A32）
 window.seekToTime = function(seconds) {
   if (!$audio.src) return;
-  $audio.currentTime = seconds;
+  const apply = () => { $audio.currentTime = seconds; };
+  if (!$audio.duration || isNaN($audio.duration)) {
+    $audio.addEventListener("loadedmetadata", apply, { once: true });
+  } else {
+    apply();
+  }
   if ($audio.paused) {
     $audio.play().catch(() => {});
   }
-  toast(`跳转至 ${fmtDur(seconds)}`);
 };
 
 /* ---------------- 视图层 ---------------- */
@@ -489,6 +614,10 @@ async function TrackPlayerView(topicId, itemId) {
     return;
   }
 
+  // 深链/刷新进入播放页也要有播放列表与话题上下文（修 A23：prev/next/连播不再失灵）
+  PlayerState.currentTopic = topic;
+  PlayerState.playlist = topic.items.filter(it => it.status === "generated");
+
   $app.innerHTML = `
     <div style="margin-bottom:20px;">
       <a href="#/topic/${encodeURIComponent(topicId)}" style="color:var(--text-sub);font-size:13px;font-weight:600;">← 返回专辑: ${esc(topic.name)}</a>
@@ -497,7 +626,7 @@ async function TrackPlayerView(topicId, itemId) {
     <div class="player-detail-container">
       <!-- 左侧：黑胶唱片与音轨控制卡 -->
       <div class="vinyl-card">
-        <div class="vinyl-disk playing" id="vinyl-disk">🎙️</div>
+        <div class="vinyl-disk" id="vinyl-disk">🎙️</div>
         <div class="song-title">${esc(item.title)}</div>
         <div class="song-artist">Bruce English Corpus · 工业级母带版</div>
 
@@ -514,10 +643,10 @@ async function TrackPlayerView(topicId, itemId) {
       <!-- 右侧：实时卡拉OK歌词剧本面板 -->
       <div class="lyrics-panel" id="lyrics-panel">
         <div class="lyrics-header">
-          <span id="script-panel-title">${PlayerState.track === 'podcast' ? '🎙️ 播客双语精讲实录 (Tom Holland & Mia)' : '🎧 纯英母语独白文本'}</span>
-          <span style="font-size:12px;color:var(--accent);display:flex;align-items:center;gap:6px;">
+          <span id="script-panel-title">${PlayerState.track === 'podcast' ? '🎙️ 播客剧本实录' : '🎧 纯英母语独白文本'}</span>
+          <span style="font-size:12px;display:flex;align-items:center;gap:6px;">
             <span class="status-dot"></span>
-            <span>Live Transcript 毫秒级同步对齐</span>
+            <span id="tl-mode-chip">对齐模式…</span>
           </span>
         </div>
 
@@ -533,15 +662,17 @@ async function TrackPlayerView(topicId, itemId) {
   `;
 
   // 监听用户手动翻阅滚动，短时间内暂停自动居中抢焦
+  // （程序性 scrollIntoView 落在 programmaticScrollUntil 窗口内，不算用户翻阅——修 A24）
   const panel = document.getElementById("lyrics-panel");
   if (panel) {
     let scrollTimer;
     panel.onscroll = () => {
+      if (Date.now() < PlayerState.programmaticScrollUntil) return;
       PlayerState.userIsScrolling = true;
       clearTimeout(scrollTimer);
       scrollTimer = setTimeout(() => {
         PlayerState.userIsScrolling = false;
-      }, 3500);
+      }, 1400);
     };
   }
 

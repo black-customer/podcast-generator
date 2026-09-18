@@ -602,6 +602,24 @@ a { color: inherit; text-decoration: none; }
 }
 .progress-track:hover .progress-fill { background: var(--accent); }
 
+/* A-B 循环标记与激活态 */
+.loop-marker {
+  position: absolute;
+  top: -2px;
+  width: 2px;
+  height: 10px;
+  background: #ffd166;
+  border-radius: 1px;
+  transform: translateX(-1px);
+}
+.loop-btn.active-speed {
+  color: #ffd166;
+  border-color: #ffd166;
+}
+.progress-track.has-loop {
+  box-shadow: inset 0 0 0 1px rgba(255, 209, 102, 0.5);
+}
+
 .player-right {
   display: flex;
   align-items: center;

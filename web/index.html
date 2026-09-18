@@ -65,15 +65,21 @@
       <div class="player-controls">
         <button class="ctrl-btn" id="gp-prev" title="上一首">⏮</button>
         <button class="ctrl-btn ctrl-skip" id="gp-rewind" title="快退 15 秒">⏪ 15s</button>
-        <button class="ctrl-btn play-btn" id="gp-play" title="播放/暂停">▶</button>
+        <button class="ctrl-btn play-btn" id="gp-play" title="播放/暂停 (空格)">▶</button>
         <button class="ctrl-btn ctrl-skip" id="gp-forward" title="快进 15 秒">15s ⏩</button>
         <button class="ctrl-btn" id="gp-next" title="下一首">⏭</button>
         <button class="speed-toggle-btn" id="gp-speed" title="切换播放倍速 (0.8x / 1.0x / 1.2x / 1.5x)">1.0x</button>
+        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-a" title="设 A-B 循环起点 (A)">A·</button>
+        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-b" title="设 A-B 循环终点 (B)">·B</button>
+        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-clear" title="清除循环 (L)" style="display:none;">✕循环</button>
+        <button class="ctrl-btn ctrl-skip" id="gp-replay-line" title="重播当前句 (R)">🔁句</button>
       </div>
       <div class="progress-bar-wrap">
         <span class="time-label" id="gp-cur-time">0:00</span>
         <div class="progress-track" id="gp-progress-track">
           <div class="progress-fill" id="gp-progress-fill"></div>
+          <div class="loop-marker" id="gp-loop-a-mark" style="display:none;"></div>
+          <div class="loop-marker" id="gp-loop-b-mark" style="display:none;"></div>
         </div>
         <span class="time-label" id="gp-total-time">0:00</span>
       </div>

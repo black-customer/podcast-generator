@@ -465,5 +465,105 @@
         }
       ]
     }
+  },
+  "2286e49424ad": {
+    "id": "2286e49424ad",
+    "kind": "generate",
+    "topic_id": "01-align",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-18T23:56:39",
+    "finished_at": "2026-09-18T23:56:40"
+  },
+  "fd41c0a47ecb": {
+    "id": "fd41c0a47ecb",
+    "kind": "generate",
+    "topic_id": "01-inval",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-18T23:56:40",
+    "finished_at": "2026-09-18T23:56:41"
+  },
+  "cfc85a4ca6b0": {
+    "id": "cfc85a4ca6b0",
+    "kind": "generate",
+    "topic_id": "01-mono",
+    "track": "monologue",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-18T23:56:41",
+    "finished_at": "2026-09-18T23:56:42"
+  },
+  "ff6b2822fff3": {
+    "id": "ff6b2822fff3",
+    "kind": "generate",
+    "topic_id": "01-qa",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-item",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-18T23:56:43",
+    "finished_at": "2026-09-18T23:56:45"
+  },
+  "2381b9368dd9": {
+    "id": "2381b9368dd9",
+    "kind": "generate",
+    "topic_id": "01-e2e",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 1,
+    "current": "001-q",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-18T23:56:45",
+    "finished_at": "2026-09-18T23:56:46"
+  },
+  "6e102881ecef": {
+    "id": "6e102881ecef",
+    "kind": "assemble",
+    "topic_id": "01-e2e",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-18T23:56:46",
+    "finished_at": "2026-09-18T23:56:46",
+    "result": {
+      "topic_id": "01-e2e",
+      "topic_name": "E2E",
+      "track": "podcast",
+      "file": "01-e2e_podcast.mp3",
+      "total_sec": 1.93,
+      "item_count": 1,
+      "generated_at": "2026-09-18T23:56:46",
+      "items": [
+        {
+          "id": "001-q",
+          "title": "Q?",
+          "duration_sec": 1.93
+        }
+      ]
+    }
   }
 }
