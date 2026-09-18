@@ -2,6 +2,7 @@
 import logging
 import re
 import shutil
+import threading
 import time
 import uuid
 from pathlib import Path
@@ -29,6 +30,11 @@ DIALOGUE_LINE_RE = re.compile(r"^\s*(?:person\s*)?([ab])\s*[:：]", re.IGNORECAS
 
 
 class TTSError(RuntimeError):
+    pass
+
+
+class TTSCancelled(RuntimeError):
+    """用户取消：任务应立即停止，不算错误。"""
     pass
 
 
@@ -127,7 +133,9 @@ def estimate_seconds(text: str) -> float:
     return max(1.0, len(text or "") / 14.0)
 
 
-def _post_tts(payload: dict, settings: dict) -> bytes:
+def _post_tts(
+    payload: dict, settings: dict, cancel: threading.Event | None = None
+) -> bytes:
     headers = {
         "Authorization": f"Bearer {real_api_key(settings)}",
         "model": settings.get("model") or "s2.1-pro-free",
@@ -147,8 +155,13 @@ def _post_tts(payload: dict, settings: dict) -> bytes:
 
     last_err = ""
     for attempt in range(4):
+        if cancel is not None and cancel.is_set():
+            raise TTSCancelled("已取消")
         if attempt:
-            time.sleep([2, 5, 10][attempt - 1])
+            for _ in range(int([2, 5, 10][attempt - 1] * 10)):
+                if cancel is not None and cancel.is_set():
+                    raise TTSCancelled("已取消")
+                time.sleep(0.1)
         try:
             r = httpx.post(FISH_TTS_URL, headers=headers, json=payload, timeout=300)
         except httpx.HTTPError as exc:
@@ -163,7 +176,12 @@ def _post_tts(payload: dict, settings: dict) -> bytes:
     raise TTSError(f"重试 4 次仍失败。{last_err}")
 
 
-def fish_tts_segment(text: str, settings: dict, reference_id: str = "") -> bytes:
+def fish_tts_segment(
+    text: str,
+    settings: dict,
+    reference_id: str = "",
+    cancel: threading.Event | None = None,
+) -> bytes:
     payload: dict = {
         "text": text,
         "chunk_length": 200,
@@ -177,10 +195,14 @@ def fish_tts_segment(text: str, settings: dict, reference_id: str = "") -> bytes
         speed = 1.0
     if speed != 1.0:
         payload["prosody"] = {"speed": max(SPEED_MIN, min(SPEED_MAX, speed))}
-    return _post_tts(payload, settings)
+    return _post_tts(payload, settings, cancel=cancel)
 
 
-def fish_tts_dialogue(lines: list[tuple[str, str]], settings: dict) -> bytes:
+def fish_tts_dialogue(
+    lines: list[tuple[str, str]],
+    settings: dict,
+    cancel: threading.Event | None = None,
+) -> bytes:
     """多说话人单次生成：A/B 行转成 <|speaker:i|> 标记，reference_id 传声音数组。
 
     模型看到整段对话上下文，接话节奏、反应、停顿由模型自己演绎（NotebookLM 式）。
@@ -198,7 +220,7 @@ def fish_tts_dialogue(lines: list[tuple[str, str]], settings: dict) -> bytes:
         "text": "\n".join(parts),
         "reference_id": [voice_a, voice_b],
     }
-    return _post_tts(payload, settings)
+    return _post_tts(payload, settings, cancel=cancel)
 
 
 def test_connection(settings: dict) -> dict:
@@ -239,6 +261,7 @@ def _synthesize_source(
     out_path: Path,
     settings: dict,
     force_monologue: bool = False,
+    cancel: threading.Event | None = None,
 ) -> tuple[float, int, bool, str, list[dict] | None]:
     """核心合成函数：处理文本分段/多说话人合成并输出到 out_path。
     返回: (duration_sec, seg_count, is_dialogue, tts_mode, alignment_segments)
@@ -263,7 +286,7 @@ def _synthesize_source(
     line_map: list[int] = []  # 每个计划段属于哪个对话行（独白为空）
     if dialogue and not dry:
         try:
-            single_pass_bytes = fish_tts_dialogue(dialogue, settings)
+            single_pass_bytes = fish_tts_dialogue(dialogue, settings, cancel=cancel)
         except TTSError:
             single_pass_bytes = None
 
@@ -301,10 +324,12 @@ def _synthesize_source(
             seg_durations: list[float] = []
             for idx, (seg, ref, gap) in enumerate(plan):
                 seg_path = work / f"seg-{idx:03d}.mp3"
+                if cancel is not None and cancel.is_set():
+                    raise TTSCancelled("已取消")
                 if dry:
                     audio.make_tone(estimate_seconds(seg), seg_path)
                 else:
-                    seg_path.write_bytes(fish_tts_segment(seg, settings, ref))
+                    seg_path.write_bytes(fish_tts_segment(seg, settings, ref, cancel=cancel))
                 seg_durations.append(audio.probe_duration(seg_path))
                 entries.append({"path": seg_path, "gap_before": gap})
             seg_count = len(entries)
@@ -363,13 +388,14 @@ def _synthesize_with_qa(
     out_path: Path,
     settings: dict,
     force_monologue: bool = False,
+    cancel: threading.Event | None = None,
 ) -> tuple[tuple, dict, str]:
     """合成 + QA 门禁：异常音频隔离（.rejected.mp3）、去违规标签重试一次。
 
     返回 (合成结果元组, QA 报告, 实际使用的源文本)。
     """
     dry = not real_api_key(settings) or bool(settings.get("dry_run"))
-    result = _synthesize_source(src, out_path, settings, force_monologue)
+    result = _synthesize_source(src, out_path, settings, force_monologue, cancel=cancel)
     effective_src = src
     # 时长必须探测最终产物（母带/外部因素可能改变它），不能用合成时的返回值
     report = audioqa.run_qa(out_path, src, duration_sec=None, skip_vad=dry)
@@ -381,7 +407,9 @@ def _synthesize_with_qa(
             quarantine = out_path.with_suffix(".rejected.mp3")
             out_path.replace(quarantine)
             try:
-                result = _synthesize_source(cleaned, out_path, settings, force_monologue)
+                result = _synthesize_source(
+                    cleaned, out_path, settings, force_monologue, cancel=cancel
+                )
                 effective_src = cleaned
                 report = audioqa.run_qa(out_path, cleaned, duration_sec=None, skip_vad=dry)
             except Exception:
@@ -425,7 +453,12 @@ def _save_track_outputs(
     return tl
 
 
-def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> dict:
+def generate_item_audio(
+    topic_id: str,
+    item_id: str,
+    track: str = "default",
+    cancel: threading.Event | None = None,
+) -> dict:
     """为单个条目生成音频。
     track: 'monologue' | 'podcast' | 'all' | 'default'
     """
@@ -451,7 +484,7 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
         if src_mono:
             out_mono = ipath / "audio_monologue.mp3"
             (dur, segs, is_diag, mode, seg_spans), qa_report, eff_src = _synthesize_with_qa(
-                src_mono, out_mono, settings, force_monologue=True
+                src_mono, out_mono, settings, force_monologue=True, cancel=cancel
             )
             meta_updates["duration_sec_monologue"] = round(dur, 2)
             meta_updates["qa_monologue"] = qa_report["verdict"]
@@ -475,7 +508,7 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
         if src_pod:
             out_pod = ipath / "audio_podcast.mp3"
             (dur, segs, is_diag, mode, seg_spans), qa_report, eff_src = _synthesize_with_qa(
-                src_pod, out_pod, settings, force_monologue=False
+                src_pod, out_pod, settings, force_monologue=False, cancel=cancel
             )
             meta_updates["duration_sec_podcast"] = round(dur, 2)
             meta_updates["qa_podcast"] = qa_report["verdict"]
@@ -498,7 +531,7 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
             raise TTSError("没有可合成的文本")
         out_def = ipath / "audio.mp3"
         (dur, segs, is_diag, mode, seg_spans), qa_report, eff_src = _synthesize_with_qa(
-            src_def, out_def, settings
+            src_def, out_def, settings, cancel=cancel
         )
         meta_updates["duration_sec"] = round(dur, 2)
         meta_updates["tts_source"] = field_def

@@ -48,10 +48,10 @@ def test_anomalous_audio_triggers_quarantine_and_retry(qa_env, monkeypatch):
     real_synth = tts._synthesize_source
     calls = {"n": 0, "texts": []}
 
-    def fake_synth(text, out_path, settings, force_monologue=False):
+    def fake_synth(text, out_path, settings, force_monologue=False, cancel=None):
         calls["n"] += 1
         calls["texts"].append(text)
-        result = real_synth(text, out_path, settings, force_monologue)
+        result = real_synth(text, out_path, settings, force_monologue, cancel=cancel)
         if calls["n"] == 1:
             # 注入异常：追加 12 秒静音，时长比失控（模拟"笑了 12 秒"）
             padded = out_path.with_suffix(".padded.mp3")

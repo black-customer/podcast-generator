@@ -38,7 +38,15 @@ def assemble_episode(topic_id: str, track: str = "default") -> dict:
         for i, it in enumerate(items)
     ]
     out = episode_path(topic_id, track=track)
-    audio.concat_mp3(entries, out)
+    # 原子输出：先写临时文件再替换，读方永远看到完整旧版或完整新版
+    tmp_out = out.with_name(out.name + ".assembling.mp3")
+    try:
+        audio.concat_mp3(entries, tmp_out)
+        import os
+
+        os.replace(tmp_out, out)
+    finally:
+        tmp_out.unlink(missing_ok=True)
     total = audio.probe_duration(out)
 
     manifest = {

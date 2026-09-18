@@ -243,6 +243,11 @@ def api_generate_topic(topic_id: str, body: GenerateIn):
         raise _err(400, str(e)) from e
 
 
+@router.get("/jobs")
+def api_list_jobs():
+    return jobs.list_jobs()
+
+
 @router.get("/jobs/{job_id}")
 def api_get_job(job_id: str):
     job = jobs.get_job(job_id)
@@ -260,12 +265,13 @@ def api_cancel_job(job_id: str):
 
 @router.post("/topics/{topic_id}/episode")
 def api_assemble_episode(topic_id: str, track: TrackParam = "default"):
+    """合成改为后台任务（互斥防双击并发 ffmpeg，M05）。"""
     try:
-        return assemble.assemble_episode(topic_id, track=track)
+        return jobs.start_assemble(topic_id, track=track)
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
-    except (RuntimeError, audio.FFmpegError) as e:
-        raise _err(400, str(e)) from e
+    except jobs.JobConflict as e:
+        raise _err(409, str(e)) from e
 
 
 @router.get("/topics/{topic_id}/episode")

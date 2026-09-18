@@ -1077,11 +1077,33 @@ async function mgOpenEditor(topicId, itemId) {
 }
 
 async function mgAssemble(topicId, track) {
+  const btnId = track === "podcast" ? "mg-ep-pod" : "mg-ep-mono";
+  const btn = document.getElementById(btnId);
+  const label = btn ? btn.textContent : "合成";
   try {
-    const m = await api("POST", `/api/topics/${encodeURIComponent(topicId)}/episode?track=${track}`);
-    toast(`整集已合成：${m.item_count} 条 · ${fmtDur(m.total_sec)}`);
+    if (btn) { btn.disabled = true; btn.textContent = "合成中…"; }
+    const r = await api("POST", `/api/topics/${encodeURIComponent(topicId)}/episode?track=${track}`);
+    if (r.already_running) { toast("已有合成任务进行中"); return; }
+    // 后台任务：轮询到完成
+    const job = await new Promise((resolve, reject) => {
+      const timer = setInterval(async () => {
+        try {
+          const j = await api("GET", `/api/jobs/${r.job_id}`);
+          if (j.state !== "running") { clearInterval(timer); resolve(j); }
+        } catch (e) { clearInterval(timer); reject(e); }
+      }, 1200);
+    });
+    if (job.state === "error" || (job.errors && job.errors.length)) {
+      toast("合成失败：" + (job.errors[0] || {}).message, "err");
+    } else {
+      const m = job.result || {};
+      toast(`整集已合成：${m.item_count ?? "?"} 条 · ${fmtDur(m.total_sec || 0)}`);
+      mgLoadTopic(topicId);
+    }
   } catch (e) {
-    toast("合成失败：" + e.message);
+    toast("合成失败：" + e.message, "err");
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = label; }
   }
 }
 

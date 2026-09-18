@@ -1,30 +1,108 @@
-"""后台批量任务：串行生成一个话题下所有待合成条目的音频。"""
+"""后台任务系统：持久化 + 话题互斥 + 取消令牌 + 异步合成（M05）。"""
+import json
+import logging
 import threading
 import uuid
 
-from . import library, tts
+from . import assemble, library, tts
+from .config import DATA_DIR, atomic_write_text
+
+logger = logging.getLogger(__name__)
 
 JOBS_LOCK = threading.Lock()
 JOBS: dict[str, dict] = {}
 
-# 已结束任务最多保留条数，防止 JOBS 无限增长
+# 持久化文件（测试可替换）
+JOBS_FILE = DATA_DIR / "jobs.json"
+
+# 已结束任务最多保留条数
 MAX_FINISHED_JOBS = 50
+
+# 运行中任务的 topic 互斥表
+_ACTIVE_TOPICS: dict[str, str] = {}  # topic_id -> job_id
+
+
+class JobConflict(RuntimeError):
+    pass
+
+
+def _now() -> str:
+    return library.now_iso()
+
+
+def _persist_locked() -> None:
+    """把任务表原子落盘（去掉运行期内部字段）。"""
+    serializable = {}
+    for jid, j in JOBS.items():
+        serializable[jid] = {k: v for k, v in j.items() if k not in ("cancel_event",)}
+    try:
+        atomic_write_text(JOBS_FILE, json.dumps(serializable, ensure_ascii=False, indent=2))
+    except OSError:
+        logger.warning("任务表落盘失败", exc_info=True)
+
+
+def recover_from_disk() -> None:
+    """服务启动时恢复任务表；上次仍在 running 的任务标记为 interrupted。"""
+    if not JOBS_FILE.exists():
+        return
+    try:
+        stored = json.loads(JOBS_FILE.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return
+    if not isinstance(stored, dict):
+        return
+    with JOBS_LOCK:
+        JOBS.clear()
+        _ACTIVE_TOPICS.clear()
+        for jid, j in stored.items():
+            if not isinstance(j, dict):
+                continue
+            if j.get("state") == "running":
+                j["state"] = "interrupted"
+                j["finished_at"] = _now()
+                j.setdefault("errors", []).append(
+                    {"item_id": "", "message": "服务重启，任务中断"}
+                )
+            JOBS[jid] = j
+        _prune_finished_locked()
+        _persist_locked()
 
 
 def get_job(job_id: str) -> dict | None:
     with JOBS_LOCK:
         job = JOBS.get(job_id)
-        return dict(job) if job else None
+        if not job:
+            return None
+        out = dict(job)
+        out.pop("cancel_event", None)
+        return out
+
+
+def list_jobs(limit: int = 50) -> list[dict]:
+    with JOBS_LOCK:
+        jobs = [dict(j) for j in JOBS.values()]
+    for j in jobs:
+        j.pop("cancel_event", None)
+    jobs.sort(key=lambda j: j.get("started_at") or "", reverse=True)
+    return jobs[:limit]
 
 
 def _prune_finished_locked() -> None:
     finished = sorted(
-        (j for j in JOBS.values() if j["state"] != "running"),
+        (j for j in JOBS.values() if j["state"] not in ("running",)),
         key=lambda j: j.get("started_at") or "",
     )
     excess = len(finished) - MAX_FINISHED_JOBS
-    for j in finished[:max(0, excess)]:
+    for j in finished[: max(0, excess)]:
         JOBS.pop(j["id"], None)
+        _ACTIVE_TOPICS.pop(j.get("topic_id") or "", None)
+
+
+def _finish(job: dict, state: str) -> None:
+    job["state"] = state
+    job["finished_at"] = _now()
+    _ACTIVE_TOPICS.pop(job.get("topic_id") or "", None)
+    _persist_locked()
 
 
 def _run_generate(
@@ -34,31 +112,41 @@ def _run_generate(
     force: bool,
     track: str = "default",
 ) -> None:
-    job = JOBS[job_id]
+    with JOBS_LOCK:
+        job = JOBS.get(job_id)
+        cancel_event = (job or {}).get("cancel_event")
+    if job is None:
+        return
     for idx, item_id in enumerate(item_ids):
+        if cancel_event is not None and cancel_event.is_set():
+            with JOBS_LOCK:
+                _finish(job, "cancelled")
+            return
         with JOBS_LOCK:
-            if job.get("cancel"):
-                job["state"] = "cancelled"
-                break
             job["done"] = idx
             job["current"] = item_id
+            _persist_locked()
         try:
             if force:
                 library.update_item_meta(topic_id, item_id, stale=False)
-            tts.generate_item_audio(topic_id, item_id, track=track)
+            tts.generate_item_audio(topic_id, item_id, track=track, cancel=cancel_event)
+        except tts.TTSCancelled:
+            with JOBS_LOCK:
+                _finish(job, "cancelled")
+            return
         except Exception as exc:  # 单条失败不阻断批次
             msg = str(exc)
             with JOBS_LOCK:
                 job["errors"].append({"item_id": item_id, "message": msg[:300]})
+                _persist_locked()
             try:
                 library.update_item_meta(topic_id, item_id, error=msg[:300])
             except Exception:
                 pass
     with JOBS_LOCK:
         if job["state"] == "running":
-            job["state"] = "done"
             job["done"] = len(item_ids)
-        job["finished_at"] = library.now_iso()
+            _finish(job, "done")
 
 
 def start_generate(
@@ -67,7 +155,17 @@ def start_generate(
     item_ids: list[str] | None = None,
     track: str = "default",
 ) -> dict:
-    """启动批量合成。item_ids 为空时：选取话题内所有待生成条目；force 全部重来。"""
+    """启动批量合成。同话题已有运行中任务时返回该任务（already_running=True）。"""
+    with JOBS_LOCK:
+        active_id = _ACTIVE_TOPICS.get(topic_id)
+        if active_id and active_id in JOBS and JOBS[active_id]["state"] == "running":
+            active = JOBS[active_id]
+            return {
+                "job_id": active_id,
+                "total": active["total"],
+                "already_running": True,
+            }
+
     topic = library.get_topic(topic_id)
     if item_ids is None:
         targets = []
@@ -92,6 +190,7 @@ def start_generate(
         raise RuntimeError("没有需要生成的条目（请检查对应轨道文本是否已填写）")
 
     job_id = uuid.uuid4().hex[:12]
+    cancel_event = threading.Event()
     with JOBS_LOCK:
         JOBS[job_id] = {
             "id": job_id,
@@ -104,10 +203,13 @@ def start_generate(
             "current": "",
             "errors": [],
             "cancel": False,
-            "started_at": library.now_iso(),
+            "cancel_event": cancel_event,
+            "started_at": _now(),
             "finished_at": None,
         }
+        _ACTIVE_TOPICS[topic_id] = job_id
         _prune_finished_locked()
+        _persist_locked()
     t = threading.Thread(
         target=_run_generate, args=(job_id, topic_id, targets, force, track), daemon=True
     )
@@ -115,10 +217,63 @@ def start_generate(
     return {"job_id": job_id, "total": len(targets)}
 
 
+def _run_assemble(job_id: str, topic_id: str, track: str) -> None:
+    with JOBS_LOCK:
+        job = JOBS.get(job_id)
+    if job is None:
+        return
+    try:
+        manifest = assemble.assemble_episode(topic_id, track=track)
+        with JOBS_LOCK:
+            job["result"] = manifest
+            _finish(job, "done")
+    except Exception as exc:
+        with JOBS_LOCK:
+            job["errors"].append({"item_id": "", "message": str(exc)[:300]})
+            _finish(job, "error")
+
+
+def start_assemble(topic_id: str, track: str = "default") -> dict:
+    """整集合成改为后台任务（不再阻塞 HTTP 请求，避免双击并发 ffmpeg）。"""
+    with JOBS_LOCK:
+        active_id = _ACTIVE_TOPICS.get(topic_id)
+        if active_id and active_id in JOBS and JOBS[active_id]["state"] == "running":
+            active = JOBS[active_id]
+            if active.get("kind") == "assemble":
+                return {"job_id": active_id, "already_running": True}
+
+    library.get_topic(topic_id)  # 校验存在性，404 由上层转译
+    job_id = uuid.uuid4().hex[:12]
+    with JOBS_LOCK:
+        JOBS[job_id] = {
+            "id": job_id,
+            "kind": "assemble",
+            "topic_id": topic_id,
+            "track": track,
+            "state": "running",
+            "total": 1,
+            "done": 0,
+            "current": "",
+            "errors": [],
+            "cancel": False,
+            "cancel_event": threading.Event(),
+            "started_at": _now(),
+            "finished_at": None,
+        }
+        _ACTIVE_TOPICS[topic_id] = job_id
+        _prune_finished_locked()
+        _persist_locked()
+    threading.Thread(target=_run_assemble, args=(job_id, topic_id, track), daemon=True).start()
+    return {"job_id": job_id, "total": 1}
+
+
 def cancel_job(job_id: str) -> bool:
     with JOBS_LOCK:
         job = JOBS.get(job_id)
         if job and job["state"] == "running":
             job["cancel"] = True
+            event = job.get("cancel_event")
+            if event is not None:
+                event.set()
             return True
         return False

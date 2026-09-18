@@ -236,10 +236,19 @@ def test_dry_run_generate_and_assemble(client, lib_env):
     assert len(tl) == 2
     assert tl[0]["start"] == 0 and tl[-1]["end"] >= tl[-1]["start"]
 
-    # 合成整集 + 清单
+    # 合成整集（后台任务，M05）+ 清单
     m = client.post(f"/api/topics/{tid}/episode?track=podcast")
     assert m.status_code == 200
-    manifest = m.json()
+    job_id = m.json()["job_id"]
+    asm_deadline = time.time() + 90
+    asm_job = None
+    while time.time() < asm_deadline:
+        asm_job = client.get(f"/api/jobs/{job_id}").json()
+        if asm_job["state"] != "running":
+            break
+        time.sleep(0.2)
+    assert asm_job and asm_job["state"] == "done", asm_job
+    manifest = asm_job["result"]
     assert manifest["item_count"] == 1
     assert client.get(f"/api/topics/{tid}/episode?track=podcast").json()["file"] == manifest["file"]
 
