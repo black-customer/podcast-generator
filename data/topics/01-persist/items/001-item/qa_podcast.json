@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-19T01:14:23",
+  "checked_at": "2026-09-19T01:21:15",
   "duration_sec": 2.82,
   "verdict": "pass",
   "issues": [],
@@ -21,7 +21,7 @@
     {
       "kind": "clipping",
       "ok": true,
-      "peak_db": -12.97746,
+      "peak_db": -12.991721,
       "severity": "medium"
     }
   ]

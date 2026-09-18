@@ -193,6 +193,10 @@ def get_topic(topic_id: str) -> dict:
         for d in item_dirs(tpath):
             meta = load_meta(d)
             texts = read_item_texts(d)
+            mono = d / "audio_monologue.mp3"
+            pod = d / "audio_podcast.mp3"
+            has_legacy = (d / "audio.mp3").exists() and (d / "audio.mp3").stat().st_size > 0
+            is_diag = bool(meta.get("dialogue"))
             items.append(
                 {
                     "id": d.name,
@@ -201,6 +205,14 @@ def get_topic(topic_id: str) -> dict:
                     "error": meta.get("error") or "",
                     "stale": bool(meta.get("stale")),
                     "duration_sec": meta.get("duration_sec"),
+                    "duration_sec_monologue": meta.get("duration_sec_monologue"),
+                    "duration_sec_podcast": meta.get("duration_sec_podcast"),
+                    "has_monologue": (mono.exists() and mono.stat().st_size > 0)
+                    or (has_legacy and not is_diag),
+                    "has_podcast": (pod.exists() and pod.stat().st_size > 0)
+                    or (has_legacy and is_diag),
+                    "qa_podcast": meta.get("qa_podcast"),
+                    "qa_monologue": meta.get("qa_monologue"),
                     "updated_at": meta.get("updated_at") or "",
                 }
             )
@@ -305,25 +317,43 @@ def read_voices() -> list:
 
 
 def resolve_audio_file(d: Path, track: str = "default") -> Path | None:
-    """按轨道优先级选出条目下可用的音频文件（存在且非空），没有则 None。
+    """按轨道语义选出条目下正确的音频（存在且非空），没有则 None。
 
-    track: 'monologue' → 独白版（缺则回退旧版 audio.mp3）
-           'podcast'   → 播客版（缺则回退旧版 audio.mp3）
+    track: 'monologue' → audio_monologue.mp3（旧版 audio.mp3 仅在非对话内容时回退）
+           'podcast'   → audio_podcast.mp3（旧版 audio.mp3 仅在对话内容时回退，修审计 A9）
            其他/default → audio.mp3 → 独白 → 播客
     """
-    if track == "monologue":
-        candidates = ("audio_monologue.mp3", "audio.mp3")
-    elif track == "podcast":
-        candidates = ("audio_podcast.mp3", "audio.mp3")
-    else:
-        candidates = ("audio.mp3", "audio_monologue.mp3", "audio_podcast.mp3")
-    for name in candidates:
-        p = d / name
+    legacy = d / "audio.mp3"
+
+    def _usable(p: Path) -> bool:
         try:
-            if p.exists() and p.stat().st_size > 0:
-                return p
+            return p.exists() and p.stat().st_size > 0
         except OSError:
-            continue
+            return False
+
+    meta_dialogue = None
+    if track == "monologue":
+        mono = d / "audio_monologue.mp3"
+        if _usable(mono):
+            return mono
+        if meta_dialogue is None:
+            meta_dialogue = bool(load_meta(d).get("dialogue"))
+        if not meta_dialogue and _usable(legacy):
+            return legacy
+        return None
+    if track == "podcast":
+        pod = d / "audio_podcast.mp3"
+        if _usable(pod):
+            return pod
+        if meta_dialogue is None:
+            meta_dialogue = bool(load_meta(d).get("dialogue"))
+        if meta_dialogue and _usable(legacy):
+            return legacy
+        return None
+    for name in ("audio.mp3", "audio_monologue.mp3", "audio_podcast.mp3"):
+        p = d / name
+        if _usable(p):
+            return p
     return None
 
 

@@ -74,9 +74,8 @@ def assemble_episode(topic_id: str, track: str = "default") -> dict:
 
 
 def load_manifest(topic_id: str, track: str = "default") -> dict | None:
+    """精确轨道语义：请求 monologue/podcast 时绝不回退到 default 清单（审计 A19）。"""
     f = episode_manifest_path(topic_id, track=track)
-    if not f.exists() and track != "default":
-        f = episode_manifest_path(topic_id, track="default")
     if f.exists():
         try:
             return json.loads(f.read_text(encoding="utf-8"))

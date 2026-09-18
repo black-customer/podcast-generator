@@ -934,3 +934,16 @@ a { color: inherit; text-decoration: none; }
 /* 词级卡拉OK */
 .karaoke-word { opacity: 0.78; transition: opacity .12s; border-radius: 3px; }
 .karaoke-word.on { opacity: 1; background: rgba(79, 140, 255, 0.28); }
+
+/* 中文参考面板 */
+.zh-panel {
+  padding: 14px 18px;
+  margin: 0 0 12px;
+  background: var(--panel-2, #1d212b);
+  border: 1px solid var(--border, #2a3040);
+  border-radius: 10px;
+  color: var(--text-sub, #8b93a5);
+  font-size: 14px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}

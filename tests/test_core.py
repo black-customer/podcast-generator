@@ -129,16 +129,22 @@ def test_stale_detection_covers_all_tracks(lib_env):
 
 
 def test_resolve_audio_file_priority(lib_env):
+    """M08 语义修正：podcast/monologue 轨不再错误回退到语义不符的旧版 audio.mp3（审计 A9）。"""
     t = library.create_topic("T")
     it = library.create_item(t["id"], {"question": "Q"})
     d = library.item_path(t["id"], it["id"])
     assert library.resolve_audio_file(d, "default") is None
 
+    # 旧版 audio.mp3（内容语义未知）：独白轨可回退、播客轨不可（防止把独白当播客）
     (d / "audio.mp3").write_bytes(b"x")
     assert library.resolve_audio_file(d, "monologue") == d / "audio.mp3"
+    assert library.resolve_audio_file(d, "podcast") is None
 
     (d / "audio_monologue.mp3").write_bytes(b"x")
     assert library.resolve_audio_file(d, "monologue") == d / "audio_monologue.mp3"
+
+    # meta 标记对话内容后，播客轨才允许回退到旧版 audio.mp3
+    library.update_item_meta(t["id"], it["id"], dialogue=True)
     assert library.resolve_audio_file(d, "podcast") == d / "audio.mp3"
 
     (d / "audio_podcast.mp3").write_bytes(b"x")

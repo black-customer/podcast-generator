@@ -596,10 +596,13 @@ async function TopicDetailView(topicId, token) {
       <div class="track-num">${idx + 1}</div>
       <div class="track-title">${esc(it.title)}</div>
       <div class="track-tags">
-        <span class="track-pill mono">🎧 独白</span>
-        <span class="track-pill pod">🎙️ 播客</span>
+        ${it.has_monologue ? '<span class="track-pill mono">🎧 独白</span>' : ""}
+        ${it.has_podcast ? '<span class="track-pill pod">🎙️ 播客</span>' : ""}
+        ${it.stale ? '<span class="track-pill" style="color:var(--warn)">待更新</span>' : ""}
+        ${it.error ? '<span class="track-pill" style="color:var(--err)">错误</span>' : ""}
+        ${!it.has_monologue && !it.has_podcast ? '<span class="track-pill">—</span>' : ""}
       </div>
-      <div>${it.duration_sec ? fmtDur(it.duration_sec) : "—"}</div>
+      <div>${it.duration_sec_podcast ? fmtDur(it.duration_sec_podcast) : (it.duration_sec ? fmtDur(it.duration_sec) : "—")}</div>
       <div><a class="btn-pill" style="padding:4px 12px;font-size:12px;" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">播放</a></div>
     </div>
   `).join("");
@@ -694,11 +697,18 @@ async function TrackPlayerView(topicId, itemId, token) {
       <div class="lyrics-panel" id="lyrics-panel">
         <div class="lyrics-header">
           <span id="script-panel-title">${PlayerState.track === 'podcast' ? '🎙️ 播客剧本实录' : '🎧 纯英母语独白文本'}</span>
-          <span style="font-size:12px;display:flex;align-items:center;gap:6px;">
-            <span class="status-dot"></span>
-            <span id="tl-mode-chip">对齐模式…</span>
+          <span style="font-size:12px;display:flex;align-items:center;gap:12px;">
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer;color:var(--text-sub);">
+              <input type="checkbox" id="zh-toggle" checked> 中文参考
+            </label>
+            <span style="display:flex;align-items:center;gap:6px;">
+              <span class="status-dot"></span>
+              <span id="tl-mode-chip">对齐模式…</span>
+            </span>
           </span>
         </div>
+
+        <div id="zh-panel" class="zh-panel">${item.chinese ? esc(item.chinese) : '<p style="color:var(--text-sub)">该条目暂无中文参考</p>'}</div>
 
         <div id="pod-stream" class="bubble-stream" style="display:${PlayerState.track === 'podcast' ? 'flex' : 'none'}">
           <p style="color:var(--text-sub);padding:20px;">正在加载时间轴...</p>
@@ -710,6 +720,15 @@ async function TrackPlayerView(topicId, itemId, token) {
       </div>
     </div>
   `;
+
+  // 中文参考折叠
+  const zhToggle = document.getElementById("zh-toggle");
+  const zhPanel = document.getElementById("zh-panel");
+  if (zhToggle && zhPanel) {
+    zhToggle.addEventListener("change", () => {
+      zhPanel.style.display = zhToggle.checked ? "block" : "none";
+    });
+  }
 
   // 监听用户手动翻阅滚动，短时间内暂停自动居中抢焦
   // （程序性 scrollIntoView 落在 programmaticScrollUntil 窗口内，不算用户翻阅——修 A24）
