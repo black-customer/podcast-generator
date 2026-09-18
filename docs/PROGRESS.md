@@ -40,9 +40,19 @@
 - e2e 依赖真实主语料 02-sleep-healthy-eating/001（对话+独白按钮禁用断言依赖其对话属性）
 - now_iso 已是毫秒；时间戳字符串比较即可判新旧
 
+## M11 已完成（tag m11）
+
+- server/exports.py：export_m4b（ffmetadata 章节，AC=ffprobe chapters==N 且标题正确）
+- export_srt（alignment→SRT，剥标签）
+- API: POST /topics/{tid}/export/m4b、POST /topics/{tid}/items/{iid}/export/srt、
+  GET /exports/{filename}（防穿越）
+- 工作台按钮：导出 M4B / 导出 SRT（依赖 ManageState.editingItemId）
+- item_title 增强：英文轨文本首行（剥 A:/B: 前缀）可作标题
+- 测试：tests/test_exports.py（ffprobe 章节 AC + SRT 内容）
+
 ## 下一步（按序，接着跑完 M11-M20）
 
-1. M11 M4B 导出：assemble 后 ffmpeg ffmetadata 章节嵌入（offsets 已有）→ AC: ffprobe chapters
+1. M12 剩余：VTT/LRC 导出 + 局域网 RSS（SRT 已在 M11 完成）
 2. M12 字幕导出（alignment→SRT/VTT/LRC）+ 局域网 RSS（enclosure 绝对 URL）
 3. M13 PWA（manifest+SW+Media Session+移动布局+配对二维码）
 4. M09 UI 质感（设计令牌/空错态/截图审查子代理；es modules 拆分评估）
