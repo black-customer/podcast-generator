@@ -1,4 +1,5 @@
 -r requirements.txt
 pytest>=8
-ruff
-requests
+ruff>=0.4
+playwright>=1.44
+requests>=2.31

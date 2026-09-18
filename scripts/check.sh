@@ -33,8 +33,12 @@ else
 fi
 
 if [ "${1:-}" = "--with-e2e" ]; then
-  echo "=== [extra] e2e（需要上述服务；e2e 自行起 8765）==="
+  echo "=== [extra] Playwright e2e（自起 8765 服务）==="
+  "$PY" run.py --no-open --port 8765 > /dev/null 2>&1 &
+  E2E_PID=$!
+  sleep 3
   "$PY" -m pytest tests/e2e -q
+  kill $E2E_PID 2>/dev/null || true
 fi
 
 echo "=== CHECK GREEN ==="
