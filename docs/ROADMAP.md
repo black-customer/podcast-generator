@@ -7,7 +7,7 @@
 
 ## Wave 1：自治基座
 
-### M01 自治基座与版本化 [G1] — ACTIVE
+### M01 自治基座与版本化 [G1] — DONE (2026-09-18, tag v0.1)
 价值：一切长程工作的前提。
 WP：git 治理（.gitignore 音频策略）；CONSTITUTION/AGENTS/ROADMAP/PROGRESS 四文档；
 scripts/check.sh 门禁；修复服务停摆与 .tmp 残骸；现有测试纳入门禁；占位符 key 误判 live 修复。
@@ -15,7 +15,7 @@ AC：check.sh 全绿（含 ruff+pytest+启动冒烟）；账本反映 20 里程�
 
 ## Wave 2：音频真相层（最高优先）
 
-### M02 逐词对齐真相层 [G2]（依赖 M01）
+### M02 逐词对齐真相层 [G2]（依赖 M01）— DONE* (tag m02；*SSE 逐词层待网络恢复后接线并跑真实 AC)
 价值：根治"点击跳不准、文本不跟读"。
 WP：接入 Fish `/v1/tts/stream/with-timestamp` SSE（逐词时间戳）；
 逐行模式拼接前探测每段真实时长（当前被丢弃）；alignment.json 边车（词级+句级 span，
@@ -23,7 +23,7 @@ WP：接入 Fish `/v1/tts/stream/with-timestamp` SSE（逐词时间戳）；
 AC：新生成条目必有 alignment.json；抽 N 句 ffmpeg 切听偏差 <150ms（脚本验证）；
 缓存失效回归测试（审计 A2）。
 
-### M03 音频 QA 门禁与自愈 [G2]（依赖 M02）
+### M03 音频 QA 门禁与自愈 [G2]（依赖 M02）— DONE* (tag m03；*真实音频 AC 与现有条目重验待网络)
 价值：根治"[chuckle] 笑 5 秒导致音画错位"。
 WP：期望/实际时长比检查；Silero VAD 非语音孤岛检测（笑声/长静音）；
 silencedetect+astats 削波；异常自动隔离+去标签重试；生成附质量报告；
