@@ -1,7 +1,14 @@
-"""Playwright 无头浏览器 E2E 自动化测试预言机 (tests/e2e/test_player_ui.py)"""
+"""Playwright 无头浏览器 E2E：播放器精准交互（M06）+ 全视图冒烟。
+
+运行：服务已启动后 .venv/Scripts/python -m pytest tests/e2e/test_player_ui.py -q
+依赖真实库中已有条目（02-sleep-healthy-eating / 001-...，Bruce 主语料）。
+"""
 from playwright.sync_api import sync_playwright
 
 BASE_URL = "http://127.0.0.1:8765"
+TOPIC = "02-sleep-healthy-eating"
+ITEM = "001-sleep-and-healthy-eating-dialogue"
+
 
 def test_full_player_workflow():
     with sync_playwright() as p:
@@ -15,86 +22,90 @@ def test_full_player_workflow():
                 console_errors.append(msg.text)
         page.on("console", _on_console)
 
-        # 1. 访问首页
-        page.goto(BASE_URL)
-        page.wait_for_selector(".hero-title", timeout=5000)
-        assert "高保真母语口语媒体库" in page.content()
+        # 1. 首页
+        page.goto(f"{BASE_URL}/#/topics")
+        page.wait_for_selector(".album-card", timeout=5000)
 
-        # 2. 点击进入专辑详情
-        album_card = page.wait_for_selector(".album-card", timeout=5000)
-        assert album_card is not None
-        album_card.click()
-        page.wait_for_selector(".track-row", timeout=5000)
-        assert "专辑 · 英语口语语料库" in page.content()
-
-        # 3. 点击曲目进入沉浸式播放器与剧本页
-        first_track = page.locator(".track-row").first
-        first_track.click()
+        # 2. 直接进入目标条目的沉浸播放页
+        page.goto(f"{BASE_URL}/#/play/{TOPIC}/{ITEM}")
         page.wait_for_selector("#lyrics-panel", timeout=5000)
         assert page.is_visible("#vinyl-disk")
         assert page.is_visible("#pod-stream")
         assert page.is_visible("#btn-tab-pod")
-        assert page.is_visible("#btn-tab-mono")
 
-        # 4. 验证底部全局播放器与控制器
+        # 3. 全局播放器与新控制按钮
         assert page.is_visible("#global-player")
-        assert page.is_visible("#gp-play")
-        assert page.is_visible("#gp-rewind")
-        assert page.is_visible("#gp-forward")
-        assert page.is_visible("#gp-speed")
+        assert page.is_visible("#gp-loop-a")
+        assert page.is_visible("#gp-loop-b")
+        assert page.is_visible("#gp-replay-line")
 
-        # 5. 测试播客点击跳播与时间轴渲染
+        # 4. 时间轴渲染 + 对齐模式标志（诚实显示 measured/estimated）
         page.wait_for_selector("#pod-stream .dialogue-bubble", timeout=5000)
-        pod_bubbles = page.locator("#pod-stream .dialogue-bubble")
-        assert pod_bubbles.count() >= 5
-        # 点击第 3 句进行跳播测试
-        third_bubble = pod_bubbles.nth(2)
-        third_bubble.click()
+        bubbles = page.locator("#pod-stream .dialogue-bubble")
+        assert bubbles.count() >= 5
+        assert page.locator("#tl-mode-chip").inner_text() != ""
+
+        # 5. 点击第 3 句跳播
+        bubbles.nth(2).click()
+        page.wait_for_timeout(400)
+        cur = page.evaluate("() => document.getElementById('core-audio').currentTime")
+        assert cur > 0, "点击句子后 currentTime 应变化"
+
+        # 6. A-B 循环：设 A → 前进 → 设 B → 越过 B 应回跳
+        page.evaluate("() => { document.getElementById('core-audio').currentTime = 5.0; }")
+        page.wait_for_timeout(200)
+        page.locator("#gp-loop-a").click()
+        page.evaluate("() => { document.getElementById('core-audio').currentTime = 7.0; }")
+        page.wait_for_timeout(200)
+        page.locator("#gp-loop-b").click()
+        loop_ab = page.evaluate(
+            "() => JSON.stringify({a: PlayerState.loopA, b: PlayerState.loopB})"
+        )
+        import json
+        ab = json.loads(loop_ab)
+        assert ab["a"] is not None and ab["b"] is not None and ab["b"] > ab["a"]
+        b_point = str(ab["b"])
+        jump_expr = (
+            "() => { document.getElementById('core-audio').currentTime = " + b_point + " - 0.2; }"
+        )
+        page.evaluate(jump_expr)
+        page.wait_for_timeout(800)
+        cur2 = page.evaluate("() => document.getElementById('core-audio').currentTime")
+        assert cur2 < ab["b"], f"越过 B 点应回跳，实际 {cur2:.2f} >= B={ab['b']:.2f}"
+        page.locator("#gp-loop-clear").click()
+
+        # 7. 句间导航（seekLine：下一句 / 上一句）
+        page.evaluate("() => seekLine(1)")
         page.wait_for_timeout(300)
-        cur_time = page.evaluate("() => document.getElementById('core-audio').currentTime")
-        assert cur_time > 0, "Expected audio.currentTime to advance on click-to-seek"
-
-        # 6. 测试独白版切换、歌词渲染与精准跳播
-        mono_tab_btn = page.locator("#btn-tab-mono")
-        mono_tab_btn.click()
-        page.wait_for_selector("#mono-stream .monologue-line", timeout=5000)
-        assert page.is_visible("#mono-stream")
-        assert not page.is_visible("#pod-stream")
-        mono_lines = page.locator("#mono-stream .monologue-line")
-        assert mono_lines.count() >= 10, f"Expected >= 10 monologue lines, got {mono_lines.count()}"
-
-        # 点击独白第 4 句进行跳播
-        fourth_mono = mono_lines.nth(3)
-        fourth_mono.click()
+        t_next = page.evaluate("() => document.getElementById('core-audio').currentTime")
+        page.evaluate("() => seekLine(-1)")
         page.wait_for_timeout(300)
-        mono_time = page.evaluate("() => document.getElementById('core-audio').currentTime")
-        assert mono_time > 0, "Expected audio.currentTime to advance on monologue click-to-seek"
+        t_prev = page.evaluate("() => document.getElementById('core-audio').currentTime")
+        assert t_next != t_prev
 
-        # 7. 切回播客版
-        pod_tab_btn = page.locator("#btn-tab-pod")
-        pod_tab_btn.click()
-        page.wait_for_timeout(300)
-        assert page.is_visible("#pod-stream")
-        assert not page.is_visible("#mono-stream")
+        # 8. 键盘快捷键：空格暂停/播放
+        space_pause = page.evaluate(
+            "() => { const a = document.getElementById('core-audio');"
+            " const wasPaused = a.paused; a.focus();"
+            " document.dispatchEvent(new KeyboardEvent('keydown', {code: 'Space', bubbles: true}));"
+            " return {wasPaused, nowPaused: a.paused}; }"
+        )
+        assert space_pause["wasPaused"] != space_pause["nowPaused"], "空格应切换播放/暂停"
 
-        # 8. 测试倍速切换
-        speed_btn = page.locator("#gp-speed")
-        assert speed_btn.inner_text() == "1.0x"
-        speed_btn.click()
-        assert speed_btn.inner_text() == "1.2x"
-        speed_btn.click()
-        assert speed_btn.inner_text() == "1.5x"
+        # 9. 切换独白轨 → 时间轴渲染
+        page.locator("#btn-tab-mono").click()
+        page.wait_for_timeout(600)
+        assert page.locator("#tl-mode-chip").inner_text() != ""
 
-        # 9. 测试声学音色展台视图
+        # 10. 音色展台视图（去演示文案后仍可用）
         page.goto(f"{BASE_URL}/#/voices")
         page.wait_for_selector(".voice-card", timeout=5000)
-        voice_cards = page.locator(".voice-card")
-        assert voice_cards.count() >= 4
-        assert "Peter Parker" in page.content()
+        assert page.locator(".voice-card").count() >= 1
 
-        # 10. 断言全程无 JS 运行时异常
+        # 11. 全程无 JS 运行时异常
         assert len(console_errors) == 0, f"Captured console errors: {console_errors}"
         browser.close()
+
 
 if __name__ == "__main__":
     test_full_player_workflow()

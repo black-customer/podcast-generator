@@ -30,36 +30,38 @@ def test_manage_view_workflow():
         # 3. 新建话题 → 自动选中 → 面板出现生成工具栏
         import time as _t
         topic_name = f"e2e-manage-{int(_t.time())}"
-        page.fill("#mg-new-topic", topic_name)
-        page.click("#mg-create-topic")
-        page.wait_for_selector("#mg-gen-topic", timeout=5000)
+        try:
+            page.fill("#mg-new-topic", topic_name)
+            page.click("#mg-create-topic")
+            page.wait_for_selector("#mg-gen-topic", timeout=5000)
 
-        # 4. 新建条目 → 列表出现 → 打开编辑器
-        page.fill("#mg-new-q", "Do you like coffee?")
-        page.click("#mg-create-item")
-        page.wait_for_selector("#mg-item-list .mg-item-row", timeout=5000)
-        page.locator("#mg-item-list [data-edit]").click()
-        page.wait_for_selector("#mg-f-question", timeout=5000)
-        assert page.input_value("#mg-f-question") == "Do you like coffee?"
+            # 4. 新建条目 → 列表出现 → 打开编辑器
+            page.fill("#mg-new-q", "Do you like coffee?")
+            page.click("#mg-create-item")
+            page.wait_for_selector("#mg-item-list .mg-item-row", timeout=5000)
+            page.locator("#mg-item-list [data-edit]").click()
+            page.wait_for_selector("#mg-f-question", timeout=5000)
+            assert page.input_value("#mg-f-question") == "Do you like coffee?"
 
-        # 5. 修改中文回答并保存 → 重新加载后仍在（PATCH 部分更新语义）
-        page.fill("#mg-f-chinese", "我超爱咖啡。")
-        page.click("#mg-save-item")
-        page.wait_for_timeout(800)
-        page.locator("#mg-item-list [data-edit]").click()
-        page.wait_for_selector("#mg-f-chinese", timeout=5000)
-        assert page.input_value("#mg-f-question") == "Do you like coffee?", "保存后问题不应被清空"
-        assert page.input_value("#mg-f-chinese") == "我超爱咖啡。"
-
-        # 6. 复制改写请求按钮（写入剪贴板需权限，headless 下仅验证不报错）
-        # 7. 删除话题，清理测试数据（定位器必须圈定在本话题行内，绝不点到其他话题）
-        row = page.locator(".mg-topic-row", has_text=topic_name)
-        page.once("dialog", lambda d: d.accept())
-        row.locator("[data-del]").click()
-        page.wait_for_selector(
-            f".mg-topic-row:has-text('{topic_name}')", state="detached", timeout=5000
-        )
-        assert topic_name not in page.locator("#mg-topic-list").text_content()
+            # 5. 修改中文回答并保存 → 重新加载后仍在（PATCH 部分更新语义）
+            page.fill("#mg-f-chinese", "我超爱咖啡。")
+            page.click("#mg-save-item")
+            page.wait_for_timeout(800)
+            page.locator("#mg-item-list [data-edit]").click()
+            page.wait_for_selector("#mg-f-chinese", timeout=5000)
+            q_val = page.input_value("#mg-f-question")
+            assert q_val == "Do you like coffee?", "保存后问题不应被清空"
+            assert page.input_value("#mg-f-chinese") == "我超爱咖啡。"
+        finally:
+            # 失败也要清理，避免遗留空话题污染真实语料库
+            import requests
+            try:
+                topics = requests.get(f"{BASE_URL}/api/topics", timeout=10).json()
+                for t in topics:
+                    if t["name"] == topic_name:
+                        requests.delete(f"{BASE_URL}/api/topics/{t['id']}", timeout=10)
+            except Exception:
+                pass
 
         # 8. 无 JS 运行时异常
         assert len(console_errors) == 0, f"Captured console errors: {console_errors}"

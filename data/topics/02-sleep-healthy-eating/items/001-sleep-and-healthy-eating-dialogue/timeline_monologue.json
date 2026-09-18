@@ -1,0 +1,470 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: Hey.",
+    "start": 0.0,
+    "end": 0.46,
+    "duration": 0.46
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Guess what time I got up today.",
+    "start": 0.46,
+    "end": 2.51,
+    "duration": 2.05
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Six thirty.",
+    "start": 2.51,
+    "end": 3.24,
+    "duration": 0.73
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A.M.",
+    "start": 3.24,
+    "end": 3.5,
+    "duration": 0.26
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "B: Wait— six thirty?",
+    "start": 3.5,
+    "end": 5.12,
+    "duration": 1.62
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "You?",
+    "start": 5.12,
+    "end": 5.38,
+    "duration": 0.26
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "The guy who goes to bed at seven...",
+    "start": 5.38,
+    "end": 7.99,
+    "duration": 2.61
+  },
+  {
+    "id": 7,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "in the morning?",
+    "start": 7.99,
+    "end": 8.98,
+    "duration": 0.99
+  },
+  {
+    "id": 8,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: Hey, that was one time.",
+    "start": 8.98,
+    "end": 10.7,
+    "duration": 1.72
+  },
+  {
+    "id": 9,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "[chuckle] But yeah, I'm really trying to adjust my sleep schedule.",
+    "start": 10.7,
+    "end": 14.41,
+    "duration": 3.71
+  },
+  {
+    "id": 10,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And honestly?",
+    "start": 14.41,
+    "end": 15.27,
+    "duration": 0.86
+  },
+  {
+    "id": 11,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Waking up early makes me feel like my life is just...",
+    "start": 15.27,
+    "end": 19.07,
+    "duration": 3.8
+  },
+  {
+    "id": 12,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "full of possibilities.",
+    "start": 19.07,
+    "end": 20.53,
+    "duration": 1.46
+  },
+  {
+    "id": 13,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "B: No, I get that.",
+    "start": 20.53,
+    "end": 21.72,
+    "duration": 1.19
+  },
+  {
+    "id": 14,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's a great feeling.",
+    "start": 21.72,
+    "end": 23.11,
+    "duration": 1.39
+  },
+  {
+    "id": 15,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Okay so— what else have you been thinking about?",
+    "start": 23.11,
+    "end": 26.58,
+    "duration": 3.47
+  },
+  {
+    "id": 16,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: Food, actually.",
+    "start": 26.58,
+    "end": 27.77,
+    "duration": 1.19
+  },
+  {
+    "id": 17,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like, a lot.",
+    "start": 27.77,
+    "end": 28.56,
+    "duration": 0.79
+  },
+  {
+    "id": 18,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I want to eat low-calorie meals, but still make them delicious, you know?",
+    "start": 28.56,
+    "end": 33.39,
+    "duration": 4.83
+  },
+  {
+    "id": 19,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "B: Okay, so give me an example.",
+    "start": 33.39,
+    "end": 35.44,
+    "duration": 2.05
+  },
+  {
+    "id": 20,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "What's a meal you like?",
+    "start": 35.44,
+    "end": 36.96,
+    "duration": 1.52
+  },
+  {
+    "id": 21,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: Alright, so— brown rice, chicken, veggies...",
+    "start": 36.96,
+    "end": 40.37,
+    "duration": 3.41
+  },
+  {
+    "id": 22,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "and a little sesame sauce on top.",
+    "start": 40.37,
+    "end": 42.55,
+    "duration": 2.18
+  },
+  {
+    "id": 23,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "B: Ooh, that's a solid combo.",
+    "start": 42.55,
+    "end": 44.47,
+    "duration": 1.92
+  },
+  {
+    "id": 24,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Because brown rice is a whole grain, chicken breast is low in fat, high in protein...",
+    "start": 44.47,
+    "end": 50.39,
+    "duration": 5.92
+  },
+  {
+    "id": 25,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "that's a great base, right there.",
+    "start": 50.39,
+    "end": 52.57,
+    "duration": 2.18
+  },
+  {
+    "id": 26,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: Right?",
+    "start": 52.57,
+    "end": 53.17,
+    "duration": 0.6
+  },
+  {
+    "id": 27,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And don't forget the mushrooms.",
+    "start": 53.17,
+    "end": 55.22,
+    "duration": 2.05
+  },
+  {
+    "id": 28,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Dietary fiber, baby.",
+    "start": 55.22,
+    "end": 56.54,
+    "duration": 1.32
+  },
+  {
+    "id": 29,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "B: [chuckle] Exactly.",
+    "start": 56.54,
+    "end": 57.33,
+    "duration": 0.79
+  },
+  {
+    "id": 30,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And if you throw in broccoli and carrots— low in calories, high in fiber and vitamins.",
+    "start": 57.33,
+    "end": 63.32,
+    "duration": 5.99
+  },
+  {
+    "id": 31,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "You're basically set.",
+    "start": 63.32,
+    "end": 64.71,
+    "duration": 1.39
+  },
+  {
+    "id": 32,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: Okay, but what about the sesame sauce, though?",
+    "start": 64.71,
+    "end": 67.95,
+    "duration": 3.24
+  },
+  {
+    "id": 33,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Is that actually healthy?",
+    "start": 67.95,
+    "end": 69.6,
+    "duration": 1.65
+  },
+  {
+    "id": 34,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Be honest.",
+    "start": 69.6,
+    "end": 70.26,
+    "duration": 0.66
+  },
+  {
+    "id": 35,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "B: Well...",
+    "start": 70.26,
+    "end": 71.22,
+    "duration": 0.96
+  },
+  {
+    "id": 36,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "it has some healthy fats, but it's also really calorie-dense.",
+    "start": 71.22,
+    "end": 75.26,
+    "duration": 4.04
+  },
+  {
+    "id": 37,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: So just a little then?",
+    "start": 75.26,
+    "end": 76.91,
+    "duration": 1.65
+  },
+  {
+    "id": 38,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "B: Just a little.",
+    "start": 76.91,
+    "end": 78.03,
+    "duration": 1.12
+  },
+  {
+    "id": 39,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A little sesame sauce for flavor, since it's so high in calories.",
+    "start": 78.03,
+    "end": 82.33,
+    "duration": 4.3
+  },
+  {
+    "id": 40,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: Got it, got it.",
+    "start": 82.33,
+    "end": 83.52,
+    "duration": 1.19
+  },
+  {
+    "id": 41,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So basically— if I want food that's low calorie but still tasty, I just use spices.",
+    "start": 83.52,
+    "end": 89.31,
+    "duration": 5.79
+  },
+  {
+    "id": 42,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "B: Yes.",
+    "start": 89.31,
+    "end": 89.77,
+    "duration": 0.46
+  },
+  {
+    "id": 43,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Spices, herbs, vinegar, lemon juice...",
+    "start": 89.77,
+    "end": 92.58,
+    "duration": 2.81
+  },
+  {
+    "id": 44,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "small amounts of strong sauces.",
+    "start": 92.58,
+    "end": 94.63,
+    "duration": 2.05
+  },
+  {
+    "id": 45,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That's the whole trick.",
+    "start": 94.63,
+    "end": 96.15,
+    "duration": 1.52
+  },
+  {
+    "id": 46,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: Okay, so I can say: I use spices, and just a little sauce, to add flavor without too many calories.",
+    "start": 96.15,
+    "end": 102.9,
+    "duration": 6.75
+  },
+  {
+    "id": 47,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "B: Perfectly said.",
+    "start": 102.9,
+    "end": 104.09,
+    "duration": 1.19
+  },
+  {
+    "id": 48,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Nailed it.",
+    "start": 104.09,
+    "end": 104.75,
+    "duration": 0.66
+  },
+  {
+    "id": 49,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A: Ha!",
+    "start": 104.75,
+    "end": 105.15,
+    "duration": 0.4
+  },
+  {
+    "id": 50,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Nice.",
+    "start": 105.15,
+    "end": 105.48,
+    "duration": 0.33
+  },
+  {
+    "id": 51,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That's what I want to practice saying.",
+    "start": 105.48,
+    "end": 108.04,
+    "duration": 2.56
+  }
+]

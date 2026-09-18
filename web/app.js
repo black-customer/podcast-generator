@@ -92,6 +92,14 @@ function initGlobalPlayer() {
     }
   };
 
+  $audio.onerror = () => {
+    if (!$audio.src) return;
+    toast("音频加载失败（可能尚未生成该音轨）");
+    PlayerState.isPlaying = false;
+    const pb = document.getElementById("gp-play");
+    if (pb) pb.textContent = "▶";
+  };
+
   $audio.onplay = () => {
     PlayerState.isPlaying = true;
     $playBtn.textContent = "⏸";
@@ -330,7 +338,7 @@ function setTrack(newTrack) {
     } else {
       podBtn.classList.add("active");
       monoBtn.classList.remove("active");
-      if (scriptTitle) scriptTitle.textContent = "🎙️ 播客双语精讲实录 (Tom Holland & Mia)";
+      if (scriptTitle) scriptTitle.textContent = "🎙️ 播客剧本实录";
     }
   }
 }
@@ -354,8 +362,8 @@ async function playItem(topicId, item, autoPlay = true) {
 
   document.getElementById("gp-title").textContent = item.title || "未命名曲目";
   document.getElementById("gp-sub").textContent = track === "podcast"
-    ? "🎙️ 双人精讲播客版 (Peter Parker · 荷兰弟少年感 & Mia)"
-    : "🎧 纯英母语独白版 (Alex · 母语级清亮少年音)";
+    ? "🎙️ 双人对话播客版"
+    : "🎧 纯英母语独白版";
   document.getElementById("gp-cover").textContent = track === "podcast" ? "🎙️" : "🎧";
   document.getElementById("gp-download").href = audioUrl;
 
@@ -402,8 +410,7 @@ async function loadTimeline(topicId, itemId, track) {
 // 格式化文本中的核心语块与标签
 function formatBodyText(raw) {
   return esc(raw)
-    .replace(/(whole grains?|coarse grains?|comprehensible input|something to look forward to|brute-force|short-circuited|literally|dude)/gi, '<span class="highlight-chunk">$1</span>')
-    .replace(/(\[chuckle\]|\[sigh\]|\[slight pause\]|\[gasp\])/gi, '<em style="color:var(--text-muted);font-size:12px;font-style:italic;">$1</em>');
+    .replace(/(\[[^\]]+\])/gi, '<em style="color:var(--text-muted);font-size:12px;font-style:italic;">$1</em>');
 }
 
 // 渲染实时同步歌词流
@@ -427,7 +434,7 @@ function renderLiveTimelineUI() {
     podStream.innerHTML = timeline.map(line => {
       const isA = line.speaker === "A";
       const spkClass = isA ? "a" : "b";
-      const displayName = isA ? "Alex (Tom Holland Vibe)" : "Mia (灵动搭档)";
+      const displayName = line.name || (isA ? "Alex" : "Mia");
 
       return `
         <div class="dialogue-bubble" id="pod-line-${line.id}" onclick="seekToTime(${line.start})">
@@ -477,15 +484,17 @@ window.seekToTime = function(seconds) {
 /* ---------------- 视图层 ---------------- */
 
 // 1. 媒体库首页：专辑卡片画廊
-async function TopicsGalleryView() {
+async function TopicsGalleryView(token) {
   $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载媒体库专辑中…</p>`;
   let topics = [];
   try {
     topics = await api("GET", "/api/topics");
   } catch (e) {
+    if (viewStale(token)) return;
     $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
     return;
   }
+  if (viewStale(token)) return;
 
   const hash = location.hash;
   let filtered = topics;
@@ -527,7 +536,7 @@ async function TopicsGalleryView() {
 }
 
 // 2. 专辑详情与曲目列表
-async function TopicDetailView(topicId) {
+async function TopicDetailView(topicId, token) {
   $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载专辑详情中…</p>`;
   let topic, manifestMono = null, manifestPod = null;
   try {
@@ -535,9 +544,11 @@ async function TopicDetailView(topicId) {
     try { manifestMono = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/episode?track=monologue`); } catch (_) {}
     try { manifestPod = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/episode?track=podcast`); } catch (_) {}
   } catch (e) {
+    if (viewStale(token)) return;
     $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
     return;
   }
+  if (viewStale(token)) return;
 
   PlayerState.currentTopic = topic;
   // 只把已生成音频的条目放进播放列表，避免连播时切到无声条目
@@ -603,16 +614,18 @@ async function TopicDetailView(topicId) {
 }
 
 // 3. 沉浸式单曲播放与卡拉OK实时剧本页
-async function TrackPlayerView(topicId, itemId) {
+async function TrackPlayerView(topicId, itemId, token) {
   $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载曲目与双语剧本中…</p>`;
   let item, topic;
   try {
     topic = await api("GET", `/api/topics/${encodeURIComponent(topicId)}`);
     item = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`);
   } catch (e) {
+    if (viewStale(token)) return;
     $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
     return;
   }
+  if (viewStale(token)) return;
 
   // 深链/刷新进入播放页也要有播放列表与话题上下文（修 A23：prev/next/连播不再失灵）
   PlayerState.currentTopic = topic;
@@ -688,17 +701,19 @@ async function TrackPlayerView(topicId, itemId) {
   playItem(topicId, item, true);
 }
 
-// 4. 荷兰弟与多音色内置展台
-async function VoicesShowcaseView() {
+// 4. 音色展台
+async function VoicesShowcaseView(token) {
   $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载声学音色展台中…</p>`;
   let voices = [], settings = {};
   try {
     voices = await api("GET", "/api/voices");
     settings = await api("GET", "/api/settings");
   } catch (e) {
+    if (viewStale(token)) return;
     $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
     return;
   }
+  if (viewStale(token)) return;
 
   const curVoiceA = (settings.reference_id || "").trim();
   const curVoiceB = (settings.reference_id_b || "").trim();
@@ -749,7 +764,7 @@ async function VoicesShowcaseView() {
   $app.innerHTML = `
     <div class="hero-banner" style="background: linear-gradient(135deg, rgba(30, 215, 96, 0.25) 0%, rgba(61, 123, 246, 0.2) 100%);">
       <div class="hero-title">🎭 声学音色预设展台 (Voice Preset Registry)</div>
-      <div class="hero-desc">告别机械中年播音感。预设首推<b>荷兰弟 (Peter Parker vibe)</b> 少年音色：语调跳跃、带自然气声与好奇心碎碎念；搭配 Mia 双语敏捷搭档，打造身临其境的纯正英语对话。</div>
+      <div class="hero-desc">选择并保存你的长期发音模仿对象：语色一旦定版，整套语料的听感与 shadowing 基准就稳定了。搭配双音色可生成双人对话播客。</div>
     </div>
 
     <div class="section-header">
@@ -823,7 +838,7 @@ function mgStatusPill(it) {
   return `<span class="mg-pill">空</span>`;
 }
 
-async function ManageView() {
+async function ManageView(token) {
   if (ManageState.pollTimer) {
     clearInterval(ManageState.pollTimer);
     ManageState.pollTimer = null;
@@ -835,9 +850,11 @@ async function ManageView() {
     topics = await api("GET", "/api/topics");
     health = await api("GET", "/api/health").catch(() => null);
   } catch (e) {
+    if (viewStale(token)) return;
     $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
     return;
   }
+  if (viewStale(token)) return;
 
   const modelOpts = (settings.models || [])
     .map(m => `<option value="${esc(m)}" ${m === settings.model ? "selected" : ""}>${esc(m)}</option>`)
@@ -1017,7 +1034,7 @@ function mgRenderTopicList(topics) {
   });
 }
 
-async function mgLoadTopic(topicId, keepEditorClosed = false) {
+async function mgLoadTopic(topicId, keepEditorClosed = false, token = null) {
   const $panel = document.getElementById("mg-topic-panel");
   if (!$panel) return;
   $panel.innerHTML = `<p style="color:var(--text-sub);">加载话题中…</p>`;
@@ -1025,9 +1042,11 @@ async function mgLoadTopic(topicId, keepEditorClosed = false) {
   try {
     topic = await api("GET", `/api/topics/${encodeURIComponent(topicId)}`);
   } catch (e) {
+    if (token !== null && viewStale(token)) return;
     $panel.innerHTML = `<p style="color:var(--text-sub);">加载失败：${esc(e.message)}</p>`;
     return;
   }
+  if (token !== null && viewStale(token)) return;
 
   $panel.innerHTML = `
     <h3>🎬 ${esc(topic.name)}</h3>
@@ -1240,11 +1259,28 @@ async function mgAssemble(topicId, track) {
 
 function mgStartPolling(jobId) {
   if (ManageState.pollTimer) clearInterval(ManageState.pollTimer);
+  let consecutiveErrors = 0;
   const tick = async () => {
+    // 已离开工作台 → 停止轮询（修审计 A22 定时器泄漏）
+    if (!location.hash.startsWith("#/manage")) {
+      clearInterval(ManageState.pollTimer);
+      ManageState.pollTimer = null;
+      return;
+    }
     let job;
     try {
       job = await api("GET", `/api/jobs/${jobId}`);
-    } catch (_) {
+      consecutiveErrors = 0;
+    } catch (e) {
+      // 404 = 任务被清理或服务重启；连续失败 4 次（约 6 秒）停止轮询，避免永久空转
+      consecutiveErrors += 1;
+      if (consecutiveErrors >= 4) {
+        clearInterval(ManageState.pollTimer);
+        ManageState.pollTimer = null;
+        toast("任务查询失败，已停止跟踪（可能服务已重启）");
+        const box = document.getElementById("mg-job-box");
+        if (box) box.innerHTML = `<div class="mg-hint">⚠️ 任务跟踪中断（服务可能重启过）。请刷新工作台。</div>`;
+      }
       return;
     }
     ManageState.job = job;
@@ -1257,7 +1293,10 @@ function mgStartPolling(jobId) {
       return;
     }
     const pct = job.total ? Math.round((job.done / job.total) * 100) : 0;
-    const stateText = { running: "⏳ 生成中", done: "✅ 已完成", cancelled: "已取消" }[job.state] || job.state;
+    const stateText = {
+      running: "⏳ 生成中", done: "✅ 已完成", cancelled: "已取消",
+      error: "❌ 出错", interrupted: "⚠️ 已中断（服务重启）",
+    }[job.state] || job.state;
     box.innerHTML = `
       <div class="mg-progress"><div class="mg-progress-fill" style="width:${pct}%"></div></div>
       <div class="mg-hint mg-job-line">
@@ -1284,7 +1323,28 @@ function mgStartPolling(jobId) {
 }
 
 /* ---------------- 路由调度 ---------------- */
+
+// 路由令牌：每次导航递增；视图的异步 continuation 写 DOM 前核对，
+// 过期即放弃写入（修审计 A21——快速导航时旧视图覆盖新视图）。
+let routeToken = 0;
+function currentRouteToken() {
+  return routeToken;
+}
+
+// 视图统一入口：装载路由令牌并驱动视图
+function mountView(viewFn) {
+  const token = ++routeToken;
+  viewFn(token);
+}
+
+// 异步视图安全写 DOM：令牌过期返回 true（调用方应立即 return）
+function viewStale(token) {
+  // null/undefined = 程序性重渲染（如操作后刷新面板），不受路由令牌约束
+  return token != null && token !== routeToken;
+}
+
 function route() {
+  const token = ++routeToken;
   const hash = location.hash || "#/topics";
   document.querySelectorAll(".nav-item").forEach(el => {
     if (el.getAttribute("href") === hash) {
@@ -1294,31 +1354,37 @@ function route() {
     }
   });
 
+  // 导航离开工作台时清理轮询定时器（修审计 A22）
+  if (!hash.startsWith("#/manage") && ManageState.pollTimer) {
+    clearInterval(ManageState.pollTimer);
+    ManageState.pollTimer = null;
+  }
+
   if (hash.startsWith("#/voices")) {
-    VoicesShowcaseView();
+    VoicesShowcaseView(token);
     return;
   }
 
   if (hash.startsWith("#/manage")) {
-    ManageView();
+    ManageView(token);
     return;
   }
 
   if (hash.startsWith("#/play/")) {
     const parts = hash.slice(7).split("/");
     if (parts.length >= 2) {
-      TrackPlayerView(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]));
+      TrackPlayerView(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
       return;
     }
   }
 
   if (hash.startsWith("#/topic/")) {
     const tid = hash.slice(8);
-    TopicDetailView(decodeURIComponent(tid));
+    TopicDetailView(decodeURIComponent(tid), token);
     return;
   }
 
-  TopicsGalleryView();
+  TopicsGalleryView(token);
 }
 
 window.addEventListener("hashchange", route);
