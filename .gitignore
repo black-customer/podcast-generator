@@ -41,3 +41,11 @@ desktop.ini
 .idea/
 .vscode/
 .zcode/
+
+# Lint cache
+.ruff_cache/
+
+# 音频策略：文本与 meta 入库（语料是产品本体），音频不入库（可再生、体积大）
+# 例外：初始提交中已跟踪的音频保持跟踪，避免状态不一致
+data/topics/**/audio*.mp3
+data/episodes/*.mp3

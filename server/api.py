@@ -89,9 +89,9 @@ def api_get_topic(topic_id: str):
     try:
         return library.get_topic(topic_id)
     except FileNotFoundError as e:
-        raise _err(404, str(e))
+        raise _err(404, str(e)) from e
     except ValueError as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
 
 @router.patch("/topics/{topic_id}")
@@ -100,7 +100,7 @@ def api_rename_topic(topic_id: str, body: TopicIn):
         library.rename_topic(topic_id, body.name)
         return {"ok": True}
     except FileNotFoundError as e:
-        raise _err(404, str(e))
+        raise _err(404, str(e)) from e
 
 
 @router.delete("/topics/{topic_id}")
@@ -109,7 +109,7 @@ def api_delete_topic(topic_id: str):
         library.delete_topic(topic_id)
         return {"ok": True}
     except ValueError as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
 
 # ---------------------------------------------------------------- items
@@ -119,9 +119,9 @@ def api_create_item(topic_id: str, body: ItemIn):
     try:
         return library.create_item(topic_id, body.model_dump())
     except FileNotFoundError as e:
-        raise _err(404, str(e))
+        raise _err(404, str(e)) from e
     except ValueError as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
 
 @router.post("/topics/{topic_id}/items/bulk")
@@ -140,9 +140,9 @@ def api_get_item(topic_id: str, item_id: str):
     try:
         return library.get_item_full(topic_id, item_id)
     except FileNotFoundError as e:
-        raise _err(404, str(e))
+        raise _err(404, str(e)) from e
     except ValueError as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
 
 @router.patch("/topics/{topic_id}/items/{item_id}")
@@ -157,9 +157,9 @@ def api_update_item(topic_id: str, item_id: str, body: ItemIn):
     try:
         return library.update_item_texts(topic_id, item_id, fields)
     except FileNotFoundError as e:
-        raise _err(404, str(e))
+        raise _err(404, str(e)) from e
     except ValueError as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
 
 @router.delete("/topics/{topic_id}/items/{item_id}")
@@ -168,7 +168,7 @@ def api_delete_item(topic_id: str, item_id: str):
         library.delete_item(topic_id, item_id)
         return {"ok": True}
     except ValueError as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
 
 @router.get("/topics/{topic_id}/items/{item_id}/audio")
@@ -177,7 +177,7 @@ def api_item_audio(topic_id: str, item_id: str, track: TrackParam = "default"):
     try:
         ipath = library.item_path(topic_id, item_id)
     except ValueError as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
     target = library.resolve_audio_file(ipath, track)
     if not target:
@@ -191,7 +191,7 @@ def api_item_timeline(topic_id: str, item_id: str, track: TrackParam = "podcast"
     try:
         tl = timeline.get_or_create_timeline(topic_id, item_id, track)
     except (FileNotFoundError, ValueError) as e:
-        raise _err(404, str(e))
+        raise _err(404, str(e)) from e
     return tl
 
 
@@ -202,7 +202,7 @@ def api_generate_item(topic_id: str, item_id: str, body: GenerateIn):
     try:
         return jobs.start_generate(topic_id, force=body.force, item_ids=[item_id], track=body.track)
     except (FileNotFoundError, RuntimeError) as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
 
 @router.post("/topics/{topic_id}/generate")
@@ -210,7 +210,7 @@ def api_generate_topic(topic_id: str, body: GenerateIn):
     try:
         return jobs.start_generate(topic_id, force=body.force, track=body.track)
     except (FileNotFoundError, RuntimeError) as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
 
 @router.get("/jobs/{job_id}")
@@ -233,9 +233,9 @@ def api_assemble_episode(topic_id: str, track: TrackParam = "default"):
     try:
         return assemble.assemble_episode(topic_id, track=track)
     except FileNotFoundError as e:
-        raise _err(404, str(e))
+        raise _err(404, str(e)) from e
     except (RuntimeError, audio.FFmpegError) as e:
-        raise _err(400, str(e))
+        raise _err(400, str(e)) from e
 
 
 @router.get("/topics/{topic_id}/episode")
@@ -298,7 +298,7 @@ def api_rewrite_request(topic_id: str, item_id: str):
     try:
         item = library.get_item_full(topic_id, item_id)
     except (FileNotFoundError, ValueError) as e:
-        raise _err(404, str(e))
+        raise _err(404, str(e)) from e
     template_file = PROMPTS_DIR / "promptA_zh_to_natural_english.md"
     if template_file.exists():
         template = template_file.read_text(encoding="utf-8")
@@ -315,7 +315,7 @@ def api_voice_direct_request(topic_id: str, item_id: str):
     try:
         item = library.get_item_full(topic_id, item_id)
     except (FileNotFoundError, ValueError) as e:
-        raise _err(404, str(e))
+        raise _err(404, str(e)) from e
     template_file = PROMPTS_DIR / "promptB_voice_direct.md"
     if not (item.get("natural_english") or "").strip():
         raise _err(400, "请先填写 Natural English")

@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
-from server import library, tts, assemble
+from server import library, tts
 
 
 def ingest_and_generate(
@@ -83,7 +83,9 @@ def main():
     parser.add_argument("--chinese-file", help="Path to Chinese text file")
     parser.add_argument("--monologue-file", help="Path to Monologue text file")
     parser.add_argument("--podcast-file", help="Path to Podcast dialogue text file")
-    parser.add_argument("--track", default="all", choices=["all", "monologue", "podcast", "default"])
+    parser.add_argument(
+        "--track", default="all", choices=["all", "monologue", "podcast", "default"]
+    )
     parser.add_argument("--no-audio", action="store_true", help="Skip TTS synthesis")
 
     args = parser.parse_args()

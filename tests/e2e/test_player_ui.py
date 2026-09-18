@@ -1,5 +1,4 @@
 """Playwright 无头浏览器 E2E 自动化测试预言机 (tests/e2e/test_player_ui.py)"""
-import pytest
 from playwright.sync_api import sync_playwright
 
 BASE_URL = "http://127.0.0.1:8765"
@@ -11,7 +10,10 @@ def test_full_player_workflow():
 
         console_errors = []
         page.on("pageerror", lambda err: console_errors.append(str(err)))
-        page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
+        def _on_console(msg):
+            if msg.type == "error":
+                console_errors.append(msg.text)
+        page.on("console", _on_console)
 
         # 1. 访问首页
         page.goto(BASE_URL)

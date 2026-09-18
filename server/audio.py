@@ -28,8 +28,8 @@ def check_ffmpeg() -> tuple[bool, str]:
 def _run(args: list[str], timeout: float = 600) -> None:
     try:
         proc = subprocess.run(args, capture_output=True, text=True, timeout=timeout)
-    except subprocess.TimeoutExpired:
-        raise FFmpegError(f"ffmpeg 超时（>{timeout:.0f}s）: {args[0]} …")
+    except subprocess.TimeoutExpired as exc:
+        raise FFmpegError(f"ffmpeg 超时（>{timeout:.0f}s）: {args[0]} …") from exc
     if proc.returncode != 0:
         tail = (proc.stderr or "")[-500:]
         raise FFmpegError(f"ffmpeg 失败: {tail}")
@@ -87,7 +87,7 @@ def make_tone(seconds: float, out_path: Path) -> Path:
 
 
 def concat_mp3(entries: list[dict], out_path: Path) -> None:
-    """entries: [{path, gap_before}]，按顺序拼接、响度归一（-16 LUFS）并重编码为 44.1kHz 单声道 mp3。"""
+    """拼接音频块：响度归一（-16 LUFS），输出 44.1kHz 单声道 mp3。entries=[{path,gap_before}]。"""
     out_path.parent.mkdir(parents=True, exist_ok=True)
     lines = []
     for e in entries:

@@ -20,7 +20,8 @@ from server import assemble, audio, library, tts
 
 def _ffmpeg_ok() -> bool:
     try:
-        return subprocess.run(["ffmpeg", "-version"], capture_output=True, timeout=15).returncode == 0
+        proc = subprocess.run(["ffmpeg", "-version"], capture_output=True, timeout=15)
+        return proc.returncode == 0
     except (FileNotFoundError, subprocess.TimeoutExpired):
         return False
 
@@ -176,7 +177,8 @@ def test_health(client):
 def test_api_patch_partial_update_regression(client, lib_env):
     """回归：PATCH 只传一个字段时，其他字段不能被清空。"""
     tid = client.post("/api/topics", json={"name": "T"}).json()["id"]
-    iid = client.post(f"/api/topics/{tid}/items", json={"question": "Q1", "chinese": "中文"}).json()["id"]
+    r = client.post(f"/api/topics/{tid}/items", json={"question": "Q1", "chinese": "中文"})
+    iid = r.json()["id"]
 
     r = client.patch(f"/api/topics/{tid}/items/{iid}", json={"chinese": "新中文"})
     assert r.status_code == 200
@@ -192,7 +194,8 @@ def test_api_track_validation(client, lib_env):
     tid = client.post("/api/topics", json={"name": "T"}).json()["id"]
     iid = client.post(f"/api/topics/{tid}/items", json={"question": "Q"}).json()["id"]
 
-    assert client.post(f"/api/topics/{tid}/items/{iid}/generate", json={"track": "bogus"}).status_code == 422
+    r = client.post(f"/api/topics/{tid}/items/{iid}/generate", json={"track": "bogus"})
+    assert r.status_code == 422
     assert client.post(f"/api/topics/{tid}/generate", json={"track": "bogus"}).status_code == 422
     assert client.get(f"/api/topics/{tid}/episode?track=bogus").status_code == 422
 

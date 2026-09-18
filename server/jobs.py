@@ -27,7 +27,13 @@ def _prune_finished_locked() -> None:
         JOBS.pop(j["id"], None)
 
 
-def _run_generate(job_id: str, topic_id: str, item_ids: list[str], force: bool, track: str = "default") -> None:
+def _run_generate(
+    job_id: str,
+    topic_id: str,
+    item_ids: list[str],
+    force: bool,
+    track: str = "default",
+) -> None:
     job = JOBS[job_id]
     for idx, item_id in enumerate(item_ids):
         with JOBS_LOCK:

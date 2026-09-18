@@ -13,6 +13,7 @@ from .config import (
     FISH_TTS_URL,
     TMP_DIR,
     load_settings,
+    real_api_key,
 )
 
 logger = logging.getLogger(__name__)
@@ -128,7 +129,7 @@ def estimate_seconds(text: str) -> float:
 
 def _post_tts(payload: dict, settings: dict) -> bytes:
     headers = {
-        "Authorization": f"Bearer {(settings.get('fish_api_key') or '').strip()}",
+        "Authorization": f"Bearer {real_api_key(settings)}",
         "model": settings.get("model") or "s2.1-pro-free",
         "Content-Type": "application/json",
     }
@@ -202,10 +203,10 @@ def fish_tts_dialogue(lines: list[tuple[str, str]], settings: dict) -> bytes:
 
 def test_connection(settings: dict) -> dict:
     """用最小请求验证 key（生成 1 秒音频）。"""
-    if not (settings.get("fish_api_key") or "").strip():
+    if not real_api_key(settings):
         return {"ok": True, "mode": "dry_run", "message": "未配置 API key，当前为 dry-run 模式"}
     headers = {
-        "Authorization": f"Bearer {settings['fish_api_key'].strip()}",
+        "Authorization": f"Bearer {real_api_key(settings)}",
         "model": settings.get("model") or "s2.1-pro-free",
         "Content-Type": "application/json",
     }
@@ -242,7 +243,7 @@ def _synthesize_source(
     """核心合成函数：处理文本分段/多说话人合成并输出到 out_path。
     返回: (duration_sec, seg_count, is_dialogue, tts_mode)
     """
-    dry = not (settings.get("fish_api_key") or "").strip() or bool(settings.get("dry_run"))
+    dry = not real_api_key(settings) or bool(settings.get("dry_run"))
     try:
         seg_chars = int(settings.get("segment_chars") or 700)
     except (TypeError, ValueError):
@@ -335,7 +336,7 @@ def generate_item_audio(topic_id: str, item_id: str, track: str = "default") -> 
     if track not in VALID_TRACKS:
         raise TTSError(f"未知轨道: {track}（可选 {VALID_TRACKS}）")
     settings = load_settings()
-    dry = not (settings.get("fish_api_key") or "").strip() or bool(settings.get("dry_run"))
+    dry = not real_api_key(settings) or bool(settings.get("dry_run"))
     full = library.get_item_full(topic_id, item_id)
     ipath = library.item_path(topic_id, item_id)
 

@@ -72,7 +72,8 @@ def load_settings() -> dict:
                 pass
         elif (DATA_DIR / "settings.example.json").exists():
             try:
-                stored = json.loads((DATA_DIR / "settings.example.json").read_text(encoding="utf-8"))
+                example = DATA_DIR / "settings.example.json"
+                stored = json.loads(example.read_text(encoding="utf-8"))
                 if isinstance(stored, dict):
                     settings.update({k: v for k, v in stored.items() if k in settings})
             except (json.JSONDecodeError, OSError):
@@ -103,6 +104,15 @@ def settings_keys():
     return DEFAULT_SETTINGS.keys()
 
 
+# 占位符 key（settings.example.json 复制后未替换的情况）一律视为未配置
+_PLACEHOLDER_KEYS = {"", "your_fish_api_key_here", "your-fish-api-key"}
+
+
+def real_api_key(settings: dict | None = None) -> str:
+    key = ((settings or {}).get("fish_api_key") or "").strip()
+    return "" if key.lower() in _PLACEHOLDER_KEYS else key
+
+
 def is_dry_run(settings: dict | None = None) -> bool:
     s = settings or load_settings()
-    return bool(s.get("dry_run")) or not (s.get("fish_api_key") or "").strip()
+    return bool(s.get("dry_run")) or not real_api_key(s)

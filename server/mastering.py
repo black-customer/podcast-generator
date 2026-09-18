@@ -88,7 +88,7 @@ def apply_mastering(
     ]
 
     try:
-        res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=FFMPEG_TIMEOUT)
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=FFMPEG_TIMEOUT)
         if res.returncode != 0:
             # 降级：如果复杂的 filter_complex 失败（如旧版 ffmpeg 不支持 normalize），
             # 使用纯人声 EQ 链路，只损失底噪垫底
@@ -107,13 +107,15 @@ def apply_mastering(
                 "44100",
                 str(tmp_out),
             ]
-            res2 = subprocess.run(cmd_fallback, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=FFMPEG_TIMEOUT)
+            res2 = subprocess.run(
+                cmd_fallback, capture_output=True, text=True, timeout=FFMPEG_TIMEOUT
+            )
             if res2.returncode != 0:
                 raise FFmpegError(f"FFmpeg 母带处理失败: {res2.stderr[:300]}")
     except subprocess.TimeoutExpired as exc:
         raise FFmpegError(f"FFmpeg 母带处理超时: {exc}") from exc
     except OSError as exc:
-        raise FFmpegError(f"执行 ffmpeg 失败: {exc}")
+        raise FFmpegError(f"执行 ffmpeg 失败: {exc}") from exc
 
     if tmp_out.exists():
         if output_audio.exists():

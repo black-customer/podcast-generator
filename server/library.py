@@ -171,7 +171,9 @@ def delete_topic(topic_id: str) -> None:
         # 同步清理该话题已合成的剧集音频与清单，避免孤儿文件
         if EPISODES_DIR.exists():
             for p in EPISODES_DIR.iterdir():
-                if p.is_file() and (p.name.startswith(f"{topic_id}_") or p.name.startswith(f"{topic_id}.")):
+                if p.is_file() and (
+                    p.name.startswith(f"{topic_id}_") or p.name.startswith(f"{topic_id}.")
+                ):
                     p.unlink(missing_ok=True)
 
 
@@ -412,8 +414,10 @@ def get_item_full(topic_id: str, item_id: str) -> dict:
             raise FileNotFoundError("条目不存在")
         texts = read_item_texts(d)
         meta = load_meta(d)
-        has_mono = (d / "audio_monologue.mp3").exists() and (d / "audio_monologue.mp3").stat().st_size > 0
-        has_pod = (d / "audio_podcast.mp3").exists() and (d / "audio_podcast.mp3").stat().st_size > 0
+        mono = d / "audio_monologue.mp3"
+        pod = d / "audio_podcast.mp3"
+        has_mono = mono.exists() and mono.stat().st_size > 0
+        has_pod = pod.exists() and pod.stat().st_size > 0
         has_legacy = (d / "audio.mp3").exists() and (d / "audio.mp3").stat().st_size > 0
         return {
             "topic_id": topic_id,

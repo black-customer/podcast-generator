@@ -2,7 +2,6 @@
 
 运行：服务已启动后 .venv/Scripts/python -m pytest tests/e2e/test_manage_ui.py -q
 """
-import pytest
 from playwright.sync_api import sync_playwright
 
 BASE_URL = "http://127.0.0.1:8765"
@@ -14,7 +13,10 @@ def test_manage_view_workflow():
         page = browser.new_page()
         console_errors = []
         page.on("pageerror", lambda err: console_errors.append(str(err)))
-        page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
+        def _on_console(msg):
+            if msg.type == "error":
+                console_errors.append(msg.text)
+        page.on("console", _on_console)
 
         # 1. 打开工作台
         page.goto(f"{BASE_URL}/#/manage")
@@ -54,7 +56,9 @@ def test_manage_view_workflow():
         row = page.locator(".mg-topic-row", has_text=topic_name)
         page.once("dialog", lambda d: d.accept())
         row.locator("[data-del]").click()
-        page.wait_for_selector(f".mg-topic-row:has-text('{topic_name}')", state="detached", timeout=5000)
+        page.wait_for_selector(
+            f".mg-topic-row:has-text('{topic_name}')", state="detached", timeout=5000
+        )
         assert topic_name not in page.locator("#mg-topic-list").text_content()
 
         # 8. 无 JS 运行时异常

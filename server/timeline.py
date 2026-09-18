@@ -36,9 +36,9 @@ def generate_timeline_for_dialogue(
         # 汉字权重加权 (1个汉字约等于3.5个英文字符的时长)
         cjk_count = len(re.findall(r"[\u4e00-\u9fff]", clean_text))
         ascii_count = len(re.findall(r"[a-zA-Z0-9]", clean_text))
-        
+
         weight = max(1.0, ascii_count + (cjk_count * 3.6))
-        
+
         # 标签额外停顿
         if "[slight pause]" in body or "..." in body or "—" in body:
             weight += 4.5
@@ -162,7 +162,10 @@ def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") 
     ipath = library.item_path(topic_id, item_id)
     full = library.get_item_full(topic_id, item_id)
 
-    cache = ipath / (f"timeline_{track}.json" if track in ("monologue", "podcast") else "timeline_podcast.json")
+    if track in ("monologue", "podcast"):
+        cache = ipath / f"timeline_{track}.json"
+    else:
+        cache = ipath / "timeline_podcast.json"
     cached = load_timeline(cache)
     if cached:
         return cached
@@ -179,7 +182,8 @@ def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") 
     if track == "monologue":
         tl = generate_timeline_for_monologue(src, audio_path)
     else:
-        tl = generate_timeline_for_dialogue(src, audio_path) or generate_timeline_for_monologue(src, audio_path)
+        tl = generate_timeline_for_dialogue(src, audio_path)
+        tl = tl or generate_timeline_for_monologue(src, audio_path)
     if tl:
         save_timeline(tl, cache)
     return tl
