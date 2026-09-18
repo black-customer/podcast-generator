@@ -3,6 +3,7 @@
 输出保存到 data/.tmp/sse_probe.txt（原始事件）供分析，不入库。
 用法：.venv/Scripts/python scripts/probe_fish_sse.py
 """
+import base64
 import json
 import sys
 from pathlib import Path
@@ -10,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import httpx
 
-from server.config import FISH_TTS_URL, load_settings, real_api_key
+from server.config import load_settings, real_api_key
 
 ENDPOINT = "https://api.fish.audio/v1/tts/stream/with-timestamp"
 OUT = Path("data/.tmp/sse_probe.txt")
@@ -28,7 +29,8 @@ def main() -> None:
         "Content-Type": "application/json",
     }
     payload = {
-        "text": "Well, I mean, I am technically still a student. But here is the thing: I switched majors.",
+        "text": "Well, I mean, I am technically still a student. "
+        "But here is the thing: I switched majors.",
         "format": "mp3",
         "mp3_bitrate": 64,
         "latency": "normal",
@@ -51,7 +53,8 @@ def main() -> None:
             if line.startswith("data:"):
                 try:
                     data = json.loads(line[5:].strip())
-                    audio_bytes += __import__("base64").b64decode(data.get("audio") or data.get("audio_base64") or "")
+                    payload = data.get("audio") or data.get("audio_base64") or ""
+                    audio_bytes += base64.b64decode(payload)
                 except Exception:
                     pass
     OUT.write_text("\n".join(events), encoding="utf-8")

@@ -108,7 +108,7 @@ def main() -> int:
         for f in failures:
             print(" -", f)
         return 1
-    print("\n=== AC PASS（模式: %s）===" % doc["mode"])
+    print(f"\n=== AC PASS（模式: {doc['mode']}）===")
     return 0
 
 
