@@ -1,0 +1,304 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "cd458a144ac0fad5",
+  "audio_signature": "467113:1789785814",
+  "created_at": "2026-09-19T10:43:34",
+  "segments": [
+    {
+      "text": "What kinds of websites are popular in your country?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.68
+    },
+    {
+      "text": "Oh, in China, social media and online shopping websites are extremely popular. Like Taobao — it's kind of the Amazon of China. There's also Bilibili, like I mentioned, and the Chinese TikTok, and this app called Xiaohongshu — the \"red note\" app. They're all hugely popular in our country.",
+      "speaker": "b",
+      "start": 3.16,
+      "end": 19.41
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "kinds",
+      "start": 0.16,
+      "end": 0.48
+    },
+    {
+      "text": "of",
+      "start": 0.48,
+      "end": 0.64
+    },
+    {
+      "text": "websites",
+      "start": 0.64,
+      "end": 1.2
+    },
+    {
+      "text": "are",
+      "start": 1.2,
+      "end": 1.28
+    },
+    {
+      "text": "popular",
+      "start": 1.28,
+      "end": 1.76
+    },
+    {
+      "text": "in",
+      "start": 1.76,
+      "end": 1.84
+    },
+    {
+      "text": "your",
+      "start": 1.84,
+      "end": 2.08
+    },
+    {
+      "text": "country",
+      "start": 2.08,
+      "end": 2.64
+    },
+    {
+      "text": "Oh",
+      "start": 3.106,
+      "end": 3.426
+    },
+    {
+      "text": "in",
+      "start": 3.426,
+      "end": 3.586
+    },
+    {
+      "text": "China",
+      "start": 3.586,
+      "end": 4.306
+    },
+    {
+      "text": "social",
+      "start": 4.306,
+      "end": 4.706
+    },
+    {
+      "text": "media",
+      "start": 4.706,
+      "end": 5.106
+    },
+    {
+      "text": "and",
+      "start": 5.106,
+      "end": 5.346
+    },
+    {
+      "text": "online",
+      "start": 5.346,
+      "end": 5.746
+    },
+    {
+      "text": "shopping",
+      "start": 5.746,
+      "end": 6.146
+    },
+    {
+      "text": "websites",
+      "start": 6.146,
+      "end": 6.546
+    },
+    {
+      "text": "are",
+      "start": 6.546,
+      "end": 6.706
+    },
+    {
+      "text": "extremely",
+      "start": 6.706,
+      "end": 7.426
+    },
+    {
+      "text": "popular",
+      "start": 7.426,
+      "end": 8.066
+    },
+    {
+      "text": "Like",
+      "start": 8.226,
+      "end": 8.386
+    },
+    {
+      "text": "Taobao",
+      "start": 8.386,
+      "end": 9.106
+    },
+    {
+      "text": "it's",
+      "start": 9.186,
+      "end": 9.266
+    },
+    {
+      "text": "kind",
+      "start": 9.266,
+      "end": 9.506
+    },
+    {
+      "text": "of",
+      "start": 9.506,
+      "end": 9.586
+    },
+    {
+      "text": "the",
+      "start": 9.586,
+      "end": 9.666
+    },
+    {
+      "text": "Amazon",
+      "start": 9.666,
+      "end": 10.146
+    },
+    {
+      "text": "of",
+      "start": 10.146,
+      "end": 10.226
+    },
+    {
+      "text": "China",
+      "start": 10.226,
+      "end": 10.626
+    },
+    {
+      "text": "There's",
+      "start": 10.706,
+      "end": 10.866
+    },
+    {
+      "text": "also",
+      "start": 10.866,
+      "end": 11.106
+    },
+    {
+      "text": "Bilibili",
+      "start": 11.106,
+      "end": 11.666
+    },
+    {
+      "text": "like",
+      "start": 11.666,
+      "end": 11.906
+    },
+    {
+      "text": "I",
+      "start": 11.906,
+      "end": 11.906
+    },
+    {
+      "text": "mentioned",
+      "start": 11.906,
+      "end": 12.546
+    },
+    {
+      "text": "and",
+      "start": 12.546,
+      "end": 12.706
+    },
+    {
+      "text": "the",
+      "start": 12.706,
+      "end": 12.786
+    },
+    {
+      "text": "Chinese",
+      "start": 12.786,
+      "end": 13.186
+    },
+    {
+      "text": "TikTok",
+      "start": 13.186,
+      "end": 13.826
+    },
+    {
+      "text": "and",
+      "start": 13.906,
+      "end": 13.986
+    },
+    {
+      "text": "this",
+      "start": 13.986,
+      "end": 14.146
+    },
+    {
+      "text": "app",
+      "start": 14.226,
+      "end": 14.546
+    },
+    {
+      "text": "called",
+      "start": 14.546,
+      "end": 14.786
+    },
+    {
+      "text": "Xiaohongshu",
+      "start": 14.786,
+      "end": 15.906
+    },
+    {
+      "text": "the",
+      "start": 15.906,
+      "end": 16.066
+    },
+    {
+      "text": "red",
+      "start": 16.066,
+      "end": 16.306
+    },
+    {
+      "text": "note",
+      "start": 16.306,
+      "end": 16.626
+    },
+    {
+      "text": "app",
+      "start": 16.626,
+      "end": 16.946
+    },
+    {
+      "text": "They're",
+      "start": 17.026,
+      "end": 17.266
+    },
+    {
+      "text": "all",
+      "start": 17.266,
+      "end": 17.506
+    },
+    {
+      "text": "hugely",
+      "start": 17.506,
+      "end": 17.986
+    },
+    {
+      "text": "popular",
+      "start": 17.986,
+      "end": 18.386
+    },
+    {
+      "text": "in",
+      "start": 18.386,
+      "end": 18.466
+    },
+    {
+      "text": "our",
+      "start": 18.466,
+      "end": 18.546
+    },
+    {
+      "text": "country",
+      "start": 18.546,
+      "end": 19.106
+    }
+  ]
+}

@@ -1,50 +1,4 @@
 {
-  "01a138df2c1c": {
-    "id": "01a138df2c1c",
-    "kind": "assemble",
-    "topic_id": "01-e2e",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 0,
-    "current": "",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:09.764",
-    "finished_at": "2026-09-19T01:49:09.922",
-    "result": {
-      "topic_id": "01-e2e",
-      "topic_name": "E2E",
-      "track": "podcast",
-      "file": "01-e2e_podcast.mp3",
-      "total_sec": 1.93,
-      "item_count": 1,
-      "generated_at": "2026-09-19T01:49:09.919",
-      "items": [
-        {
-          "id": "001-q",
-          "title": "Q?",
-          "duration_sec": 1.93,
-          "offset_sec": 0.0,
-          "generated_at": "2026-09-19T01:49:08.847"
-        }
-      ]
-    }
-  },
-  "f8b7d83b875b": {
-    "id": "f8b7d83b875b",
-    "kind": "generate",
-    "topic_id": "01-align",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:46.392",
-    "finished_at": "2026-09-19T01:49:47.292"
-  },
   "619469365d2b": {
     "id": "619469365d2b",
     "kind": "generate",
@@ -1247,6 +1201,115 @@
           "duration_sec": 20.51,
           "offset_sec": 151.24,
           "generated_at": "2026-09-19T10:39:31.193"
+        }
+      ]
+    }
+  },
+  "c92283e09a2f": {
+    "id": "c92283e09a2f",
+    "kind": "generate",
+    "topic_id": "01-part-1-tidiness-websites-watches-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 10,
+    "done": 10,
+    "current": "010-do-you-think-it-s-important-to-wear-a-watch",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:42:33.170",
+    "finished_at": "2026-09-19T10:44:25.505"
+  },
+  "e98855953159": {
+    "id": "e98855953159",
+    "kind": "assemble",
+    "topic_id": "01-part-1-tidiness-websites-watches-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:45:35.823",
+    "finished_at": "2026-09-19T10:45:40.769",
+    "result": {
+      "topic_id": "01-part-1-tidiness-websites-watches-bruce-真实回答",
+      "topic_name": "Part 1 · Tidiness, Websites & Watches（Bruce 真实回答）",
+      "track": "podcast",
+      "file": "01-part-1-tidiness-websites-watches-bruce-真实回答_podcast.mp3",
+      "total_sec": 177.85,
+      "item_count": 10,
+      "generated_at": "2026-09-19T10:45:40.767",
+      "items": [
+        {
+          "id": "001-do-you-like-to-keep-things-tidy",
+          "title": "Do you like to keep things tidy?",
+          "duration_sec": 17.32,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T10:42:33.180"
+        },
+        {
+          "id": "002-did-you-use-to-keep-your-room-dirty-as-a-child",
+          "title": "Did you use to keep your room dirty as a child?",
+          "duration_sec": 14.71,
+          "offset_sec": 17.92,
+          "generated_at": "2026-09-19T10:42:44.007"
+        },
+        {
+          "id": "003-what-kinds-of-websites-do-you-often-visit",
+          "title": "What kinds of websites do you often visit?",
+          "duration_sec": 16.3,
+          "offset_sec": 33.23,
+          "generated_at": "2026-09-19T10:42:53.107"
+        },
+        {
+          "id": "004-what-is-your-favorite-website",
+          "title": "What is your favorite website?",
+          "duration_sec": 19.46,
+          "offset_sec": 50.13,
+          "generated_at": "2026-09-19T10:43:01.843"
+        },
+        {
+          "id": "005-are-there-any-changes-to-the-websites-you-often-visit",
+          "title": "Are there any changes to the websites you often visit?",
+          "duration_sec": 23.35,
+          "offset_sec": 70.19,
+          "generated_at": "2026-09-19T10:43:12.610"
+        },
+        {
+          "id": "006-what-kinds-of-websites-are-popular-in-your-country",
+          "title": "What kinds of websites are popular in your country?",
+          "duration_sec": 19.41,
+          "offset_sec": 94.14,
+          "generated_at": "2026-09-19T10:43:24.789"
+        },
+        {
+          "id": "007-do-you-wear-a-watch",
+          "title": "Do you wear a watch?",
+          "duration_sec": 26.7,
+          "offset_sec": 114.15,
+          "generated_at": "2026-09-19T10:43:34.975"
+        },
+        {
+          "id": "008-have-you-ever-gotten-a-watch-as-a-gift",
+          "title": "Have you ever gotten a watch as a gift?",
+          "duration_sec": 11.76,
+          "offset_sec": 141.45,
+          "generated_at": "2026-09-19T10:43:49.230"
+        },
+        {
+          "id": "009-why-do-some-people-wear-expensive-watches",
+          "title": "Why do some people wear expensive watches?",
+          "duration_sec": 26.04,
+          "offset_sec": 153.81,
+          "generated_at": "2026-09-19T10:43:56.874"
+        },
+        {
+          "id": "010-do-you-think-it-s-important-to-wear-a-watch",
+          "title": "Do you think it's important to wear a watch?",
+          "duration_sec": 29.26,
+          "offset_sec": 180.45,
+          "generated_at": "2026-09-19T10:44:10.825"
         }
       ]
     }

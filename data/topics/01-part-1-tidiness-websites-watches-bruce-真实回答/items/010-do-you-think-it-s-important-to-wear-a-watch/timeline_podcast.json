@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you think it's important to wear a watch, and why?",
+    "start": 0.0,
+    "end": 2.9,
+    "duration": 2.9,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Nowadays, I think it depends. I know a lot of people who don't wear a watch at all, because they have phones — they can just check the time there. But I think a watch is important for certain kinds of people. Like if you do extreme sports — climbing mountains, going to remote places — a watch can show your GPS location, your heart rate, and even send emergency information if something goes wrong. For those situations, it's really important. But for normal people, it's not that necessary.",
+    "start": 3.27,
+    "end": 29.26,
+    "duration": 25.99,
+    "mode": "sse"
+  }
+]

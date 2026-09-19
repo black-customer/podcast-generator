@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "What kinds of websites are popular in your country?",
+    "start": 0.0,
+    "end": 2.68,
+    "duration": 2.68,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Oh, in China, social media and online shopping websites are extremely popular. Like Taobao — it's kind of the Amazon of China. There's also Bilibili, like I mentioned, and the Chinese TikTok, and this app called Xiaohongshu — the \"red note\" app. They're all hugely popular in our country.",
+    "start": 3.16,
+    "end": 19.41,
+    "duration": 16.25,
+    "mode": "sse"
+  }
+]

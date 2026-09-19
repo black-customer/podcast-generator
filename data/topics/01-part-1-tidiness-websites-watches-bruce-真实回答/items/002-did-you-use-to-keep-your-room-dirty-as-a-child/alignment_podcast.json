@@ -1,0 +1,309 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "4a33fc713a969fc8",
+  "audio_signature": "354264:1789785772",
+  "created_at": "2026-09-19T10:42:53",
+  "segments": [
+    {
+      "text": "Did you use to keep your room dirty as a child?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.71
+    },
+    {
+      "text": "Definitely not clean. I've been a lazy person since I was a kid, so my room was always a mess, and my mom would come in and scold me. But she kind of spoiled me — she would just scold me and then clean the room herself.",
+      "speaker": "b",
+      "start": 3.14,
+      "end": 14.71
+    }
+  ],
+  "words": [
+    {
+      "text": "Did",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.4
+    },
+    {
+      "text": "use",
+      "start": 0.4,
+      "end": 0.8
+    },
+    {
+      "text": "to",
+      "start": 0.8,
+      "end": 0.88
+    },
+    {
+      "text": "keep",
+      "start": 0.88,
+      "end": 1.12
+    },
+    {
+      "text": "your",
+      "start": 1.12,
+      "end": 1.2
+    },
+    {
+      "text": "room",
+      "start": 1.2,
+      "end": 1.52
+    },
+    {
+      "text": "dirty",
+      "start": 1.52,
+      "end": 1.84
+    },
+    {
+      "text": "as",
+      "start": 1.84,
+      "end": 2.0
+    },
+    {
+      "text": "a",
+      "start": 2.0,
+      "end": 2.0
+    },
+    {
+      "text": "child",
+      "start": 2.0,
+      "end": 2.64
+    },
+    {
+      "text": "Definitely",
+      "start": 3.06,
+      "end": 3.46
+    },
+    {
+      "text": "not",
+      "start": 3.46,
+      "end": 3.7
+    },
+    {
+      "text": "clean",
+      "start": 3.7,
+      "end": 4.18
+    },
+    {
+      "text": "I've",
+      "start": 4.42,
+      "end": 4.58
+    },
+    {
+      "text": "been",
+      "start": 4.58,
+      "end": 4.66
+    },
+    {
+      "text": "a",
+      "start": 4.66,
+      "end": 4.74
+    },
+    {
+      "text": "lazy",
+      "start": 4.74,
+      "end": 5.14
+    },
+    {
+      "text": "person",
+      "start": 5.14,
+      "end": 5.46
+    },
+    {
+      "text": "since",
+      "start": 5.46,
+      "end": 5.7
+    },
+    {
+      "text": "I",
+      "start": 5.7,
+      "end": 5.86
+    },
+    {
+      "text": "was",
+      "start": 5.86,
+      "end": 5.94
+    },
+    {
+      "text": "a",
+      "start": 5.94,
+      "end": 6.02
+    },
+    {
+      "text": "kid",
+      "start": 6.02,
+      "end": 6.5
+    },
+    {
+      "text": "so",
+      "start": 6.82,
+      "end": 6.98
+    },
+    {
+      "text": "my",
+      "start": 6.98,
+      "end": 7.06
+    },
+    {
+      "text": "room",
+      "start": 7.06,
+      "end": 7.22
+    },
+    {
+      "text": "was",
+      "start": 7.22,
+      "end": 7.38
+    },
+    {
+      "text": "always",
+      "start": 7.46,
+      "end": 7.78
+    },
+    {
+      "text": "a",
+      "start": 7.78,
+      "end": 7.78
+    },
+    {
+      "text": "mess",
+      "start": 7.78,
+      "end": 8.34
+    },
+    {
+      "text": "and",
+      "start": 8.42,
+      "end": 8.58
+    },
+    {
+      "text": "my",
+      "start": 8.58,
+      "end": 8.66
+    },
+    {
+      "text": "mom",
+      "start": 8.66,
+      "end": 8.9
+    },
+    {
+      "text": "would",
+      "start": 8.9,
+      "end": 8.98
+    },
+    {
+      "text": "come",
+      "start": 8.98,
+      "end": 9.14
+    },
+    {
+      "text": "in",
+      "start": 9.14,
+      "end": 9.38
+    },
+    {
+      "text": "and",
+      "start": 9.38,
+      "end": 9.38
+    },
+    {
+      "text": "scold",
+      "start": 9.38,
+      "end": 9.78
+    },
+    {
+      "text": "me",
+      "start": 9.78,
+      "end": 10.1
+    },
+    {
+      "text": "But",
+      "start": 10.5,
+      "end": 10.58
+    },
+    {
+      "text": "she",
+      "start": 10.58,
+      "end": 10.74
+    },
+    {
+      "text": "kind",
+      "start": 10.74,
+      "end": 10.9
+    },
+    {
+      "text": "of",
+      "start": 10.9,
+      "end": 10.98
+    },
+    {
+      "text": "spoiled",
+      "start": 10.98,
+      "end": 11.38
+    },
+    {
+      "text": "me",
+      "start": 11.38,
+      "end": 11.7
+    },
+    {
+      "text": "she",
+      "start": 11.7,
+      "end": 11.94
+    },
+    {
+      "text": "would",
+      "start": 11.94,
+      "end": 12.02
+    },
+    {
+      "text": "just",
+      "start": 12.02,
+      "end": 12.26
+    },
+    {
+      "text": "scold",
+      "start": 12.26,
+      "end": 12.5
+    },
+    {
+      "text": "me",
+      "start": 12.5,
+      "end": 12.82
+    },
+    {
+      "text": "and",
+      "start": 13.06,
+      "end": 13.22
+    },
+    {
+      "text": "then",
+      "start": 13.22,
+      "end": 13.38
+    },
+    {
+      "text": "clean",
+      "start": 13.38,
+      "end": 13.62
+    },
+    {
+      "text": "the",
+      "start": 13.62,
+      "end": 13.7
+    },
+    {
+      "text": "room",
+      "start": 13.7,
+      "end": 13.94
+    },
+    {
+      "text": "herself",
+      "start": 13.94,
+      "end": 14.34
+    }
+  ]
+}

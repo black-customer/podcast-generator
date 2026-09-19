@@ -1,0 +1,539 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "5de7f1d4cc85eee9",
+  "audio_signature": "642029:1789785828",
+  "created_at": "2026-09-19T10:43:49",
+  "segments": [
+    {
+      "text": "Do you wear a watch?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.37
+    },
+    {
+      "text": "Yes, I do — as a matter of fact, I can show you mine. I've worn watches since primary school, because at school I couldn't use my phone, but I still needed to know the time, so my mom bought me one. Back then it was just a simple watch — mechanical or battery-powered, just for telling the time. But now I wear a smartwatch, and it has different functions — not just time, but also heart rate. When I work out at the gym, I can see how many calories I'm actually burning, even if it's not that accurate.",
+      "speaker": "b",
+      "start": 1.74,
+      "end": 26.7
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.4
+    },
+    {
+      "text": "wear",
+      "start": 0.4,
+      "end": 0.64
+    },
+    {
+      "text": "a",
+      "start": 0.64,
+      "end": 0.64
+    },
+    {
+      "text": "watch",
+      "start": 0.64,
+      "end": 1.36
+    },
+    {
+      "text": "Yes",
+      "start": 1.726,
+      "end": 2.046
+    },
+    {
+      "text": "I",
+      "start": 2.046,
+      "end": 2.206
+    },
+    {
+      "text": "do",
+      "start": 2.206,
+      "end": 2.286
+    },
+    {
+      "text": "as",
+      "start": 2.366,
+      "end": 2.446
+    },
+    {
+      "text": "a",
+      "start": 2.446,
+      "end": 2.526
+    },
+    {
+      "text": "matter",
+      "start": 2.526,
+      "end": 2.766
+    },
+    {
+      "text": "of",
+      "start": 2.766,
+      "end": 2.846
+    },
+    {
+      "text": "fact",
+      "start": 2.846,
+      "end": 3.086
+    },
+    {
+      "text": "I",
+      "start": 3.086,
+      "end": 3.166
+    },
+    {
+      "text": "can",
+      "start": 3.166,
+      "end": 3.326
+    },
+    {
+      "text": "show",
+      "start": 3.326,
+      "end": 3.566
+    },
+    {
+      "text": "you",
+      "start": 3.566,
+      "end": 3.726
+    },
+    {
+      "text": "mine",
+      "start": 3.726,
+      "end": 4.126
+    },
+    {
+      "text": "I've",
+      "start": 4.366,
+      "end": 4.526
+    },
+    {
+      "text": "worn",
+      "start": 4.526,
+      "end": 4.766
+    },
+    {
+      "text": "watches",
+      "start": 4.766,
+      "end": 5.086
+    },
+    {
+      "text": "since",
+      "start": 5.086,
+      "end": 5.326
+    },
+    {
+      "text": "primary",
+      "start": 5.326,
+      "end": 5.646
+    },
+    {
+      "text": "school",
+      "start": 5.646,
+      "end": 6.126
+    },
+    {
+      "text": "because",
+      "start": 6.286,
+      "end": 6.526
+    },
+    {
+      "text": "at",
+      "start": 6.526,
+      "end": 6.606
+    },
+    {
+      "text": "school",
+      "start": 6.606,
+      "end": 6.926
+    },
+    {
+      "text": "I",
+      "start": 6.926,
+      "end": 7.006
+    },
+    {
+      "text": "couldn't",
+      "start": 7.006,
+      "end": 7.246
+    },
+    {
+      "text": "use",
+      "start": 7.246,
+      "end": 7.406
+    },
+    {
+      "text": "my",
+      "start": 7.406,
+      "end": 7.486
+    },
+    {
+      "text": "phone",
+      "start": 7.486,
+      "end": 7.886
+    },
+    {
+      "text": "but",
+      "start": 8.286,
+      "end": 8.366
+    },
+    {
+      "text": "I",
+      "start": 8.366,
+      "end": 8.446
+    },
+    {
+      "text": "still",
+      "start": 8.446,
+      "end": 8.686
+    },
+    {
+      "text": "needed",
+      "start": 8.686,
+      "end": 9.086
+    },
+    {
+      "text": "to",
+      "start": 9.166,
+      "end": 9.166
+    },
+    {
+      "text": "know",
+      "start": 9.166,
+      "end": 9.326
+    },
+    {
+      "text": "the",
+      "start": 9.326,
+      "end": 9.406
+    },
+    {
+      "text": "time",
+      "start": 9.406,
+      "end": 9.886
+    },
+    {
+      "text": "so",
+      "start": 9.886,
+      "end": 10.046
+    },
+    {
+      "text": "my",
+      "start": 10.046,
+      "end": 10.126
+    },
+    {
+      "text": "mom",
+      "start": 10.126,
+      "end": 10.366
+    },
+    {
+      "text": "bought",
+      "start": 10.366,
+      "end": 10.606
+    },
+    {
+      "text": "me",
+      "start": 10.606,
+      "end": 10.686
+    },
+    {
+      "text": "one",
+      "start": 10.686,
+      "end": 11.006
+    },
+    {
+      "text": "Back",
+      "start": 11.246,
+      "end": 11.486
+    },
+    {
+      "text": "then",
+      "start": 11.486,
+      "end": 11.726
+    },
+    {
+      "text": "it",
+      "start": 11.726,
+      "end": 11.806
+    },
+    {
+      "text": "was",
+      "start": 11.806,
+      "end": 11.886
+    },
+    {
+      "text": "just",
+      "start": 11.886,
+      "end": 12.046
+    },
+    {
+      "text": "a",
+      "start": 12.046,
+      "end": 12.126
+    },
+    {
+      "text": "simple",
+      "start": 12.126,
+      "end": 12.526
+    },
+    {
+      "text": "watch",
+      "start": 12.526,
+      "end": 13.006
+    },
+    {
+      "text": "mechanical",
+      "start": 13.086,
+      "end": 13.646
+    },
+    {
+      "text": "or",
+      "start": 13.646,
+      "end": 13.806
+    },
+    {
+      "text": "battery",
+      "start": 13.806,
+      "end": 14.126
+    },
+    {
+      "text": "powered",
+      "start": 14.126,
+      "end": 14.526
+    },
+    {
+      "text": "just",
+      "start": 14.766,
+      "end": 15.006
+    },
+    {
+      "text": "for",
+      "start": 15.006,
+      "end": 15.086
+    },
+    {
+      "text": "telling",
+      "start": 15.086,
+      "end": 15.326
+    },
+    {
+      "text": "the",
+      "start": 15.326,
+      "end": 15.406
+    },
+    {
+      "text": "time",
+      "start": 15.406,
+      "end": 15.806
+    },
+    {
+      "text": "But",
+      "start": 16.332,
+      "end": 16.412
+    },
+    {
+      "text": "now",
+      "start": 16.412,
+      "end": 16.572
+    },
+    {
+      "text": "I",
+      "start": 16.572,
+      "end": 16.652
+    },
+    {
+      "text": "wear",
+      "start": 16.652,
+      "end": 16.812
+    },
+    {
+      "text": "a",
+      "start": 16.812,
+      "end": 16.812
+    },
+    {
+      "text": "smartwatch",
+      "start": 16.812,
+      "end": 17.532
+    },
+    {
+      "text": "and",
+      "start": 17.852,
+      "end": 17.932
+    },
+    {
+      "text": "it",
+      "start": 17.932,
+      "end": 17.932
+    },
+    {
+      "text": "has",
+      "start": 17.932,
+      "end": 18.172
+    },
+    {
+      "text": "different",
+      "start": 18.172,
+      "end": 18.492
+    },
+    {
+      "text": "functions",
+      "start": 18.492,
+      "end": 19.052
+    },
+    {
+      "text": "not",
+      "start": 19.292,
+      "end": 19.452
+    },
+    {
+      "text": "just",
+      "start": 19.452,
+      "end": 19.692
+    },
+    {
+      "text": "time",
+      "start": 19.692,
+      "end": 20.012
+    },
+    {
+      "text": "but",
+      "start": 20.012,
+      "end": 20.172
+    },
+    {
+      "text": "also",
+      "start": 20.172,
+      "end": 20.492
+    },
+    {
+      "text": "heart",
+      "start": 20.492,
+      "end": 20.732
+    },
+    {
+      "text": "rate",
+      "start": 20.732,
+      "end": 21.052
+    },
+    {
+      "text": "When",
+      "start": 21.532,
+      "end": 21.612
+    },
+    {
+      "text": "I",
+      "start": 21.612,
+      "end": 21.692
+    },
+    {
+      "text": "work",
+      "start": 21.692,
+      "end": 21.852
+    },
+    {
+      "text": "out",
+      "start": 21.852,
+      "end": 22.012
+    },
+    {
+      "text": "at",
+      "start": 22.012,
+      "end": 22.092
+    },
+    {
+      "text": "the",
+      "start": 22.092,
+      "end": 22.092
+    },
+    {
+      "text": "gym",
+      "start": 22.092,
+      "end": 22.492
+    },
+    {
+      "text": "I",
+      "start": 22.492,
+      "end": 22.652
+    },
+    {
+      "text": "can",
+      "start": 22.652,
+      "end": 22.732
+    },
+    {
+      "text": "see",
+      "start": 22.732,
+      "end": 22.972
+    },
+    {
+      "text": "how",
+      "start": 22.972,
+      "end": 23.052
+    },
+    {
+      "text": "many",
+      "start": 23.052,
+      "end": 23.212
+    },
+    {
+      "text": "calories",
+      "start": 23.212,
+      "end": 23.692
+    },
+    {
+      "text": "I'm",
+      "start": 23.692,
+      "end": 23.852
+    },
+    {
+      "text": "actually",
+      "start": 23.852,
+      "end": 24.172
+    },
+    {
+      "text": "burning",
+      "start": 24.172,
+      "end": 24.652
+    },
+    {
+      "text": "even",
+      "start": 24.972,
+      "end": 25.212
+    },
+    {
+      "text": "if",
+      "start": 25.212,
+      "end": 25.292
+    },
+    {
+      "text": "it's",
+      "start": 25.292,
+      "end": 25.452
+    },
+    {
+      "text": "not",
+      "start": 25.452,
+      "end": 25.692
+    },
+    {
+      "text": "that",
+      "start": 25.692,
+      "end": 25.852
+    },
+    {
+      "text": "accurate",
+      "start": 25.852,
+      "end": 26.412
+    }
+  ]
+}

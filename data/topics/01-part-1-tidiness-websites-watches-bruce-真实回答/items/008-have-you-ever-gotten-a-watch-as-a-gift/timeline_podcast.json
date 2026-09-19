@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Have you ever gotten a watch as a gift?",
+    "start": 0.0,
+    "end": 2.1,
+    "duration": 2.1,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "No, I haven't, actually. I just... I need to have a watch, you know? So when mine breaks or gets too old, I just buy a new one myself. It's never really been a gift kind of thing.",
+    "start": 2.45,
+    "end": 11.76,
+    "duration": 9.31,
+    "mode": "sse"
+  }
+]

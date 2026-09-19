@@ -1,0 +1,384 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "50ad4c5bb721b389",
+  "audio_signature": "561781:1789785804",
+  "created_at": "2026-09-19T10:43:24",
+  "segments": [
+    {
+      "text": "Have there been any changes to the websites you often visit?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 3.1
+    },
+    {
+      "text": "Yes, there have been some changes. I used to watch Bilibili — the Chinese YouTube — but these days I watch YouTube more often, because I wanted to break through the information barrier. And also, I need to learn English, and almost everything on YouTube is in English. So I switched from Bilibili to YouTube to improve my English and get more information.",
+      "speaker": "b",
+      "start": 3.55,
+      "end": 23.35
+    }
+  ],
+  "words": [
+    {
+      "text": "Have",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "there",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "been",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "any",
+      "start": 0.48,
+      "end": 0.64
+    },
+    {
+      "text": "changes",
+      "start": 0.64,
+      "end": 1.2
+    },
+    {
+      "text": "to",
+      "start": 1.2,
+      "end": 1.28
+    },
+    {
+      "text": "the",
+      "start": 1.28,
+      "end": 1.36
+    },
+    {
+      "text": "websites",
+      "start": 1.36,
+      "end": 2.0
+    },
+    {
+      "text": "you",
+      "start": 2.0,
+      "end": 2.08
+    },
+    {
+      "text": "often",
+      "start": 2.08,
+      "end": 2.56
+    },
+    {
+      "text": "visit",
+      "start": 2.56,
+      "end": 3.04
+    },
+    {
+      "text": "Yes",
+      "start": 3.478,
+      "end": 4.198
+    },
+    {
+      "text": "there",
+      "start": 4.278,
+      "end": 4.358
+    },
+    {
+      "text": "have",
+      "start": 4.358,
+      "end": 4.598
+    },
+    {
+      "text": "been",
+      "start": 4.598,
+      "end": 4.758
+    },
+    {
+      "text": "some",
+      "start": 4.758,
+      "end": 4.998
+    },
+    {
+      "text": "changes",
+      "start": 4.998,
+      "end": 5.718
+    },
+    {
+      "text": "I",
+      "start": 6.118,
+      "end": 6.198
+    },
+    {
+      "text": "used",
+      "start": 6.198,
+      "end": 6.438
+    },
+    {
+      "text": "to",
+      "start": 6.438,
+      "end": 6.518
+    },
+    {
+      "text": "watch",
+      "start": 6.518,
+      "end": 6.838
+    },
+    {
+      "text": "Bilibili",
+      "start": 6.838,
+      "end": 7.478
+    },
+    {
+      "text": "the",
+      "start": 7.478,
+      "end": 7.558
+    },
+    {
+      "text": "Chinese",
+      "start": 7.558,
+      "end": 8.038
+    },
+    {
+      "text": "YouTube",
+      "start": 8.038,
+      "end": 8.598
+    },
+    {
+      "text": "but",
+      "start": 8.678,
+      "end": 8.758
+    },
+    {
+      "text": "these",
+      "start": 8.758,
+      "end": 8.998
+    },
+    {
+      "text": "days",
+      "start": 8.998,
+      "end": 9.158
+    },
+    {
+      "text": "I",
+      "start": 9.158,
+      "end": 9.238
+    },
+    {
+      "text": "watch",
+      "start": 9.238,
+      "end": 9.478
+    },
+    {
+      "text": "YouTube",
+      "start": 9.478,
+      "end": 9.798
+    },
+    {
+      "text": "more",
+      "start": 9.798,
+      "end": 10.038
+    },
+    {
+      "text": "often",
+      "start": 10.038,
+      "end": 10.598
+    },
+    {
+      "text": "because",
+      "start": 10.838,
+      "end": 10.998
+    },
+    {
+      "text": "I",
+      "start": 10.998,
+      "end": 11.158
+    },
+    {
+      "text": "wanted",
+      "start": 11.158,
+      "end": 11.558
+    },
+    {
+      "text": "to",
+      "start": 11.558,
+      "end": 11.558
+    },
+    {
+      "text": "break",
+      "start": 11.558,
+      "end": 11.878
+    },
+    {
+      "text": "through",
+      "start": 11.878,
+      "end": 12.118
+    },
+    {
+      "text": "the",
+      "start": 12.118,
+      "end": 12.118
+    },
+    {
+      "text": "information",
+      "start": 12.118,
+      "end": 12.678
+    },
+    {
+      "text": "barrier",
+      "start": 12.678,
+      "end": 13.158
+    },
+    {
+      "text": "And",
+      "start": 13.558,
+      "end": 13.638
+    },
+    {
+      "text": "also",
+      "start": 13.638,
+      "end": 14.278
+    },
+    {
+      "text": "I",
+      "start": 14.518,
+      "end": 14.598
+    },
+    {
+      "text": "need",
+      "start": 14.598,
+      "end": 14.758
+    },
+    {
+      "text": "to",
+      "start": 14.838,
+      "end": 14.838
+    },
+    {
+      "text": "learn",
+      "start": 14.838,
+      "end": 14.998
+    },
+    {
+      "text": "English",
+      "start": 14.998,
+      "end": 15.638
+    },
+    {
+      "text": "and",
+      "start": 15.718,
+      "end": 15.798
+    },
+    {
+      "text": "almost",
+      "start": 15.798,
+      "end": 16.118
+    },
+    {
+      "text": "everything",
+      "start": 16.198,
+      "end": 16.598
+    },
+    {
+      "text": "on",
+      "start": 16.598,
+      "end": 16.678
+    },
+    {
+      "text": "YouTube",
+      "start": 16.678,
+      "end": 16.998
+    },
+    {
+      "text": "is",
+      "start": 16.998,
+      "end": 17.078
+    },
+    {
+      "text": "in",
+      "start": 17.078,
+      "end": 17.158
+    },
+    {
+      "text": "English",
+      "start": 17.158,
+      "end": 17.718
+    },
+    {
+      "text": "So",
+      "start": 18.319,
+      "end": 18.479
+    },
+    {
+      "text": "I",
+      "start": 18.479,
+      "end": 18.559
+    },
+    {
+      "text": "switched",
+      "start": 18.559,
+      "end": 18.879
+    },
+    {
+      "text": "from",
+      "start": 18.879,
+      "end": 19.039
+    },
+    {
+      "text": "Bilibili",
+      "start": 19.039,
+      "end": 19.679
+    },
+    {
+      "text": "to",
+      "start": 19.759,
+      "end": 19.839
+    },
+    {
+      "text": "YouTube",
+      "start": 19.839,
+      "end": 20.399
+    },
+    {
+      "text": "to",
+      "start": 20.639,
+      "end": 20.719
+    },
+    {
+      "text": "improve",
+      "start": 20.719,
+      "end": 21.119
+    },
+    {
+      "text": "my",
+      "start": 21.119,
+      "end": 21.199
+    },
+    {
+      "text": "English",
+      "start": 21.199,
+      "end": 21.759
+    },
+    {
+      "text": "and",
+      "start": 21.759,
+      "end": 21.919
+    },
+    {
+      "text": "get",
+      "start": 21.919,
+      "end": 21.999
+    },
+    {
+      "text": "more",
+      "start": 21.999,
+      "end": 22.159
+    },
+    {
+      "text": "information",
+      "start": 22.159,
+      "end": 22.879
+    }
+  ]
+}

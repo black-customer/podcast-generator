@@ -1,0 +1,514 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "347b26127fd0decb",
+  "audio_signature": "626355:1789785850",
+  "created_at": "2026-09-19T10:44:10",
+  "segments": [
+    {
+      "text": "Why do some people wear expensive watches?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.5
+    },
+    {
+      "text": "Yeah, that's an interesting question. I don't think I would buy an expensive watch even if I were rich, but maybe it's an identity symbol, you know? Like how some girls buy luxury bags. I think expensive watches are the same thing for some men — a way to show their status. And I've also heard that some rich people buy expensive watches and jewelry because if something bad happens, they can just grab them and run — they're portable, and worth more than gold by volume. So maybe that's a reason too.",
+      "speaker": "b",
+      "start": 2.94,
+      "end": 26.04
+    }
+  ],
+  "words": [
+    {
+      "text": "Why",
+      "start": 0.0,
+      "end": 0.32
+    },
+    {
+      "text": "do",
+      "start": 0.32,
+      "end": 0.4
+    },
+    {
+      "text": "some",
+      "start": 0.4,
+      "end": 0.64
+    },
+    {
+      "text": "people",
+      "start": 0.64,
+      "end": 0.96
+    },
+    {
+      "text": "wear",
+      "start": 0.96,
+      "end": 1.2
+    },
+    {
+      "text": "expensive",
+      "start": 1.2,
+      "end": 1.76
+    },
+    {
+      "text": "watches",
+      "start": 1.76,
+      "end": 2.48
+    },
+    {
+      "text": "Yeah",
+      "start": 2.921,
+      "end": 3.401
+    },
+    {
+      "text": "that's",
+      "start": 3.401,
+      "end": 3.561
+    },
+    {
+      "text": "an",
+      "start": 3.561,
+      "end": 3.641
+    },
+    {
+      "text": "interesting",
+      "start": 3.641,
+      "end": 4.041
+    },
+    {
+      "text": "question",
+      "start": 4.041,
+      "end": 4.521
+    },
+    {
+      "text": "I",
+      "start": 4.521,
+      "end": 4.601
+    },
+    {
+      "text": "don't",
+      "start": 4.601,
+      "end": 4.761
+    },
+    {
+      "text": "think",
+      "start": 4.761,
+      "end": 4.921
+    },
+    {
+      "text": "I",
+      "start": 4.921,
+      "end": 5.001
+    },
+    {
+      "text": "would",
+      "start": 5.001,
+      "end": 5.081
+    },
+    {
+      "text": "buy",
+      "start": 5.081,
+      "end": 5.241
+    },
+    {
+      "text": "an",
+      "start": 5.241,
+      "end": 5.321
+    },
+    {
+      "text": "expensive",
+      "start": 5.321,
+      "end": 5.721
+    },
+    {
+      "text": "watch",
+      "start": 5.721,
+      "end": 6.041
+    },
+    {
+      "text": "even",
+      "start": 6.041,
+      "end": 6.201
+    },
+    {
+      "text": "if",
+      "start": 6.201,
+      "end": 6.281
+    },
+    {
+      "text": "I",
+      "start": 6.281,
+      "end": 6.361
+    },
+    {
+      "text": "were",
+      "start": 6.361,
+      "end": 6.441
+    },
+    {
+      "text": "rich",
+      "start": 6.441,
+      "end": 7.081
+    },
+    {
+      "text": "but",
+      "start": 7.321,
+      "end": 7.401
+    },
+    {
+      "text": "maybe",
+      "start": 7.401,
+      "end": 7.641
+    },
+    {
+      "text": "it's",
+      "start": 7.641,
+      "end": 7.801
+    },
+    {
+      "text": "an",
+      "start": 7.801,
+      "end": 7.881
+    },
+    {
+      "text": "identity",
+      "start": 7.881,
+      "end": 8.281
+    },
+    {
+      "text": "symbol",
+      "start": 8.281,
+      "end": 8.841
+    },
+    {
+      "text": "you",
+      "start": 8.841,
+      "end": 9.001
+    },
+    {
+      "text": "know",
+      "start": 9.001,
+      "end": 9.241
+    },
+    {
+      "text": "Like",
+      "start": 9.321,
+      "end": 9.481
+    },
+    {
+      "text": "how",
+      "start": 9.481,
+      "end": 9.561
+    },
+    {
+      "text": "some",
+      "start": 9.561,
+      "end": 9.801
+    },
+    {
+      "text": "girls",
+      "start": 9.801,
+      "end": 10.041
+    },
+    {
+      "text": "buy",
+      "start": 10.041,
+      "end": 10.121
+    },
+    {
+      "text": "luxury",
+      "start": 10.121,
+      "end": 10.521
+    },
+    {
+      "text": "bags",
+      "start": 10.521,
+      "end": 11.001
+    },
+    {
+      "text": "I",
+      "start": 11.081,
+      "end": 11.161
+    },
+    {
+      "text": "think",
+      "start": 11.161,
+      "end": 11.321
+    },
+    {
+      "text": "expensive",
+      "start": 11.321,
+      "end": 11.801
+    },
+    {
+      "text": "watches",
+      "start": 11.801,
+      "end": 12.121
+    },
+    {
+      "text": "are",
+      "start": 12.121,
+      "end": 12.201
+    },
+    {
+      "text": "the",
+      "start": 12.201,
+      "end": 12.281
+    },
+    {
+      "text": "same",
+      "start": 12.281,
+      "end": 12.521
+    },
+    {
+      "text": "thing",
+      "start": 12.521,
+      "end": 12.761
+    },
+    {
+      "text": "for",
+      "start": 12.761,
+      "end": 12.841
+    },
+    {
+      "text": "some",
+      "start": 12.841,
+      "end": 13.001
+    },
+    {
+      "text": "men",
+      "start": 13.001,
+      "end": 13.401
+    },
+    {
+      "text": "a",
+      "start": 13.641,
+      "end": 13.641
+    },
+    {
+      "text": "way",
+      "start": 13.641,
+      "end": 13.801
+    },
+    {
+      "text": "to",
+      "start": 13.801,
+      "end": 13.881
+    },
+    {
+      "text": "show",
+      "start": 13.881,
+      "end": 14.041
+    },
+    {
+      "text": "their",
+      "start": 14.041,
+      "end": 14.201
+    },
+    {
+      "text": "status",
+      "start": 14.201,
+      "end": 14.841
+    },
+    {
+      "text": "And",
+      "start": 15.274,
+      "end": 15.354
+    },
+    {
+      "text": "I've",
+      "start": 15.354,
+      "end": 15.434
+    },
+    {
+      "text": "also",
+      "start": 15.434,
+      "end": 15.674
+    },
+    {
+      "text": "heard",
+      "start": 15.674,
+      "end": 15.834
+    },
+    {
+      "text": "that",
+      "start": 15.834,
+      "end": 15.994
+    },
+    {
+      "text": "some",
+      "start": 15.994,
+      "end": 16.154
+    },
+    {
+      "text": "rich",
+      "start": 16.154,
+      "end": 16.394
+    },
+    {
+      "text": "people",
+      "start": 16.394,
+      "end": 16.714
+    },
+    {
+      "text": "buy",
+      "start": 16.714,
+      "end": 16.954
+    },
+    {
+      "text": "expensive",
+      "start": 16.954,
+      "end": 17.434
+    },
+    {
+      "text": "watches",
+      "start": 17.434,
+      "end": 17.754
+    },
+    {
+      "text": "and",
+      "start": 17.754,
+      "end": 17.834
+    },
+    {
+      "text": "jewelry",
+      "start": 17.834,
+      "end": 18.394
+    },
+    {
+      "text": "because",
+      "start": 18.554,
+      "end": 18.794
+    },
+    {
+      "text": "if",
+      "start": 18.794,
+      "end": 18.874
+    },
+    {
+      "text": "something",
+      "start": 18.874,
+      "end": 19.194
+    },
+    {
+      "text": "bad",
+      "start": 19.194,
+      "end": 19.354
+    },
+    {
+      "text": "happens",
+      "start": 19.354,
+      "end": 19.994
+    },
+    {
+      "text": "they",
+      "start": 20.154,
+      "end": 20.234
+    },
+    {
+      "text": "can",
+      "start": 20.234,
+      "end": 20.314
+    },
+    {
+      "text": "just",
+      "start": 20.314,
+      "end": 20.474
+    },
+    {
+      "text": "grab",
+      "start": 20.474,
+      "end": 20.794
+    },
+    {
+      "text": "them",
+      "start": 20.794,
+      "end": 20.954
+    },
+    {
+      "text": "and",
+      "start": 20.954,
+      "end": 21.114
+    },
+    {
+      "text": "run",
+      "start": 21.114,
+      "end": 21.514
+    },
+    {
+      "text": "they're",
+      "start": 21.514,
+      "end": 21.594
+    },
+    {
+      "text": "portable",
+      "start": 21.594,
+      "end": 22.314
+    },
+    {
+      "text": "and",
+      "start": 22.474,
+      "end": 22.634
+    },
+    {
+      "text": "worth",
+      "start": 22.634,
+      "end": 22.874
+    },
+    {
+      "text": "more",
+      "start": 22.874,
+      "end": 22.954
+    },
+    {
+      "text": "than",
+      "start": 22.954,
+      "end": 23.114
+    },
+    {
+      "text": "gold",
+      "start": 23.114,
+      "end": 23.434
+    },
+    {
+      "text": "by",
+      "start": 23.434,
+      "end": 23.514
+    },
+    {
+      "text": "volume",
+      "start": 23.514,
+      "end": 24.154
+    },
+    {
+      "text": "So",
+      "start": 24.314,
+      "end": 24.474
+    },
+    {
+      "text": "maybe",
+      "start": 24.474,
+      "end": 24.794
+    },
+    {
+      "text": "that's",
+      "start": 24.794,
+      "end": 24.954
+    },
+    {
+      "text": "a",
+      "start": 24.954,
+      "end": 25.034
+    },
+    {
+      "text": "reason",
+      "start": 25.034,
+      "end": 25.354
+    },
+    {
+      "text": "too",
+      "start": 25.354,
+      "end": 25.834
+    }
+  ]
+}

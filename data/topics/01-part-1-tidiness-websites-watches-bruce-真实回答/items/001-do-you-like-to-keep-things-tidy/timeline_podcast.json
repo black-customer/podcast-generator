@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you like to keep things tidy?",
+    "start": 0.0,
+    "end": 1.87,
+    "duration": 1.87,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I would say I'm kind of lazy, so my things get messy sometimes. But here's the thing — I do like tidy things, it's just that... if things can become messy automatically, then keeping them tidy is a losing battle. So I'd say I like tidiness in theory, but laziness wins.",
+    "start": 2.22,
+    "end": 17.32,
+    "duration": 15.1,
+    "mode": "sse"
+  }
+]

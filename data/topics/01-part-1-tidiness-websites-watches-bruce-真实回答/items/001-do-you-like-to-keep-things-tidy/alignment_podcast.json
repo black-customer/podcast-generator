@@ -1,0 +1,309 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "57e1650572db8965",
+  "audio_signature": "416958:1789785763",
+  "created_at": "2026-09-19T10:42:43",
+  "segments": [
+    {
+      "text": "Do you like to keep things tidy?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.87
+    },
+    {
+      "text": "I would say I'm kind of lazy, so my things get messy sometimes. But here's the thing — I do like tidy things, it's just that... if things can become messy automatically, then keeping them tidy is a losing battle. So I'd say I like tidiness in theory, but laziness wins.",
+      "speaker": "b",
+      "start": 2.22,
+      "end": 17.32
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "like",
+      "start": 0.32,
+      "end": 0.56
+    },
+    {
+      "text": "to",
+      "start": 0.56,
+      "end": 0.64
+    },
+    {
+      "text": "keep",
+      "start": 0.64,
+      "end": 0.96
+    },
+    {
+      "text": "things",
+      "start": 0.96,
+      "end": 1.28
+    },
+    {
+      "text": "tidy",
+      "start": 1.28,
+      "end": 1.84
+    },
+    {
+      "text": "I",
+      "start": 2.19,
+      "end": 2.27
+    },
+    {
+      "text": "would",
+      "start": 2.27,
+      "end": 2.43
+    },
+    {
+      "text": "say",
+      "start": 2.43,
+      "end": 2.59
+    },
+    {
+      "text": "I'm",
+      "start": 2.59,
+      "end": 2.75
+    },
+    {
+      "text": "kind",
+      "start": 2.75,
+      "end": 3.07
+    },
+    {
+      "text": "of",
+      "start": 3.07,
+      "end": 3.15
+    },
+    {
+      "text": "lazy",
+      "start": 3.15,
+      "end": 3.63
+    },
+    {
+      "text": "so",
+      "start": 3.63,
+      "end": 4.11
+    },
+    {
+      "text": "my",
+      "start": 4.11,
+      "end": 4.35
+    },
+    {
+      "text": "things",
+      "start": 4.35,
+      "end": 4.67
+    },
+    {
+      "text": "get",
+      "start": 4.67,
+      "end": 4.75
+    },
+    {
+      "text": "messy",
+      "start": 4.75,
+      "end": 5.07
+    },
+    {
+      "text": "sometimes",
+      "start": 5.07,
+      "end": 5.79
+    },
+    {
+      "text": "But",
+      "start": 5.87,
+      "end": 6.11
+    },
+    {
+      "text": "here's",
+      "start": 6.11,
+      "end": 6.35
+    },
+    {
+      "text": "the",
+      "start": 6.35,
+      "end": 6.43
+    },
+    {
+      "text": "thing",
+      "start": 6.43,
+      "end": 6.75
+    },
+    {
+      "text": "I",
+      "start": 7.39,
+      "end": 7.55
+    },
+    {
+      "text": "do",
+      "start": 7.55,
+      "end": 7.71
+    },
+    {
+      "text": "like",
+      "start": 7.71,
+      "end": 7.95
+    },
+    {
+      "text": "tidy",
+      "start": 7.95,
+      "end": 8.27
+    },
+    {
+      "text": "things",
+      "start": 8.27,
+      "end": 8.75
+    },
+    {
+      "text": "it's",
+      "start": 8.75,
+      "end": 8.91
+    },
+    {
+      "text": "just",
+      "start": 8.91,
+      "end": 9.23
+    },
+    {
+      "text": "that",
+      "start": 9.23,
+      "end": 9.55
+    },
+    {
+      "text": "if",
+      "start": 10.03,
+      "end": 10.19
+    },
+    {
+      "text": "things",
+      "start": 10.19,
+      "end": 10.43
+    },
+    {
+      "text": "can",
+      "start": 10.43,
+      "end": 10.51
+    },
+    {
+      "text": "become",
+      "start": 10.51,
+      "end": 10.83
+    },
+    {
+      "text": "messy",
+      "start": 10.83,
+      "end": 11.07
+    },
+    {
+      "text": "automatically",
+      "start": 11.07,
+      "end": 11.87
+    },
+    {
+      "text": "then",
+      "start": 12.11,
+      "end": 12.35
+    },
+    {
+      "text": "keeping",
+      "start": 12.35,
+      "end": 12.59
+    },
+    {
+      "text": "them",
+      "start": 12.59,
+      "end": 12.67
+    },
+    {
+      "text": "tidy",
+      "start": 12.67,
+      "end": 12.99
+    },
+    {
+      "text": "is",
+      "start": 12.99,
+      "end": 13.07
+    },
+    {
+      "text": "a",
+      "start": 13.07,
+      "end": 13.15
+    },
+    {
+      "text": "losing",
+      "start": 13.15,
+      "end": 13.47
+    },
+    {
+      "text": "battle",
+      "start": 13.47,
+      "end": 13.87
+    },
+    {
+      "text": "So",
+      "start": 14.03,
+      "end": 14.27
+    },
+    {
+      "text": "I'd",
+      "start": 14.27,
+      "end": 14.43
+    },
+    {
+      "text": "say",
+      "start": 14.43,
+      "end": 14.59
+    },
+    {
+      "text": "I",
+      "start": 14.59,
+      "end": 14.59
+    },
+    {
+      "text": "like",
+      "start": 14.59,
+      "end": 14.83
+    },
+    {
+      "text": "tidiness",
+      "start": 14.83,
+      "end": 15.31
+    },
+    {
+      "text": "in",
+      "start": 15.31,
+      "end": 15.39
+    },
+    {
+      "text": "theory",
+      "start": 15.39,
+      "end": 15.87
+    },
+    {
+      "text": "but",
+      "start": 15.87,
+      "end": 16.19
+    },
+    {
+      "text": "laziness",
+      "start": 16.19,
+      "end": 16.67
+    },
+    {
+      "text": "wins",
+      "start": 16.67,
+      "end": 17.07
+    }
+  ]
+}

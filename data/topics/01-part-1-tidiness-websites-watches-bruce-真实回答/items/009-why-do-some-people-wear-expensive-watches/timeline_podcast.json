@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Why do some people wear expensive watches?",
+    "start": 0.0,
+    "end": 2.5,
+    "duration": 2.5,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yeah, that's an interesting question. I don't think I would buy an expensive watch even if I were rich, but maybe it's an identity symbol, you know? Like how some girls buy luxury bags. I think expensive watches are the same thing for some men — a way to show their status. And I've also heard that some rich people buy expensive watches and jewelry because if something bad happens, they can just grab them and run — they're portable, and worth more than gold by volume. So maybe that's a reason too.",
+    "start": 2.94,
+    "end": 26.04,
+    "duration": 23.1,
+    "mode": "sse"
+  }
+]
