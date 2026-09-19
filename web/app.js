@@ -923,7 +923,7 @@ async function VoicesShowcaseView(token) {
   const curVoiceA = (settings.reference_id || "").trim();
   const curVoiceB = (settings.reference_id_b || "").trim();
 
-  const cardsHtml = voices.map(v => {
+  const cardHtml = v => {
     const isCurA = v.reference_id === curVoiceA;
     const isCurB = v.reference_id === curVoiceB;
 
@@ -932,6 +932,15 @@ async function VoicesShowcaseView(token) {
       alex_young_adult: "💻",
       london_scholar: "🎓",
       mia_bilingual: "🎙️",
+      cand_sarah: "🎓",
+      cand_alle: "✨",
+      cand_friendly_w: "💼",
+      cand_egirl: "🌸",
+      cand_ethan: "🧑‍🏫",
+      cand_elite: "👔",
+      cand_slax: "📖",
+      cand_adam: "☕",
+      cand_us_clone: "🎩",
     };
     const avatar = avatars[v.id] || "🗣️";
 
@@ -948,14 +957,14 @@ async function VoicesShowcaseView(token) {
         <div class="voice-desc">${esc(v.description)}</div>
         <div class="voice-params">
           <span>口音: ${esc(v.accent)}</span>
-          <span>语速: ${v.speed}x</span>
-          <span>温度: ${v.temperature}</span>
+          <span>语速: ${v.speed ?? 1.0}x</span>
+          ${v.temperature != null ? `<span>温度: ${v.temperature}</span>` : ""}
         </div>
         <div>
-          <button class="voice-btn" onclick="previewVoice('${esc(v.reference_id)}', this)" title="播放该音色的试听样本">▶ 试听</button>
+          <button class="voice-btn" onclick="previewVoice('${esc(v.reference_id)}', this)" title="播放该音色的试听样本（真实合成）">▶ 试听</button>
           ${v.gender === 'male' ? `
             <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'male', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
-              ${isCurA ? "✓ 当前默认男声" : "设为默认男声 (Speaker A)"}
+              ${isCurA ? "✓ 当前默认男声 (Speaker A)" : "设为默认男声 (Speaker A)"}
             </button>
           ` : `
             <button class="voice-btn ${isCurB ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'female', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
@@ -965,7 +974,10 @@ async function VoicesShowcaseView(token) {
         </div>
       </div>
     `;
-  }).join("");
+  };
+
+  const presets = voices.filter(v => v.tier !== "candidate");
+  const candidates = voices.filter(v => v.tier === "candidate");
 
   $app.innerHTML = `
     <div class="hero-banner" style="background: linear-gradient(135deg, rgba(30, 215, 96, 0.25) 0%, rgba(61, 123, 246, 0.2) 100%);">
@@ -978,8 +990,17 @@ async function VoicesShowcaseView(token) {
     </div>
 
     <div class="voice-grid">
-      ${cardsHtml}
+      ${presets.map(cardHtml).join("")}
     </div>
+
+    ${candidates.length ? `
+    <div class="section-header" style="margin-top:28px;">
+      <div class="section-title">候选音色 · 试听定夺中</div>
+      <div style="font-size:12px;color:var(--text-sub);">从 fish.audio 公共市场筛选，试听满意可直接设为 A/B</div>
+    </div>
+    <div class="voice-grid">
+      ${candidates.map(cardHtml).join("")}
+    </div>` : ""}
   `;
 }
 

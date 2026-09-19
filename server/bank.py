@@ -18,10 +18,14 @@ from .config import atomic_write_text
 from .library import now_iso
 
 BANK_PATH = Path(__file__).resolve().parent.parent / "data" / "question_bank.json"
+PUBLIC_BANK_PATH = Path(__file__).resolve().parent.parent / "data" / "question_bank_public.json"
 EXTRA_PATH = Path(__file__).resolve().parent.parent / "data" / "question_bank_extra.json"
 DEFAULT_DB_PATH = Path(r"D:\project\RoastDuck\data\app.db")
 SNAPSHOT_VERSION = 1
 PAGE_SIZE = 20
+
+# 公开包剔除的个人数据：Bruce 的个人回答题册（题干含其个人作答描述，绝不分发）
+PRIVATE_BOOK_IDS = {"book_personal_ielts_answers"}
 
 # 必考话题：雅思每季固定的开场五件套（Bruce 2026-09-20 定稿）。
 # 全等匹配话题英文名的规整形式，避免 Part3 的 "Work, Career & Success" 等误伤。
@@ -123,7 +127,37 @@ def sync_from_db(db_path: Path | str | None = None, out_path: Path | str | None 
     }
     out.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_text(out, json.dumps(snapshot, ensure_ascii=False, indent=1))
+    # 公开子集：剔除 Bruce 个人回答题册及其题目后入库（git 跟踪，路人开箱即有题库）
+    pub = _strip_private(snapshot)
+    atomic_write_text(out.with_name("question_bank_public.json"),
+                      json.dumps(pub, ensure_ascii=False, indent=1))
     return snapshot
+
+
+def _strip_private(snapshot: dict) -> dict:
+    """公开分发子集：去掉私人题册与其题目，去掉本机路径。只含公开题库内容。"""
+    books = [b for b in snapshot.get("books", []) if b["id"] not in PRIVATE_BOOK_IDS]
+    questions = [q for q in snapshot.get("questions", []) if q["book_id"] not in PRIVATE_BOOK_IDS]
+    used_topics = {q["topic_id"] for q in questions}
+    topics = [t for t in snapshot.get("topics", []) if t["id"] in used_topics]
+    qids = {q["id"] for q in questions}
+    sets = []
+    for s in snapshot.get("sets", []):
+        sets.append({**s, "question_ids": [i for i in s.get("question_ids", []) if i in qids]})
+    return {
+        "version": snapshot.get("version"),
+        "public": True,
+        "counts": {
+            "books": len(books),
+            "topics": len(topics),
+            "questions": len(questions),
+            "sets": len(sets),
+        },
+        "books": books,
+        "topics": topics,
+        "questions": questions,
+        "sets": sets,
+    }
 
 
 def merge_extra(data: dict, extra_path: Path | None = None) -> dict:
@@ -198,8 +232,10 @@ def merge_extra(data: dict, extra_path: Path | None = None) -> dict:
 
 
 def load_bank(path: Path | str | None = None) -> dict:
-    """读题库快照；未导入时抛 FileNotFoundError。"""
+    """读题库快照；完整快照缺失时回落到仓库自带的公开子集（路人开箱即用）。"""
     p = Path(path) if path else BANK_PATH
+    if not p.exists():
+        p = PUBLIC_BANK_PATH
     if not p.exists():
         raise FileNotFoundError("题库快照不存在：先运行 python -m server.bank --sync")
     return json.loads(p.read_text(encoding="utf-8"))

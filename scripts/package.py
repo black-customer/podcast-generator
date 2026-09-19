@@ -14,8 +14,8 @@ OUT = BASE / "dist" / "bruce-corpus-share.zip"
 INCLUDE_DIRS = ["server", "web", "prompts", "docs", "scripts", "tests", "mobile"]
 INCLUDE_FILES = [
     "README.md", "AGENTS.md", "requirements.txt", "requirements-dev.txt",
-    "run.py", "pipeline.py", "start.bat", "open_app.bat", "app.ico",
-    "pyproject.toml", ".gitignore",
+    "run.py", "pipeline.py", "start.bat", "open_app.bat", "update_app.bat",
+    "app.ico", "VERSION", "pyproject.toml", ".gitignore",
 ]
 INCLUDE_DATA = ["data/voices.json", "data/settings.example.json"]
 

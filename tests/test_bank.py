@@ -106,7 +106,42 @@ def test_sync_missing_db_raises(tmp_path: Path):
         bank.sync_from_db(tmp_path / "nope.db", tmp_path / "out.json")
 
 
-def test_load_bank_missing_raises(tmp_path: Path):
+def test_public_snapshot_strips_private_book(duck_db: Path, tmp_path: Path, monkeypatch):
+    """公开包绝不包含个人回答册（Bruce 数据绝不分发）。"""
+    con = sqlite3.connect(duck_db)
+    con.execute("insert into books values ('book_personal_ielts_answers', '我的答案', 'Personal')")
+    con.execute(
+        "insert into questions values ('qp1', 'book_personal_ielts_answers', NULL, 1, "
+        "'原问句缺失：我的个人回答', '我的个人回答', 'np1')"
+    )
+    con.commit()
+    con.close()
+    monkeypatch.setattr(bank, "EXTRA_PATH", tmp_path / "no-extra.json")
+    out = tmp_path / "bank.json"
+    bank.sync_from_db(duck_db, out)
+    pub_path = out.with_name("question_bank_public.json")
+    raw = pub_path.read_text(encoding="utf-8")
+    assert "book_personal_ielts_answers" not in raw
+    assert "我的个人回答" not in raw and "原问句缺失" not in raw
+    pub = json.loads(raw)
+    assert pub["public"] is True and "source" not in pub
+    assert {q["id"] for q in pub["questions"]}.isdisjoint({"qp1"})
+
+
+def test_load_bank_falls_back_to_public(tmp_path: Path, monkeypatch):
+    """完整快照缺失时回落公开子集（路人开箱即有题库）。"""
+    pub = {"version": 1, "public": True, "questions": [{"id": "q1", "text": "Hi?"}]}
+    pub_file = tmp_path / "question_bank_public.json"
+    pub_file.write_text(json.dumps(pub), encoding="utf-8")
+    monkeypatch.setattr(bank, "BANK_PATH", tmp_path / "question_bank.json")
+    monkeypatch.setattr(bank, "PUBLIC_BANK_PATH", pub_file)
+    loaded = bank.load_bank()
+    assert loaded["public"] is True and loaded["questions"][0]["id"] == "q1"
+
+
+def test_load_bank_missing_raises(tmp_path: Path, monkeypatch):
+    monkeypatch.setattr(bank, "BANK_PATH", tmp_path / "nope.json")
+    monkeypatch.setattr(bank, "PUBLIC_BANK_PATH", tmp_path / "no-public.json")
     with pytest.raises(FileNotFoundError):
         bank.load_bank(tmp_path / "nope.json")
 
@@ -284,6 +319,7 @@ def test_api_bank_questions(monkeypatch, snapshot_file: Path):
 
 def test_api_bank_questions_not_available(monkeypatch, tmp_path: Path):
     monkeypatch.setattr(bank, "BANK_PATH", tmp_path / "nope.json")
+    monkeypatch.setattr(bank, "PUBLIC_BANK_PATH", tmp_path / "no-public.json")
     r = client.get("/api/bank/questions")
     assert r.status_code == 200
     data = r.json()

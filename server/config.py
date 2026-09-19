@@ -14,6 +14,16 @@ TOPICS_DIR = DATA_DIR / "topics"
 EPISODES_DIR = DATA_DIR / "episodes"
 TMP_DIR = DATA_DIR / ".tmp"
 
+
+def _read_version() -> str:
+    try:
+        return (BASE_DIR / "VERSION").read_text(encoding="utf-8").strip() or "dev"
+    except OSError:
+        return "dev"
+
+
+APP_VERSION = _read_version()
+
 SETTINGS_FILE = DATA_DIR / "settings.json"
 
 SETTINGS_LOCK = threading.Lock()

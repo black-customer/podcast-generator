@@ -1,6 +1,7 @@
 [
   {
     "id": "tom_holland_vibe",
+    "tier": "preset",
     "name": "Peter Parker (荷兰弟少年感)",
     "gender": "male",
     "accent": "American",
@@ -12,6 +13,7 @@
   },
   {
     "id": "alex_young_adult",
+    "tier": "preset",
     "name": "Alex (加州大学极客)",
     "gender": "male",
     "accent": "American",
@@ -23,6 +25,7 @@
   },
   {
     "id": "london_scholar",
+    "tier": "preset",
     "name": "Arthur (英伦阳光青年)",
     "gender": "male",
     "accent": "British",
@@ -30,10 +33,11 @@
     "description": "伦敦年轻大学学者风格，发音考究但毫无距离感",
     "reference_id": "4aee64c0c03c47288fa04f0b6d240a19",
     "speed": 1.0,
-    "temperature": 0.80
+    "temperature": 0.8
   },
   {
     "id": "mia_bilingual",
+    "tier": "preset",
     "name": "Mia (灵动双语搭档)",
     "gender": "female",
     "accent": "Bilingual (US/CN)",
@@ -41,6 +45,96 @@
     "description": "灵动亲和的母语级中英双语主播，擅长互动吐槽与深度复盘",
     "reference_id": "570b8ac5c3ff4e46849b0763a60b86b7",
     "speed": 1.0,
-    "temperature": 0.80
+    "temperature": 0.8
+  },
+  {
+    "id": "cand_sarah",
+    "tier": "candidate",
+    "name": "Sarah (官方知性主播)",
+    "gender": "female",
+    "accent": "American",
+    "tag": "知性投入 · 官方基准",
+    "description": "fish.audio 官方高人气女声，专注投入的讲述者，最稳的提问音色",
+    "reference_id": "933563129e564b19a115bedd57b7406a"
+  },
+  {
+    "id": "cand_alle",
+    "tier": "candidate",
+    "name": "ALLE (活力社交系)",
+    "gender": "female",
+    "accent": "American",
+    "tag": "年轻活泼 · 友好亲近",
+    "description": "年轻女声，精力充沛、友好自然，社媒博主感",
+    "reference_id": "59e9dc1cb20c452584788a2690c80970"
+  },
+  {
+    "id": "cand_friendly_w",
+    "tier": "candidate",
+    "name": "Friendly Women (明亮职业系)",
+    "gender": "female",
+    "accent": "American",
+    "tag": "明亮专业 · 青春职业感",
+    "description": "明亮有活力的年轻职业女声，专业但不生硬",
+    "reference_id": "b545c585f631496c914815291da4e893"
+  },
+  {
+    "id": "cand_egirl",
+    "tier": "candidate",
+    "name": "E-girl (软萌可爱系)",
+    "gender": "female",
+    "accent": "American",
+    "tag": "软萌 · 陪伴感",
+    "description": "可爱系年轻女声，聊天陪伴感强",
+    "reference_id": "98655a12fa944e26b274c535e5e03842"
+  },
+  {
+    "id": "cand_ethan",
+    "tier": "candidate",
+    "name": "Ethan (官方好奇讲解员)",
+    "gender": "male",
+    "accent": "American",
+    "tag": "好奇讲解 · 官方基准",
+    "description": "fish.audio 官方高人气男声，好奇心讲解者，Bruce 当前回答音色",
+    "reference_id": "536d3a5e000945adb7038665781a4aca"
+  },
+  {
+    "id": "cand_elite",
+    "tier": "candidate",
+    "name": "ELITE (干练职业系)",
+    "gender": "male",
+    "accent": "American",
+    "tag": "自信干练 · 清晰职业",
+    "description": "自信有活力的年轻男声，音色清脆、专业感强",
+    "reference_id": "d8a1340984ee4b63ad1ffae27a6a4339"
+  },
+  {
+    "id": "cand_slax",
+    "tier": "candidate",
+    "name": "Slax (沉稳叙事系)",
+    "gender": "male",
+    "accent": "American",
+    "tag": "清晰沉稳 · 叙事节奏",
+    "description": "清晰、精准、有分寸的叙事男声，适合讲解与陈述",
+    "reference_id": "c5f56a6cc2ec4fa8920cb4c5889a3fb7"
+  },
+  {
+    "id": "cand_adam",
+    "tier": "candidate",
+    "name": "Adam (友好口语系)",
+    "gender": "male",
+    "accent": "American",
+    "tag": "友好口语 · 日常对话",
+    "description": "自信有活力的年轻男声，友好、口语化、对话感强",
+    "reference_id": "9259a7392c454a1eb6436141abb5a558"
+  },
+  {
+    "id": "cand_us_clone",
+    "tier": "candidate",
+    "name": "美区克隆 (成熟低沉系)",
+    "gender": "male",
+    "accent": "American",
+    "tag": "成熟低沉 · 平滑专业",
+    "description": "专业沉稳的中年男声，音色平滑低沉",
+    "reference_id": "692a2e659a8748558a1abc97ec051e0e"
   }
 ]

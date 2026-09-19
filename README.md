@@ -21,6 +21,37 @@
 
 依赖：Python 3.11+、ffmpeg（PATH 中）。
 
+## 让 AI Agent 帮你装 / 帮你更新（推荐）
+
+你不需要懂技术。对任意 AI 编码助手（ZCode / Codex / WorkBuddy / Claude Code 等）说一句话即可。
+
+**首次安装**，对 Agent 说：
+
+```text
+帮我从 GitHub 克隆 <仓库地址> 到本机，按它 README 的 "AI Agent 安装指令" 完成安装并启动，
+启动成功后打开 http://127.0.0.1:8765 告诉我。
+```
+
+**以后更新**，对 Agent 说：
+
+```text
+帮我更新 IELTS Pod：在项目目录运行 update_app.bat，完成后告诉我新版本号。
+```
+
+**AI Agent 安装指令**（Agent 按此执行，全程无需人工介入）：
+
+```bash
+git clone <仓库地址> && cd podcastGenerate
+# ffmpeg 缺失时：winget install Gyan.FFmpeg （装后重开终端）
+# 1) 创建并激活虚拟环境：python -m venv .venv；.venv/Scripts/python -m pip install -r requirements.txt
+# 2) 后台启动服务（脚本会阻塞，务必后台运行）：start "IELTS Pod Server" /min start.bat  或  .venv/Scripts/python run.py --no-open &
+# 3) 验证：GET http://127.0.0.1:8765/api/health 返回 200 即成功（version 字段为当前版本）
+# 题库已内置（公开子集，523 题）；数据全部保存在 data/，更新永不动它
+```
+
+**一键更新**（也可自己双击 `update_app.bat`）：拉最新代码 → 同步依赖 → 自动重启服务 →
+重新打开网页。你的 key、语料、音频都在 `data/` 里，更新永不触碰。
+
 ## fish.audio Key 申请（可能需要科学上网）
 
 1. 打开 [fish.audio](https://fish.audio)（国内直连不稳定，建议自备代理）；
@@ -39,8 +70,9 @@
 4. 已在库中的题显示「已作答」徽标（按题干匹配）；
 5. 🎲「随机来一题」从当前筛选中随机抽题练口语。
 
-题库数据来自本地 RoastDuck 题库快照：`python -m server.bank --sync`
-（需 `D:\project\RoastDuck\data\app.db`；他人使用可跳过，题库页会显示引导卡）。
+题库开箱即用（仓库内置公开子集 523 题，含 1–4月 / 5–8月 / 9–12月三个考季与必考题）。
+Bruce 的完整题库可从本地 RoastDuck 重同步：`python -m server.bank --sync`
+（需 `D:\project\RoastDuck\data\app.db`；公开包绝不包含任何个人作答数据）。
 
 ## 配置（工作台 → 设置）
 

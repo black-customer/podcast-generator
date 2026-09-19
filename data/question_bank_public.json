@@ -1,0 +1,5494 @@
+{
+ "version": 1,
+ "public": true,
+ "counts": {
+  "books": 3,
+  "topics": 101,
+  "questions": 523,
+  "sets": 3
+ },
+ "books": [
+  {
+   "id": "book2_speaking_success",
+   "title_zh": "IELTS Speaking for Success",
+   "title_en": "IELTS Speaking for Success"
+  },
+  {
+   "id": "book3_ielts_energy",
+   "title_zh": "IELTS Energy 7+",
+   "title_en": "IELTS Energy 7+"
+  },
+  {
+   "id": "book4_esl_daily",
+   "title_zh": "ESL Daily English Podcast",
+   "title_en": "ESL Daily English Podcast"
+  }
+ ],
+ "topics": [
+  {
+   "id": "t1_114fnls1lb",
+   "name_zh": "科学",
+   "name_en": "Science",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_11bhlfne2t",
+   "name_zh": "公园",
+   "name_en": "Parks",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_12ocyducbj",
+   "name_zh": "分享",
+   "name_en": "Sharing",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_136ahni1gk",
+   "name_zh": "购物",
+   "name_en": "Shopping",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1389u7g1vg",
+   "name_zh": "你居住的区域",
+   "name_en": "The area you live in",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_13fwmvy1f9",
+   "name_zh": "你生活的城市",
+   "name_en": "The city you live in",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_162na3oksg",
+   "name_zh": "外出",
+   "name_en": "Going out",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_170nwtl1pi",
+   "name_zh": "礼物",
+   "name_en": "Gifts",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_19cbk7m1xf",
+   "name_zh": "鞋子",
+   "name_en": "Shoes",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_19cme7f440",
+   "name_zh": "外太空与星星",
+   "name_en": "Outer space and stars",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_19hfw34ctm",
+   "name_zh": "景观",
+   "name_en": "Views",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1a63h71lme",
+   "name_zh": "老师",
+   "name_en": "Teachers",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1avxfkq18u",
+   "name_zh": "镜子",
+   "name_en": "Mirrors",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1fnnwj11qm",
+   "name_zh": "放假",
+   "name_en": "Day off",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1h1co95fgy",
+   "name_zh": "音乐",
+   "name_en": "Music",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1iy4n69815",
+   "name_zh": "整洁",
+   "name_en": "Tidiness",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1ke8fo51us",
+   "name_zh": "人多的地方",
+   "name_en": "Crowded place",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1kvlziy168",
+   "name_zh": "博物馆",
+   "name_en": "Museum",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1nvc6l31gi",
+   "name_zh": "人生阶段",
+   "name_en": "Life stages",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1oqv943402",
+   "name_zh": "唱歌",
+   "name_en": "Singing",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1ql9ufzpkh",
+   "name_zh": "玩笑&喜剧",
+   "name_en": "Jokes & Comedies",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1r4htsx1oc",
+   "name_zh": "公共场所",
+   "name_en": "Public places",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1sbebgjupl",
+   "name_zh": "种蔬菜/水果",
+   "name_en": "Growing vegetables /Fruits",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1tkut917qw",
+   "name_zh": "散步",
+   "name_en": "Walking",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1u1pb0p1nj",
+   "name_zh": "耳机",
+   "name_en": "Headphones",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1u42buw9et",
+   "name_zh": "聊天",
+   "name_en": "Chatting",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_1yipkqd7i5",
+   "name_zh": "汽⻋",
+   "name_en": "Cars",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_2q7j5z1kco",
+   "name_zh": "宠物和动物",
+   "name_en": "Pet and animals",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_4t2ntq1aqu",
+   "name_zh": "衣服",
+   "name_en": "Clothing",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_50k2mn1p5b",
+   "name_zh": "广告",
+   "name_en": "Advertisement",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_57oucd1w5q",
+   "name_zh": "规则",
+   "name_en": "Rules",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_6d8qvp17s5",
+   "name_zh": "与老人相处",
+   "name_en": "Staying with old people",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_6yyeom1bi1",
+   "name_zh": "爱好",
+   "name_en": "Hobby",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_8f4rcwq9f5",
+   "name_zh": "晨间时光/早晨活动",
+   "name_en": "Morning time/routine",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_9k7nir1lci",
+   "name_zh": "休息",
+   "name_en": "Having a break",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_dpq2nl7qtl",
+   "name_zh": "手表",
+   "name_en": "Watch",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_gyldce16hv",
+   "name_zh": "阅读",
+   "name_en": "Reading",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_hbvzkq12yn",
+   "name_zh": "食物",
+   "name_en": "Food",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_js2k9i1g94",
+   "name_zh": "儿时活动",
+   "name_en": "Children activities",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_keia6vgoa9",
+   "name_zh": "做得好的事情",
+   "name_en": "Doing something well",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_n1jg711j3o",
+   "name_zh": "工作或学习",
+   "name_en": "Work or studies",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_n8xqbo10wt",
+   "name_zh": "植物",
+   "name_en": "Plants",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_pyppbh173v",
+   "name_zh": "打字",
+   "name_en": "Typing",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_q3v4lz16xx",
+   "name_zh": "借东西",
+   "name_en": "Borrowing and Lending",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_rlipj91vcl",
+   "name_zh": "社交媒体",
+   "name_en": "Social media",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_seh20l151n",
+   "name_zh": "家乡",
+   "name_en": "Hometown",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_skx92m3i9u",
+   "name_zh": "团体运动",
+   "name_en": "Sports team",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_uea2i2xcan",
+   "name_zh": "家/住所",
+   "name_en": "Home/accommodation",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_ujodnbqrv2",
+   "name_zh": "艺术",
+   "name_en": "Art",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_ujt2rwz9go",
+   "name_zh": "网站",
+   "name_en": "Websites",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_urcpn24zzp",
+   "name_zh": "建筑",
+   "name_en": "Building",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t1_x55tl61t6b",
+   "name_zh": "旅行/Scenery风景",
+   "name_en": "Travelling",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t2_09u05edddt",
+   "name_zh": "人物难题2: 喜欢画画的小孩",
+   "name_en": "人物难题2: 喜欢画画的小孩",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_180kp2b7kd",
+   "name_zh": "串题六：想颁布的环保法律；想颁布的法律",
+   "name_en": "串题六：想颁布的环保法律；想颁布的法律",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_1duesmj1q2",
+   "name_zh": "串题三：拥有成功商业的人；名人出演的广告；遇到困难终成功的人；想见的名人",
+   "name_en": "串题三：拥有成功商业的人；名人出演的广告；遇到困难终成功的人；想见的名人",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_1hrrnxu1ll",
+   "name_zh": "串题九：在团队中工作；很久没有收到回复的信息",
+   "name_en": "串题九：在团队中工作；很久没有收到回复的信息",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_1k9t62147o",
+   "name_zh": "串题四：推荐旅行过的地方;喜欢或不喜欢的高建筑;购物地点;有趣的建筑; *去过且喜欢的城市",
+   "name_en": "串题四：推荐旅行过的地方;喜欢或不喜欢的高建筑;购物地点;有趣的建筑; *去过且喜欢的城市",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_1kwl4jppw7",
+   "name_zh": "新题串题4: 有趣的建筑，购物地点",
+   "name_en": "新题串题4: 有趣的建筑，购物地点",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_1ncrzkg1bh",
+   "name_zh": "串题十一：禁用手机的场合，微笑的场合，对家庭重要的东西",
+   "name_en": "串题十一：禁用手机的场合，微笑的场合，对家庭重要的东西",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_1nxslz8obu",
+   "name_zh": "串题二：近期改变的计划；改变重要想法；重要决定；长久目标；鼓励别人做不愿做的事",
+   "name_en": "串题二：近期改变的计划；改变重要想法；重要决定；长久目标；鼓励别人做不愿做的事",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_1rkkilf1og",
+   "name_zh": "串题十：有趣视频；近期观影",
+   "name_en": "串题十：有趣视频；近期观影",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_1soldw3odq",
+   "name_zh": "新题串题3: 自行车/摩托车/汽车旅行，外国的短期停留",
+   "name_en": "新题串题3: 自行车/摩托车/汽车旅行，外国的短期停留",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_1yssg8719v",
+   "name_zh": "串题七：喜欢现场体育赛事；早起经历",
+   "name_en": "串题七：喜欢现场体育赛事；早起经历",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_3bkp99wmtf",
+   "name_zh": "串题五：喜欢在家/花园种菜的人；爱护自然之人；安静的地方；去过的无聊地方；喜欢拜访但不想住的家",
+   "name_en": "串题五：喜欢在家/花园种菜的人；爱护自然之人；安静的地方；去过的无聊地方；喜欢拜访但不想住的家",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_49gixd10h8",
+   "name_zh": "",
+   "name_en": "",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_g6rufu1k58",
+   "name_zh": "人物难题1: 在家族企业工作的人",
+   "name_en": "人物难题1: 在家族企业工作的人",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_gx035rmc2p",
+   "name_zh": "串题八：擅长学习和说语言的人；发小；擅长做计划的人；朋友自学",
+   "name_en": "串题八：擅长学习和说语言的人；发小；擅长做计划的人；朋友自学",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_hx5n9uj7qh",
+   "name_zh": "串题一：遇到的科技问题；别人帮助解决问题；花费超过预期的物品；想拥有的科技产品；*app/程序；*机智解决问题的人；*为家人骄傲",
+   "name_en": "串题一：遇到的科技问题；别人帮助解决问题；花费超过预期的物品；想拥有的科技产品；*app/程序；*机智解决问题的人；*为家人骄傲",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_qcjchkzs9h",
+   "name_zh": "人物难题3: 做计划的人",
+   "name_en": "人物难题3: 做计划的人",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_s7dy5k1kdx",
+   "name_zh": "新题串题5:发挥想象力，最近读过的故事",
+   "name_en": "新题串题5:发挥想象力，最近读过的故事",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_v0tmvz1dw0",
+   "name_zh": "人物难题4: 朋友学的技能",
+   "name_en": "人物难题4: 朋友学的技能",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t2_xwkdv5mha5",
+   "name_zh": "串题十二：想从事的短期海外工作；完美工作；自行车/摩托车/汽车旅行；",
+   "name_en": "串题十二：想从事的短期海外工作；完美工作；自行车/摩托车/汽车旅行；",
+   "ielts_part": 2,
+   "sort": 0
+  },
+  {
+   "id": "t3_10fxl71836",
+   "name_zh": "!教育､学习､成⻓+",
+   "name_en": "Education, Learning & Personal Development",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_1848nfy1w5",
+   "name_zh": "教育与成长",
+   "name_en": "Topic 1 (Education & Personal Growth)",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_1bmcizh155",
+   "name_zh": "!家庭､孩子､教育方式*",
+   "name_en": "Family, Children & Parenting",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_1iu0bv1gvj",
+   "name_zh": "!艺术､创造力､想象力*",
+   "name_en": "Art, Creativity & Imagination",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_1o5w7bw1gu",
+   "name_zh": "!消费､金钱､生活方式*",
+   "name_en": "Consumption, Money & Lifestyle Choices",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_1u8h55w1fu",
+   "name_zh": "家庭与教育",
+   "name_en": "Topic 4 (Family & Parenting)",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_1uqrnuyrc0",
+   "name_zh": "规则与社会",
+   "name_en": "Topic 5 (Rules & Society)",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_47ox9s1wye",
+   "name_zh": "!社会行为､人际关系*",
+   "name_en": "Society, Behaviour & Relationships",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_gbfswuxia9",
+   "name_zh": "!娱乐､电影､音乐*",
+   "name_en": "Entertainment, Movies & Music",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_okjc1t74uo",
+   "name_zh": "广告与媒体",
+   "name_en": "Topic 7 (Advertising & Media)",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_oxdfg91wc3",
+   "name_zh": "工作与成功",
+   "name_en": "Topic 3 (Work & Success)",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_s9w8hb1ayy",
+   "name_zh": "!计划､决策､建议+",
+   "name_en": "Planning, Decision-Making & Advice",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_t6ls0td8bl",
+   "name_zh": "[科技､手机､互联网d",
+   "name_en": "Technology, Phones & Digital Life",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_vayyduksk4",
+   "name_zh": "!工作､职业､成功+",
+   "name_en": "Work, Career & Success",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t3_zbhwka1be7",
+   "name_zh": "!名气､公众形象､媒体+",
+   "name_en": "Fame, Media & Public Attention",
+   "ielts_part": 3,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_24bd8f92c4",
+   "name_zh": "电脑/平板",
+   "name_en": "Computers / Tablets",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_1c97c99646",
+   "name_zh": "失物/捡到东西",
+   "name_en": "Lost and Found",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_d73e9c16fa",
+   "name_zh": "收藏东西",
+   "name_en": "Collecting Things",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_4ab505a6c2",
+   "name_zh": "街市/集市",
+   "name_en": "Street Market",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_950593b1f4",
+   "name_zh": "纸",
+   "name_en": "Paper",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_d46cf735fb",
+   "name_zh": "水果和蔬菜",
+   "name_en": "Fruit and Vegetables",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_68b6cb141b",
+   "name_zh": "礼貌",
+   "name_en": "Politeness",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_a3990fd35c",
+   "name_zh": "垃圾与回收",
+   "name_en": "Rubbish and Recycling",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_127feaad02",
+   "name_zh": "疲劳/感到疲惫",
+   "name_en": "Tiredness",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_bb71aacb70",
+   "name_zh": "旅行",
+   "name_en": "Traveling",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_57817d1429",
+   "name_zh": "中学",
+   "name_en": "Secondary School",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_6ae999552a",
+   "name_zh": "名字",
+   "name_en": "Name",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_fc88351dcd",
+   "name_zh": "感觉无聊",
+   "name_en": "Feeling bored",
+   "ielts_part": 1,
+   "sort": 0
+  },
+  {
+   "id": "t_x26q3_3d9209c459",
+   "name_zh": "朋友",
+   "name_en": "Friends",
+   "ielts_part": 1,
+   "sort": 0
+  }
+ ],
+ "questions": [
+  {
+   "id": "q_9nrpe78rp3ln",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "Are the people friendly in the city?",
+   "text_zh": "这座城市的人们友好吗？"
+  },
+  {
+   "id": "q_15fsd7afq0tt",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1389u7g1vg",
+   "text": "Are the people in your neighborhood nice and friendly?",
+   "text_zh": "你社区里的人们友善吗？"
+  },
+  {
+   "id": "q_1h0qj8q128k5",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "Are the transport facilities to your home very good?",
+   "text_zh": "到你家的交通设施非常好吗？"
+  },
+  {
+   "id": "q_hg2wuc1ofvps",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_ujt2rwz9go",
+   "text": "Are there any changes to the websites you often visit?",
+   "text_zh": "你经常浏览的网站有什么变化吗?"
+  },
+  {
+   "id": "q_ywu1isgwpz18",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_11bhlfne2t",
+   "text": "Are there any parks you want to go to in the future?",
+   "text_zh": "在未来你有什么想去的公园吗"
+  },
+  {
+   "id": "q_dx9q491xfcib",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_57oucd1w5q",
+   "text": "Are there any rules for students at your school? /",
+   "text_zh": "你们学校对学生有规定吗？"
+  },
+  {
+   "id": "q_7ptwdc1yvsxe",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "Are there big changes in this city?",
+   "text_zh": "在这个城市有任何大的改变吗？"
+  },
+  {
+   "id": "q_1175zk81en76",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1kvlziy168",
+   "text": "Are there many museums in your hometown?",
+   "text_zh": "你的家乡有很多博物馆吗？"
+  },
+  {
+   "id": "q_lsqhea1f50ug",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Are there many young people in your hometown?",
+   "text_zh": "在你的家乡有很多年轻人吗？"
+  },
+  {
+   "id": "q_1kpdk19pbvz7",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "Are there people of different ages living in this city?",
+   "text_zh": "这个城市里有不同年龄的人吗？"
+  },
+  {
+   "id": "q_1uq83bt17m13",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_urcpn24zzp",
+   "text": "Are there tall buildings near your home?",
+   "text_zh": "你加附近有高大的建筑吗？"
+  },
+  {
+   "id": "q_jjtmy117u4vp",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1ql9ufzpkh",
+   "text": "Are you good at telling jokes?",
+   "text_zh": "你擅⻓开玩笑吗？"
+  },
+  {
+   "id": "q_1nml913gupkp",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_6d8qvp17s5",
+   "text": "Are you happy to work with people who are older than you?",
+   "text_zh": "你乐意和比你年长的人一起工作吗？"
+  },
+  {
+   "id": "q_brdlgt1w6kw1",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1sbebgjupl",
+   "text": "Are you interested in growing vegetables and fruits?",
+   "text_zh": "你对种蔬菜和水果感兴趣吗？"
+  },
+  {
+   "id": "q_1v9ykic1xpql",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Are you looking forward to working?",
+   "text_zh": "你期待工作吗？"
+  },
+  {
+   "id": "q_ojbz2a1p8mpm",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1a63h71lme",
+   "text": "Are you still in touch with your primary school teachers?",
+   "text_zh": "你现在还和你的小学老师保持联系吗？"
+  },
+  {
+   "id": "q_acygb5xq0v0l",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1nvc6l31gi",
+   "text": "At what age do you think people are the happiest?",
+   "text_zh": "你认为人们在哪个年龄最开心？"
+  },
+  {
+   "id": "q_mna2yv1wp3o0",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "Can you describe the place where you live?",
+   "text_zh": "你可以描述一下你住的地方吗？"
+  },
+  {
+   "id": "q_1jcx2aq14tf9",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1yipkqd7i5",
+   "text": "Did you enjoy traveling by car when you were a kid?",
+   "text_zh": "你小时候喜欢汽⻋旅行吗？"
+  },
+  {
+   "id": "q_1p1s2eu1xsi8",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_6yyeom1bi1",
+   "text": "Did you have any hobbies when you were a child?",
+   "text_zh": "你小时候有什么爱好？"
+  },
+  {
+   "id": "q_1uqq5qsbm7y3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Did you learn about the culture of your hometown in your childhood?",
+   "text_zh": "在你的童年你是否学过你家乡的文化？"
+  },
+  {
+   "id": "q_17kuoczked0y",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Did you learn about the history of your hometown at school",
+   "text_zh": "？你在学校学过你家乡的历史吗？"
+  },
+  {
+   "id": "q_ji6vln11ldd3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_11bhlfne2t",
+   "text": "Did you like going to parks as a child?",
+   "text_zh": "你小时候喜欢去公园吗"
+  },
+  {
+   "id": "q_k72jjo2nadjw",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1tkut917qw",
+   "text": "Did you often go outside to have a walk when you were a child?",
+   "text_zh": "当你是孩子时你经常出门散步吗？"
+  },
+  {
+   "id": "q_8tmi271mdwe6",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1iy4n69815",
+   "text": "Did you use to keep your room tidy as a child?",
+   "text_zh": "你小时候会经常保持房间整⻬吗"
+  },
+  {
+   "id": "q_1nikm9xokaf5",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_12ocyducbj",
+   "text": "Did your parents teach you to share when you were a child?",
+   "text_zh": "你小时候父母有教过你分享吗？"
+  },
+  {
+   "id": "q_dxecye1qmwmq",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_114fnls1lb",
+   "text": "Do Chinese people often visit science museums?",
+   "text_zh": "中国人经常去科学博物馆吗？"
+  },
+  {
+   "id": "q_kqjs6d1n7ns9",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n8xqbo10wt",
+   "text": "Do Chinese people send plants as gifts? /",
+   "text_zh": "中国人会送植物当礼物吗？"
+  },
+  {
+   "id": "q_2ym748101yta",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1sbebgjupl",
+   "text": "Do many people grow vegetables in your city?",
+   "text_zh": "在你的城市，很多人种菜吗？"
+  },
+  {
+   "id": "q_1iszftz46ch3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1ke8fo51us",
+   "text": "Do most people like crowded places?",
+   "text_zh": "大多数人喜欢人多的地方吗？"
+  },
+  {
+   "id": "q_pgijnrh6879f",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_162na3oksg",
+   "text": "Do you always take your mobile phone with you when going out?",
+   "text_zh": "出门时你总是会带手机吗？"
+  },
+  {
+   "id": "q_150mi32atk6f",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1u42buw9et",
+   "text": "Do you argue with friends?",
+   "text_zh": "你会和朋友吵架吗？"
+  },
+  {
+   "id": "q_m7vdfe1n5pux",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_162na3oksg",
+   "text": "Do you bring food or snacks with you when going out?",
+   "text_zh": "出门的时候你会带吃的或者零食吗？"
+  },
+  {
+   "id": "q_137svhquax6p",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_hbvzkq12yn",
+   "text": "Do you eat different foods at different times of the year?",
+   "text_zh": "在一年的不同时间中你吃不同的食物吗？"
+  },
+  {
+   "id": "q_1obob7y1wye8",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1nvc6l31gi",
+   "text": "Do you enjoy being the age you are now?",
+   "text_zh": "你喜欢你现在的年龄吗？"
+  },
+  {
+   "id": "q_4cezt51cemlp",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_6d8qvp17s5",
+   "text": "Do you enjoy spending time with old people?",
+   "text_zh": "你喜欢和老人一起度过时间吗？"
+  },
+  {
+   "id": "q_2j5p0qxfllcq",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1a63h71lme",
+   "text": "Do you have a favorite teacher?",
+   "text_zh": "你有一个喜欢的老师吗？"
+  },
+  {
+   "id": "q_14g7lft1wujg",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_6yyeom1bi1",
+   "text": "Do you have a hobby that you've had since childhood?",
+   "text_zh": "你有什么爱好是从你小时候开始就有的？"
+  },
+  {
+   "id": "q_1j0dokgdgpsg",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1a63h71lme",
+   "text": "Do you have a teacher from your past that you still remember?",
+   "text_zh": "你现在有从过去到现在依旧记着的老师吗？"
+  },
+  {
+   "id": "q_1jn20wc1aq41",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_keia6vgoa9",
+   "text": "Do you have an experience when you did something well?/",
+   "text_zh": "你有过做的很好的经历吗？"
+  },
+  {
+   "id": "q_zfea7r8j8ykj",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_keia6vgoa9",
+   "text": "Do you have an experience when your teacher thought you did a good job",
+   "text_zh": "？/你有没有让你的老师认为你做的很好的经历？"
+  },
+  {
+   "id": "q_z2lca1ajevvr",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_6yyeom1bi1",
+   "text": "Do you have any hobbies?",
+   "text_zh": "你有什么爱好吗？"
+  },
+  {
+   "id": "q_mlcrhcffa208",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1nvc6l31gi",
+   "text": "Do you have any plans for the next five years?",
+   "text_zh": "对于未来5年你有什么计划吗？"
+  },
+  {
+   "id": "q_1wv7uvx1jkbl",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Do you have any plans for your studies in the next five years?",
+   "text_zh": "你接下来5年的学习计划是什么？"
+  },
+  {
+   "id": "q_1vml9q7e90ba",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Do you have any plans for your work in the next five years?",
+   "text_zh": "接下来5年你对于工作有什么计划吗？"
+  },
+  {
+   "id": "q_119hnak5g7eq",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_12ocyducbj",
+   "text": "Do you have anything to share with others recently?",
+   "text_zh": "你最近有什么想和别人分享的吗？"
+  },
+  {
+   "id": "q_5wax00313mna",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_6yyeom1bi1",
+   "text": "Do you have the same hobbies as your family members?",
+   "text_zh": "你有和你家庭成员一样的爱好吗？"
+  },
+  {
+   "id": "q_pkr6p61c99j9",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n8xqbo10wt",
+   "text": "Do you keep plants at home? /",
+   "text_zh": "你家里养植物吗？"
+  },
+  {
+   "id": "q_1r5nmiv1fvus",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1389u7g1vg",
+   "text": "Do you know any famous people in your area?",
+   "text_zh": "你知道任何在那个区域里的名人吗？"
+  },
+  {
+   "id": "q_l90f8j3sen4n",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1389u7g1vg",
+   "text": "Do you know any of your neighbors?",
+   "text_zh": "你知道你的邻居吗？"
+  },
+  {
+   "id": "q_hhjque1rpqz3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n8xqbo10wt",
+   "text": "Do you know anything about growing a plant? /",
+   "text_zh": "你知道怎么种植物吗？"
+  },
+  {
+   "id": "q_om8s1jgwq6lt",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_ujodnbqrv2",
+   "text": "Do you like art?",
+   "text_zh": "你喜欢艺术吗？"
+  },
+  {
+   "id": "q_9kgrcwalzdtc",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19cbk7m1xf",
+   "text": "Do you like buying shoes? How often?",
+   "text_zh": "你喜欢买鞋子吗？你多久买一次？"
+  },
+  {
+   "id": "q_ajaqqpjog4y3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1u42buw9et",
+   "text": "Do you like chatting with friends?",
+   "text_zh": "你喜欢和朋友聊天吗？"
+  },
+  {
+   "id": "q_ft2t9u19jxyy",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1ke8fo51us",
+   "text": "Do you like crowded places?",
+   "text_zh": "你喜欢人多的地方吗？"
+  },
+  {
+   "id": "q_1kx7q3wqmoh4",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_8f4rcwq9f5",
+   "text": "Do you like getting up early in the morning?",
+   "text_zh": "你喜欢在早上早起吗？"
+  },
+  {
+   "id": "q_hvuqiyicgxz4",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_q3v4lz16xx",
+   "text": "Do you like lending things to others?",
+   "text_zh": "你喜欢把东西借给别人吗？"
+  },
+  {
+   "id": "q_16svzq11blw2",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Do you like living there?",
+   "text_zh": "你喜欢在那里生活吗？"
+  },
+  {
+   "id": "q_19gzg4o1sk06",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1avxfkq18u",
+   "text": "Do you like looking at yourself in the mirror? How often?",
+   "text_zh": "你喜欢照镜子吗？多久照一次？"
+  },
+  {
+   "id": "q_11gqrrxhfj6y",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_ujodnbqrv2",
+   "text": "Do you like modern art or traditional art? /",
+   "text_zh": "你更喜欢现代艺术还是传统艺术？"
+  },
+  {
+   "id": "q_011rqmabk1wq",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_gyldce16hv",
+   "text": "Do you like reading?",
+   "text_zh": "你喜欢阅读吗？"
+  },
+  {
+   "id": "q_9kz9ar1os5xj",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19cme7f440",
+   "text": "Do you like science fiction movies? Why?",
+   "text_zh": "你喜欢科幻电影吗？为什么？"
+  },
+  {
+   "id": "q_vs3n6op4yu2i",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_114fnls1lb",
+   "text": "Do you like science?",
+   "text_zh": "你喜欢科学吗？"
+  },
+  {
+   "id": "q_iw36tasvk0by",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_136ahni1gk",
+   "text": "Do you like shopping?",
+   "text_zh": "你喜欢购物吗？"
+  },
+  {
+   "id": "q_0j4twgdtg3zl",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1oqv943402",
+   "text": "Do you like singing? Why?",
+   "text_zh": "你喜欢唱歌吗？为什么？"
+  },
+  {
+   "id": "q_8qte9p1mw70c",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19hfw34ctm",
+   "text": "Do you like taking pictures of different views?",
+   "text_zh": "你喜欢给不同的景色拍照吗？"
+  },
+  {
+   "id": "q_tv89091w573u",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1389u7g1vg",
+   "text": "Do you like the area that you live in?",
+   "text_zh": "你喜欢你生活的区域吗？"
+  },
+  {
+   "id": "q_6f77jr1asrnn",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "Do you like this city? Why?",
+   "text_zh": "你喜欢这个城市吗？为什么？"
+  },
+  {
+   "id": "q_1ydliyn1ezg8",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1iy4n69815",
+   "text": "Do you like to keep things tidy?",
+   "text_zh": "你喜欢保持事物整洁吗"
+  },
+  {
+   "id": "q_qqcthbthz35r",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1ql9ufzpkh",
+   "text": "Do you like to watch comedies?",
+   "text_zh": "你喜欢看喜剧吗？"
+  },
+  {
+   "id": "q_1a6dl9omjc37",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_ujodnbqrv2",
+   "text": "Do you like visiting art galleries? /",
+   "text_zh": "你喜欢去美术馆吗？"
+  },
+  {
+   "id": "q_1b4uluu5j9tc",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_114fnls1lb",
+   "text": "Do you like watching science TV programs?",
+   "text_zh": "你喜欢看科学节目吗？"
+  },
+  {
+   "id": "q_1p5ktw1a7ryv",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_skx92m3i9u",
+   "text": "Do you like watching team games? Why?",
+   "text_zh": "你喜欢看团体比赛吗？为什么？"
+  },
+  {
+   "id": "q_17ysvbs96ttv",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_4t2ntq1aqu",
+   "text": "Do you like wearing T-shirts?",
+   "text_zh": "你喜欢穿T恤吗？"
+  },
+  {
+   "id": "q_1rvt82equogt",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Do you like your job?",
+   "text_zh": "你喜欢你的工作吗？"
+  },
+  {
+   "id": "q_1bghhrhqu2so",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Do you like your subject?",
+   "text_zh": "你喜欢你的学科吗？"
+  },
+  {
+   "id": "q_1pp48cw1jx64",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1389u7g1vg",
+   "text": "Do you live in a noisy or a quiet area?",
+   "text_zh": "你住在一个安静还是吵闹的区域？"
+  },
+  {
+   "id": "q_dsjzpnxzvd0z",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "Do you live in an apartment or a house?",
+   "text_zh": "你住在公寓里还是房子里？"
+  },
+  {
+   "id": "q_4dbvrw1kkgf2",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_x55tl61t6b",
+   "text": "Do you look out the window at the scenery when travelling by bus or car?",
+   "text_zh": "当你乘坐公交车或汽车出行时，你会看向窗外欣赏风景吗？"
+  },
+  {
+   "id": "q_h77i5e1nbxwu",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Do you miss being a student?",
+   "text_zh": "你想念学生时光吗？"
+  },
+  {
+   "id": "q_17ue9c515upy",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_162na3oksg",
+   "text": "Do you often bring cash with you?",
+   "text_zh": "你经常带现金吗？"
+  },
+  {
+   "id": "q_l36j0l2nlazr",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1r4htsx1oc",
+   "text": "Do you often go to public places with your friends? /",
+   "text_zh": "你经常和朋友去公共场所吗？"
+  },
+  {
+   "id": "q_1vplddg1symz",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "Do you often see your neighbors?",
+   "text_zh": "你经常见到你的邻居吗？"
+  },
+  {
+   "id": "q_1vljj2hlk09f",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_keia6vgoa9",
+   "text": "Do you often tell your friends when they do something well?/",
+   "text_zh": "你会经常告诉你的朋友他们做的很好吗？"
+  },
+  {
+   "id": "q_1hr2mth15alu",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1kvlziy168",
+   "text": "Do you often visit a museum?",
+   "text_zh": "你经常去博物馆吗？"
+  },
+  {
+   "id": "q_n0cro61qw808",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "Do you plan to live there for a long time?",
+   "text_zh": "你计划在那里久居？"
+  },
+  {
+   "id": "q_1sgrjju1d46s",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "Do you prefer living in a house or an apartment?",
+   "text_zh": "你更喜欢住房子还是公寓？"
+  },
+  {
+   "id": "q_1368v1p13wia",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_136ahni1gk",
+   "text": "Do you prefer online shopping or in-store shopping?",
+   "text_zh": "你喜欢线上购物还是线下购物？"
+  },
+  {
+   "id": "q_sd2qid1edww3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1h1co95fgy",
+   "text": "Do you prefer sad or happy music?",
+   "text_zh": "你更喜欢悲伤的还是开心的音乐？"
+  },
+  {
+   "id": "q_1souo9p1e4tn",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_gyldce16hv",
+   "text": "Do you prefer scanning or detailed reading?",
+   "text_zh": "你喜欢通读还是精读？"
+  },
+  {
+   "id": "q_go354hz3agwx",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_x55tl61t6b",
+   "text": "Do you prefer the mountains or the sea?",
+   "text_zh": "你更喜欢山还是海呢？"
+  },
+  {
+   "id": "q_sk2iq61meip8",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1yipkqd7i5",
+   "text": "Do you prefer to be a driver or a passenger?",
+   "text_zh": "你更喜欢做司机还是乘客？"
+  },
+  {
+   "id": "q_159gh2fzonif",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1u42buw9et",
+   "text": "Do you prefer to chat with a group of people or with only one friend?",
+   "text_zh": "你更喜欢和一群人聊天还是只和一个朋友聊天"
+  },
+  {
+   "id": "q_nhzzl8y0l9qw",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1u42buw9et",
+   "text": "Do you prefer to communicate face-to-face or via social media?",
+   "text_zh": "你更喜欢面对面交流还是通过社交媒体交流？"
+  },
+  {
+   "id": "q_h2uag14yek9n",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_57oucd1w5q",
+   "text": "Do you prefer to have more or fewer rules at school? /",
+   "text_zh": "你更喜欢学校有更多还是更少的规定？"
+  },
+  {
+   "id": "q_1e6ra62jb8ym",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_gyldce16hv",
+   "text": "Do you prefer to read on paper or on a screen?",
+   "text_zh": "你喜欢纸质阅读还是电子？"
+  },
+  {
+   "id": "q_wjopk41y0oea",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Do you prefer to study in the mornings or in the afternoons?",
+   "text_zh": "你喜欢在早上学习还是下午学习？"
+  },
+  {
+   "id": "q_1eznf5xmi1zo",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_4t2ntq1aqu",
+   "text": "Do you prefer to wear comfortable and casual clothes or smart clothes?",
+   "text_zh": "你更喜欢穿舒适随意的衣服还是精致的衣服？"
+  },
+  {
+   "id": "q_t1pwe01bnzsx",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_pyppbh173v",
+   "text": "Do you prefer typing or handwriting?",
+   "text_zh": "你更喜欢打字还是手写？"
+  },
+  {
+   "id": "q_1k6kywlbpx73",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19hfw34ctm",
+   "text": "Do you prefer views in urban areas or rural areas?",
+   "text_zh": "你喜欢城市景观还是乡村景观？"
+  },
+  {
+   "id": "q_8c5hg9wcowa1",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19hfw34ctm",
+   "text": "Do you prefer views in your own country or in other countries?",
+   "text_zh": "你喜欢你自己国家的景观还是其他国家的？"
+  },
+  {
+   "id": "q_1ktiywhp1wuj",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_4t2ntq1aqu",
+   "text": "Do you spend a lot of time choosing clothes?",
+   "text_zh": "你花很多时间选衣服吗？"
+  },
+  {
+   "id": "q_8dk39a17gelx",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_11bhlfne2t",
+   "text": "Do you still like going to parks now?",
+   "text_zh": "你现在仍然喜欢去公园吗"
+  },
+  {
+   "id": "q_1vzz8823x1cq",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_9k7nir1lci",
+   "text": "Do you take a nap when you are taking your rest?",
+   "text_zh": "休息的时候你会小睡一下吗？"
+  },
+  {
+   "id": "q_jg0v1hztjlvb",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_urcpn24zzp",
+   "text": "Do you take photos of buildings?",
+   "text_zh": "你给建筑拍照吗？"
+  },
+  {
+   "id": "q_sqxxkkh3hcze",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_x55tl61t6b",
+   "text": "Do you take photos of the scenery outside the car window?",
+   "text_zh": "你会为车窗外的景色拍照吗？"
+  },
+  {
+   "id": "q_0h568ygq5i5w",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1yipkqd7i5",
+   "text": "Do you think car colours are important?",
+   "text_zh": "你认为汽⻋颜色重要吗？"
+  },
+  {
+   "id": "q_156wus8z12p2",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "Do you think it is important to live in a comfortable environment",
+   "text_zh": "？你认为居住在一个舒适的环境是重要的吗？"
+  },
+  {
+   "id": "q_1is68rw144is",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_dpq2nl7qtl",
+   "text": "Do you think it is important to wear a watch? Why?",
+   "text_zh": "你认为戴手表是重要的吗为什么"
+  },
+  {
+   "id": "q_h6uydgtdkojk",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1sbebgjupl",
+   "text": "Do you think it’s easy to grow vegetables?",
+   "text_zh": "你觉得种菜容易吗？"
+  },
+  {
+   "id": "q_17uegwihtfoi",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1kvlziy168",
+   "text": "Do you think museums are important?",
+   "text_zh": "你认为博物馆重要吗？"
+  },
+  {
+   "id": "q_a8pumx11rtsn",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1oqv943402",
+   "text": "Do you think singing can bring happiness to people?",
+   "text_zh": "你认为唱歌可以为人们带来开心吗？"
+  },
+  {
+   "id": "q_5k9b62osg6dm",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_57oucd1w5q",
+   "text": "Do you think students would benefit more from more rules? /",
+   "text_zh": "你觉得更多规定会让学生受益吗？"
+  },
+  {
+   "id": "q_jtprykorbuy8",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Do you think that your subject is popular in your country?",
+   "text_zh": "你认为你的学科在你的国家受欢迎吗？"
+  },
+  {
+   "id": "q_cfu7g51dthe7",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_170nwtl1pi",
+   "text": "Do you think you are good at choosing gifts?",
+   "text_zh": "你认为你擅长挑礼物吗？"
+  },
+  {
+   "id": "q_4oewv81dep86",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_rlipj91vcl",
+   "text": "Do you think you spend too much time on social media?",
+   "text_zh": "你认为你花了太多时间在社交媒体上吗？"
+  },
+  {
+   "id": "q_1a27j8j1ljb3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Do you think you will continue living there for a long time?",
+   "text_zh": "你认为你会长时间住到那里吗？"
+  },
+  {
+   "id": "q_18zmtuq12o72",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_pyppbh173v",
+   "text": "Do you type on a desktop or laptop keyboard every day?",
+   "text_zh": "你每天都用键盘打字吗？"
+  },
+  {
+   "id": "q_6a1pkfev00q5",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1u1pb0p1nj",
+   "text": "Do you use headphones?",
+   "text_zh": "你用耳机吗？"
+  },
+  {
+   "id": "q_1fq203a1gpoo",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1fnnwj11qm",
+   "text": "Do you usually spend your days off with your parents or with your friends?",
+   "text_zh": "你经常和你的父母和朋友一起度过假期吗？"
+  },
+  {
+   "id": "q_s5le1c7pm36a",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1avxfkq18u",
+   "text": "Do you usually take a mirror with you?",
+   "text_zh": "你经常随身带镜子吗？"
+  },
+  {
+   "id": "q_ot5b381xk5fe",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1tkut917qw",
+   "text": "Do you walk a lot?",
+   "text_zh": "你经常散步吗？"
+  },
+  {
+   "id": "q_1whbtnfnqc9u",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1a63h71lme",
+   "text": "Do you want to be a teacher in the future?",
+   "text_zh": "在未来你想成为老师吗？"
+  },
+  {
+   "id": "q_131dl8f1mg7e",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_ujodnbqrv2",
+   "text": "Do you want to be an artist? /",
+   "text_zh": "你想成为一名艺术家吗？"
+  },
+  {
+   "id": "q_q8874l14882y",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Do you want to change to another job?",
+   "text_zh": "你想要换工作吗？"
+  },
+  {
+   "id": "q_1yccz16cjjjm",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Do you want to change your major?",
+   "text_zh": "你想要换专业吗？"
+  },
+  {
+   "id": "q_1avkl421ayei",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19cme7f440",
+   "text": "Do you want to go into outer space in the future?",
+   "text_zh": "在未来你想要进入外太空吗？"
+  },
+  {
+   "id": "q_1tqgsqwtl6zz",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19cme7f440",
+   "text": "Do you want to know more about outer space?",
+   "text_zh": "你想要知道关于外太空的更多吗？"
+  },
+  {
+   "id": "q_1dfofyiyx91j",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_dpq2nl7qtl",
+   "text": "Do you wear a watch?",
+   "text_zh": "你戴手表吗"
+  },
+  {
+   "id": "q_bw0cbffz3t3t",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1r4htsx1oc",
+   "text": "Do you wear headphones in public places? /",
+   "text_zh": "你在公共场合会戴耳机吗？"
+  },
+  {
+   "id": "q_1v8mint4orqo",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1ql9ufzpkh",
+   "text": "Do your friends like to tell jokes?",
+   "text_zh": "你的朋友喜欢开玩笑吗？"
+  },
+  {
+   "id": "q_1f6fi28cjyvn",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_rlipj91vcl",
+   "text": "Do your friends use social media?",
+   "text_zh": "你的朋友们使用社交媒体吗？"
+  },
+  {
+   "id": "q_1atqseprhxsi",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1h1co95fgy",
+   "text": "Does happy music make you feel more excited?",
+   "text_zh": "开心的音乐会让你更激动吗？"
+  },
+  {
+   "id": "q_1pgrzzq1lark",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_hbvzkq12yn",
+   "text": "Has your favourite food changed since you were a child?",
+   "text_zh": "从你小的时候开始，你最喜欢的食物是怎么变化的？"
+  },
+  {
+   "id": "q_1xhsrnz1lord",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_skx92m3i9u",
+   "text": "Have you ever been part of a sports team?",
+   "text_zh": "你有过成为运动队的一员的经历吗？"
+  },
+  {
+   "id": "q_id9p8ldyhoh3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_q3v4lz16xx",
+   "text": "Have you ever borrowed books from others?",
+   "text_zh": "你借过别人的书吗？"
+  },
+  {
+   "id": "q_g7ept31cvv2q",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_q3v4lz16xx",
+   "text": "Have you ever borrowed money from others?",
+   "text_zh": "你曾经问别人借过钱吗？"
+  },
+  {
+   "id": "q_1u8db5bxkaok",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1avxfkq18u",
+   "text": "Have you ever bought mirrors?",
+   "text_zh": "你曾经买过镜子吗？"
+  },
+  {
+   "id": "q_ni3j2qve7t8c",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19cbk7m1xf",
+   "text": "Have you ever bought shoes online?",
+   "text_zh": "你有没有在网上买过鞋？"
+  },
+  {
+   "id": "q_1o2pdi653bjb",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_dpq2nl7qtl",
+   "text": "Have you ever gotten a watch as a gift?",
+   "text_zh": "你曾经收到过手表作为礼物吗"
+  },
+  {
+   "id": "q_1n1fdqy1olfx",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_2q7j5z1kco",
+   "text": "Have you ever had a pet before?",
+   "text_zh": "你之前养过宠物吗？"
+  },
+  {
+   "id": "q_1nckxh6pmckm",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_57oucd1w5q",
+   "text": "Have you ever had a really dedicated teacher? /",
+   "text_zh": "你遇到过特别敬业的老师吗？"
+  },
+  {
+   "id": "q_1h5ko2i171s0",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19cme7f440",
+   "text": "Have you ever learnt about outer space and stars?",
+   "text_zh": "你曾经学过外太空与星星吗？"
+  },
+  {
+   "id": "q_km3blgtxh5ug",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1oqv943402",
+   "text": "Have you ever learnt how to sing?",
+   "text_zh": "你曾经学过唱歌吗？"
+  },
+  {
+   "id": "q_6o4qj7c0cc2l",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_rlipj91vcl",
+   "text": "Have you ever posted anything on social media?",
+   "text_zh": "你曾经在社交媒体中发布过什么吗？"
+  },
+  {
+   "id": "q_1p8vmixhh1cx",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_170nwtl1pi",
+   "text": "Have you ever received a great gift?",
+   "text_zh": "你曾经收到过一个好的礼物吗？"
+  },
+  {
+   "id": "q_1vu4xl11oqnv",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_170nwtl1pi",
+   "text": "Have you ever sent handmade gifts to others?",
+   "text_zh": "你曾经送过手工礼物给别人吗？"
+  },
+  {
+   "id": "q_1ev6ekt1a5wj",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1r4htsx1oc",
+   "text": "Have you ever talked with someone you don’t know in public places? /",
+   "text_zh": "你在公共场合和陌生人聊过天吗？"
+  },
+  {
+   "id": "q_1twi9361v8hk",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1ql9ufzpkh",
+   "text": "Have you ever watched a live show?",
+   "text_zh": "你曾经观看过现场演出吗？"
+  },
+  {
+   "id": "q_1g2dhhsanwiw",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_6d8qvp17s5",
+   "text": "Have you ever worked with old people?",
+   "text_zh": "你有和老人一起工作过吗？"
+  },
+  {
+   "id": "q_si5dng4ihtkm",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Have you learned anything about the history of your hometown?",
+   "text_zh": "你曾经是否学过你家乡的历史？"
+  },
+  {
+   "id": "q_ot1yfz219sgl",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1nvc6l31gi",
+   "text": "How do people remember each stage of their lives?",
+   "text_zh": "人们怎么记住他们的人生阶段？"
+  },
+  {
+   "id": "q_1xzqiv7130n5",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_9k7nir1lci",
+   "text": "How do you feel after taking a nap?",
+   "text_zh": "小睡后你感觉怎么样？"
+  },
+  {
+   "id": "q_057jh6v5ilhm",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_q3v4lz16xx",
+   "text": "How do you feel when people don't return things they borrowed from you?",
+   "text_zh": "当别人不归还你借的东西时你的感受是什么？"
+  },
+  {
+   "id": "q_zv7asr2zbsbl",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_pyppbh173v",
+   "text": "How do you improve your typing?",
+   "text_zh": "你如何提高你的打字速度？"
+  },
+  {
+   "id": "q_j11qmvl0mek1",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "How long have you been living there?",
+   "text_zh": "你住在那里多久了？"
+  },
+  {
+   "id": "q_1d7zp7c1emzp",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "How long have you lived in this city?",
+   "text_zh": "你在这个城市住多久了？"
+  },
+  {
+   "id": "q_1m49nd2c3w3h",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "How long have you lived there?",
+   "text_zh": "你住那里多久了？"
+  },
+  {
+   "id": "q_18b0pby1phef",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19cbk7m1xf",
+   "text": "How much money do you usually spend on shoes?",
+   "text_zh": "你一般花多少钱买鞋？"
+  },
+  {
+   "id": "q_1vrdeppc7k4c",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "How much time do you spend on your studies each week?",
+   "text_zh": "你每周花在学习上的时间有多少？"
+  },
+  {
+   "id": "q_5ccg6n1p8vyt",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_136ahni1gk",
+   "text": "How often do you go shopping?",
+   "text_zh": "你多久购物一次？"
+  },
+  {
+   "id": "q_1qd7f1kceigy",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_9k7nir1lci",
+   "text": "How often do you take a rest or a break?",
+   "text_zh": "你多久休息一次？"
+  },
+  {
+   "id": "q_slnwtpvhtrvh",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_162na3oksg",
+   "text": "How often do you use cash?",
+   "text_zh": "你多久用一次现金？"
+  },
+  {
+   "id": "q_4gvmkt1n64gr",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1u1pb0p1nj",
+   "text": "In what conditions would you not use headphones?",
+   "text_zh": "在什么情况下你不用耳机？"
+  },
+  {
+   "id": "q_ql8g141bsggh",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1a63h71lme",
+   "text": "In what way has your favourite teacher helped you?",
+   "text_zh": "你最喜欢的老师是如何帮助你的？"
+  },
+  {
+   "id": "q_1doysc5okzte",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1sbebgjupl",
+   "text": "Is growing vegetables popular in your country?",
+   "text_zh": "在你们国家，种蔬菜流行吗？"
+  },
+  {
+   "id": "q_3kcreo1psrll",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_skx92m3i9u",
+   "text": "Is team sports popular in your culture?",
+   "text_zh": "团体运动在你们的文化中受欢迎吗？"
+  },
+  {
+   "id": "q_fkwlsodqbahm",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Is that a big city or a small place?",
+   "text_zh": "你的家乡是一个大城市还是小地方？"
+  },
+  {
+   "id": "q_1ymyatn1x8ye",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "Is the city friendly to children and old people?",
+   "text_zh": "这个城市对于小孩和老人友好吗？"
+  },
+  {
+   "id": "q_wjmbahxov24t",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1ke8fo51us",
+   "text": "Is the city where you live crowded?",
+   "text_zh": "你住的城市拥挤吗？"
+  },
+  {
+   "id": "q_7crrlo1q3j2k",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_urcpn24zzp",
+   "text": "Is there a building that you would like to visit?",
+   "text_zh": "有没有什么你喜欢参观的建筑？"
+  },
+  {
+   "id": "q_17z8s371woyj",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1ke8fo51us",
+   "text": "Is there a crowded place near where you live?",
+   "text_zh": "你家附近有没有人多的地方？"
+  },
+  {
+   "id": "q_1cq3c0w1nbpv",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_50k2mn1p5b",
+   "text": "Is there an advertisement that made an impression on you when you were a child?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1lo5uf71baqj",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Is there anything you dislike about it?",
+   "text_zh": "有没有什么你不喜欢的地方？"
+  },
+  {
+   "id": "q_9lgw6vtk9asp",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "Is this city your permanent residence?",
+   "text_zh": "这个城市是你的永久居住地吗？"
+  },
+  {
+   "id": "q_sm4sku1o9t7b",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Is your hometown a good place for young people to pursue their careers?",
+   "text_zh": "你的家乡是年轻人追逐他们的职业的好地方吗？"
+  },
+  {
+   "id": "q_18nmcfc19ok8",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "Please describe the room you live in.",
+   "text_zh": "描述一下你的房间"
+  },
+  {
+   "id": "q_haf4kfa5o59t",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Please describe your hometown a little.",
+   "text_zh": "描述一下你的家乡"
+  },
+  {
+   "id": "q_z4u2r8122qbf",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1sbebgjupl",
+   "text": "Should schools teach students how to grow vegetables?",
+   "text_zh": "学校应该教学生如何种菜吗？"
+  },
+  {
+   "id": "q_16guh0h2fbuh",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1389u7g1vg",
+   "text": "What are some changes in the area recently?",
+   "text_zh": "在那个区域有什么改变？"
+  },
+  {
+   "id": "q_yai8cptimmzn",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_6d8qvp17s5",
+   "text": "What are the benefits of being friends or working with old people?",
+   "text_zh": "和老人交朋友或共事有什么好处？"
+  },
+  {
+   "id": "q_1ysxpc0izpvv",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "What are the benefits of being your age?",
+   "text_zh": "你这个年龄有什么好处？"
+  },
+  {
+   "id": "q_pz19w91urkh4",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_skx92m3i9u",
+   "text": "What are the differences between team sports and individual sports?",
+   "text_zh": "团体运动和个人运动的区别是什么？"
+  },
+  {
+   "id": "q_11qt0jneiwxh",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_x55tl61t6b",
+   "text": "What are the most beautiful sights you have seen while traveling?",
+   "text_zh": "你旅游时见过最漂亮的景观是什么？"
+  },
+  {
+   "id": "q_iqptt31pm4se",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "What changes would you like to see in your school?",
+   "text_zh": "你喜欢在你的学校里看到什么改变？"
+  },
+  {
+   "id": "q_1tspc4h1t734",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "What city do you live in?",
+   "text_zh": "你生活在什么城市？"
+  },
+  {
+   "id": "q_2vd59818af4j",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_8f4rcwq9f5",
+   "text": "What did you do in the morning when you were little? Why?",
+   "text_zh": "当你小的时候你在早上会做什么？为什么？"
+  },
+  {
+   "id": "q_110xf4qa8ien",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1nvc6l31gi",
+   "text": "What did you often do with your friends in your childhood?",
+   "text_zh": "在你的童年你经常和你的朋友一起做什么？"
+  },
+  {
+   "id": "q_ufqcak1fxnw5",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_rlipj91vcl",
+   "text": "What do people often do on social media?",
+   "text_zh": "人们在社交媒体上经常会做什么？"
+  },
+  {
+   "id": "q_97zljvwueuqr",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_170nwtl1pi",
+   "text": "What do you consider when choosing a gift?",
+   "text_zh": "当你挑选礼物时你会考虑什么？"
+  },
+  {
+   "id": "q_1j03a5615ljm",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "What do you like (most) about your hometown?",
+   "text_zh": "你最喜欢你家乡的什么？"
+  },
+  {
+   "id": "q_1id0ebhfy09b",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "What do you think is the most important at the moment?",
+   "text_zh": "你认为当下什么是最重要的？"
+  },
+  {
+   "id": "q_1evr0ia17r21",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1u42buw9et",
+   "text": "What do you usually chat about with friends?",
+   "text_zh": "你通常和朋友聊些什么？"
+  },
+  {
+   "id": "q_pqbuttnqzpnh",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_8f4rcwq9f5",
+   "text": "What do you usually do in the morning?",
+   "text_zh": "在早晨你一般会做什么？"
+  },
+  {
+   "id": "q_169ukpf1y010",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "What do you usually do in your apartment?",
+   "text_zh": "在你的公寓中你经常做什么？"
+  },
+  {
+   "id": "q_1vvx0en3hglc",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1yipkqd7i5",
+   "text": "What do you usually do when there is a traffic jam?",
+   "text_zh": "当交通堵塞的时候你经常干什么？"
+  },
+  {
+   "id": "q_1uscvnq1jsqu",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_9k7nir1lci",
+   "text": "What do you usually do when you are resting?",
+   "text_zh": "休息的时候你通常会做什么？"
+  },
+  {
+   "id": "q_sb2odepzp0b2",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1fnnwj11qm",
+   "text": "What do you usually do when you have days off?",
+   "text_zh": "在休息时你通常会做什么？"
+  },
+  {
+   "id": "q_9xfv35l8qbn5",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_170nwtl1pi",
+   "text": "What gift have you received recently?",
+   "text_zh": "你最近收到了什么礼物？"
+  },
+  {
+   "id": "q_1jmbjkc1y02g",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_2q7j5z1kco",
+   "text": "What is the most popular animal in China?",
+   "text_zh": "在中国最受欢迎的动物是什么？"
+  },
+  {
+   "id": "q_1g175t54m1tk",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_hbvzkq12yn",
+   "text": "What is your favourite food?",
+   "text_zh": "你最喜欢的食物是什么？"
+  },
+  {
+   "id": "q_1mpyvfujevpx",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_ujt2rwz9go",
+   "text": "What is your favourite website?",
+   "text_zh": "你最喜欢的网站是什么?"
+  },
+  {
+   "id": "q_r1knyt1yktuk",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_4t2ntq1aqu",
+   "text": "What kind of clothes do you like to wear?",
+   "text_zh": "你喜欢穿哪种衣服？"
+  },
+  {
+   "id": "q_136i27l15awk",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_hbvzkq12yn",
+   "text": "What kind of food did you like when you were young?",
+   "text_zh": "当你年轻时你最喜欢哪种食物？"
+  },
+  {
+   "id": "q_1kui5g6mj01w",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "What kind of house or apartment do you want to live in in the future?",
+   "text_zh": "哪种房子或公寓你未来想要居住？"
+  },
+  {
+   "id": "q_2yje6i1rxgwe",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_12ocyducbj",
+   "text": "What kind of news do you share with your friends?",
+   "text_zh": "你通常会和朋友分享什么样的消息？"
+  },
+  {
+   "id": "q_rhbesw17e0g8",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_12ocyducbj",
+   "text": "What kind of things are not suitable for sharing?",
+   "text_zh": "哪些东西不适合分享？"
+  },
+  {
+   "id": "q_1u7lyi1391mz",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_12ocyducbj",
+   "text": "What kind of things do you like to share with others?",
+   "text_zh": "你喜欢和别人分享什么东西？"
+  },
+  {
+   "id": "q_kqpdrc1cwk7v",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "What kinds of accommodation do you live in?",
+   "text_zh": "你住在哪种住处？"
+  },
+  {
+   "id": "q_gn1ta31qv0os",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_114fnls1lb",
+   "text": "What kinds of interesting things have you done with science?",
+   "text_zh": "你做过和科学有关的有趣事情是什么？"
+  },
+  {
+   "id": "q_iexc1mx336j8",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_ujt2rwz9go",
+   "text": "What kinds of websites are popular in your country?",
+   "text_zh": "在你的国家哪些网站是受欢迎的?"
+  },
+  {
+   "id": "q_u2dada1delv6",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_ujt2rwz9go",
+   "text": "What kinds of websites do you often visit?",
+   "text_zh": "你经常浏览什么网站?"
+  },
+  {
+   "id": "q_17d0rek80c4k",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "What makes you feel pleasant in your home",
+   "text_zh": "？在你家什么让你感到愉悦？"
+  },
+  {
+   "id": "q_1vifqckfqyso",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "What part of your home do you like the most?",
+   "text_zh": "你最喜欢你家的哪个部分？"
+  },
+  {
+   "id": "q_1wjscofdwr7e",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n8xqbo10wt",
+   "text": "What plant did you grow when you were young? /",
+   "text_zh": "你小时候种过什么植物？"
+  },
+  {
+   "id": "q_y9mm31ip5917",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "What requirements did you need to meet to get your current job?",
+   "text_zh": "你获得当前工作需要满足什么要求？"
+  },
+  {
+   "id": "q_1tu2wrdp1y7g",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "What room does your family spend most of the time in?",
+   "text_zh": "你家人花最多时间呆在哪个房间？"
+  },
+  {
+   "id": "q_1h1l5dkw2qdr",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "What subjects are you studying?",
+   "text_zh": "你学习什么学科？"
+  },
+  {
+   "id": "q_mzt5261ighte",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "What technology do you use at work?",
+   "text_zh": "你在工作中用什么技术？"
+  },
+  {
+   "id": "q_hx5nmue44rva",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "What technology do you use when you study?",
+   "text_zh": "当你学习时你会用什么科技？"
+  },
+  {
+   "id": "q_gb6x8qvvy3xs",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1u1pb0p1nj",
+   "text": "What type of headphones do you use?",
+   "text_zh": "你使用的是哪种耳机？"
+  },
+  {
+   "id": "q_1ofys3b1bg44",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1yipkqd7i5",
+   "text": "What types of cars do you like?",
+   "text_zh": "你喜欢哪种类型的⻋？"
+  },
+  {
+   "id": "q_1d08chchpscj",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_js2k9i1g94",
+   "text": "What were your favourite activities when you were a child?",
+   "text_zh": "当你是孩子时你最喜欢什么活动？"
+  },
+  {
+   "id": "q_85lqaj8zfa13",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "What work do you do?",
+   "text_zh": "你做什么工作的？"
+  },
+  {
+   "id": "q_1r6e6qa137xt",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1fnnwj11qm",
+   "text": "What would you like to do if you had a day off tomorrow?",
+   "text_zh": "如果你明天休息你会做什么？"
+  },
+  {
+   "id": "q_1e227glj1hrd",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "What's the weather like where you live?",
+   "text_zh": "你最喜欢你住的地方的什么天气？"
+  },
+  {
+   "id": "q_194yyxskqmb6",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "What's your favorite room in your apartment or house",
+   "text_zh": "？你在你住所最喜欢哪个房间？"
+  },
+  {
+   "id": "q_lhekxz1elv61",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_2q7j5z1kco",
+   "text": "What's your favourite animal? Why?",
+   "text_zh": "你最喜欢的动物是什么？为什么？"
+  },
+  {
+   "id": "q_8kl0vb2x60ff",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "What's your hometown famous for",
+   "text_zh": "？你的家乡因什么而出名？"
+  },
+  {
+   "id": "q_48h0vnoqj4jt",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_pyppbh173v",
+   "text": "When did you learn how to type on a keyboard?",
+   "text_zh": "你什么时候学会用键盘打字的？"
+  },
+  {
+   "id": "q_hi9j2hpcdnob",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_114fnls1lb",
+   "text": "When did you start to learn about science?",
+   "text_zh": "你什么时候开始学习科学的？"
+  },
+  {
+   "id": "q_dqdu3m3u4i6w",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_rlipj91vcl",
+   "text": "When did you start using social media?",
+   "text_zh": "你什么时候开始使用社交媒体的？"
+  },
+  {
+   "id": "q_b45k3ndz11o1",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_gyldce16hv",
+   "text": "When do you need to read carefully, and when not?",
+   "text_zh": "什么时候你会仔细阅读？什么时候不会？"
+  },
+  {
+   "id": "q_x03wqp1mo3lj",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1fnnwj11qm",
+   "text": "When was the last time you had a few days off?",
+   "text_zh": "你上一次休息是什么时候？"
+  },
+  {
+   "id": "q_188t8fc10pox",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1kvlziy168",
+   "text": "When was the last time you visited a museum?",
+   "text_zh": "你上次去博物馆是什么时候？"
+  },
+  {
+   "id": "q_qphxhp186uvf",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1ke8fo51us",
+   "text": "When was the last time you were in a crowded place?",
+   "text_zh": "上一次你去人多的地方是什么时候？"
+  },
+  {
+   "id": "q_6y6pefm7lftp",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1u1pb0p1nj",
+   "text": "When would you use headphones?",
+   "text_zh": "你什么时候会用耳机？"
+  },
+  {
+   "id": "q_10335ow15d9b",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1tkut917qw",
+   "text": "Where did you go for a walk lately?",
+   "text_zh": "你最近去哪散步了？"
+  },
+  {
+   "id": "q_fodv0p1j8s2c",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1389u7g1vg",
+   "text": "Where do you like to go in that area?",
+   "text_zh": "你喜欢去那片区域的哪里？"
+  },
+  {
+   "id": "q_1ebfxhy1lrzr",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_2q7j5z1kco",
+   "text": "Where do you prefer to keep your pet, indoors or outdoors?",
+   "text_zh": "你更喜欢在哪里养宠物？室内还是室外？"
+  },
+  {
+   "id": "q_lv5x0q15nfwh",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_seh20l151n",
+   "text": "Where is your hometown?",
+   "text_zh": "你的家乡在哪？"
+  },
+  {
+   "id": "q_0bj5ns3bv041",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1tkut917qw",
+   "text": "Where would you like to take a long walk if you had the chance?",
+   "text_zh": "如果你有机会你会在什么地方散步很长时间？"
+  },
+  {
+   "id": "q_zce7hr1k3obr",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_19cbk7m1xf",
+   "text": "Which do you prefer, fashionable shoes or comfortable shoes?",
+   "text_zh": "你更喜欢时尚的鞋还是舒适的鞋？"
+  },
+  {
+   "id": "q_161a0541w0b2",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_114fnls1lb",
+   "text": "Which science subject is interesting to you?",
+   "text_zh": "哪个科学主题对你来说是有趣的？"
+  },
+  {
+   "id": "q_uytau91eclvc",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_uea2i2xcan",
+   "text": "Who do you live with?",
+   "text_zh": "你和谁住在一起？"
+  },
+  {
+   "id": "q_1fpcfasdfjtj",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1oqv943402",
+   "text": "Who do you want to sing for?",
+   "text_zh": "你想为谁唱歌？"
+  },
+  {
+   "id": "q_15qdnhdv3nc9",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Who helps you the most? And how?",
+   "text_zh": "谁帮助你最多？怎么帮助的？"
+  },
+  {
+   "id": "q_102jz80nns3j",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_12ocyducbj",
+   "text": "Who is the first person you would like to share good news with?",
+   "text_zh": "你第一个想和谁分享好消息？"
+  },
+  {
+   "id": "q_5al44qngbici",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Why did you choose to do that type of work (or that job)?",
+   "text_zh": "你为什么选择做那份工作？"
+  },
+  {
+   "id": "q_703nmh1afavv",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_n1jg711j3o",
+   "text": "Why did you choose to study that subject?",
+   "text_zh": "你为什么选择学习这个学科？"
+  },
+  {
+   "id": "q_1mkuhy81pwtx",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1tkut917qw",
+   "text": "Why do people like to walk in parks?",
+   "text_zh": "为什么人们喜欢在公园散步？"
+  },
+  {
+   "id": "q_6bypxi139ou3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_dpq2nl7qtl",
+   "text": "Why do some people wear expensive watches?",
+   "text_zh": "为什么一些人们戴很贵的手表"
+  },
+  {
+   "id": "q_zpyk671yvvh3",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_11bhlfne2t",
+   "text": "Would you like to see more parks in your city?",
+   "text_zh": "你希望在你的城市⻅到更多公园吗"
+  },
+  {
+   "id": "q_aazics8foihy",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1r4htsx1oc",
+   "text": "Would you like to see more public places near where you live? /",
+   "text_zh": "你希望你家附近有更多公共场所吗？"
+  },
+  {
+   "id": "q_ogaaqh1gm3j0",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_13fwmvy1f9",
+   "text": "Would you recommend your city to others?",
+   "text_zh": "你会推荐你的城市给其他人吗？"
+  },
+  {
+   "id": "q_1isn5c1cpf0d",
+   "book_id": "book1_ielts_complete",
+   "part": 1,
+   "topic_id": "t1_1avxfkq18u",
+   "text": "Would you use mirrors to decorate your room?",
+   "text_zh": "你喜欢用镜子装饰你的房间吗？"
+  },
+  {
+   "id": "q_8c4olkk0rxci",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1soldw3odq",
+   "text": "Describe a bicycle/motorcycle/car trip you would like to go\nYou should say:\nWho you would like to go with\nWhere you would like to go\nWhen you would like to go\nAnd explain why you would like to go by bicycle/motorcycle/car",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1wgqsl75bhki",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_3bkp99wmtf",
+   "text": "Describe a boring place\nYou should say:\nWhere it is\nWho you went there with\nWhat you did there\nAnd explain why you think it is a boring place",
+   "text_zh": ""
+  },
+  {
+   "id": "q_10su8mw5s3sm",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_hx5n9uj7qh",
+   "text": "Describe a challenging technological problem you faced\nYou should say:\nWhat the problem was\nWhen and where you faced it\nHow challenging it was\nAnd explain how you solved it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_10b3rmm16na2",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_09u05edddt",
+   "text": "Describe a child who loves drawing/painting\nYou should say:\nWho he/she is\nHow you knew him/her\nHow often he/she draws/paints\nAnd explain why you think he/she loves drawing/painting",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1247b4c1a6o9",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1k9t62147o",
+   "text": "Describe a city you enjoyed visiting\nYou should say:\nWhere it is\nWhen you visited it\nHow long you stayed there\nWhat you did there\nAnd explain why you enjoyed visiting it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_atiow2rd5awy",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_49gixd10h8",
+   "text": "Describe a creative person (e.g. an artist, a musician, an architect, etc.) you admire\nYou should say:\nWhat it is\nWhen/where you did it\nWhy you thought it was exciting\nAnd explain how you felt about it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_lb2ymes2iz0i",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1duesmj1q2",
+   "text": "Describe a famous person you would like to meet\nYou should say:\nWho he/she is\nHow you knew him/ her\nHow/where you would like to meet him/her\nAnd explain why you would like to meet him/her",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1vucfof1fgmg",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1soldw3odq",
+   "text": "Describe a foreign country you would like to stay or work for a short period of time\nYou should say:\nWhich country it is\nWhere you got to know this country\nWhat you will do there\nWhy you will stay or work there just for a short period of time",
+   "text_zh": ""
+  },
+  {
+   "id": "q_r8cuea1m7erq",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_gx035rmc2p",
+   "text": "Describe a friend from your childhood\nYou should say:\nWho he/she is\nWhere and how you met each other\nWhat you often did together\nAnd explain what made you like him/her",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1mnf69s10qqk",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_49gixd10h8",
+   "text": "Describe a good friend who is important to you\nYou should say:\nWho he/she is\nHow/where you got to know him/her\nHow long you have known each other\nAnd explain why he/she is important to you",
+   "text_zh": ""
+  },
+  {
+   "id": "q_doya5qectxnw",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_3bkp99wmtf",
+   "text": "Describe a home that you like to visit but do not want to live in\nYou should say:\nWhere it is\nWhat it is like\nWhy you like to visit it\nAnd explain why you would not like to live there",
+   "text_zh": ""
+  },
+  {
+   "id": "q_m4vpen1b5hu0",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1yssg8719v",
+   "text": "Describe a live sports event you watched and liked\nYou should say:\nWhat it was\nWhen and where you watched it\nWho you watched it with\nAnd explain why you liked it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_15twugj8b6j9",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1nxslz8obu",
+   "text": "Describe a long-term goal you would like to achieve\nYou should say:\nHow long you have had this goal\nWhat the goal is\nHow you will achieve it\nAnd explain why you set this goal",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1t84gij1i5id",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1rkkilf1og",
+   "text": "Describe a movie you watched and enjoyed recently\nYou should say:\nWhen and where you watched it\nWho you watched it with\nWhat it was about\nAnd explain why you watched this movie",
+   "text_zh": ""
+  },
+  {
+   "id": "q_ggqi1f1u1mee",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_xwkdv5mha5",
+   "text": "Describe a music event that you didn’t enjoy\nYou should say:\nWhat it was\nWho you went with\nWhy you decided to go there\nAnd explain why you didn’t enjoy it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_ab5j26i787z8",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_180kp2b7kd",
+   "text": "Describe a new law you would like to introduce in your country\nYou should say:\nWhat law it is\nWhat changes this law brings\nWhether this new law will be popular\nHow you came up with the new law\nAnd explain how you feel about this new law",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1ityc381woxr",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_xwkdv5mha5",
+   "text": "Describe a perfect job you would like to have in the future\nYou should say:\nWhat it is\nWhere you heard about it from\nWhat you need to learn to get the job\nAnd explain why you think it is a perfect job",
+   "text_zh": ""
+  },
+  {
+   "id": "q_z4aloiy0r2me",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_49gixd10h8",
+   "text": "Describe a person from a different cultural background with whom you enjoy spending time\nYou should say:\nWho he/she is\nWhere he/she is from\nWhere/how you knew him/her\nAnd explain how you feel about him/her",
+   "text_zh": ""
+  },
+  {
+   "id": "q_16q24c41j1u5",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_49gixd10h8",
+   "text": "Describe a person who encouraged you to protect the nature\nYou should say:\nWho he/she is\nHow he/she encouraged you\nWhat he/she encouraged you to do\nAnd explain how you feel about this person",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1i7d8qk128i0",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_gx035rmc2p",
+   "text": "Describe a person who is good at learning and speaking new languages\nYou should say:\nHow you got to know him/her\nHow he/she learns a new language\nWhat languages he/she can speak\nAnd explain how you feel about him/her",
+   "text_zh": ""
+  },
+  {
+   "id": "q_17ucnrgfhdxy",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_3bkp99wmtf",
+   "text": "Describe a person who likes to look after the natural world\nYou should say:\nWho this person is\nWhat he or she does\nHow he or she does it\nHow often he or she does it\nAnd explain how you feel about this person",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1b6fr4p69zhy",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_3bkp99wmtf",
+   "text": "Describe a person who loves to grow vegetables at home or in the garden\nYou should say:\nWho this person is\nWhat vegetables he/she grows\nHow he/she grows the vegetables\nAnd explain why he/she loves growing vegetables",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1kacozbm1pvl",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_qcjchkzs9h",
+   "text": "Describe a person who makes plans a lot\nYou should say:\nWho he/she is\nHow you knew him/her\nWhat plans he/she makes\nAnd explain how you feel about this person",
+   "text_zh": ""
+  },
+  {
+   "id": "q_5rd4wd1yjt4s",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_gx035rmc2p",
+   "text": "Describe a person who makes plans a lot and is good at planning\nYou should say:\nWho he/she is\nHow you knew him/her\nWhat plans he/she makes\nAnd explain how you feel about this person",
+   "text_zh": ""
+  },
+  {
+   "id": "q_qnrqdh1r17mu",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1duesmj1q2",
+   "text": "Describe a person who met difficulties but succeeded\nYou should say:\nWho this person is\nWhat difficulties he met\nHow he overcame the difficulties\nAnd explain how you feel about him",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1e3t5bl77zd2",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_hx5n9uj7qh",
+   "text": "Describe a person who solved a problem in a smart way\nYou should say:\nWho this person is\nWhat the problem was\nHow he/she solved it\nAnd explain why you think he/she did it in a smart way",
+   "text_zh": ""
+  },
+  {
+   "id": "q_8bu669e7xnab",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_49gixd10h8",
+   "text": "Describe a person you disliked at first but ended up being friends with\nYou should say:\nWho he/she is\nHow you knew him/her\nWhy you disliked him/her at first but changed your mind\nAnd explain how you feel about the experience",
+   "text_zh": ""
+  },
+  {
+   "id": "q_zzw7bkfb4esq",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_g6rufu1k58",
+   "text": "Describe a person you know who enjoys working for a family business (e.g. a shop,etc)\nYou should say:\nWho he/she is\nWhat the business is\nWhat his/her job is\nAnd explain why he/she enjoys working there",
+   "text_zh": ""
+  },
+  {
+   "id": "q_stnr1112hryy",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1duesmj1q2",
+   "text": "Describe a person you know who has a successful business\nYou should say:\nWho this person is\nHow you got to know him/her\nWhy and how he/she started the business\nWhat business he/she does\nAnd explain why you think the business is successful",
+   "text_zh": ""
+  },
+  {
+   "id": "q_16yfn081odnt",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_xwkdv5mha5",
+   "text": "Describe a person you know who would like to choose a career in the medical field (e.g. a doctor, a nurse)\nYou should say:\nWhen you knew him/her\nWhen he/she started to think about that\nWhat he/she would like to do\nAnd explain why he/she would like to choose this career",
+   "text_zh": ""
+  },
+  {
+   "id": "q_rumkf51n35eq",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_hx5n9uj7qh",
+   "text": "Describe a piece of technology (not a phone) that you would like to own\nYou should say:\nWhat it is\nHow much it costs\nWhat you will use it for\nAnd explain why you would like to own it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_16qf0p41bx00",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1k9t62147o",
+   "text": "Describe a place you have travelled to that you would like to recommend to others\nYou should say:\nWhat it is\nWhere it is\nWhat you saw and did there\nAnd explain why you would like to recommend it to others",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1j54mg61hfvv",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1nxslz8obu",
+   "text": "Describe a plan that you had to change recently\nYou should say:\nWhen this happened\nWhat made you change the plan\nWhat the new plan was\nAnd how you felt about the change",
+   "text_zh": ""
+  },
+  {
+   "id": "q_13rsxgx1pqt5",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_hx5n9uj7qh",
+   "text": "Describe a program or app on your computer or phone\nYou should say:\nWhat it is\nWhen/how you use it\nWhere you found it\nAnd explain how you feel about it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1canyun181f2",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_3bkp99wmtf",
+   "text": "Describe a quiet place you like to go\nYou should say:\nWhere it is\nHow you knew it\nHow often you go there\nWhat you do there\nAnd explain how you feel about the place",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1g8ymkisxedx",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1k9t62147o",
+   "text": "Describe a shop you enjoy visiting\nYou should say:\nWhat its name is\nWhere it is\nHow often you visit it\nWhy you like to visit it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_77b3m911tbw6",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1kwl4jppw7",
+   "text": "Describe a shopping mall\nYou should say:\nWhat its name is\nWhere it is\nHow often you visit it\nAnd what you usually buy at the mall",
+   "text_zh": ""
+  },
+  {
+   "id": "q_2gakqe1yz2wq",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_xwkdv5mha5",
+   "text": "Describe a short-term job you want to have in a foreign country\nYou should say:\nWhere it is\nHow you know of it\nWhat the job is\nAnd explain why you want to do it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1vocrwfoj2iz",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_49gixd10h8",
+   "text": "Describe a singer you like You should say: Who he/she is What his/her personality is like What kind of style his/her music belongs to And explain why you like him/her",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1d91k2aoe872",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_49gixd10h8",
+   "text": "Describe a sportsperson you admire\nYou should say:\nWho he/she is\nWhat you know about him/her\nWhat he/she is like in real life\nWhat achievement he/she has made\nAnd explain why you admire him/her",
+   "text_zh": ""
+  },
+  {
+   "id": "q_89tgefka15nr",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_s7dy5k1kdx",
+   "text": "Describe a story (e.g. a fairy tale, etc.) you have read recently\nYou should say:\nWhat it is about\nWhen you read it\nWhether you liked it\nAnd explain what you have learned from it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1ftzuii1xuhv",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1k9t62147o",
+   "text": "Describe a tall building you like or dislike\nYou should say:\nWhat it is used for\nWhere it is\nWhat it looks like\nAnd explain why you like/dislike it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_12oh1kd18zpk",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_hx5n9uj7qh",
+   "text": "Describe a time when a person did something to help you solve a problem\nYou should say:\nWho the person is\nWhat the problem was\nHow he/she helped you\nAnd explain how you felt about the experience",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1hdx96r1bhdc",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_49gixd10h8",
+   "text": "Describe a time when a person persuaded you to do something and you were happy about that\nYou should say:\nWho he/she was When/where it happened\nWhat he/she persuaded you to do\nAnd explain why you were happy",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1hjn1xf1bq1b",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1nxslz8obu",
+   "text": "Describe a time when you changed an important opinion of yours\nYou should say:\nWhen you changed your opinion\nWhat the original opinion was\nWhy you changed it\nAnd explain how you felt about the experience",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1tmf75cxxyvp",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1nxslz8obu",
+   "text": "Describe a time when you encouraged someone to do something that he/she didn't want to do\nYou should say:\nWho he or she is\nWhat you encouraged him/her to do\nHow he/she reacted\nAnd explain why you encouraged him/her to do it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1cgh1i6jctgi",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_hx5n9uj7qh",
+   "text": "Describe a time when you felt proud of a family member\nYou should say:\nWhen it happened\nWho the person is\nWhat the person did\nAnd explain why you felt proud of him/her",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1syszcg1p3e8",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1nxslz8obu",
+   "text": "Describe a time when you gave advice to others\nYou should say:\nWhen it was\nTo whom you gave the advice\nWhat the advice was\nAnd explain why you gave the advice",
+   "text_zh": ""
+  },
+  {
+   "id": "q_udg6rd1pg2fm",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1yssg8719v",
+   "text": "Describe a time when you got up early\nYou should say:\nWhen it was\nWhat you did\nWhy you got up early\nAnd how you felt about it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_30dif6mf1eps",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1hrrnxu1ll",
+   "text": "Describe a time when you sent a message or an email to someone but received no reply for a long time\nYou should say:\nWho you sent it to\nWhat the message/email was about\nWhether you finally received the reply\nAnd explain how you felt about the experience",
+   "text_zh": ""
+  },
+  {
+   "id": "q_mci6vovq8uac",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1hrrnxu1ll",
+   "text": "Describe a time when you worked in a group\nYou should say:\nWhat you did\nWho you worked with\nWhat problems you faced\nAnd explain why you worked in the group",
+   "text_zh": ""
+  },
+  {
+   "id": "q_4os6af1tckos",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_s7dy5k1kdx",
+   "text": "Describe a time you needed to use your imagination\nYou should say:\nWhen it was\nWhy you needed to use imagination\nHow difficult or easy it was\nAnd explain how you felt about it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1vqjx18w3fb7",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_49gixd10h8",
+   "text": "Describe a time you saw something interesting on social media\nYou should say:\nWhen it was\nWhere you saw it\nWhat you saw\nAnd explain why you think it was interesting",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1w6rzrzl6ke5",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1duesmj1q2",
+   "text": "Describe an advertisement with a famous person in it\nYou should say:\nWho the person is\nWhere you can see it\nWhat the advertisement is about\nAnd explain how you feel about the advertisement",
+   "text_zh": ""
+  },
+  {
+   "id": "q_4f8mjjfr3t9h",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_180kp2b7kd",
+   "text": "Describe an environmental law you would like your country to introduce\nYou should say:\nWhat law it should be\nWhy people should follow the law\nWhether the law will be popular\nAnd explain how you feel about this law",
+   "text_zh": ""
+  },
+  {
+   "id": "q_15ox8zu14reb",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1nxslz8obu",
+   "text": "Describe an important decision that you made\nYou should say:\nWhat the decision was\nHow you made your decision\nWhat the results of the decision were\nAnd explain why it was important",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1ln0xib16776",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1k9t62147o",
+   "text": "Describe an interesting building\nYou should say:\nWhere it is\nWhat it looks like\nWhat function it has\nAnd explain why you think it is interesting",
+   "text_zh": ""
+  },
+  {
+   "id": "q_3cqcq19inj1a",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1rkkilf1og",
+   "text": "Describe an interesting video\nYou should say:\nWhen and where you watched it\nWhat it is about\nWhy you watched it\nAnd explain how you feel about it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_tm4l231fnuqt",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_hx5n9uj7qh",
+   "text": "Describe an item on which you spent more than expected\nYou should say:\nWhat it is\nHow much you spent on it\nWhy you bought it\nAnd explain why you think you spent more than expected",
+   "text_zh": ""
+  },
+  {
+   "id": "q_qmykmy1d3aei",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1ncrzkg1bh",
+   "text": "Describe an occasion when many people were smiling\nYou should say:\nWhen it happened\nWho you were with\nWhat happened\nAnd explain why most people were smiling",
+   "text_zh": ""
+  },
+  {
+   "id": "q_xbmw00tcuctg",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1ncrzkg1bh",
+   "text": "Describe an occasion when you were not allowed to use your mobile phone\nYou should say:\nWhen it was\nWhere it was\nWhy you were not allowed to use your mobile phone\nAnd how you felt about it",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1rcj3q41mvqe",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_v0tmvz1dw0",
+   "text": "Describe one of your friends who learned a skill from someone (not a teacher)\nYou should say:\nWho he/she is\nWhat skill he/she learned\nHow he/she learned\nAnd explain whether it would be easier to learn from a teacher",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1f9f8irv2nk6",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_gx035rmc2p",
+   "text": "Describe one of your friends who learned something without a teacher\nYou should say:\nWho he/she is\nWhat skill he/she learned\nHow he/she learned\nAnd explain whether it would be easier to learn from a teacher",
+   "text_zh": ""
+  },
+  {
+   "id": "q_ucvcze1s0k4h",
+   "book_id": "book1_ielts_complete",
+   "part": 2,
+   "topic_id": "t2_1ncrzkg1bh",
+   "text": "Describe something important that has been kept in your family for a long time\nYou should say:\nWhat it is\nWhen your family had it\nHow your family got it\nAnd explain why it is important to your family",
+   "text_zh": ""
+  },
+  {
+   "id": "q_13j0xkw7i2ms",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Are celebrity endorsements effective?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_rvcdcyh5lm26",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_s9w8hb1ayy",
+   "text": "Are good decision-making skills learned or natural?",
+   "text_zh": "好的决策能力是后天习得的ª还是天生的-"
+  },
+  {
+   "id": "q_1joztzq8mf7l",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "Are people becoming more environmentally aware?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1qdu2e21au29",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_47ox9s1wye",
+   "text": "Are people more polite today than in the past?",
+   "text_zh": "你觉得现在的人比过去更有礼貌吗1"
+  },
+  {
+   "id": "q_k2oarb1iwbyf",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "Are students too reliant on AI?",
+   "text_zh": "学生现在太依赖AI了吗？"
+  },
+  {
+   "id": "q_f2qfryeuan8k",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "Are there many people who can speak foreign languages in your country? 中",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1f62qml1m28z",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_10fxl71836",
+   "text": "Can people learn effectively without a teacher-",
+   "text_zh": "没有老师ª人们也能有效学习吗-"
+  },
+  {
+   "id": "q_6zivki1ya9a3",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Do Chinese people like visiting others' homes?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_e6gdc0q6cado",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_gbfswuxia9",
+   "text": "Do famous actors guarantee a successful film?",
+   "text_zh": "有名演员能保证电影成功吗1"
+  },
+  {
+   "id": "q_u3j48a4u3svc",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_47ox9s1wye",
+   "text": "Do modern lifestyles make people less connected?",
+   "text_zh": "现代生活方式会让人与人之间变得更疏远吗1"
+  },
+  {
+   "id": "q_1p90f8f133wc",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1iu0bv1gvj",
+   "text": "Do museums still matter in the digital age?",
+   "text_zh": "在数字时代Z博物馆还有意义吗1"
+  },
+  {
+   "id": "q_h3y9071idbjn",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Do people prefer local news or international news?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_fy27cmdmzyg0",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Do people prefer privacy today?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1q5085lwhmkk",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Do people still read newspapers?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_4g1b9fv6u4q5",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_zbhwka1be7",
+   "text": "Do people usually become famous because of talent or luck?",
+   "text_zh": "人们成名是因为天赋还是运气-"
+  },
+  {
+   "id": "q_2e8kyu1116ft",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_vayyduksk4",
+   "text": "Do people’s career goals change as they grow older?",
+   "text_zh": "人们的职业目标会随着年龄增⻓而改变吗-"
+  },
+  {
+   "id": "q_vjg4ankqh8lz",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_10fxl71836",
+   "text": "Do you think children have too many subjects to learn nowadays?",
+   "text_zh": "你认为现在的孩子要学的科目太多了吗-"
+  },
+  {
+   "id": "q_5utwwd1c5sq4",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_zbhwka1be7",
+   "text": "Do you think fame brings more happiness or pressure?",
+   "text_zh": "你认为名声带来更多的开心还是压力-"
+  },
+  {
+   "id": "q_16e7c2g1i4ml",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_s9w8hb1ayy",
+   "text": "Do you think it is important to plan ahead in life?",
+   "text_zh": "你认为提前规划人生重要吗-"
+  },
+  {
+   "id": "q_58ni0e19fkq4",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_t6ls0td8bl",
+   "text": "Do you think people are becoming too dependent on technology?",
+   "text_zh": "你认为人们越来越依赖科技了吗-"
+  },
+  {
+   "id": "q_1lvds28rmbst",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_47ox9s1wye",
+   "text": "Do you think people who smile a lot are more friendly?",
+   "text_zh": "你觉得经常微笑的人更友好吗1"
+  },
+  {
+   "id": "q_31b0khixc1zp",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1o5w7bw1gu",
+   "text": "Do you think shopping is a form of entertainment?",
+   "text_zh": "你认为购物是一种娱乐方式吗1"
+  },
+  {
+   "id": "q_1wljzn39kvez",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_gbfswuxia9",
+   "text": "Do young and old people have different music tastes?",
+   "text_zh": "年轻人和老年人的音乐喜好有不同吗1"
+  },
+  {
+   "id": "q_i3g3v8l56qre",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1o5w7bw1gu",
+   "text": "Do young people spend money differently from older people?",
+   "text_zh": "年轻人和年⻓者的花钱方式有不同吗1"
+  },
+  {
+   "id": "q_1ab6jfo19tb8",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "Does speaking other languages help at work?",
+   "text_zh": "会说其他语言对工作有帮助吗？"
+  },
+  {
+   "id": "q_7txfe9otdvq3",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Has people's attitude toward pets changed?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1gt3y3wemfvc",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1u8h55w1fu",
+   "text": "How can adults encourage children?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_15n5s7m1pa4m",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "How can governments encourage greener lifestyles?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1yjlvms1lcak",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1bmcizh155",
+   "text": "How can parents encourage children effectively?",
+   "text_zh": "父母可以如何有效地鼓励孩子1"
+  },
+  {
+   "id": "q_1wp8d1kzd7yl",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1u8h55w1fu",
+   "text": "How can parents help children make good decisions?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1ckp0im4y12s",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_vayyduksk4",
+   "text": "How can people prove their abilities when working abroad?",
+   "text_zh": "人在国外工作时ª如何证明自己的能力-"
+  },
+  {
+   "id": "q_1y4owwujx9cw",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_10fxl71836",
+   "text": "How can teachers make learning more engaging for students?",
+   "text_zh": "老师可以如何让学习变得更有趣-"
+  },
+  {
+   "id": "q_130z3sdt4nvw",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "How can technology help environmental protection?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1sne9s41dsnc",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1iu0bv1gvj",
+   "text": "How do artworks inspire people?",
+   "text_zh": "艺术作品是如何激励人们的1"
+  },
+  {
+   "id": "q_t7myst1dy9te",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "How do people plan holidays?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_dplp971u42wz",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_t6ls0td8bl",
+   "text": "How do young and old people use mobile phones differently?",
+   "text_zh": "年轻人和老年人使用手机有什么不同-"
+  },
+  {
+   "id": "q_w030a711le44",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1o5w7bw1gu",
+   "text": "How does advertising influence people’s spending habits?",
+   "text_zh": "广告如何影响人们的消费习惯1"
+  },
+  {
+   "id": "q_b1iku712yans",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_zbhwka1be7",
+   "text": "How does social media change the meaning of fame?",
+   "text_zh": "社交媒体如何改变名声的意义-"
+  },
+  {
+   "id": "q_7aedbyakz3cw",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "How does technology affect laws?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_11ez14xs01vk",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_t6ls0td8bl",
+   "text": "How has technology changed the way people communicate?",
+   "text_zh": "科技是如何改变人们沟通方式的-"
+  },
+  {
+   "id": "q_xte9rvgsx11n",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "How has tourism changed over time?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1rgea4wx2cp0",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "How important are neighborhood relationships?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_8xlw7911rs49",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_vayyduksk4",
+   "text": "How important are soft skills in the workplace?",
+   "text_zh": "软技能在职场中有多重要-"
+  },
+  {
+   "id": "q_d8tnt01ept38",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1iu0bv1gvj",
+   "text": "How important is imagination for children’s development?",
+   "text_zh": "想象力对孩子的发展有多重要1"
+  },
+  {
+   "id": "q_3t3qoq1wf12z",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "How important is it for schools to help children become smarter?",
+   "text_zh": "学校帮助孩子变得更聪明有多重要？"
+  },
+  {
+   "id": "q_qc2tby3qsfum",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_47ox9s1wye",
+   "text": "How important is kindness in modern society?",
+   "text_zh": "善良在现代社会有多重要1"
+  },
+  {
+   "id": "q_1usfam21qd2c",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1bmcizh155",
+   "text": "Is academic success more important than personal happiness?",
+   "text_zh": "学业成功比个人幸福更重要吗1"
+  },
+  {
+   "id": "q_17wg7018yenc",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_oxdfg91wc3",
+   "text": "Is getting promoted always a good thing?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_12hdk5ueu6qc",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1iu0bv1gvj",
+   "text": "Is imagination important for scientists and inventors?",
+   "text_zh": "想象力对科学家和发明家重要吗1"
+  },
+  {
+   "id": "q_9usi1si7s8le",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_s9w8hb1ayy",
+   "text": "Is it better to ask friends or parents for advice?",
+   "text_zh": "向朋友还是父母寻求建议更好-"
+  },
+  {
+   "id": "q_1xbz6h14b32y",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_10fxl71836",
+   "text": "Is it better to study many subjects or specialise in a few?",
+   "text_zh": "学习很多科目好ª还是专注少数科目更好-"
+  },
+  {
+   "id": "q_soj3aef9iqyy",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_zbhwka1be7",
+   "text": "Is it easier to become famous today than in the past?",
+   "text_zh": "现在成名比过去更容易吗-"
+  },
+  {
+   "id": "q_x6jfmw1s1fxx",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_oxdfg91wc3",
+   "text": "Is it good to be ambitious?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_so3ir8pglzq2",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_oxdfg91wc3",
+   "text": "Is it good to change jobs?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_pilbqk1iggqd",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_10fxl71836",
+   "text": "Is it important to keep learning after graduating from school?",
+   "text_zh": "毕业后继续学习重要吗-"
+  },
+  {
+   "id": "q_1kg3po63hb7d",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Is it important to plan holidays in advance?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_17rnlzmznu2g",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1o5w7bw1gu",
+   "text": "Is it important to save money? Why or why not?",
+   "text_zh": "存钱重要吗1为什么1"
+  },
+  {
+   "id": "q_sui7iisuoct4",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_t6ls0td8bl",
+   "text": "Is online communication as effective as face-to-face communication?",
+   "text_zh": "线上沟通和面对面沟通一样有效吗-"
+  },
+  {
+   "id": "q_g6u1wz9oy137",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_vayyduksk4",
+   "text": "Is salary the most important reason for choosing a career?",
+   "text_zh": "薪资是选择职业时最重要的因素吗-"
+  },
+  {
+   "id": "q_17pzlpgdzv1w",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1u8h55w1fu",
+   "text": "Should children be independent?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_hruzv5oh5505",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1bmcizh155",
+   "text": "Should children help with household chores?",
+   "text_zh": "孩子应该帮忙做家务吗1"
+  },
+  {
+   "id": "q_1ojuy1c2oct5",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1iu0bv1gvj",
+   "text": "Should children learn art subjects at school?",
+   "text_zh": "孩子应该在学校学习艺术类科目吗1"
+  },
+  {
+   "id": "q_12bbqcf2j40h",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "Should children learn to use AI?",
+   "text_zh": "学生应该学习AI吗？"
+  },
+  {
+   "id": "q_y8r92n1ig2tp",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_s9w8hb1ayy",
+   "text": "Should children plan their future careers early?",
+   "text_zh": "孩子应该很早就规划未来的职业吗-"
+  },
+  {
+   "id": "q_31qwxg185224",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_t6ls0td8bl",
+   "text": "Should governments control or regulate the use of technology?",
+   "text_zh": "政府是否应该对科技的使用进行管理或监管-"
+  },
+  {
+   "id": "q_1hdu45g1etuc",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "Should governments introduce stricter environmental laws?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_uzgr0o5ch9hy",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Should governments protect animals?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1q6np3pqi8py",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1u8h55w1fu",
+   "text": "Should parents be strict?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_qflqio3za1fa",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1bmcizh155",
+   "text": "Should parents reward children for good behaviour?",
+   "text_zh": "父母应该因为孩子的良好行为而奖励他们吗1"
+  },
+  {
+   "id": "q_rwm54jhw3b09",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1u8h55w1fu",
+   "text": "Should parents support children's ambitions?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1nvqrtv10xed",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_s9w8hb1ayy",
+   "text": "Should people prepare before giving advice?",
+   "text_zh": "在给别人建议之前ª人们应该做准备吗-"
+  },
+  {
+   "id": "q_16kkg0l101sf",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Should pets be kept in cities?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_c2sjqwtnuvyw",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_10fxl71836",
+   "text": "Should schools focus more on practical skills or academic knowledge?",
+   "text_zh": "学校应该更注重实用技能还是学术知识-"
+  },
+  {
+   "id": "q_1vhzvzplna8i",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Should schools teach children about animals?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1t4j1jx1t20v",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1bmcizh155",
+   "text": "Should schools teach children life skills?",
+   "text_zh": "学校应该教孩子生活技能吗1"
+  },
+  {
+   "id": "q_17px6joj5rww",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1o5w7bw1gu",
+   "text": "Should wealthy people donate more to society?",
+   "text_zh": "富人应该向社会捐赠更多吗1"
+  },
+  {
+   "id": "q_v89pfd1hu04o",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_47ox9s1wye",
+   "text": "What are good and bad manners when using mobile phones?",
+   "text_zh": "使用手机时有哪些好的和不好的礼仪1"
+  },
+  {
+   "id": "q_gv018dpbx699",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_zbhwka1be7",
+   "text": "What are the advantages and disadvantages of being famous at a young age?",
+   "text_zh": "在年轻时成名有什么优缺点？"
+  },
+  {
+   "id": "q_15k3gh51v0m6",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "What are the advantages of AI? AI",
+   "text_zh": "有什么优势?"
+  },
+  {
+   "id": "q_1wsji211sy5l",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What are the advantages of advertisements?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1uqf75oa5q9x",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What are the advantages of keeping pets?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_18ei175848rz",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What are the differences between city and countryside homes?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1a5bccd1257g",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_gbfswuxia9",
+   "text": "What are the differences between live music and recorded music?",
+   "text_zh": "现场音乐和录制音乐有什么不同1"
+  },
+  {
+   "id": "q_1mwfq791q3c1",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "What are the disadvantages of AI?AI",
+   "text_zh": "有什么劣势？"
+  },
+  {
+   "id": "q_15p2mf9dmv34",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What are the disadvantages of advertisements?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_3m0tjxhuqiw7",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_t6ls0td8bl",
+   "text": "What are the positive and negative effects of mobile phones on relationships?",
+   "text_zh": "手机对人际关系有哪些积极和消极影响-"
+  },
+  {
+   "id": "q_kj0n571ye894",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What benefits does tourism bring?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1ezw4db11h59",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "What can individuals do for the environment?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_16uqh57wsjsp",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What can people learn from animals?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_172bgys1blom",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What do people do when visiting others?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1gn2lnzx8s7z",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "What environmental laws already exist?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_131uy191ydk6",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "What environmental problems are common today?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1ge987ub4dp2",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_vayyduksk4",
+   "text": "What factors should people consider when choosing a job-",
+   "text_zh": "人们在选择工作时应该考虑哪些因素-"
+  },
+  {
+   "id": "q_1bnnwktt4r5q",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What gifts do people bring when visiting?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_cqm9p110crck",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What is the ideal length of a holiday?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1k6zwqxyxqh0",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "What is the most important thing for learning a language?",
+   "text_zh": "学习语言最重要的是什么？"
+  },
+  {
+   "id": "q_1hw3atex8jqi",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "What is the purpose of punishment?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1fk418u1rqut",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_vayyduksk4",
+   "text": "What kinds of jobs are popular among young people today?",
+   "text_zh": "现在年轻人中哪些工作比较受欢迎-"
+  },
+  {
+   "id": "q_ik27cm62z9p8",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1iu0bv1gvj",
+   "text": "What kinds of jobs require imagination?",
+   "text_zh": "哪些工作需要想象力1"
+  },
+  {
+   "id": "q_bxk239x0ctnj",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_gbfswuxia9",
+   "text": "What kinds of movies are popular in your country?",
+   "text_zh": "在你的国家Z哪些类型的电影比较受欢迎1"
+  },
+  {
+   "id": "q_1gwnxgbw2u2a",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1o5w7bw1gu",
+   "text": "What kinds of things are people willing to pay high prices for?",
+   "text_zh": "人们愿意为哪些东⻄支付高价1"
+  },
+  {
+   "id": "q_yeymqs1o933p",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What makes a destination attractive?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_jgugaahlid78",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What makes a home comfortable?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1ojqbfraf5sm",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_vayyduksk4",
+   "text": "What makes a job a “dream job”?",
+   "text_zh": "什么样的工作可以被称为“理想工作”-"
+  },
+  {
+   "id": "q_1rxx5sr4trna",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_gbfswuxia9",
+   "text": "What makes a movie successful?",
+   "text_zh": "一部电影成功的因素有哪些1"
+  },
+  {
+   "id": "q_fviwkk1wk6dq",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "What makes an advertisement successful?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_jibyuv4skmmx",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_s9w8hb1ayy",
+   "text": "What problems can arise if people ask too many others for advice-",
+   "text_zh": "如果向太多人寻求建议ª会出现什么问题-"
+  },
+  {
+   "id": "q_7c64a31dlm77",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_zbhwka1be7",
+   "text": "What responsibilities do famous people have toward society?",
+   "text_zh": "名人对社会应承担哪些z责任-"
+  },
+  {
+   "id": "q_ykr1iy1hmsbx",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1u8h55w1fu",
+   "text": "What responsibilities do parents have in education?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1bbrm4p13jl9",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "What rules should people follow at work?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_4sc7mcrq3rge",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "When do children begin to form their own opinions?",
+   "text_zh": "儿童何时开始形成自己的观点?"
+  },
+  {
+   "id": "q_5lb34k15ee2u",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1bmcizh155",
+   "text": "When do parents usually feel proud of their children?",
+   "text_zh": "父母通常在什么时候会为孩子感到骄傲1"
+  },
+  {
+   "id": "q_rfebauglfpxc",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_s9w8hb1ayy",
+   "text": "When might older people ask young people for advice-",
+   "text_zh": "老年人在什么时候会向年轻人寻求建议-"
+  },
+  {
+   "id": "q_1nhsup81jttn",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_oxdfg91wc3",
+   "text": "Which industries are easiest to succeed in?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_ic9u8wgj9n8a",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_47ox9s1wye",
+   "text": "Who should people turn to for help, family or colleagues?",
+   "text_zh": "人们遇到困难时应该向家人还是同事求助1"
+  },
+  {
+   "id": "q_dns7l0uujxmo",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Why are animal stories popular among children?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1fh5lyy1gazc",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Why are some advertisements boring?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_146i4bwh4qbu",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_47ox9s1wye",
+   "text": "Why are some people reluctant to ask for help?",
+   "text_zh": "为什么有些人不愿意向别人求助1"
+  },
+  {
+   "id": "q_1tmln011qduk",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "Why do children dislike rules?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_26gv9h1xeyz1",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1u8h55w1fu",
+   "text": "Why do children need role models?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1dj8azm1wfiz",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1iu0bv1gvj",
+   "text": "Why do children tend to be more creative than adults?",
+   "text_zh": "为什么孩子通常比成年人更有创造力1"
+  },
+  {
+   "id": "q_1f4rl9clbkpk",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "Why do people become upset when others don't reply?",
+   "text_zh": "为什么当别人不回复时，人们会感到沮丧？"
+  },
+  {
+   "id": "q_x8kklj13gf1s",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1o5w7bw1gu",
+   "text": "Why do people buy things they don’t really need?",
+   "text_zh": "为什么人们会买一些并不真正需要的东⻄1"
+  },
+  {
+   "id": "q_1sqg205cql3k",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "Why do people delay replying to messages?",
+   "text_zh": "为什么有些人会晚回消息？"
+  },
+  {
+   "id": "q_z3s0ighmebp2",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_gbfswuxia9",
+   "text": "Why do people enjoy going to live concerts?",
+   "text_zh": "为什么人们喜欢去现场音乐会1"
+  },
+  {
+   "id": "q_x1cx4d1wnl6i",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_gbfswuxia9",
+   "text": "Why do people like listening to music while exercising?",
+   "text_zh": "为什么人们喜欢在运动时听音乐1"
+  },
+  {
+   "id": "q_ddlrjb16gfus",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_okjc1t74uo",
+   "text": "Why do people travel?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1ykvdin88pot",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_oxdfg91wc3",
+   "text": "Why do people want high positions?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1xwd7z117cut",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "Why do societies need laws?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_zyey9g1ttgij",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_t6ls0td8bl",
+   "text": "Why do some people dislike using apps or digital tools?",
+   "text_zh": "为什么有些人不喜欢使用应用程序或数字工具-"
+  },
+  {
+   "id": "q_qjsxp6d8h0gk",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "Why do some people prefer messaging to calling?",
+   "text_zh": "为什么有些人比起打电话更喜欢发消息？"
+  },
+  {
+   "id": "q_107hr4mdvupa",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_oxdfg91wc3",
+   "text": "Why do some people succeed despite difficulties?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1n2xzfw1geto",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "Why is environmental protection important?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1yfnilsy8u65",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1848nfy1w5",
+   "text": "Why is it easier for children to learn than adults?",
+   "text_zh": "为什么儿童比成人更容易学习？"
+  },
+  {
+   "id": "q_y96cj112n3w4",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_oxdfg91wc3",
+   "text": "Why should children have ambitions?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_169qu3q15rsv",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_1uqrnuyrc0",
+   "text": "Will there ever be universally accepted laws?",
+   "text_zh": ""
+  },
+  {
+   "id": "q_1bh06k11nenu",
+   "book_id": "book1_ielts_complete",
+   "part": 3,
+   "topic_id": "t3_zbhwka1be7",
+   "text": "Would you like to be famous? Why or why not?",
+   "text_zh": "你想要变得有名吗-为什么-"
+  },
+  {
+   "id": "q_x26q3_e0e9eb39be",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_24bd8f92c4",
+   "text": "Would you like to use a computer or tablet?",
+   "text_zh": "你喜欢使用电脑还是平板吗？"
+  },
+  {
+   "id": "q_x26q3_25b8a7f480",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_24bd8f92c4",
+   "text": "In what conditions would you use a computer or tablet?",
+   "text_zh": "在什么情况下你会使用电脑或平板？"
+  },
+  {
+   "id": "q_x26q3_3f407f259c",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_24bd8f92c4",
+   "text": "When was the first time you used a computer or tablet?",
+   "text_zh": "你第一次使用电脑或平板是什么时候？"
+  },
+  {
+   "id": "q_x26q3_350193230e",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_24bd8f92c4",
+   "text": "What would your life be like without computers or tablets?",
+   "text_zh": "如果没有电脑或平板，你的生活会是什么样的？"
+  },
+  {
+   "id": "q_x26q3_1e2dc9c62d",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_24bd8f92c4",
+   "text": "In what conditions would it be difficult for you to use a computer or tablet?",
+   "text_zh": "在什么情况下，你会觉得使用电脑或平板很困难？"
+  },
+  {
+   "id": "q_x26q3_5afc265c65",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_1c97c99646",
+   "text": "What will you do if you find something lost by others?",
+   "text_zh": "如果你捡到别人丢失的东西，你会怎么做？"
+  },
+  {
+   "id": "q_x26q3_c2a518250b",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_1c97c99646",
+   "text": "Do you report to the police when finding something lost by others? Why?",
+   "text_zh": "如果捡到别人丢失的东西，你会向警察报告吗？为什么？"
+  },
+  {
+   "id": "q_x26q3_75b5010d5a",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_1c97c99646",
+   "text": "Have you ever lost things?",
+   "text_zh": "你有没有丢过东西？"
+  },
+  {
+   "id": "q_x26q3_e73d47b77b",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_1c97c99646",
+   "text": "Will you post on social media if you lose your item?",
+   "text_zh": "如果你丢了东西，你会在社交媒体上发布消息吗？"
+  },
+  {
+   "id": "q_x26q3_8e399f6744",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_1c97c99646",
+   "text": "Have you ever lost your keys?",
+   "text_zh": "你有没有丢过钥匙？"
+  },
+  {
+   "id": "q_x26q3_3fcd6c9cc2",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_d73e9c16fa",
+   "text": "Do you collect things?",
+   "text_zh": "你会收藏东西吗？"
+  },
+  {
+   "id": "q_x26q3_9607de4dd9",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_d73e9c16fa",
+   "text": "Are there any things you have kept from your childhood?",
+   "text_zh": "有没有什么东西是你从童年一直保留到现在的？"
+  },
+  {
+   "id": "q_x26q3_0ba83128cc",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_d73e9c16fa",
+   "text": "Would you keep old things for a long time? Why?",
+   "text_zh": "你会把旧东西保存很长时间吗？为什么？"
+  },
+  {
+   "id": "q_x26q3_7519051c38",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_d73e9c16fa",
+   "text": "Where do you usually keep things you need?",
+   "text_zh": "你通常把需要的东西放在哪里？"
+  },
+  {
+   "id": "q_x26q3_85aea42108",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_4ab505a6c2",
+   "text": "What do people usually buy on the street market?",
+   "text_zh": "人们通常会在街市上买什么？"
+  },
+  {
+   "id": "q_x26q3_3ce7ed7c72",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_4ab505a6c2",
+   "text": "Do you prefer to go shopping in the shopping mall or on the street market?",
+   "text_zh": "你更喜欢去购物中心购物，还是去街市购物？"
+  },
+  {
+   "id": "q_x26q3_0e2d8ff077",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_4ab505a6c2",
+   "text": "When was the last time you went to a street market?",
+   "text_zh": "你上一次去街市是什么时候？"
+  },
+  {
+   "id": "q_x26q3_6db10d5191",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_4ab505a6c2",
+   "text": "Are there many street markets in China?",
+   "text_zh": "中国有很多街市吗？"
+  },
+  {
+   "id": "q_x26q3_80308bb87a",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_950593b1f4",
+   "text": "Have you made any crafts with paper?",
+   "text_zh": "你有没有用纸做过手工？"
+  },
+  {
+   "id": "q_x26q3_6ffc21aceb",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_950593b1f4",
+   "text": "Do you still write physical letters?",
+   "text_zh": "你现在还会写实体信件吗？"
+  },
+  {
+   "id": "q_x26q3_2475156624",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_950593b1f4",
+   "text": "Do people still keep handwritten letters today?",
+   "text_zh": "现在人们还会保存手写信件吗？"
+  },
+  {
+   "id": "q_x26q3_484addecd8",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_950593b1f4",
+   "text": "Do you carry paper and pens with you when you go out?",
+   "text_zh": "你出门的时候会随身带纸和笔吗？"
+  },
+  {
+   "id": "q_x26q3_fee3221a16",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_950593b1f4",
+   "text": "What did you like to do with paper as a child?",
+   "text_zh": "你小时候喜欢用纸做什么？"
+  },
+  {
+   "id": "q_x26q3_5c1065fa43",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_d46cf735fb",
+   "text": "How often do you eat fruit and vegetables?",
+   "text_zh": "你多久吃一次水果和蔬菜？"
+  },
+  {
+   "id": "q_x26q3_26352d2875",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_d46cf735fb",
+   "text": "Where do you usually buy fruit and vegetables?",
+   "text_zh": "你通常在哪里购买水果和蔬菜？"
+  },
+  {
+   "id": "q_x26q3_e7fc89274b",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_d46cf735fb",
+   "text": "What kind of fruits and vegetables do you dislike?",
+   "text_zh": "你不喜欢什么种类的水果和蔬菜？"
+  },
+  {
+   "id": "q_x26q3_52fafa0021",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_d46cf735fb",
+   "text": "Were there any kind of fruits and vegetables you disliked as a child?",
+   "text_zh": "你小时候有没有不喜欢的水果或蔬菜？"
+  },
+  {
+   "id": "q_x26q3_eff119f609",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_68b6cb141b",
+   "text": "How did you learn to be polite as a child?",
+   "text_zh": "你小时候是如何学会礼貌待人的？"
+  },
+  {
+   "id": "q_x26q3_a99602bd20",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_68b6cb141b",
+   "text": "Do you think being polite is very important?",
+   "text_zh": "你认为礼貌待人很重要吗？"
+  },
+  {
+   "id": "q_x26q3_982858d58e",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_68b6cb141b",
+   "text": "On what occasions should we be polite?",
+   "text_zh": "什么样的场合我们应该礼貌？"
+  },
+  {
+   "id": "q_x26q3_ffa40b9b44",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_68b6cb141b",
+   "text": "What did you do to show your politeness as a child?",
+   "text_zh": "你是小孩的时候，会怎么样展示你的礼貌？"
+  },
+  {
+   "id": "q_x26q3_e44501b5dd",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_a3990fd35c",
+   "text": "Is waste sorting common in your country?",
+   "text_zh": "中国垃圾分类普遍吗？"
+  },
+  {
+   "id": "q_x26q3_3ae3b35e5d",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_a3990fd35c",
+   "text": "Did you recycle when you were a kid?",
+   "text_zh": "你小时候会回收垃圾吗？"
+  },
+  {
+   "id": "q_x26q3_d7e80e2b82",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_a3990fd35c",
+   "text": "What do you do when you see rubbish on the street?",
+   "text_zh": "当你看到街上的垃圾时，你会怎么做？"
+  },
+  {
+   "id": "q_x26q3_f86bd6af04",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_a3990fd35c",
+   "text": "How do you recycle things like paper and plastic?",
+   "text_zh": "你是如何回收纸张和塑料之类的东西的？"
+  },
+  {
+   "id": "q_x26q3_ba93a0ff4e",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_127feaad02",
+   "text": "Do you often feel tired?",
+   "text_zh": "你经常感到疲惫吗？"
+  },
+  {
+   "id": "q_x26q3_30a9d3d4cd",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_127feaad02",
+   "text": "When would you feel tired?",
+   "text_zh": "你什么时候会感到疲惫？"
+  },
+  {
+   "id": "q_x26q3_a27fd05285",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_127feaad02",
+   "text": "What do you do when you feel tired?",
+   "text_zh": "当你感到疲惫时，你会做什么？"
+  },
+  {
+   "id": "q_x26q3_db9196d2cc",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_127feaad02",
+   "text": "When you feel tired, do you still go out with your friends?",
+   "text_zh": "觉得累的时候，你也会仍然出去跟朋友玩吗？"
+  },
+  {
+   "id": "q_x26q3_dab6fe416c",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_bb71aacb70",
+   "text": "Do you prefer to sit by the window when traveling?",
+   "text_zh": "旅行的时候，你更喜欢坐在靠窗的位置吗？"
+  },
+  {
+   "id": "q_x26q3_34841a2aa0",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_bb71aacb70",
+   "text": "Did you have a long journey with your family as a child?",
+   "text_zh": "你小时候有没有和家人进行过长途旅行？"
+  },
+  {
+   "id": "q_x26q3_39d186a6b1",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t1_50k2mn1p5b",
+   "text": "Do you often see advertisements when you are on your phone or computer?",
+   "text_zh": "你经常在手机或电脑上看到广告吗？"
+  },
+  {
+   "id": "q_x26q3_89fddea936",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t1_50k2mn1p5b",
+   "text": "Do you see a lot of advertising on trains or other transport?",
+   "text_zh": "你在火车或其他交通工具上会看到很多广告吗？"
+  },
+  {
+   "id": "q_x26q3_c55fdf8d3e",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t1_50k2mn1p5b",
+   "text": "Do you like advertisements?",
+   "text_zh": "你喜欢广告吗？"
+  },
+  {
+   "id": "q_x26q3_084b0da5ca",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t1_50k2mn1p5b",
+   "text": "What kind of advertising do you like?",
+   "text_zh": "你喜欢什么类型的广告？"
+  },
+  {
+   "id": "q_x26q3_b7091bac96",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_57817d1429",
+   "text": "Do you remember your first day at secondary school?",
+   "text_zh": "你还记得你上中学的第一天吗？"
+  },
+  {
+   "id": "q_x26q3_6ae6d6fa43",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_57817d1429",
+   "text": "Were there any subjects that you found difficult at secondary school?",
+   "text_zh": "你在中学时有没有觉得哪些科目很难？"
+  },
+  {
+   "id": "q_x26q3_dcca4bdef1",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_57817d1429",
+   "text": "What was your favourite subject at secondary school?",
+   "text_zh": "你在中学时最喜欢的科目是什么？"
+  },
+  {
+   "id": "q_x26q3_5fc0f7c948",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_57817d1429",
+   "text": "Is there anything you miss about your secondary school?",
+   "text_zh": "你有没有什么怀念中学生活的地方？"
+  },
+  {
+   "id": "q_x26q3_8144b0916f",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_6ae999552a",
+   "text": "Is it easy for you to remember people's names?",
+   "text_zh": "你觉得记住别人的名字简单吗？"
+  },
+  {
+   "id": "q_x26q3_b2d0c676e4",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_6ae999552a",
+   "text": "How do you remember people's names?",
+   "text_zh": "你是怎么记住别人的名字的？"
+  },
+  {
+   "id": "q_x26q3_1443f90f39",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_6ae999552a",
+   "text": "How do you feel when people can't remember your name?",
+   "text_zh": "如果被人记不得你的名字你有什么感觉？"
+  },
+  {
+   "id": "q_x26q3_21164e6fb5",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_6ae999552a",
+   "text": "Do you often forget people's names?",
+   "text_zh": "你会经常忘记别人的名字吗？"
+  },
+  {
+   "id": "q_x26q3_fff726f5e8",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_fc88351dcd",
+   "text": "Do you often feel bored?",
+   "text_zh": "你经常感到无聊吗？"
+  },
+  {
+   "id": "q_x26q3_74551d9485",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_fc88351dcd",
+   "text": "When would you feel bored?",
+   "text_zh": "你什么时候会感到无聊？"
+  },
+  {
+   "id": "q_x26q3_9a1819650d",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_fc88351dcd",
+   "text": "What do you do when you feel bored?",
+   "text_zh": "当你感到无聊的时候，你会做什么？"
+  },
+  {
+   "id": "q_x26q3_5cfc5053e1",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_fc88351dcd",
+   "text": "Do you think childhood is boring or adulthood is boring?",
+   "text_zh": "你觉得童年生活无聊，还是成年生活无聊？"
+  },
+  {
+   "id": "q_x26q3_2a66559841",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_3d9209c459",
+   "text": "Is there a difference between where you meet friends now and where you used to meet them in the past?",
+   "text_zh": "你现在和朋友见面的地方，和过去和朋友见面的地方有什么不同吗？"
+  },
+  {
+   "id": "q_x26q3_0697b8b72b",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_3d9209c459",
+   "text": "Why are some places suitable for meeting while others are not?",
+   "text_zh": "为什么有些地方适合见面，而有些地方不适合？"
+  },
+  {
+   "id": "q_x26q3_25390dfd31",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_3d9209c459",
+   "text": "Do you prefer to spend time with one friend or with a group of friends?",
+   "text_zh": "你更喜欢和一个朋友待在一起，还是和一群朋友待在一起？"
+  },
+  {
+   "id": "q_x26q3_8a0494a044",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_3d9209c459",
+   "text": "Would you invite friends to your home?",
+   "text_zh": "你会邀请朋友来你家吗？"
+  },
+  {
+   "id": "q_x26q3_7262b1deff",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_3d9209c459",
+   "text": "How important are friends to you?",
+   "text_zh": "朋友对你来说有多重要？"
+  },
+  {
+   "id": "q_x26q3_2518c7d544",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_3d9209c459",
+   "text": "Do you often go out with your friends?",
+   "text_zh": "你经常和朋友出去吗？"
+  },
+  {
+   "id": "q_x26q3_e28c0e9d90",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_3d9209c459",
+   "text": "Where do you often meet each other?",
+   "text_zh": "你们经常在哪里见面？"
+  },
+  {
+   "id": "q_x26q3_f6507507a2",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_3d9209c459",
+   "text": "What do you usually do with your friends?",
+   "text_zh": "你通常和朋友一起做什么？"
+  },
+  {
+   "id": "q_x26q3_1ea57d336f",
+   "book_id": "book_extra_maimen",
+   "part": 1,
+   "topic_id": "t_x26q3_3d9209c459",
+   "text": "Do you have a friend you have known for a long time?",
+   "text_zh": "你有没有一个认识很久的朋友？"
+  }
+ ],
+ "sets": [
+  {
+   "id": "qs_2026_01_04",
+   "name_zh": "2026 年 1–4 月",
+   "year": 2026,
+   "start_month": 1,
+   "end_month": 4,
+   "question_ids": [
+    "q_011rqmabk1wq",
+    "q_057jh6v5ilhm",
+    "q_0bj5ns3bv041",
+    "q_102jz80nns3j",
+    "q_10335ow15d9b",
+    "q_10b3rmm16na2",
+    "q_110xf4qa8ien",
+    "q_1175zk81en76",
+    "q_119hnak5g7eq",
+    "q_11ez14xs01vk",
+    "q_11gqrrxhfj6y",
+    "q_11qt0jneiwxh",
+    "q_12hdk5ueu6qc",
+    "q_131dl8f1mg7e",
+    "q_136i27l15awk",
+    "q_137svhquax6p",
+    "q_13rsxgx1pqt5",
+    "q_146i4bwh4qbu",
+    "q_14g7lft1wujg",
+    "q_150mi32atk6f",
+    "q_156wus8z12p2",
+    "q_159gh2fzonif",
+    "q_15fsd7afq0tt",
+    "q_15qdnhdv3nc9",
+    "q_169ukpf1y010",
+    "q_16e7c2g1i4ml",
+    "q_16guh0h2fbuh",
+    "q_16q24c41j1u5",
+    "q_16svzq11blw2",
+    "q_17d0rek80c4k",
+    "q_17kuoczked0y",
+    "q_17px6joj5rww",
+    "q_17rnlzmznu2g",
+    "q_17ue9c515upy",
+    "q_17uegwihtfoi",
+    "q_17z8s371woyj",
+    "q_188t8fc10pox",
+    "q_18b0pby1phef",
+    "q_18nmcfc19ok8",
+    "q_18zmtuq12o72",
+    "q_194yyxskqmb6",
+    "q_1a27j8j1ljb3",
+    "q_1a5bccd1257g",
+    "q_1a6dl9omjc37",
+    "q_1bghhrhqu2so",
+    "q_1bh06k11nenu",
+    "q_1cgh1i6jctgi",
+    "q_1ckp0im4y12s",
+    "q_1cq3c0w1nbpv",
+    "q_1d08chchpscj",
+    "q_1d7zp7c1emzp",
+    "q_1d91k2aoe872",
+    "q_1dj8azm1wfiz",
+    "q_1doysc5okzte",
+    "q_1e227glj1hrd",
+    "q_1e3t5bl77zd2",
+    "q_1e6ra62jb8ym",
+    "q_1ebfxhy1lrzr",
+    "q_1ev6ekt1a5wj",
+    "q_1evr0ia17r21",
+    "q_1f62qml1m28z",
+    "q_1fk418u1rqut",
+    "q_1fq203a1gpoo",
+    "q_1g175t54m1tk",
+    "q_1g2dhhsanwiw",
+    "q_1ge987ub4dp2",
+    "q_1gwnxgbw2u2a",
+    "q_1h0qj8q128k5",
+    "q_1h1l5dkw2qdr",
+    "q_1hdx96r1bhdc",
+    "q_1hr2mth15alu",
+    "q_1id0ebhfy09b",
+    "q_1id0ebhfy09b",
+    "q_1iszftz46ch3",
+    "q_1ityc381woxr",
+    "q_1j03a5615ljm",
+    "q_1jmbjkc1y02g",
+    "q_1jn20wc1aq41",
+    "q_1k6kywlbpx73",
+    "q_1kacozbm1pvl",
+    "q_1kpdk19pbvz7",
+    "q_1kui5g6mj01w",
+    "q_1kx7q3wqmoh4",
+    "q_1ln0xib16776",
+    "q_1lo5uf71baqj",
+    "q_1lvds28rmbst",
+    "q_1m49nd2c3w3h",
+    "q_1mkuhy81pwtx",
+    "q_1mnf69s10qqk",
+    "q_1n1fdqy1olfx",
+    "q_1nckxh6pmckm",
+    "q_1nikm9xokaf5",
+    "q_1nml913gupkp",
+    "q_1nvqrtv10xed",
+    "q_1obob7y1wye8",
+    "q_1ojqbfraf5sm",
+    "q_1ojuy1c2oct5",
+    "q_1p1s2eu1xsi8",
+    "q_1p5ktw1a7ryv",
+    "q_1p8vmixhh1cx",
+    "q_1p90f8f133wc",
+    "q_1pgrzzq1lark",
+    "q_1pp48cw1jx64",
+    "q_1qd7f1kceigy",
+    "q_1qdu2e21au29",
+    "q_1r5nmiv1fvus",
+    "q_1r6e6qa137xt",
+    "q_1rcj3q41mvqe",
+    "q_1rvt82equogt",
+    "q_1rxx5sr4trna",
+    "q_1sgrjju1d46s",
+    "q_1sne9s41dsnc",
+    "q_1souo9p1e4tn",
+    "q_1syszcg1p3e8",
+    "q_1t4j1jx1t20v",
+    "q_1t84gij1i5id",
+    "q_1tspc4h1t734",
+    "q_1tu2wrdp1y7g",
+    "q_1u7lyi1391mz",
+    "q_1uq83bt17m13",
+    "q_1uqq5qsbm7y3",
+    "q_1uscvnq1jsqu",
+    "q_1usfam21qd2c",
+    "q_1v9ykic1xpql",
+    "q_1vifqckfqyso",
+    "q_1vljj2hlk09f",
+    "q_1vml9q7e90ba",
+    "q_1vocrwfoj2iz",
+    "q_1vplddg1symz",
+    "q_1vqjx18w3fb7",
+    "q_1vrdeppc7k4c",
+    "q_1vu4xl11oqnv",
+    "q_1vucfof1fgmg",
+    "q_1vzz8823x1cq",
+    "q_1wjscofdwr7e",
+    "q_1wljzn39kvez",
+    "q_1wv7uvx1jkbl",
+    "q_1xbz6h14b32y",
+    "q_1xhsrnz1lord",
+    "q_1xzqiv7130n5",
+    "q_1y4owwujx9cw",
+    "q_1yccz16cjjjm",
+    "q_1yjlvms1lcak",
+    "q_1ymyatn1x8ye",
+    "q_1ysxpc0izpvv",
+    "q_2e8kyu1116ft",
+    "q_2vd59818af4j",
+    "q_2yje6i1rxgwe",
+    "q_2ym748101yta",
+    "q_31b0khixc1zp",
+    "q_31qwxg185224",
+    "q_3kcreo1psrll",
+    "q_3m0tjxhuqiw7",
+    "q_48h0vnoqj4jt",
+    "q_4cezt51cemlp",
+    "q_4dbvrw1kkgf2",
+    "q_4g1b9fv6u4q5",
+    "q_4os6af1tckos",
+    "q_58ni0e19fkq4",
+    "q_5al44qngbici",
+    "q_5k9b62osg6dm",
+    "q_5lb34k15ee2u",
+    "q_5utwwd1c5sq4",
+    "q_5wax00313mna",
+    "q_6f77jr1asrnn",
+    "q_703nmh1afavv",
+    "q_77b3m911tbw6",
+    "q_7c64a31dlm77",
+    "q_7crrlo1q3j2k",
+    "q_7ptwdc1yvsxe",
+    "q_85lqaj8zfa13",
+    "q_89tgefka15nr",
+    "q_8bu669e7xnab",
+    "q_8c4olkk0rxci",
+    "q_8c5hg9wcowa1",
+    "q_8kl0vb2x60ff",
+    "q_8qte9p1mw70c",
+    "q_8xlw7911rs49",
+    "q_97zljvwueuqr",
+    "q_9kgrcwalzdtc",
+    "q_9lgw6vtk9asp",
+    "q_9nrpe78rp3ln",
+    "q_9usi1si7s8le",
+    "q_9xfv35l8qbn5",
+    "q_aazics8foihy",
+    "q_acygb5xq0v0l",
+    "q_ajaqqpjog4y3",
+    "q_atiow2rd5awy",
+    "q_b1iku712yans",
+    "q_b45k3ndz11o1",
+    "q_brdlgt1w6kw1",
+    "q_bw0cbffz3t3t",
+    "q_bxk239x0ctnj",
+    "q_c2sjqwtnuvyw",
+    "q_cfu7g51dthe7",
+    "q_d8tnt01ept38",
+    "q_dplp971u42wz",
+    "q_dsjzpnxzvd0z",
+    "q_dx9q491xfcib",
+    "q_e6gdc0q6cado",
+    "q_fkwlsodqbahm",
+    "q_fodv0p1j8s2c",
+    "q_ft2t9u19jxyy",
+    "q_g6u1wz9oy137",
+    "q_g7ept31cvv2q",
+    "q_ggqi1f1u1mee",
+    "q_go354hz3agwx",
+    "q_gv018dpbx699",
+    "q_h2uag14yek9n",
+    "q_h6uydgtdkojk",
+    "q_h77i5e1nbxwu",
+    "q_haf4kfa5o59t",
+    "q_hhjque1rpqz3",
+    "q_hruzv5oh5505",
+    "q_hvuqiyicgxz4",
+    "q_hx5nmue44rva",
+    "q_i3g3v8l56qre",
+    "q_ic9u8wgj9n8a",
+    "q_id9p8ldyhoh3",
+    "q_ik27cm62z9p8",
+    "q_iqptt31pm4se",
+    "q_j11qmvl0mek1",
+    "q_jg0v1hztjlvb",
+    "q_jibyuv4skmmx",
+    "q_jtprykorbuy8",
+    "q_k72jjo2nadjw",
+    "q_kqjs6d1n7ns9",
+    "q_kqpdrc1cwk7v",
+    "q_l36j0l2nlazr",
+    "q_l90f8j3sen4n",
+    "q_lhekxz1elv61",
+    "q_lsqhea1f50ug",
+    "q_lv5x0q15nfwh",
+    "q_m7vdfe1n5pux",
+    "q_mlcrhcffa208",
+    "q_mna2yv1wp3o0",
+    "q_mzt5261ighte",
+    "q_n0cro61qw808",
+    "q_nhzzl8y0l9qw",
+    "q_ni3j2qve7t8c",
+    "q_ogaaqh1gm3j0",
+    "q_om8s1jgwq6lt",
+    "q_ot1yfz219sgl",
+    "q_ot5b381xk5fe",
+    "q_pgijnrh6879f",
+    "q_pilbqk1iggqd",
+    "q_pkr6p61c99j9",
+    "q_pqbuttnqzpnh",
+    "q_pz19w91urkh4",
+    "q_q8874l14882y",
+    "q_qc2tby3qsfum",
+    "q_qflqio3za1fa",
+    "q_qmykmy1d3aei",
+    "q_qphxhp186uvf",
+    "q_r8cuea1m7erq",
+    "q_rfebauglfpxc",
+    "q_rhbesw17e0g8",
+    "q_rumkf51n35eq",
+    "q_rvcdcyh5lm26",
+    "q_sb2odepzp0b2",
+    "q_si5dng4ihtkm",
+    "q_slnwtpvhtrvh",
+    "q_sm4sku1o9t7b",
+    "q_soj3aef9iqyy",
+    "q_sqxxkkh3hcze",
+    "q_sui7iisuoct4",
+    "q_t1pwe01bnzsx",
+    "q_tm4l231fnuqt",
+    "q_tv89091w573u",
+    "q_u3j48a4u3svc",
+    "q_ucvcze1s0k4h",
+    "q_uytau91eclvc",
+    "q_v89pfd1hu04o",
+    "q_vjg4ankqh8lz",
+    "q_w030a711le44",
+    "q_wjmbahxov24t",
+    "q_wjopk41y0oea",
+    "q_x03wqp1mo3lj",
+    "q_x1cx4d1wnl6i",
+    "q_x8kklj13gf1s",
+    "q_xbmw00tcuctg",
+    "q_y8r92n1ig2tp",
+    "q_y9mm31ip5917",
+    "q_yai8cptimmzn",
+    "q_z2lca1ajevvr",
+    "q_z3s0ighmebp2",
+    "q_z4aloiy0r2me",
+    "q_z4u2r8122qbf",
+    "q_zce7hr1k3obr",
+    "q_zfea7r8j8ykj",
+    "q_zv7asr2zbsbl",
+    "q_zyey9g1ttgij",
+    "q_zzw7bkfb4esq"
+   ]
+  },
+  {
+   "id": "qs_2026_05_08",
+   "name_zh": "2026 年 5–8 月",
+   "year": 2026,
+   "start_month": 5,
+   "end_month": 8,
+   "question_ids": [
+    "q_0h568ygq5i5w",
+    "q_0j4twgdtg3zl",
+    "q_107hr4mdvupa",
+    "q_10su8mw5s3sm",
+    "q_1247b4c1a6o9",
+    "q_12bbqcf2j40h",
+    "q_12oh1kd18zpk",
+    "q_130z3sdt4nvw",
+    "q_131uy191ydk6",
+    "q_1368v1p13wia",
+    "q_13j0xkw7i2ms",
+    "q_13rsxgx1pqt5",
+    "q_15k3gh51v0m6",
+    "q_15n5s7m1pa4m",
+    "q_15ox8zu14reb",
+    "q_15p2mf9dmv34",
+    "q_15twugj8b6j9",
+    "q_161a0541w0b2",
+    "q_169qu3q15rsv",
+    "q_16kkg0l101sf",
+    "q_16qf0p41bx00",
+    "q_16uqh57wsjsp",
+    "q_16yfn081odnt",
+    "q_172bgys1blom",
+    "q_17pzlpgdzv1w",
+    "q_17ucnrgfhdxy",
+    "q_17wg7018yenc",
+    "q_17ysvbs96ttv",
+    "q_18ei175848rz",
+    "q_19gzg4o1sk06",
+    "q_1ab6jfo19tb8",
+    "q_1atqseprhxsi",
+    "q_1avkl421ayei",
+    "q_1b4uluu5j9tc",
+    "q_1b6fr4p69zhy",
+    "q_1bbrm4p13jl9",
+    "q_1bnnwktt4r5q",
+    "q_1canyun181f2",
+    "q_1cgh1i6jctgi",
+    "q_1dfofyiyx91j",
+    "q_1e3t5bl77zd2",
+    "q_1eznf5xmi1zo",
+    "q_1ezw4db11h59",
+    "q_1f4rl9clbkpk",
+    "q_1f6fi28cjyvn",
+    "q_1f9f8irv2nk6",
+    "q_1fh5lyy1gazc",
+    "q_1fpcfasdfjtj",
+    "q_1ftzuii1xuhv",
+    "q_1g8ymkisxedx",
+    "q_1gn2lnzx8s7z",
+    "q_1gt3y3wemfvc",
+    "q_1h5ko2i171s0",
+    "q_1hdu45g1etuc",
+    "q_1hjn1xf1bq1b",
+    "q_1hw3atex8jqi",
+    "q_1i7d8qk128i0",
+    "q_1is68rw144is",
+    "q_1isn5c1cpf0d",
+    "q_1ityc381woxr",
+    "q_1j0dokgdgpsg",
+    "q_1j54mg61hfvv",
+    "q_1jcx2aq14tf9",
+    "q_1joztzq8mf7l",
+    "q_1k6zwqxyxqh0",
+    "q_1kg3po63hb7d",
+    "q_1ktiywhp1wuj",
+    "q_1ln0xib16776",
+    "q_1mpyvfujevpx",
+    "q_1mwfq791q3c1",
+    "q_1n2xzfw1geto",
+    "q_1nhsup81jttn",
+    "q_1o2pdi653bjb",
+    "q_1ofys3b1bg44",
+    "q_1q5085lwhmkk",
+    "q_1q6np3pqi8py",
+    "q_1rgea4wx2cp0",
+    "q_1sqg205cql3k",
+    "q_1syszcg1p3e8",
+    "q_1t84gij1i5id",
+    "q_1tmf75cxxyvp",
+    "q_1tmln011qduk",
+    "q_1tqgsqwtl6zz",
+    "q_1twi9361v8hk",
+    "q_1u8db5bxkaok",
+    "q_1uqf75oa5q9x",
+    "q_1v8mint4orqo",
+    "q_1vhzvzplna8i",
+    "q_1vvx0en3hglc",
+    "q_1w6rzrzl6ke5",
+    "q_1wgqsl75bhki",
+    "q_1whbtnfnqc9u",
+    "q_1wp8d1kzd7yl",
+    "q_1wsji211sy5l",
+    "q_1xwd7z117cut",
+    "q_1ydliyn1ezg8",
+    "q_1yfnilsy8u65",
+    "q_1ykvdin88pot",
+    "q_26gv9h1xeyz1",
+    "q_2gakqe1yz2wq",
+    "q_2j5p0qxfllcq",
+    "q_30dif6mf1eps",
+    "q_3cqcq19inj1a",
+    "q_3t3qoq1wf12z",
+    "q_4f8mjjfr3t9h",
+    "q_4gvmkt1n64gr",
+    "q_4oewv81dep86",
+    "q_4sc7mcrq3rge",
+    "q_5ccg6n1p8vyt",
+    "q_5rd4wd1yjt4s",
+    "q_6a1pkfev00q5",
+    "q_6bypxi139ou3",
+    "q_6o4qj7c0cc2l",
+    "q_6y6pefm7lftp",
+    "q_6zivki1ya9a3",
+    "q_7aedbyakz3cw",
+    "q_7txfe9otdvq3",
+    "q_8dk39a17gelx",
+    "q_8tmi271mdwe6",
+    "q_9kz9ar1os5xj",
+    "q_a8pumx11rtsn",
+    "q_ab5j26i787z8",
+    "q_cqm9p110crck",
+    "q_ddlrjb16gfus",
+    "q_dns7l0uujxmo",
+    "q_doya5qectxnw",
+    "q_dqdu3m3u4i6w",
+    "q_dxecye1qmwmq",
+    "q_f2qfryeuan8k",
+    "q_fviwkk1wk6dq",
+    "q_fy27cmdmzyg0",
+    "q_gb6x8qvvy3xs",
+    "q_ggqi1f1u1mee",
+    "q_gn1ta31qv0os",
+    "q_h3y9071idbjn",
+    "q_hg2wuc1ofvps",
+    "q_hi9j2hpcdnob",
+    "q_iexc1mx336j8",
+    "q_iw36tasvk0by",
+    "q_jgugaahlid78",
+    "q_ji6vln11ldd3",
+    "q_jjtmy117u4vp",
+    "q_k2oarb1iwbyf",
+    "q_kj0n571ye894",
+    "q_km3blgtxh5ug",
+    "q_lb2ymes2iz0i",
+    "q_m4vpen1b5hu0",
+    "q_mci6vovq8uac",
+    "q_ojbz2a1p8mpm",
+    "q_qjsxp6d8h0gk",
+    "q_ql8g141bsggh",
+    "q_qmykmy1d3aei",
+    "q_qnrqdh1r17mu",
+    "q_qqcthbthz35r",
+    "q_r1knyt1yktuk",
+    "q_r8cuea1m7erq",
+    "q_rumkf51n35eq",
+    "q_rwm54jhw3b09",
+    "q_s5le1c7pm36a",
+    "q_sd2qid1edww3",
+    "q_sk2iq61meip8",
+    "q_so3ir8pglzq2",
+    "q_stnr1112hryy",
+    "q_t7myst1dy9te",
+    "q_tm4l231fnuqt",
+    "q_u2dada1delv6",
+    "q_ucvcze1s0k4h",
+    "q_udg6rd1pg2fm",
+    "q_ufqcak1fxnw5",
+    "q_uzgr0o5ch9hy",
+    "q_vs3n6op4yu2i",
+    "q_x6jfmw1s1fxx",
+    "q_xbmw00tcuctg",
+    "q_xte9rvgsx11n",
+    "q_y96cj112n3w4",
+    "q_yeymqs1o933p",
+    "q_ykr1iy1hmsbx",
+    "q_ywu1isgwpz18",
+    "q_zpyk671yvvh3"
+   ]
+  },
+  {
+   "id": "qs_2026_09_12",
+   "name_zh": "2026 年 9–12 月",
+   "year": 2026,
+   "start_month": 9,
+   "end_month": 12,
+   "question_ids": [
+    "q_x26q3_e0e9eb39be",
+    "q_x26q3_25b8a7f480",
+    "q_x26q3_3f407f259c",
+    "q_x26q3_350193230e",
+    "q_x26q3_1e2dc9c62d",
+    "q_x26q3_5afc265c65",
+    "q_x26q3_c2a518250b",
+    "q_x26q3_75b5010d5a",
+    "q_x26q3_e73d47b77b",
+    "q_x26q3_8e399f6744",
+    "q_x26q3_3fcd6c9cc2",
+    "q_x26q3_9607de4dd9",
+    "q_x26q3_0ba83128cc",
+    "q_x26q3_7519051c38",
+    "q_x26q3_85aea42108",
+    "q_x26q3_3ce7ed7c72",
+    "q_x26q3_0e2d8ff077",
+    "q_x26q3_6db10d5191",
+    "q_x26q3_80308bb87a",
+    "q_x26q3_6ffc21aceb",
+    "q_x26q3_2475156624",
+    "q_x26q3_484addecd8",
+    "q_x26q3_fee3221a16",
+    "q_x26q3_5c1065fa43",
+    "q_x26q3_26352d2875",
+    "q_x26q3_e7fc89274b",
+    "q_x26q3_52fafa0021",
+    "q_x26q3_eff119f609",
+    "q_x26q3_a99602bd20",
+    "q_x26q3_982858d58e",
+    "q_x26q3_ffa40b9b44",
+    "q_x26q3_e44501b5dd",
+    "q_x26q3_3ae3b35e5d",
+    "q_x26q3_d7e80e2b82",
+    "q_x26q3_f86bd6af04",
+    "q_x26q3_ba93a0ff4e",
+    "q_x26q3_30a9d3d4cd",
+    "q_x26q3_a27fd05285",
+    "q_x26q3_db9196d2cc",
+    "q_x26q3_dab6fe416c",
+    "q_x26q3_34841a2aa0",
+    "q_9kgrcwalzdtc",
+    "q_ni3j2qve7t8c",
+    "q_18b0pby1phef",
+    "q_zce7hr1k3obr",
+    "q_x26q3_39d186a6b1",
+    "q_1cq3c0w1nbpv",
+    "q_x26q3_89fddea936",
+    "q_x26q3_c55fdf8d3e",
+    "q_x26q3_084b0da5ca",
+    "q_x26q3_b7091bac96",
+    "q_x26q3_6ae6d6fa43",
+    "q_x26q3_dcca4bdef1",
+    "q_x26q3_5fc0f7c948",
+    "q_x26q3_8144b0916f",
+    "q_x26q3_b2d0c676e4",
+    "q_x26q3_1443f90f39",
+    "q_x26q3_21164e6fb5",
+    "q_x26q3_fff726f5e8",
+    "q_x26q3_74551d9485",
+    "q_x26q3_9a1819650d",
+    "q_x26q3_5cfc5053e1",
+    "q_x26q3_2a66559841",
+    "q_x26q3_0697b8b72b",
+    "q_x26q3_25390dfd31",
+    "q_x26q3_8a0494a044",
+    "q_x26q3_7262b1deff",
+    "q_x26q3_2518c7d544",
+    "q_x26q3_e28c0e9d90",
+    "q_x26q3_f6507507a2",
+    "q_x26q3_1ea57d336f"
+   ]
+  }
+ ]
+}

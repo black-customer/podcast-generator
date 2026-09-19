@@ -20,6 +20,7 @@ from . import (
     tts,
 )
 from .config import (
+    APP_VERSION,
     DATA_DIR,
     FISH_MODELS,
     PROMPTS_DIR,
@@ -110,6 +111,7 @@ def health():
     ok, msg = audio.check_ffmpeg()
     return {
         "ok": ok,
+        "version": APP_VERSION,
         "ffmpeg": {"ok": ok, "message": msg},
         "mode": "dry_run" if is_dry_run() else "live",
         "data_dir": str(DATA_DIR),
