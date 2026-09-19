@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "How long have you lived in this city?",
+    "start": 0.0,
+    "end": 1.39,
+    "duration": 1.39,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I've lived in this city for about four years, because my college is here.",
+    "start": 1.95,
+    "end": 5.72,
+    "duration": 3.77,
+    "mode": "sse"
+  }
+]

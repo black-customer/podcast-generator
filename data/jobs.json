@@ -1,32 +1,4 @@
 {
-  "c1bc1c934caf": {
-    "id": "c1bc1c934caf",
-    "kind": "generate",
-    "topic_id": "01-qa",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T02:02:32.381",
-    "finished_at": "2026-09-19T02:02:34.351"
-  },
-  "d694d7f13265": {
-    "id": "d694d7f13265",
-    "kind": "generate",
-    "topic_id": "01-e2e",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-q",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T02:02:34.854",
-    "finished_at": "2026-09-19T02:02:35.528"
-  },
   "19accdad0375": {
     "id": "19accdad0375",
     "kind": "assemble",
@@ -1735,6 +1707,108 @@
           "duration_sec": 23.88,
           "offset_sec": 284.19,
           "generated_at": "2026-09-19T11:13:35.884"
+        }
+      ]
+    }
+  },
+  "b9e263ea734a": {
+    "id": "b9e263ea734a",
+    "kind": "generate",
+    "topic_id": "01-part-1-hometown-homes-bruce-真实回答-女问男答",
+    "track": "podcast",
+    "state": "done",
+    "total": 9,
+    "done": 9,
+    "current": "009-how-long-have-you-lived-in-this-city",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T11:15:35.413",
+    "finished_at": "2026-09-19T11:16:56.538"
+  },
+  "fc1a73b74923": {
+    "id": "fc1a73b74923",
+    "kind": "assemble",
+    "topic_id": "01-part-1-hometown-homes-bruce-真实回答-女问男答",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T11:17:01.758",
+    "finished_at": "2026-09-19T11:17:06.240",
+    "result": {
+      "topic_id": "01-part-1-hometown-homes-bruce-真实回答-女问男答",
+      "topic_name": "Part 1 · Hometown & Homes（Bruce 真实回答 · 女问男答）",
+      "track": "podcast",
+      "file": "01-part-1-hometown-homes-bruce-真实回答-女问男答_podcast.mp3",
+      "total_sec": 115.72,
+      "item_count": 9,
+      "generated_at": "2026-09-19T11:17:06.238",
+      "items": [
+        {
+          "id": "001-what-kind-of-house-or-apartment-do-you-want-to-live-in-in-th",
+          "title": "What kind of house or apartment do you want to live in in the future?",
+          "duration_sec": 19.28,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T11:15:35.421"
+        },
+        {
+          "id": "002-are-the-transport-facilities-to-your-home-very-good",
+          "title": "Are the transport facilities to your home very good?",
+          "duration_sec": 22.86,
+          "offset_sec": 19.88,
+          "generated_at": "2026-09-19T11:15:45.595"
+        },
+        {
+          "id": "003-do-you-prefer-living-in-a-house-or-in-an-apartment",
+          "title": "Do you prefer living in a house or in an apartment?",
+          "duration_sec": 18.39,
+          "offset_sec": 43.34,
+          "generated_at": "2026-09-19T11:15:57.227"
+        },
+        {
+          "id": "004-please-describe-the-room-you-are-living-in",
+          "title": "Please describe the room you are living in.",
+          "duration_sec": 17.5,
+          "offset_sec": 62.33,
+          "generated_at": "2026-09-19T11:16:07.720"
+        },
+        {
+          "id": "005-where-is-your-hometown",
+          "title": "Where is your hometown?",
+          "duration_sec": 12.98,
+          "offset_sec": 80.43,
+          "generated_at": "2026-09-19T11:16:16.876"
+        },
+        {
+          "id": "006-is-it-a-big-city-or-a-small-place",
+          "title": "Is it a big city or a small place?",
+          "duration_sec": 16.04,
+          "offset_sec": 94.01,
+          "generated_at": "2026-09-19T11:16:24.832"
+        },
+        {
+          "id": "007-what-city-do-you-live-in",
+          "title": "What city do you live in?",
+          "duration_sec": 6.64,
+          "offset_sec": 110.65,
+          "generated_at": "2026-09-19T11:16:34.505"
+        },
+        {
+          "id": "008-do-you-like-this-city-and-why",
+          "title": "Do you like this city and why?",
+          "duration_sec": 19.91,
+          "offset_sec": 117.89,
+          "generated_at": "2026-09-19T11:16:39.710"
+        },
+        {
+          "id": "009-how-long-have-you-lived-in-this-city",
+          "title": "How long have you lived in this city?",
+          "duration_sec": 5.72,
+          "offset_sec": 138.4,
+          "generated_at": "2026-09-19T11:16:51.570"
         }
       ]
     }

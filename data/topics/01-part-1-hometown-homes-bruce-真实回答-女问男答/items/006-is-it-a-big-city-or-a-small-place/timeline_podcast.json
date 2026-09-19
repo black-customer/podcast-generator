@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Is it a big city or a small place?",
+    "start": 0.0,
+    "end": 3.22,
+    "duration": 3.22,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "It's a small place, and it's still underdeveloped. The people there speak in the local accent — they speak dialect. And actually, my real home is in the hills — I lived in a mountain area, a very small and remote part of the city.",
+    "start": 3.56,
+    "end": 16.04,
+    "duration": 12.48,
+    "mode": "sse"
+  }
+]

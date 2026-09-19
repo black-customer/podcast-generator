@@ -1,0 +1,284 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "213b4a2dcf8654b4",
+  "audio_signature": "386238:1789787793",
+  "created_at": "2026-09-19T11:16:34",
+  "segments": [
+    {
+      "text": "Is it a big city or a small place?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 3.22
+    },
+    {
+      "text": "It's a small place, and it's still underdeveloped. The people there speak in the local accent — they speak dialect. And actually, my real home is in the hills — I lived in a mountain area, a very small and remote part of the city.",
+      "speaker": "b",
+      "start": 3.56,
+      "end": 16.04
+    }
+  ],
+  "words": [
+    {
+      "text": "Is",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "it",
+      "start": 0.16,
+      "end": 0.48
+    },
+    {
+      "text": "a",
+      "start": 0.56,
+      "end": 0.64
+    },
+    {
+      "text": "big",
+      "start": 0.64,
+      "end": 0.96
+    },
+    {
+      "text": "city",
+      "start": 0.96,
+      "end": 1.44
+    },
+    {
+      "text": "or",
+      "start": 1.52,
+      "end": 2.0
+    },
+    {
+      "text": "a",
+      "start": 2.08,
+      "end": 2.16
+    },
+    {
+      "text": "small",
+      "start": 2.16,
+      "end": 2.48
+    },
+    {
+      "text": "place",
+      "start": 2.48,
+      "end": 3.2
+    },
+    {
+      "text": "It's",
+      "start": 3.537,
+      "end": 3.697
+    },
+    {
+      "text": "a",
+      "start": 3.697,
+      "end": 3.777
+    },
+    {
+      "text": "small",
+      "start": 3.777,
+      "end": 4.097
+    },
+    {
+      "text": "place",
+      "start": 4.097,
+      "end": 4.657
+    },
+    {
+      "text": "and",
+      "start": 4.657,
+      "end": 4.817
+    },
+    {
+      "text": "it's",
+      "start": 4.817,
+      "end": 4.897
+    },
+    {
+      "text": "still",
+      "start": 4.897,
+      "end": 5.217
+    },
+    {
+      "text": "underdeveloped",
+      "start": 5.217,
+      "end": 6.017
+    },
+    {
+      "text": "The",
+      "start": 6.097,
+      "end": 6.177
+    },
+    {
+      "text": "people",
+      "start": 6.177,
+      "end": 6.497
+    },
+    {
+      "text": "there",
+      "start": 6.497,
+      "end": 6.737
+    },
+    {
+      "text": "speak",
+      "start": 6.737,
+      "end": 7.057
+    },
+    {
+      "text": "in",
+      "start": 7.057,
+      "end": 7.137
+    },
+    {
+      "text": "the",
+      "start": 7.137,
+      "end": 7.217
+    },
+    {
+      "text": "local",
+      "start": 7.217,
+      "end": 7.617
+    },
+    {
+      "text": "accent",
+      "start": 7.617,
+      "end": 8.177
+    },
+    {
+      "text": "they",
+      "start": 8.257,
+      "end": 8.337
+    },
+    {
+      "text": "speak",
+      "start": 8.337,
+      "end": 8.737
+    },
+    {
+      "text": "dialect",
+      "start": 8.737,
+      "end": 9.457
+    },
+    {
+      "text": "And",
+      "start": 9.537,
+      "end": 9.697
+    },
+    {
+      "text": "actually",
+      "start": 9.697,
+      "end": 10.257
+    },
+    {
+      "text": "my",
+      "start": 10.257,
+      "end": 10.417
+    },
+    {
+      "text": "real",
+      "start": 10.417,
+      "end": 10.817
+    },
+    {
+      "text": "home",
+      "start": 10.817,
+      "end": 11.137
+    },
+    {
+      "text": "is",
+      "start": 11.137,
+      "end": 11.297
+    },
+    {
+      "text": "in",
+      "start": 11.297,
+      "end": 11.377
+    },
+    {
+      "text": "the",
+      "start": 11.377,
+      "end": 11.537
+    },
+    {
+      "text": "hills",
+      "start": 11.537,
+      "end": 12.097
+    },
+    {
+      "text": "I",
+      "start": 12.097,
+      "end": 12.257
+    },
+    {
+      "text": "lived",
+      "start": 12.257,
+      "end": 12.497
+    },
+    {
+      "text": "in",
+      "start": 12.497,
+      "end": 12.577
+    },
+    {
+      "text": "a",
+      "start": 12.577,
+      "end": 12.657
+    },
+    {
+      "text": "mountain",
+      "start": 12.657,
+      "end": 13.057
+    },
+    {
+      "text": "area",
+      "start": 13.057,
+      "end": 13.537
+    },
+    {
+      "text": "a",
+      "start": 13.617,
+      "end": 13.697
+    },
+    {
+      "text": "very",
+      "start": 13.697,
+      "end": 14.097
+    },
+    {
+      "text": "small",
+      "start": 14.097,
+      "end": 14.497
+    },
+    {
+      "text": "and",
+      "start": 14.497,
+      "end": 14.577
+    },
+    {
+      "text": "remote",
+      "start": 14.577,
+      "end": 14.977
+    },
+    {
+      "text": "part",
+      "start": 14.977,
+      "end": 15.217
+    },
+    {
+      "text": "of",
+      "start": 15.217,
+      "end": 15.297
+    },
+    {
+      "text": "the",
+      "start": 15.297,
+      "end": 15.377
+    },
+    {
+      "text": "city",
+      "start": 15.377,
+      "end": 15.937
+    }
+  ]
+}

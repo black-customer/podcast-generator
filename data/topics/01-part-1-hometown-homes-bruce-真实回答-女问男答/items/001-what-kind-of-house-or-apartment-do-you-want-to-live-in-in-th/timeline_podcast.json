@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "What kind of house or apartment do you want to live in in the future?",
+    "start": 0.0,
+    "end": 2.91,
+    "duration": 2.91,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Actually, I don't have a typical favorite, because I haven't explored many options yet. But I think it should be big, and it should have a good view — that would be enough. Big, a nice view, and clean. That's it, really. Oh, and it should be in the city center — definitely not in the suburbs.",
+    "start": 3.37,
+    "end": 19.28,
+    "duration": 15.91,
+    "mode": "sse"
+  }
+]

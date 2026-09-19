@@ -1,0 +1,409 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "7aa7bd0c5e5fac42",
+  "audio_signature": "549869:1789787756",
+  "created_at": "2026-09-19T11:15:57",
+  "segments": [
+    {
+      "text": "Are the transport facilities to your home very good?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.9
+    },
+    {
+      "text": "It used to be good, because there was a subway station right near my home — I could just take the subway anywhere. But I recently moved to another place, and the transport has become much worse. Now I'm in a remote area: I have to take a bus first, then transfer to the subway station, and only then take the subway into the city. It's really not good.",
+      "speaker": "b",
+      "start": 3.33,
+      "end": 22.86
+    }
+  ],
+  "words": [
+    {
+      "text": "Are",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "the",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "transport",
+      "start": 0.24,
+      "end": 0.8
+    },
+    {
+      "text": "facilities",
+      "start": 0.8,
+      "end": 1.44
+    },
+    {
+      "text": "to",
+      "start": 1.6,
+      "end": 1.6
+    },
+    {
+      "text": "your",
+      "start": 1.6,
+      "end": 1.84
+    },
+    {
+      "text": "home",
+      "start": 1.84,
+      "end": 2.16
+    },
+    {
+      "text": "very",
+      "start": 2.16,
+      "end": 2.48
+    },
+    {
+      "text": "good",
+      "start": 2.48,
+      "end": 2.88
+    },
+    {
+      "text": "It",
+      "start": 3.305,
+      "end": 3.465
+    },
+    {
+      "text": "used",
+      "start": 3.465,
+      "end": 3.865
+    },
+    {
+      "text": "to",
+      "start": 3.865,
+      "end": 3.865
+    },
+    {
+      "text": "be",
+      "start": 3.865,
+      "end": 4.025
+    },
+    {
+      "text": "good",
+      "start": 4.025,
+      "end": 4.425
+    },
+    {
+      "text": "because",
+      "start": 4.505,
+      "end": 4.825
+    },
+    {
+      "text": "there",
+      "start": 4.825,
+      "end": 4.985
+    },
+    {
+      "text": "was",
+      "start": 4.985,
+      "end": 5.065
+    },
+    {
+      "text": "a",
+      "start": 5.065,
+      "end": 5.145
+    },
+    {
+      "text": "subway",
+      "start": 5.145,
+      "end": 5.625
+    },
+    {
+      "text": "station",
+      "start": 5.625,
+      "end": 6.025
+    },
+    {
+      "text": "right",
+      "start": 6.025,
+      "end": 6.265
+    },
+    {
+      "text": "near",
+      "start": 6.265,
+      "end": 6.505
+    },
+    {
+      "text": "my",
+      "start": 6.505,
+      "end": 6.745
+    },
+    {
+      "text": "home",
+      "start": 6.745,
+      "end": 7.145
+    },
+    {
+      "text": "I",
+      "start": 7.225,
+      "end": 7.385
+    },
+    {
+      "text": "could",
+      "start": 7.385,
+      "end": 7.465
+    },
+    {
+      "text": "just",
+      "start": 7.465,
+      "end": 7.705
+    },
+    {
+      "text": "take",
+      "start": 7.705,
+      "end": 7.945
+    },
+    {
+      "text": "the",
+      "start": 7.945,
+      "end": 8.025
+    },
+    {
+      "text": "subway",
+      "start": 8.025,
+      "end": 8.505
+    },
+    {
+      "text": "anywhere",
+      "start": 8.505,
+      "end": 9.145
+    },
+    {
+      "text": "But",
+      "start": 9.145,
+      "end": 9.305
+    },
+    {
+      "text": "I",
+      "start": 9.305,
+      "end": 9.465
+    },
+    {
+      "text": "recently",
+      "start": 9.465,
+      "end": 9.945
+    },
+    {
+      "text": "moved",
+      "start": 9.945,
+      "end": 10.265
+    },
+    {
+      "text": "to",
+      "start": 10.265,
+      "end": 10.345
+    },
+    {
+      "text": "another",
+      "start": 10.345,
+      "end": 10.665
+    },
+    {
+      "text": "place",
+      "start": 10.665,
+      "end": 11.145
+    },
+    {
+      "text": "and",
+      "start": 11.225,
+      "end": 11.305
+    },
+    {
+      "text": "the",
+      "start": 11.305,
+      "end": 11.385
+    },
+    {
+      "text": "transport",
+      "start": 11.385,
+      "end": 11.945
+    },
+    {
+      "text": "has",
+      "start": 11.945,
+      "end": 12.105
+    },
+    {
+      "text": "become",
+      "start": 12.105,
+      "end": 12.425
+    },
+    {
+      "text": "much",
+      "start": 12.425,
+      "end": 12.665
+    },
+    {
+      "text": "worse",
+      "start": 12.665,
+      "end": 13.305
+    },
+    {
+      "text": "Now",
+      "start": 13.732,
+      "end": 14.132
+    },
+    {
+      "text": "I'm",
+      "start": 14.132,
+      "end": 14.212
+    },
+    {
+      "text": "in",
+      "start": 14.212,
+      "end": 14.292
+    },
+    {
+      "text": "a",
+      "start": 14.292,
+      "end": 14.372
+    },
+    {
+      "text": "remote",
+      "start": 14.372,
+      "end": 14.772
+    },
+    {
+      "text": "area",
+      "start": 14.772,
+      "end": 15.332
+    },
+    {
+      "text": "I",
+      "start": 15.412,
+      "end": 15.572
+    },
+    {
+      "text": "have",
+      "start": 15.572,
+      "end": 15.732
+    },
+    {
+      "text": "to",
+      "start": 15.732,
+      "end": 15.812
+    },
+    {
+      "text": "take",
+      "start": 15.812,
+      "end": 16.052
+    },
+    {
+      "text": "a",
+      "start": 16.052,
+      "end": 16.052
+    },
+    {
+      "text": "bus",
+      "start": 16.052,
+      "end": 16.452
+    },
+    {
+      "text": "first",
+      "start": 16.452,
+      "end": 16.932
+    },
+    {
+      "text": "then",
+      "start": 17.012,
+      "end": 17.252
+    },
+    {
+      "text": "transfer",
+      "start": 17.252,
+      "end": 17.732
+    },
+    {
+      "text": "to",
+      "start": 17.732,
+      "end": 17.812
+    },
+    {
+      "text": "the",
+      "start": 17.812,
+      "end": 17.972
+    },
+    {
+      "text": "subway",
+      "start": 17.972,
+      "end": 18.372
+    },
+    {
+      "text": "station",
+      "start": 18.372,
+      "end": 19.012
+    },
+    {
+      "text": "and",
+      "start": 19.012,
+      "end": 19.172
+    },
+    {
+      "text": "only",
+      "start": 19.172,
+      "end": 19.492
+    },
+    {
+      "text": "then",
+      "start": 19.492,
+      "end": 19.732
+    },
+    {
+      "text": "take",
+      "start": 19.732,
+      "end": 19.972
+    },
+    {
+      "text": "the",
+      "start": 19.972,
+      "end": 20.052
+    },
+    {
+      "text": "subway",
+      "start": 20.052,
+      "end": 20.532
+    },
+    {
+      "text": "into",
+      "start": 20.532,
+      "end": 20.772
+    },
+    {
+      "text": "the",
+      "start": 20.772,
+      "end": 20.852
+    },
+    {
+      "text": "city",
+      "start": 20.852,
+      "end": 21.412
+    },
+    {
+      "text": "It's",
+      "start": 21.412,
+      "end": 21.652
+    },
+    {
+      "text": "really",
+      "start": 21.652,
+      "end": 21.972
+    },
+    {
+      "text": "not",
+      "start": 21.972,
+      "end": 22.212
+    },
+    {
+      "text": "good",
+      "start": 22.212,
+      "end": 22.692
+    }
+  ]
+}

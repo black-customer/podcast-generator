@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "aad0c3cc0c46688f",
+  "audio_signature": "138597:1789787816",
+  "created_at": "2026-09-19T11:16:56",
+  "segments": [
+    {
+      "text": "How long have you lived in this city?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.39
+    },
+    {
+      "text": "I've lived in this city for about four years, because my college is here.",
+      "speaker": "b",
+      "start": 1.95,
+      "end": 5.72
+    }
+  ],
+  "words": [
+    {
+      "text": "How",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "long",
+      "start": 0.08,
+      "end": 0.32
+    },
+    {
+      "text": "have",
+      "start": 0.32,
+      "end": 0.32
+    },
+    {
+      "text": "you",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "lived",
+      "start": 0.48,
+      "end": 0.64
+    },
+    {
+      "text": "in",
+      "start": 0.64,
+      "end": 0.72
+    },
+    {
+      "text": "this",
+      "start": 0.72,
+      "end": 0.88
+    },
+    {
+      "text": "city",
+      "start": 0.88,
+      "end": 1.36
+    },
+    {
+      "text": "I've",
+      "start": 1.899,
+      "end": 2.059
+    },
+    {
+      "text": "lived",
+      "start": 2.059,
+      "end": 2.299
+    },
+    {
+      "text": "in",
+      "start": 2.299,
+      "end": 2.379
+    },
+    {
+      "text": "this",
+      "start": 2.379,
+      "end": 2.539
+    },
+    {
+      "text": "city",
+      "start": 2.539,
+      "end": 2.859
+    },
+    {
+      "text": "for",
+      "start": 2.859,
+      "end": 3.019
+    },
+    {
+      "text": "about",
+      "start": 3.019,
+      "end": 3.339
+    },
+    {
+      "text": "four",
+      "start": 3.339,
+      "end": 3.579
+    },
+    {
+      "text": "years",
+      "start": 3.579,
+      "end": 4.139
+    },
+    {
+      "text": "because",
+      "start": 4.219,
+      "end": 4.459
+    },
+    {
+      "text": "my",
+      "start": 4.459,
+      "end": 4.619
+    },
+    {
+      "text": "college",
+      "start": 4.619,
+      "end": 5.099
+    },
+    {
+      "text": "is",
+      "start": 5.099,
+      "end": 5.179
+    },
+    {
+      "text": "here",
+      "start": 5.179,
+      "end": 5.579
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you prefer living in a house or in an apartment?",
+    "start": 0.0,
+    "end": 2.51,
+    "duration": 2.51,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Honestly, I don't really know the difference between a house and an apartment, because I come from a developing city — we don't have that distinction there. I always just called it a house. So I guess a house is maybe bigger than an apartment, or maybe cheaper? Based on that, I'd say I prefer living in a house.",
+    "start": 2.96,
+    "end": 18.39,
+    "duration": 15.43,
+    "mode": "sse"
+  }
+]
