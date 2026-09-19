@@ -1,7 +1,8 @@
-# AGENTS.md — 工程约定（Agent 会话必读）
+# AGENTS.md — 工程约定（ZCode / Qoder / Codex 会话必读）
 
-本仓库是 Bruce 的个人英语学习播客生成器。宪法见 `docs/CONSTITUTION.md`（冲突时宪法优先）。
-路线图见 `docs/ROADMAP.md`，进度账本见 `docs/PROGRESS.md`。**每次工作会话先读这三个文件。**
+本仓库是 Bruce 的个人英语学习播客生成器。先读 `docs/CONSTITUTION.md`、
+`docs/ROADMAP.md`、`docs/PROGRESS.md`；冲突时宪法优先。音频、UI 或 data/ 改动再读
+`docs/QUALITY_PLAYBOOK.md`。Qoder 可使用 `/podcast-quality` 自动加载这份质量约定。
 
 ## 常用命令
 
@@ -39,6 +40,14 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 <file>
 - 数据层改动必须先写回归测试（data/ 是产品本体，破坏 = 事故）
 - 注释只写"代码本身说不出的约束"，不写"我改了什么"
 
+## 完成定义
+
+- 先调查现状，再给不超过 5 条的小计划；禁止顺手扩展任务范围或主动增加技术复杂度
+- 缺陷修复和 data/ 改动必须先写能失败的回归测试，再实现修复
+- “应该没问题”不是证据：代码任务交付时列出实际运行的命令与结果；UI/音频任务还要给截图或试听门结论
+- `bash scripts/check.sh` 未绿，不得提交、标记里程碑 DONE 或打 tag
+- 发现用户已有未提交改动时先识别归属，保留并绕开；禁止 reset、checkout 或覆盖
+
 ## 提交规范
 
 - 一任务一提交：`feat|fix|refactor|test|docs|chore: <一句话>`
@@ -48,8 +57,8 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 <file>
 
 ## 会话协议（长程自驱）
 
-1. 读 ROADMAP → 选最高价值就绪里程碑 → 读 PROGRESS 了解上文
-2. 探索现状（Read 优先）→ 小计划 → TDD 实现 → `bash scripts/check.sh` 绿 → commit
-3. 更新 PROGRESS.md（做了什么/发现了什么/下一步）→ 打 tag → 下一个里程碑
+1. 读三份核心文档 → 选最高价值就绪里程碑 → 检查工作树
+2. 探索现状（Read 优先）→ ≤5 条小计划 → TDD 实现 → 自查 diff
+3. `bash scripts/check.sh` 绿 → 更新 PROGRESS/ROADMAP → 一任务一提交 → 里程碑 tag
 4. 升级规则（只有这些情况找 Bruce）：宪法冲突、要花钱、破坏性操作、
    连续 3 次门禁红（停下写复盘到 PROGRESS）

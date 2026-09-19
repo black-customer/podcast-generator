@@ -140,3 +140,14 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
    提问者/回答者角色卡，Bruce 理想旅程唯一功能缺口）
 5. 坑：uvicorn 父子进程互拉，杀端口进程须 taskkill /F /T 杀树；
    git checkout -- data/ 会复活已 git rm 的目录（01-persist 二次删除）
+
+## 2026-09-20 会话 7：质量重置启动（Q01–Q03）
+
+- Bruce 定稿轻量质量重置：目标是“愿意反复听、适合模仿的个性化英语输入”，
+  不把项目扩张为专业播客生产平台；B04 暂停至 Q03 完成。
+- Q01：根 AGENTS 增加可验证完成定义；新增按音频/UI/data 分类的短 playbook；
+  Qoder 增加 `podcast-quality` Skill；审核纳入 `.zcodeignore`。
+- Q02/Q03 范围锁定：不做多模型审稿、ASR、自训练、旧语料批量重生、前端全面模块化。
+- Q01 验收：Qoder Skill 校验通过；`scripts/check.sh` 全绿（94 passed, 1 skipped；
+  ruff、导入、启动冒烟均通过）。
+- 下一步：TDD 实现 Q02；真实 TTS 与最终音色选择留给 Bruce 听感门。

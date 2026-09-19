@@ -1,0 +1,83 @@
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# Sensitive Configuration & API Keys
+data/settings.json
+.env
+.env.*
+*.key
+*.pem
+
+# Test & Coverage Outputs
+.pytest_cache/
+.coverage
+htmlcov/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Local Temporary & Scratch Files
+data/.tmp/
+tmp/
+*.tmp
+*.log
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs & Editor configs
+.idea/
+.vscode/
+.zcode/
+
+# Lint cache
+.ruff_cache/
+
+# 音频策略：文本与 meta 入库（语料是产品本体），音频不入库（可再生、体积大）
+# 例外：初始提交中已跟踪的音频保持跟踪，避免状态不一致
+data/topics/**/audio*.mp3
+data/episodes/*.mp3
+
+# 题库快照：可再生（python -m server.bank --sync），且源自 Bruce 私有 RoastDuck 数据，不入库
+data/question_bank.json
+
+# 任务运行态：服务重启恢复用，非产品数据
+data/jobs.json
+
+# ===== ↑ 以上同步自 .gitignore（「从 .gitignore 同步」只重写以上部分）=====
+.git/
+.hg/
+.svn/
+node_modules/
+bower_components/
+jspm_packages/
+site-packages/
+coverage/
+lcov-report/
+cmakefiles/
+cmake-build-*/
+bazel-*/
+pods/
+deriveddata/
+storybook-static/
+allure-results/
+allure-report/
+cdk.out/
+*.dist-info/
+eggs/
+pip-wheel-metadata/
+wheels/
+# ----- ↑ 以上为 ZCode 默认排除规则（自定义规则请写在本行下方，不会被同步/恢复改动）-----
+# 自定义规则写在下方（本行提示可删除）

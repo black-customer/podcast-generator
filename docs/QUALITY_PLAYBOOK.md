@@ -1,0 +1,33 @@
+# QUALITY PLAYBOOK — 按任务类型完成，而不是按感觉完成
+
+只在任务触及对应领域时读取本节。共同门禁仍以根 `AGENTS.md` 为准。
+
+## 音频与语料
+
+- 保持 `natural_english`（可读文本）、`podcast_text`（可读女问男答）、
+  `podcast_script`（Fish 表演稿）职责分离；旧条目允许回退，新条目三者一起产出。
+- 女问男答优先整段单次合成；逐行生成只作失败回退。真实 TTS 必须由 Bruce 明确要求。
+- prompt 不得随机堆 filler；所有口头禅、自我修正和停顿都要承担语气或思维功能。
+- 合成参数改动必须覆盖普通 TTS、SSE 与试听三条路径；母带改动必须验证响度、时长和失败保留。
+- 完成证据：dry-run/单测全绿；真实听感改动另需固定样本 A/B，由 Bruce 过听感门。
+
+## UI
+
+- 围绕“选题 → 作答 → 听自己的母语化表达”组织层级；内容优先于装饰。
+- 保持原生 JS、hash 路由、server/pack 双数据源和移动壳共用前端，不顺手换框架或拆全站架构。
+- 文本必须经 `esc()`；交互使用语义按钮/链接，保留键盘焦点、Reduced Motion 和正文选择复制。
+- 一次完整实现后批量检查桌面与移动截图；集中修一轮，再确认一轮，禁止无限抛光。
+- 完成证据：相关 Playwright e2e、桌面/移动截图、无播放器与导航遮挡。
+
+## data/ 与发布
+
+- data/ 是产品本体：先写回归测试，使用原子写，验证旧 schema/旧包兼容与缓存失效。
+- `data/settings.json`、私有题库、运行态 jobs 和可再生音频不得进入发布物或 git 历史。
+- 发布前运行完整门禁和脱敏检查；Agent 永不 push，发布决定留给 Bruce。
+
+## 高频踩坑
+
+- Windows 使用 `.venv/Scripts/python`；ffmpeg concat 路径必须兼容 CJK。
+- hash 导航异步渲染；前端 e2e 点击后等待目标状态，不靠固定 DOM 瞬时断言。
+- `npx cap sync android` 后必须再跑 `python scripts/sync_mobile.py` 才能用本机 JDK17 构建。
+- 不把 QA 的“文件可用”误写成“听起来像真人”；自然度最终由听感门决定。
