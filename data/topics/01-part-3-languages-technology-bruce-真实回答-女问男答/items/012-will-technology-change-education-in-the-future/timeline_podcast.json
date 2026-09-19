@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you think technology will change education in the future?",
+    "start": 0.0,
+    "end": 2.97,
+    "duration": 2.97,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yeah, absolutely, 100%. You know, AI — ChatGPT, Gemini — is developing at a dramatic speed, so it will absolutely change the education system we have right now. But how exactly? I don't know. I think there will still be teachers, and AI could be a very useful tool for both teachers and students. And AI will be everywhere — like the air. It'll spread into every small piece of the education system.",
+    "start": 3.46,
+    "end": 28.55,
+    "duration": 25.09,
+    "mode": "sse"
+  }
+]

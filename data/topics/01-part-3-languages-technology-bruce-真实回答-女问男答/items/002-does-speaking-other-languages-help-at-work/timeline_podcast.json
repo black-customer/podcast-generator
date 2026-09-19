@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Does speaking other languages help at work?",
+    "start": 0.0,
+    "end": 2.49,
+    "duration": 2.49,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yeah, absolutely. Because language is a communication tool — I think languages are communication tools. If you can speak another language, you can communicate with more people. Maybe you have some other ability that can solve their needs, or at least you could teach others who want to learn this language. So of course it helps at work — well, at some work, it depends on what you do. But generally, I think speaking another language gives you more advantages at work.",
+    "start": 2.85,
+    "end": 27.22,
+    "duration": 24.37,
+    "mode": "sse"
+  }
+]

@@ -1,0 +1,724 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "a963093e385d67f8",
+  "audio_signature": "1052674:1789788428",
+  "created_at": "2026-09-19T11:27:09",
+  "segments": [
+    {
+      "text": "Do you think old people can use technology well?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.41
+    },
+    {
+      "text": "Well, of course it depends. \"Old people\" is a general concept — age only. Even people of the same age have different learning abilities and different learning skills. Some of them can absolutely use technology well. But if a person never built the habit of learning new things — for example, my grandparents, they'd say, \"Oh, I'm old, I don't want to learn new things, I can't learn new things\" — then they just make excuses and can't use technology well. So I think it depends on the person's personality. Someone like me — when I'm old, I'll still be following the latest technology trends, because I like learning new things. The future of technology will be brilliant, and I'll definitely be into it and use it well — maybe even better than my own children.",
+      "speaker": "b",
+      "start": 2.89,
+      "end": 43.81
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "you",
+      "start": 0.08,
+      "end": 0.24
+    },
+    {
+      "text": "think",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "old",
+      "start": 0.48,
+      "end": 0.72
+    },
+    {
+      "text": "people",
+      "start": 0.72,
+      "end": 1.04
+    },
+    {
+      "text": "can",
+      "start": 1.04,
+      "end": 1.2
+    },
+    {
+      "text": "use",
+      "start": 1.2,
+      "end": 1.36
+    },
+    {
+      "text": "technology",
+      "start": 1.36,
+      "end": 1.92
+    },
+    {
+      "text": "well",
+      "start": 1.92,
+      "end": 2.4
+    },
+    {
+      "text": "Well",
+      "start": 2.874,
+      "end": 3.114
+    },
+    {
+      "text": "of",
+      "start": 3.114,
+      "end": 3.194
+    },
+    {
+      "text": "course",
+      "start": 3.194,
+      "end": 3.594
+    },
+    {
+      "text": "it",
+      "start": 3.594,
+      "end": 3.674
+    },
+    {
+      "text": "depends",
+      "start": 3.674,
+      "end": 4.314
+    },
+    {
+      "text": "Old",
+      "start": 4.314,
+      "end": 4.634
+    },
+    {
+      "text": "people",
+      "start": 4.634,
+      "end": 5.034
+    },
+    {
+      "text": "is",
+      "start": 5.034,
+      "end": 5.114
+    },
+    {
+      "text": "a",
+      "start": 5.114,
+      "end": 5.194
+    },
+    {
+      "text": "general",
+      "start": 5.194,
+      "end": 5.594
+    },
+    {
+      "text": "concept",
+      "start": 5.594,
+      "end": 6.234
+    },
+    {
+      "text": "age",
+      "start": 6.314,
+      "end": 6.554
+    },
+    {
+      "text": "only",
+      "start": 6.554,
+      "end": 7.194
+    },
+    {
+      "text": "Even",
+      "start": 7.194,
+      "end": 7.514
+    },
+    {
+      "text": "people",
+      "start": 7.514,
+      "end": 7.834
+    },
+    {
+      "text": "of",
+      "start": 7.834,
+      "end": 7.914
+    },
+    {
+      "text": "the",
+      "start": 7.914,
+      "end": 7.994
+    },
+    {
+      "text": "same",
+      "start": 7.994,
+      "end": 8.314
+    },
+    {
+      "text": "age",
+      "start": 8.314,
+      "end": 8.714
+    },
+    {
+      "text": "have",
+      "start": 8.714,
+      "end": 8.874
+    },
+    {
+      "text": "different",
+      "start": 8.874,
+      "end": 9.194
+    },
+    {
+      "text": "learning",
+      "start": 9.194,
+      "end": 9.514
+    },
+    {
+      "text": "abilities",
+      "start": 9.514,
+      "end": 10.154
+    },
+    {
+      "text": "and",
+      "start": 10.154,
+      "end": 10.314
+    },
+    {
+      "text": "different",
+      "start": 10.314,
+      "end": 10.634
+    },
+    {
+      "text": "learning",
+      "start": 10.634,
+      "end": 11.034
+    },
+    {
+      "text": "skills",
+      "start": 11.034,
+      "end": 11.594
+    },
+    {
+      "text": "Some",
+      "start": 11.674,
+      "end": 11.914
+    },
+    {
+      "text": "of",
+      "start": 11.914,
+      "end": 11.994
+    },
+    {
+      "text": "them",
+      "start": 11.994,
+      "end": 12.154
+    },
+    {
+      "text": "can",
+      "start": 12.154,
+      "end": 12.314
+    },
+    {
+      "text": "absolutely",
+      "start": 12.314,
+      "end": 13.034
+    },
+    {
+      "text": "use",
+      "start": 13.034,
+      "end": 13.274
+    },
+    {
+      "text": "technology",
+      "start": 13.274,
+      "end": 13.914
+    },
+    {
+      "text": "well",
+      "start": 13.914,
+      "end": 14.394
+    },
+    {
+      "text": "But",
+      "start": 14.708,
+      "end": 15.108
+    },
+    {
+      "text": "if",
+      "start": 15.108,
+      "end": 15.268
+    },
+    {
+      "text": "a",
+      "start": 15.268,
+      "end": 15.268
+    },
+    {
+      "text": "person",
+      "start": 15.268,
+      "end": 15.748
+    },
+    {
+      "text": "never",
+      "start": 15.748,
+      "end": 15.988
+    },
+    {
+      "text": "built",
+      "start": 15.988,
+      "end": 16.308
+    },
+    {
+      "text": "the",
+      "start": 16.308,
+      "end": 16.388
+    },
+    {
+      "text": "habit",
+      "start": 16.388,
+      "end": 16.708
+    },
+    {
+      "text": "of",
+      "start": 16.708,
+      "end": 16.788
+    },
+    {
+      "text": "learning",
+      "start": 16.788,
+      "end": 17.188
+    },
+    {
+      "text": "new",
+      "start": 17.188,
+      "end": 17.348
+    },
+    {
+      "text": "things",
+      "start": 17.348,
+      "end": 17.748
+    },
+    {
+      "text": "for",
+      "start": 17.748,
+      "end": 17.988
+    },
+    {
+      "text": "example",
+      "start": 17.988,
+      "end": 18.548
+    },
+    {
+      "text": "my",
+      "start": 18.628,
+      "end": 18.788
+    },
+    {
+      "text": "grandparents",
+      "start": 18.788,
+      "end": 19.668
+    },
+    {
+      "text": "they'd",
+      "start": 19.668,
+      "end": 19.908
+    },
+    {
+      "text": "say",
+      "start": 19.908,
+      "end": 20.388
+    },
+    {
+      "text": "Oh",
+      "start": 20.388,
+      "end": 20.788
+    },
+    {
+      "text": "I'm",
+      "start": 20.788,
+      "end": 21.028
+    },
+    {
+      "text": "old",
+      "start": 21.028,
+      "end": 21.508
+    },
+    {
+      "text": "I",
+      "start": 21.508,
+      "end": 21.668
+    },
+    {
+      "text": "don't",
+      "start": 21.668,
+      "end": 21.828
+    },
+    {
+      "text": "want",
+      "start": 21.828,
+      "end": 21.988
+    },
+    {
+      "text": "to",
+      "start": 21.988,
+      "end": 22.068
+    },
+    {
+      "text": "learn",
+      "start": 22.068,
+      "end": 22.308
+    },
+    {
+      "text": "new",
+      "start": 22.308,
+      "end": 22.468
+    },
+    {
+      "text": "things",
+      "start": 22.468,
+      "end": 22.948
+    },
+    {
+      "text": "I",
+      "start": 23.028,
+      "end": 23.188
+    },
+    {
+      "text": "can't",
+      "start": 23.188,
+      "end": 23.428
+    },
+    {
+      "text": "learn",
+      "start": 23.428,
+      "end": 23.748
+    },
+    {
+      "text": "new",
+      "start": 23.748,
+      "end": 23.908
+    },
+    {
+      "text": "things",
+      "start": 23.908,
+      "end": 24.468
+    },
+    {
+      "text": "then",
+      "start": 24.548,
+      "end": 24.708
+    },
+    {
+      "text": "they",
+      "start": 24.708,
+      "end": 24.868
+    },
+    {
+      "text": "just",
+      "start": 24.868,
+      "end": 25.028
+    },
+    {
+      "text": "make",
+      "start": 25.028,
+      "end": 25.268
+    },
+    {
+      "text": "excuses",
+      "start": 25.268,
+      "end": 25.988
+    },
+    {
+      "text": "and",
+      "start": 25.988,
+      "end": 26.148
+    },
+    {
+      "text": "can't",
+      "start": 26.148,
+      "end": 26.388
+    },
+    {
+      "text": "use",
+      "start": 26.388,
+      "end": 26.628
+    },
+    {
+      "text": "technology",
+      "start": 26.628,
+      "end": 27.188
+    },
+    {
+      "text": "well",
+      "start": 27.188,
+      "end": 27.668
+    },
+    {
+      "text": "So",
+      "start": 27.748,
+      "end": 27.988
+    },
+    {
+      "text": "I",
+      "start": 27.988,
+      "end": 28.068
+    },
+    {
+      "text": "think",
+      "start": 28.068,
+      "end": 28.308
+    },
+    {
+      "text": "it",
+      "start": 28.308,
+      "end": 28.388
+    },
+    {
+      "text": "depends",
+      "start": 28.388,
+      "end": 28.708
+    },
+    {
+      "text": "on",
+      "start": 28.708,
+      "end": 28.868
+    },
+    {
+      "text": "the",
+      "start": 28.868,
+      "end": 28.948
+    },
+    {
+      "text": "person's",
+      "start": 28.948,
+      "end": 29.348
+    },
+    {
+      "text": "personality",
+      "start": 29.348,
+      "end": 30.228
+    },
+    {
+      "text": "Someone",
+      "start": 30.503,
+      "end": 30.903
+    },
+    {
+      "text": "like",
+      "start": 30.903,
+      "end": 31.143
+    },
+    {
+      "text": "me",
+      "start": 31.143,
+      "end": 31.463
+    },
+    {
+      "text": "when",
+      "start": 31.463,
+      "end": 31.623
+    },
+    {
+      "text": "I'm",
+      "start": 31.623,
+      "end": 31.863
+    },
+    {
+      "text": "old",
+      "start": 31.863,
+      "end": 32.263
+    },
+    {
+      "text": "I'll",
+      "start": 32.263,
+      "end": 32.423
+    },
+    {
+      "text": "still",
+      "start": 32.423,
+      "end": 32.663
+    },
+    {
+      "text": "be",
+      "start": 32.663,
+      "end": 32.823
+    },
+    {
+      "text": "following",
+      "start": 32.823,
+      "end": 33.383
+    },
+    {
+      "text": "the",
+      "start": 33.383,
+      "end": 33.383
+    },
+    {
+      "text": "latest",
+      "start": 33.383,
+      "end": 33.783
+    },
+    {
+      "text": "technology",
+      "start": 33.783,
+      "end": 34.423
+    },
+    {
+      "text": "trends",
+      "start": 34.423,
+      "end": 34.903
+    },
+    {
+      "text": "because",
+      "start": 34.903,
+      "end": 35.223
+    },
+    {
+      "text": "I",
+      "start": 35.223,
+      "end": 35.383
+    },
+    {
+      "text": "like",
+      "start": 35.383,
+      "end": 35.623
+    },
+    {
+      "text": "learning",
+      "start": 35.623,
+      "end": 35.943
+    },
+    {
+      "text": "new",
+      "start": 35.943,
+      "end": 36.103
+    },
+    {
+      "text": "things",
+      "start": 36.103,
+      "end": 36.743
+    },
+    {
+      "text": "The",
+      "start": 36.823,
+      "end": 36.903
+    },
+    {
+      "text": "future",
+      "start": 36.903,
+      "end": 37.303
+    },
+    {
+      "text": "of",
+      "start": 37.303,
+      "end": 37.383
+    },
+    {
+      "text": "technology",
+      "start": 37.383,
+      "end": 38.023
+    },
+    {
+      "text": "will",
+      "start": 38.023,
+      "end": 38.183
+    },
+    {
+      "text": "be",
+      "start": 38.183,
+      "end": 38.263
+    },
+    {
+      "text": "brilliant",
+      "start": 38.263,
+      "end": 38.823
+    },
+    {
+      "text": "and",
+      "start": 38.903,
+      "end": 39.063
+    },
+    {
+      "text": "I'll",
+      "start": 39.063,
+      "end": 39.143
+    },
+    {
+      "text": "definitely",
+      "start": 39.143,
+      "end": 39.703
+    },
+    {
+      "text": "be",
+      "start": 39.703,
+      "end": 39.943
+    },
+    {
+      "text": "into",
+      "start": 39.943,
+      "end": 40.343
+    },
+    {
+      "text": "it",
+      "start": 40.343,
+      "end": 40.503
+    },
+    {
+      "text": "and",
+      "start": 40.503,
+      "end": 40.663
+    },
+    {
+      "text": "use",
+      "start": 40.663,
+      "end": 40.903
+    },
+    {
+      "text": "it",
+      "start": 40.903,
+      "end": 40.983
+    },
+    {
+      "text": "well",
+      "start": 40.983,
+      "end": 41.543
+    },
+    {
+      "text": "maybe",
+      "start": 41.543,
+      "end": 41.943
+    },
+    {
+      "text": "even",
+      "start": 41.943,
+      "end": 42.183
+    },
+    {
+      "text": "better",
+      "start": 42.183,
+      "end": 42.503
+    },
+    {
+      "text": "than",
+      "start": 42.503,
+      "end": 42.583
+    },
+    {
+      "text": "my",
+      "start": 42.663,
+      "end": 42.823
+    },
+    {
+      "text": "own",
+      "start": 42.823,
+      "end": 43.063
+    },
+    {
+      "text": "children",
+      "start": 43.063,
+      "end": 43.623
+    }
+  ]
+}

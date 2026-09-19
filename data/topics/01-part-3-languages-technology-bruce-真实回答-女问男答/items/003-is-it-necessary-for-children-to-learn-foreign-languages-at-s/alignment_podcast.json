@@ -1,0 +1,814 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "d16030468e1cb25b",
+  "audio_signature": "1230724:1789788291",
+  "created_at": "2026-09-19T11:24:52",
+  "segments": [
+    {
+      "text": "Is it necessary for children to learn foreign languages at school?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 3.29
+    },
+    {
+      "text": "Yeah, of course, I think it's very necessary — especially in China. We speak Mandarin here, and in this world, English is the master language. There are so many people speaking English, and if you want to communicate with them, you need to speak English too. Once you learn English well, you broaden your horizon — it's like opening a new gate to the world. You gain access to so many things: different people, different scenery, different cultures. And learning a new language can also make people smarter — it activates your brain and improves your critical thinking, because you need a lot of input, comprehensive input. For example, I learn English from watching TV shows, articles, English novels — and I've gotten to know so many English writers through that. This input improved my critical thinking and broadened my horizon. So it's a very valuable skill and an impressive experience.",
+      "speaker": "b",
+      "start": 3.77,
+      "end": 51.23
+    }
+  ],
+  "words": [
+    {
+      "text": "Is",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "it",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "necessary",
+      "start": 0.32,
+      "end": 0.8
+    },
+    {
+      "text": "for",
+      "start": 0.8,
+      "end": 0.88
+    },
+    {
+      "text": "children",
+      "start": 0.88,
+      "end": 1.44
+    },
+    {
+      "text": "to",
+      "start": 1.44,
+      "end": 1.52
+    },
+    {
+      "text": "learn",
+      "start": 1.52,
+      "end": 1.76
+    },
+    {
+      "text": "foreign",
+      "start": 1.76,
+      "end": 2.08
+    },
+    {
+      "text": "languages",
+      "start": 2.08,
+      "end": 2.64
+    },
+    {
+      "text": "at",
+      "start": 2.64,
+      "end": 2.72
+    },
+    {
+      "text": "school",
+      "start": 2.72,
+      "end": 3.28
+    },
+    {
+      "text": "Yeah",
+      "start": 3.757,
+      "end": 4.157
+    },
+    {
+      "text": "of",
+      "start": 4.237,
+      "end": 4.397
+    },
+    {
+      "text": "course",
+      "start": 4.397,
+      "end": 4.877
+    },
+    {
+      "text": "I",
+      "start": 4.877,
+      "end": 4.957
+    },
+    {
+      "text": "think",
+      "start": 4.957,
+      "end": 5.117
+    },
+    {
+      "text": "it's",
+      "start": 5.117,
+      "end": 5.277
+    },
+    {
+      "text": "very",
+      "start": 5.277,
+      "end": 5.597
+    },
+    {
+      "text": "necessary",
+      "start": 5.597,
+      "end": 6.317
+    },
+    {
+      "text": "especially",
+      "start": 6.317,
+      "end": 6.877
+    },
+    {
+      "text": "in",
+      "start": 6.877,
+      "end": 7.037
+    },
+    {
+      "text": "China",
+      "start": 7.037,
+      "end": 7.597
+    },
+    {
+      "text": "We",
+      "start": 7.597,
+      "end": 7.757
+    },
+    {
+      "text": "speak",
+      "start": 7.757,
+      "end": 7.997
+    },
+    {
+      "text": "Mandarin",
+      "start": 7.997,
+      "end": 8.557
+    },
+    {
+      "text": "here",
+      "start": 8.557,
+      "end": 8.957
+    },
+    {
+      "text": "and",
+      "start": 8.957,
+      "end": 9.117
+    },
+    {
+      "text": "in",
+      "start": 9.117,
+      "end": 9.197
+    },
+    {
+      "text": "this",
+      "start": 9.197,
+      "end": 9.357
+    },
+    {
+      "text": "world",
+      "start": 9.357,
+      "end": 9.837
+    },
+    {
+      "text": "English",
+      "start": 9.837,
+      "end": 10.317
+    },
+    {
+      "text": "is",
+      "start": 10.317,
+      "end": 10.397
+    },
+    {
+      "text": "the",
+      "start": 10.397,
+      "end": 10.477
+    },
+    {
+      "text": "master",
+      "start": 10.477,
+      "end": 10.957
+    },
+    {
+      "text": "language",
+      "start": 10.957,
+      "end": 11.597
+    },
+    {
+      "text": "There",
+      "start": 11.597,
+      "end": 11.757
+    },
+    {
+      "text": "are",
+      "start": 11.757,
+      "end": 11.837
+    },
+    {
+      "text": "so",
+      "start": 11.837,
+      "end": 12.077
+    },
+    {
+      "text": "many",
+      "start": 12.077,
+      "end": 12.317
+    },
+    {
+      "text": "people",
+      "start": 12.317,
+      "end": 12.637
+    },
+    {
+      "text": "speaking",
+      "start": 12.637,
+      "end": 13.037
+    },
+    {
+      "text": "English",
+      "start": 13.037,
+      "end": 13.517
+    },
+    {
+      "text": "and",
+      "start": 13.597,
+      "end": 13.677
+    },
+    {
+      "text": "if",
+      "start": 13.677,
+      "end": 13.757
+    },
+    {
+      "text": "you",
+      "start": 13.757,
+      "end": 13.917
+    },
+    {
+      "text": "want",
+      "start": 13.917,
+      "end": 14.157
+    },
+    {
+      "text": "to",
+      "start": 14.157,
+      "end": 14.157
+    },
+    {
+      "text": "communicate",
+      "start": 14.157,
+      "end": 14.797
+    },
+    {
+      "text": "with",
+      "start": 14.797,
+      "end": 14.957
+    },
+    {
+      "text": "them",
+      "start": 14.957,
+      "end": 15.277
+    },
+    {
+      "text": "you",
+      "start": 15.277,
+      "end": 15.357
+    },
+    {
+      "text": "need",
+      "start": 15.357,
+      "end": 15.597
+    },
+    {
+      "text": "to",
+      "start": 15.597,
+      "end": 15.677
+    },
+    {
+      "text": "speak",
+      "start": 15.677,
+      "end": 15.917
+    },
+    {
+      "text": "English",
+      "start": 15.917,
+      "end": 16.317
+    },
+    {
+      "text": "too",
+      "start": 16.317,
+      "end": 16.797
+    },
+    {
+      "text": "Once",
+      "start": 17.226,
+      "end": 17.466
+    },
+    {
+      "text": "you",
+      "start": 17.466,
+      "end": 17.546
+    },
+    {
+      "text": "learn",
+      "start": 17.546,
+      "end": 17.786
+    },
+    {
+      "text": "English",
+      "start": 17.786,
+      "end": 18.186
+    },
+    {
+      "text": "well",
+      "start": 18.186,
+      "end": 18.666
+    },
+    {
+      "text": "you",
+      "start": 18.746,
+      "end": 18.826
+    },
+    {
+      "text": "broaden",
+      "start": 18.826,
+      "end": 19.306
+    },
+    {
+      "text": "your",
+      "start": 19.306,
+      "end": 19.386
+    },
+    {
+      "text": "horizon",
+      "start": 19.386,
+      "end": 20.186
+    },
+    {
+      "text": "it's",
+      "start": 20.186,
+      "end": 20.426
+    },
+    {
+      "text": "like",
+      "start": 20.426,
+      "end": 20.586
+    },
+    {
+      "text": "opening",
+      "start": 20.586,
+      "end": 20.986
+    },
+    {
+      "text": "a",
+      "start": 20.986,
+      "end": 20.986
+    },
+    {
+      "text": "new",
+      "start": 20.986,
+      "end": 21.306
+    },
+    {
+      "text": "gate",
+      "start": 21.306,
+      "end": 21.626
+    },
+    {
+      "text": "to",
+      "start": 21.626,
+      "end": 21.706
+    },
+    {
+      "text": "the",
+      "start": 21.706,
+      "end": 21.786
+    },
+    {
+      "text": "world",
+      "start": 21.786,
+      "end": 22.346
+    },
+    {
+      "text": "You",
+      "start": 22.426,
+      "end": 22.586
+    },
+    {
+      "text": "gain",
+      "start": 22.586,
+      "end": 22.826
+    },
+    {
+      "text": "access",
+      "start": 22.826,
+      "end": 23.306
+    },
+    {
+      "text": "to",
+      "start": 23.306,
+      "end": 23.386
+    },
+    {
+      "text": "so",
+      "start": 23.386,
+      "end": 23.626
+    },
+    {
+      "text": "many",
+      "start": 23.626,
+      "end": 23.866
+    },
+    {
+      "text": "things",
+      "start": 23.866,
+      "end": 24.506
+    },
+    {
+      "text": "different",
+      "start": 24.586,
+      "end": 24.906
+    },
+    {
+      "text": "people",
+      "start": 24.906,
+      "end": 25.386
+    },
+    {
+      "text": "different",
+      "start": 25.466,
+      "end": 25.866
+    },
+    {
+      "text": "scenery",
+      "start": 25.866,
+      "end": 26.426
+    },
+    {
+      "text": "different",
+      "start": 26.506,
+      "end": 26.826
+    },
+    {
+      "text": "cultures",
+      "start": 26.826,
+      "end": 27.466
+    },
+    {
+      "text": "And",
+      "start": 27.955,
+      "end": 28.035
+    },
+    {
+      "text": "learning",
+      "start": 28.035,
+      "end": 28.435
+    },
+    {
+      "text": "a",
+      "start": 28.435,
+      "end": 28.435
+    },
+    {
+      "text": "new",
+      "start": 28.435,
+      "end": 28.675
+    },
+    {
+      "text": "language",
+      "start": 28.675,
+      "end": 29.155
+    },
+    {
+      "text": "can",
+      "start": 29.155,
+      "end": 29.235
+    },
+    {
+      "text": "also",
+      "start": 29.235,
+      "end": 29.555
+    },
+    {
+      "text": "make",
+      "start": 29.555,
+      "end": 29.795
+    },
+    {
+      "text": "people",
+      "start": 29.795,
+      "end": 30.035
+    },
+    {
+      "text": "smarter",
+      "start": 30.035,
+      "end": 30.755
+    },
+    {
+      "text": "it",
+      "start": 30.755,
+      "end": 30.915
+    },
+    {
+      "text": "activates",
+      "start": 30.915,
+      "end": 31.395
+    },
+    {
+      "text": "your",
+      "start": 31.395,
+      "end": 31.475
+    },
+    {
+      "text": "brain",
+      "start": 31.475,
+      "end": 31.955
+    },
+    {
+      "text": "and",
+      "start": 31.955,
+      "end": 32.035
+    },
+    {
+      "text": "improves",
+      "start": 32.035,
+      "end": 32.435
+    },
+    {
+      "text": "your",
+      "start": 32.515,
+      "end": 32.595
+    },
+    {
+      "text": "critical",
+      "start": 32.595,
+      "end": 32.995
+    },
+    {
+      "text": "thinking",
+      "start": 32.995,
+      "end": 33.555
+    },
+    {
+      "text": "because",
+      "start": 33.555,
+      "end": 33.875
+    },
+    {
+      "text": "you",
+      "start": 33.875,
+      "end": 33.955
+    },
+    {
+      "text": "need",
+      "start": 33.955,
+      "end": 34.115
+    },
+    {
+      "text": "a",
+      "start": 34.115,
+      "end": 34.195
+    },
+    {
+      "text": "lot",
+      "start": 34.195,
+      "end": 34.435
+    },
+    {
+      "text": "of",
+      "start": 34.435,
+      "end": 34.515
+    },
+    {
+      "text": "input",
+      "start": 34.515,
+      "end": 34.995
+    },
+    {
+      "text": "comprehensive",
+      "start": 35.075,
+      "end": 35.795
+    },
+    {
+      "text": "input",
+      "start": 35.795,
+      "end": 36.275
+    },
+    {
+      "text": "For",
+      "start": 36.678,
+      "end": 36.758
+    },
+    {
+      "text": "example",
+      "start": 36.758,
+      "end": 37.398
+    },
+    {
+      "text": "I",
+      "start": 37.398,
+      "end": 37.558
+    },
+    {
+      "text": "learn",
+      "start": 37.558,
+      "end": 37.718
+    },
+    {
+      "text": "English",
+      "start": 37.718,
+      "end": 38.198
+    },
+    {
+      "text": "from",
+      "start": 38.198,
+      "end": 38.358
+    },
+    {
+      "text": "watching",
+      "start": 38.358,
+      "end": 38.678
+    },
+    {
+      "text": "TV",
+      "start": 38.678,
+      "end": 39.078
+    },
+    {
+      "text": "shows",
+      "start": 39.078,
+      "end": 39.558
+    },
+    {
+      "text": "articles",
+      "start": 39.638,
+      "end": 40.278
+    },
+    {
+      "text": "English",
+      "start": 40.358,
+      "end": 40.678
+    },
+    {
+      "text": "novels",
+      "start": 40.678,
+      "end": 41.318
+    },
+    {
+      "text": "and",
+      "start": 41.318,
+      "end": 41.478
+    },
+    {
+      "text": "I've",
+      "start": 41.478,
+      "end": 41.638
+    },
+    {
+      "text": "gotten",
+      "start": 41.638,
+      "end": 41.878
+    },
+    {
+      "text": "to",
+      "start": 41.958,
+      "end": 41.958
+    },
+    {
+      "text": "know",
+      "start": 41.958,
+      "end": 42.198
+    },
+    {
+      "text": "so",
+      "start": 42.198,
+      "end": 42.438
+    },
+    {
+      "text": "many",
+      "start": 42.438,
+      "end": 42.758
+    },
+    {
+      "text": "English",
+      "start": 42.758,
+      "end": 43.078
+    },
+    {
+      "text": "writers",
+      "start": 43.078,
+      "end": 43.558
+    },
+    {
+      "text": "through",
+      "start": 43.558,
+      "end": 43.798
+    },
+    {
+      "text": "that",
+      "start": 43.798,
+      "end": 44.038
+    },
+    {
+      "text": "This",
+      "start": 44.198,
+      "end": 44.438
+    },
+    {
+      "text": "input",
+      "start": 44.438,
+      "end": 44.838
+    },
+    {
+      "text": "improved",
+      "start": 44.838,
+      "end": 45.318
+    },
+    {
+      "text": "my",
+      "start": 45.318,
+      "end": 45.398
+    },
+    {
+      "text": "critical",
+      "start": 45.398,
+      "end": 45.798
+    },
+    {
+      "text": "thinking",
+      "start": 45.798,
+      "end": 46.358
+    },
+    {
+      "text": "and",
+      "start": 46.358,
+      "end": 46.438
+    },
+    {
+      "text": "broadened",
+      "start": 46.438,
+      "end": 46.918
+    },
+    {
+      "text": "my",
+      "start": 46.918,
+      "end": 47.078
+    },
+    {
+      "text": "horizon",
+      "start": 47.078,
+      "end": 47.718
+    },
+    {
+      "text": "So",
+      "start": 47.798,
+      "end": 47.958
+    },
+    {
+      "text": "it's",
+      "start": 47.958,
+      "end": 48.118
+    },
+    {
+      "text": "a",
+      "start": 48.118,
+      "end": 48.118
+    },
+    {
+      "text": "very",
+      "start": 48.118,
+      "end": 48.438
+    },
+    {
+      "text": "valuable",
+      "start": 48.438,
+      "end": 48.918
+    },
+    {
+      "text": "skill",
+      "start": 48.918,
+      "end": 49.478
+    },
+    {
+      "text": "and",
+      "start": 49.478,
+      "end": 49.638
+    },
+    {
+      "text": "an",
+      "start": 49.638,
+      "end": 49.718
+    },
+    {
+      "text": "impressive",
+      "start": 49.718,
+      "end": 50.198
+    },
+    {
+      "text": "experience",
+      "start": 50.198,
+      "end": 51.078
+    }
+  ]
+}

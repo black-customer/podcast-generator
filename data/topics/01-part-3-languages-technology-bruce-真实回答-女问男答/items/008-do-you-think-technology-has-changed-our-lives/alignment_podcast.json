@@ -1,0 +1,609 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "2362594ab458c95f",
+  "audio_signature": "905343:1789788367",
+  "created_at": "2026-09-19T11:26:08",
+  "segments": [
+    {
+      "text": "Do you think technology has changed our lives?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.17
+    },
+    {
+      "text": "Yeah, absolutely, technology has changed our lives. Since we have phones and apps, we can connect with people over really long distances — and even see their faces. Technology also helps us learn skills more easily. Like, I can learn English from videos now. But in the old days, if you wanted to learn a new language, you had to actually go there and communicate with the local people, without any translations. Nowadays we have AI and apps to learn languages — it's so useful. In fact, I'm talking with you over a computer right now, and we're talking about technology. Even the IELTS test can be taken online these days.",
+      "speaker": "b",
+      "start": 2.53,
+      "end": 37.67
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "think",
+      "start": 0.24,
+      "end": 0.4
+    },
+    {
+      "text": "technology",
+      "start": 0.4,
+      "end": 0.96
+    },
+    {
+      "text": "has",
+      "start": 0.96,
+      "end": 1.12
+    },
+    {
+      "text": "changed",
+      "start": 1.12,
+      "end": 1.52
+    },
+    {
+      "text": "our",
+      "start": 1.52,
+      "end": 1.6
+    },
+    {
+      "text": "lives",
+      "start": 1.6,
+      "end": 2.16
+    },
+    {
+      "text": "Yeah",
+      "start": 2.516,
+      "end": 2.916
+    },
+    {
+      "text": "absolutely",
+      "start": 2.916,
+      "end": 3.956
+    },
+    {
+      "text": "technology",
+      "start": 3.956,
+      "end": 4.596
+    },
+    {
+      "text": "has",
+      "start": 4.596,
+      "end": 4.756
+    },
+    {
+      "text": "changed",
+      "start": 4.756,
+      "end": 5.156
+    },
+    {
+      "text": "our",
+      "start": 5.156,
+      "end": 5.316
+    },
+    {
+      "text": "lives",
+      "start": 5.316,
+      "end": 5.876
+    },
+    {
+      "text": "Since",
+      "start": 5.956,
+      "end": 6.116
+    },
+    {
+      "text": "we",
+      "start": 6.116,
+      "end": 6.276
+    },
+    {
+      "text": "have",
+      "start": 6.276,
+      "end": 6.516
+    },
+    {
+      "text": "phones",
+      "start": 6.516,
+      "end": 6.836
+    },
+    {
+      "text": "and",
+      "start": 6.836,
+      "end": 6.996
+    },
+    {
+      "text": "apps",
+      "start": 6.996,
+      "end": 7.396
+    },
+    {
+      "text": "we",
+      "start": 7.396,
+      "end": 7.556
+    },
+    {
+      "text": "can",
+      "start": 7.556,
+      "end": 7.716
+    },
+    {
+      "text": "connect",
+      "start": 7.716,
+      "end": 8.036
+    },
+    {
+      "text": "with",
+      "start": 8.036,
+      "end": 8.196
+    },
+    {
+      "text": "people",
+      "start": 8.196,
+      "end": 8.516
+    },
+    {
+      "text": "over",
+      "start": 8.516,
+      "end": 8.676
+    },
+    {
+      "text": "really",
+      "start": 8.676,
+      "end": 9.076
+    },
+    {
+      "text": "long",
+      "start": 9.076,
+      "end": 9.316
+    },
+    {
+      "text": "distances",
+      "start": 9.316,
+      "end": 10.036
+    },
+    {
+      "text": "and",
+      "start": 10.116,
+      "end": 10.196
+    },
+    {
+      "text": "even",
+      "start": 10.276,
+      "end": 10.516
+    },
+    {
+      "text": "see",
+      "start": 10.516,
+      "end": 10.676
+    },
+    {
+      "text": "their",
+      "start": 10.676,
+      "end": 10.836
+    },
+    {
+      "text": "faces",
+      "start": 10.836,
+      "end": 11.556
+    },
+    {
+      "text": "Technology",
+      "start": 11.636,
+      "end": 12.276
+    },
+    {
+      "text": "also",
+      "start": 12.276,
+      "end": 12.676
+    },
+    {
+      "text": "helps",
+      "start": 12.676,
+      "end": 12.916
+    },
+    {
+      "text": "us",
+      "start": 12.916,
+      "end": 13.076
+    },
+    {
+      "text": "learn",
+      "start": 13.076,
+      "end": 13.316
+    },
+    {
+      "text": "skills",
+      "start": 13.316,
+      "end": 13.796
+    },
+    {
+      "text": "more",
+      "start": 13.796,
+      "end": 13.956
+    },
+    {
+      "text": "easily",
+      "start": 13.956,
+      "end": 14.596
+    },
+    {
+      "text": "Like",
+      "start": 14.676,
+      "end": 14.916
+    },
+    {
+      "text": "I",
+      "start": 14.916,
+      "end": 15.076
+    },
+    {
+      "text": "can",
+      "start": 15.076,
+      "end": 15.236
+    },
+    {
+      "text": "learn",
+      "start": 15.236,
+      "end": 15.476
+    },
+    {
+      "text": "English",
+      "start": 15.476,
+      "end": 15.956
+    },
+    {
+      "text": "from",
+      "start": 15.956,
+      "end": 16.116
+    },
+    {
+      "text": "videos",
+      "start": 16.116,
+      "end": 16.676
+    },
+    {
+      "text": "now",
+      "start": 16.676,
+      "end": 17.076
+    },
+    {
+      "text": "But",
+      "start": 17.531,
+      "end": 17.691
+    },
+    {
+      "text": "in",
+      "start": 17.691,
+      "end": 17.771
+    },
+    {
+      "text": "the",
+      "start": 17.771,
+      "end": 17.931
+    },
+    {
+      "text": "old",
+      "start": 17.931,
+      "end": 18.251
+    },
+    {
+      "text": "days",
+      "start": 18.251,
+      "end": 18.571
+    },
+    {
+      "text": "if",
+      "start": 18.571,
+      "end": 18.731
+    },
+    {
+      "text": "you",
+      "start": 18.731,
+      "end": 18.891
+    },
+    {
+      "text": "wanted",
+      "start": 18.891,
+      "end": 19.211
+    },
+    {
+      "text": "to",
+      "start": 19.211,
+      "end": 19.211
+    },
+    {
+      "text": "learn",
+      "start": 19.211,
+      "end": 19.451
+    },
+    {
+      "text": "a",
+      "start": 19.451,
+      "end": 19.531
+    },
+    {
+      "text": "new",
+      "start": 19.531,
+      "end": 19.771
+    },
+    {
+      "text": "language",
+      "start": 19.771,
+      "end": 20.331
+    },
+    {
+      "text": "you",
+      "start": 20.331,
+      "end": 20.491
+    },
+    {
+      "text": "had",
+      "start": 20.491,
+      "end": 20.731
+    },
+    {
+      "text": "to",
+      "start": 20.731,
+      "end": 20.811
+    },
+    {
+      "text": "actually",
+      "start": 20.811,
+      "end": 21.211
+    },
+    {
+      "text": "go",
+      "start": 21.211,
+      "end": 21.531
+    },
+    {
+      "text": "there",
+      "start": 21.531,
+      "end": 21.771
+    },
+    {
+      "text": "and",
+      "start": 21.771,
+      "end": 21.931
+    },
+    {
+      "text": "communicate",
+      "start": 21.931,
+      "end": 22.571
+    },
+    {
+      "text": "with",
+      "start": 22.571,
+      "end": 22.731
+    },
+    {
+      "text": "the",
+      "start": 22.731,
+      "end": 22.731
+    },
+    {
+      "text": "local",
+      "start": 22.731,
+      "end": 23.131
+    },
+    {
+      "text": "people",
+      "start": 23.131,
+      "end": 23.691
+    },
+    {
+      "text": "without",
+      "start": 23.691,
+      "end": 24.011
+    },
+    {
+      "text": "any",
+      "start": 24.011,
+      "end": 24.251
+    },
+    {
+      "text": "translations",
+      "start": 24.251,
+      "end": 25.211
+    },
+    {
+      "text": "Nowadays",
+      "start": 25.291,
+      "end": 25.851
+    },
+    {
+      "text": "we",
+      "start": 25.851,
+      "end": 26.011
+    },
+    {
+      "text": "have",
+      "start": 26.011,
+      "end": 26.251
+    },
+    {
+      "text": "AI",
+      "start": 26.251,
+      "end": 26.491
+    },
+    {
+      "text": "and",
+      "start": 26.491,
+      "end": 26.891
+    },
+    {
+      "text": "apps",
+      "start": 26.891,
+      "end": 27.291
+    },
+    {
+      "text": "to",
+      "start": 27.291,
+      "end": 27.291
+    },
+    {
+      "text": "learn",
+      "start": 27.291,
+      "end": 27.531
+    },
+    {
+      "text": "languages",
+      "start": 27.531,
+      "end": 28.251
+    },
+    {
+      "text": "it's",
+      "start": 28.251,
+      "end": 28.491
+    },
+    {
+      "text": "so",
+      "start": 28.491,
+      "end": 28.731
+    },
+    {
+      "text": "useful",
+      "start": 28.731,
+      "end": 29.371
+    },
+    {
+      "text": "In",
+      "start": 29.718,
+      "end": 29.798
+    },
+    {
+      "text": "fact",
+      "start": 29.798,
+      "end": 30.278
+    },
+    {
+      "text": "I'm",
+      "start": 30.278,
+      "end": 30.438
+    },
+    {
+      "text": "talking",
+      "start": 30.438,
+      "end": 30.758
+    },
+    {
+      "text": "with",
+      "start": 30.758,
+      "end": 30.918
+    },
+    {
+      "text": "you",
+      "start": 30.918,
+      "end": 31.158
+    },
+    {
+      "text": "over",
+      "start": 31.158,
+      "end": 31.398
+    },
+    {
+      "text": "a",
+      "start": 31.398,
+      "end": 31.478
+    },
+    {
+      "text": "computer",
+      "start": 31.478,
+      "end": 31.958
+    },
+    {
+      "text": "right",
+      "start": 31.958,
+      "end": 32.198
+    },
+    {
+      "text": "now",
+      "start": 32.198,
+      "end": 32.598
+    },
+    {
+      "text": "and",
+      "start": 32.678,
+      "end": 32.758
+    },
+    {
+      "text": "we're",
+      "start": 32.758,
+      "end": 32.918
+    },
+    {
+      "text": "talking",
+      "start": 32.918,
+      "end": 33.318
+    },
+    {
+      "text": "about",
+      "start": 33.318,
+      "end": 33.638
+    },
+    {
+      "text": "technology",
+      "start": 33.638,
+      "end": 34.518
+    },
+    {
+      "text": "Even",
+      "start": 34.598,
+      "end": 34.838
+    },
+    {
+      "text": "the",
+      "start": 34.838,
+      "end": 34.998
+    },
+    {
+      "text": "IELTS",
+      "start": 34.998,
+      "end": 35.398
+    },
+    {
+      "text": "test",
+      "start": 35.398,
+      "end": 35.718
+    },
+    {
+      "text": "can",
+      "start": 35.718,
+      "end": 35.878
+    },
+    {
+      "text": "be",
+      "start": 35.878,
+      "end": 35.958
+    },
+    {
+      "text": "taken",
+      "start": 35.958,
+      "end": 36.278
+    },
+    {
+      "text": "online",
+      "start": 36.278,
+      "end": 36.758
+    },
+    {
+      "text": "these",
+      "start": 36.758,
+      "end": 36.998
+    },
+    {
+      "text": "days",
+      "start": 36.998,
+      "end": 37.478
+    }
+  ]
+}

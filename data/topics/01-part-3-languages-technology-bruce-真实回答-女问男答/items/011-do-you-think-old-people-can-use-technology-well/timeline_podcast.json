@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you think old people can use technology well?",
+    "start": 0.0,
+    "end": 2.41,
+    "duration": 2.41,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Well, of course it depends. \"Old people\" is a general concept — age only. Even people of the same age have different learning abilities and different learning skills. Some of them can absolutely use technology well. But if a person never built the habit of learning new things — for example, my grandparents, they'd say, \"Oh, I'm old, I don't want to learn new things, I can't learn new things\" — then they just make excuses and can't use technology well. So I think it depends on the person's personality. Someone like me — when I'm old, I'll still be following the latest technology trends, because I like learning new things. The future of technology will be brilliant, and I'll definitely be into it and use it well — maybe even better than my own children.",
+    "start": 2.89,
+    "end": 43.81,
+    "duration": 40.92,
+    "mode": "sse"
+  }
+]

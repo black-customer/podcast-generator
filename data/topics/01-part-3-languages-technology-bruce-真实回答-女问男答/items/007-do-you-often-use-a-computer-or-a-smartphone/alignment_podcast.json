@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "a93d29ded00cb4df",
+  "audio_signature": "328560:1789788349",
+  "created_at": "2026-09-19T11:25:50",
+  "segments": [
+    {
+      "text": "Do you often use a computer or a smartphone?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.42
+    },
+    {
+      "text": "Yeah, of course, I use them both very frequently — almost every day. My smartphone, absolutely, every day. And the computer, in recent months, every day as well — because I use it to learn English.",
+      "speaker": "b",
+      "start": 2.74,
+      "end": 13.64
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "often",
+      "start": 0.32,
+      "end": 0.64
+    },
+    {
+      "text": "use",
+      "start": 0.64,
+      "end": 0.8
+    },
+    {
+      "text": "a",
+      "start": 0.8,
+      "end": 0.88
+    },
+    {
+      "text": "computer",
+      "start": 0.88,
+      "end": 1.44
+    },
+    {
+      "text": "or",
+      "start": 1.44,
+      "end": 1.6
+    },
+    {
+      "text": "a",
+      "start": 1.6,
+      "end": 1.68
+    },
+    {
+      "text": "smartphone",
+      "start": 1.68,
+      "end": 2.4
+    },
+    {
+      "text": "Yeah",
+      "start": 2.714,
+      "end": 3.114
+    },
+    {
+      "text": "of",
+      "start": 3.114,
+      "end": 3.274
+    },
+    {
+      "text": "course",
+      "start": 3.274,
+      "end": 3.594
+    },
+    {
+      "text": "I",
+      "start": 3.594,
+      "end": 3.674
+    },
+    {
+      "text": "use",
+      "start": 3.674,
+      "end": 3.914
+    },
+    {
+      "text": "them",
+      "start": 3.914,
+      "end": 4.074
+    },
+    {
+      "text": "both",
+      "start": 4.074,
+      "end": 4.314
+    },
+    {
+      "text": "very",
+      "start": 4.314,
+      "end": 4.634
+    },
+    {
+      "text": "frequently",
+      "start": 4.634,
+      "end": 5.354
+    },
+    {
+      "text": "almost",
+      "start": 5.354,
+      "end": 5.754
+    },
+    {
+      "text": "every",
+      "start": 5.754,
+      "end": 6.074
+    },
+    {
+      "text": "day",
+      "start": 6.074,
+      "end": 6.554
+    },
+    {
+      "text": "My",
+      "start": 6.634,
+      "end": 6.794
+    },
+    {
+      "text": "smartphone",
+      "start": 6.794,
+      "end": 7.434
+    },
+    {
+      "text": "absolutely",
+      "start": 7.434,
+      "end": 8.234
+    },
+    {
+      "text": "every",
+      "start": 8.234,
+      "end": 8.554
+    },
+    {
+      "text": "day",
+      "start": 8.554,
+      "end": 9.114
+    },
+    {
+      "text": "And",
+      "start": 9.114,
+      "end": 9.274
+    },
+    {
+      "text": "the",
+      "start": 9.274,
+      "end": 9.274
+    },
+    {
+      "text": "computer",
+      "start": 9.274,
+      "end": 9.834
+    },
+    {
+      "text": "in",
+      "start": 9.834,
+      "end": 9.914
+    },
+    {
+      "text": "recent",
+      "start": 9.914,
+      "end": 10.234
+    },
+    {
+      "text": "months",
+      "start": 10.234,
+      "end": 10.634
+    },
+    {
+      "text": "every",
+      "start": 10.634,
+      "end": 10.954
+    },
+    {
+      "text": "day",
+      "start": 10.954,
+      "end": 11.194
+    },
+    {
+      "text": "as",
+      "start": 11.194,
+      "end": 11.274
+    },
+    {
+      "text": "well",
+      "start": 11.274,
+      "end": 11.754
+    },
+    {
+      "text": "because",
+      "start": 11.754,
+      "end": 12.074
+    },
+    {
+      "text": "I",
+      "start": 12.074,
+      "end": 12.154
+    },
+    {
+      "text": "use",
+      "start": 12.154,
+      "end": 12.394
+    },
+    {
+      "text": "it",
+      "start": 12.394,
+      "end": 12.554
+    },
+    {
+      "text": "to",
+      "start": 12.554,
+      "end": 12.554
+    },
+    {
+      "text": "learn",
+      "start": 12.554,
+      "end": 12.874
+    },
+    {
+      "text": "English",
+      "start": 12.874,
+      "end": 13.514
+    }
+  ]
+}

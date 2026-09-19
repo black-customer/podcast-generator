@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you think technology has changed our lives?",
+    "start": 0.0,
+    "end": 2.17,
+    "duration": 2.17,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yeah, absolutely, technology has changed our lives. Since we have phones and apps, we can connect with people over really long distances — and even see their faces. Technology also helps us learn skills more easily. Like, I can learn English from videos now. But in the old days, if you wanted to learn a new language, you had to actually go there and communicate with the local people, without any translations. Nowadays we have AI and apps to learn languages — it's so useful. In fact, I'm talking with you over a computer right now, and we're talking about technology. Even the IELTS test can be taken online these days.",
+    "start": 2.53,
+    "end": 37.67,
+    "duration": 35.14,
+    "mode": "sse"
+  }
+]

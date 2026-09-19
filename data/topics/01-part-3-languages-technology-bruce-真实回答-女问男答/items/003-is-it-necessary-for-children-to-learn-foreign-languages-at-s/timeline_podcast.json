@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Is it necessary for children to learn foreign languages at school?",
+    "start": 0.0,
+    "end": 3.29,
+    "duration": 3.29,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yeah, of course, I think it's very necessary — especially in China. We speak Mandarin here, and in this world, English is the master language. There are so many people speaking English, and if you want to communicate with them, you need to speak English too. Once you learn English well, you broaden your horizon — it's like opening a new gate to the world. You gain access to so many things: different people, different scenery, different cultures. And learning a new language can also make people smarter — it activates your brain and improves your critical thinking, because you need a lot of input, comprehensive input. For example, I learn English from watching TV shows, articles, English novels — and I've gotten to know so many English writers through that. This input improved my critical thinking and broadened my horizon. So it's a very valuable skill and an impressive experience.",
+    "start": 3.77,
+    "end": 51.23,
+    "duration": 47.46,
+    "mode": "sse"
+  }
+]

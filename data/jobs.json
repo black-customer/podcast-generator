@@ -1,32 +1,4 @@
 {
-  "254769349e91": {
-    "id": "254769349e91",
-    "kind": "generate",
-    "topic_id": "01-inval",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T02:04:58.867",
-    "finished_at": "2026-09-19T02:04:59.735"
-  },
-  "fa665443652f": {
-    "id": "fa665443652f",
-    "kind": "generate",
-    "topic_id": "01-mono",
-    "track": "monologue",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T02:04:59.825",
-    "finished_at": "2026-09-19T02:05:00.480"
-  },
   "3bfb836acd10": {
     "id": "3bfb836acd10",
     "kind": "generate",
@@ -1844,6 +1816,129 @@
           "duration_sec": 36.86,
           "offset_sec": 201.38,
           "generated_at": "2026-09-19T11:21:05.033"
+        }
+      ]
+    }
+  },
+  "d55feb449a6f": {
+    "id": "d55feb449a6f",
+    "kind": "generate",
+    "topic_id": "01-part-3-languages-technology-bruce-真实回答-女问男答",
+    "track": "podcast",
+    "state": "done",
+    "total": 12,
+    "done": 12,
+    "current": "012-will-technology-change-education-in-the-future",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T11:23:55.475",
+    "finished_at": "2026-09-19T11:27:22.532"
+  },
+  "5c89d0a12dbb": {
+    "id": "5c89d0a12dbb",
+    "kind": "assemble",
+    "topic_id": "01-part-3-languages-technology-bruce-真实回答-女问男答",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T11:27:31.220",
+    "finished_at": "2026-09-19T11:27:41.727",
+    "result": {
+      "topic_id": "01-part-3-languages-technology-bruce-真实回答-女问男答",
+      "topic_name": "Part 3 · Languages & Technology（Bruce 真实回答 · 女问男答）",
+      "track": "podcast",
+      "file": "01-part-3-languages-technology-bruce-真实回答-女问男答_podcast.mp3",
+      "total_sec": 392.55,
+      "item_count": 12,
+      "generated_at": "2026-09-19T11:27:41.724",
+      "items": [
+        {
+          "id": "001-are-there-many-people-who-can-speak-foreign-languages-in-you",
+          "title": "Are there many people who can speak foreign languages in your country?",
+          "duration_sec": 41.25,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T11:23:55.486"
+        },
+        {
+          "id": "002-does-speaking-other-languages-help-at-work",
+          "title": "Does speaking other languages help at work?",
+          "duration_sec": 27.22,
+          "offset_sec": 41.85,
+          "generated_at": "2026-09-19T11:24:15.334"
+        },
+        {
+          "id": "003-is-it-necessary-for-children-to-learn-foreign-languages-at-s",
+          "title": "Is it necessary for children to learn foreign languages at school?",
+          "duration_sec": 51.23,
+          "offset_sec": 69.67,
+          "generated_at": "2026-09-19T11:24:28.891"
+        },
+        {
+          "id": "004-is-it-important-for-children-to-learn-a-foreign-language",
+          "title": "Is it important for children to learn a foreign language?",
+          "duration_sec": 14.24,
+          "offset_sec": 121.5,
+          "generated_at": "2026-09-19T11:24:52.824"
+        },
+        {
+          "id": "005-is-it-difficult-for-adults-to-learn-a-new-language",
+          "title": "Is it difficult for adults to learn a new language?",
+          "duration_sec": 35.74,
+          "offset_sec": 136.34,
+          "generated_at": "2026-09-19T11:25:01.571"
+        },
+        {
+          "id": "006-do-you-think-everyone-should-learn-a-foreign-language",
+          "title": "Do you think everyone should learn a foreign language?",
+          "duration_sec": 48.48,
+          "offset_sec": 172.68,
+          "generated_at": "2026-09-19T11:25:19.745"
+        },
+        {
+          "id": "007-do-you-often-use-a-computer-or-a-smartphone",
+          "title": "Do you often use a computer or a smartphone?",
+          "duration_sec": 13.64,
+          "offset_sec": 221.76,
+          "generated_at": "2026-09-19T11:25:42.313"
+        },
+        {
+          "id": "008-do-you-think-technology-has-changed-our-lives",
+          "title": "Do you think technology has changed our lives?",
+          "duration_sec": 37.67,
+          "offset_sec": 236.0,
+          "generated_at": "2026-09-19T11:25:50.223"
+        },
+        {
+          "id": "009-do-you-think-technology-has-made-our-lives-easier",
+          "title": "Do you think technology has made our lives easier?",
+          "duration_sec": 35.6,
+          "offset_sec": 274.27,
+          "generated_at": "2026-09-19T11:26:08.141"
+        },
+        {
+          "id": "010-do-you-think-children-should-have-their-own-smartphones",
+          "title": "Do you think children should have their own smartphones?",
+          "duration_sec": 47.44,
+          "offset_sec": 310.47,
+          "generated_at": "2026-09-19T11:26:25.812"
+        },
+        {
+          "id": "011-do-you-think-old-people-can-use-technology-well",
+          "title": "Do you think old people can use technology well?",
+          "duration_sec": 43.81,
+          "offset_sec": 358.51,
+          "generated_at": "2026-09-19T11:26:48.202"
+        },
+        {
+          "id": "012-will-technology-change-education-in-the-future",
+          "title": "Will technology change education in the future?",
+          "duration_sec": 28.55,
+          "offset_sec": 402.92,
+          "generated_at": "2026-09-19T11:27:09.027"
         }
       ]
     }

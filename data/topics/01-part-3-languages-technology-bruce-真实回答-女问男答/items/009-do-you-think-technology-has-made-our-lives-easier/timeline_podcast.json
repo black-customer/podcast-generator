@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you think technology has made our lives easier?",
+    "start": 0.0,
+    "end": 2.09,
+    "duration": 2.09,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "To some extent, I think it has made our lives easier. But actually, in some ways, technology has made our lives harder — because we have more options now. We need to put real effort into thinking about which action to take. For example, if I want to learn English, there are tons of materials — which one should I use for input? And there are so many methods: shadowing, communicating with people, all kinds of apps. Too many options just make it harder to make a decision and take action. So generally, technology makes life much more convenient — but it also gives our brains more things to think about.",
+    "start": 2.69,
+    "end": 35.6,
+    "duration": 32.91,
+    "mode": "sse"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you often use a computer or a smartphone?",
+    "start": 0.0,
+    "end": 2.42,
+    "duration": 2.42,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yeah, of course, I use them both very frequently — almost every day. My smartphone, absolutely, every day. And the computer, in recent months, every day as well — because I use it to learn English.",
+    "start": 2.74,
+    "end": 13.64,
+    "duration": 10.9,
+    "mode": "sse"
+  }
+]

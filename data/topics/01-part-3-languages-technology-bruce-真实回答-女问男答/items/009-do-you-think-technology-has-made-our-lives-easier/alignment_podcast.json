@@ -1,0 +1,609 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "467c2f43a2737cc6",
+  "audio_signature": "855815:1789788385",
+  "created_at": "2026-09-19T11:26:25",
+  "segments": [
+    {
+      "text": "Do you think technology has made our lives easier?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.09
+    },
+    {
+      "text": "To some extent, I think it has made our lives easier. But actually, in some ways, technology has made our lives harder — because we have more options now. We need to put real effort into thinking about which action to take. For example, if I want to learn English, there are tons of materials — which one should I use for input? And there are so many methods: shadowing, communicating with people, all kinds of apps. Too many options just make it harder to make a decision and take action. So generally, technology makes life much more convenient — but it also gives our brains more things to think about.",
+      "speaker": "b",
+      "start": 2.69,
+      "end": 35.6
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "you",
+      "start": 0.08,
+      "end": 0.16
+    },
+    {
+      "text": "think",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "technology",
+      "start": 0.32,
+      "end": 0.88
+    },
+    {
+      "text": "has",
+      "start": 0.88,
+      "end": 0.96
+    },
+    {
+      "text": "made",
+      "start": 0.96,
+      "end": 1.2
+    },
+    {
+      "text": "our",
+      "start": 1.2,
+      "end": 1.28
+    },
+    {
+      "text": "lives",
+      "start": 1.28,
+      "end": 1.6
+    },
+    {
+      "text": "easier",
+      "start": 1.6,
+      "end": 2.08
+    },
+    {
+      "text": "To",
+      "start": 2.676,
+      "end": 2.756
+    },
+    {
+      "text": "some",
+      "start": 2.756,
+      "end": 2.996
+    },
+    {
+      "text": "extent",
+      "start": 2.996,
+      "end": 3.476
+    },
+    {
+      "text": "I",
+      "start": 3.476,
+      "end": 3.636
+    },
+    {
+      "text": "think",
+      "start": 3.636,
+      "end": 3.876
+    },
+    {
+      "text": "it",
+      "start": 3.876,
+      "end": 3.956
+    },
+    {
+      "text": "has",
+      "start": 3.956,
+      "end": 4.196
+    },
+    {
+      "text": "made",
+      "start": 4.196,
+      "end": 4.516
+    },
+    {
+      "text": "our",
+      "start": 4.516,
+      "end": 4.596
+    },
+    {
+      "text": "lives",
+      "start": 4.596,
+      "end": 4.916
+    },
+    {
+      "text": "easier",
+      "start": 4.916,
+      "end": 5.636
+    },
+    {
+      "text": "But",
+      "start": 5.716,
+      "end": 5.796
+    },
+    {
+      "text": "actually",
+      "start": 5.796,
+      "end": 6.276
+    },
+    {
+      "text": "in",
+      "start": 6.276,
+      "end": 6.356
+    },
+    {
+      "text": "some",
+      "start": 6.356,
+      "end": 6.676
+    },
+    {
+      "text": "ways",
+      "start": 6.676,
+      "end": 7.076
+    },
+    {
+      "text": "technology",
+      "start": 7.076,
+      "end": 7.716
+    },
+    {
+      "text": "has",
+      "start": 7.716,
+      "end": 7.796
+    },
+    {
+      "text": "made",
+      "start": 7.796,
+      "end": 8.036
+    },
+    {
+      "text": "our",
+      "start": 8.036,
+      "end": 8.116
+    },
+    {
+      "text": "lives",
+      "start": 8.116,
+      "end": 8.436
+    },
+    {
+      "text": "harder",
+      "start": 8.436,
+      "end": 8.996
+    },
+    {
+      "text": "because",
+      "start": 9.076,
+      "end": 9.316
+    },
+    {
+      "text": "we",
+      "start": 9.316,
+      "end": 9.476
+    },
+    {
+      "text": "have",
+      "start": 9.476,
+      "end": 9.636
+    },
+    {
+      "text": "more",
+      "start": 9.636,
+      "end": 9.876
+    },
+    {
+      "text": "options",
+      "start": 9.876,
+      "end": 10.356
+    },
+    {
+      "text": "now",
+      "start": 10.356,
+      "end": 10.836
+    },
+    {
+      "text": "We",
+      "start": 10.836,
+      "end": 10.996
+    },
+    {
+      "text": "need",
+      "start": 10.996,
+      "end": 11.156
+    },
+    {
+      "text": "to",
+      "start": 11.156,
+      "end": 11.236
+    },
+    {
+      "text": "put",
+      "start": 11.236,
+      "end": 11.476
+    },
+    {
+      "text": "real",
+      "start": 11.476,
+      "end": 11.796
+    },
+    {
+      "text": "effort",
+      "start": 11.796,
+      "end": 12.116
+    },
+    {
+      "text": "into",
+      "start": 12.116,
+      "end": 12.276
+    },
+    {
+      "text": "thinking",
+      "start": 12.276,
+      "end": 12.676
+    },
+    {
+      "text": "about",
+      "start": 12.676,
+      "end": 12.916
+    },
+    {
+      "text": "which",
+      "start": 12.916,
+      "end": 13.156
+    },
+    {
+      "text": "action",
+      "start": 13.156,
+      "end": 13.636
+    },
+    {
+      "text": "to",
+      "start": 13.636,
+      "end": 13.716
+    },
+    {
+      "text": "take",
+      "start": 13.716,
+      "end": 14.196
+    },
+    {
+      "text": "For",
+      "start": 14.608,
+      "end": 14.768
+    },
+    {
+      "text": "example",
+      "start": 14.768,
+      "end": 15.408
+    },
+    {
+      "text": "if",
+      "start": 15.488,
+      "end": 15.648
+    },
+    {
+      "text": "I",
+      "start": 15.648,
+      "end": 15.728
+    },
+    {
+      "text": "want",
+      "start": 15.728,
+      "end": 15.968
+    },
+    {
+      "text": "to",
+      "start": 15.968,
+      "end": 16.048
+    },
+    {
+      "text": "learn",
+      "start": 16.048,
+      "end": 16.288
+    },
+    {
+      "text": "English",
+      "start": 16.288,
+      "end": 16.928
+    },
+    {
+      "text": "there",
+      "start": 16.928,
+      "end": 17.168
+    },
+    {
+      "text": "are",
+      "start": 17.168,
+      "end": 17.168
+    },
+    {
+      "text": "tons",
+      "start": 17.168,
+      "end": 17.568
+    },
+    {
+      "text": "of",
+      "start": 17.568,
+      "end": 17.648
+    },
+    {
+      "text": "materials",
+      "start": 17.648,
+      "end": 18.448
+    },
+    {
+      "text": "which",
+      "start": 18.528,
+      "end": 18.768
+    },
+    {
+      "text": "one",
+      "start": 18.768,
+      "end": 18.928
+    },
+    {
+      "text": "should",
+      "start": 18.928,
+      "end": 19.088
+    },
+    {
+      "text": "I",
+      "start": 19.088,
+      "end": 19.168
+    },
+    {
+      "text": "use",
+      "start": 19.168,
+      "end": 19.488
+    },
+    {
+      "text": "for",
+      "start": 19.488,
+      "end": 19.648
+    },
+    {
+      "text": "input",
+      "start": 19.648,
+      "end": 20.128
+    },
+    {
+      "text": "And",
+      "start": 20.288,
+      "end": 20.448
+    },
+    {
+      "text": "there",
+      "start": 20.448,
+      "end": 20.608
+    },
+    {
+      "text": "are",
+      "start": 20.608,
+      "end": 20.688
+    },
+    {
+      "text": "so",
+      "start": 20.688,
+      "end": 20.928
+    },
+    {
+      "text": "many",
+      "start": 20.928,
+      "end": 21.168
+    },
+    {
+      "text": "methods",
+      "start": 21.168,
+      "end": 21.808
+    },
+    {
+      "text": "shadowing",
+      "start": 21.888,
+      "end": 22.608
+    },
+    {
+      "text": "communicating",
+      "start": 22.688,
+      "end": 23.328
+    },
+    {
+      "text": "with",
+      "start": 23.328,
+      "end": 23.488
+    },
+    {
+      "text": "people",
+      "start": 23.488,
+      "end": 24.048
+    },
+    {
+      "text": "all",
+      "start": 24.048,
+      "end": 24.288
+    },
+    {
+      "text": "kinds",
+      "start": 24.288,
+      "end": 24.608
+    },
+    {
+      "text": "of",
+      "start": 24.608,
+      "end": 24.688
+    },
+    {
+      "text": "apps",
+      "start": 24.688,
+      "end": 25.248
+    },
+    {
+      "text": "Too",
+      "start": 25.328,
+      "end": 25.488
+    },
+    {
+      "text": "many",
+      "start": 25.488,
+      "end": 25.728
+    },
+    {
+      "text": "options",
+      "start": 25.728,
+      "end": 26.208
+    },
+    {
+      "text": "just",
+      "start": 26.208,
+      "end": 26.368
+    },
+    {
+      "text": "make",
+      "start": 26.368,
+      "end": 26.608
+    },
+    {
+      "text": "it",
+      "start": 26.608,
+      "end": 26.688
+    },
+    {
+      "text": "harder",
+      "start": 26.688,
+      "end": 27.008
+    },
+    {
+      "text": "to",
+      "start": 27.088,
+      "end": 27.168
+    },
+    {
+      "text": "make",
+      "start": 27.168,
+      "end": 27.408
+    },
+    {
+      "text": "a",
+      "start": 27.408,
+      "end": 27.408
+    },
+    {
+      "text": "decision",
+      "start": 27.408,
+      "end": 28.048
+    },
+    {
+      "text": "and",
+      "start": 28.048,
+      "end": 28.208
+    },
+    {
+      "text": "take",
+      "start": 28.208,
+      "end": 28.448
+    },
+    {
+      "text": "action",
+      "start": 28.448,
+      "end": 29.088
+    },
+    {
+      "text": "So",
+      "start": 29.542,
+      "end": 29.702
+    },
+    {
+      "text": "generally",
+      "start": 29.702,
+      "end": 30.182
+    },
+    {
+      "text": "technology",
+      "start": 30.182,
+      "end": 30.822
+    },
+    {
+      "text": "makes",
+      "start": 30.822,
+      "end": 31.062
+    },
+    {
+      "text": "life",
+      "start": 31.062,
+      "end": 31.302
+    },
+    {
+      "text": "much",
+      "start": 31.302,
+      "end": 31.622
+    },
+    {
+      "text": "more",
+      "start": 31.622,
+      "end": 31.862
+    },
+    {
+      "text": "convenient",
+      "start": 31.862,
+      "end": 32.582
+    },
+    {
+      "text": "but",
+      "start": 32.582,
+      "end": 32.742
+    },
+    {
+      "text": "it",
+      "start": 32.742,
+      "end": 32.822
+    },
+    {
+      "text": "also",
+      "start": 32.822,
+      "end": 33.222
+    },
+    {
+      "text": "gives",
+      "start": 33.222,
+      "end": 33.542
+    },
+    {
+      "text": "our",
+      "start": 33.542,
+      "end": 33.622
+    },
+    {
+      "text": "brains",
+      "start": 33.622,
+      "end": 34.102
+    },
+    {
+      "text": "more",
+      "start": 34.102,
+      "end": 34.342
+    },
+    {
+      "text": "things",
+      "start": 34.342,
+      "end": 34.742
+    },
+    {
+      "text": "to",
+      "start": 34.742,
+      "end": 34.742
+    },
+    {
+      "text": "think",
+      "start": 34.742,
+      "end": 35.062
+    },
+    {
+      "text": "about",
+      "start": 35.062,
+      "end": 35.462
+    }
+  ]
+}

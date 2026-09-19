@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you think everyone should learn a foreign language?",
+    "start": 0.0,
+    "end": 2.41,
+    "duration": 2.41,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "That's a tricky one. Absolutely, I suggest everyone learn a foreign language — but I don't think it's necessary. Because there are a lot of useful skills in this world, like coding, exercising, sports. You know, it's not something everyone must do. If you do learn a foreign language, it's definitely beneficial. I suggest it — but I don't think people should be forced to. Look, most of us are just ordinary people. We all learned advanced mathematics, calculus. Some people say, \"I never use calculus when I'm buying vegetables\" — and you're right. But we all know that learning math improves your logic, and learning a new language broadens your horizon and helps you make connections with people around the world. Still, some people just don't need it. So overall, I suggest everyone give it a try — it's very beneficial.",
+    "start": 2.92,
+    "end": 48.48,
+    "duration": 45.56,
+    "mode": "sse"
+  }
+]

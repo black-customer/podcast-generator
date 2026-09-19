@@ -1,0 +1,759 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "18f9a2f4b90e6d1d",
+  "audio_signature": "1164896:1789788341",
+  "created_at": "2026-09-19T11:25:42",
+  "segments": [
+    {
+      "text": "Do you think everyone should learn a foreign language?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.41
+    },
+    {
+      "text": "That's a tricky one. Absolutely, I suggest everyone learn a foreign language — but I don't think it's necessary. Because there are a lot of useful skills in this world, like coding, exercising, sports. You know, it's not something everyone must do. If you do learn a foreign language, it's definitely beneficial. I suggest it — but I don't think people should be forced to. Look, most of us are just ordinary people. We all learned advanced mathematics, calculus. Some people say, \"I never use calculus when I'm buying vegetables\" — and you're right. But we all know that learning math improves your logic, and learning a new language broadens your horizon and helps you make connections with people around the world. Still, some people just don't need it. So overall, I suggest everyone give it a try — it's very beneficial.",
+      "speaker": "b",
+      "start": 2.92,
+      "end": 48.48
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "think",
+      "start": 0.32,
+      "end": 0.64
+    },
+    {
+      "text": "everyone",
+      "start": 0.64,
+      "end": 1.04
+    },
+    {
+      "text": "should",
+      "start": 1.04,
+      "end": 1.2
+    },
+    {
+      "text": "learn",
+      "start": 1.2,
+      "end": 1.36
+    },
+    {
+      "text": "a",
+      "start": 1.36,
+      "end": 1.36
+    },
+    {
+      "text": "foreign",
+      "start": 1.36,
+      "end": 1.76
+    },
+    {
+      "text": "language",
+      "start": 1.76,
+      "end": 2.4
+    },
+    {
+      "text": "That's",
+      "start": 2.908,
+      "end": 3.068
+    },
+    {
+      "text": "a",
+      "start": 3.068,
+      "end": 3.148
+    },
+    {
+      "text": "tricky",
+      "start": 3.148,
+      "end": 3.548
+    },
+    {
+      "text": "one",
+      "start": 3.548,
+      "end": 3.948
+    },
+    {
+      "text": "Absolutely",
+      "start": 4.028,
+      "end": 4.908
+    },
+    {
+      "text": "I",
+      "start": 4.908,
+      "end": 5.068
+    },
+    {
+      "text": "suggest",
+      "start": 5.068,
+      "end": 5.468
+    },
+    {
+      "text": "everyone",
+      "start": 5.548,
+      "end": 6.028
+    },
+    {
+      "text": "learn",
+      "start": 6.028,
+      "end": 6.188
+    },
+    {
+      "text": "a",
+      "start": 6.188,
+      "end": 6.268
+    },
+    {
+      "text": "foreign",
+      "start": 6.268,
+      "end": 6.588
+    },
+    {
+      "text": "language",
+      "start": 6.588,
+      "end": 7.148
+    },
+    {
+      "text": "but",
+      "start": 7.148,
+      "end": 7.308
+    },
+    {
+      "text": "I",
+      "start": 7.308,
+      "end": 7.468
+    },
+    {
+      "text": "don't",
+      "start": 7.468,
+      "end": 7.708
+    },
+    {
+      "text": "think",
+      "start": 7.708,
+      "end": 7.948
+    },
+    {
+      "text": "it's",
+      "start": 7.948,
+      "end": 8.028
+    },
+    {
+      "text": "necessary",
+      "start": 8.028,
+      "end": 8.908
+    },
+    {
+      "text": "Because",
+      "start": 8.908,
+      "end": 9.228
+    },
+    {
+      "text": "there",
+      "start": 9.228,
+      "end": 9.468
+    },
+    {
+      "text": "are",
+      "start": 9.468,
+      "end": 9.548
+    },
+    {
+      "text": "a",
+      "start": 9.548,
+      "end": 9.628
+    },
+    {
+      "text": "lot",
+      "start": 9.628,
+      "end": 9.948
+    },
+    {
+      "text": "of",
+      "start": 9.948,
+      "end": 10.028
+    },
+    {
+      "text": "useful",
+      "start": 10.028,
+      "end": 10.428
+    },
+    {
+      "text": "skills",
+      "start": 10.428,
+      "end": 10.828
+    },
+    {
+      "text": "in",
+      "start": 10.828,
+      "end": 10.988
+    },
+    {
+      "text": "this",
+      "start": 10.988,
+      "end": 11.148
+    },
+    {
+      "text": "world",
+      "start": 11.148,
+      "end": 11.628
+    },
+    {
+      "text": "like",
+      "start": 11.708,
+      "end": 11.948
+    },
+    {
+      "text": "coding",
+      "start": 11.948,
+      "end": 12.508
+    },
+    {
+      "text": "exercising",
+      "start": 12.588,
+      "end": 13.468
+    },
+    {
+      "text": "sports",
+      "start": 13.468,
+      "end": 14.188
+    },
+    {
+      "text": "You",
+      "start": 14.188,
+      "end": 14.348
+    },
+    {
+      "text": "know",
+      "start": 14.348,
+      "end": 14.668
+    },
+    {
+      "text": "it's",
+      "start": 14.668,
+      "end": 14.828
+    },
+    {
+      "text": "not",
+      "start": 14.828,
+      "end": 15.068
+    },
+    {
+      "text": "something",
+      "start": 15.068,
+      "end": 15.468
+    },
+    {
+      "text": "everyone",
+      "start": 15.468,
+      "end": 15.868
+    },
+    {
+      "text": "must",
+      "start": 15.868,
+      "end": 16.268
+    },
+    {
+      "text": "do",
+      "start": 16.268,
+      "end": 16.748
+    },
+    {
+      "text": "If",
+      "start": 17.145,
+      "end": 17.305
+    },
+    {
+      "text": "you",
+      "start": 17.305,
+      "end": 17.465
+    },
+    {
+      "text": "do",
+      "start": 17.465,
+      "end": 17.705
+    },
+    {
+      "text": "learn",
+      "start": 17.705,
+      "end": 17.865
+    },
+    {
+      "text": "a",
+      "start": 17.865,
+      "end": 17.945
+    },
+    {
+      "text": "foreign",
+      "start": 17.945,
+      "end": 18.265
+    },
+    {
+      "text": "language",
+      "start": 18.265,
+      "end": 18.825
+    },
+    {
+      "text": "it's",
+      "start": 18.825,
+      "end": 18.985
+    },
+    {
+      "text": "definitely",
+      "start": 18.985,
+      "end": 19.545
+    },
+    {
+      "text": "beneficial",
+      "start": 19.545,
+      "end": 20.425
+    },
+    {
+      "text": "I",
+      "start": 20.425,
+      "end": 20.585
+    },
+    {
+      "text": "suggest",
+      "start": 20.585,
+      "end": 21.145
+    },
+    {
+      "text": "it",
+      "start": 21.145,
+      "end": 21.385
+    },
+    {
+      "text": "but",
+      "start": 21.385,
+      "end": 21.545
+    },
+    {
+      "text": "I",
+      "start": 21.545,
+      "end": 21.625
+    },
+    {
+      "text": "don't",
+      "start": 21.625,
+      "end": 21.865
+    },
+    {
+      "text": "think",
+      "start": 21.865,
+      "end": 22.105
+    },
+    {
+      "text": "people",
+      "start": 22.105,
+      "end": 22.425
+    },
+    {
+      "text": "should",
+      "start": 22.425,
+      "end": 22.585
+    },
+    {
+      "text": "be",
+      "start": 22.585,
+      "end": 22.665
+    },
+    {
+      "text": "forced",
+      "start": 22.665,
+      "end": 23.145
+    },
+    {
+      "text": "to",
+      "start": 23.145,
+      "end": 23.465
+    },
+    {
+      "text": "Look",
+      "start": 23.625,
+      "end": 24.025
+    },
+    {
+      "text": "most",
+      "start": 24.105,
+      "end": 24.425
+    },
+    {
+      "text": "of",
+      "start": 24.425,
+      "end": 24.505
+    },
+    {
+      "text": "us",
+      "start": 24.505,
+      "end": 24.665
+    },
+    {
+      "text": "are",
+      "start": 24.665,
+      "end": 24.745
+    },
+    {
+      "text": "just",
+      "start": 24.745,
+      "end": 24.985
+    },
+    {
+      "text": "ordinary",
+      "start": 25.065,
+      "end": 25.625
+    },
+    {
+      "text": "people",
+      "start": 25.625,
+      "end": 26.185
+    },
+    {
+      "text": "We",
+      "start": 26.185,
+      "end": 26.345
+    },
+    {
+      "text": "all",
+      "start": 26.345,
+      "end": 26.585
+    },
+    {
+      "text": "learned",
+      "start": 26.585,
+      "end": 26.825
+    },
+    {
+      "text": "advanced",
+      "start": 26.825,
+      "end": 27.225
+    },
+    {
+      "text": "mathematics",
+      "start": 27.225,
+      "end": 28.185
+    },
+    {
+      "text": "calculus",
+      "start": 28.185,
+      "end": 28.905
+    },
+    {
+      "text": "Some",
+      "start": 29.38,
+      "end": 29.62
+    },
+    {
+      "text": "people",
+      "start": 29.62,
+      "end": 29.86
+    },
+    {
+      "text": "say",
+      "start": 29.86,
+      "end": 30.34
+    },
+    {
+      "text": "I",
+      "start": 30.42,
+      "end": 30.5
+    },
+    {
+      "text": "never",
+      "start": 30.5,
+      "end": 30.82
+    },
+    {
+      "text": "use",
+      "start": 30.82,
+      "end": 31.06
+    },
+    {
+      "text": "calculus",
+      "start": 31.06,
+      "end": 31.62
+    },
+    {
+      "text": "when",
+      "start": 31.62,
+      "end": 31.7
+    },
+    {
+      "text": "I'm",
+      "start": 31.7,
+      "end": 31.86
+    },
+    {
+      "text": "buying",
+      "start": 31.86,
+      "end": 32.18
+    },
+    {
+      "text": "vegetables",
+      "start": 32.18,
+      "end": 32.9
+    },
+    {
+      "text": "and",
+      "start": 32.98,
+      "end": 33.14
+    },
+    {
+      "text": "you're",
+      "start": 33.14,
+      "end": 33.22
+    },
+    {
+      "text": "right",
+      "start": 33.22,
+      "end": 33.7
+    },
+    {
+      "text": "But",
+      "start": 33.78,
+      "end": 33.94
+    },
+    {
+      "text": "we",
+      "start": 33.94,
+      "end": 34.1
+    },
+    {
+      "text": "all",
+      "start": 34.1,
+      "end": 34.26
+    },
+    {
+      "text": "know",
+      "start": 34.34,
+      "end": 34.58
+    },
+    {
+      "text": "that",
+      "start": 34.58,
+      "end": 34.66
+    },
+    {
+      "text": "learning",
+      "start": 34.66,
+      "end": 35.06
+    },
+    {
+      "text": "math",
+      "start": 35.06,
+      "end": 35.38
+    },
+    {
+      "text": "improves",
+      "start": 35.38,
+      "end": 35.78
+    },
+    {
+      "text": "your",
+      "start": 35.78,
+      "end": 35.94
+    },
+    {
+      "text": "logic",
+      "start": 35.94,
+      "end": 36.5
+    },
+    {
+      "text": "and",
+      "start": 36.58,
+      "end": 36.74
+    },
+    {
+      "text": "learning",
+      "start": 36.74,
+      "end": 37.06
+    },
+    {
+      "text": "a",
+      "start": 37.06,
+      "end": 37.06
+    },
+    {
+      "text": "new",
+      "start": 37.06,
+      "end": 37.22
+    },
+    {
+      "text": "language",
+      "start": 37.22,
+      "end": 37.78
+    },
+    {
+      "text": "broadens",
+      "start": 37.78,
+      "end": 38.26
+    },
+    {
+      "text": "your",
+      "start": 38.26,
+      "end": 38.34
+    },
+    {
+      "text": "horizon",
+      "start": 38.34,
+      "end": 39.06
+    },
+    {
+      "text": "and",
+      "start": 39.06,
+      "end": 39.14
+    },
+    {
+      "text": "helps",
+      "start": 39.14,
+      "end": 39.38
+    },
+    {
+      "text": "you",
+      "start": 39.38,
+      "end": 39.46
+    },
+    {
+      "text": "make",
+      "start": 39.46,
+      "end": 39.7
+    },
+    {
+      "text": "connections",
+      "start": 39.7,
+      "end": 40.26
+    },
+    {
+      "text": "with",
+      "start": 40.26,
+      "end": 40.42
+    },
+    {
+      "text": "people",
+      "start": 40.42,
+      "end": 40.74
+    },
+    {
+      "text": "around",
+      "start": 40.74,
+      "end": 41.06
+    },
+    {
+      "text": "the",
+      "start": 41.06,
+      "end": 41.06
+    },
+    {
+      "text": "world",
+      "start": 41.06,
+      "end": 41.7
+    },
+    {
+      "text": "Still",
+      "start": 41.78,
+      "end": 42.34
+    },
+    {
+      "text": "some",
+      "start": 42.34,
+      "end": 42.58
+    },
+    {
+      "text": "people",
+      "start": 42.58,
+      "end": 42.9
+    },
+    {
+      "text": "just",
+      "start": 42.9,
+      "end": 43.14
+    },
+    {
+      "text": "don't",
+      "start": 43.14,
+      "end": 43.46
+    },
+    {
+      "text": "need",
+      "start": 43.46,
+      "end": 43.7
+    },
+    {
+      "text": "it",
+      "start": 43.7,
+      "end": 43.94
+    },
+    {
+      "text": "So",
+      "start": 44.206,
+      "end": 44.446
+    },
+    {
+      "text": "overall",
+      "start": 44.446,
+      "end": 45.086
+    },
+    {
+      "text": "I",
+      "start": 45.086,
+      "end": 45.246
+    },
+    {
+      "text": "suggest",
+      "start": 45.246,
+      "end": 45.726
+    },
+    {
+      "text": "everyone",
+      "start": 45.726,
+      "end": 46.126
+    },
+    {
+      "text": "give",
+      "start": 46.126,
+      "end": 46.366
+    },
+    {
+      "text": "it",
+      "start": 46.366,
+      "end": 46.366
+    },
+    {
+      "text": "a",
+      "start": 46.366,
+      "end": 46.446
+    },
+    {
+      "text": "try",
+      "start": 46.446,
+      "end": 47.006
+    },
+    {
+      "text": "it's",
+      "start": 47.006,
+      "end": 47.166
+    },
+    {
+      "text": "very",
+      "start": 47.166,
+      "end": 47.566
+    },
+    {
+      "text": "beneficial",
+      "start": 47.566,
+      "end": 48.366
+    }
+  ]
+}

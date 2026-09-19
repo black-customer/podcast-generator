@@ -1,0 +1,604 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "8ca04602a4b2e707",
+  "audio_signature": "858950:1789788318",
+  "created_at": "2026-09-19T11:25:19",
+  "segments": [
+    {
+      "text": "Is it difficult for adults to learn a new language?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.65
+    },
+    {
+      "text": "Physically, maybe it's harder for adults than children to learn a new language. But actually, I don't think it's that hard — because adults have better... brains, in a way. Not that their IQ is higher — it just means they've seen more of the world, they have more experience. And that experience helps them make a better learning plan. Also, adults have access to more useful tools, and maybe they've already built up abilities in other areas that help them learn faster. Plus, they might know more foreign people — they have the ability to reach out and communicate with them. And that absolutely improves your language learning.",
+      "speaker": "b",
+      "start": 3.2,
+      "end": 35.74
+    }
+  ],
+  "words": [
+    {
+      "text": "Is",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "it",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "difficult",
+      "start": 0.32,
+      "end": 0.72
+    },
+    {
+      "text": "for",
+      "start": 0.72,
+      "end": 0.88
+    },
+    {
+      "text": "adults",
+      "start": 0.88,
+      "end": 1.44
+    },
+    {
+      "text": "to",
+      "start": 1.44,
+      "end": 1.44
+    },
+    {
+      "text": "learn",
+      "start": 1.44,
+      "end": 1.68
+    },
+    {
+      "text": "a",
+      "start": 1.68,
+      "end": 1.76
+    },
+    {
+      "text": "new",
+      "start": 1.76,
+      "end": 1.92
+    },
+    {
+      "text": "language",
+      "start": 1.92,
+      "end": 2.64
+    },
+    {
+      "text": "Physically",
+      "start": 3.186,
+      "end": 3.746
+    },
+    {
+      "text": "maybe",
+      "start": 3.746,
+      "end": 4.066
+    },
+    {
+      "text": "it's",
+      "start": 4.066,
+      "end": 4.226
+    },
+    {
+      "text": "harder",
+      "start": 4.226,
+      "end": 4.546
+    },
+    {
+      "text": "for",
+      "start": 4.546,
+      "end": 4.706
+    },
+    {
+      "text": "adults",
+      "start": 4.706,
+      "end": 5.106
+    },
+    {
+      "text": "than",
+      "start": 5.106,
+      "end": 5.266
+    },
+    {
+      "text": "children",
+      "start": 5.266,
+      "end": 5.826
+    },
+    {
+      "text": "to",
+      "start": 5.826,
+      "end": 5.906
+    },
+    {
+      "text": "learn",
+      "start": 5.906,
+      "end": 6.146
+    },
+    {
+      "text": "a",
+      "start": 6.146,
+      "end": 6.146
+    },
+    {
+      "text": "new",
+      "start": 6.146,
+      "end": 6.306
+    },
+    {
+      "text": "language",
+      "start": 6.306,
+      "end": 7.026
+    },
+    {
+      "text": "But",
+      "start": 7.106,
+      "end": 7.186
+    },
+    {
+      "text": "actually",
+      "start": 7.186,
+      "end": 7.746
+    },
+    {
+      "text": "I",
+      "start": 7.746,
+      "end": 7.906
+    },
+    {
+      "text": "don't",
+      "start": 7.906,
+      "end": 8.226
+    },
+    {
+      "text": "think",
+      "start": 8.226,
+      "end": 8.386
+    },
+    {
+      "text": "it's",
+      "start": 8.386,
+      "end": 8.546
+    },
+    {
+      "text": "that",
+      "start": 8.626,
+      "end": 8.786
+    },
+    {
+      "text": "hard",
+      "start": 8.786,
+      "end": 9.186
+    },
+    {
+      "text": "because",
+      "start": 9.266,
+      "end": 9.506
+    },
+    {
+      "text": "adults",
+      "start": 9.506,
+      "end": 9.906
+    },
+    {
+      "text": "have",
+      "start": 9.906,
+      "end": 10.146
+    },
+    {
+      "text": "better",
+      "start": 10.146,
+      "end": 10.546
+    },
+    {
+      "text": "brains",
+      "start": 10.706,
+      "end": 11.346
+    },
+    {
+      "text": "in",
+      "start": 11.346,
+      "end": 11.506
+    },
+    {
+      "text": "a",
+      "start": 11.506,
+      "end": 11.506
+    },
+    {
+      "text": "way",
+      "start": 11.506,
+      "end": 11.986
+    },
+    {
+      "text": "Not",
+      "start": 11.986,
+      "end": 12.306
+    },
+    {
+      "text": "that",
+      "start": 12.306,
+      "end": 12.386
+    },
+    {
+      "text": "their",
+      "start": 12.386,
+      "end": 12.466
+    },
+    {
+      "text": "IQ",
+      "start": 12.466,
+      "end": 12.946
+    },
+    {
+      "text": "is",
+      "start": 12.946,
+      "end": 13.106
+    },
+    {
+      "text": "higher",
+      "start": 13.106,
+      "end": 13.506
+    },
+    {
+      "text": "it",
+      "start": 13.506,
+      "end": 13.666
+    },
+    {
+      "text": "just",
+      "start": 13.666,
+      "end": 13.906
+    },
+    {
+      "text": "means",
+      "start": 13.906,
+      "end": 14.226
+    },
+    {
+      "text": "they've",
+      "start": 14.226,
+      "end": 14.386
+    },
+    {
+      "text": "seen",
+      "start": 14.386,
+      "end": 14.786
+    },
+    {
+      "text": "more",
+      "start": 14.786,
+      "end": 14.946
+    },
+    {
+      "text": "of",
+      "start": 14.946,
+      "end": 15.106
+    },
+    {
+      "text": "the",
+      "start": 15.106,
+      "end": 15.186
+    },
+    {
+      "text": "world",
+      "start": 15.186,
+      "end": 15.746
+    },
+    {
+      "text": "they",
+      "start": 15.746,
+      "end": 15.906
+    },
+    {
+      "text": "have",
+      "start": 15.906,
+      "end": 16.066
+    },
+    {
+      "text": "more",
+      "start": 16.066,
+      "end": 16.306
+    },
+    {
+      "text": "experience",
+      "start": 16.306,
+      "end": 17.186
+    },
+    {
+      "text": "And",
+      "start": 17.567,
+      "end": 17.727
+    },
+    {
+      "text": "that",
+      "start": 17.727,
+      "end": 17.887
+    },
+    {
+      "text": "experience",
+      "start": 17.887,
+      "end": 18.447
+    },
+    {
+      "text": "helps",
+      "start": 18.447,
+      "end": 18.767
+    },
+    {
+      "text": "them",
+      "start": 18.767,
+      "end": 18.927
+    },
+    {
+      "text": "make",
+      "start": 18.927,
+      "end": 19.167
+    },
+    {
+      "text": "a",
+      "start": 19.167,
+      "end": 19.247
+    },
+    {
+      "text": "better",
+      "start": 19.247,
+      "end": 19.567
+    },
+    {
+      "text": "learning",
+      "start": 19.567,
+      "end": 19.967
+    },
+    {
+      "text": "plan",
+      "start": 19.967,
+      "end": 20.367
+    },
+    {
+      "text": "Also",
+      "start": 20.527,
+      "end": 21.007
+    },
+    {
+      "text": "adults",
+      "start": 21.007,
+      "end": 21.487
+    },
+    {
+      "text": "have",
+      "start": 21.487,
+      "end": 21.647
+    },
+    {
+      "text": "access",
+      "start": 21.647,
+      "end": 22.127
+    },
+    {
+      "text": "to",
+      "start": 22.127,
+      "end": 22.207
+    },
+    {
+      "text": "more",
+      "start": 22.207,
+      "end": 22.447
+    },
+    {
+      "text": "useful",
+      "start": 22.447,
+      "end": 22.847
+    },
+    {
+      "text": "tools",
+      "start": 22.847,
+      "end": 23.407
+    },
+    {
+      "text": "and",
+      "start": 23.487,
+      "end": 23.647
+    },
+    {
+      "text": "maybe",
+      "start": 23.647,
+      "end": 23.887
+    },
+    {
+      "text": "they've",
+      "start": 23.887,
+      "end": 24.047
+    },
+    {
+      "text": "already",
+      "start": 24.047,
+      "end": 24.447
+    },
+    {
+      "text": "built",
+      "start": 24.447,
+      "end": 24.767
+    },
+    {
+      "text": "up",
+      "start": 24.767,
+      "end": 24.847
+    },
+    {
+      "text": "abilities",
+      "start": 24.847,
+      "end": 25.407
+    },
+    {
+      "text": "in",
+      "start": 25.407,
+      "end": 25.567
+    },
+    {
+      "text": "other",
+      "start": 25.567,
+      "end": 25.807
+    },
+    {
+      "text": "areas",
+      "start": 25.807,
+      "end": 26.367
+    },
+    {
+      "text": "that",
+      "start": 26.367,
+      "end": 26.447
+    },
+    {
+      "text": "help",
+      "start": 26.447,
+      "end": 26.687
+    },
+    {
+      "text": "them",
+      "start": 26.687,
+      "end": 26.847
+    },
+    {
+      "text": "learn",
+      "start": 26.847,
+      "end": 27.167
+    },
+    {
+      "text": "faster",
+      "start": 27.167,
+      "end": 27.807
+    },
+    {
+      "text": "Plus",
+      "start": 28.153,
+      "end": 28.553
+    },
+    {
+      "text": "they",
+      "start": 28.553,
+      "end": 28.713
+    },
+    {
+      "text": "might",
+      "start": 28.713,
+      "end": 28.953
+    },
+    {
+      "text": "know",
+      "start": 28.953,
+      "end": 29.193
+    },
+    {
+      "text": "more",
+      "start": 29.193,
+      "end": 29.433
+    },
+    {
+      "text": "foreign",
+      "start": 29.433,
+      "end": 29.833
+    },
+    {
+      "text": "people",
+      "start": 29.833,
+      "end": 30.313
+    },
+    {
+      "text": "they",
+      "start": 30.393,
+      "end": 30.553
+    },
+    {
+      "text": "have",
+      "start": 30.553,
+      "end": 30.713
+    },
+    {
+      "text": "the",
+      "start": 30.713,
+      "end": 30.873
+    },
+    {
+      "text": "ability",
+      "start": 30.873,
+      "end": 31.353
+    },
+    {
+      "text": "to",
+      "start": 31.353,
+      "end": 31.353
+    },
+    {
+      "text": "reach",
+      "start": 31.353,
+      "end": 31.593
+    },
+    {
+      "text": "out",
+      "start": 31.593,
+      "end": 31.833
+    },
+    {
+      "text": "and",
+      "start": 31.833,
+      "end": 31.913
+    },
+    {
+      "text": "communicate",
+      "start": 31.913,
+      "end": 32.553
+    },
+    {
+      "text": "with",
+      "start": 32.553,
+      "end": 32.713
+    },
+    {
+      "text": "them",
+      "start": 32.713,
+      "end": 33.033
+    },
+    {
+      "text": "And",
+      "start": 33.113,
+      "end": 33.273
+    },
+    {
+      "text": "that",
+      "start": 33.273,
+      "end": 33.433
+    },
+    {
+      "text": "absolutely",
+      "start": 33.433,
+      "end": 34.073
+    },
+    {
+      "text": "improves",
+      "start": 34.073,
+      "end": 34.553
+    },
+    {
+      "text": "your",
+      "start": 34.553,
+      "end": 34.713
+    },
+    {
+      "text": "language",
+      "start": 34.713,
+      "end": 35.113
+    },
+    {
+      "text": "learning",
+      "start": 35.113,
+      "end": 35.593
+    }
+  ]
+}

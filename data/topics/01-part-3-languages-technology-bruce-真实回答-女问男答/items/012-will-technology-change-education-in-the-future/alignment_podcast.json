@@ -1,0 +1,424 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "6112aa694f9902c2",
+  "audio_signature": "686542:1789788441",
+  "created_at": "2026-09-19T11:27:22",
+  "segments": [
+    {
+      "text": "Do you think technology will change education in the future?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.97
+    },
+    {
+      "text": "Yeah, absolutely, 100%. You know, AI — ChatGPT, Gemini — is developing at a dramatic speed, so it will absolutely change the education system we have right now. But how exactly? I don't know. I think there will still be teachers, and AI could be a very useful tool for both teachers and students. And AI will be everywhere — like the air. It'll spread into every small piece of the education system.",
+      "speaker": "b",
+      "start": 3.46,
+      "end": 28.55
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "think",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "technology",
+      "start": 0.48,
+      "end": 1.04
+    },
+    {
+      "text": "will",
+      "start": 1.04,
+      "end": 1.28
+    },
+    {
+      "text": "change",
+      "start": 1.28,
+      "end": 1.68
+    },
+    {
+      "text": "education",
+      "start": 1.76,
+      "end": 2.24
+    },
+    {
+      "text": "in",
+      "start": 2.24,
+      "end": 2.4
+    },
+    {
+      "text": "the",
+      "start": 2.4,
+      "end": 2.4
+    },
+    {
+      "text": "future",
+      "start": 2.4,
+      "end": 2.96
+    },
+    {
+      "text": "Yeah",
+      "start": 3.444,
+      "end": 3.924
+    },
+    {
+      "text": "absolutely",
+      "start": 4.004,
+      "end": 4.804
+    },
+    {
+      "text": "100",
+      "start": 4.804,
+      "end": 4.804
+    },
+    {
+      "text": "You",
+      "start": 4.804,
+      "end": 5.284
+    },
+    {
+      "text": "know",
+      "start": 6.164,
+      "end": 6.404
+    },
+    {
+      "text": "AI",
+      "start": 6.404,
+      "end": 7.044
+    },
+    {
+      "text": "ChatGPT",
+      "start": 7.044,
+      "end": 8.084
+    },
+    {
+      "text": "Gemini",
+      "start": 8.084,
+      "end": 8.804
+    },
+    {
+      "text": "is",
+      "start": 8.804,
+      "end": 8.964
+    },
+    {
+      "text": "developing",
+      "start": 8.964,
+      "end": 9.524
+    },
+    {
+      "text": "at",
+      "start": 9.524,
+      "end": 9.604
+    },
+    {
+      "text": "a",
+      "start": 9.604,
+      "end": 9.684
+    },
+    {
+      "text": "dramatic",
+      "start": 9.684,
+      "end": 10.244
+    },
+    {
+      "text": "speed",
+      "start": 10.244,
+      "end": 10.804
+    },
+    {
+      "text": "so",
+      "start": 10.884,
+      "end": 11.044
+    },
+    {
+      "text": "it",
+      "start": 11.044,
+      "end": 11.204
+    },
+    {
+      "text": "will",
+      "start": 11.204,
+      "end": 11.364
+    },
+    {
+      "text": "absolutely",
+      "start": 11.364,
+      "end": 12.004
+    },
+    {
+      "text": "change",
+      "start": 12.004,
+      "end": 12.324
+    },
+    {
+      "text": "the",
+      "start": 12.324,
+      "end": 12.484
+    },
+    {
+      "text": "education",
+      "start": 12.484,
+      "end": 13.044
+    },
+    {
+      "text": "system",
+      "start": 13.044,
+      "end": 13.444
+    },
+    {
+      "text": "we",
+      "start": 13.444,
+      "end": 13.604
+    },
+    {
+      "text": "have",
+      "start": 13.604,
+      "end": 13.844
+    },
+    {
+      "text": "right",
+      "start": 13.844,
+      "end": 14.084
+    },
+    {
+      "text": "now",
+      "start": 14.084,
+      "end": 14.564
+    },
+    {
+      "text": "But",
+      "start": 14.724,
+      "end": 14.804
+    },
+    {
+      "text": "how",
+      "start": 14.804,
+      "end": 15.124
+    },
+    {
+      "text": "exactly",
+      "start": 15.124,
+      "end": 15.844
+    },
+    {
+      "text": "I",
+      "start": 15.924,
+      "end": 16.084
+    },
+    {
+      "text": "don't",
+      "start": 16.084,
+      "end": 16.244
+    },
+    {
+      "text": "know",
+      "start": 16.244,
+      "end": 16.724
+    },
+    {
+      "text": "I",
+      "start": 16.724,
+      "end": 16.884
+    },
+    {
+      "text": "think",
+      "start": 16.884,
+      "end": 17.124
+    },
+    {
+      "text": "there",
+      "start": 17.124,
+      "end": 17.204
+    },
+    {
+      "text": "will",
+      "start": 17.204,
+      "end": 17.364
+    },
+    {
+      "text": "still",
+      "start": 17.364,
+      "end": 17.604
+    },
+    {
+      "text": "be",
+      "start": 17.604,
+      "end": 17.764
+    },
+    {
+      "text": "teachers",
+      "start": 17.764,
+      "end": 18.484
+    },
+    {
+      "text": "and",
+      "start": 18.564,
+      "end": 18.644
+    },
+    {
+      "text": "AI",
+      "start": 18.644,
+      "end": 19.124
+    },
+    {
+      "text": "could",
+      "start": 19.124,
+      "end": 19.284
+    },
+    {
+      "text": "be",
+      "start": 19.284,
+      "end": 19.444
+    },
+    {
+      "text": "a",
+      "start": 19.444,
+      "end": 19.444
+    },
+    {
+      "text": "very",
+      "start": 19.444,
+      "end": 19.764
+    },
+    {
+      "text": "useful",
+      "start": 19.764,
+      "end": 20.244
+    },
+    {
+      "text": "tool",
+      "start": 20.244,
+      "end": 20.484
+    },
+    {
+      "text": "for",
+      "start": 20.484,
+      "end": 20.644
+    },
+    {
+      "text": "both",
+      "start": 20.644,
+      "end": 20.964
+    },
+    {
+      "text": "teachers",
+      "start": 20.964,
+      "end": 21.444
+    },
+    {
+      "text": "and",
+      "start": 21.444,
+      "end": 21.604
+    },
+    {
+      "text": "students",
+      "start": 21.684,
+      "end": 22.324
+    },
+    {
+      "text": "And",
+      "start": 22.766,
+      "end": 22.846
+    },
+    {
+      "text": "AI",
+      "start": 22.846,
+      "end": 23.326
+    },
+    {
+      "text": "will",
+      "start": 23.326,
+      "end": 23.406
+    },
+    {
+      "text": "be",
+      "start": 23.406,
+      "end": 23.646
+    },
+    {
+      "text": "everywhere",
+      "start": 23.646,
+      "end": 24.366
+    },
+    {
+      "text": "like",
+      "start": 24.366,
+      "end": 24.606
+    },
+    {
+      "text": "the",
+      "start": 24.606,
+      "end": 24.766
+    },
+    {
+      "text": "air",
+      "start": 24.766,
+      "end": 25.246
+    },
+    {
+      "text": "It'll",
+      "start": 25.246,
+      "end": 25.486
+    },
+    {
+      "text": "spread",
+      "start": 25.486,
+      "end": 25.806
+    },
+    {
+      "text": "into",
+      "start": 25.806,
+      "end": 26.046
+    },
+    {
+      "text": "every",
+      "start": 26.046,
+      "end": 26.366
+    },
+    {
+      "text": "small",
+      "start": 26.366,
+      "end": 26.686
+    },
+    {
+      "text": "piece",
+      "start": 26.686,
+      "end": 27.006
+    },
+    {
+      "text": "of",
+      "start": 27.006,
+      "end": 27.166
+    },
+    {
+      "text": "the",
+      "start": 27.166,
+      "end": 27.326
+    },
+    {
+      "text": "education",
+      "start": 27.326,
+      "end": 27.806
+    },
+    {
+      "text": "system",
+      "start": 27.806,
+      "end": 28.446
+    }
+  ]
+}

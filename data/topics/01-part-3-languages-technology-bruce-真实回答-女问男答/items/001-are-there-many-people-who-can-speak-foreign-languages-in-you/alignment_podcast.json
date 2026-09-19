@@ -1,0 +1,679 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "b3ab7b7b189d71ba",
+  "audio_signature": "991234:1789788254",
+  "created_at": "2026-09-19T11:24:15",
+  "segments": [
+    {
+      "text": "Are there many people who can speak foreign languages in your country?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.73
+    },
+    {
+      "text": "Of course, there are a lot of people who can speak foreign languages in China. But from my perspective, in my social circle, I don't actually know a person who can speak two languages fluently. From the internet, though, I know a lot of people who speak many languages — English, of course, Mandarin and Cantonese, Spanish, Japanese, Korean, and so on. And China is a huge country with a huge population. If you just mean \"speak,\" then yes — even I can say a few Japanese words, like Konnichiwa. Because we have this compulsory education system where every student learns English at school, so everybody can speak some English — maybe not fluently, but they can speak. So I think yes.",
+      "speaker": "b",
+      "start": 3.18,
+      "end": 41.25
+    }
+  ],
+  "words": [
+    {
+      "text": "Are",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "there",
+      "start": 0.08,
+      "end": 0.24
+    },
+    {
+      "text": "many",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "people",
+      "start": 0.48,
+      "end": 0.72
+    },
+    {
+      "text": "who",
+      "start": 0.72,
+      "end": 0.8
+    },
+    {
+      "text": "can",
+      "start": 0.8,
+      "end": 0.96
+    },
+    {
+      "text": "speak",
+      "start": 0.96,
+      "end": 1.36
+    },
+    {
+      "text": "foreign",
+      "start": 1.36,
+      "end": 1.68
+    },
+    {
+      "text": "languages",
+      "start": 1.68,
+      "end": 2.08
+    },
+    {
+      "text": "in",
+      "start": 2.08,
+      "end": 2.16
+    },
+    {
+      "text": "your",
+      "start": 2.16,
+      "end": 2.24
+    },
+    {
+      "text": "country",
+      "start": 2.24,
+      "end": 2.72
+    },
+    {
+      "text": "Of",
+      "start": 3.166,
+      "end": 3.326
+    },
+    {
+      "text": "course",
+      "start": 3.326,
+      "end": 3.726
+    },
+    {
+      "text": "there",
+      "start": 3.726,
+      "end": 3.886
+    },
+    {
+      "text": "are",
+      "start": 3.886,
+      "end": 4.046
+    },
+    {
+      "text": "a",
+      "start": 4.046,
+      "end": 4.046
+    },
+    {
+      "text": "lot",
+      "start": 4.046,
+      "end": 4.366
+    },
+    {
+      "text": "of",
+      "start": 4.366,
+      "end": 4.446
+    },
+    {
+      "text": "people",
+      "start": 4.446,
+      "end": 4.766
+    },
+    {
+      "text": "who",
+      "start": 4.766,
+      "end": 4.846
+    },
+    {
+      "text": "can",
+      "start": 4.846,
+      "end": 5.006
+    },
+    {
+      "text": "speak",
+      "start": 5.006,
+      "end": 5.246
+    },
+    {
+      "text": "foreign",
+      "start": 5.246,
+      "end": 5.566
+    },
+    {
+      "text": "languages",
+      "start": 5.566,
+      "end": 6.126
+    },
+    {
+      "text": "in",
+      "start": 6.126,
+      "end": 6.206
+    },
+    {
+      "text": "China",
+      "start": 6.206,
+      "end": 6.766
+    },
+    {
+      "text": "But",
+      "start": 6.766,
+      "end": 7.006
+    },
+    {
+      "text": "from",
+      "start": 7.006,
+      "end": 7.166
+    },
+    {
+      "text": "my",
+      "start": 7.166,
+      "end": 7.406
+    },
+    {
+      "text": "perspective",
+      "start": 7.406,
+      "end": 8.046
+    },
+    {
+      "text": "in",
+      "start": 8.046,
+      "end": 8.206
+    },
+    {
+      "text": "my",
+      "start": 8.206,
+      "end": 8.446
+    },
+    {
+      "text": "social",
+      "start": 8.446,
+      "end": 8.766
+    },
+    {
+      "text": "circle",
+      "start": 8.766,
+      "end": 9.326
+    },
+    {
+      "text": "I",
+      "start": 9.406,
+      "end": 9.486
+    },
+    {
+      "text": "don't",
+      "start": 9.486,
+      "end": 9.726
+    },
+    {
+      "text": "actually",
+      "start": 9.726,
+      "end": 10.126
+    },
+    {
+      "text": "know",
+      "start": 10.126,
+      "end": 10.286
+    },
+    {
+      "text": "a",
+      "start": 10.286,
+      "end": 10.366
+    },
+    {
+      "text": "person",
+      "start": 10.366,
+      "end": 10.766
+    },
+    {
+      "text": "who",
+      "start": 10.766,
+      "end": 10.846
+    },
+    {
+      "text": "can",
+      "start": 10.846,
+      "end": 11.006
+    },
+    {
+      "text": "speak",
+      "start": 11.006,
+      "end": 11.246
+    },
+    {
+      "text": "two",
+      "start": 11.246,
+      "end": 11.566
+    },
+    {
+      "text": "languages",
+      "start": 11.566,
+      "end": 12.046
+    },
+    {
+      "text": "fluently",
+      "start": 12.046,
+      "end": 12.766
+    },
+    {
+      "text": "From",
+      "start": 13.122,
+      "end": 13.282
+    },
+    {
+      "text": "the",
+      "start": 13.282,
+      "end": 13.442
+    },
+    {
+      "text": "internet",
+      "start": 13.442,
+      "end": 13.842
+    },
+    {
+      "text": "though",
+      "start": 13.842,
+      "end": 14.162
+    },
+    {
+      "text": "I",
+      "start": 14.242,
+      "end": 14.322
+    },
+    {
+      "text": "know",
+      "start": 14.322,
+      "end": 14.562
+    },
+    {
+      "text": "a",
+      "start": 14.562,
+      "end": 14.562
+    },
+    {
+      "text": "lot",
+      "start": 14.562,
+      "end": 14.802
+    },
+    {
+      "text": "of",
+      "start": 14.802,
+      "end": 14.962
+    },
+    {
+      "text": "people",
+      "start": 14.962,
+      "end": 15.202
+    },
+    {
+      "text": "who",
+      "start": 15.202,
+      "end": 15.362
+    },
+    {
+      "text": "speak",
+      "start": 15.362,
+      "end": 15.682
+    },
+    {
+      "text": "many",
+      "start": 15.682,
+      "end": 16.002
+    },
+    {
+      "text": "languages",
+      "start": 16.002,
+      "end": 16.722
+    },
+    {
+      "text": "English",
+      "start": 16.802,
+      "end": 17.362
+    },
+    {
+      "text": "of",
+      "start": 17.362,
+      "end": 17.442
+    },
+    {
+      "text": "course",
+      "start": 17.442,
+      "end": 17.762
+    },
+    {
+      "text": "Mandarin",
+      "start": 17.762,
+      "end": 18.322
+    },
+    {
+      "text": "and",
+      "start": 18.322,
+      "end": 18.402
+    },
+    {
+      "text": "Cantonese",
+      "start": 18.402,
+      "end": 19.282
+    },
+    {
+      "text": "Spanish",
+      "start": 19.282,
+      "end": 19.842
+    },
+    {
+      "text": "Japanese",
+      "start": 19.842,
+      "end": 20.562
+    },
+    {
+      "text": "Korean",
+      "start": 20.562,
+      "end": 21.122
+    },
+    {
+      "text": "and",
+      "start": 21.122,
+      "end": 21.282
+    },
+    {
+      "text": "so",
+      "start": 21.282,
+      "end": 21.602
+    },
+    {
+      "text": "on",
+      "start": 21.602,
+      "end": 21.922
+    },
+    {
+      "text": "And",
+      "start": 22.002,
+      "end": 22.082
+    },
+    {
+      "text": "China",
+      "start": 22.082,
+      "end": 22.482
+    },
+    {
+      "text": "is",
+      "start": 22.482,
+      "end": 22.642
+    },
+    {
+      "text": "a",
+      "start": 22.642,
+      "end": 22.722
+    },
+    {
+      "text": "huge",
+      "start": 22.722,
+      "end": 23.042
+    },
+    {
+      "text": "country",
+      "start": 23.042,
+      "end": 23.522
+    },
+    {
+      "text": "with",
+      "start": 23.522,
+      "end": 23.682
+    },
+    {
+      "text": "a",
+      "start": 23.682,
+      "end": 23.762
+    },
+    {
+      "text": "huge",
+      "start": 23.762,
+      "end": 24.082
+    },
+    {
+      "text": "population",
+      "start": 24.082,
+      "end": 24.962
+    },
+    {
+      "text": "If",
+      "start": 25.379,
+      "end": 25.539
+    },
+    {
+      "text": "you",
+      "start": 25.539,
+      "end": 25.619
+    },
+    {
+      "text": "just",
+      "start": 25.619,
+      "end": 25.859
+    },
+    {
+      "text": "mean",
+      "start": 25.859,
+      "end": 26.099
+    },
+    {
+      "text": "speak",
+      "start": 26.099,
+      "end": 26.659
+    },
+    {
+      "text": "then",
+      "start": 26.659,
+      "end": 26.899
+    },
+    {
+      "text": "yes",
+      "start": 26.899,
+      "end": 27.379
+    },
+    {
+      "text": "even",
+      "start": 27.379,
+      "end": 27.619
+    },
+    {
+      "text": "I",
+      "start": 27.619,
+      "end": 27.779
+    },
+    {
+      "text": "can",
+      "start": 27.779,
+      "end": 27.939
+    },
+    {
+      "text": "say",
+      "start": 27.939,
+      "end": 28.179
+    },
+    {
+      "text": "a",
+      "start": 28.179,
+      "end": 28.179
+    },
+    {
+      "text": "few",
+      "start": 28.179,
+      "end": 28.419
+    },
+    {
+      "text": "Japanese",
+      "start": 28.419,
+      "end": 29.059
+    },
+    {
+      "text": "words",
+      "start": 29.059,
+      "end": 29.459
+    },
+    {
+      "text": "like",
+      "start": 29.459,
+      "end": 29.779
+    },
+    {
+      "text": "Konnichiwa",
+      "start": 29.779,
+      "end": 30.659
+    },
+    {
+      "text": "Because",
+      "start": 30.659,
+      "end": 30.979
+    },
+    {
+      "text": "we",
+      "start": 30.979,
+      "end": 31.139
+    },
+    {
+      "text": "have",
+      "start": 31.139,
+      "end": 31.299
+    },
+    {
+      "text": "this",
+      "start": 31.299,
+      "end": 31.459
+    },
+    {
+      "text": "compulsory",
+      "start": 31.459,
+      "end": 32.179
+    },
+    {
+      "text": "education",
+      "start": 32.179,
+      "end": 32.819
+    },
+    {
+      "text": "system",
+      "start": 32.819,
+      "end": 33.379
+    },
+    {
+      "text": "where",
+      "start": 33.379,
+      "end": 33.539
+    },
+    {
+      "text": "every",
+      "start": 33.539,
+      "end": 33.779
+    },
+    {
+      "text": "student",
+      "start": 33.779,
+      "end": 34.259
+    },
+    {
+      "text": "learns",
+      "start": 34.259,
+      "end": 34.499
+    },
+    {
+      "text": "English",
+      "start": 34.499,
+      "end": 34.899
+    },
+    {
+      "text": "at",
+      "start": 34.899,
+      "end": 35.059
+    },
+    {
+      "text": "school",
+      "start": 35.059,
+      "end": 35.619
+    },
+    {
+      "text": "so",
+      "start": 35.619,
+      "end": 35.859
+    },
+    {
+      "text": "everybody",
+      "start": 35.859,
+      "end": 36.339
+    },
+    {
+      "text": "can",
+      "start": 36.339,
+      "end": 36.419
+    },
+    {
+      "text": "speak",
+      "start": 36.419,
+      "end": 36.739
+    },
+    {
+      "text": "some",
+      "start": 36.739,
+      "end": 36.979
+    },
+    {
+      "text": "English",
+      "start": 36.979,
+      "end": 37.539
+    },
+    {
+      "text": "maybe",
+      "start": 37.539,
+      "end": 37.859
+    },
+    {
+      "text": "not",
+      "start": 37.859,
+      "end": 38.099
+    },
+    {
+      "text": "fluently",
+      "start": 38.099,
+      "end": 38.739
+    },
+    {
+      "text": "but",
+      "start": 38.819,
+      "end": 38.979
+    },
+    {
+      "text": "they",
+      "start": 38.979,
+      "end": 39.139
+    },
+    {
+      "text": "can",
+      "start": 39.139,
+      "end": 39.299
+    },
+    {
+      "text": "speak",
+      "start": 39.299,
+      "end": 39.779
+    },
+    {
+      "text": "So",
+      "start": 39.859,
+      "end": 40.099
+    },
+    {
+      "text": "I",
+      "start": 40.099,
+      "end": 40.259
+    },
+    {
+      "text": "think",
+      "start": 40.259,
+      "end": 40.499
+    },
+    {
+      "text": "yes",
+      "start": 40.499,
+      "end": 41.059
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Is it difficult for adults to learn a new language?",
+    "start": 0.0,
+    "end": 2.65,
+    "duration": 2.65,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Physically, maybe it's harder for adults than children to learn a new language. But actually, I don't think it's that hard — because adults have better... brains, in a way. Not that their IQ is higher — it just means they've seen more of the world, they have more experience. And that experience helps them make a better learning plan. Also, adults have access to more useful tools, and maybe they've already built up abilities in other areas that help them learn faster. Plus, they might know more foreign people — they have the ability to reach out and communicate with them. And that absolutely improves your language learning.",
+    "start": 3.2,
+    "end": 35.74,
+    "duration": 32.54,
+    "mode": "sse"
+  }
+]

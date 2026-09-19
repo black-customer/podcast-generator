@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you think it's important for children to learn a foreign language?",
+    "start": 0.0,
+    "end": 3.23,
+    "duration": 3.23,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yeah, of course. As I said before, it's necessary for children to learn foreign languages at school — so yes, it's very important for children to learn a foreign language. Same reasons as I mentioned.",
+    "start": 3.57,
+    "end": 14.24,
+    "duration": 10.67,
+    "mode": "sse"
+  }
+]
