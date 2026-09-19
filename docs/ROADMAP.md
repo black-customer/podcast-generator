@@ -147,7 +147,7 @@ WP：语料包格式（zip：manifest 版本/指纹 + 条目文本 + timeline/al
 播放页（音字同步高亮/点句跳转/逐词点亮/翻译层）+ 导入管理。
 AC：pack 导出幂等与完整性单测；pack 模式渲染单测；APK 在模拟器实测播放页同步高亮（截图验收）。tag b02。
 
-### B03 分享开源（交付"可推送状态"）— PENDING（依赖 B02 产出 APK）
+### B03 分享开源（交付"可推送状态"）— DONE (2026-09-19, tag b03；审计 0 泄漏，dist/ 就绪)
 价值：让别人立马体验上（Bruce 优先级 3）；git push 由 Bruce 执行，Agent 只交付可推送状态。
 WP：`git log -S` 全历史脱敏审计（API key 从未入库）；settings.example.json；
 Bruce 真实语料与公开示例语料分离（代码公开/数据私有，RoastDuck 模式）；README 重写

@@ -11,12 +11,14 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent.parent
 OUT = BASE / "dist" / "bruce-corpus-share.zip"
 
-INCLUDE_DIRS = ["server", "web", "prompts", "docs", "scripts", "tests"]
+INCLUDE_DIRS = ["server", "web", "prompts", "docs", "scripts", "tests", "mobile"]
 INCLUDE_FILES = [
     "README.md", "AGENTS.md", "requirements.txt", "requirements-dev.txt",
     "run.py", "pipeline.py", "start.bat", "pyproject.toml", ".gitignore",
 ]
 INCLUDE_DATA = ["data/voices.json", "data/settings.example.json"]
+
+EXCLUDE_PARTS = {"__pycache__", ".pytest_cache", ".ruff_cache", "node_modules", "www", "build", ".gradle"}
 
 
 def main() -> int:
@@ -30,8 +32,7 @@ def main() -> int:
                 if not f.is_file():
                     continue
                 rel = f.relative_to(BASE)
-                s = str(rel)
-                if "__pycache__" in s or ".pytest_cache" in s or ".ruff_cache" in s:
+                if any(part in EXCLUDE_PARTS for part in rel.parts):
                     continue
                 zf.write(f, rel)
                 count += 1

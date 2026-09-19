@@ -84,3 +84,19 @@
 - Android 输入框自动首字母大写：URL 校验正则必须加 i 标志
 - mini player 覆盖底部导航（z-index 更高），UI 自动化点导航前要先让播放器消失
 - WebView 无可达性树，UI 自动化用坐标（截图比例 900x2000 → 设备 1080x2400，×1.2）
+
+## B03 执行记录（tag b03）
+
+- 脱敏审计：真实 key 全历史 0 次出现（-S 片段扫描）；settings.json 从未入库；
+  question_bank.json 已 ignore（含 Bruce 私有 RoastDuck 数据）
+- README：愿景与核心不变量重述、fish.audio key 申请教程（含科学上网提示）、
+  雅思题库闭环、手机 APP 两条装包路径 + APK 构建步骤、排错表 + FAQ
+- 分享包：scripts/package.py 收入 mobile 工程（排除 node_modules/www/build/.gradle）；
+  dist/bruce-corpus-share.zip 445KB/150 文件；dist/ielts-pod-debug.apk 4.1MB
+- 分享包审计：无 settings.json、无个人语料、无真实 key（脚本验证）
+- git push 由 Bruce 决定时机（AGENTS.md 禁止 agent push）
+
+## 下一程：B04 教学内容（待 Bruce 启动）
+
+diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播客模板（锚定具体雅思题）
+→ 16:9 1-3 分钟视频模板 → 中英结合大众变体。原则见 CONSTITUTION「教学内容设计原则」。
