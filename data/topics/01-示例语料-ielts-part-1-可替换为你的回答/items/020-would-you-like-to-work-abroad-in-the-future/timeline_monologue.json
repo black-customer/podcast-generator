@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I would love to experience working abroad for a year or two.",
+    "start": 0.0,
+    "end": 4.36,
+    "duration": 4.36
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Long term though, I would probably come back.",
+    "start": 4.36,
+    "end": 7.63,
+    "duration": 3.27
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Home is here.",
+    "start": 7.63,
+    "end": 8.57,
+    "duration": 0.94
+  }
+]

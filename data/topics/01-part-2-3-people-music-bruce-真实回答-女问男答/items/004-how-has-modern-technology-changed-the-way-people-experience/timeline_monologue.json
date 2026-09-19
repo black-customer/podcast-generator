@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think it's mostly about the way people communicate with the singer.",
+    "start": 0.0,
+    "end": 4.34,
+    "duration": 4.34
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "In the past, if you listened to music, you could only listen — maybe you were surprised by a singer, maybe you liked them, but you couldn't communicate with them.",
+    "start": 4.34,
+    "end": 14.82,
+    "duration": 10.48
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But now, with music apps, you can sometimes interact with those singers directly.",
+    "start": 14.82,
+    "end": 19.92,
+    "duration": 5.1
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's like reading a book and being able to talk with the writer.",
+    "start": 19.92,
+    "end": 23.95,
+    "duration": 4.03
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And it's also just way more convenient to listen through apps now, instead of cassettes or MP3 players.",
+    "start": 23.95,
+    "end": 30.43,
+    "duration": 6.48
+  }
+]

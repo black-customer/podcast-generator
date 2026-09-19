@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yes, I watch a lot of science programs.",
+    "start": 0.0,
+    "end": 2.29,
+    "duration": 2.29
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "They're really interesting — they can explain so many things in real life, help you think about them from a science angle.",
+    "start": 2.29,
+    "end": 9.72,
+    "duration": 7.43
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And they motivate you to think, which I really like.",
+    "start": 9.72,
+    "end": 12.77,
+    "duration": 3.05
+  }
+]

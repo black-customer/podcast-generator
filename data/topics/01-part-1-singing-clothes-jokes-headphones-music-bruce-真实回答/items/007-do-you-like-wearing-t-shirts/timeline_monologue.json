@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, of course.",
+    "start": 0.0,
+    "end": 0.96,
+    "duration": 0.96
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like I said, I love wearing T-shirts.",
+    "start": 0.96,
+    "end": 3.17,
+    "duration": 2.21
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "They're so easy — you just grab one and go.",
+    "start": 3.17,
+    "end": 6.01,
+    "duration": 2.84
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And when you do sports, they're really comfortable.",
+    "start": 6.01,
+    "end": 9.05,
+    "duration": 3.04
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Plus they match with lots of pants and trousers, so they're just a great thing to have.",
+    "start": 9.05,
+    "end": 14.24,
+    "duration": 5.19
+  }
+]

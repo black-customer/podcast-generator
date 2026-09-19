@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, that's an interesting question.",
+    "start": 0.0,
+    "end": 1.91,
+    "duration": 1.91
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I don't think I would buy an expensive watch even if I were rich, but maybe it's an identity symbol, you know?",
+    "start": 1.91,
+    "end": 7.58,
+    "duration": 5.67
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like how some girls buy luxury bags.",
+    "start": 7.58,
+    "end": 9.44,
+    "duration": 1.86
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think expensive watches are the same thing for some men — a way to show their status.",
+    "start": 9.44,
+    "end": 14.16,
+    "duration": 4.72
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And I've also heard that some rich people buy expensive watches and jewelry because if something bad happens, they can just grab them and run — they're portable, and worth more than gold by volume.",
+    "start": 14.16,
+    "end": 24.55,
+    "duration": 10.39
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So maybe that's a reason too.",
+    "start": 24.55,
+    "end": 26.04,
+    "duration": 1.49
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Some of them do, some of them don't.",
+    "start": 0.0,
+    "end": 2.28,
+    "duration": 2.28
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's a kind of talent, I think — it's a feeling.",
+    "start": 2.28,
+    "end": 5.6,
+    "duration": 3.32
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I prefer friends who tell jokes, but telling a good joke is actually hard, you know?",
+    "start": 5.6,
+    "end": 10.91,
+    "duration": 5.31
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Telling a decent joke is a difficult thing, I would say.",
+    "start": 10.91,
+    "end": 14.45,
+    "duration": 3.54
+  }
+]

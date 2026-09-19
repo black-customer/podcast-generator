@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Honestly, I'm not really a city person, and I don't like this city — but that doesn't mean I hate it.",
+    "start": 0.0,
+    "end": 6.4,
+    "duration": 6.4
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I just don't like it, you know.",
+    "start": 6.4,
+    "end": 8.28,
+    "duration": 1.88
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I grew up in the southern part of China, so I never got used to it here: it's too cold in winter and too dry.",
+    "start": 8.28,
+    "end": 14.89,
+    "duration": 6.61
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Also, the prices are higher — things here cost more than where I used to live.",
+    "start": 14.89,
+    "end": 19.91,
+    "duration": 5.02
+  }
+]

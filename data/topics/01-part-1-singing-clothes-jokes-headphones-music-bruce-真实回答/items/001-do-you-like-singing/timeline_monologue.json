@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, of course, I like singing.",
+    "start": 0.0,
+    "end": 1.83,
+    "duration": 1.83
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I sing every single day — there's always a song in my head when I wake up.",
+    "start": 1.83,
+    "end": 6.33,
+    "duration": 4.5
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I don't know why, but it's there.",
+    "start": 6.33,
+    "end": 8.22,
+    "duration": 1.89
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And I like singing because it lets me express my emotions at that moment — whatever I'm feeling, I can just sing it out.",
+    "start": 8.22,
+    "end": 15.36,
+    "duration": 7.14
+  }
+]

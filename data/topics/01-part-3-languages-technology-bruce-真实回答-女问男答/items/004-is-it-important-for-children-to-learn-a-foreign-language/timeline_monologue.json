@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, of course.",
+    "start": 0.0,
+    "end": 1.12,
+    "duration": 1.12
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "As I said before, it's necessary for children to learn foreign languages at school — so yes, it's very important for children to learn a foreign language.",
+    "start": 1.12,
+    "end": 12.26,
+    "duration": 11.14
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Same reasons as I mentioned.",
+    "start": 12.26,
+    "end": 14.24,
+    "duration": 1.98
+  }
+]

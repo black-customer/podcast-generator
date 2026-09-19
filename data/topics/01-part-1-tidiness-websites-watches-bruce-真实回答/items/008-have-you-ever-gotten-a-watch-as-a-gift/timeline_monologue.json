@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "No, I haven't, actually.",
+    "start": 0.0,
+    "end": 1.57,
+    "duration": 1.57
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I just...",
+    "start": 1.57,
+    "end": 2.45,
+    "duration": 0.88
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I need to have a watch, you know?",
+    "start": 2.45,
+    "end": 4.61,
+    "duration": 2.16
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So when mine breaks or gets too old, I just buy a new one myself.",
+    "start": 4.61,
+    "end": 8.87,
+    "duration": 4.26
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's never really been a gift kind of thing.",
+    "start": 8.87,
+    "end": 11.76,
+    "duration": 2.89
+  }
+]

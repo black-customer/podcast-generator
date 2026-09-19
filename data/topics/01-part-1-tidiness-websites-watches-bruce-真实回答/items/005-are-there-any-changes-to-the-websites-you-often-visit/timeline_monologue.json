@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yes, there have been some changes.",
+    "start": 0.0,
+    "end": 2.23,
+    "duration": 2.23
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I used to watch Bilibili — the Chinese YouTube — but these days I watch YouTube more often, because I wanted to break through the information barrier.",
+    "start": 2.23,
+    "end": 12.35,
+    "duration": 10.12
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And also, I need to learn English, and almost everything on YouTube is in English.",
+    "start": 12.35,
+    "end": 17.72,
+    "duration": 5.37
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I switched from Bilibili to YouTube to improve my English and get more information.",
+    "start": 17.72,
+    "end": 23.35,
+    "duration": 5.63
+  }
+]

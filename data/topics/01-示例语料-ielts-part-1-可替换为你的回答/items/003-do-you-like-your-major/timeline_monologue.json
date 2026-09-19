@@ -1,0 +1,20 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, I do, although it is kind of complicated.",
+    "start": 0.0,
+    "end": 3.38,
+    "duration": 3.38
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Some courses are honestly a bit dry, but the moment you build something that actually works, that feeling is unbeatable.",
+    "start": 3.38,
+    "end": 12.0,
+    "duration": 8.62
+  }
+]

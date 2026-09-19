@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Basically, I like studying in the mornings — but here's the funny part: I don't get up in the mornings.",
+    "start": 0.0,
+    "end": 6.64,
+    "duration": 6.64
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I often wake up too late, like 9 a.m.",
+    "start": 6.64,
+    "end": 8.92,
+    "duration": 2.28
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "or even 11 a.m., so I usually sleep through the morning and study in the afternoon.",
+    "start": 8.92,
+    "end": 14.05,
+    "duration": 5.13
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But in theory, I prefer mornings, because they're much quieter than afternoons.",
+    "start": 14.05,
+    "end": 18.93,
+    "duration": 4.88
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "A quiet space and waking up early to study gives me this sense that I'm a better person, that I have better execution ability, you know.",
+    "start": 18.93,
+    "end": 27.32,
+    "duration": 8.39
+  }
+]

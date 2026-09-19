@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yes, I always use headphones, because I like listening to music, podcasts, and watching videos.",
+    "start": 0.0,
+    "end": 6.03,
+    "duration": 6.03
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And in public, it's important to wear headphones so your sound doesn't bother other people.",
+    "start": 6.03,
+    "end": 11.81,
+    "duration": 5.78
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I usually wear them.",
+    "start": 11.81,
+    "end": 13.27,
+    "duration": 1.46
+  }
+]

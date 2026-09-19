@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Way too much, honestly.",
+    "start": 0.0,
+    "end": 1.38,
+    "duration": 1.38
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Sometimes eight hours a day, or even more.",
+    "start": 1.38,
+    "end": 3.9,
+    "duration": 2.52
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'm addicted to it, I would say.",
+    "start": 3.9,
+    "end": 5.83,
+    "duration": 1.93
+  }
+]

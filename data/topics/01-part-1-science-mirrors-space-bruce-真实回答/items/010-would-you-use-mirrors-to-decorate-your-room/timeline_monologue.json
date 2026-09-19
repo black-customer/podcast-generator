@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "No, absolutely not.",
+    "start": 0.0,
+    "end": 1.14,
+    "duration": 1.14
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That's kind of a weird thing for us, because in China there's feng shui — you know, traditional beliefs.",
+    "start": 1.14,
+    "end": 7.67,
+    "duration": 6.53
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "We have stories and tales that if you leave a mirror open in your room, bad things might come out of it.",
+    "start": 7.67,
+    "end": 13.93,
+    "duration": 6.26
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's a terrifying thought for a lot of people.",
+    "start": 13.93,
+    "end": 16.7,
+    "duration": 2.77
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So we just don't do that.",
+    "start": 16.7,
+    "end": 18.21,
+    "duration": 1.51
+  }
+]

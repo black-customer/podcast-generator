@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Mostly messaging — staying connected with people, communicating.",
+    "start": 0.0,
+    "end": 4.23,
+    "duration": 4.23
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Or sharing their lives and feelings, you know, their daily stuff.",
+    "start": 4.23,
+    "end": 8.24,
+    "duration": 4.01
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Sometimes someone else has the same feelings, or they just need to let things out so they feel better.",
+    "start": 8.24,
+    "end": 14.54,
+    "duration": 6.3
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Oh, and some people actually run their own business on social media — it's a whole career for them.",
+    "start": 14.54,
+    "end": 20.92,
+    "duration": 6.38
+  }
+]

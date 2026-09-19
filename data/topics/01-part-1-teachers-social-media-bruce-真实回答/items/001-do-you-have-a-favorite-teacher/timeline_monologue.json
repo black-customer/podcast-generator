@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Honestly, no, I don't really have a favorite teacher.",
+    "start": 0.0,
+    "end": 3.15,
+    "duration": 3.15
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'm kind of an introvert, so I never built those deep relationships with mine.",
+    "start": 3.15,
+    "end": 7.79,
+    "duration": 4.64
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "They taught, I sat in my chair, listened and took in the knowledge — just normal classroom interactions.",
+    "start": 7.79,
+    "end": 14.24,
+    "duration": 6.45
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That's it, really.",
+    "start": 14.24,
+    "end": 15.31,
+    "duration": 1.07
+  }
+]

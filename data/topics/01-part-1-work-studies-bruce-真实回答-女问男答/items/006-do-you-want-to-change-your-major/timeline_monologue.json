@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I've already changed it once, you know — my first major was chemistry, and then I switched to computer science, which is my favorite major now.",
+    "start": 0.0,
+    "end": 8.21,
+    "duration": 8.21
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Although sometimes I think English wouldn't be a bad choice either.",
+    "start": 8.21,
+    "end": 11.94,
+    "duration": 3.73
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But I like where I am right now, so I don't want to change my major again.",
+    "start": 11.94,
+    "end": 16.07,
+    "duration": 4.13
+  }
+]

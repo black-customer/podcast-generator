@@ -1,0 +1,101 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "The famous person I'd like to meet is Elon Musk.",
+    "start": 0.0,
+    "end": 3.2,
+    "duration": 3.2
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Everybody knows him, I think — he's the richest person in the world.",
+    "start": 3.2,
+    "end": 8.03,
+    "duration": 4.83
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I knew him through the news, you know, I follow who the richest people in the world are.",
+    "start": 8.03,
+    "end": 13.89,
+    "duration": 5.86
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And I've watched so many videos and interviews about him.",
+    "start": 13.89,
+    "end": 17.69,
+    "duration": 3.8
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "How would I like to meet him?",
+    "start": 17.69,
+    "end": 19.62,
+    "duration": 1.93
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think on a street, or maybe in a restaurant — say he's eating somewhere in disguise, so nobody recognizes him.",
+    "start": 19.62,
+    "end": 27.38,
+    "duration": 7.76
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But I would.",
+    "start": 27.38,
+    "end": 28.18,
+    "duration": 0.8
+  },
+  {
+    "id": 7,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'd walk up and say, \"Oh, you're Elon, right?\" And he'd be shocked.",
+    "start": 28.18,
+    "end": 32.64,
+    "duration": 4.46
+  },
+  {
+    "id": 8,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Then we'd talk, and I'd introduce myself.",
+    "start": 32.64,
+    "end": 35.37,
+    "duration": 2.73
+  },
+  {
+    "id": 9,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Because I think he's a really smart person — being the richest man in the world, there's no doubt about that.",
+    "start": 35.37,
+    "end": 42.93,
+    "duration": 7.56
+  },
+  {
+    "id": 10,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'd love to see how he thinks, and learn something from him.",
+    "start": 42.93,
+    "end": 46.92,
+    "duration": 3.99
+  }
+]

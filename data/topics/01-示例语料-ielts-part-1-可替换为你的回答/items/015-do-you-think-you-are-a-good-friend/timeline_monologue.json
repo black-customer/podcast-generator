@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I would like to think so.",
+    "start": 0.0,
+    "end": 1.82,
+    "duration": 1.82
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "If a friend needs me, I will definitely show up.",
+    "start": 1.82,
+    "end": 5.32,
+    "duration": 3.5
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That is my baseline, you know.",
+    "start": 5.32,
+    "end": 7.5,
+    "duration": 2.18
+  }
+]

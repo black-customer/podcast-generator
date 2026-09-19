@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, I have.",
+    "start": 0.0,
+    "end": 0.9,
+    "duration": 0.9
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I've watched a lot of videos about them, and through school I also learned things like the Big Bang theory, gravity, and just the normal stuff.",
+    "start": 0.9,
+    "end": 10.83,
+    "duration": 9.93
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But most of what I know, I learned from YouTube and Bilibili.",
+    "start": 10.83,
+    "end": 15.07,
+    "duration": 4.24
+  }
+]

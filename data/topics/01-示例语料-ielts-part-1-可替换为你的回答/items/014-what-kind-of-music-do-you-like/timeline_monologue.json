@@ -1,0 +1,20 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "My taste is all over the place, it really depends on my mood.",
+    "start": 0.0,
+    "end": 4.39,
+    "duration": 4.39
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "When I am coding, I go for instrumental music though.",
+    "start": 4.39,
+    "end": 8.21,
+    "duration": 3.82
+  }
+]

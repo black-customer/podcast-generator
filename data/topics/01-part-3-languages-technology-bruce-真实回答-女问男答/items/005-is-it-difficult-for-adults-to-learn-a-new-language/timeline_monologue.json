@@ -1,0 +1,74 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Physically, maybe it's harder for adults than children to learn a new language.",
+    "start": 0.0,
+    "end": 4.44,
+    "duration": 4.44
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But actually, I don't think it's that hard — because adults have better...",
+    "start": 4.44,
+    "end": 8.85,
+    "duration": 4.41
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "brains, in a way.",
+    "start": 8.85,
+    "end": 9.8,
+    "duration": 0.95
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Not that their IQ is higher — it just means they've seen more of the world, they have more experience.",
+    "start": 9.8,
+    "end": 15.78,
+    "duration": 5.98
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And that experience helps them make a better learning plan.",
+    "start": 15.78,
+    "end": 19.09,
+    "duration": 3.31
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Also, adults have access to more useful tools, and maybe they've already built up abilities in other areas that help them learn faster.",
+    "start": 19.09,
+    "end": 26.67,
+    "duration": 7.58
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Plus, they might know more foreign people — they have the ability to reach out and communicate with them.",
+    "start": 26.67,
+    "end": 32.82,
+    "duration": 6.15
+  },
+  {
+    "id": 7,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And that absolutely improves your language learning.",
+    "start": 32.82,
+    "end": 35.74,
+    "duration": 2.92
+  }
+]

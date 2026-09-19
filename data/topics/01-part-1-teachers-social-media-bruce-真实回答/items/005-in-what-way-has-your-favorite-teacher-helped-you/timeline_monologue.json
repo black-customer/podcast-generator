@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Well, this goes back to what I said — I don't have a favorite teacher.",
+    "start": 0.0,
+    "end": 3.93,
+    "duration": 3.93
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And honestly, I don't feel like any of them helped me enormously.",
+    "start": 3.93,
+    "end": 7.36,
+    "duration": 3.43
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Because if someone had actually helped me that much, I would call them my favorite teacher, right?",
+    "start": 7.36,
+    "end": 12.53,
+    "duration": 5.17
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So by definition, no one really stands out.",
+    "start": 12.53,
+    "end": 14.79,
+    "duration": 2.26
+  }
+]

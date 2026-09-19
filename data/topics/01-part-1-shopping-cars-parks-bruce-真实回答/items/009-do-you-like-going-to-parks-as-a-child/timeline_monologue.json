@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I would say no.",
+    "start": 0.0,
+    "end": 1.0,
+    "duration": 1.0
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Since I was a child, I was really into video games — I liked exciting entertainment, like theme parks, Disneylands, stuff like that.",
+    "start": 1.0,
+    "end": 10.06,
+    "duration": 9.06
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So normal parks were boring to me.",
+    "start": 10.06,
+    "end": 12.32,
+    "duration": 2.26
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I didn't want to look at scenery; I just wanted to play games.",
+    "start": 12.32,
+    "end": 16.43,
+    "duration": 4.11
+  }
+]

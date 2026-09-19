@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Definitely not clean.",
+    "start": 0.0,
+    "end": 1.39,
+    "duration": 1.39
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I've been a lazy person since I was a kid, so my room was always a mess, and my mom would come in and scold me.",
+    "start": 1.39,
+    "end": 8.76,
+    "duration": 7.37
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But she kind of spoiled me — she would just scold me and then clean the room herself.",
+    "start": 8.76,
+    "end": 14.71,
+    "duration": 5.95
+  }
+]

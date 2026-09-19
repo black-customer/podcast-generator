@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'm twenty-one right now, so I think that's quite young.",
+    "start": 0.0,
+    "end": 3.33,
+    "duration": 3.33
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Being this age, we're able to do so many things legally, and we still have enough time.",
+    "start": 3.33,
+    "end": 8.5,
+    "duration": 5.17
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Compared with older people, we have more time to achieve what we want; compared with younger people, we have more experience and a broader horizon.",
+    "start": 8.5,
+    "end": 17.24,
+    "duration": 8.74
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I think it's a good age — we can use our time to try things and explore different opportunities in life.",
+    "start": 17.24,
+    "end": 23.88,
+    "duration": 6.64
+  }
+]

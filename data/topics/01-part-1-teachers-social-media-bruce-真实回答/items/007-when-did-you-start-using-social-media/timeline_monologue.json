@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think it was primary school.",
+    "start": 0.0,
+    "end": 1.61,
+    "duration": 1.61
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Our teacher set up a class group on QQ — it's a Chinese app, kind of like WeChat — and all the students had to join it to get notices, because the teacher would sometimes send announcements there.",
+    "start": 1.61,
+    "end": 12.34,
+    "duration": 10.73
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I've basically been on social media since I was a pupil.",
+    "start": 12.34,
+    "end": 15.49,
+    "duration": 3.15
+  }
+]

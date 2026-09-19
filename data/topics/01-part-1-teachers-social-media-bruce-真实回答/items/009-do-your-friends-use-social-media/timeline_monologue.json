@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yes.",
+    "start": 0.0,
+    "end": 0.28,
+    "duration": 0.28
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like I said, it's modern life — we're Gen Z, and people our age just can't get away from it.",
+    "start": 0.28,
+    "end": 7.13,
+    "duration": 6.85
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "We share memes, videos, and feelings with each other.",
+    "start": 7.13,
+    "end": 10.89,
+    "duration": 3.76
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's everywhere, so yeah, all of us use it.",
+    "start": 10.89,
+    "end": 13.95,
+    "duration": 3.06
+  }
+]

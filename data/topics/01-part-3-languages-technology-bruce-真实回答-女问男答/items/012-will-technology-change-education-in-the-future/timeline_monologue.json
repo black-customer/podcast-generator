@@ -1,0 +1,65 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, absolutely, 100%.",
+    "start": 0.0,
+    "end": 1.63,
+    "duration": 1.63
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "You know, AI — ChatGPT, Gemini — is developing at a dramatic speed, so it will absolutely change the education system we have right now.",
+    "start": 1.63,
+    "end": 11.61,
+    "duration": 9.98
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But how exactly?",
+    "start": 11.61,
+    "end": 12.75,
+    "duration": 1.14
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I don't know.",
+    "start": 12.75,
+    "end": 13.67,
+    "duration": 0.92
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think there will still be teachers, and AI could be a very useful tool for both teachers and students.",
+    "start": 13.67,
+    "end": 21.06,
+    "duration": 7.39
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And AI will be everywhere — like the air.",
+    "start": 21.06,
+    "end": 24.29,
+    "duration": 3.23
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It'll spread into every small piece of the education system.",
+    "start": 24.29,
+    "end": 28.55,
+    "duration": 4.26
+  }
+]

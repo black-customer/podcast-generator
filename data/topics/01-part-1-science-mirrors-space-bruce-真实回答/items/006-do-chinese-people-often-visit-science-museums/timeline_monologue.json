@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, I think a lot of Chinese people visit science museums.",
+    "start": 0.0,
+    "end": 4.02,
+    "duration": 4.02
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Because parents believe it helps children become smarter — you know, helps grow their IQ.",
+    "start": 4.02,
+    "end": 10.28,
+    "duration": 6.26
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And schools organize trips there too, for the same reason: people think visiting science museums makes you more logical and smarter.",
+    "start": 10.28,
+    "end": 19.12,
+    "duration": 8.84
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So they have this belief, and that's why they go often.",
+    "start": 19.12,
+    "end": 22.8,
+    "duration": 3.68
+  }
+]

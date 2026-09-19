@@ -1,0 +1,74 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Well, of course it depends.",
+    "start": 0.0,
+    "end": 1.53,
+    "duration": 1.53
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "\"Old people\" is a general concept — age only.",
+    "start": 1.53,
+    "end": 4.34,
+    "duration": 2.81
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Even people of the same age have different learning abilities and different learning skills.",
+    "start": 4.34,
+    "end": 9.56,
+    "duration": 5.22
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Some of them can absolutely use technology well.",
+    "start": 9.56,
+    "end": 12.28,
+    "duration": 2.72
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But if a person never built the habit of learning new things — for example, my grandparents, they'd say, \"Oh, I'm old, I don't want to learn new things, I can't learn new things\" — then they just make excuses and can't use technology well.",
+    "start": 12.28,
+    "end": 26.1,
+    "duration": 13.82
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I think it depends on the person's personality.",
+    "start": 26.1,
+    "end": 28.94,
+    "duration": 2.84
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Someone like me — when I'm old, I'll still be following the latest technology trends, because I like learning new things.",
+    "start": 28.94,
+    "end": 36.06,
+    "duration": 7.12
+  },
+  {
+    "id": 7,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "The future of technology will be brilliant, and I'll definitely be into it and use it well — maybe even better than my own children.",
+    "start": 36.06,
+    "end": 43.81,
+    "duration": 7.75
+  }
+]

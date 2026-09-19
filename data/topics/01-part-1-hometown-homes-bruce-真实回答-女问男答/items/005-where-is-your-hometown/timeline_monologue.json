@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "My hometown is Shangrao, in Jiangxi province.",
+    "start": 0.0,
+    "end": 3.12,
+    "duration": 3.12
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's a developing city — I can tell you it's not very developed, honestly.",
+    "start": 3.12,
+    "end": 8.56,
+    "duration": 5.44
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's less developed than most places, just a small town, really.",
+    "start": 8.56,
+    "end": 12.98,
+    "duration": 4.42
+  }
+]

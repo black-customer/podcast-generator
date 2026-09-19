@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, of course, I use them both very frequently — almost every day.",
+    "start": 0.0,
+    "end": 4.85,
+    "duration": 4.85
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "My smartphone, absolutely, every day.",
+    "start": 4.85,
+    "end": 7.32,
+    "duration": 2.47
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And the computer, in recent months, every day as well — because I use it to learn English.",
+    "start": 7.32,
+    "end": 13.64,
+    "duration": 6.32
+  }
+]

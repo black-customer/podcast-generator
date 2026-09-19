@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Right now I'm living in a dormitory — a six-person room.",
+    "start": 0.0,
+    "end": 3.76,
+    "duration": 3.76
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I just have one desk, and it's a two-floor setup: the first floor is the desk, and the second floor is my bed.",
+    "start": 3.76,
+    "end": 10.6,
+    "duration": 6.84
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "On the desk there are some books, my computer, some cups, and other little things.",
+    "start": 10.6,
+    "end": 15.7,
+    "duration": 5.1
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's just a very normal room.",
+    "start": 15.7,
+    "end": 17.5,
+    "duration": 1.8
+  }
+]

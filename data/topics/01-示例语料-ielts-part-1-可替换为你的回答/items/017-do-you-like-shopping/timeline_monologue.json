@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I am pretty indifferent, to be honest.",
+    "start": 0.0,
+    "end": 2.77,
+    "duration": 2.77
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I only buy what I need.",
+    "start": 2.77,
+    "end": 4.45,
+    "duration": 1.68
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Window shopping is just not my thing.",
+    "start": 4.45,
+    "end": 7.14,
+    "duration": 2.69
+  }
+]

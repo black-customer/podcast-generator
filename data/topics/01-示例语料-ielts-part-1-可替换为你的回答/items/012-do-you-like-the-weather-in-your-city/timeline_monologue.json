@@ -1,0 +1,20 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It is okay, I guess.",
+    "start": 0.0,
+    "end": 1.44,
+    "duration": 1.44
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Summers are brutally hot, but winters are actually pretty nice, so it balances out.",
+    "start": 1.44,
+    "end": 7.43,
+    "duration": 5.99
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's a small place, and it's still underdeveloped.",
+    "start": 0.0,
+    "end": 3.38,
+    "duration": 3.38
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "The people there speak in the local accent — they speak dialect.",
+    "start": 3.38,
+    "end": 8.02,
+    "duration": 4.64
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And actually, my real home is in the hills — I lived in a mountain area, a very small and remote part of the city.",
+    "start": 8.02,
+    "end": 16.04,
+    "duration": 8.02
+  }
+]

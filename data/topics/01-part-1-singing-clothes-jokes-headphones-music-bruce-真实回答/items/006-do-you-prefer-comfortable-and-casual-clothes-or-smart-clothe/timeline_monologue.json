@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I prefer comfortable clothes, because they help me feel relaxed — like this shirt I'm wearing right now, it's really comfortable.",
+    "start": 0.0,
+    "end": 7.59,
+    "duration": 7.59
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And about appearance: comfortable doesn't mean not smart, you know?",
+    "start": 7.59,
+    "end": 11.4,
+    "duration": 3.81
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "With the right matching, you can wear comfortable clothes and still look good.",
+    "start": 11.4,
+    "end": 15.84,
+    "duration": 4.44
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But for specific occasions — like a job interview, or an opportunity, or meeting someone important — wearing smart clothes matters too.",
+    "start": 15.84,
+    "end": 23.77,
+    "duration": 7.93
+  }
+]

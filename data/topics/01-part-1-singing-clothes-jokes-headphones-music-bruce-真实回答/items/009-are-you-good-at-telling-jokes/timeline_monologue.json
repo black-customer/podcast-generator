@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, I'm really, really good at this.",
+    "start": 0.0,
+    "end": 2.1,
+    "duration": 2.1
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I consider myself a very humorous person — I can always make my friends laugh out loud.",
+    "start": 2.1,
+    "end": 7.15,
+    "duration": 5.05
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And I think jokes are a great thing.",
+    "start": 7.15,
+    "end": 9.14,
+    "duration": 1.99
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "If a person doesn't have any jokes in their life, I think their life is totally a mess — a boring mess, boring as hell.",
+    "start": 9.14,
+    "end": 15.96,
+    "duration": 6.82
+  }
+]

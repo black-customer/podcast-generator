@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Absolutely AI — like ChatGPT, and Doubao here in China.",
+    "start": 0.0,
+    "end": 4.19,
+    "duration": 4.19
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "AI is really, really useful and widely used.",
+    "start": 4.19,
+    "end": 7.29,
+    "duration": 3.1
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think everyone in this generation must use AI — not \"should,\" must.",
+    "start": 7.29,
+    "end": 12.46,
+    "duration": 5.17
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I use it to solve problems I meet in my studies, to communicate in English, and to improve my English as well.",
+    "start": 12.46,
+    "end": 20.19,
+    "duration": 7.73
+  }
+]

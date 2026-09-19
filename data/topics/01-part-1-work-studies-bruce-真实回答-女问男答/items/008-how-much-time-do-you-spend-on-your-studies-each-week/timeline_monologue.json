@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It really depends, because I'm not a very regular person — my study time depends on my mood.",
+    "start": 0.0,
+    "end": 6.53,
+    "duration": 6.53
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Sometimes I spend about four hours a day, which is 28 hours a week.",
+    "start": 6.53,
+    "end": 11.06,
+    "duration": 4.53
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But sometimes I study more, and sometimes less.",
+    "start": 11.06,
+    "end": 14.24,
+    "duration": 3.18
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So on average, maybe around 30 hours a week.",
+    "start": 14.24,
+    "end": 17.21,
+    "duration": 2.97
+  }
+]

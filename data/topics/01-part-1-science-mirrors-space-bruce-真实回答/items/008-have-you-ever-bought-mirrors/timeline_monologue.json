@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yes, of course.",
+    "start": 0.0,
+    "end": 0.86,
+    "duration": 0.86
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I bought one for shaving — I need to see whether I've shaved cleanly.",
+    "start": 0.86,
+    "end": 5.09,
+    "duration": 4.23
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And also when I put on facial cream, I need to check that I've applied it properly and there's no white stuff left on my face.",
+    "start": 5.09,
+    "end": 12.34,
+    "duration": 7.25
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That would look strange.",
+    "start": 12.34,
+    "end": 13.71,
+    "duration": 1.37
+  }
+]

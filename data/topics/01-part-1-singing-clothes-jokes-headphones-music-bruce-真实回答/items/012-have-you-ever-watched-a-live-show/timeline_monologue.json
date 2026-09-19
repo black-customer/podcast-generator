@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yes, I watched one when I was a freshman — my first time at a live show.",
+    "start": 0.0,
+    "end": 4.56,
+    "duration": 4.56
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It was in a huge place — like a stadium, I guess, not a museum, just a really, really enormous venue.",
+    "start": 4.56,
+    "end": 10.84,
+    "duration": 6.28
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "When I sat there, I thought, wow, this feels so unreal.",
+    "start": 10.84,
+    "end": 14.12,
+    "duration": 3.28
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I couldn't believe I was sitting there watching my favorite singer right in front of me — well, there was still a distance, but I could actually see them.",
+    "start": 14.12,
+    "end": 23.56,
+    "duration": 9.44
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "The vibe, the people around you, the performance — just amazing.",
+    "start": 23.56,
+    "end": 27.64,
+    "duration": 4.08
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Totally unreal.",
+    "start": 27.64,
+    "end": 28.53,
+    "duration": 0.89
+  }
+]

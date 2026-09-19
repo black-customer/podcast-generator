@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Honestly, I don't really know the difference between a house and an apartment, because I come from a developing city — we don't have that distinction there.",
+    "start": 0.0,
+    "end": 9.42,
+    "duration": 9.42
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I always just called it a house.",
+    "start": 9.42,
+    "end": 11.3,
+    "duration": 1.88
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I guess a house is maybe bigger than an apartment, or maybe cheaper?",
+    "start": 11.3,
+    "end": 15.46,
+    "duration": 4.16
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Based on that, I'd say I prefer living in a house.",
+    "start": 15.46,
+    "end": 18.39,
+    "duration": 2.93
+  }
+]

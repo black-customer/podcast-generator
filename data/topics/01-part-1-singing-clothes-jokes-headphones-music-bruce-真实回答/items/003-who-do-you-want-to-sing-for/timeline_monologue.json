@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Oh, basically just me, myself.",
+    "start": 0.0,
+    "end": 2.01,
+    "duration": 2.01
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Maybe later, when I have a girlfriend, or in specific situations — like on someone's birthday, I would sing a birthday song for them.",
+    "start": 2.01,
+    "end": 11.23,
+    "duration": 9.22
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Or on Father's Day or Mother's Day, I would sing for my parents.",
+    "start": 11.23,
+    "end": 15.52,
+    "duration": 4.29
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But most of the time, I just sing for myself, to express my feelings.",
+    "start": 15.52,
+    "end": 20.14,
+    "duration": 4.62
+  }
+]

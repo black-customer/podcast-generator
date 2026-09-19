@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Actually yes, but not like a school teacher — primary school, high school, that kind of thing.",
+    "start": 0.0,
+    "end": 6.15,
+    "duration": 6.15
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I want to be someone who passes knowledge on to other people.",
+    "start": 6.15,
+    "end": 9.96,
+    "duration": 3.81
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "English, AI, anything I'm good at — I'd teach people how to do things the way I do them.",
+    "start": 9.96,
+    "end": 15.74,
+    "duration": 5.78
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So yeah, in that sense, I do want to be a teacher.",
+    "start": 15.74,
+    "end": 18.86,
+    "duration": 3.12
+  }
+]

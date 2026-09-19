@@ -1,0 +1,20 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "As a kid I was obsessed with fried chicken.",
+    "start": 0.0,
+    "end": 3.1,
+    "duration": 3.1
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Looking back now, that was probably not the healthiest obsession.",
+    "start": 3.1,
+    "end": 7.79,
+    "duration": 4.69
+  }
+]

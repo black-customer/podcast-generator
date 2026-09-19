@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "No, I haven't, not properly.",
+    "start": 0.0,
+    "end": 1.7,
+    "duration": 1.7
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "School didn't really teach me how to sing — they just taught me knowledge about music, like how to recognize song types, how to learn a new song, its lyrics, the background story, stuff like that.",
+    "start": 1.7,
+    "end": 13.86,
+    "duration": 12.16
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But they never taught me how to sing a song better, you know.",
+    "start": 13.86,
+    "end": 17.55,
+    "duration": 3.69
+  }
+]

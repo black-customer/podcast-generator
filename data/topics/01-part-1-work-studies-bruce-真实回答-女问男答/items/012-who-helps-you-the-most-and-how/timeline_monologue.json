@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "My first thought is my parents — my father and mother help me the most, of course.",
+    "start": 0.0,
+    "end": 5.57,
+    "duration": 5.57
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But recently, the thing that helps me the most is AI, definitely AI.",
+    "start": 5.57,
+    "end": 9.95,
+    "duration": 4.38
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Whenever I have a question, I just ask AI and it helps me solve the problem — it gives me the answer, or the instructions, and I follow them and get it done.",
+    "start": 9.95,
+    "end": 20.35,
+    "duration": 10.4
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So in this area, AI definitely helps me the most.",
+    "start": 20.35,
+    "end": 23.51,
+    "duration": 3.16
+  }
+]

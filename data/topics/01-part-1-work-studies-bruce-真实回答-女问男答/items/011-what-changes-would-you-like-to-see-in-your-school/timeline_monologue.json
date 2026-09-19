@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I have a lot to say about this, but mainly — the takeout situation.",
+    "start": 0.0,
+    "end": 4.08,
+    "duration": 4.08
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I usually order takeout at school, but my school doesn't offer a proper place to put it.",
+    "start": 4.08,
+    "end": 9.1,
+    "duration": 5.02
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Everything just gets left at the gate, and some people go there and pick up takeout that isn't even theirs — they basically steal other people's food.",
+    "start": 9.1,
+    "end": 17.91,
+    "duration": 8.81
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I really wish my school would build a takeout cupboard, or at least a better place to store it, so our takeout doesn't get stolen so easily.",
+    "start": 17.91,
+    "end": 26.07,
+    "duration": 8.16
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think music isn't that different from books in this sense — different generations face different problems.",
+    "start": 0.0,
+    "end": 6.7,
+    "duration": 6.7
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "The older generation might have worried about earning money, about moving to a bigger city to make a living.",
+    "start": 6.7,
+    "end": 13.13,
+    "duration": 6.43
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "The new generation faces more problems about emotions, private affairs, personal relationships.",
+    "start": 13.13,
+    "end": 18.79,
+    "duration": 5.66
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Because life has gotten better, the country has developed, so we face different problems now.",
+    "start": 18.79,
+    "end": 24.33,
+    "duration": 5.54
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And music is created by singers to share their experiences and express their emotions.",
+    "start": 24.33,
+    "end": 29.45,
+    "duration": 5.12
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So different generations have different music — there are some common things, but there are differences too.",
+    "start": 29.45,
+    "end": 36.15,
+    "duration": 6.7
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's because of the generation, because of the era, I think.",
+    "start": 36.15,
+    "end": 39.71,
+    "duration": 3.56
+  }
+]

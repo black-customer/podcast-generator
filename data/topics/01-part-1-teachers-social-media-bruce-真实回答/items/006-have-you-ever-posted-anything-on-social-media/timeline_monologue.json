@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Of course.",
+    "start": 0.0,
+    "end": 0.57,
+    "duration": 0.57
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think in modern life, most of us have posted something at some point.",
+    "start": 0.57,
+    "end": 4.65,
+    "duration": 4.08
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I've posted text about what I'm doing, shared my thoughts and ideas, and maybe some photos of my achievements in games.",
+    "start": 4.65,
+    "end": 11.49,
+    "duration": 6.84
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Mostly it's just little posts to share how I'm feeling.",
+    "start": 11.49,
+    "end": 14.65,
+    "duration": 3.16
+  }
+]

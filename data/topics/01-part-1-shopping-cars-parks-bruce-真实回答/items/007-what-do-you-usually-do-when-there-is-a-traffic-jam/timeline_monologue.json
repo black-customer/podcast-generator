@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I just play on my phone.",
+    "start": 0.0,
+    "end": 1.84,
+    "duration": 1.84
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "What else can I do?",
+    "start": 1.84,
+    "end": 3.3,
+    "duration": 1.46
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'm just a passenger, remember?",
+    "start": 3.3,
+    "end": 5.68,
+    "duration": 2.38
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So — phone out, and hope the traffic jam clears up quickly.",
+    "start": 5.68,
+    "end": 10.55,
+    "duration": 4.87
+  }
+]

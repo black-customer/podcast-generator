@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I wouldn't say I love doing it, because I'm not that handsome, honestly.",
+    "start": 0.0,
+    "end": 4.25,
+    "duration": 4.25
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But I do it often — maybe twice a day.",
+    "start": 4.25,
+    "end": 6.76,
+    "duration": 2.51
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Because when I go out, I need to check that I look fine, you know?",
+    "start": 6.76,
+    "end": 10.65,
+    "duration": 3.89
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's not that I enjoy looking at myself — it's more like a necessity.",
+    "start": 10.65,
+    "end": 14.99,
+    "duration": 4.34
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I just need to make sure I look presentable.",
+    "start": 14.99,
+    "end": 17.58,
+    "duration": 2.59
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Honestly, I don't have a five-year plan — only a two or three-year one.",
+    "start": 0.0,
+    "end": 4.7,
+    "duration": 4.7
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So my plan is to improve my English speaking, from IELTS band 6 to band 8 or 8.5.",
+    "start": 4.7,
+    "end": 9.74,
+    "duration": 5.04
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Then I'd work as an IELTS teacher, teaching English to others — that way I keep improving my own English while earning money from it.",
+    "start": 9.74,
+    "end": 18.3,
+    "duration": 8.56
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And in the meantime, AI is developing so fast that I think everyone should learn it.",
+    "start": 18.3,
+    "end": 23.53,
+    "duration": 5.23
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I'll also study AI and try to become an AI expert in the next few years.",
+    "start": 23.53,
+    "end": 28.21,
+    "duration": 4.68
+  }
+]

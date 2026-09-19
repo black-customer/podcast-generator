@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "My major is computer science, so I study a lot of subjects related to computers — like AI-assisted coding, which people call vibe coding now.",
+    "start": 0.0,
+    "end": 9.01,
+    "duration": 9.01
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's a new term.",
+    "start": 9.01,
+    "end": 10.0,
+    "duration": 0.99
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And software development as well.",
+    "start": 10.0,
+    "end": 12.04,
+    "duration": 2.04
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Also, I'm preparing for the IELTS, so I'm studying English — speaking, reading, listening, and writing.",
+    "start": 12.04,
+    "end": 18.7,
+    "duration": 6.66
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'm more into in-store shopping, to be honest.",
+    "start": 0.0,
+    "end": 2.63,
+    "duration": 2.63
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "In a store you can see things and touch them — I think touching is the most important part.",
+    "start": 2.63,
+    "end": 8.09,
+    "duration": 5.46
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "There's a whole different experience: not just seeing, but touching, trying things on.",
+    "start": 8.09,
+    "end": 13.01,
+    "duration": 4.92
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But online shopping has its advantages too — it's so accessible.",
+    "start": 13.01,
+    "end": 16.93,
+    "duration": 3.92
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So mostly I do online shopping, but in my heart I prefer stores.",
+    "start": 16.93,
+    "end": 20.59,
+    "duration": 3.66
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Actually, if the technology ever developed to the point where I could just click my phone and be shopping in a real store — then I would definitely choose in-store shopping.",
+    "start": 20.59,
+    "end": 30.72,
+    "duration": 10.13
+  }
+]

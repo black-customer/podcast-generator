@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, absolutely.",
+    "start": 0.0,
+    "end": 0.98,
+    "duration": 0.98
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Because language is a communication tool — I think languages are communication tools.",
+    "start": 0.98,
+    "end": 6.13,
+    "duration": 5.15
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "If you can speak another language, you can communicate with more people.",
+    "start": 6.13,
+    "end": 10.27,
+    "duration": 4.14
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Maybe you have some other ability that can solve their needs, or at least you could teach others who want to learn this language.",
+    "start": 10.27,
+    "end": 17.69,
+    "duration": 7.42
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So of course it helps at work — well, at some work, it depends on what you do.",
+    "start": 17.69,
+    "end": 22.44,
+    "duration": 4.75
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But generally, I think speaking another language gives you more advantages at work.",
+    "start": 22.44,
+    "end": 27.22,
+    "duration": 4.78
+  }
+]

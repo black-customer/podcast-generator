@@ -1,0 +1,65 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "To some extent, I think it has made our lives easier.",
+    "start": 0.0,
+    "end": 3.08,
+    "duration": 3.08
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But actually, in some ways, technology has made our lives harder — because we have more options now.",
+    "start": 3.08,
+    "end": 9.15,
+    "duration": 6.07
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "We need to put real effort into thinking about which action to take.",
+    "start": 9.15,
+    "end": 13.1,
+    "duration": 3.95
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "For example, if I want to learn English, there are tons of materials — which one should I use for input?",
+    "start": 13.1,
+    "end": 19.41,
+    "duration": 6.31
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And there are so many methods: shadowing, communicating with people, all kinds of apps.",
+    "start": 19.41,
+    "end": 24.47,
+    "duration": 5.06
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Too many options just make it harder to make a decision and take action.",
+    "start": 24.47,
+    "end": 28.66,
+    "duration": 4.19
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So generally, technology makes life much more convenient — but it also gives our brains more things to think about.",
+    "start": 28.66,
+    "end": 35.6,
+    "duration": 6.94
+  }
+]

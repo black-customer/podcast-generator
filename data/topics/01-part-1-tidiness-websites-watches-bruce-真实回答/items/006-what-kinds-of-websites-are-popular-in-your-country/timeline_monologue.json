@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Oh, in China, social media and online shopping websites are extremely popular.",
+    "start": 0.0,
+    "end": 5.15,
+    "duration": 5.15
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like Taobao — it's kind of the Amazon of China.",
+    "start": 5.15,
+    "end": 8.55,
+    "duration": 3.4
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "There's also Bilibili, like I mentioned, and the Chinese TikTok, and this app called Xiaohongshu — the \"red note\" app.",
+    "start": 8.55,
+    "end": 16.64,
+    "duration": 8.09
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "They're all hugely popular in our country.",
+    "start": 16.64,
+    "end": 19.41,
+    "duration": 2.77
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Hmm, maybe physics.",
+    "start": 0.0,
+    "end": 1.09,
+    "duration": 1.09
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Because physics is everywhere in real life — you can see it in anything.",
+    "start": 1.09,
+    "end": 5.5,
+    "duration": 4.41
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like, why can Spider-Man climb walls without falling?",
+    "start": 5.5,
+    "end": 8.55,
+    "duration": 3.05
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Stuff like that.",
+    "start": 8.55,
+    "end": 9.47,
+    "duration": 0.92
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "You can find so many scenes in daily life that show physics, and I think that's really interesting.",
+    "start": 9.47,
+    "end": 15.17,
+    "duration": 5.7
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It expands to so many things around us.",
+    "start": 15.17,
+    "end": 17.42,
+    "duration": 2.25
+  }
+]

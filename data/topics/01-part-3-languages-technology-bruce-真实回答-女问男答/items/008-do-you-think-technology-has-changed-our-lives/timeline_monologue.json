@@ -1,0 +1,74 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, absolutely, technology has changed our lives.",
+    "start": 0.0,
+    "end": 3.07,
+    "duration": 3.07
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Since we have phones and apps, we can connect with people over really long distances — and even see their faces.",
+    "start": 3.07,
+    "end": 10.09,
+    "duration": 7.02
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Technology also helps us learn skills more easily.",
+    "start": 10.09,
+    "end": 13.1,
+    "duration": 3.01
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like, I can learn English from videos now.",
+    "start": 13.1,
+    "end": 15.63,
+    "duration": 2.53
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But in the old days, if you wanted to learn a new language, you had to actually go there and communicate with the local people, without any translations.",
+    "start": 15.63,
+    "end": 24.85,
+    "duration": 9.22
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Nowadays we have AI and apps to learn languages — it's so useful.",
+    "start": 24.85,
+    "end": 29.04,
+    "duration": 4.19
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "In fact, I'm talking with you over a computer right now, and we're talking about technology.",
+    "start": 29.04,
+    "end": 34.58,
+    "duration": 5.54
+  },
+  {
+    "id": 7,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Even the IELTS test can be taken online these days.",
+    "start": 34.58,
+    "end": 37.67,
+    "duration": 3.09
+  }
+]

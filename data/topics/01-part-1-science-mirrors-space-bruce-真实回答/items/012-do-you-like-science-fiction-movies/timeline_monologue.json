@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yes, I like science fiction movies.",
+    "start": 0.0,
+    "end": 2.05,
+    "duration": 2.05
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "They're very interesting — the most important thing is they show you things you've never seen before.",
+    "start": 2.05,
+    "end": 8.22,
+    "duration": 6.17
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "They broaden your horizon and motivate you to hope something about the future.",
+    "start": 8.22,
+    "end": 12.78,
+    "duration": 4.56
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Not too hopeful, but just...",
+    "start": 12.78,
+    "end": 14.68,
+    "duration": 1.9
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "a kind of thought that makes you imagine how amazing the future could be.",
+    "start": 14.68,
+    "end": 18.94,
+    "duration": 4.26
+  }
+]

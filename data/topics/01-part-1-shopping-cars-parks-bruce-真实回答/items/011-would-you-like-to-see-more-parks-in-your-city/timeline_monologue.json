@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yes, of course.",
+    "start": 0.0,
+    "end": 1.06,
+    "duration": 1.06
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Some parks are really remote from me — there's a big distance.",
+    "start": 1.06,
+    "end": 5.75,
+    "duration": 4.69
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I hope there will be more beautiful gardens and parks close to where I live.",
+    "start": 5.75,
+    "end": 11.31,
+    "duration": 5.56
+  }
+]

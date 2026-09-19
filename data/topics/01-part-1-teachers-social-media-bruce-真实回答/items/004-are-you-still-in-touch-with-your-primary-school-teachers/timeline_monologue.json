@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Absolutely not.",
+    "start": 0.0,
+    "end": 0.85,
+    "duration": 0.85
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's been a really long time — like twelve years.",
+    "start": 0.85,
+    "end": 3.88,
+    "duration": 3.03
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I haven't been in touch with them at all, and back then I didn't have a deep relationship with them either.",
+    "start": 3.88,
+    "end": 9.95,
+    "duration": 6.07
+  }
+]

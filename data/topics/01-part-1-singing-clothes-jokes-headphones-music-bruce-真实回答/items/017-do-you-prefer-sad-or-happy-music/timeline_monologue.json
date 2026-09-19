@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Actually, I don't have a preference, but if you make me say it, I'd go with happy music.",
+    "start": 0.0,
+    "end": 5.07,
+    "duration": 5.07
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Although I think both kinds have a real reason to exist.",
+    "start": 5.07,
+    "end": 8.3,
+    "duration": 3.23
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "When I'm sad, I want to listen to happy music — being sad already feels disgusting, and I need the vibe to match if I want to be emotional.",
+    "start": 8.3,
+    "end": 16.57,
+    "duration": 8.27
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And when I'm happy, happy music is very enjoyable.",
+    "start": 16.57,
+    "end": 19.45,
+    "duration": 2.88
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But if I'm happy and I listen to sad music, it just feels — wow, so out of place.",
+    "start": 19.45,
+    "end": 24.38,
+    "duration": 4.93
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I think it depends on my emotion at the moment.",
+    "start": 24.38,
+    "end": 27.27,
+    "duration": 2.89
+  }
+]

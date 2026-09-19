@@ -1,0 +1,20 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I use them when I want to listen to music or watch videos.",
+    "start": 0.0,
+    "end": 3.88,
+    "duration": 3.88
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Basically whenever I'm using my phone in a public situation, I'll put on headphones.",
+    "start": 3.88,
+    "end": 9.51,
+    "duration": 5.63
+  }
+]

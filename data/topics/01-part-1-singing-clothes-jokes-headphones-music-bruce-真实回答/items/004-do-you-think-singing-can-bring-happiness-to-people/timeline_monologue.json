@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, absolutely, of course.",
+    "start": 0.0,
+    "end": 1.66,
+    "duration": 1.66
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That's the reason so many people love listening to music — it makes them feel better.",
+    "start": 1.66,
+    "end": 6.96,
+    "duration": 5.3
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Singing is, at its core, about expressing feelings, and when you sing, other people can feel what you feel — it's like a strengthened way of sharing emotions.",
+    "start": 6.96,
+    "end": 16.59,
+    "duration": 9.63
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And maybe some songs match exactly what you're going through.",
+    "start": 16.59,
+    "end": 20.2,
+    "duration": 3.61
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Then you realize that somewhere out there, someone has felt the same way as you — and you feel you're not alone.",
+    "start": 20.2,
+    "end": 27.1,
+    "duration": 6.9
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That's how singing brings people happiness.",
+    "start": 27.1,
+    "end": 29.65,
+    "duration": 2.55
+  }
+]

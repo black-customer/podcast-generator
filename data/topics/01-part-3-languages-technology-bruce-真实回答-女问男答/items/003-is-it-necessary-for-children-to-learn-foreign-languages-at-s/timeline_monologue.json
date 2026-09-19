@@ -1,0 +1,83 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, of course, I think it's very necessary — especially in China.",
+    "start": 0.0,
+    "end": 4.06,
+    "duration": 4.06
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "We speak Mandarin here, and in this world, English is the master language.",
+    "start": 4.06,
+    "end": 8.26,
+    "duration": 4.2
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "There are so many people speaking English, and if you want to communicate with them, you need to speak English too.",
+    "start": 8.26,
+    "end": 14.79,
+    "duration": 6.53
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Once you learn English well, you broaden your horizon — it's like opening a new gate to the world.",
+    "start": 14.79,
+    "end": 20.61,
+    "duration": 5.82
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "You gain access to so many things: different people, different scenery, different cultures.",
+    "start": 20.61,
+    "end": 25.78,
+    "duration": 5.17
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And learning a new language can also make people smarter — it activates your brain and improves your critical thinking, because you need a lot of input, comprehensive input.",
+    "start": 25.78,
+    "end": 35.86,
+    "duration": 10.08
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "For example, I learn English from watching TV shows, articles, English novels — and I've gotten to know so many English writers through that.",
+    "start": 35.86,
+    "end": 44.12,
+    "duration": 8.26
+  },
+  {
+    "id": 7,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "This input improved my critical thinking and broadened my horizon.",
+    "start": 44.12,
+    "end": 47.87,
+    "duration": 3.75
+  },
+  {
+    "id": 8,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So it's a very valuable skill and an impressive experience.",
+    "start": 47.87,
+    "end": 51.23,
+    "duration": 3.36
+  }
+]

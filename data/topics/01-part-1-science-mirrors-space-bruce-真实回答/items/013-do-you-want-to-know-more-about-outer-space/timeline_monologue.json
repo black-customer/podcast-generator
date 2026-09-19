@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yes, absolutely.",
+    "start": 0.0,
+    "end": 1.04,
+    "duration": 1.04
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'm very curious about all these things.",
+    "start": 1.04,
+    "end": 3.63,
+    "duration": 2.59
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I've already spent a lot of time searching about aliens — do they really exist?",
+    "start": 3.63,
+    "end": 9.05,
+    "duration": 5.42
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Is there any evidence?",
+    "start": 9.05,
+    "end": 10.48,
+    "duration": 1.43
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I've actually done real digging on this, watching videos about it for hours.",
+    "start": 10.48,
+    "end": 15.41,
+    "duration": 4.93
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'm very curious.",
+    "start": 15.41,
+    "end": 16.51,
+    "duration": 1.1
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I would say I'm kind of lazy, so my things get messy sometimes.",
+    "start": 0.0,
+    "end": 4.03,
+    "duration": 4.03
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But here's the thing — I do like tidy things, it's just that...",
+    "start": 4.03,
+    "end": 8.35,
+    "duration": 4.32
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "if things can become messy automatically, then keeping them tidy is a losing battle.",
+    "start": 8.35,
+    "end": 13.73,
+    "duration": 5.38
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So I'd say I like tidiness in theory, but laziness wins.",
+    "start": 13.73,
+    "end": 17.32,
+    "duration": 3.59
+  }
+]

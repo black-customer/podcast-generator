@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "When it's fine to let my phone play out loud — like in my dormitory or at home.",
+    "start": 0.0,
+    "end": 4.92,
+    "duration": 4.92
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Or when it's inappropriate to use headphones — like in a classroom when the teacher is giving a lecture right in front of you.",
+    "start": 4.92,
+    "end": 12.61,
+    "duration": 7.69
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Wearing headphones then is just disrespectful, I think.",
+    "start": 12.61,
+    "end": 15.85,
+    "duration": 3.24
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So in that case, I won't use them.",
+    "start": 15.85,
+    "end": 17.85,
+    "duration": 2.0
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'll still play on my phone, but silently, without headphones.",
+    "start": 17.85,
+    "end": 21.5,
+    "duration": 3.65
+  }
+]

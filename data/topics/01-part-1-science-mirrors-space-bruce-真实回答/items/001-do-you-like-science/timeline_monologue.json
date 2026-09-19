@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Yeah, I'm really into science.",
+    "start": 0.0,
+    "end": 2.04,
+    "duration": 2.04
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Although my grades in science weren't great, I find it fascinating — it's the curiosity thing, you know?",
+    "start": 2.04,
+    "end": 9.41,
+    "duration": 7.37
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I love seeing amazing stuff, like how two stars have gravity and one just orbits the other, or how a black hole comes into being, or how chemical reactions happen.",
+    "start": 9.41,
+    "end": 20.49,
+    "duration": 11.08
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I'm really into all of it.",
+    "start": 20.49,
+    "end": 22.26,
+    "duration": 1.77
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It used to be good, because there was a subway station right near my home — I could just take the subway anywhere.",
+    "start": 0.0,
+    "end": 7.66,
+    "duration": 7.66
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But I recently moved to another place, and the transport has become much worse.",
+    "start": 7.66,
+    "end": 12.77,
+    "duration": 5.11
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Now I'm in a remote area: I have to take a bus first, then transfer to the subway station, and only then take the subway into the city.",
+    "start": 12.77,
+    "end": 21.5,
+    "duration": 8.73
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's really not good.",
+    "start": 21.5,
+    "end": 22.86,
+    "duration": 1.36
+  }
+]

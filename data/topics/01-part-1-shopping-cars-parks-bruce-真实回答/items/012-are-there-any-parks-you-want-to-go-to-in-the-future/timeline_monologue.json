@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Hmm, not really.",
+    "start": 0.0,
+    "end": 1.04,
+    "duration": 1.04
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I don't know many parks, to be honest — I couldn't tell you if there are any especially beautiful ones around.",
+    "start": 1.04,
+    "end": 8.49,
+    "duration": 7.45
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So no, I don't have any plans to visit a specific park.",
+    "start": 8.49,
+    "end": 12.07,
+    "duration": 3.58
+  }
+]

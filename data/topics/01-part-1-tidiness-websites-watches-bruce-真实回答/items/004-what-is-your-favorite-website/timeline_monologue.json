@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "My favorite would be YouTube.",
+    "start": 0.0,
+    "end": 1.82,
+    "duration": 1.82
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think it's the biggest video website in the world, and most people use it frequently because there's just such a huge amount of knowledge and information there.",
+    "start": 1.82,
+    "end": 11.97,
+    "duration": 10.15
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Everyone can find videos they're interested in — and so can I.",
+    "start": 11.97,
+    "end": 16.14,
+    "duration": 4.17
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I watch vlogs, gaming videos, sometimes just streams.",
+    "start": 16.14,
+    "end": 19.46,
+    "duration": 3.32
+  }
+]

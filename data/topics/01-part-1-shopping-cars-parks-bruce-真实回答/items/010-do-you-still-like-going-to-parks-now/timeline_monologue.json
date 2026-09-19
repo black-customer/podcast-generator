@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I couldn't say \"still,\" because I didn't really like them back then — but I like going to parks now.",
+    "start": 0.0,
+    "end": 6.48,
+    "duration": 6.48
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I've gotten really into this peaceful feeling, you know?",
+    "start": 6.48,
+    "end": 9.95,
+    "duration": 3.47
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "When I'm in a park, I can enjoy the beautiful scenery, watch what people are doing, watch their lives, see the animals.",
+    "start": 9.95,
+    "end": 17.33,
+    "duration": 7.38
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "It's just very peaceful.",
+    "start": 17.33,
+    "end": 18.82,
+    "duration": 1.49
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So yes, I like parks now.",
+    "start": 18.82,
+    "end": 20.38,
+    "duration": 1.56
+  }
+]
