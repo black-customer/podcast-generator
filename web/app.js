@@ -1553,6 +1553,147 @@ function mgStartPolling(jobId) {
 /* ---------------- 路由调度 ---------------- */
 
 // 路由令牌：每次导航递增；视图的异步 continuation 写 DOM 前核对，
+// 8. 雅思题库（B01）——URL 参数驱动：#/bank?part=&topic=&q=&page=&sel=
+function bankParams() {
+  const p = new URLSearchParams(location.hash.split("?")[1] || "");
+  return {
+    part: p.get("part") || "1",
+    topic: p.get("topic") || "",
+    q: p.get("q") || "",
+    page: parseInt(p.get("page") || "1", 10) || 1,
+    sel: p.get("sel") || "",
+  };
+}
+
+function bankGo(overrides) {
+  const cur = bankParams();
+  const next = { ...cur, ...overrides };
+  const filterChanged = ["part", "topic", "q"].some(
+    (k) => overrides[k] !== undefined && overrides[k] !== cur[k]
+  );
+  if (filterChanged) next.page = 1;
+  const qs = new URLSearchParams();
+  qs.set("part", next.part);
+  if (next.topic) qs.set("topic", next.topic);
+  if (next.q) qs.set("q", next.q);
+  if (next.page > 1) qs.set("page", String(next.page));
+  if (next.sel) qs.set("sel", next.sel);
+  location.hash = `#/bank?${qs.toString()}`;
+}
+
+async function bankSubmitAnswer(questionId) {
+  const input = document.getElementById("bank-answer-input");
+  const btn = document.getElementById("bank-answer-submit");
+  const answer = (input && input.value || "").trim();
+  if (!answer) { toast("先写下你的回答（中文或英文都可以）"); return; }
+  btn.disabled = true;
+  btn.textContent = "提交中…";
+  try {
+    const res = await api("POST", "/api/bank/answer", { question_id: questionId, answer });
+    toast(`已入库：话题「${res.topic_name}」`);
+    location.hash = `#/topic/${encodeURIComponent(res.topic_id)}`;
+  } catch (e) {
+    toast(`提交失败：${e.message}`);
+    btn.disabled = false;
+    btn.textContent = "提交作答";
+  }
+}
+
+async function BankView(token) {
+  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载雅思题库中…</p>`;
+  const p = bankParams();
+  let data;
+  try {
+    const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&page=${p.page}` +
+      (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
+      (p.q ? `&q=${encodeURIComponent(p.q)}` : "");
+    data = await api("GET", query);
+  } catch (e) {
+    if (viewStale(token)) return;
+    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">题库加载失败：${esc(e.message)}</p>`;
+    return;
+  }
+  if (viewStale(token)) return;
+
+  if (!data.available) {
+    $app.innerHTML = `
+      <div class="hero-banner">
+        <div class="hero-title">雅思题库</div>
+        <div class="hero-desc">题库快照尚未导入。在项目目录运行 <code>python -m server.bank --sync</code>
+        从 RoastDuck 导入题库后刷新本页。</div>
+      </div>`;
+    return;
+  }
+
+  const partTabs = [["1", "Part 1 · 日常问答"], ["2", "Part 2 · 独白描述"], ["3", "Part 3 · 深入讨论"]]
+    .map(([v, label]) =>
+      `<button class="bank-tab ${p.part === v ? "active" : ""}" onclick="bankGo({part: '${v}'})">${label}</button>`
+    ).join("");
+
+  const topicOptions = [`<option value="">全部话题（${data.total}）</option>`]
+    .concat((data.topics || []).map(
+      (t) => `<option value="${esc(t.id)}" ${p.topic === t.id ? "selected" : ""}>${esc(t.name_zh)}（${t.count}）</option>`
+    )).join("");
+
+  const selItem = p.sel ? (data.items.find((it) => it.id === p.sel) || null) : null;
+  const answerCard = selItem ? `
+    <div class="bank-answer-card">
+      <div class="bank-answer-q">${esc(selItem.text)}</div>
+      ${selItem.text_zh ? `<div class="bank-answer-zh">${esc(selItem.text_zh)}</div>` : ""}
+      <textarea id="bank-answer-input" rows="6"
+        placeholder="用中文或英文自由作答——说出你想表达的意思，母语者版本由 Agent 会话改写后生成音频"></textarea>
+      <div class="bank-answer-actions">
+        <button id="bank-answer-submit" class="bank-submit-btn" onclick="bankSubmitAnswer('${esc(selItem.id)}')">提交作答</button>
+        <button class="btn-pill" onclick="bankGo({sel: ''})">收起</button>
+      </div>
+      <p class="bank-answer-hint">提交后条目进入话题「${esc(selItem.topic_name_en || selItem.topic_name)}」；
+      改写与音频生成在工作台或 Agent 会话中完成。</p>
+    </div>` : "";
+
+  const rowsHtml = data.items.map((it) => `
+    <div class="bank-row ${it.id === p.sel ? "selected" : ""}" onclick="bankGo({sel: '${esc(it.id)}'})">
+      <div class="bank-row-text">${esc(it.text)}</div>
+      <div class="bank-row-meta">
+        <span class="bank-topic-tag">${esc(it.topic_name)}</span>
+        ${it.answered ? `<span class="bank-badge">已作答</span>` : ""}
+        ${it.part !== 1 ? `<span class="bank-part-tag">Part ${it.part}</span>` : ""}
+      </div>
+    </div>`).join("");
+
+  const hasPrev = data.page > 1;
+  const hasNext = data.page < data.pageCount;
+
+  $app.innerHTML = `
+    <div class="hero-banner">
+      <div class="hero-title">雅思题库</div>
+      <div class="hero-desc">选题 → 自由作答 → 母语者音频。题目来自本地 RoastDuck 题库快照。</div>
+    </div>
+
+    <div class="bank-toolbar">
+      <div class="bank-tabs">${partTabs}</div>
+      <select class="bank-select" onchange="bankGo({topic: this.value})">${topicOptions}</select>
+      <div class="bank-search">
+        <input id="bank-q" value="${esc(p.q)}" placeholder="搜索题干（中英文）"
+          onkeydown="if(event.key==='Enter')bankGo({q: document.getElementById('bank-q').value.trim()})">
+        <button class="btn-pill" onclick="bankGo({q: document.getElementById('bank-q').value.trim()})">搜索</button>
+      </div>
+    </div>
+
+    ${answerCard}
+
+    <div class="bank-list">
+      ${rowsHtml || `<p style="color:var(--text-sub);padding:24px 0;">没有匹配的题目</p>`}
+    </div>
+
+    ${data.pageCount > 0 ? `
+    <div class="bank-pager">
+      <button class="btn-pill" ${hasPrev ? "" : "disabled"} onclick="bankGo({page: ${data.page - 1}})">上一页</button>
+      <span>第 ${data.page} / ${data.pageCount} 页 · 共 ${data.total} 题</span>
+      <button class="btn-pill" ${hasNext ? "" : "disabled"} onclick="bankGo({page: ${data.page + 1}})">下一页</button>
+    </div>` : ""}
+  `;
+}
+
 // 过期即放弃写入（修审计 A21——快速导航时旧视图覆盖新视图）。
 let routeToken = 0;
 function currentRouteToken() {
@@ -1575,7 +1716,8 @@ function route() {
   const token = ++routeToken;
   const hash = location.hash || "#/topics";
   document.querySelectorAll(".nav-item").forEach(el => {
-    if (el.getAttribute("href") === hash) {
+    const href = el.getAttribute("href");
+    if (href === hash || (hash.startsWith("#/bank") && href === "#/bank")) {
       el.classList.add("active");
     } else {
       el.classList.remove("active");
@@ -1586,6 +1728,11 @@ function route() {
   if (!hash.startsWith("#/manage") && ManageState.pollTimer) {
     clearInterval(ManageState.pollTimer);
     ManageState.pollTimer = null;
+  }
+
+  if (hash.startsWith("#/bank")) {
+    BankView(token);
+    return;
   }
 
   if (hash.startsWith("#/voices")) {

@@ -127,7 +127,7 @@ AC：验收脚本全绿；docs/BASELINE.md 落盘。
 > 决策依据见 CONSTITUTION.md（2026-09-19 增补）。原 M 系列 20/20 完成，
 > 视频字幕卡渲染器已按 Bruce 指示取消删除。本轮 = B01+B02+B03，B04 留下一轮。
 
-### B01 PC 题库 — ACTIVE
+### B01 PC 题库 — DONE (2026-09-19, tag b01；480 题/93 话题/2 题集已同步；17 单测 + e2e 全绿)
 价值：选题→作答→音频闭环的入口（Bruce 优先级 1）。
 数据源：`D:\project\RoastDuck\data\app.db` 只读直读 → 快照 `data/question_bank.json`
 （questions: part 1-3 / text 含 Part2 cue card / textZh / normText 唯一；topics: 中英名/ieltsPart）。

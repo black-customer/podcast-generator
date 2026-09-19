@@ -49,3 +49,6 @@ desktop.ini
 # 例外：初始提交中已跟踪的音频保持跟踪，避免状态不一致
 data/topics/**/audio*.mp3
 data/episodes/*.mp3
+
+# 题库快照：可再生（python -m server.bank --sync），且源自 Bruce 私有 RoastDuck 数据，不入库
+data/question_bank.json

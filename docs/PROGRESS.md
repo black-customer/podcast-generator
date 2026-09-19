@@ -38,5 +38,22 @@
 2. ✅ 工作树清理：删 mobile_video.py、render-video/lan-info 端点、jobs render 任务；
    run.py 保留 --host/--port 参数但默认收回 127.0.0.1（开源后他人安全默认，
    B02 手机导入时用 --host 0.0.0.0）；Wave9 timeline 副产物与试听缓存入库 → commit
-3. ⏳ B01 PC 题库（进行中）
-4. B02 手机 APP；5. B03 分享开源（待做）
+3. ✅ B01 PC 题库（tag b01）：
+   - server/bank.py：只读直读 RoastDuck app.db → data/question_bank.json 快照
+     （480 题/93 话题/2 题集；快照 gitignore，可再生 `python -m server.bank --sync`）
+   - API：GET /api/bank/questions（part/topic/q/page，含话题计数与"已作答"徽标数据）、
+     POST /api/bank/answer（中文→chinese 字段、纯英→natural_english；话题名=题库话题英文名，
+     同名复用否则新建）
+   - 前端 #/bank：Part1/2/3 标签 + 话题下拉 + 搜索 + 分页，URL 参数驱动；Part2 cue card 全文；
+     作答卡提交后跳转话题页
+   - 测试：tests/test_bank.py 17 个（同步只读幂等/查询过滤分页搜索/徽标匹配/语言分派/API）
+     + tests/e2e/test_bank_ui.py（浏览→Part 切换→搜索→作答→话题出现，含清理）
+   - 已作答徽标在真实库验证有效：Bruce 的 Wave 语料题目与题库 norm 匹配命中
+4. ⏳ B02 手机 APP（进行中）；5. B03 分享开源（待做）
+
+## B01 补充工程事实
+
+- e2e 断言注意事项：新作答条目无音频 → 话题页 audio 资源 404 属预期，
+  console 过滤需排除 "Failed to load resource"；话题页条目列表异步加载须 wait_for_selector
+- 题库快照不入 git（.gitignore），公开仓库用户无 RoastDuck 时题库页显示导入引导卡——
+  B03 时决定是否把快照附 Release 供下载

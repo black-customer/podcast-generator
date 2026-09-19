@@ -6,7 +6,18 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, field_validator
 
-from . import assemble, audio, exports, exports_media, jobs, library, production, timeline, tts
+from . import (
+    assemble,
+    audio,
+    bank,
+    exports,
+    exports_media,
+    jobs,
+    library,
+    production,
+    timeline,
+    tts,
+)
 from .config import (
     DATA_DIR,
     FISH_MODELS,
@@ -468,6 +479,76 @@ def api_content_drafts(topic_id: str):
         return production.content_drafts(topic_id)
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
+
+
+# ---------------------------------------------------------------- bank（B01 题库）
+
+
+class BankAnswerIn(BaseModel):
+    question_id: str
+    answer: str
+
+
+@router.get("/bank/questions")
+def api_bank_questions(
+    part: int | None = None,
+    topic: str | None = None,
+    q: str | None = None,
+    page: int = 1,
+    page_size: int = bank.PAGE_SIZE,
+):
+    try:
+        snapshot = bank.load_bank()
+    except FileNotFoundError:
+        return {
+            "available": False,
+            "items": [],
+            "total": 0,
+            "page": 1,
+            "pageCount": 0,
+            "topics": [],
+        }
+    result = bank.query_questions(
+        snapshot,
+        part=part,
+        topic_id=topic,
+        q=q,
+        page=page,
+        page_size=page_size,
+        answered=bank.answered_norms(),
+    )
+    result["available"] = True
+    result["topics"] = bank.bank_topics(snapshot, part=part)
+    return result
+
+
+@router.post("/bank/answer")
+def api_bank_answer(body: BankAnswerIn):
+    try:
+        snapshot = bank.load_bank()
+    except FileNotFoundError as e:
+        raise _err(404, "题库未导入：先运行 python -m server.bank --sync") from e
+    question = bank.find_question(snapshot, body.question_id)
+    if question is None:
+        raise _err(404, "题目不存在")
+    fields = bank.answer_fields(body.answer)
+    if not fields:
+        raise _err(422, "回答不能为空")
+    # 话题映射：题库话题英文名 == 库内话题名（忽略大小写）→ 复用；否则新建
+    topic_name = bank.answer_topic_name(snapshot, question)
+    target = next(
+        (t for t in library.list_topics() if t["name"].strip().casefold() == topic_name.casefold()),
+        None,
+    )
+    if target is None:
+        target = library.create_topic(topic_name)
+    created = library.create_item(target["id"], {"question": question["text"], **fields})
+    return {
+        "topic_id": target["id"],
+        "item_id": created["id"],
+        "topic_name": target["name"],
+        "question": question["text"],
+    }
 
 
 @router.get("/exports/{filename}")
