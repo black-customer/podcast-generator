@@ -119,3 +119,45 @@ AC：干净机器按 README 从零跑通（自动演练）；zip 解压可运行
 WP：全量验收 sweep 脚本；灌 ≥20 条真实语料全链路（含对话+独白）；
 性能/质量基线报告；分享包试分发；与 Bruce 愿景复核会（唯一必到场的门）。
 AC：验收脚本全绿；docs/BASELINE.md 落盘。
+
+---
+
+# 第二程：产品化主线（2026-09-19 PM 讨论定稿）
+
+> 决策依据见 CONSTITUTION.md（2026-09-19 增补）。原 M 系列 20/20 完成，
+> 视频字幕卡渲染器已按 Bruce 指示取消删除。本轮 = B01+B02+B03，B04 留下一轮。
+
+### B01 PC 题库 — ACTIVE
+价值：选题→作答→音频闭环的入口（Bruce 优先级 1）。
+数据源：`D:\project\RoastDuck\data\app.db` 只读直读 → 快照 `data/question_bank.json`
+（questions: part 1-3 / text 含 Part2 cue card / textZh / normText 唯一；topics: 中英名/ieltsPart）。
+快照制而非运行时依赖 RoastDuck；提供重同步命令。
+WP：导入脚本；`GET /api/bank/questions?part=&topic=&q=&page=` + `GET /api/bank/topics`；
+`#/bank` 视图（Part1/2/3 标签 + 话题筛选 + 搜索 + 分页，URL 参数驱动；Part2 cue card 全文；
+已入库条目"已有音频"徽标按题干 norm 匹配）；作答提交 → 对应话题下建 item 进现有链路
+（改写仍由 Agent 会话完成）。
+AC：导入只读幂等（单测）；API 过滤/分页/搜索测试；e2e 浏览→筛选→提交→条目出现。tag b01。
+
+### B02 手机 APP（Capacitor 独立 Android 应用）— PENDING（依赖 B01 题库快照）
+价值：走路/通勤离线收听（Bruce 优先级 2）；形态=独立 APP，局域网网页只是过渡。
+WP：语料包格式（zip：manifest 版本/指纹 + 条目文本 + timeline/alignment + 音频 + 题库快照）
+与 `GET /api/pack/export`；前端 DataSource 抽象（server 模式=fetch API ↔ pack 模式=本地导入，
+列表/播放视图复用，M13 移动布局复用）；`mobile/` Capacitor 工程 + 导入页（LAN 直传 /
+文件选择器两种方式，数据存 APP 沙箱）；APP v1 = 题库浏览（随机来一题）+ 话题条目列表 +
+播放页（音字同步高亮/点句跳转/逐词点亮/翻译层）+ 导入管理。
+AC：pack 导出幂等与完整性单测；pack 模式渲染单测；APK 在模拟器实测播放页同步高亮（截图验收）。tag b02。
+
+### B03 分享开源（交付"可推送状态"）— PENDING（依赖 B02 产出 APK）
+价值：让别人立马体验上（Bruce 优先级 3）；git push 由 Bruce 执行，Agent 只交付可推送状态。
+WP：`git log -S` 全历史脱敏审计（API key 从未入库）；settings.example.json；
+Bruce 真实语料与公开示例语料分离（代码公开/数据私有，RoastDuck 模式）；README 重写
+（愿景 / 5 分钟上手 / fish.audio key 申请教程 + VPN 提示 / APK 安装与语料包导入指引 / FAQ）；
+Release 附 APK + 可移植 zip（复用 M19 package.py 装配）。
+AC：审计无泄漏（脚本验证）；干净检出按 README 跑通演练。tag b03。
+
+### B04 教学内容（下一轮）— PENDING（依赖 B01-B03）
+依据：CONSTITUTION「教学内容设计原则」。
+WP：diff 机制（两种教学模式共用的原料库——我的表达 vs 母语者表达）；
+纯英文双主持教学播客模板（锚定具体雅思题，主持人拓展同类表达变体）；
+16:9 1-3 分钟视频模板；中英结合大众变体（后置）。
+远期可选：中文主持音色；纠错式学员声（含 Bruce 原声方案）。
