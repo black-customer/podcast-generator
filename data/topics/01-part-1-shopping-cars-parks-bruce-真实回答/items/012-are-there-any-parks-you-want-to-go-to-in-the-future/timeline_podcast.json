@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Are there any parks you want to go to in the future?",
+    "start": 0.0,
+    "end": 2.52,
+    "duration": 2.52,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Hmm, not really. I don't know many parks, to be honest — I couldn't tell you if there are any especially beautiful ones around. So no, I don't have any plans to visit a specific park.",
+    "start": 3.13,
+    "end": 12.07,
+    "duration": 8.94,
+    "mode": "sse"
+  }
+]

@@ -1,0 +1,95 @@
+{
+  "topic_id": "01-part-1-shopping-cars-parks-bruce-真实回答",
+  "topic_name": "Part 1 · Shopping, Cars & Parks（Bruce 真实回答）",
+  "track": "podcast",
+  "file": "01-part-1-shopping-cars-parks-bruce-真实回答_podcast.mp3",
+  "total_sec": 184.46,
+  "item_count": 12,
+  "generated_at": "2026-09-19T10:50:24.795",
+  "items": [
+    {
+      "id": "001-do-you-like-shopping",
+      "title": "Do you like shopping?",
+      "duration_sec": 15.6,
+      "offset_sec": 0.0,
+      "generated_at": "2026-09-19T10:47:55.110"
+    },
+    {
+      "id": "002-how-often-do-you-go-shopping",
+      "title": "How often do you go shopping?",
+      "duration_sec": 18.34,
+      "offset_sec": 16.2,
+      "generated_at": "2026-09-19T10:48:04.471"
+    },
+    {
+      "id": "003-do-you-prefer-online-shopping-or-in-store-shopping",
+      "title": "Do you prefer online shopping or in-store shopping?",
+      "duration_sec": 30.72,
+      "offset_sec": 35.14,
+      "generated_at": "2026-09-19T10:48:14.630"
+    },
+    {
+      "id": "004-did-you-enjoy-traveling-by-car-when-you-were-a-kid",
+      "title": "Did you enjoy traveling by car when you were a kid?",
+      "duration_sec": 20.48,
+      "offset_sec": 66.46,
+      "generated_at": "2026-09-19T10:48:30.062"
+    },
+    {
+      "id": "005-what-type-of-cars-do-you-like",
+      "title": "What type of cars do you like?",
+      "duration_sec": 14.24,
+      "offset_sec": 87.54,
+      "generated_at": "2026-09-19T10:48:40.746"
+    },
+    {
+      "id": "006-do-you-prefer-to-be-a-driver-or-a-passenger",
+      "title": "Do you prefer to be a driver or a passenger?",
+      "duration_sec": 24.4,
+      "offset_sec": 102.38,
+      "generated_at": "2026-09-19T10:48:49.079"
+    },
+    {
+      "id": "007-what-do-you-usually-do-when-there-is-a-traffic-jam",
+      "title": "What do you usually do when there is a traffic jam?",
+      "duration_sec": 10.55,
+      "offset_sec": 127.38,
+      "generated_at": "2026-09-19T10:49:00.829"
+    },
+    {
+      "id": "008-do-you-think-colors-are-important",
+      "title": "Do you think colors are important?",
+      "duration_sec": 22.41,
+      "offset_sec": 138.53,
+      "generated_at": "2026-09-19T10:49:07.302"
+    },
+    {
+      "id": "009-do-you-like-going-to-parks-as-a-child",
+      "title": "Do you like going to parks as a child?",
+      "duration_sec": 16.43,
+      "offset_sec": 161.54,
+      "generated_at": "2026-09-19T10:49:19.002"
+    },
+    {
+      "id": "010-do-you-still-like-going-to-parks-now",
+      "title": "Do you still like going to parks now?",
+      "duration_sec": 20.38,
+      "offset_sec": 178.57,
+      "generated_at": "2026-09-19T10:49:27.865"
+    },
+    {
+      "id": "011-would-you-like-to-see-more-parks-in-your-city",
+      "title": "Would you like to see more parks in your city?",
+      "duration_sec": 11.31,
+      "offset_sec": 199.55,
+      "generated_at": "2026-09-19T10:49:38.283"
+    },
+    {
+      "id": "012-are-there-any-parks-you-want-to-go-to-in-the-future",
+      "title": "Are there any parks you want to go to in the future?",
+      "duration_sec": 12.07,
+      "offset_sec": 211.46,
+      "generated_at": "2026-09-19T10:49:45.287"
+    }
+  ]
+}

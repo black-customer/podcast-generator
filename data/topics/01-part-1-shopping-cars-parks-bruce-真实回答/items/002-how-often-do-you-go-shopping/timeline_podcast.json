@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "How often do you go shopping?",
+    "start": 0.0,
+    "end": 1.7,
+    "duration": 1.7,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Very, very rarely — if you mean going to an actual physical store. That almost never happens. Sometimes I need new clothes or new pants, you know, new things — then I'll just shop online. And if I don't have a need, if there's no requirement, then I won't go shopping at all.",
+    "start": 2.07,
+    "end": 18.34,
+    "duration": 16.27,
+    "mode": "sse"
+  }
+]

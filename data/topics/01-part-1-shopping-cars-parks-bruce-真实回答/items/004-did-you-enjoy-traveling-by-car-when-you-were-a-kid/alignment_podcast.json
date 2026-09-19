@@ -1,0 +1,404 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "15a456cc7f1ee264",
+  "audio_signature": "492817:1789786120",
+  "created_at": "2026-09-19T10:48:40",
+  "segments": [
+    {
+      "text": "Did you enjoy traveling by car when you were a kid?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.92
+    },
+    {
+      "text": "Actually, no, I didn't. My father is a worker — the kind of guy who builds and renovates houses — and his car was always full of tools. Dirty, smelly tools everywhere. So whenever I rode in his car, I had to put up with that smell for the whole ride, and it made me dizzy. So no, I didn't enjoy traveling by car as a kid.",
+      "speaker": "b",
+      "start": 3.35,
+      "end": 20.48
+    }
+  ],
+  "words": [
+    {
+      "text": "Did",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "you",
+      "start": 0.24,
+      "end": 0.4
+    },
+    {
+      "text": "enjoy",
+      "start": 0.4,
+      "end": 0.8
+    },
+    {
+      "text": "traveling",
+      "start": 0.8,
+      "end": 1.28
+    },
+    {
+      "text": "by",
+      "start": 1.28,
+      "end": 1.44
+    },
+    {
+      "text": "car",
+      "start": 1.44,
+      "end": 1.84
+    },
+    {
+      "text": "when",
+      "start": 1.84,
+      "end": 2.0
+    },
+    {
+      "text": "you",
+      "start": 2.0,
+      "end": 2.24
+    },
+    {
+      "text": "were",
+      "start": 2.24,
+      "end": 2.32
+    },
+    {
+      "text": "a",
+      "start": 2.32,
+      "end": 2.32
+    },
+    {
+      "text": "kid",
+      "start": 2.32,
+      "end": 2.88
+    },
+    {
+      "text": "Actually",
+      "start": 3.305,
+      "end": 3.705
+    },
+    {
+      "text": "no",
+      "start": 3.705,
+      "end": 3.865
+    },
+    {
+      "text": "I",
+      "start": 3.865,
+      "end": 4.025
+    },
+    {
+      "text": "didn't",
+      "start": 4.025,
+      "end": 4.425
+    },
+    {
+      "text": "My",
+      "start": 4.505,
+      "end": 4.665
+    },
+    {
+      "text": "father",
+      "start": 4.665,
+      "end": 4.985
+    },
+    {
+      "text": "is",
+      "start": 4.985,
+      "end": 5.145
+    },
+    {
+      "text": "a",
+      "start": 5.145,
+      "end": 5.145
+    },
+    {
+      "text": "worker",
+      "start": 5.145,
+      "end": 5.705
+    },
+    {
+      "text": "the",
+      "start": 5.785,
+      "end": 5.865
+    },
+    {
+      "text": "kind",
+      "start": 5.865,
+      "end": 6.105
+    },
+    {
+      "text": "of",
+      "start": 6.105,
+      "end": 6.105
+    },
+    {
+      "text": "guy",
+      "start": 6.105,
+      "end": 6.265
+    },
+    {
+      "text": "who",
+      "start": 6.265,
+      "end": 6.425
+    },
+    {
+      "text": "builds",
+      "start": 6.425,
+      "end": 6.745
+    },
+    {
+      "text": "and",
+      "start": 6.745,
+      "end": 6.825
+    },
+    {
+      "text": "renovates",
+      "start": 6.825,
+      "end": 7.225
+    },
+    {
+      "text": "houses",
+      "start": 7.225,
+      "end": 7.785
+    },
+    {
+      "text": "and",
+      "start": 7.945,
+      "end": 8.025
+    },
+    {
+      "text": "his",
+      "start": 8.025,
+      "end": 8.185
+    },
+    {
+      "text": "car",
+      "start": 8.185,
+      "end": 8.425
+    },
+    {
+      "text": "was",
+      "start": 8.425,
+      "end": 8.505
+    },
+    {
+      "text": "always",
+      "start": 8.505,
+      "end": 8.905
+    },
+    {
+      "text": "full",
+      "start": 8.905,
+      "end": 9.065
+    },
+    {
+      "text": "of",
+      "start": 9.065,
+      "end": 9.225
+    },
+    {
+      "text": "tools",
+      "start": 9.225,
+      "end": 9.865
+    },
+    {
+      "text": "Dirty",
+      "start": 10.025,
+      "end": 10.425
+    },
+    {
+      "text": "smelly",
+      "start": 10.425,
+      "end": 10.905
+    },
+    {
+      "text": "tools",
+      "start": 10.905,
+      "end": 11.225
+    },
+    {
+      "text": "everywhere",
+      "start": 11.305,
+      "end": 11.945
+    },
+    {
+      "text": "So",
+      "start": 12.025,
+      "end": 12.185
+    },
+    {
+      "text": "whenever",
+      "start": 12.185,
+      "end": 12.425
+    },
+    {
+      "text": "I",
+      "start": 12.425,
+      "end": 12.585
+    },
+    {
+      "text": "rode",
+      "start": 12.585,
+      "end": 12.745
+    },
+    {
+      "text": "in",
+      "start": 12.745,
+      "end": 12.825
+    },
+    {
+      "text": "his",
+      "start": 12.825,
+      "end": 12.985
+    },
+    {
+      "text": "car",
+      "start": 12.985,
+      "end": 13.305
+    },
+    {
+      "text": "I",
+      "start": 13.305,
+      "end": 13.385
+    },
+    {
+      "text": "had",
+      "start": 13.385,
+      "end": 13.625
+    },
+    {
+      "text": "to",
+      "start": 13.625,
+      "end": 13.625
+    },
+    {
+      "text": "put",
+      "start": 13.625,
+      "end": 13.785
+    },
+    {
+      "text": "up",
+      "start": 13.785,
+      "end": 13.945
+    },
+    {
+      "text": "with",
+      "start": 13.945,
+      "end": 14.025
+    },
+    {
+      "text": "that",
+      "start": 14.025,
+      "end": 14.265
+    },
+    {
+      "text": "smell",
+      "start": 14.425,
+      "end": 14.745
+    },
+    {
+      "text": "for",
+      "start": 14.745,
+      "end": 14.905
+    },
+    {
+      "text": "the",
+      "start": 14.905,
+      "end": 14.985
+    },
+    {
+      "text": "whole",
+      "start": 14.985,
+      "end": 15.225
+    },
+    {
+      "text": "ride",
+      "start": 15.225,
+      "end": 15.625
+    },
+    {
+      "text": "and",
+      "start": 16.025,
+      "end": 16.105
+    },
+    {
+      "text": "it",
+      "start": 16.105,
+      "end": 16.185
+    },
+    {
+      "text": "made",
+      "start": 16.185,
+      "end": 16.345
+    },
+    {
+      "text": "me",
+      "start": 16.345,
+      "end": 16.505
+    },
+    {
+      "text": "dizzy",
+      "start": 16.505,
+      "end": 16.985
+    },
+    {
+      "text": "So",
+      "start": 17.476,
+      "end": 17.636
+    },
+    {
+      "text": "no",
+      "start": 17.636,
+      "end": 18.116
+    },
+    {
+      "text": "I",
+      "start": 18.276,
+      "end": 18.356
+    },
+    {
+      "text": "didn't",
+      "start": 18.356,
+      "end": 18.596
+    },
+    {
+      "text": "enjoy",
+      "start": 18.596,
+      "end": 18.916
+    },
+    {
+      "text": "traveling",
+      "start": 18.916,
+      "end": 19.236
+    },
+    {
+      "text": "by",
+      "start": 19.236,
+      "end": 19.396
+    },
+    {
+      "text": "car",
+      "start": 19.396,
+      "end": 19.636
+    },
+    {
+      "text": "as",
+      "start": 19.636,
+      "end": 19.796
+    },
+    {
+      "text": "a",
+      "start": 19.796,
+      "end": 19.796
+    },
+    {
+      "text": "kid",
+      "start": 19.796,
+      "end": 20.196
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "c8a9b7e2a4b736bb",
+  "audio_signature": "272762:1789786184",
+  "created_at": "2026-09-19T10:49:45",
+  "segments": [
+    {
+      "text": "Would you like to see more parks in your city?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.13
+    },
+    {
+      "text": "Yes, of course. Some parks are really remote from me — there's a big distance. So I hope there will be more beautiful gardens and parks close to where I live.",
+      "speaker": "b",
+      "start": 2.53,
+      "end": 11.31
+    }
+  ],
+  "words": [
+    {
+      "text": "Would",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "like",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "to",
+      "start": 0.48,
+      "end": 0.48
+    },
+    {
+      "text": "see",
+      "start": 0.48,
+      "end": 0.72
+    },
+    {
+      "text": "more",
+      "start": 0.72,
+      "end": 0.96
+    },
+    {
+      "text": "parks",
+      "start": 0.96,
+      "end": 1.28
+    },
+    {
+      "text": "in",
+      "start": 1.28,
+      "end": 1.44
+    },
+    {
+      "text": "your",
+      "start": 1.44,
+      "end": 1.6
+    },
+    {
+      "text": "city",
+      "start": 1.6,
+      "end": 2.08
+    },
+    {
+      "text": "Yes",
+      "start": 2.469,
+      "end": 2.949
+    },
+    {
+      "text": "of",
+      "start": 2.949,
+      "end": 3.029
+    },
+    {
+      "text": "course",
+      "start": 3.029,
+      "end": 3.669
+    },
+    {
+      "text": "Some",
+      "start": 3.989,
+      "end": 4.309
+    },
+    {
+      "text": "parks",
+      "start": 4.309,
+      "end": 4.549
+    },
+    {
+      "text": "are",
+      "start": 4.549,
+      "end": 4.629
+    },
+    {
+      "text": "really",
+      "start": 4.629,
+      "end": 4.869
+    },
+    {
+      "text": "remote",
+      "start": 4.869,
+      "end": 5.269
+    },
+    {
+      "text": "from",
+      "start": 5.269,
+      "end": 5.349
+    },
+    {
+      "text": "me",
+      "start": 5.349,
+      "end": 5.509
+    },
+    {
+      "text": "there's",
+      "start": 5.509,
+      "end": 5.749
+    },
+    {
+      "text": "a",
+      "start": 5.749,
+      "end": 5.749
+    },
+    {
+      "text": "big",
+      "start": 5.749,
+      "end": 6.069
+    },
+    {
+      "text": "distance",
+      "start": 6.069,
+      "end": 6.789
+    },
+    {
+      "text": "So",
+      "start": 7.029,
+      "end": 7.429
+    },
+    {
+      "text": "I",
+      "start": 7.429,
+      "end": 7.589
+    },
+    {
+      "text": "hope",
+      "start": 7.589,
+      "end": 7.909
+    },
+    {
+      "text": "there",
+      "start": 7.909,
+      "end": 7.989
+    },
+    {
+      "text": "will",
+      "start": 7.989,
+      "end": 8.069
+    },
+    {
+      "text": "be",
+      "start": 8.069,
+      "end": 8.229
+    },
+    {
+      "text": "more",
+      "start": 8.229,
+      "end": 8.549
+    },
+    {
+      "text": "beautiful",
+      "start": 8.629,
+      "end": 9.029
+    },
+    {
+      "text": "gardens",
+      "start": 9.029,
+      "end": 9.589
+    },
+    {
+      "text": "and",
+      "start": 9.589,
+      "end": 9.669
+    },
+    {
+      "text": "parks",
+      "start": 9.669,
+      "end": 10.069
+    },
+    {
+      "text": "close",
+      "start": 10.069,
+      "end": 10.309
+    },
+    {
+      "text": "to",
+      "start": 10.389,
+      "end": 10.469
+    },
+    {
+      "text": "where",
+      "start": 10.469,
+      "end": 10.549
+    },
+    {
+      "text": "I",
+      "start": 10.549,
+      "end": 10.709
+    },
+    {
+      "text": "live",
+      "start": 10.709,
+      "end": 11.029
+    }
+  ]
+}

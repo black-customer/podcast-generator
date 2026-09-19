@@ -1,0 +1,539 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "dfae5c5a2a7def4e",
+  "audio_signature": "738577:1789786109",
+  "created_at": "2026-09-19T10:48:30",
+  "segments": [
+    {
+      "text": "Do you prefer online shopping or in-store shopping?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 3.38
+    },
+    {
+      "text": "I'm more into in-store shopping, to be honest. In a store you can see things and touch them — I think touching is the most important part. There's a whole different experience: not just seeing, but touching, trying things on. But online shopping has its advantages too — it's so accessible. So mostly I do online shopping, but in my heart I prefer stores. Actually, if the technology ever developed to the point where I could just click my phone and be shopping in a real store — then I would definitely choose in-store shopping.",
+      "speaker": "b",
+      "start": 3.7,
+      "end": 30.72
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "prefer",
+      "start": 0.24,
+      "end": 0.64
+    },
+    {
+      "text": "online",
+      "start": 0.64,
+      "end": 1.2
+    },
+    {
+      "text": "shopping",
+      "start": 1.2,
+      "end": 1.84
+    },
+    {
+      "text": "or",
+      "start": 1.84,
+      "end": 2.08
+    },
+    {
+      "text": "in",
+      "start": 2.08,
+      "end": 2.32
+    },
+    {
+      "text": "store",
+      "start": 2.32,
+      "end": 2.72
+    },
+    {
+      "text": "shopping",
+      "start": 2.72,
+      "end": 3.36
+    },
+    {
+      "text": "I'm",
+      "start": 3.677,
+      "end": 3.837
+    },
+    {
+      "text": "more",
+      "start": 3.837,
+      "end": 3.997
+    },
+    {
+      "text": "into",
+      "start": 3.997,
+      "end": 4.157
+    },
+    {
+      "text": "in",
+      "start": 4.157,
+      "end": 4.397
+    },
+    {
+      "text": "store",
+      "start": 4.397,
+      "end": 4.637
+    },
+    {
+      "text": "shopping",
+      "start": 4.637,
+      "end": 5.197
+    },
+    {
+      "text": "to",
+      "start": 5.277,
+      "end": 5.277
+    },
+    {
+      "text": "be",
+      "start": 5.277,
+      "end": 5.437
+    },
+    {
+      "text": "honest",
+      "start": 5.437,
+      "end": 6.077
+    },
+    {
+      "text": "In",
+      "start": 6.157,
+      "end": 6.237
+    },
+    {
+      "text": "a",
+      "start": 6.237,
+      "end": 6.317
+    },
+    {
+      "text": "store",
+      "start": 6.317,
+      "end": 6.637
+    },
+    {
+      "text": "you",
+      "start": 6.637,
+      "end": 6.797
+    },
+    {
+      "text": "can",
+      "start": 6.797,
+      "end": 6.957
+    },
+    {
+      "text": "see",
+      "start": 6.957,
+      "end": 7.197
+    },
+    {
+      "text": "things",
+      "start": 7.197,
+      "end": 7.517
+    },
+    {
+      "text": "and",
+      "start": 7.517,
+      "end": 7.597
+    },
+    {
+      "text": "touch",
+      "start": 7.597,
+      "end": 7.917
+    },
+    {
+      "text": "them",
+      "start": 7.917,
+      "end": 8.317
+    },
+    {
+      "text": "I",
+      "start": 8.637,
+      "end": 8.717
+    },
+    {
+      "text": "think",
+      "start": 8.717,
+      "end": 8.877
+    },
+    {
+      "text": "touching",
+      "start": 8.877,
+      "end": 9.197
+    },
+    {
+      "text": "is",
+      "start": 9.197,
+      "end": 9.357
+    },
+    {
+      "text": "the",
+      "start": 9.357,
+      "end": 9.357
+    },
+    {
+      "text": "most",
+      "start": 9.357,
+      "end": 9.677
+    },
+    {
+      "text": "important",
+      "start": 9.677,
+      "end": 9.997
+    },
+    {
+      "text": "part",
+      "start": 9.997,
+      "end": 10.397
+    },
+    {
+      "text": "There's",
+      "start": 10.557,
+      "end": 10.717
+    },
+    {
+      "text": "a",
+      "start": 10.717,
+      "end": 10.717
+    },
+    {
+      "text": "whole",
+      "start": 10.717,
+      "end": 10.957
+    },
+    {
+      "text": "different",
+      "start": 10.957,
+      "end": 11.277
+    },
+    {
+      "text": "experience",
+      "start": 11.277,
+      "end": 11.837
+    },
+    {
+      "text": "not",
+      "start": 11.837,
+      "end": 11.997
+    },
+    {
+      "text": "just",
+      "start": 11.997,
+      "end": 12.237
+    },
+    {
+      "text": "seeing",
+      "start": 12.237,
+      "end": 12.637
+    },
+    {
+      "text": "but",
+      "start": 12.637,
+      "end": 12.797
+    },
+    {
+      "text": "touching",
+      "start": 12.797,
+      "end": 13.277
+    },
+    {
+      "text": "trying",
+      "start": 13.277,
+      "end": 13.677
+    },
+    {
+      "text": "things",
+      "start": 13.677,
+      "end": 13.997
+    },
+    {
+      "text": "on",
+      "start": 13.997,
+      "end": 14.477
+    },
+    {
+      "text": "But",
+      "start": 14.637,
+      "end": 14.717
+    },
+    {
+      "text": "online",
+      "start": 14.717,
+      "end": 15.117
+    },
+    {
+      "text": "shopping",
+      "start": 15.117,
+      "end": 15.437
+    },
+    {
+      "text": "has",
+      "start": 15.517,
+      "end": 15.677
+    },
+    {
+      "text": "its",
+      "start": 15.677,
+      "end": 15.757
+    },
+    {
+      "text": "advantages",
+      "start": 15.757,
+      "end": 16.317
+    },
+    {
+      "text": "too",
+      "start": 16.317,
+      "end": 16.877
+    },
+    {
+      "text": "it's",
+      "start": 17.117,
+      "end": 17.277
+    },
+    {
+      "text": "so",
+      "start": 17.277,
+      "end": 17.597
+    },
+    {
+      "text": "accessible",
+      "start": 17.597,
+      "end": 18.317
+    },
+    {
+      "text": "So",
+      "start": 18.878,
+      "end": 19.038
+    },
+    {
+      "text": "mostly",
+      "start": 19.038,
+      "end": 19.438
+    },
+    {
+      "text": "I",
+      "start": 19.438,
+      "end": 19.518
+    },
+    {
+      "text": "do",
+      "start": 19.518,
+      "end": 19.678
+    },
+    {
+      "text": "online",
+      "start": 19.678,
+      "end": 20.158
+    },
+    {
+      "text": "shopping",
+      "start": 20.158,
+      "end": 20.798
+    },
+    {
+      "text": "but",
+      "start": 20.958,
+      "end": 21.118
+    },
+    {
+      "text": "in",
+      "start": 21.118,
+      "end": 21.198
+    },
+    {
+      "text": "my",
+      "start": 21.198,
+      "end": 21.278
+    },
+    {
+      "text": "heart",
+      "start": 21.278,
+      "end": 21.598
+    },
+    {
+      "text": "I",
+      "start": 21.598,
+      "end": 21.678
+    },
+    {
+      "text": "prefer",
+      "start": 21.678,
+      "end": 21.918
+    },
+    {
+      "text": "stores",
+      "start": 21.918,
+      "end": 22.638
+    },
+    {
+      "text": "Actually",
+      "start": 22.878,
+      "end": 23.358
+    },
+    {
+      "text": "if",
+      "start": 23.358,
+      "end": 23.518
+    },
+    {
+      "text": "the",
+      "start": 23.518,
+      "end": 23.518
+    },
+    {
+      "text": "technology",
+      "start": 23.518,
+      "end": 24.078
+    },
+    {
+      "text": "ever",
+      "start": 24.078,
+      "end": 24.318
+    },
+    {
+      "text": "developed",
+      "start": 24.318,
+      "end": 24.798
+    },
+    {
+      "text": "to",
+      "start": 24.798,
+      "end": 24.798
+    },
+    {
+      "text": "the",
+      "start": 24.798,
+      "end": 24.878
+    },
+    {
+      "text": "point",
+      "start": 24.878,
+      "end": 25.118
+    },
+    {
+      "text": "where",
+      "start": 25.118,
+      "end": 25.198
+    },
+    {
+      "text": "I",
+      "start": 25.198,
+      "end": 25.278
+    },
+    {
+      "text": "could",
+      "start": 25.278,
+      "end": 25.358
+    },
+    {
+      "text": "just",
+      "start": 25.358,
+      "end": 25.518
+    },
+    {
+      "text": "click",
+      "start": 25.518,
+      "end": 25.758
+    },
+    {
+      "text": "my",
+      "start": 25.758,
+      "end": 25.918
+    },
+    {
+      "text": "phone",
+      "start": 25.918,
+      "end": 26.398
+    },
+    {
+      "text": "and",
+      "start": 26.638,
+      "end": 26.798
+    },
+    {
+      "text": "be",
+      "start": 26.798,
+      "end": 26.878
+    },
+    {
+      "text": "shopping",
+      "start": 26.878,
+      "end": 27.278
+    },
+    {
+      "text": "in",
+      "start": 27.278,
+      "end": 27.358
+    },
+    {
+      "text": "a",
+      "start": 27.358,
+      "end": 27.358
+    },
+    {
+      "text": "real",
+      "start": 27.358,
+      "end": 27.598
+    },
+    {
+      "text": "store",
+      "start": 27.598,
+      "end": 28.158
+    },
+    {
+      "text": "then",
+      "start": 28.478,
+      "end": 28.558
+    },
+    {
+      "text": "I",
+      "start": 28.558,
+      "end": 28.558
+    },
+    {
+      "text": "would",
+      "start": 28.558,
+      "end": 28.718
+    },
+    {
+      "text": "definitely",
+      "start": 28.718,
+      "end": 29.118
+    },
+    {
+      "text": "choose",
+      "start": 29.118,
+      "end": 29.438
+    },
+    {
+      "text": "in",
+      "start": 29.438,
+      "end": 29.598
+    },
+    {
+      "text": "store",
+      "start": 29.598,
+      "end": 29.838
+    },
+    {
+      "text": "shopping",
+      "start": 29.838,
+      "end": 30.558
+    }
+  ]
+}

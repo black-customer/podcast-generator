@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Did you enjoy traveling by car when you were a kid?",
+    "start": 0.0,
+    "end": 2.92,
+    "duration": 2.92,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Actually, no, I didn't. My father is a worker — the kind of guy who builds and renovates houses — and his car was always full of tools. Dirty, smelly tools everywhere. So whenever I rode in his car, I had to put up with that smell for the whole ride, and it made me dizzy. So no, I didn't enjoy traveling by car as a kid.",
+    "start": 3.35,
+    "end": 20.48,
+    "duration": 17.13,
+    "mode": "sse"
+  }
+]

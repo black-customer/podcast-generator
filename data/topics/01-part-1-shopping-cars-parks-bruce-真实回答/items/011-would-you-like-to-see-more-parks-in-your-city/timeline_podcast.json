@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Would you like to see more parks in your city?",
+    "start": 0.0,
+    "end": 2.13,
+    "duration": 2.13,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yes, of course. Some parks are really remote from me — there's a big distance. So I hope there will be more beautiful gardens and parks close to where I live.",
+    "start": 2.53,
+    "end": 11.31,
+    "duration": 8.78,
+    "mode": "sse"
+  }
+]

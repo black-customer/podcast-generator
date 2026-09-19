@@ -1,0 +1,274 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "c30bf182c5bc5a52",
+  "audio_signature": "375580:1789786084",
+  "created_at": "2026-09-19T10:48:04",
+  "segments": [
+    {
+      "text": "Do you like shopping?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.3
+    },
+    {
+      "text": "I wouldn't call myself a shopping person, mostly because I'm not that rich, honestly. And I don't really crave actual things — except food. If I'm going to buy something interesting, it's going to be something delicious. So no, you can say I'm not really into shopping.",
+      "speaker": "b",
+      "start": 1.74,
+      "end": 15.6
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "like",
+      "start": 0.32,
+      "end": 0.56
+    },
+    {
+      "text": "shopping",
+      "start": 0.56,
+      "end": 1.28
+    },
+    {
+      "text": "I",
+      "start": 1.713,
+      "end": 1.793
+    },
+    {
+      "text": "wouldn't",
+      "start": 1.793,
+      "end": 2.113
+    },
+    {
+      "text": "call",
+      "start": 2.113,
+      "end": 2.193
+    },
+    {
+      "text": "myself",
+      "start": 2.193,
+      "end": 2.513
+    },
+    {
+      "text": "a",
+      "start": 2.513,
+      "end": 2.593
+    },
+    {
+      "text": "shopping",
+      "start": 2.593,
+      "end": 2.993
+    },
+    {
+      "text": "person",
+      "start": 2.993,
+      "end": 3.553
+    },
+    {
+      "text": "mostly",
+      "start": 3.553,
+      "end": 3.873
+    },
+    {
+      "text": "because",
+      "start": 3.873,
+      "end": 4.113
+    },
+    {
+      "text": "I'm",
+      "start": 4.113,
+      "end": 4.273
+    },
+    {
+      "text": "not",
+      "start": 4.273,
+      "end": 4.673
+    },
+    {
+      "text": "that",
+      "start": 4.673,
+      "end": 4.833
+    },
+    {
+      "text": "rich",
+      "start": 4.833,
+      "end": 5.233
+    },
+    {
+      "text": "honestly",
+      "start": 5.313,
+      "end": 5.873
+    },
+    {
+      "text": "And",
+      "start": 5.873,
+      "end": 5.873
+    },
+    {
+      "text": "I",
+      "start": 6.193,
+      "end": 6.193
+    },
+    {
+      "text": "don't",
+      "start": 6.193,
+      "end": 6.353
+    },
+    {
+      "text": "really",
+      "start": 6.353,
+      "end": 6.513
+    },
+    {
+      "text": "crave",
+      "start": 6.513,
+      "end": 6.993
+    },
+    {
+      "text": "actual",
+      "start": 6.993,
+      "end": 7.473
+    },
+    {
+      "text": "things",
+      "start": 7.473,
+      "end": 7.953
+    },
+    {
+      "text": "except",
+      "start": 7.953,
+      "end": 8.433
+    },
+    {
+      "text": "food",
+      "start": 8.433,
+      "end": 8.913
+    },
+    {
+      "text": "If",
+      "start": 9.073,
+      "end": 9.153
+    },
+    {
+      "text": "I'm",
+      "start": 9.153,
+      "end": 9.233
+    },
+    {
+      "text": "going",
+      "start": 9.233,
+      "end": 9.473
+    },
+    {
+      "text": "to",
+      "start": 9.473,
+      "end": 9.473
+    },
+    {
+      "text": "buy",
+      "start": 9.473,
+      "end": 9.633
+    },
+    {
+      "text": "something",
+      "start": 9.633,
+      "end": 9.873
+    },
+    {
+      "text": "interesting",
+      "start": 10.033,
+      "end": 10.833
+    },
+    {
+      "text": "it's",
+      "start": 10.833,
+      "end": 10.993
+    },
+    {
+      "text": "going",
+      "start": 10.993,
+      "end": 11.233
+    },
+    {
+      "text": "to",
+      "start": 11.233,
+      "end": 11.233
+    },
+    {
+      "text": "be",
+      "start": 11.233,
+      "end": 11.313
+    },
+    {
+      "text": "something",
+      "start": 11.313,
+      "end": 11.633
+    },
+    {
+      "text": "delicious",
+      "start": 11.633,
+      "end": 12.353
+    },
+    {
+      "text": "So",
+      "start": 12.513,
+      "end": 12.993
+    },
+    {
+      "text": "no",
+      "start": 13.073,
+      "end": 13.553
+    },
+    {
+      "text": "you",
+      "start": 13.793,
+      "end": 13.873
+    },
+    {
+      "text": "can",
+      "start": 13.873,
+      "end": 14.033
+    },
+    {
+      "text": "say",
+      "start": 14.033,
+      "end": 14.113
+    },
+    {
+      "text": "I'm",
+      "start": 14.113,
+      "end": 14.273
+    },
+    {
+      "text": "not",
+      "start": 14.273,
+      "end": 14.433
+    },
+    {
+      "text": "really",
+      "start": 14.433,
+      "end": 14.593
+    },
+    {
+      "text": "into",
+      "start": 14.593,
+      "end": 14.753
+    },
+    {
+      "text": "shopping",
+      "start": 14.753,
+      "end": 15.393
+    }
+  ]
+}

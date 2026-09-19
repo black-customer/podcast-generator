@@ -1,0 +1,309 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "ce5834102689bef4",
+  "audio_signature": "441409:1789786094",
+  "created_at": "2026-09-19T10:48:14",
+  "segments": [
+    {
+      "text": "How often do you go shopping?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.7
+    },
+    {
+      "text": "Very, very rarely — if you mean going to an actual physical store. That almost never happens. Sometimes I need new clothes or new pants, you know, new things — then I'll just shop online. And if I don't have a need, if there's no requirement, then I won't go shopping at all.",
+      "speaker": "b",
+      "start": 2.07,
+      "end": 18.34
+    }
+  ],
+  "words": [
+    {
+      "text": "How",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "often",
+      "start": 0.16,
+      "end": 0.64
+    },
+    {
+      "text": "do",
+      "start": 0.64,
+      "end": 0.64
+    },
+    {
+      "text": "you",
+      "start": 0.64,
+      "end": 0.8
+    },
+    {
+      "text": "go",
+      "start": 0.8,
+      "end": 0.96
+    },
+    {
+      "text": "shopping",
+      "start": 0.96,
+      "end": 1.68
+    },
+    {
+      "text": "Very",
+      "start": 2.051,
+      "end": 2.531
+    },
+    {
+      "text": "very",
+      "start": 2.531,
+      "end": 2.771
+    },
+    {
+      "text": "rarely",
+      "start": 2.771,
+      "end": 3.251
+    },
+    {
+      "text": "if",
+      "start": 3.251,
+      "end": 3.331
+    },
+    {
+      "text": "you",
+      "start": 3.331,
+      "end": 3.411
+    },
+    {
+      "text": "mean",
+      "start": 3.411,
+      "end": 3.731
+    },
+    {
+      "text": "going",
+      "start": 3.731,
+      "end": 4.131
+    },
+    {
+      "text": "to",
+      "start": 4.211,
+      "end": 4.371
+    },
+    {
+      "text": "an",
+      "start": 4.371,
+      "end": 4.531
+    },
+    {
+      "text": "actual",
+      "start": 4.531,
+      "end": 5.091
+    },
+    {
+      "text": "physical",
+      "start": 5.331,
+      "end": 5.651
+    },
+    {
+      "text": "store",
+      "start": 5.651,
+      "end": 6.291
+    },
+    {
+      "text": "That",
+      "start": 6.451,
+      "end": 6.611
+    },
+    {
+      "text": "almost",
+      "start": 6.611,
+      "end": 7.091
+    },
+    {
+      "text": "never",
+      "start": 7.251,
+      "end": 7.651
+    },
+    {
+      "text": "happens",
+      "start": 7.651,
+      "end": 8.371
+    },
+    {
+      "text": "Sometimes",
+      "start": 8.771,
+      "end": 9.251
+    },
+    {
+      "text": "I",
+      "start": 9.251,
+      "end": 9.411
+    },
+    {
+      "text": "need",
+      "start": 9.411,
+      "end": 9.571
+    },
+    {
+      "text": "new",
+      "start": 9.571,
+      "end": 9.731
+    },
+    {
+      "text": "clothes",
+      "start": 9.731,
+      "end": 10.211
+    },
+    {
+      "text": "or",
+      "start": 10.211,
+      "end": 10.691
+    },
+    {
+      "text": "new",
+      "start": 10.691,
+      "end": 10.931
+    },
+    {
+      "text": "pants",
+      "start": 10.931,
+      "end": 11.571
+    },
+    {
+      "text": "you",
+      "start": 11.651,
+      "end": 11.811
+    },
+    {
+      "text": "know",
+      "start": 11.811,
+      "end": 11.971
+    },
+    {
+      "text": "new",
+      "start": 11.971,
+      "end": 12.211
+    },
+    {
+      "text": "things",
+      "start": 12.211,
+      "end": 12.691
+    },
+    {
+      "text": "then",
+      "start": 12.771,
+      "end": 12.931
+    },
+    {
+      "text": "I'll",
+      "start": 12.931,
+      "end": 13.091
+    },
+    {
+      "text": "just",
+      "start": 13.091,
+      "end": 13.251
+    },
+    {
+      "text": "shop",
+      "start": 13.251,
+      "end": 13.571
+    },
+    {
+      "text": "online",
+      "start": 13.571,
+      "end": 14.131
+    },
+    {
+      "text": "And",
+      "start": 14.611,
+      "end": 14.691
+    },
+    {
+      "text": "if",
+      "start": 14.691,
+      "end": 14.771
+    },
+    {
+      "text": "I",
+      "start": 14.771,
+      "end": 14.851
+    },
+    {
+      "text": "don't",
+      "start": 14.851,
+      "end": 15.091
+    },
+    {
+      "text": "have",
+      "start": 15.091,
+      "end": 15.251
+    },
+    {
+      "text": "a",
+      "start": 15.251,
+      "end": 15.251
+    },
+    {
+      "text": "need",
+      "start": 15.251,
+      "end": 15.651
+    },
+    {
+      "text": "if",
+      "start": 15.651,
+      "end": 15.811
+    },
+    {
+      "text": "there's",
+      "start": 15.811,
+      "end": 15.971
+    },
+    {
+      "text": "no",
+      "start": 15.971,
+      "end": 16.131
+    },
+    {
+      "text": "requirement",
+      "start": 16.131,
+      "end": 16.771
+    },
+    {
+      "text": "then",
+      "start": 16.771,
+      "end": 17.011
+    },
+    {
+      "text": "I",
+      "start": 17.011,
+      "end": 17.091
+    },
+    {
+      "text": "won't",
+      "start": 17.091,
+      "end": 17.251
+    },
+    {
+      "text": "go",
+      "start": 17.331,
+      "end": 17.411
+    },
+    {
+      "text": "shopping",
+      "start": 17.411,
+      "end": 17.731
+    },
+    {
+      "text": "at",
+      "start": 17.731,
+      "end": 17.811
+    },
+    {
+      "text": "all",
+      "start": 17.811,
+      "end": 18.131
+    }
+  ]
+}

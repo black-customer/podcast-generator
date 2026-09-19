@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you still like going to parks now?",
+    "start": 0.0,
+    "end": 2.04,
+    "duration": 2.04,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I couldn't say \"still,\" because I didn't really like them back then — but I like going to parks now. I've gotten really into this peaceful feeling, you know? When I'm in a park, I can enjoy the beautiful scenery, watch what people are doing, watch their lives, see the animals. It's just very peaceful. So yes, I like parks now.",
+    "start": 2.42,
+    "end": 20.38,
+    "duration": 17.96,
+    "mode": "sse"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you think colors are important?",
+    "start": 0.0,
+    "end": 1.85,
+    "duration": 1.85,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yes, I think they are. It's like buying a phone — when I buy a phone, I consider the color. And if I buy a car, I'll definitely consider the color too. It's actually more important for a car, because you can put a case on your phone, but a car... the color is about first impressions. If someone rides in your car, they'll have thoughts about your personality just from how it looks.",
+    "start": 2.29,
+    "end": 22.41,
+    "duration": 20.12,
+    "mode": "sse"
+  }
+]

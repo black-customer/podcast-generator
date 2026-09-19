@@ -1,0 +1,264 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "52e42b531a630ec3",
+  "audio_signature": "342979:1789786128",
+  "created_at": "2026-09-19T10:48:49",
+  "segments": [
+    {
+      "text": "What type of cars do you like?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.7
+    },
+    {
+      "text": "Honestly, I'm not really into cars, so I don't know much about the types. Maybe electric cars, that's the trend now. But I couldn't name specifics — I'd just say a beautiful car and a convenient car. That's about all I've got.",
+      "speaker": "b",
+      "start": 2.19,
+      "end": 14.24
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "type",
+      "start": 0.16,
+      "end": 0.4
+    },
+    {
+      "text": "of",
+      "start": 0.4,
+      "end": 0.56
+    },
+    {
+      "text": "cars",
+      "start": 0.56,
+      "end": 0.96
+    },
+    {
+      "text": "do",
+      "start": 0.96,
+      "end": 1.04
+    },
+    {
+      "text": "you",
+      "start": 1.04,
+      "end": 1.2
+    },
+    {
+      "text": "like",
+      "start": 1.2,
+      "end": 1.68
+    },
+    {
+      "text": "Honestly",
+      "start": 2.165,
+      "end": 2.805
+    },
+    {
+      "text": "I'm",
+      "start": 2.885,
+      "end": 3.125
+    },
+    {
+      "text": "not",
+      "start": 3.125,
+      "end": 3.365
+    },
+    {
+      "text": "really",
+      "start": 3.365,
+      "end": 3.605
+    },
+    {
+      "text": "into",
+      "start": 3.605,
+      "end": 3.845
+    },
+    {
+      "text": "cars",
+      "start": 3.845,
+      "end": 4.325
+    },
+    {
+      "text": "so",
+      "start": 4.325,
+      "end": 4.485
+    },
+    {
+      "text": "I",
+      "start": 4.485,
+      "end": 4.565
+    },
+    {
+      "text": "don't",
+      "start": 4.565,
+      "end": 4.805
+    },
+    {
+      "text": "know",
+      "start": 4.805,
+      "end": 4.885
+    },
+    {
+      "text": "much",
+      "start": 4.885,
+      "end": 5.285
+    },
+    {
+      "text": "about",
+      "start": 5.285,
+      "end": 5.525
+    },
+    {
+      "text": "the",
+      "start": 5.525,
+      "end": 5.605
+    },
+    {
+      "text": "types",
+      "start": 5.605,
+      "end": 6.165
+    },
+    {
+      "text": "Maybe",
+      "start": 6.245,
+      "end": 6.565
+    },
+    {
+      "text": "electric",
+      "start": 6.565,
+      "end": 7.045
+    },
+    {
+      "text": "cars",
+      "start": 7.045,
+      "end": 7.525
+    },
+    {
+      "text": "that's",
+      "start": 7.525,
+      "end": 7.765
+    },
+    {
+      "text": "the",
+      "start": 7.765,
+      "end": 7.845
+    },
+    {
+      "text": "trend",
+      "start": 7.845,
+      "end": 8.165
+    },
+    {
+      "text": "now",
+      "start": 8.165,
+      "end": 8.645
+    },
+    {
+      "text": "But",
+      "start": 8.965,
+      "end": 9.045
+    },
+    {
+      "text": "I",
+      "start": 9.045,
+      "end": 9.125
+    },
+    {
+      "text": "couldn't",
+      "start": 9.125,
+      "end": 9.525
+    },
+    {
+      "text": "name",
+      "start": 9.525,
+      "end": 9.765
+    },
+    {
+      "text": "specifics",
+      "start": 9.765,
+      "end": 10.485
+    },
+    {
+      "text": "I'd",
+      "start": 10.485,
+      "end": 10.725
+    },
+    {
+      "text": "just",
+      "start": 10.725,
+      "end": 10.885
+    },
+    {
+      "text": "say",
+      "start": 10.885,
+      "end": 11.205
+    },
+    {
+      "text": "a",
+      "start": 11.205,
+      "end": 11.285
+    },
+    {
+      "text": "beautiful",
+      "start": 11.285,
+      "end": 11.685
+    },
+    {
+      "text": "car",
+      "start": 11.685,
+      "end": 12.005
+    },
+    {
+      "text": "and",
+      "start": 12.005,
+      "end": 12.165
+    },
+    {
+      "text": "a",
+      "start": 12.165,
+      "end": 12.165
+    },
+    {
+      "text": "convenient",
+      "start": 12.165,
+      "end": 12.645
+    },
+    {
+      "text": "car",
+      "start": 12.645,
+      "end": 12.965
+    },
+    {
+      "text": "That's",
+      "start": 12.965,
+      "end": 13.205
+    },
+    {
+      "text": "about",
+      "start": 13.205,
+      "end": 13.445
+    },
+    {
+      "text": "all",
+      "start": 13.445,
+      "end": 13.605
+    },
+    {
+      "text": "I've",
+      "start": 13.605,
+      "end": 13.685
+    },
+    {
+      "text": "got",
+      "start": 13.685,
+      "end": 14.085
+    }
+  ]
+}

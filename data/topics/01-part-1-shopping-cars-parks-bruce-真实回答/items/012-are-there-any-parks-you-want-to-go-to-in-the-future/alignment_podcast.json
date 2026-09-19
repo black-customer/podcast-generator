@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "aa5b7d0774477f3f",
+  "audio_signature": "290943:1789786191",
+  "created_at": "2026-09-19T10:49:52",
+  "segments": [
+    {
+      "text": "Are there any parks you want to go to in the future?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.52
+    },
+    {
+      "text": "Hmm, not really. I don't know many parks, to be honest — I couldn't tell you if there are any especially beautiful ones around. So no, I don't have any plans to visit a specific park.",
+      "speaker": "b",
+      "start": 3.13,
+      "end": 12.07
+    }
+  ],
+  "words": [
+    {
+      "text": "Are",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "there",
+      "start": 0.08,
+      "end": 0.24
+    },
+    {
+      "text": "any",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "parks",
+      "start": 0.48,
+      "end": 0.88
+    },
+    {
+      "text": "you",
+      "start": 0.88,
+      "end": 0.96
+    },
+    {
+      "text": "want",
+      "start": 0.96,
+      "end": 1.12
+    },
+    {
+      "text": "to",
+      "start": 1.12,
+      "end": 1.12
+    },
+    {
+      "text": "go",
+      "start": 1.12,
+      "end": 1.44
+    },
+    {
+      "text": "to",
+      "start": 1.52,
+      "end": 1.76
+    },
+    {
+      "text": "in",
+      "start": 1.76,
+      "end": 1.84
+    },
+    {
+      "text": "the",
+      "start": 1.84,
+      "end": 1.92
+    },
+    {
+      "text": "future",
+      "start": 1.92,
+      "end": 2.48
+    },
+    {
+      "text": "Hmm",
+      "start": 3.081,
+      "end": 3.321
+    },
+    {
+      "text": "not",
+      "start": 3.481,
+      "end": 3.721
+    },
+    {
+      "text": "really",
+      "start": 3.721,
+      "end": 4.281
+    },
+    {
+      "text": "I",
+      "start": 4.361,
+      "end": 4.441
+    },
+    {
+      "text": "don't",
+      "start": 4.441,
+      "end": 4.601
+    },
+    {
+      "text": "know",
+      "start": 4.601,
+      "end": 4.761
+    },
+    {
+      "text": "many",
+      "start": 4.761,
+      "end": 5.161
+    },
+    {
+      "text": "parks",
+      "start": 5.161,
+      "end": 5.641
+    },
+    {
+      "text": "to",
+      "start": 5.641,
+      "end": 5.721
+    },
+    {
+      "text": "be",
+      "start": 5.721,
+      "end": 5.801
+    },
+    {
+      "text": "honest",
+      "start": 5.801,
+      "end": 6.281
+    },
+    {
+      "text": "I",
+      "start": 6.441,
+      "end": 6.521
+    },
+    {
+      "text": "couldn't",
+      "start": 6.521,
+      "end": 6.761
+    },
+    {
+      "text": "tell",
+      "start": 6.761,
+      "end": 6.921
+    },
+    {
+      "text": "you",
+      "start": 6.921,
+      "end": 7.081
+    },
+    {
+      "text": "if",
+      "start": 7.161,
+      "end": 7.241
+    },
+    {
+      "text": "there",
+      "start": 7.241,
+      "end": 7.321
+    },
+    {
+      "text": "are",
+      "start": 7.321,
+      "end": 7.321
+    },
+    {
+      "text": "any",
+      "start": 7.321,
+      "end": 7.481
+    },
+    {
+      "text": "especially",
+      "start": 7.481,
+      "end": 7.961
+    },
+    {
+      "text": "beautiful",
+      "start": 7.961,
+      "end": 8.361
+    },
+    {
+      "text": "ones",
+      "start": 8.361,
+      "end": 8.521
+    },
+    {
+      "text": "around",
+      "start": 8.521,
+      "end": 9.001
+    },
+    {
+      "text": "So",
+      "start": 9.161,
+      "end": 9.321
+    },
+    {
+      "text": "no",
+      "start": 9.321,
+      "end": 9.721
+    },
+    {
+      "text": "I",
+      "start": 9.801,
+      "end": 9.881
+    },
+    {
+      "text": "don't",
+      "start": 9.881,
+      "end": 10.041
+    },
+    {
+      "text": "have",
+      "start": 10.041,
+      "end": 10.201
+    },
+    {
+      "text": "any",
+      "start": 10.201,
+      "end": 10.281
+    },
+    {
+      "text": "plans",
+      "start": 10.281,
+      "end": 10.681
+    },
+    {
+      "text": "to",
+      "start": 10.681,
+      "end": 10.681
+    },
+    {
+      "text": "visit",
+      "start": 10.681,
+      "end": 10.921
+    },
+    {
+      "text": "a",
+      "start": 10.921,
+      "end": 11.001
+    },
+    {
+      "text": "specific",
+      "start": 11.001,
+      "end": 11.481
+    },
+    {
+      "text": "park",
+      "start": 11.481,
+      "end": 11.881
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "What type of cars do you like?",
+    "start": 0.0,
+    "end": 1.7,
+    "duration": 1.7,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Honestly, I'm not really into cars, so I don't know much about the types. Maybe electric cars, that's the trend now. But I couldn't name specifics — I'd just say a beautiful car and a convenient car. That's about all I've got.",
+    "start": 2.19,
+    "end": 14.24,
+    "duration": 12.05,
+    "mode": "sse"
+  }
+]

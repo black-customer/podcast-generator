@@ -1,0 +1,419 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "4118a9305dacb44c",
+  "audio_signature": "539211:1789786158",
+  "created_at": "2026-09-19T10:49:18",
+  "segments": [
+    {
+      "text": "Do you think colors are important?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.85
+    },
+    {
+      "text": "Yes, I think they are. It's like buying a phone — when I buy a phone, I consider the color. And if I buy a car, I'll definitely consider the color too. It's actually more important for a car, because you can put a case on your phone, but a car... the color is about first impressions. If someone rides in your car, they'll have thoughts about your personality just from how it looks.",
+      "speaker": "b",
+      "start": 2.29,
+      "end": 22.41
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "think",
+      "start": 0.24,
+      "end": 0.56
+    },
+    {
+      "text": "colors",
+      "start": 0.56,
+      "end": 1.04
+    },
+    {
+      "text": "are",
+      "start": 1.04,
+      "end": 1.12
+    },
+    {
+      "text": "important",
+      "start": 1.12,
+      "end": 1.84
+    },
+    {
+      "text": "Yes",
+      "start": 2.27,
+      "end": 2.75
+    },
+    {
+      "text": "I",
+      "start": 2.75,
+      "end": 2.83
+    },
+    {
+      "text": "think",
+      "start": 2.83,
+      "end": 3.07
+    },
+    {
+      "text": "they",
+      "start": 3.07,
+      "end": 3.23
+    },
+    {
+      "text": "are",
+      "start": 3.23,
+      "end": 3.63
+    },
+    {
+      "text": "It's",
+      "start": 3.87,
+      "end": 4.03
+    },
+    {
+      "text": "like",
+      "start": 4.03,
+      "end": 4.35
+    },
+    {
+      "text": "buying",
+      "start": 4.35,
+      "end": 4.67
+    },
+    {
+      "text": "a",
+      "start": 4.67,
+      "end": 4.67
+    },
+    {
+      "text": "phone",
+      "start": 4.67,
+      "end": 5.31
+    },
+    {
+      "text": "when",
+      "start": 5.39,
+      "end": 5.47
+    },
+    {
+      "text": "I",
+      "start": 5.47,
+      "end": 5.55
+    },
+    {
+      "text": "buy",
+      "start": 5.55,
+      "end": 5.79
+    },
+    {
+      "text": "a",
+      "start": 5.79,
+      "end": 5.87
+    },
+    {
+      "text": "phone",
+      "start": 5.87,
+      "end": 6.19
+    },
+    {
+      "text": "I",
+      "start": 6.19,
+      "end": 6.35
+    },
+    {
+      "text": "consider",
+      "start": 6.35,
+      "end": 6.75
+    },
+    {
+      "text": "the",
+      "start": 6.75,
+      "end": 6.83
+    },
+    {
+      "text": "color",
+      "start": 6.83,
+      "end": 7.39
+    },
+    {
+      "text": "And",
+      "start": 7.63,
+      "end": 7.71
+    },
+    {
+      "text": "if",
+      "start": 7.71,
+      "end": 7.79
+    },
+    {
+      "text": "I",
+      "start": 7.79,
+      "end": 7.87
+    },
+    {
+      "text": "buy",
+      "start": 7.87,
+      "end": 8.19
+    },
+    {
+      "text": "a",
+      "start": 8.19,
+      "end": 8.19
+    },
+    {
+      "text": "car",
+      "start": 8.19,
+      "end": 8.59
+    },
+    {
+      "text": "I'll",
+      "start": 8.59,
+      "end": 8.75
+    },
+    {
+      "text": "definitely",
+      "start": 8.75,
+      "end": 9.15
+    },
+    {
+      "text": "consider",
+      "start": 9.15,
+      "end": 9.55
+    },
+    {
+      "text": "the",
+      "start": 9.55,
+      "end": 9.63
+    },
+    {
+      "text": "color",
+      "start": 9.63,
+      "end": 9.95
+    },
+    {
+      "text": "too",
+      "start": 9.95,
+      "end": 10.43
+    },
+    {
+      "text": "It's",
+      "start": 10.75,
+      "end": 10.91
+    },
+    {
+      "text": "actually",
+      "start": 10.91,
+      "end": 11.15
+    },
+    {
+      "text": "more",
+      "start": 11.15,
+      "end": 11.31
+    },
+    {
+      "text": "important",
+      "start": 11.31,
+      "end": 11.63
+    },
+    {
+      "text": "for",
+      "start": 11.63,
+      "end": 11.71
+    },
+    {
+      "text": "a",
+      "start": 11.71,
+      "end": 11.79
+    },
+    {
+      "text": "car",
+      "start": 11.79,
+      "end": 12.19
+    },
+    {
+      "text": "because",
+      "start": 12.27,
+      "end": 12.75
+    },
+    {
+      "text": "you",
+      "start": 12.99,
+      "end": 13.07
+    },
+    {
+      "text": "can",
+      "start": 13.07,
+      "end": 13.23
+    },
+    {
+      "text": "put",
+      "start": 13.23,
+      "end": 13.31
+    },
+    {
+      "text": "a",
+      "start": 13.31,
+      "end": 13.39
+    },
+    {
+      "text": "case",
+      "start": 13.39,
+      "end": 13.71
+    },
+    {
+      "text": "on",
+      "start": 13.71,
+      "end": 13.79
+    },
+    {
+      "text": "your",
+      "start": 13.79,
+      "end": 13.95
+    },
+    {
+      "text": "phone",
+      "start": 13.95,
+      "end": 14.35
+    },
+    {
+      "text": "but",
+      "start": 14.67,
+      "end": 14.75
+    },
+    {
+      "text": "a",
+      "start": 14.75,
+      "end": 14.83
+    },
+    {
+      "text": "car",
+      "start": 14.83,
+      "end": 15.31
+    },
+    {
+      "text": "the",
+      "start": 15.63,
+      "end": 15.71
+    },
+    {
+      "text": "color",
+      "start": 15.71,
+      "end": 16.11
+    },
+    {
+      "text": "is",
+      "start": 16.11,
+      "end": 16.27
+    },
+    {
+      "text": "about",
+      "start": 16.27,
+      "end": 16.75
+    },
+    {
+      "text": "first",
+      "start": 16.83,
+      "end": 17.07
+    },
+    {
+      "text": "impressions",
+      "start": 17.07,
+      "end": 17.71
+    },
+    {
+      "text": "If",
+      "start": 18.235,
+      "end": 18.315
+    },
+    {
+      "text": "someone",
+      "start": 18.395,
+      "end": 18.635
+    },
+    {
+      "text": "rides",
+      "start": 18.635,
+      "end": 18.875
+    },
+    {
+      "text": "in",
+      "start": 18.875,
+      "end": 18.955
+    },
+    {
+      "text": "your",
+      "start": 18.955,
+      "end": 19.035
+    },
+    {
+      "text": "car",
+      "start": 19.035,
+      "end": 19.435
+    },
+    {
+      "text": "they'll",
+      "start": 19.435,
+      "end": 19.595
+    },
+    {
+      "text": "have",
+      "start": 19.595,
+      "end": 19.835
+    },
+    {
+      "text": "thoughts",
+      "start": 19.835,
+      "end": 20.075
+    },
+    {
+      "text": "about",
+      "start": 20.075,
+      "end": 20.235
+    },
+    {
+      "text": "your",
+      "start": 20.235,
+      "end": 20.395
+    },
+    {
+      "text": "personality",
+      "start": 20.395,
+      "end": 21.035
+    },
+    {
+      "text": "just",
+      "start": 21.035,
+      "end": 21.275
+    },
+    {
+      "text": "from",
+      "start": 21.275,
+      "end": 21.355
+    },
+    {
+      "text": "how",
+      "start": 21.355,
+      "end": 21.595
+    },
+    {
+      "text": "it",
+      "start": 21.675,
+      "end": 21.675
+    },
+    {
+      "text": "looks",
+      "start": 21.675,
+      "end": 22.235
+    }
+  ]
+}

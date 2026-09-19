@@ -1,0 +1,364 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "17a6def6061971e1",
+  "audio_signature": "490310:1789786177",
+  "created_at": "2026-09-19T10:49:38",
+  "segments": [
+    {
+      "text": "Do you still like going to parks now?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.04
+    },
+    {
+      "text": "I couldn't say \"still,\" because I didn't really like them back then — but I like going to parks now. I've gotten really into this peaceful feeling, you know? When I'm in a park, I can enjoy the beautiful scenery, watch what people are doing, watch their lives, see the animals. It's just very peaceful. So yes, I like parks now.",
+      "speaker": "b",
+      "start": 2.42,
+      "end": 20.38
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "still",
+      "start": 0.32,
+      "end": 0.56
+    },
+    {
+      "text": "like",
+      "start": 0.56,
+      "end": 0.8
+    },
+    {
+      "text": "going",
+      "start": 0.8,
+      "end": 1.12
+    },
+    {
+      "text": "to",
+      "start": 1.12,
+      "end": 1.2
+    },
+    {
+      "text": "parks",
+      "start": 1.2,
+      "end": 1.6
+    },
+    {
+      "text": "now",
+      "start": 1.6,
+      "end": 2.0
+    },
+    {
+      "text": "I",
+      "start": 2.376,
+      "end": 2.456
+    },
+    {
+      "text": "couldn't",
+      "start": 2.456,
+      "end": 2.696
+    },
+    {
+      "text": "say",
+      "start": 2.696,
+      "end": 2.936
+    },
+    {
+      "text": "still",
+      "start": 3.016,
+      "end": 3.736
+    },
+    {
+      "text": "because",
+      "start": 3.816,
+      "end": 4.056
+    },
+    {
+      "text": "I",
+      "start": 4.056,
+      "end": 4.216
+    },
+    {
+      "text": "didn't",
+      "start": 4.216,
+      "end": 4.456
+    },
+    {
+      "text": "really",
+      "start": 4.456,
+      "end": 4.696
+    },
+    {
+      "text": "like",
+      "start": 4.696,
+      "end": 4.936
+    },
+    {
+      "text": "them",
+      "start": 4.936,
+      "end": 5.096
+    },
+    {
+      "text": "back",
+      "start": 5.096,
+      "end": 5.336
+    },
+    {
+      "text": "then",
+      "start": 5.336,
+      "end": 5.656
+    },
+    {
+      "text": "but",
+      "start": 6.136,
+      "end": 6.216
+    },
+    {
+      "text": "I",
+      "start": 6.216,
+      "end": 6.296
+    },
+    {
+      "text": "like",
+      "start": 6.296,
+      "end": 6.536
+    },
+    {
+      "text": "going",
+      "start": 6.536,
+      "end": 6.776
+    },
+    {
+      "text": "to",
+      "start": 6.776,
+      "end": 6.776
+    },
+    {
+      "text": "parks",
+      "start": 6.776,
+      "end": 7.096
+    },
+    {
+      "text": "now",
+      "start": 7.096,
+      "end": 7.656
+    },
+    {
+      "text": "I've",
+      "start": 7.656,
+      "end": 7.816
+    },
+    {
+      "text": "gotten",
+      "start": 7.816,
+      "end": 8.216
+    },
+    {
+      "text": "really",
+      "start": 8.216,
+      "end": 8.536
+    },
+    {
+      "text": "into",
+      "start": 8.536,
+      "end": 8.776
+    },
+    {
+      "text": "this",
+      "start": 8.776,
+      "end": 8.936
+    },
+    {
+      "text": "peaceful",
+      "start": 8.936,
+      "end": 9.416
+    },
+    {
+      "text": "feeling",
+      "start": 9.416,
+      "end": 9.816
+    },
+    {
+      "text": "you",
+      "start": 9.816,
+      "end": 9.896
+    },
+    {
+      "text": "know",
+      "start": 9.896,
+      "end": 10.296
+    },
+    {
+      "text": "When",
+      "start": 10.376,
+      "end": 10.536
+    },
+    {
+      "text": "I'm",
+      "start": 10.536,
+      "end": 10.696
+    },
+    {
+      "text": "in",
+      "start": 10.696,
+      "end": 10.856
+    },
+    {
+      "text": "a",
+      "start": 10.856,
+      "end": 10.856
+    },
+    {
+      "text": "park",
+      "start": 10.856,
+      "end": 11.336
+    },
+    {
+      "text": "I",
+      "start": 11.416,
+      "end": 11.496
+    },
+    {
+      "text": "can",
+      "start": 11.496,
+      "end": 11.576
+    },
+    {
+      "text": "enjoy",
+      "start": 11.576,
+      "end": 11.976
+    },
+    {
+      "text": "the",
+      "start": 11.976,
+      "end": 12.056
+    },
+    {
+      "text": "beautiful",
+      "start": 12.056,
+      "end": 12.456
+    },
+    {
+      "text": "scenery",
+      "start": 12.456,
+      "end": 13.096
+    },
+    {
+      "text": "watch",
+      "start": 13.256,
+      "end": 13.576
+    },
+    {
+      "text": "what",
+      "start": 13.576,
+      "end": 13.656
+    },
+    {
+      "text": "people",
+      "start": 13.656,
+      "end": 13.896
+    },
+    {
+      "text": "are",
+      "start": 13.896,
+      "end": 13.976
+    },
+    {
+      "text": "doing",
+      "start": 13.976,
+      "end": 14.536
+    },
+    {
+      "text": "watch",
+      "start": 14.856,
+      "end": 15.176
+    },
+    {
+      "text": "their",
+      "start": 15.176,
+      "end": 15.256
+    },
+    {
+      "text": "lives",
+      "start": 15.256,
+      "end": 15.736
+    },
+    {
+      "text": "see",
+      "start": 15.736,
+      "end": 15.976
+    },
+    {
+      "text": "the",
+      "start": 15.976,
+      "end": 16.056
+    },
+    {
+      "text": "animals",
+      "start": 16.056,
+      "end": 16.696
+    },
+    {
+      "text": "It's",
+      "start": 17.05,
+      "end": 17.21
+    },
+    {
+      "text": "just",
+      "start": 17.21,
+      "end": 17.29
+    },
+    {
+      "text": "very",
+      "start": 17.29,
+      "end": 17.61
+    },
+    {
+      "text": "peaceful",
+      "start": 17.61,
+      "end": 18.25
+    },
+    {
+      "text": "So",
+      "start": 18.41,
+      "end": 18.49
+    },
+    {
+      "text": "yes",
+      "start": 18.49,
+      "end": 18.97
+    },
+    {
+      "text": "I",
+      "start": 18.97,
+      "end": 19.05
+    },
+    {
+      "text": "like",
+      "start": 19.05,
+      "end": 19.29
+    },
+    {
+      "text": "parks",
+      "start": 19.29,
+      "end": 19.61
+    },
+    {
+      "text": "now",
+      "start": 19.61,
+      "end": 20.01
+    }
+  ]
+}
