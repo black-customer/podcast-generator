@@ -182,24 +182,45 @@ function packItemFull(tid, iid) {
   };
 }
 
-// 题库查询：与 server/bank.query_questions 同语义（part/topic 过滤、中英搜索、分页、已作答徽标）
+// 题库查询：与 server/bank.query_questions 同语义
+// （part/topic/set 过滤、core 必考、中英搜索、分页、已作答徽标与条目跳转）
 function packBankQuery(qs) {
   if (!PackState.bank) {
-    return { available: false, items: [], total: 0, page: 1, pageCount: 0, topics: [] };
+    return { available: false, items: [], total: 0, page: 1, pageCount: 0, topics: [], sets: [] };
   }
-  const answered = new Set();
+  const answered = new Map();
   for (const t of PackState.topics.values()) {
     for (const it of t.items.values()) {
-      if (it.title) answered.add(packNormTitle(it.title));
+      if (!it.title) continue;
+      const key = packNormTitle(it.title);
+      const audioUrls = it.audioUrls || {};
+      const entry = {
+        topic_id: t.id, item_id: it.id,
+        has_audio: !!(audioUrls.monologue || audioUrls.podcast || audioUrls.default),
+      };
+      const prev = answered.get(key);
+      if (!prev || (entry.has_audio && !prev.has_audio)) answered.set(key, entry);
     }
   }
   const snap = PackState.bank;
   const part = qs.get("part") ? parseInt(qs.get("part"), 10) : null;
   const topicId = qs.get("topic") || null;
+  const setFilter = qs.get("set_filter") || "";
   const needle = (qs.get("q") || "").trim().toLowerCase();
   const pageSize = Math.min(Math.max(parseInt(qs.get("page_size") || "20", 10) || 20, 1), 100);
   const topicById = new Map((snap.topics || []).map((t) => [t.id, t]));
   const bookById = new Map((snap.books || []).map((b) => [b.id, b]));
+
+  // qid -> 题集列表（含短标签），与 server/bank.set_index 同构
+  const sets = snap.sets || [];
+  for (const s of sets) s.short = `${s.start_month}–${s.end_month}月`;
+  const qsets = new Map();
+  for (const s of sets) {
+    for (const qid of s.question_ids || []) {
+      if (!qsets.has(qid)) qsets.set(qid, []);
+      qsets.get(qid).push(s);
+    }
+  }
 
   const label = (row) => {
     const t = topicById.get(row.topic_id);
@@ -218,28 +239,38 @@ function packBankQuery(qs) {
       const inZh = (row.text_zh || "").toLowerCase().includes(needle);
       if (!inEn && !inZh) continue;
     }
+    const mySets = qsets.get(row.id) || [];
+    if (setFilter === "core" && mySets.length < 2) continue;
+    if (setFilter && setFilter !== "core" && !mySets.some((s) => s.id === setFilter)) continue;
     const [nameZh, nameEn] = label(row);
+    const answeredItem = answered.get(packNormTitle(row.text)) || null;
     rows.push({
       ...row,
       topic_name: nameZh,
       topic_name_en: nameEn,
-      answered: answered.has(packNormTitle(row.text)),
+      answered: !!answeredItem,
+      has_audio: !!(answeredItem && answeredItem.has_audio),
+      answered_item: answeredItem,
+      set_labels: mySets.map((s) => s.short),
+      core: mySets.length >= 2,
     });
   }
   const total = rows.length;
   if ((qs.get("random") === "1" || qs.get("random") === "true") && rows.length) {
     const pick = rows[Math.floor(Math.random() * rows.length)];
-    return { available: true, items: [pick], total, page: 1, pageCount: 1, page_size: 1, topics: [] };
+    return { available: true, items: [pick], total, page: 1, pageCount: 1, page_size: 1, topics: [], sets: [] };
   }
   const pageCount = total ? Math.max(1, Math.ceil(total / pageSize)) : 0;
   let page = parseInt(qs.get("page") || "1", 10) || 1;
   if (total) page = Math.min(Math.max(1, page), pageCount);
   else page = 1;
 
-  // 话题筛选器计数
+  // 话题筛选器计数（按当前考季过滤）
   const counts = new Map();
   for (const row of snap.questions || []) {
     if (part && row.part !== part) continue;
+    if (setFilter === "core" && (qsets.get(row.id) || []).length < 2) continue;
+    if (setFilter && setFilter !== "core" && !(qsets.get(row.id) || []).some((s) => s.id === setFilter)) continue;
     if (row.topic_id) counts.set(row.topic_id, (counts.get(row.topic_id) || 0) + 1);
   }
   const topics = (snap.topics || [])
@@ -250,10 +281,20 @@ function packBankQuery(qs) {
     }))
     .sort((a, b) => (a.ielts_part || 9) - (b.ielts_part || 9) || b.count - a.count);
 
+  // 考季筛选器数据（当前 part 下的计数 + 必考）
+  const partRows = (snap.questions || []).filter((r) => !part || r.part === part);
+  const setsOut = [];
+  for (const s of sets) {
+    const n = partRows.filter((r) => (s.question_ids || []).includes(r.id)).length;
+    if (n) setsOut.push({ id: s.id, name_zh: s.name_zh, short: s.short, count: n });
+  }
+  const coreN = partRows.filter((r) => (qsets.get(r.id) || []).length >= 2).length;
+  setsOut.push({ id: "core", name_zh: "必考题（跨考季）", short: "必考", count: coreN });
+
   return {
     available: true,
     items: rows.slice((page - 1) * pageSize, page * pageSize),
-    total, page, pageCount, page_size: pageSize, topics,
+    total, page, pageCount, page_size: pageSize, topics, sets: setsOut,
   };
 }
 

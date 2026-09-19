@@ -315,10 +315,11 @@ def api_get_voices():
 
 
 @router.get("/voices/{ref_id}/sample")
-def api_voice_sample(ref_id: str):
-    """音色试听：优先返回缓存样本；否则取 fish.audio 官方样本（零 TTS 成本）。
+def api_voice_sample(ref_id: str, regen: bool = False):
+    """音色试听：现场合成优先（真实管线、所点音色）并缓存；官方样本仅作回退。
 
-    官方样本缺失时才用本模型现场合成一句（代价 1 次免费调用），同样落缓存。
+    克隆音色的官方 samples 常是基模型的声音，与实际合成听感不符（展台会误导）；
+    因此默认用该 ref 现场合成一句（1 次免费调用，结果落缓存）。regen=1 强制重合成。
     """
     import logging
 
@@ -332,15 +333,30 @@ def api_voice_sample(ref_id: str):
         raise _err(400, "非法的音色 id")
 
     cache = DATA_DIR / "voice_samples" / f"{ref_id}.mp3"
-    if cache.exists() and cache.stat().st_size > 1000:
+    if not regen and cache.exists() and cache.stat().st_size > 1000:
         return FileResponse(cache, media_type="audio/mpeg")
 
     s = load_settings()
     key = real_api_key(s)
-    headers = {"Authorization": f"Bearer {key}"} if key else {}
 
-    # 1) 官方样本
+    # 1) 现场合成一句（与真实生成同管线——听感即所得）
+    if key and not is_dry_run(s):
+        try:
+            audio_bytes = tts.fish_tts_segment(
+                "Hi there! This is a short preview of my voice. Pretty natural, right?",
+                s,
+                reference_id=ref_id,
+            )
+            cache.parent.mkdir(parents=True, exist_ok=True)
+            cache.write_bytes(audio_bytes)
+            return FileResponse(cache, media_type="audio/mpeg")
+        except tts.TTSError as e:
+            logger.warning("现场合成试听失败，回退官方样本: %s", e)
+
+    # 2) 官方样本回退（合成不可用：dry-run/无 key/失败）。不落缓存——
+    #    克隆音色的官方样本可能并非本音色，缓存会永久遮蔽真实合成结果
     try:
+        headers = {"Authorization": f"Bearer {key}"} if key else {}
         detail = httpx.get(f"{FISH_MODELS_URL}/{ref_id}", headers=headers, timeout=30)
         if detail.status_code == 200:
             samples = detail.json().get("samples") or []
@@ -349,26 +365,14 @@ def api_voice_sample(ref_id: str):
                 if url:
                     up = httpx.get(url, timeout=60, follow_redirects=True)
                     if up.status_code == 200 and len(up.content) > 1000:
-                        cache.parent.mkdir(parents=True, exist_ok=True)
-                        cache.write_bytes(up.content)
-                        return FileResponse(cache, media_type="audio/mpeg")
+                        return Response(
+                            content=up.content,
+                            media_type="audio/mpeg",
+                            headers={"Cache-Control": "no-store"},
+                        )
     except httpx.HTTPError:
-        logger.warning("拉取官方样本失败，回退现场合成", exc_info=True)
-
-    # 2) 现场合成一句（缓存）
-    if not key or is_dry_run(s):
-        raise _err(503, "无法获取官方样本且当前为 dry-run 模式，无法现场合成试听")
-    try:
-        audio_bytes = tts.fish_tts_segment(
-            "Hi there! This is a short preview of my voice. Pretty natural, right?",
-            s,
-            reference_id=ref_id,
-        )
-    except tts.TTSError as e:
-        raise _err(502, f"试听生成失败: {e}") from e
-    cache.parent.mkdir(parents=True, exist_ok=True)
-    cache.write_bytes(audio_bytes)
-    return FileResponse(cache, media_type="audio/mpeg")
+        logger.warning("拉取官方样本也失败", exc_info=True)
+    raise _err(502, "试听生成失败（合成不可用且官方样本缺失）")
 
 
 # ---------------------------------------------------------------- settings
@@ -498,6 +502,7 @@ def api_bank_questions(
     page: int = 1,
     page_size: int = bank.PAGE_SIZE,
     random_pick: bool = False,
+    set_filter: str | None = None,
 ):
     try:
         snapshot = bank.load_bank()
@@ -509,6 +514,7 @@ def api_bank_questions(
             "page": 1,
             "pageCount": 0,
             "topics": [],
+            "sets": [],
         }
     result = bank.query_questions(
         snapshot,
@@ -517,11 +523,27 @@ def api_bank_questions(
         q=q,
         page=page,
         page_size=page_size,
-        answered=bank.answered_norms(),
+        answered_map=bank.answered_items(),
         random_pick=random_pick,
+        set_filter=set_filter,
     )
     result["available"] = True
     result["topics"] = bank.bank_topics(snapshot, part=part)
+    # 考季筛选器数据：每个题集在当前 part 下的题数 + 跨季必考计数
+    part_questions = [
+        r for r in snapshot.get("questions", []) if part is None or r["part"] == part
+    ]
+    qsets = bank.set_index(snapshot)
+    sets_out = []
+    for s in snapshot.get("sets", []):
+        n = sum(1 for r in part_questions if r["id"] in set(s.get("question_ids", [])))
+        if n:
+            sets_out.append(
+                {"id": s["id"], "name_zh": s["name_zh"], "short": s["short"], "count": n}
+            )
+    core_n = sum(1 for r in part_questions if len(qsets.get(r["id"], [])) >= 2)
+    sets_out.append({"id": "core", "name_zh": "必考题（跨考季）", "short": "必考", "count": core_n})
+    result["sets"] = sets_out
     return result
 
 
@@ -534,6 +556,8 @@ def api_bank_answer(body: BankAnswerIn):
     question = bank.find_question(snapshot, body.question_id)
     if question is None:
         raise _err(404, "题目不存在")
+    if not (question.get("text") or "").strip():
+        raise _err(422, "该题目题干缺失，无法入库")
     fields = bank.answer_fields(body.answer)
     if not fields:
         raise _err(422, "回答不能为空")

@@ -61,6 +61,13 @@ def sync_from_db(db_path: Path | str | None = None, out_path: Path | str | None 
                 "order by part, text"
             )
         ]
+        # personal 题册部分题目 text 为空（原问句缺失）——用 text_zh 回退作题干，
+        # 否则列表出现空行、作答会建出空题干条目
+        for row in questions:
+            if not row["text"].strip():
+                row["text"] = row["text_zh"].strip()
+                row["text_zh"] = ""
+        questions = [r for r in questions if r["text"]]
         links: dict[str, list[str]] = {}
         for qid, sid in cur.execute(
             "select question_id, question_set_id from question_set_links "
@@ -117,17 +124,41 @@ def norm_title(text: str) -> str:
     return " ".join(t.split())
 
 
-def answered_norms() -> set[str]:
-    """库内全部条目 title 的规整键集合（题库页"已作答/已有音频"徽标依据）。"""
+def answered_items() -> dict[str, dict]:
+    """库内条目按题干规整键索引：norm -> {topic_id, item_id, status, has_audio}。
+
+    同题多条目时优先已有音频的（点进去能听）。题库页徽标与跳转依据。
+    """
     from . import library
 
-    norms: set[str] = set()
+    result: dict[str, dict] = {}
     for t in library.list_topics():
         for it in library.get_topic(t["id"]).get("items", []):
             title = it.get("title") or ""
-            if title:
-                norms.add(norm_title(title))
-    return norms
+            if not title:
+                continue
+            entry = {
+                "topic_id": t["id"],
+                "item_id": it["id"],
+                "status": it.get("status") or "",
+                "has_audio": bool(it.get("has_monologue") or it.get("has_podcast")),
+            }
+            key = norm_title(title)
+            prev = result.get(key)
+            if prev is None or (entry["has_audio"] and not prev["has_audio"]):
+                result[key] = entry
+    return result
+
+
+def set_index(snapshot: dict) -> dict[str, list[dict]]:
+    """qid -> 所属题集列表（含 short 短标签），并给题集补 count。"""
+    sets = snapshot.get("sets", [])
+    idx: dict[str, list[dict]] = {}
+    for s in sets:
+        s["short"] = f"{s['start_month']}–{s['end_month']}月"
+        for qid in s.get("question_ids", []):
+            idx.setdefault(qid, []).append(s)
+    return idx
 
 
 def _topic_label(snapshot: dict, question: dict) -> tuple[str, str]:
@@ -148,14 +179,17 @@ def query_questions(
     q: str | None = None,
     page: int = 1,
     page_size: int = PAGE_SIZE,
-    answered: set[str] | None = None,
+    answered_map: dict[str, dict] | None = None,
     random_pick: bool = False,
+    set_filter: str | None = None,
 ) -> dict:
     """题库查询：part/topic 精确过滤，q 中英不区分大小写子串，页参数钳制。
 
+    set_filter：题集 id（考季筛选）或 "core"（跨季必考——≥2 个考季都出现的题）。
     random_pick=True 时从过滤结果随机取一题（items 单条，total 保持过滤总数）。
     """
     needle = (q or "").strip().casefold()
+    qsets = set_index(snapshot)
     rows: list[dict] = []
     for row in snapshot.get("questions", []):
         if part is not None and row["part"] != part:
@@ -167,13 +201,23 @@ def query_questions(
             in_zh = needle in (row["text_zh"] or "").casefold()
             if not in_en and not in_zh:
                 continue
+        my_sets = qsets.get(row["id"], [])
+        if set_filter == "core" and len(my_sets) < 2:
+            continue
+        if set_filter and set_filter != "core" and set_filter not in {s["id"] for s in my_sets}:
+            continue
         name_zh, name_en = _topic_label(snapshot, row)
+        answered_item = (answered_map or {}).get(norm_title(row["text"]))
         rows.append(
             {
                 **row,
                 "topic_name": name_zh,
                 "topic_name_en": name_en,
-                "answered": bool(answered) and norm_title(row["text"]) in answered,
+                "answered": answered_item is not None,
+                "has_audio": bool(answered_item and answered_item["has_audio"]),
+                "answered_item": answered_item,
+                "set_labels": [s["short"] for s in my_sets],
+                "core": len(my_sets) >= 2,
             }
         )
     total = len(rows)

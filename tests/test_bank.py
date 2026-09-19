@@ -138,16 +138,69 @@ def test_query_pagination_clamps(snapshot_file: Path):
 
 def test_query_answered_badge(snapshot_file: Path):
     snap = bank.load_bank(snapshot_file)
-    answered = {bank.norm_title("Do you have a favorite teacher?")}
-    res = bank.query_questions(snap, answered=answered)
-    flags = {it["id"]: it["answered"] for it in res["items"]}
-    assert flags["q1"] is True and flags["q2"] is False
+    answered = {
+        bank.norm_title("Do you have a favorite teacher?"): {
+            "topic_id": "t1", "item_id": "001-x", "status": "generated", "has_audio": True,
+        },
+        bank.norm_title("Do you want to be a teacher?"): {
+            "topic_id": "t1", "item_id": "002-y", "status": "ready", "has_audio": False,
+        },
+    }
+    res = bank.query_questions(snap, answered_map=answered)
+    flags = {it["id"]: it for it in res["items"]}
+    assert flags["q1"]["has_audio"] is True and flags["q1"]["answered"] is True
+    assert flags["q2"]["has_audio"] is False and flags["q2"]["answered"] is True
+    assert flags["q3"]["answered"] is False
+    assert flags["q1"]["answered_item"]["item_id"] == "001-x"
 
 
 def test_norm_title_normalizes():
     assert bank.norm_title("Do you have a favorite teacher?") == bank.norm_title(
         "do you   HAVE a favorite teacher"
     )
+
+
+def test_query_set_filter_and_core(snapshot_file: Path):
+    snap = bank.load_bank(snapshot_file)
+    # 样例：q1 属于题集 s1；无题跨 ≥2 集 → core 为空
+    res = bank.query_questions(snap, set_filter="s1")
+    assert {it["id"] for it in res["items"]} == {"q1"}
+    assert res["items"][0]["set_labels"] == ["1–3月"]
+    assert bank.query_questions(snap, set_filter="core")["total"] == 0
+    # 构造跨季数据验证 core：把 q2 也加进另一个题集
+    snap["sets"].append({"id": "s2", "name_zh": "2026 年 5–8 月", "year": 2026,
+                         "start_month": 5, "end_month": 8, "short": "5–8月",
+                         "question_ids": ["q1", "q2"]})
+    core = bank.query_questions(snap, set_filter="core")
+    assert {it["id"] for it in core["items"]} == {"q1"}  # 只有 q1 跨了 s1+s2 两个考季
+    assert all(it["core"] for it in core["items"])
+    assert bank.query_questions(snap, set_filter="s2")["total"] == 2
+
+
+def test_answered_items_prefers_audio(monkeypatch):
+    class FakeTopic:
+        def __init__(self, items):
+            self._items = items
+
+        def get(self, _k, _d=None):
+            return self._items
+
+    monkeypatch.setattr(
+        library, "list_topics",
+        lambda: [{"id": "01-a", "name": "A", "stats": {}, "total_sec": 0}],
+    )
+    monkeypatch.setattr(
+        library, "get_topic",
+        lambda tid: FakeTopic([
+            {"id": "002-plain", "title": "Same question?", "status": "ready",
+             "has_monologue": False, "has_podcast": False},
+            {"id": "001-audio", "title": "Same question?", "status": "generated",
+             "has_monologue": True, "has_podcast": False},
+        ]),
+    )
+    got = bank.answered_items()
+    assert got[bank.norm_title("Same question?")]["item_id"] == "001-audio"
+    assert got[bank.norm_title("Same question?")]["has_audio"] is True
 
 
 def test_bank_topics_counts(snapshot_file: Path):

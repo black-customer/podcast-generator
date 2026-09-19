@@ -51,6 +51,22 @@ def test_bank_view_flow():
             if page.locator(".bank-row").count() > 0:
                 assert page.locator(".bank-part-tag").count() > 0
 
+            # 2.5 考季筛选：5-8月下拉 → 行标签只剩 5–8月；必考项有"必考"徽标
+            page.click(".bank-tabs button:nth-child(1)")
+            page.wait_for_timeout(300)
+            page.select_option(".bank-toolbar select >> nth=1", "qs_2026_05_08")
+            page.wait_for_timeout(400)
+            assert "set=qs_2026_05_08" in page.url
+            rows = page.locator(".bank-row")
+            assert rows.count() > 0, "Part1 5-8月必有结果"
+            tags = page.locator(".bank-row").first.locator(".bank-topic-tag").all_inner_texts()
+            assert any("5–8月" in t for t in tags), f"行标签缺考季: {tags}"
+            page.select_option(".bank-toolbar select >> nth=1", "core")
+            page.wait_for_timeout(400)
+            # Part1 必考只有 1 题（如为 0 也不算失败——数据决定），只验证不报错
+            page.select_option(".bank-toolbar select >> nth=1", "")
+            page.wait_for_timeout(300)
+
             # 3. 搜索：回到 Part 1 搜英文题干子串（Part2 搜 hometown 为空属正常）
             page.click(".bank-tabs button:nth-child(1)")
             page.wait_for_timeout(400)
@@ -61,10 +77,26 @@ def test_bank_view_flow():
             assert rows.count() > 0, "Part1 搜 hometown 必有结果"
             assert "hometown" in rows.first.inner_text().lower()
 
-            # 4. 选中题目 → 作答卡出现（cue card 全文 + 输入框）
-            page.click(".bank-row >> nth=0")
+            # 4. 清空搜索 → 选中已作答且有音频的题 → 作答卡出现「去听已有的音频」跳转按钮
+            # （点击行后 hashchange 异步派发 + fetch 渲染，须等 DOM 稳定再操作）
+            page.fill("#bank-q", "")
+            page.press("#bank-q", "Enter")
+            page.wait_for_timeout(500)
+            page.locator(".bank-row", has_text="已有音频").first.click()
+            page.wait_for_timeout(700)
             page.wait_for_selector(".bank-answer-card", timeout=5000)
-            assert page.locator("#bank-answer-input").is_visible()
+            assert page.locator("text=去听已有的音频").count() == 1
+
+            # 4.5 选中未作答题 → 输入框可见可作答
+            # （不精确断言跳转按钮数：同题干可能跨册重复，另一册版本或已作答）
+            un = requests.get(
+                f"{BASE_URL}/api/bank/questions?part=1&page_size=100", timeout=10
+            ).json()
+            target = next((it for it in un["items"] if not it["answered"]), None)
+            assert target, "Part1 应存在未作答题目"
+            page.locator(".bank-row", has_text=target["text"][:40]).first.click()
+            page.wait_for_timeout(700)
+            page.wait_for_selector("#bank-answer-input", timeout=5000)
 
             # 5. 提交中文作答 → 跳转到话题页（真实入库，finally 清理）
             page.fill("#bank-answer-input", f"e2e 题库作答冒烟 {stamp}")

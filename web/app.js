@@ -1586,6 +1586,7 @@ function bankParams() {
   return {
     part: p.get("part") || "1",
     topic: p.get("topic") || "",
+    set: p.get("set") || "",
     q: p.get("q") || "",
     page: parseInt(p.get("page") || "1", 10) || 1,
     sel: p.get("sel") || "",
@@ -1595,13 +1596,14 @@ function bankParams() {
 function bankGo(overrides) {
   const cur = bankParams();
   const next = { ...cur, ...overrides };
-  const filterChanged = ["part", "topic", "q"].some(
+  const filterChanged = ["part", "topic", "set", "q"].some(
     (k) => overrides[k] !== undefined && overrides[k] !== cur[k]
   );
   if (filterChanged) next.page = 1;
   const qs = new URLSearchParams();
   qs.set("part", next.part);
   if (next.topic) qs.set("topic", next.topic);
+  if (next.set) qs.set("set", next.set);
   if (next.q) qs.set("q", next.q);
   if (next.page > 1) qs.set("page", String(next.page));
   if (next.sel) qs.set("sel", next.sel);
@@ -1613,7 +1615,8 @@ let bankRandomPick = null;
 async function bankRandomGo() {
   const p = bankParams();
   const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&random=1` +
-    (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "");
+    (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
+    (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "");
   try {
     const res = await api("GET", query);
     if (!res.items || !res.items.length) { toast("该筛选下没有题目"); return; }
@@ -1649,6 +1652,7 @@ async function BankView(token) {
   try {
     const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&page=${p.page}` +
       (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
+      (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "") +
       (p.q ? `&q=${encodeURIComponent(p.q)}` : "");
     data = await api("GET", query);
   } catch (e) {
@@ -1678,12 +1682,25 @@ async function BankView(token) {
       (t) => `<option value="${esc(t.id)}" ${p.topic === t.id ? "selected" : ""}>${esc(t.name_zh)}（${t.count}）</option>`
     )).join("");
 
+  const setOptions = [`<option value="">全部考季（${data.total}）</option>`]
+    .concat((data.sets || []).map(
+      (s) => `<option value="${esc(s.id)}" ${(p.set || "") === s.id ? "selected" : ""}>${esc(s.name_zh)}（${s.count}）</option>`
+    )).join("");
+
   const selItem = (p.sel && data.items.find((it) => it.id === p.sel)) || bankRandomPick;
   const packMode = typeof PackState !== "undefined" && PackState.active;
+  const selJump = selItem && selItem.answered_item ? `
+      <div class="bank-answer-actions" style="margin-top:12px;">
+        ${selItem.answered_item.has_audio
+          ? `<button class="bank-submit-btn" onclick="location.hash='#/play/${encodeURIComponent(selItem.answered_item.topic_id)}/${encodeURIComponent(selItem.answered_item.item_id)}'">▶ 去听已有的音频</button>`
+          : `<button class="btn-pill" onclick="location.hash='#/topic/${encodeURIComponent(selItem.answered_item.topic_id)}'">查看已作答条目（还没有音频，需先生成）</button>`}
+      </div>` : "";
   const answerCard = selItem ? `
     <div class="bank-answer-card">
       <div class="bank-answer-q">${esc(selItem.text)}</div>
       ${selItem.text_zh ? `<div class="bank-answer-zh">${esc(selItem.text_zh)}</div>` : ""}
+      ${selItem.core ? `<div class="bank-row-meta" style="margin-top:8px;"><span class="bank-badge">必考题</span>${(selItem.set_labels || []).map((l) => `<span class="bank-topic-tag">${esc(l)}</span>`).join("")}</div>` : ""}
+      ${selJump}
       ${packMode ? `<p class="bank-answer-hint">📱 APP 浏览模式：随机练题口头作答即可，提交作答请在电脑端进行。</p>` : `
       <textarea id="bank-answer-input" rows="6"
         placeholder="用中文或英文自由作答——说出你想表达的意思，母语者版本由 Agent 会话改写后生成音频"></textarea>
@@ -1700,7 +1717,9 @@ async function BankView(token) {
       <div class="bank-row-text">${esc(it.text)}</div>
       <div class="bank-row-meta">
         <span class="bank-topic-tag">${esc(it.topic_name)}</span>
-        ${it.answered ? `<span class="bank-badge">已作答</span>` : ""}
+        ${it.has_audio ? `<span class="bank-badge">▶ 已有音频</span>` : (it.answered ? `<span class="bank-badge bank-badge-dim">已作答·未生成</span>` : "")}
+        ${it.core ? `<span class="bank-part-tag">必考</span>` : ""}
+        ${(it.set_labels || []).map((l) => `<span class="bank-topic-tag">${esc(l)}</span>`).join("")}
         ${it.part !== 1 ? `<span class="bank-part-tag">Part ${it.part}</span>` : ""}
       </div>
     </div>`).join("");
@@ -1717,6 +1736,7 @@ async function BankView(token) {
     <div class="bank-toolbar">
       <div class="bank-tabs">${partTabs}</div>
       <select class="bank-select" onchange="bankGo({topic: this.value})">${topicOptions}</select>
+      <select class="bank-select" onchange="bankGo({set: this.value})">${setOptions}</select>
       <div class="bank-search">
         <input id="bank-q" value="${esc(p.q)}" placeholder="搜索题干（中英文）"
           onkeydown="if(event.key==='Enter')bankGo({q: document.getElementById('bank-q').value.trim()})">

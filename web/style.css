@@ -1127,3 +1127,4 @@ body.app-shell #nav-import { display: flex; }
 body.app-shell .nav-item[data-filter="voices"],
 body.app-shell .nav-item[data-filter="manage"] { display: none; }
 body.app-shell #nav-import { display: flex; }
+.bank-badge-dim { background: var(--bg-highlight); color: var(--text-sub); font-weight: 400; }
