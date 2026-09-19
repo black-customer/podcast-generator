@@ -529,20 +529,21 @@ def api_bank_questions(
     )
     result["available"] = True
     result["topics"] = bank.bank_topics(snapshot, part=part)
-    # 考季筛选器数据：每个题集在当前 part 下的题数 + 跨季必考计数
+    # 考季筛选器数据：每个题集在当前 part 下的题数 + 必考题（固定五话题）计数
     part_questions = [
         r for r in snapshot.get("questions", []) if part is None or r["part"] == part
     ]
-    qsets = bank.set_index(snapshot)
+    core_tids = bank._core_topic_ids(snapshot)
     sets_out = []
     for s in snapshot.get("sets", []):
-        n = sum(1 for r in part_questions if r["id"] in set(s.get("question_ids", [])))
+        s_ids = set(s.get("question_ids", []))
+        n = sum(1 for r in part_questions if r["id"] in s_ids)
         if n:
             sets_out.append(
                 {"id": s["id"], "name_zh": s["name_zh"], "short": s["short"], "count": n}
             )
-    core_n = sum(1 for r in part_questions if len(qsets.get(r["id"], [])) >= 2)
-    sets_out.append({"id": "core", "name_zh": "必考题（跨考季）", "short": "必考", "count": core_n})
+    core_n = sum(1 for r in part_questions if r["topic_id"] in core_tids)
+    sets_out.append({"id": "core", "name_zh": "必考题", "short": "必考", "count": core_n})
     result["sets"] = sets_out
     return result
 

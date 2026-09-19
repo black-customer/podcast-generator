@@ -6,6 +6,7 @@
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import re
@@ -17,9 +18,20 @@ from .config import atomic_write_text
 from .library import now_iso
 
 BANK_PATH = Path(__file__).resolve().parent.parent / "data" / "question_bank.json"
+EXTRA_PATH = Path(__file__).resolve().parent.parent / "data" / "question_bank_extra.json"
 DEFAULT_DB_PATH = Path(r"D:\project\RoastDuck\data\app.db")
 SNAPSHOT_VERSION = 1
 PAGE_SIZE = 20
+
+# 必考话题：雅思每季固定的开场五件套（Bruce 2026-09-20 定稿）。
+# 全等匹配话题英文名的规整形式，避免 Part3 的 "Work, Career & Success" 等误伤。
+CORE_TOPIC_NORMS = {
+    "work or studies", "work or study", "work studies", "work study", "work",
+    "home accommodation", "home or accommodation", "home", "accommodation",
+    "hometown",
+    "the area you live in", "area you live in",
+    "the city you live in", "city you live in",
+}
 
 
 def sync_from_db(db_path: Path | str | None = None, out_path: Path | str | None = None) -> dict:
@@ -90,6 +102,10 @@ def sync_from_db(db_path: Path | str | None = None, out_path: Path | str | None 
         ]
     finally:
         con.close()
+    merged = merge_extra(
+        {"topics": topics, "questions": questions, "sets": sets}
+    )
+    topics, questions, sets = merged["topics"], merged["questions"], merged["sets"]
     snapshot = {
         "version": SNAPSHOT_VERSION,
         "exported_at": now_iso(),
@@ -108,6 +124,77 @@ def sync_from_db(db_path: Path | str | None = None, out_path: Path | str | None 
     out.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_text(out, json.dumps(snapshot, ensure_ascii=False, indent=1))
     return snapshot
+
+
+def merge_extra(data: dict, extra_path: Path | None = None) -> dict:
+    """把补充题源（如 9–12月新题 PDF 整理件）合并进快照数据。
+
+    话题按英文名规全等去重（复用已有 id）；题目按题干规整去重（已有题跳过）；
+    新题生成稳定 id（q_x26q3_<hash>）并全部挂到 extra 的题集下。幂等：重跑不重复。
+    """
+    path = extra_path if extra_path is not None else EXTRA_PATH
+    if not path.exists():
+        return data
+    extra = json.loads(Path(path).read_text(encoding="utf-8"))
+
+    topics = data["topics"]
+    questions = data["questions"]
+    sets = data["sets"]
+
+    topic_id_by_norm: dict[str, str] = {}
+    for t in topics:
+        topic_id_by_norm[norm_title(t.get("name_en") or t["name_zh"])] = t["id"]
+
+    set_id = extra["set"]["id"]
+    if not any(s["id"] == set_id for s in sets):
+        sets.append({**extra["set"], "question_ids": []})
+    target_set = next(s for s in sets if s["id"] == set_id)
+
+    existing_norms: dict[str, str] = {norm_title(q["text"]): q["id"] for q in questions}
+    linked = set(target_set.get("question_ids", []))
+
+    for q in extra.get("questions", []):
+        tnorm = norm_title(q["topic_en"])
+        tid = topic_id_by_norm.get(tnorm)
+        if tid is None:
+            tmeta = next(
+                (t for t in extra["topics"] if norm_title(t["name_en"]) == tnorm), None
+            )
+            new_id = f"t_x26q3_{hashlib.sha1(tnorm.encode()).hexdigest()[:10]}"
+            topics.append(
+                {
+                    "id": new_id,
+                    "name_zh": tmeta["name_zh"] if tmeta else q["topic_en"],
+                    "name_en": tmeta["name_en"] if tmeta else q["topic_en"],
+                    "ielts_part": 1,
+                    "sort": 0,
+                }
+            )
+            topic_id_by_norm[tnorm] = new_id
+            tid = new_id
+        qnorm = norm_title(q["text"])
+        if qnorm in existing_norms:
+            # 题干与库内已有题重复：不入重复行，但挂上本考季（同题可跨季复用）
+            if existing_norms[qnorm] not in linked:
+                target_set["question_ids"].append(existing_norms[qnorm])
+                linked.add(existing_norms[qnorm])
+            continue
+        qid = f"q_x26q3_{hashlib.sha1(qnorm.encode()).hexdigest()[:10]}"
+        questions.append(
+            {
+                "id": qid,
+                "book_id": "book_extra_maimen",
+                "part": 1,
+                "topic_id": tid,
+                "text": q["text"],
+                "text_zh": q.get("text_zh") or "",
+            }
+        )
+        existing_norms[qnorm] = qid
+        if qid not in linked:
+            target_set["question_ids"].append(qid)
+            linked.add(qid)
+    return {"topics": topics, "questions": questions, "sets": sets}
 
 
 def load_bank(path: Path | str | None = None) -> dict:
@@ -172,6 +259,15 @@ def _topic_label(snapshot: dict, question: dict) -> tuple[str, str]:
     return "未分类", ""
 
 
+def _core_topic_ids(snapshot: dict) -> set[str]:
+    """必考话题 id 集合：话题英文名规整后落在 CORE_TOPIC_NORMS 全等集合内。"""
+    return {
+        t["id"]
+        for t in snapshot.get("topics", [])
+        if norm_title(t.get("name_en") or "") in CORE_TOPIC_NORMS
+    }
+
+
 def query_questions(
     snapshot: dict,
     part: int | None = None,
@@ -185,11 +281,14 @@ def query_questions(
 ) -> dict:
     """题库查询：part/topic 精确过滤，q 中英不区分大小写子串，页参数钳制。
 
-    set_filter：题集 id（考季筛选）或 "core"（跨季必考——≥2 个考季都出现的题）。
+    set_filter：题集 id（考季筛选）或 "core"（必考题——固定五话题：
+    Work or studies / Home-accommodation / Hometown / The area you live in /
+    The city you live in，Bruce 2026-09-20 定稿）。
     random_pick=True 时从过滤结果随机取一题（items 单条，total 保持过滤总数）。
     """
     needle = (q or "").strip().casefold()
     qsets = set_index(snapshot)
+    core_tids = _core_topic_ids(snapshot)
     rows: list[dict] = []
     for row in snapshot.get("questions", []):
         if part is not None and row["part"] != part:
@@ -202,7 +301,8 @@ def query_questions(
             if not in_en and not in_zh:
                 continue
         my_sets = qsets.get(row["id"], [])
-        if set_filter == "core" and len(my_sets) < 2:
+        is_core = row["topic_id"] in core_tids
+        if set_filter == "core" and not is_core:
             continue
         if set_filter and set_filter != "core" and set_filter not in {s["id"] for s in my_sets}:
             continue
@@ -217,7 +317,7 @@ def query_questions(
                 "has_audio": bool(answered_item and answered_item["has_audio"]),
                 "answered_item": answered_item,
                 "set_labels": [s["short"] for s in my_sets],
-                "core": len(my_sets) >= 2,
+                "core": is_core,
             }
         )
     total = len(rows)

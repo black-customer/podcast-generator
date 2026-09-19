@@ -64,7 +64,9 @@ def duck_db(tmp_path: Path) -> Path:
 
 
 @pytest.fixture()
-def snapshot_file(duck_db: Path, tmp_path: Path) -> Path:
+def snapshot_file(duck_db: Path, tmp_path: Path, monkeypatch) -> Path:
+    # 隔离真实 9–12月补充题源：单测样例只反映 app.db 夹具本身
+    monkeypatch.setattr(bank, "EXTRA_PATH", tmp_path / "no-extra.json")
     out = tmp_path / "question_bank.json"
     bank.sync_from_db(duck_db, out)
     return out
@@ -72,7 +74,8 @@ def snapshot_file(duck_db: Path, tmp_path: Path) -> Path:
 
 # ---------- 同步 ----------
 
-def test_sync_creates_snapshot(duck_db: Path, tmp_path: Path):
+def test_sync_creates_snapshot(duck_db: Path, tmp_path: Path, monkeypatch):
+    monkeypatch.setattr(bank, "EXTRA_PATH", tmp_path / "no-extra.json")
     out = tmp_path / "bank.json"
     snap = bank.sync_from_db(duck_db, out)
     assert out.exists()
@@ -87,7 +90,8 @@ def test_sync_creates_snapshot(duck_db: Path, tmp_path: Path):
     assert on_disk["sets"][0]["question_ids"] == ["q1"]
 
 
-def test_sync_is_readonly_and_idempotent(duck_db: Path, tmp_path: Path):
+def test_sync_is_readonly_and_idempotent(duck_db: Path, tmp_path: Path, monkeypatch):
+    monkeypatch.setattr(bank, "EXTRA_PATH", tmp_path / "no-extra.json")
     before = duck_db.read_bytes()
     out = tmp_path / "bank.json"
     first = bank.sync_from_db(duck_db, out)
@@ -162,19 +166,55 @@ def test_norm_title_normalizes():
 
 def test_query_set_filter_and_core(snapshot_file: Path):
     snap = bank.load_bank(snapshot_file)
-    # 样例：q1 属于题集 s1；无题跨 ≥2 集 → core 为空
+    # 样例：q1 属于题集 s1；t2 名为 "Hometown"（必考话题）→ q3 是必考题
     res = bank.query_questions(snap, set_filter="s1")
     assert {it["id"] for it in res["items"]} == {"q1"}
     assert res["items"][0]["set_labels"] == ["1–3月"]
-    assert bank.query_questions(snap, set_filter="core")["total"] == 0
-    # 构造跨季数据验证 core：把 q2 也加进另一个题集
-    snap["sets"].append({"id": "s2", "name_zh": "2026 年 5–8 月", "year": 2026,
-                         "start_month": 5, "end_month": 8, "short": "5–8月",
-                         "question_ids": ["q1", "q2"]})
     core = bank.query_questions(snap, set_filter="core")
-    assert {it["id"] for it in core["items"]} == {"q1"}  # 只有 q1 跨了 s1+s2 两个考季
+    assert {it["id"] for it in core["items"]} == {"q3"}
     assert all(it["core"] for it in core["items"])
-    assert bank.query_questions(snap, set_filter="s2")["total"] == 2
+    # Part3 的 Work & Success 类话题不得误伤
+    snap["topics"].append({"id": "t_wcs", "name_zh": "工作与成功",
+                           "name_en": "Work, Career & Success", "ielts_part": 3, "sort": 0})
+    snap["questions"][3]["topic_id"] = "t_wcs"
+    core2 = bank.query_questions(snap, set_filter="core")
+    assert "q4" not in {it["id"] for it in core2["items"]}
+    assert bank.query_questions(snap, set_filter="s2")["total"] == 0
+
+
+def test_merge_extra_topics_questions_and_set(snapshot_file: Path, tmp_path: Path):
+    import copy
+
+    snap = bank.load_bank(snapshot_file)
+    baseline = copy.deepcopy({"topics": snap["topics"], "questions": snap["questions"],
+                              "sets": snap["sets"]})
+    extra = tmp_path / "extra.json"
+    extra.write_text(json.dumps({
+        "set": {"id": "qs_x", "name_zh": "2026 年 9–12 月", "year": 2026,
+                "start_month": 9, "end_month": 12},
+        "topics": [{"name_en": "Paper", "name_zh": "纸"}],
+        "questions": [
+            {"topic_en": "Paper", "text": "Brand new question?", "text_zh": "全新题"},
+            {"topic_en": "Paper", "text": "Do you have a favorite teacher?",
+             "text_zh": "与 q1 重复的题干"},
+        ],
+    }), encoding="utf-8")
+    m1 = bank.merge_extra({"topics": snap["topics"], "questions": snap["questions"],
+                           "sets": snap["sets"]}, extra_path=extra)
+    m2 = bank.merge_extra({"topics": m1["topics"], "questions": m1["questions"],
+                           "sets": m1["sets"]}, extra_path=extra)
+    # 幂等：+1 话题 +1 题（重复题干不重复入库）+1 题集
+    assert len(m1["topics"]) == len(baseline["topics"]) + 1
+    assert len(m1["questions"]) == len(baseline["questions"]) + 1
+    assert len(m1["sets"]) == len(baseline["sets"]) + 1
+    assert (len(m2["topics"]), len(m2["questions"]), len(m2["sets"])) == (
+        len(m1["topics"]), len(m1["questions"]), len(m1["sets"]))
+    added = [q for q in m1["questions"] if q["text"] == "Brand new question?"]
+    assert len(added) == 1
+    assert added[0]["part"] == 1 and added[0]["id"].startswith("q_x26q3_")
+    xset = next(s for s in m1["sets"] if s["id"] == "qs_x")
+    # 重复题干也挂考季（同题跨季复用）：2 个 question_ids
+    assert len(xset["question_ids"]) == 2
 
 
 def test_answered_items_prefers_audio(monkeypatch):

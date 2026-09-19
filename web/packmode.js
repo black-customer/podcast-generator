@@ -211,6 +211,20 @@ function packBankQuery(qs) {
   const topicById = new Map((snap.topics || []).map((t) => [t.id, t]));
   const bookById = new Map((snap.books || []).map((b) => [b.id, b]));
 
+  // 必考话题（固定五件套，与 server/bank.CORE_TOPIC_NORMS 同步）
+  const CORE_TOPIC_NORMS = new Set([
+    "work or studies", "work or study", "work studies", "work study", "work",
+    "home accommodation", "home or accommodation", "home", "accommodation",
+    "hometown",
+    "the area you live in", "area you live in",
+    "the city you live in", "city you live in",
+  ]);
+  const coreTids = new Set(
+    (snap.topics || [])
+      .filter((t) => CORE_TOPIC_NORMS.has(packNormTitle(t.name_en || "")))
+      .map((t) => t.id)
+  );
+
   // qid -> 题集列表（含短标签），与 server/bank.set_index 同构
   const sets = snap.sets || [];
   for (const s of sets) s.short = `${s.start_month}–${s.end_month}月`;
@@ -240,7 +254,8 @@ function packBankQuery(qs) {
       if (!inEn && !inZh) continue;
     }
     const mySets = qsets.get(row.id) || [];
-    if (setFilter === "core" && mySets.length < 2) continue;
+    const isCore = coreTids.has(row.topic_id);
+    if (setFilter === "core" && !isCore) continue;
     if (setFilter && setFilter !== "core" && !mySets.some((s) => s.id === setFilter)) continue;
     const [nameZh, nameEn] = label(row);
     const answeredItem = answered.get(packNormTitle(row.text)) || null;
@@ -252,7 +267,7 @@ function packBankQuery(qs) {
       has_audio: !!(answeredItem && answeredItem.has_audio),
       answered_item: answeredItem,
       set_labels: mySets.map((s) => s.short),
-      core: mySets.length >= 2,
+      core: isCore,
     });
   }
   const total = rows.length;
@@ -269,7 +284,7 @@ function packBankQuery(qs) {
   const counts = new Map();
   for (const row of snap.questions || []) {
     if (part && row.part !== part) continue;
-    if (setFilter === "core" && (qsets.get(row.id) || []).length < 2) continue;
+    if (setFilter === "core" && !coreTids.has(row.topic_id)) continue;
     if (setFilter && setFilter !== "core" && !(qsets.get(row.id) || []).some((s) => s.id === setFilter)) continue;
     if (row.topic_id) counts.set(row.topic_id, (counts.get(row.topic_id) || 0) + 1);
   }
@@ -288,8 +303,8 @@ function packBankQuery(qs) {
     const n = partRows.filter((r) => (s.question_ids || []).includes(r.id)).length;
     if (n) setsOut.push({ id: s.id, name_zh: s.name_zh, short: s.short, count: n });
   }
-  const coreN = partRows.filter((r) => (qsets.get(r.id) || []).length >= 2).length;
-  setsOut.push({ id: "core", name_zh: "必考题（跨考季）", short: "必考", count: coreN });
+  const coreN = partRows.filter((r) => coreTids.has(r.topic_id)).length;
+  setsOut.push({ id: "core", name_zh: "必考题", short: "必考", count: coreN });
 
   return {
     available: true,
