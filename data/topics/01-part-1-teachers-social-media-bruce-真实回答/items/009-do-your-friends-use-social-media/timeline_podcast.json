@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do your friends use social media?",
+    "start": 0.0,
+    "end": 1.95,
+    "duration": 1.95,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yes. Like I said, it's modern life — we're Gen Z, and people our age just can't get away from it. We share memes, videos, and feelings with each other. It's everywhere, so yeah, all of us use it.",
+    "start": 2.44,
+    "end": 14.24,
+    "duration": 11.8,
+    "mode": "sse"
+  }
+]

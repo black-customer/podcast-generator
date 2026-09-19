@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you have a favorite teacher?",
+    "start": 0.0,
+    "end": 1.62,
+    "duration": 1.62,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Honestly, no, I don't really have a favorite teacher. I'm kind of an introvert, so I never built those deep relationships with mine. They taught, I sat in my chair, listened and took in the knowledge — just normal classroom interactions. That's it, really.",
+    "start": 2.11,
+    "end": 15.1,
+    "duration": 12.99,
+    "mode": "sse"
+  }
+]

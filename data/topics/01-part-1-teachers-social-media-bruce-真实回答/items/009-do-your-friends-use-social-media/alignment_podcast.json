@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "953e4ebbf8ec7ec0",
+  "audio_signature": "342979:1789785570",
+  "created_at": "2026-09-19T10:39:31",
+  "segments": [
+    {
+      "text": "Do your friends use social media?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.95
+    },
+    {
+      "text": "Yes. Like I said, it's modern life — we're Gen Z, and people our age just can't get away from it. We share memes, videos, and feelings with each other. It's everywhere, so yeah, all of us use it.",
+      "speaker": "b",
+      "start": 2.44,
+      "end": 14.24
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "your",
+      "start": 0.16,
+      "end": 0.4
+    },
+    {
+      "text": "friends",
+      "start": 0.4,
+      "end": 0.8
+    },
+    {
+      "text": "use",
+      "start": 0.8,
+      "end": 0.96
+    },
+    {
+      "text": "social",
+      "start": 0.96,
+      "end": 1.28
+    },
+    {
+      "text": "media",
+      "start": 1.28,
+      "end": 1.92
+    },
+    {
+      "text": "Yes",
+      "start": 2.397,
+      "end": 3.037
+    },
+    {
+      "text": "Like",
+      "start": 3.357,
+      "end": 3.437
+    },
+    {
+      "text": "I",
+      "start": 3.437,
+      "end": 3.517
+    },
+    {
+      "text": "said",
+      "start": 3.517,
+      "end": 3.757
+    },
+    {
+      "text": "it's",
+      "start": 3.757,
+      "end": 3.917
+    },
+    {
+      "text": "modern",
+      "start": 3.917,
+      "end": 4.317
+    },
+    {
+      "text": "life",
+      "start": 4.317,
+      "end": 4.797
+    },
+    {
+      "text": "we're",
+      "start": 4.797,
+      "end": 5.037
+    },
+    {
+      "text": "Gen",
+      "start": 5.037,
+      "end": 5.357
+    },
+    {
+      "text": "Z",
+      "start": 5.357,
+      "end": 5.837
+    },
+    {
+      "text": "and",
+      "start": 6.077,
+      "end": 6.077
+    },
+    {
+      "text": "people",
+      "start": 6.237,
+      "end": 6.557
+    },
+    {
+      "text": "our",
+      "start": 6.557,
+      "end": 6.637
+    },
+    {
+      "text": "age",
+      "start": 6.637,
+      "end": 7.117
+    },
+    {
+      "text": "just",
+      "start": 7.117,
+      "end": 7.277
+    },
+    {
+      "text": "can't",
+      "start": 7.277,
+      "end": 7.517
+    },
+    {
+      "text": "get",
+      "start": 7.517,
+      "end": 7.597
+    },
+    {
+      "text": "away",
+      "start": 7.597,
+      "end": 7.837
+    },
+    {
+      "text": "from",
+      "start": 7.837,
+      "end": 7.997
+    },
+    {
+      "text": "it",
+      "start": 7.997,
+      "end": 8.237
+    },
+    {
+      "text": "We",
+      "start": 8.477,
+      "end": 8.637
+    },
+    {
+      "text": "share",
+      "start": 8.637,
+      "end": 8.797
+    },
+    {
+      "text": "memes",
+      "start": 8.797,
+      "end": 9.277
+    },
+    {
+      "text": "videos",
+      "start": 9.277,
+      "end": 9.837
+    },
+    {
+      "text": "and",
+      "start": 9.837,
+      "end": 9.997
+    },
+    {
+      "text": "feelings",
+      "start": 9.997,
+      "end": 10.397
+    },
+    {
+      "text": "with",
+      "start": 10.397,
+      "end": 10.477
+    },
+    {
+      "text": "each",
+      "start": 10.557,
+      "end": 10.717
+    },
+    {
+      "text": "other",
+      "start": 10.717,
+      "end": 11.117
+    },
+    {
+      "text": "It's",
+      "start": 11.277,
+      "end": 11.437
+    },
+    {
+      "text": "everywhere",
+      "start": 11.437,
+      "end": 12.077
+    },
+    {
+      "text": "so",
+      "start": 12.157,
+      "end": 12.477
+    },
+    {
+      "text": "yeah",
+      "start": 12.477,
+      "end": 12.957
+    },
+    {
+      "text": "all",
+      "start": 13.037,
+      "end": 13.277
+    },
+    {
+      "text": "of",
+      "start": 13.277,
+      "end": 13.357
+    },
+    {
+      "text": "us",
+      "start": 13.357,
+      "end": 13.517
+    },
+    {
+      "text": "use",
+      "start": 13.517,
+      "end": 13.757
+    },
+    {
+      "text": "it",
+      "start": 13.757,
+      "end": 13.997
+    }
+  ]
+}

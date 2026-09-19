@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "When did you start using social media?",
+    "start": 0.0,
+    "end": 2.05,
+    "duration": 2.05,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I think it was primary school. Our teacher set up a class group on QQ — it's a Chinese app, kind of like WeChat — and all the students had to join it to get notices, because the teacher would sometimes send announcements there. So I've basically been on social media since I was a pupil.",
+    "start": 2.6,
+    "end": 17.76,
+    "duration": 15.16,
+    "mode": "sse"
+  }
+]

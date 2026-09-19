@@ -1,0 +1,234 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "2caf4f2171a08316",
+  "audio_signature": "297840:1789785528",
+  "created_at": "2026-09-19T10:38:48",
+  "segments": [
+    {
+      "text": "Are you still in touch with your primary school teachers?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.71
+    },
+    {
+      "text": "Absolutely not. It's been a really long time — like twelve years. I haven't been in touch with them at all, and back then I didn't have a deep relationship with them either.",
+      "speaker": "b",
+      "start": 3.15,
+      "end": 12.36
+    }
+  ],
+  "words": [
+    {
+      "text": "Are",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "you",
+      "start": 0.08,
+      "end": 0.24
+    },
+    {
+      "text": "still",
+      "start": 0.24,
+      "end": 0.56
+    },
+    {
+      "text": "in",
+      "start": 0.56,
+      "end": 0.64
+    },
+    {
+      "text": "touch",
+      "start": 0.64,
+      "end": 0.88
+    },
+    {
+      "text": "with",
+      "start": 0.88,
+      "end": 1.04
+    },
+    {
+      "text": "your",
+      "start": 1.04,
+      "end": 1.2
+    },
+    {
+      "text": "primary",
+      "start": 1.2,
+      "end": 1.68
+    },
+    {
+      "text": "school",
+      "start": 1.68,
+      "end": 1.92
+    },
+    {
+      "text": "teachers",
+      "start": 1.92,
+      "end": 2.64
+    },
+    {
+      "text": "Absolutely",
+      "start": 3.06,
+      "end": 3.94
+    },
+    {
+      "text": "not",
+      "start": 3.94,
+      "end": 4.42
+    },
+    {
+      "text": "It's",
+      "start": 4.5,
+      "end": 4.74
+    },
+    {
+      "text": "been",
+      "start": 4.74,
+      "end": 4.98
+    },
+    {
+      "text": "a",
+      "start": 4.98,
+      "end": 5.14
+    },
+    {
+      "text": "really",
+      "start": 5.14,
+      "end": 5.62
+    },
+    {
+      "text": "long",
+      "start": 5.62,
+      "end": 5.86
+    },
+    {
+      "text": "time",
+      "start": 5.86,
+      "end": 6.18
+    },
+    {
+      "text": "like",
+      "start": 6.18,
+      "end": 6.42
+    },
+    {
+      "text": "twelve",
+      "start": 6.42,
+      "end": 6.82
+    },
+    {
+      "text": "years",
+      "start": 6.82,
+      "end": 7.38
+    },
+    {
+      "text": "I",
+      "start": 7.78,
+      "end": 7.86
+    },
+    {
+      "text": "haven't",
+      "start": 7.86,
+      "end": 8.1
+    },
+    {
+      "text": "been",
+      "start": 8.1,
+      "end": 8.18
+    },
+    {
+      "text": "in",
+      "start": 8.18,
+      "end": 8.26
+    },
+    {
+      "text": "touch",
+      "start": 8.26,
+      "end": 8.5
+    },
+    {
+      "text": "with",
+      "start": 8.5,
+      "end": 8.66
+    },
+    {
+      "text": "them",
+      "start": 8.66,
+      "end": 8.74
+    },
+    {
+      "text": "at",
+      "start": 8.74,
+      "end": 8.82
+    },
+    {
+      "text": "all",
+      "start": 8.82,
+      "end": 9.3
+    },
+    {
+      "text": "and",
+      "start": 9.54,
+      "end": 9.7
+    },
+    {
+      "text": "back",
+      "start": 9.7,
+      "end": 9.94
+    },
+    {
+      "text": "then",
+      "start": 9.94,
+      "end": 10.1
+    },
+    {
+      "text": "I",
+      "start": 10.1,
+      "end": 10.1
+    },
+    {
+      "text": "didn't",
+      "start": 10.1,
+      "end": 10.34
+    },
+    {
+      "text": "have",
+      "start": 10.34,
+      "end": 10.42
+    },
+    {
+      "text": "a",
+      "start": 10.42,
+      "end": 10.5
+    },
+    {
+      "text": "deep",
+      "start": 10.5,
+      "end": 10.74
+    },
+    {
+      "text": "relationship",
+      "start": 10.74,
+      "end": 11.3
+    },
+    {
+      "text": "with",
+      "start": 11.3,
+      "end": 11.38
+    },
+    {
+      "text": "them",
+      "start": 11.38,
+      "end": 11.54
+    },
+    {
+      "text": "either",
+      "start": 11.54,
+      "end": 12.02
+    }
+  ]
+}

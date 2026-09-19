@@ -1,74 +1,4 @@
 {
-  "88e7deb4a1a8": {
-    "id": "88e7deb4a1a8",
-    "kind": "generate",
-    "topic_id": "01-align",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:02.825",
-    "finished_at": "2026-09-19T01:49:03.736"
-  },
-  "6a2b125d25c5": {
-    "id": "6a2b125d25c5",
-    "kind": "generate",
-    "topic_id": "01-inval",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:03.778",
-    "finished_at": "2026-09-19T01:49:04.675"
-  },
-  "7562e45177f4": {
-    "id": "7562e45177f4",
-    "kind": "generate",
-    "topic_id": "01-mono",
-    "track": "monologue",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:04.760",
-    "finished_at": "2026-09-19T01:49:05.536"
-  },
-  "3366939acc55": {
-    "id": "3366939acc55",
-    "kind": "generate",
-    "topic_id": "01-qa",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:06.344",
-    "finished_at": "2026-09-19T01:49:08.294"
-  },
-  "ee5752530b3f": {
-    "id": "ee5752530b3f",
-    "kind": "generate",
-    "topic_id": "01-e2e",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-q",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:08.836",
-    "finished_at": "2026-09-19T01:49:09.480"
-  },
   "01a138df2c1c": {
     "id": "01a138df2c1c",
     "kind": "assemble",
@@ -990,6 +920,333 @@
           "duration_sec": 8.57,
           "offset_sec": 183.54,
           "generated_at": "2026-09-19T03:00:14.648"
+        }
+      ]
+    }
+  },
+  "d14d67281608": {
+    "id": "d14d67281608",
+    "kind": "generate",
+    "topic_id": "01-part-1-teachers-social-media-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 10,
+    "done": 10,
+    "current": "010-what-do-people-often-do-on-social-media",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:29:25.867",
+    "finished_at": "2026-09-19T10:30:52.564"
+  },
+  "b02e74c76d4f": {
+    "id": "b02e74c76d4f",
+    "kind": "assemble",
+    "topic_id": "01-part-1-teachers-social-media-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:31:26.758",
+    "finished_at": "2026-09-19T10:31:29.786",
+    "result": {
+      "topic_id": "01-part-1-teachers-social-media-bruce-真实回答",
+      "topic_name": "Part 1 · Teachers & Social Media（Bruce 真实回答）",
+      "track": "podcast",
+      "file": "01-part-1-teachers-social-media-bruce-真实回答_podcast.mp3",
+      "total_sec": 161.43,
+      "item_count": 10,
+      "generated_at": "2026-09-19T10:31:29.783",
+      "items": [
+        {
+          "id": "001-do-you-have-a-favorite-teacher",
+          "title": "Do you have a favorite teacher?",
+          "duration_sec": 15.31,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T10:29:25.875"
+        },
+        {
+          "id": "002-do-you-want-to-be-a-teacher-in-the-future",
+          "title": "Do you want to be a teacher in the future?",
+          "duration_sec": 18.86,
+          "offset_sec": 15.91,
+          "generated_at": "2026-09-19T10:29:35.262"
+        },
+        {
+          "id": "003-do-you-have-a-teacher-from-your-past-that-you-still-remember",
+          "title": "Do you have a teacher from your past that you still remember?",
+          "duration_sec": 26.28,
+          "offset_sec": 35.37,
+          "generated_at": "2026-09-19T10:29:45.595"
+        },
+        {
+          "id": "004-are-you-still-in-touch-with-your-primary-school-teachers",
+          "title": "Are you still in touch with your primary school teachers?",
+          "duration_sec": 9.95,
+          "offset_sec": 62.25,
+          "generated_at": "2026-09-19T10:29:58.581"
+        },
+        {
+          "id": "005-in-what-way-has-your-favorite-teacher-helped-you",
+          "title": "In what way has your favorite teacher helped you?",
+          "duration_sec": 14.79,
+          "offset_sec": 72.8,
+          "generated_at": "2026-09-19T10:30:04.717"
+        },
+        {
+          "id": "006-have-you-ever-posted-anything-on-social-media",
+          "title": "Have you ever posted anything on social media?",
+          "duration_sec": 14.65,
+          "offset_sec": 88.19,
+          "generated_at": "2026-09-19T10:30:12.782"
+        },
+        {
+          "id": "007-when-did-you-start-using-social-media",
+          "title": "When did you start using social media?",
+          "duration_sec": 15.49,
+          "offset_sec": 103.44,
+          "generated_at": "2026-09-19T10:30:20.909"
+        },
+        {
+          "id": "008-how-much-time-do-you-spend-on-social-media",
+          "title": "How much time do you spend on social media?",
+          "duration_sec": 5.83,
+          "offset_sec": 119.53,
+          "generated_at": "2026-09-19T10:30:29.884"
+        },
+        {
+          "id": "009-do-your-friends-use-social-media",
+          "title": "Do your friends use social media?",
+          "duration_sec": 13.95,
+          "offset_sec": 125.96,
+          "generated_at": "2026-09-19T10:30:34.398"
+        },
+        {
+          "id": "010-what-do-people-often-do-on-social-media",
+          "title": "What do people often do on social media?",
+          "duration_sec": 20.92,
+          "offset_sec": 140.51,
+          "generated_at": "2026-09-19T10:30:42.321"
+        }
+      ]
+    }
+  },
+  "30a730d1459f": {
+    "id": "30a730d1459f",
+    "kind": "generate",
+    "topic_id": "01-part-1-teachers-social-media-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 10,
+    "done": 10,
+    "current": "010-what-do-people-often-do-on-social-media",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:34:48.982",
+    "finished_at": "2026-09-19T10:36:17.956"
+  },
+  "e758cdbb2ae7": {
+    "id": "e758cdbb2ae7",
+    "kind": "assemble",
+    "topic_id": "01-part-1-teachers-social-media-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:36:40.780",
+    "finished_at": "2026-09-19T10:36:43.033",
+    "result": {
+      "topic_id": "01-part-1-teachers-social-media-bruce-真实回答",
+      "topic_name": "Part 1 · Teachers & Social Media（Bruce 真实回答）",
+      "track": "podcast",
+      "file": "01-part-1-teachers-social-media-bruce-真实回答_podcast.mp3",
+      "total_sec": 153.1,
+      "item_count": 10,
+      "generated_at": "2026-09-19T10:36:43.032",
+      "items": [
+        {
+          "id": "001-do-you-have-a-favorite-teacher",
+          "title": "Do you have a favorite teacher?",
+          "duration_sec": 15.02,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T10:34:48.992"
+        },
+        {
+          "id": "002-do-you-want-to-be-a-teacher-in-the-future",
+          "title": "Do you want to be a teacher in the future?",
+          "duration_sec": 15.02,
+          "offset_sec": 15.62,
+          "generated_at": "2026-09-19T10:34:57.769"
+        },
+        {
+          "id": "003-do-you-have-a-teacher-from-your-past-that-you-still-remember",
+          "title": "Do you have a teacher from your past that you still remember?",
+          "duration_sec": 20.82,
+          "offset_sec": 31.24,
+          "generated_at": "2026-09-19T10:35:06.894"
+        },
+        {
+          "id": "004-are-you-still-in-touch-with-your-primary-school-teachers",
+          "title": "Are you still in touch with your primary school teachers?",
+          "duration_sec": 8.2,
+          "offset_sec": 52.66,
+          "generated_at": "2026-09-19T10:35:18.458"
+        },
+        {
+          "id": "005-in-what-way-has-your-favorite-teacher-helped-you",
+          "title": "In what way has your favorite teacher helped you?",
+          "duration_sec": 18.44,
+          "offset_sec": 61.46,
+          "generated_at": "2026-09-19T10:35:23.765"
+        },
+        {
+          "id": "006-have-you-ever-posted-anything-on-social-media",
+          "title": "Have you ever posted anything on social media?",
+          "duration_sec": 14.89,
+          "offset_sec": 80.5,
+          "generated_at": "2026-09-19T10:35:33.326"
+        },
+        {
+          "id": "007-when-did-you-start-using-social-media",
+          "title": "When did you start using social media?",
+          "duration_sec": 16.35,
+          "offset_sec": 95.99,
+          "generated_at": "2026-09-19T10:35:41.599"
+        },
+        {
+          "id": "008-how-much-time-do-you-spend-on-social-media",
+          "title": "How much time do you spend on social media?",
+          "duration_sec": 6.97,
+          "offset_sec": 112.94,
+          "generated_at": "2026-09-19T10:35:55.510"
+        },
+        {
+          "id": "009-do-your-friends-use-social-media",
+          "title": "Do your friends use social media?",
+          "duration_sec": 12.51,
+          "offset_sec": 120.51,
+          "generated_at": "2026-09-19T10:36:00.581"
+        },
+        {
+          "id": "010-what-do-people-often-do-on-social-media",
+          "title": "What do people often do on social media?",
+          "duration_sec": 19.46,
+          "offset_sec": 133.62,
+          "generated_at": "2026-09-19T10:36:07.918"
+        }
+      ]
+    }
+  },
+  "eac439d094ad": {
+    "id": "eac439d094ad",
+    "kind": "generate",
+    "topic_id": "01-part-1-teachers-social-media-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 10,
+    "done": 10,
+    "current": "010-what-do-people-often-do-on-social-media",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:38:12.212",
+    "finished_at": "2026-09-19T10:39:42.064"
+  },
+  "57899c49b9d2": {
+    "id": "57899c49b9d2",
+    "kind": "assemble",
+    "topic_id": "01-part-1-teachers-social-media-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:40:30.463",
+    "finished_at": "2026-09-19T10:40:37.483",
+    "result": {
+      "topic_id": "01-part-1-teachers-social-media-bruce-真实回答",
+      "topic_name": "Part 1 · Teachers & Social Media（Bruce 真实回答）",
+      "track": "podcast",
+      "file": "01-part-1-teachers-social-media-bruce-真实回答_podcast.mp3",
+      "total_sec": 139.6,
+      "item_count": 10,
+      "generated_at": "2026-09-19T10:40:37.480",
+      "items": [
+        {
+          "id": "001-do-you-have-a-favorite-teacher",
+          "title": "Do you have a favorite teacher?",
+          "duration_sec": 15.1,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T10:38:12.220"
+        },
+        {
+          "id": "002-do-you-want-to-be-a-teacher-in-the-future",
+          "title": "Do you want to be a teacher in the future?",
+          "duration_sec": 18.39,
+          "offset_sec": 15.7,
+          "generated_at": "2026-09-19T10:38:20.428"
+        },
+        {
+          "id": "003-do-you-have-a-teacher-from-your-past-that-you-still-remember",
+          "title": "Do you have a teacher from your past that you still remember?",
+          "duration_sec": 23.48,
+          "offset_sec": 34.69,
+          "generated_at": "2026-09-19T10:38:29.879"
+        },
+        {
+          "id": "004-are-you-still-in-touch-with-your-primary-school-teachers",
+          "title": "Are you still in touch with your primary school teachers?",
+          "duration_sec": 12.36,
+          "offset_sec": 58.77,
+          "generated_at": "2026-09-19T10:38:41.520"
+        },
+        {
+          "id": "005-in-what-way-has-your-favorite-teacher-helped-you",
+          "title": "In what way has your favorite teacher helped you?",
+          "duration_sec": 17.37,
+          "offset_sec": 71.73,
+          "generated_at": "2026-09-19T10:38:48.448"
+        },
+        {
+          "id": "006-have-you-ever-posted-anything-on-social-media",
+          "title": "Have you ever posted anything on social media?",
+          "duration_sec": 18.6,
+          "offset_sec": 89.7,
+          "generated_at": "2026-09-19T10:38:57.933"
+        },
+        {
+          "id": "007-when-did-you-start-using-social-media",
+          "title": "When did you start using social media?",
+          "duration_sec": 17.76,
+          "offset_sec": 108.9,
+          "generated_at": "2026-09-19T10:39:07.783"
+        },
+        {
+          "id": "008-how-much-time-do-you-spend-on-social-media",
+          "title": "How much time do you spend on social media?",
+          "duration_sec": 8.54,
+          "offset_sec": 127.26,
+          "generated_at": "2026-09-19T10:39:17.726"
+        },
+        {
+          "id": "009-do-your-friends-use-social-media",
+          "title": "Do your friends use social media?",
+          "duration_sec": 14.24,
+          "offset_sec": 136.4,
+          "generated_at": "2026-09-19T10:39:23.258"
+        },
+        {
+          "id": "010-what-do-people-often-do-on-social-media",
+          "title": "What do people often do on social media?",
+          "duration_sec": 20.51,
+          "offset_sec": 151.24,
+          "generated_at": "2026-09-19T10:39:31.193"
         }
       ]
     }

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "In what way has your favorite teacher helped you?",
+    "start": 0.0,
+    "end": 2.43,
+    "duration": 2.43,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Well, this goes back to what I said — I don't have a favorite teacher. And honestly, I don't feel like any of them helped me enormously. Because if someone had actually helped me that much, I would call them my favorite teacher, right? So by definition, no one really stands out.",
+    "start": 2.77,
+    "end": 17.37,
+    "duration": 14.6,
+    "mode": "sse"
+  }
+]

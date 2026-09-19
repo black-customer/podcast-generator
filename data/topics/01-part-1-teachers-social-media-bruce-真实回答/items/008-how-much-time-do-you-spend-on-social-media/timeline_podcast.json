@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "How much time do you spend on social media?",
+    "start": 0.0,
+    "end": 2.46,
+    "duration": 2.46,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Way too much, honestly. Sometimes eight hours a day, or even more. I'm addicted to it, I would say.",
+    "start": 2.89,
+    "end": 8.54,
+    "duration": 5.65,
+    "mode": "sse"
+  }
+]

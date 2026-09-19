@@ -1,0 +1,329 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "e67801ab3db4f302",
+  "audio_signature": "427616:1789785557",
+  "created_at": "2026-09-19T10:39:17",
+  "segments": [
+    {
+      "text": "When did you start using social media?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.05
+    },
+    {
+      "text": "I think it was primary school. Our teacher set up a class group on QQ — it's a Chinese app, kind of like WeChat — and all the students had to join it to get notices, because the teacher would sometimes send announcements there. So I've basically been on social media since I was a pupil.",
+      "speaker": "b",
+      "start": 2.6,
+      "end": 17.76
+    }
+  ],
+  "words": [
+    {
+      "text": "When",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "did",
+      "start": 0.24,
+      "end": 0.4
+    },
+    {
+      "text": "you",
+      "start": 0.4,
+      "end": 0.48
+    },
+    {
+      "text": "start",
+      "start": 0.48,
+      "end": 0.8
+    },
+    {
+      "text": "using",
+      "start": 0.8,
+      "end": 1.12
+    },
+    {
+      "text": "social",
+      "start": 1.12,
+      "end": 1.52
+    },
+    {
+      "text": "media",
+      "start": 1.52,
+      "end": 2.0
+    },
+    {
+      "text": "I",
+      "start": 2.536,
+      "end": 2.616
+    },
+    {
+      "text": "think",
+      "start": 2.616,
+      "end": 2.776
+    },
+    {
+      "text": "it",
+      "start": 2.776,
+      "end": 2.856
+    },
+    {
+      "text": "was",
+      "start": 2.856,
+      "end": 2.936
+    },
+    {
+      "text": "primary",
+      "start": 2.936,
+      "end": 3.416
+    },
+    {
+      "text": "school",
+      "start": 3.416,
+      "end": 3.976
+    },
+    {
+      "text": "Our",
+      "start": 4.056,
+      "end": 4.136
+    },
+    {
+      "text": "teacher",
+      "start": 4.136,
+      "end": 4.456
+    },
+    {
+      "text": "set",
+      "start": 4.456,
+      "end": 4.696
+    },
+    {
+      "text": "up",
+      "start": 4.696,
+      "end": 4.856
+    },
+    {
+      "text": "a",
+      "start": 4.856,
+      "end": 4.936
+    },
+    {
+      "text": "class",
+      "start": 4.936,
+      "end": 5.256
+    },
+    {
+      "text": "group",
+      "start": 5.256,
+      "end": 5.576
+    },
+    {
+      "text": "on",
+      "start": 5.576,
+      "end": 5.816
+    },
+    {
+      "text": "QQ",
+      "start": 5.896,
+      "end": 6.616
+    },
+    {
+      "text": "it's",
+      "start": 6.936,
+      "end": 7.176
+    },
+    {
+      "text": "a",
+      "start": 7.176,
+      "end": 7.256
+    },
+    {
+      "text": "Chinese",
+      "start": 7.256,
+      "end": 7.816
+    },
+    {
+      "text": "app",
+      "start": 7.816,
+      "end": 8.216
+    },
+    {
+      "text": "kind",
+      "start": 8.216,
+      "end": 8.376
+    },
+    {
+      "text": "of",
+      "start": 8.376,
+      "end": 8.376
+    },
+    {
+      "text": "like",
+      "start": 8.376,
+      "end": 8.616
+    },
+    {
+      "text": "WeChat",
+      "start": 8.616,
+      "end": 9.176
+    },
+    {
+      "text": "and",
+      "start": 9.496,
+      "end": 9.496
+    },
+    {
+      "text": "all",
+      "start": 9.656,
+      "end": 9.736
+    },
+    {
+      "text": "the",
+      "start": 9.736,
+      "end": 9.816
+    },
+    {
+      "text": "students",
+      "start": 9.816,
+      "end": 10.216
+    },
+    {
+      "text": "had",
+      "start": 10.216,
+      "end": 10.456
+    },
+    {
+      "text": "to",
+      "start": 10.456,
+      "end": 10.536
+    },
+    {
+      "text": "join",
+      "start": 10.536,
+      "end": 10.776
+    },
+    {
+      "text": "it",
+      "start": 10.936,
+      "end": 11.016
+    },
+    {
+      "text": "to",
+      "start": 11.176,
+      "end": 11.176
+    },
+    {
+      "text": "get",
+      "start": 11.176,
+      "end": 11.336
+    },
+    {
+      "text": "notices",
+      "start": 11.336,
+      "end": 12.056
+    },
+    {
+      "text": "because",
+      "start": 12.456,
+      "end": 12.696
+    },
+    {
+      "text": "the",
+      "start": 12.696,
+      "end": 12.776
+    },
+    {
+      "text": "teacher",
+      "start": 12.776,
+      "end": 13.176
+    },
+    {
+      "text": "would",
+      "start": 13.176,
+      "end": 13.336
+    },
+    {
+      "text": "sometimes",
+      "start": 13.336,
+      "end": 13.656
+    },
+    {
+      "text": "send",
+      "start": 13.656,
+      "end": 13.816
+    },
+    {
+      "text": "announcements",
+      "start": 13.816,
+      "end": 14.456
+    },
+    {
+      "text": "there",
+      "start": 14.456,
+      "end": 14.776
+    },
+    {
+      "text": "So",
+      "start": 14.856,
+      "end": 15.016
+    },
+    {
+      "text": "I've",
+      "start": 15.016,
+      "end": 15.096
+    },
+    {
+      "text": "basically",
+      "start": 15.096,
+      "end": 15.496
+    },
+    {
+      "text": "been",
+      "start": 15.496,
+      "end": 15.656
+    },
+    {
+      "text": "on",
+      "start": 15.656,
+      "end": 15.816
+    },
+    {
+      "text": "social",
+      "start": 15.816,
+      "end": 16.056
+    },
+    {
+      "text": "media",
+      "start": 16.056,
+      "end": 16.376
+    },
+    {
+      "text": "since",
+      "start": 16.376,
+      "end": 16.616
+    },
+    {
+      "text": "I",
+      "start": 16.616,
+      "end": 16.696
+    },
+    {
+      "text": "was",
+      "start": 16.696,
+      "end": 16.776
+    },
+    {
+      "text": "a",
+      "start": 16.776,
+      "end": 16.856
+    },
+    {
+      "text": "pupil",
+      "start": 16.856,
+      "end": 17.336
+    }
+  ]
+}

@@ -1,0 +1,339 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "d0cd5094520b4aab",
+  "audio_signature": "493444:1789785581",
+  "created_at": "2026-09-19T10:39:42",
+  "segments": [
+    {
+      "text": "What do people often do on social media?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.34
+    },
+    {
+      "text": "Mostly messaging — staying connected with people, communicating. Or sharing their lives and feelings, you know, their daily stuff. Sometimes someone else has the same feelings, or they just need to let things out so they feel better. Oh, and some people actually run their own business on social media — it's a whole career for them.",
+      "speaker": "b",
+      "start": 2.8,
+      "end": 20.51
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "do",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "people",
+      "start": 0.24,
+      "end": 0.56
+    },
+    {
+      "text": "often",
+      "start": 0.56,
+      "end": 0.96
+    },
+    {
+      "text": "do",
+      "start": 0.96,
+      "end": 1.28
+    },
+    {
+      "text": "on",
+      "start": 1.28,
+      "end": 1.36
+    },
+    {
+      "text": "social",
+      "start": 1.36,
+      "end": 1.76
+    },
+    {
+      "text": "media",
+      "start": 1.76,
+      "end": 2.32
+    },
+    {
+      "text": "Mostly",
+      "start": 2.781,
+      "end": 3.261
+    },
+    {
+      "text": "messaging",
+      "start": 3.261,
+      "end": 4.141
+    },
+    {
+      "text": "staying",
+      "start": 4.141,
+      "end": 4.541
+    },
+    {
+      "text": "connected",
+      "start": 4.541,
+      "end": 4.861
+    },
+    {
+      "text": "with",
+      "start": 4.861,
+      "end": 5.021
+    },
+    {
+      "text": "people",
+      "start": 5.021,
+      "end": 5.581
+    },
+    {
+      "text": "communicating",
+      "start": 5.581,
+      "end": 6.541
+    },
+    {
+      "text": "Or",
+      "start": 6.701,
+      "end": 6.941
+    },
+    {
+      "text": "sharing",
+      "start": 6.941,
+      "end": 7.581
+    },
+    {
+      "text": "their",
+      "start": 7.581,
+      "end": 7.741
+    },
+    {
+      "text": "lives",
+      "start": 7.741,
+      "end": 8.061
+    },
+    {
+      "text": "and",
+      "start": 8.061,
+      "end": 8.221
+    },
+    {
+      "text": "feelings",
+      "start": 8.221,
+      "end": 8.861
+    },
+    {
+      "text": "you",
+      "start": 8.861,
+      "end": 8.941
+    },
+    {
+      "text": "know",
+      "start": 8.941,
+      "end": 9.021
+    },
+    {
+      "text": "their",
+      "start": 9.021,
+      "end": 9.181
+    },
+    {
+      "text": "daily",
+      "start": 9.181,
+      "end": 9.501
+    },
+    {
+      "text": "stuff",
+      "start": 9.501,
+      "end": 9.901
+    },
+    {
+      "text": "Sometimes",
+      "start": 10.141,
+      "end": 10.461
+    },
+    {
+      "text": "someone",
+      "start": 10.461,
+      "end": 10.701
+    },
+    {
+      "text": "else",
+      "start": 10.701,
+      "end": 11.021
+    },
+    {
+      "text": "has",
+      "start": 11.021,
+      "end": 11.101
+    },
+    {
+      "text": "the",
+      "start": 11.101,
+      "end": 11.181
+    },
+    {
+      "text": "same",
+      "start": 11.181,
+      "end": 11.581
+    },
+    {
+      "text": "feelings",
+      "start": 11.581,
+      "end": 12.141
+    },
+    {
+      "text": "or",
+      "start": 12.221,
+      "end": 12.541
+    },
+    {
+      "text": "they",
+      "start": 12.541,
+      "end": 12.701
+    },
+    {
+      "text": "just",
+      "start": 12.701,
+      "end": 12.861
+    },
+    {
+      "text": "need",
+      "start": 12.861,
+      "end": 13.021
+    },
+    {
+      "text": "to",
+      "start": 13.021,
+      "end": 13.101
+    },
+    {
+      "text": "let",
+      "start": 13.101,
+      "end": 13.341
+    },
+    {
+      "text": "things",
+      "start": 13.341,
+      "end": 13.581
+    },
+    {
+      "text": "out",
+      "start": 13.581,
+      "end": 13.821
+    },
+    {
+      "text": "so",
+      "start": 13.821,
+      "end": 13.981
+    },
+    {
+      "text": "they",
+      "start": 13.981,
+      "end": 14.061
+    },
+    {
+      "text": "feel",
+      "start": 14.061,
+      "end": 14.301
+    },
+    {
+      "text": "better",
+      "start": 14.301,
+      "end": 14.781
+    },
+    {
+      "text": "Oh",
+      "start": 15.144,
+      "end": 15.704
+    },
+    {
+      "text": "and",
+      "start": 15.784,
+      "end": 15.944
+    },
+    {
+      "text": "some",
+      "start": 15.944,
+      "end": 16.104
+    },
+    {
+      "text": "people",
+      "start": 16.104,
+      "end": 16.344
+    },
+    {
+      "text": "actually",
+      "start": 16.344,
+      "end": 16.744
+    },
+    {
+      "text": "run",
+      "start": 16.744,
+      "end": 17.064
+    },
+    {
+      "text": "their",
+      "start": 17.064,
+      "end": 17.224
+    },
+    {
+      "text": "own",
+      "start": 17.224,
+      "end": 17.464
+    },
+    {
+      "text": "business",
+      "start": 17.464,
+      "end": 17.944
+    },
+    {
+      "text": "on",
+      "start": 17.944,
+      "end": 18.104
+    },
+    {
+      "text": "social",
+      "start": 18.104,
+      "end": 18.424
+    },
+    {
+      "text": "media",
+      "start": 18.424,
+      "end": 18.984
+    },
+    {
+      "text": "it's",
+      "start": 19.064,
+      "end": 19.224
+    },
+    {
+      "text": "a",
+      "start": 19.224,
+      "end": 19.224
+    },
+    {
+      "text": "whole",
+      "start": 19.224,
+      "end": 19.464
+    },
+    {
+      "text": "career",
+      "start": 19.464,
+      "end": 19.864
+    },
+    {
+      "text": "for",
+      "start": 19.864,
+      "end": 20.024
+    },
+    {
+      "text": "them",
+      "start": 20.024,
+      "end": 20.344
+    }
+  ]
+}

@@ -1,0 +1,364 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "4d7126175a5fc5df",
+  "audio_signature": "442662:1789785509",
+  "created_at": "2026-09-19T10:38:29",
+  "segments": [
+    {
+      "text": "Do you want to be a teacher in the future?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.94
+    },
+    {
+      "text": "Actually yes, but not like a school teacher — primary school, high school, that kind of thing. I want to be someone who passes knowledge on to other people. English, AI, anything I'm good at — I'd teach people how to do things the way I do them. So yeah, in that sense, I do want to be a teacher.",
+      "speaker": "b",
+      "start": 2.27,
+      "end": 18.39
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "want",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "to",
+      "start": 0.48,
+      "end": 0.48
+    },
+    {
+      "text": "be",
+      "start": 0.48,
+      "end": 0.64
+    },
+    {
+      "text": "a",
+      "start": 0.64,
+      "end": 0.72
+    },
+    {
+      "text": "teacher",
+      "start": 0.72,
+      "end": 1.12
+    },
+    {
+      "text": "in",
+      "start": 1.12,
+      "end": 1.28
+    },
+    {
+      "text": "the",
+      "start": 1.28,
+      "end": 1.28
+    },
+    {
+      "text": "future",
+      "start": 1.28,
+      "end": 1.92
+    },
+    {
+      "text": "Actually",
+      "start": 2.237,
+      "end": 2.637
+    },
+    {
+      "text": "yes",
+      "start": 2.637,
+      "end": 3.197
+    },
+    {
+      "text": "but",
+      "start": 3.277,
+      "end": 3.437
+    },
+    {
+      "text": "not",
+      "start": 3.437,
+      "end": 3.677
+    },
+    {
+      "text": "like",
+      "start": 3.757,
+      "end": 4.157
+    },
+    {
+      "text": "a",
+      "start": 4.237,
+      "end": 4.317
+    },
+    {
+      "text": "school",
+      "start": 4.317,
+      "end": 4.717
+    },
+    {
+      "text": "teacher",
+      "start": 4.717,
+      "end": 5.197
+    },
+    {
+      "text": "primary",
+      "start": 5.197,
+      "end": 5.597
+    },
+    {
+      "text": "school",
+      "start": 5.597,
+      "end": 5.997
+    },
+    {
+      "text": "high",
+      "start": 5.997,
+      "end": 6.157
+    },
+    {
+      "text": "school",
+      "start": 6.157,
+      "end": 6.637
+    },
+    {
+      "text": "that",
+      "start": 6.637,
+      "end": 6.797
+    },
+    {
+      "text": "kind",
+      "start": 6.877,
+      "end": 6.957
+    },
+    {
+      "text": "of",
+      "start": 6.957,
+      "end": 7.037
+    },
+    {
+      "text": "thing",
+      "start": 7.117,
+      "end": 7.437
+    },
+    {
+      "text": "I",
+      "start": 7.757,
+      "end": 7.757
+    },
+    {
+      "text": "want",
+      "start": 7.757,
+      "end": 7.917
+    },
+    {
+      "text": "to",
+      "start": 7.917,
+      "end": 7.917
+    },
+    {
+      "text": "be",
+      "start": 7.917,
+      "end": 7.997
+    },
+    {
+      "text": "someone",
+      "start": 7.997,
+      "end": 8.237
+    },
+    {
+      "text": "who",
+      "start": 8.237,
+      "end": 8.397
+    },
+    {
+      "text": "passes",
+      "start": 8.397,
+      "end": 8.877
+    },
+    {
+      "text": "knowledge",
+      "start": 8.877,
+      "end": 9.357
+    },
+    {
+      "text": "on",
+      "start": 9.357,
+      "end": 9.517
+    },
+    {
+      "text": "to",
+      "start": 9.517,
+      "end": 9.597
+    },
+    {
+      "text": "other",
+      "start": 9.597,
+      "end": 9.757
+    },
+    {
+      "text": "people",
+      "start": 9.757,
+      "end": 10.317
+    },
+    {
+      "text": "English",
+      "start": 10.637,
+      "end": 11.277
+    },
+    {
+      "text": "AI",
+      "start": 11.357,
+      "end": 11.597
+    },
+    {
+      "text": "anything",
+      "start": 12.477,
+      "end": 12.477
+    },
+    {
+      "text": "I'm",
+      "start": 12.877,
+      "end": 12.877
+    },
+    {
+      "text": "good",
+      "start": 12.877,
+      "end": 13.037
+    },
+    {
+      "text": "at",
+      "start": 13.037,
+      "end": 13.357
+    },
+    {
+      "text": "I'd",
+      "start": 13.597,
+      "end": 13.837
+    },
+    {
+      "text": "teach",
+      "start": 13.837,
+      "end": 14.157
+    },
+    {
+      "text": "people",
+      "start": 14.157,
+      "end": 14.397
+    },
+    {
+      "text": "how",
+      "start": 14.397,
+      "end": 14.557
+    },
+    {
+      "text": "to",
+      "start": 14.557,
+      "end": 14.637
+    },
+    {
+      "text": "do",
+      "start": 14.637,
+      "end": 14.797
+    },
+    {
+      "text": "things",
+      "start": 14.797,
+      "end": 15.197
+    },
+    {
+      "text": "the",
+      "start": 15.197,
+      "end": 15.277
+    },
+    {
+      "text": "way",
+      "start": 15.277,
+      "end": 15.437
+    },
+    {
+      "text": "I",
+      "start": 15.437,
+      "end": 15.597
+    },
+    {
+      "text": "do",
+      "start": 15.597,
+      "end": 15.757
+    },
+    {
+      "text": "them",
+      "start": 15.757,
+      "end": 16.157
+    },
+    {
+      "text": "So",
+      "start": 16.317,
+      "end": 16.397
+    },
+    {
+      "text": "yeah",
+      "start": 16.397,
+      "end": 16.557
+    },
+    {
+      "text": "in",
+      "start": 16.637,
+      "end": 16.717
+    },
+    {
+      "text": "that",
+      "start": 16.717,
+      "end": 16.877
+    },
+    {
+      "text": "sense",
+      "start": 16.877,
+      "end": 17.117
+    },
+    {
+      "text": "I",
+      "start": 17.117,
+      "end": 17.197
+    },
+    {
+      "text": "do",
+      "start": 17.197,
+      "end": 17.357
+    },
+    {
+      "text": "want",
+      "start": 17.357,
+      "end": 17.517
+    },
+    {
+      "text": "to",
+      "start": 17.517,
+      "end": 17.517
+    },
+    {
+      "text": "be",
+      "start": 17.517,
+      "end": 17.677
+    },
+    {
+      "text": "a",
+      "start": 17.677,
+      "end": 17.677
+    },
+    {
+      "text": "teacher",
+      "start": 17.677,
+      "end": 18.157
+    }
+  ]
+}

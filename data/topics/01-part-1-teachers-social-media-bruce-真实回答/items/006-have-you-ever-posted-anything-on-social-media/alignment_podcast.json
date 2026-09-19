@@ -1,0 +1,299 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "8ad9254f1864fa49",
+  "audio_signature": "447678:1789785547",
+  "created_at": "2026-09-19T10:39:07",
+  "segments": [
+    {
+      "text": "Have you ever posted anything on social media?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.5
+    },
+    {
+      "text": "Of course. I think in modern life, most of us have posted something at some point. I've posted text about what I'm doing, shared my thoughts and ideas, and maybe some photos of my achievements in games. Mostly it's just little posts to share how I'm feeling.",
+      "speaker": "b",
+      "start": 3.03,
+      "end": 18.6
+    }
+  ],
+  "words": [
+    {
+      "text": "Have",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "ever",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "posted",
+      "start": 0.48,
+      "end": 0.96
+    },
+    {
+      "text": "anything",
+      "start": 0.96,
+      "end": 1.44
+    },
+    {
+      "text": "on",
+      "start": 1.44,
+      "end": 1.52
+    },
+    {
+      "text": "social",
+      "start": 1.52,
+      "end": 1.92
+    },
+    {
+      "text": "media",
+      "start": 1.92,
+      "end": 2.48
+    },
+    {
+      "text": "Of",
+      "start": 3.001,
+      "end": 3.081
+    },
+    {
+      "text": "course",
+      "start": 3.081,
+      "end": 3.721
+    },
+    {
+      "text": "I",
+      "start": 4.041,
+      "end": 4.121
+    },
+    {
+      "text": "think",
+      "start": 4.121,
+      "end": 4.361
+    },
+    {
+      "text": "in",
+      "start": 4.361,
+      "end": 4.441
+    },
+    {
+      "text": "modern",
+      "start": 4.441,
+      "end": 4.841
+    },
+    {
+      "text": "life",
+      "start": 4.841,
+      "end": 5.161
+    },
+    {
+      "text": "most",
+      "start": 5.321,
+      "end": 5.801
+    },
+    {
+      "text": "of",
+      "start": 5.801,
+      "end": 5.881
+    },
+    {
+      "text": "us",
+      "start": 5.881,
+      "end": 6.201
+    },
+    {
+      "text": "have",
+      "start": 6.201,
+      "end": 6.361
+    },
+    {
+      "text": "posted",
+      "start": 6.361,
+      "end": 6.761
+    },
+    {
+      "text": "something",
+      "start": 6.761,
+      "end": 7.241
+    },
+    {
+      "text": "at",
+      "start": 7.241,
+      "end": 7.401
+    },
+    {
+      "text": "some",
+      "start": 7.401,
+      "end": 7.641
+    },
+    {
+      "text": "point",
+      "start": 7.641,
+      "end": 8.121
+    },
+    {
+      "text": "I've",
+      "start": 8.361,
+      "end": 8.521
+    },
+    {
+      "text": "posted",
+      "start": 8.521,
+      "end": 9.001
+    },
+    {
+      "text": "text",
+      "start": 9.001,
+      "end": 9.401
+    },
+    {
+      "text": "about",
+      "start": 9.401,
+      "end": 9.561
+    },
+    {
+      "text": "what",
+      "start": 9.561,
+      "end": 9.721
+    },
+    {
+      "text": "I'm",
+      "start": 9.721,
+      "end": 9.881
+    },
+    {
+      "text": "doing",
+      "start": 9.881,
+      "end": 10.441
+    },
+    {
+      "text": "shared",
+      "start": 10.521,
+      "end": 10.841
+    },
+    {
+      "text": "my",
+      "start": 10.841,
+      "end": 11.001
+    },
+    {
+      "text": "thoughts",
+      "start": 11.001,
+      "end": 11.401
+    },
+    {
+      "text": "and",
+      "start": 11.401,
+      "end": 11.481
+    },
+    {
+      "text": "ideas",
+      "start": 11.481,
+      "end": 12.201
+    },
+    {
+      "text": "and",
+      "start": 12.201,
+      "end": 12.441
+    },
+    {
+      "text": "maybe",
+      "start": 12.441,
+      "end": 12.681
+    },
+    {
+      "text": "some",
+      "start": 12.681,
+      "end": 12.841
+    },
+    {
+      "text": "photos",
+      "start": 12.841,
+      "end": 13.241
+    },
+    {
+      "text": "of",
+      "start": 13.241,
+      "end": 13.321
+    },
+    {
+      "text": "my",
+      "start": 13.321,
+      "end": 13.481
+    },
+    {
+      "text": "achievements",
+      "start": 13.481,
+      "end": 14.121
+    },
+    {
+      "text": "in",
+      "start": 14.121,
+      "end": 14.281
+    },
+    {
+      "text": "games",
+      "start": 14.281,
+      "end": 14.921
+    },
+    {
+      "text": "Mostly",
+      "start": 15.161,
+      "end": 15.561
+    },
+    {
+      "text": "it's",
+      "start": 15.561,
+      "end": 15.801
+    },
+    {
+      "text": "just",
+      "start": 15.801,
+      "end": 15.961
+    },
+    {
+      "text": "little",
+      "start": 15.961,
+      "end": 16.201
+    },
+    {
+      "text": "posts",
+      "start": 16.201,
+      "end": 16.681
+    },
+    {
+      "text": "to",
+      "start": 17.001,
+      "end": 17.001
+    },
+    {
+      "text": "share",
+      "start": 17.001,
+      "end": 17.481
+    },
+    {
+      "text": "how",
+      "start": 17.481,
+      "end": 17.641
+    },
+    {
+      "text": "I'm",
+      "start": 17.641,
+      "end": 17.801
+    },
+    {
+      "text": "feeling",
+      "start": 17.801,
+      "end": 18.441
+    }
+  ]
+}

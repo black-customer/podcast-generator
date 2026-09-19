@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Are you still in touch with your primary school teachers?",
+    "start": 0.0,
+    "end": 2.71,
+    "duration": 2.71,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Absolutely not. It's been a really long time — like twelve years. I haven't been in touch with them at all, and back then I didn't have a deep relationship with them either.",
+    "start": 3.15,
+    "end": 12.36,
+    "duration": 9.21,
+    "mode": "sse"
+  }
+]

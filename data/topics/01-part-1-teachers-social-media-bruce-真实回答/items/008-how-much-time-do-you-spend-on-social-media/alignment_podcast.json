@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "bd75191d3ca591b2",
+  "audio_signature": "206306:1789785562",
+  "created_at": "2026-09-19T10:39:23",
+  "segments": [
+    {
+      "text": "How much time do you spend on social media?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.46
+    },
+    {
+      "text": "Way too much, honestly. Sometimes eight hours a day, or even more. I'm addicted to it, I would say.",
+      "speaker": "b",
+      "start": 2.89,
+      "end": 8.54
+    }
+  ],
+  "words": [
+    {
+      "text": "How",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "much",
+      "start": 0.16,
+      "end": 0.4
+    },
+    {
+      "text": "time",
+      "start": 0.4,
+      "end": 0.8
+    },
+    {
+      "text": "do",
+      "start": 0.8,
+      "end": 0.8
+    },
+    {
+      "text": "you",
+      "start": 0.8,
+      "end": 0.96
+    },
+    {
+      "text": "spend",
+      "start": 0.96,
+      "end": 1.28
+    },
+    {
+      "text": "on",
+      "start": 1.28,
+      "end": 1.44
+    },
+    {
+      "text": "social",
+      "start": 1.44,
+      "end": 1.84
+    },
+    {
+      "text": "media",
+      "start": 1.84,
+      "end": 2.4
+    },
+    {
+      "text": "Way",
+      "start": 2.828,
+      "end": 3.068
+    },
+    {
+      "text": "too",
+      "start": 3.068,
+      "end": 3.228
+    },
+    {
+      "text": "much",
+      "start": 3.228,
+      "end": 3.548
+    },
+    {
+      "text": "honestly",
+      "start": 3.628,
+      "end": 4.188
+    },
+    {
+      "text": "Sometimes",
+      "start": 4.268,
+      "end": 4.748
+    },
+    {
+      "text": "eight",
+      "start": 4.748,
+      "end": 4.908
+    },
+    {
+      "text": "hours",
+      "start": 4.908,
+      "end": 5.228
+    },
+    {
+      "text": "a",
+      "start": 5.228,
+      "end": 5.308
+    },
+    {
+      "text": "day",
+      "start": 5.308,
+      "end": 5.708
+    },
+    {
+      "text": "or",
+      "start": 5.868,
+      "end": 5.948
+    },
+    {
+      "text": "even",
+      "start": 5.948,
+      "end": 6.188
+    },
+    {
+      "text": "more",
+      "start": 6.188,
+      "end": 6.828
+    },
+    {
+      "text": "I'm",
+      "start": 6.828,
+      "end": 6.828
+    },
+    {
+      "text": "addicted",
+      "start": 7.148,
+      "end": 7.548
+    },
+    {
+      "text": "to",
+      "start": 7.548,
+      "end": 7.628
+    },
+    {
+      "text": "it",
+      "start": 7.628,
+      "end": 7.708
+    },
+    {
+      "text": "I",
+      "start": 7.708,
+      "end": 7.788
+    },
+    {
+      "text": "would",
+      "start": 7.788,
+      "end": 7.948
+    },
+    {
+      "text": "say",
+      "start": 7.948,
+      "end": 8.348
+    }
+  ]
+}

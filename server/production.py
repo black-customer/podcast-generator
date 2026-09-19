@@ -50,11 +50,20 @@ SECTION_ALIASES = {
     "英文": "natural_english",
     "英语": "natural_english",
     "fish script": "fish_script",
+    "fishScript".lower(): "fish_script",
     "配音稿": "fish_script",
+    "剧本": "fish_script",
     "独白": "monologue_text",
     "monologue": "monologue_text",
+    "独白文本": "monologue_text",
+    "独白剧本": "monologue_script",
+    "monologue script": "monologue_script",
     "对话": "podcast_text",
     "podcast": "podcast_text",
+    "播客剧本": "podcast_text",
+    "播客文本": "podcast_text",
+    "播客脚本": "podcast_text",
+    "podcast script": "podcast_script",
 }
 
 
@@ -87,7 +96,7 @@ def parse_batch(markdown: str) -> list[dict]:
             if cur is None:
                 continue
             name = line[4:].strip()
-            cur_field = SECTION_ALIASES.get(name.lower(), name.lower())
+            cur_field = SECTION_ALIASES.get(name.lower().replace(" ", ""), SECTION_ALIASES.get(name.lower(), name.lower()))
             cur["_buf"].setdefault(cur_field, [])
             continue
         if cur is None:

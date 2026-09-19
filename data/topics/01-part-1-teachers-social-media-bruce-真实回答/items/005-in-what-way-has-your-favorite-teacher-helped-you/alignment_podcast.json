@@ -1,0 +1,324 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "156b5674682f7416",
+  "audio_signature": "418212:1789785537",
+  "created_at": "2026-09-19T10:38:57",
+  "segments": [
+    {
+      "text": "In what way has your favorite teacher helped you?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.43
+    },
+    {
+      "text": "Well, this goes back to what I said — I don't have a favorite teacher. And honestly, I don't feel like any of them helped me enormously. Because if someone had actually helped me that much, I would call them my favorite teacher, right? So by definition, no one really stands out.",
+      "speaker": "b",
+      "start": 2.77,
+      "end": 17.37
+    }
+  ],
+  "words": [
+    {
+      "text": "In",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "what",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "way",
+      "start": 0.32,
+      "end": 0.64
+    },
+    {
+      "text": "has",
+      "start": 0.64,
+      "end": 0.8
+    },
+    {
+      "text": "your",
+      "start": 0.8,
+      "end": 0.96
+    },
+    {
+      "text": "favorite",
+      "start": 0.96,
+      "end": 1.36
+    },
+    {
+      "text": "teacher",
+      "start": 1.36,
+      "end": 1.76
+    },
+    {
+      "text": "helped",
+      "start": 1.76,
+      "end": 2.08
+    },
+    {
+      "text": "you",
+      "start": 2.08,
+      "end": 2.4
+    },
+    {
+      "text": "Well",
+      "start": 2.735,
+      "end": 2.895
+    },
+    {
+      "text": "this",
+      "start": 2.895,
+      "end": 3.135
+    },
+    {
+      "text": "goes",
+      "start": 3.135,
+      "end": 3.295
+    },
+    {
+      "text": "back",
+      "start": 3.295,
+      "end": 3.615
+    },
+    {
+      "text": "to",
+      "start": 3.615,
+      "end": 3.695
+    },
+    {
+      "text": "what",
+      "start": 3.695,
+      "end": 3.695
+    },
+    {
+      "text": "I",
+      "start": 3.695,
+      "end": 3.855
+    },
+    {
+      "text": "said",
+      "start": 3.855,
+      "end": 4.255
+    },
+    {
+      "text": "I",
+      "start": 4.495,
+      "end": 4.655
+    },
+    {
+      "text": "don't",
+      "start": 4.655,
+      "end": 4.975
+    },
+    {
+      "text": "have",
+      "start": 4.975,
+      "end": 5.135
+    },
+    {
+      "text": "a",
+      "start": 5.135,
+      "end": 5.135
+    },
+    {
+      "text": "favorite",
+      "start": 5.135,
+      "end": 5.615
+    },
+    {
+      "text": "teacher",
+      "start": 5.615,
+      "end": 6.095
+    },
+    {
+      "text": "And",
+      "start": 6.255,
+      "end": 6.415
+    },
+    {
+      "text": "honestly",
+      "start": 6.415,
+      "end": 6.815
+    },
+    {
+      "text": "I",
+      "start": 6.815,
+      "end": 6.895
+    },
+    {
+      "text": "don't",
+      "start": 6.895,
+      "end": 7.055
+    },
+    {
+      "text": "feel",
+      "start": 7.055,
+      "end": 7.215
+    },
+    {
+      "text": "like",
+      "start": 7.215,
+      "end": 7.375
+    },
+    {
+      "text": "any",
+      "start": 7.455,
+      "end": 7.695
+    },
+    {
+      "text": "of",
+      "start": 7.695,
+      "end": 7.775
+    },
+    {
+      "text": "them",
+      "start": 7.775,
+      "end": 7.935
+    },
+    {
+      "text": "helped",
+      "start": 7.935,
+      "end": 8.415
+    },
+    {
+      "text": "me",
+      "start": 8.415,
+      "end": 8.815
+    },
+    {
+      "text": "enormously",
+      "start": 8.895,
+      "end": 9.855
+    },
+    {
+      "text": "Because",
+      "start": 10.095,
+      "end": 10.255
+    },
+    {
+      "text": "if",
+      "start": 10.255,
+      "end": 10.335
+    },
+    {
+      "text": "someone",
+      "start": 10.335,
+      "end": 10.575
+    },
+    {
+      "text": "had",
+      "start": 10.575,
+      "end": 10.735
+    },
+    {
+      "text": "actually",
+      "start": 10.735,
+      "end": 11.055
+    },
+    {
+      "text": "helped",
+      "start": 11.055,
+      "end": 11.375
+    },
+    {
+      "text": "me",
+      "start": 11.375,
+      "end": 11.535
+    },
+    {
+      "text": "that",
+      "start": 11.535,
+      "end": 11.775
+    },
+    {
+      "text": "much",
+      "start": 11.775,
+      "end": 12.175
+    },
+    {
+      "text": "I",
+      "start": 12.415,
+      "end": 12.495
+    },
+    {
+      "text": "would",
+      "start": 12.495,
+      "end": 12.655
+    },
+    {
+      "text": "call",
+      "start": 12.655,
+      "end": 12.895
+    },
+    {
+      "text": "them",
+      "start": 12.895,
+      "end": 13.055
+    },
+    {
+      "text": "my",
+      "start": 13.055,
+      "end": 13.215
+    },
+    {
+      "text": "favorite",
+      "start": 13.215,
+      "end": 13.615
+    },
+    {
+      "text": "teacher",
+      "start": 13.615,
+      "end": 14.175
+    },
+    {
+      "text": "right",
+      "start": 14.415,
+      "end": 14.815
+    },
+    {
+      "text": "So",
+      "start": 14.975,
+      "end": 15.055
+    },
+    {
+      "text": "by",
+      "start": 15.055,
+      "end": 15.215
+    },
+    {
+      "text": "definition",
+      "start": 15.215,
+      "end": 15.935
+    },
+    {
+      "text": "no",
+      "start": 15.935,
+      "end": 16.015
+    },
+    {
+      "text": "one",
+      "start": 16.015,
+      "end": 16.175
+    },
+    {
+      "text": "really",
+      "start": 16.175,
+      "end": 16.415
+    },
+    {
+      "text": "stands",
+      "start": 16.415,
+      "end": 16.815
+    },
+    {
+      "text": "out",
+      "start": 16.815,
+      "end": 17.135
+    }
+  ]
+}
