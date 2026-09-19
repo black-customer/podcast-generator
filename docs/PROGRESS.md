@@ -123,3 +123,20 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   撤销之前"跨考季重复=必考"的自作主张定义；CORE_TOPIC_NORMS 全等匹配，
   Part3 的 "Work, Career & Success" 不会误伤；packmode.js 同步
 - 教训：merge_extra 原地修改传入列表，测试需 deepcopy 基线；fixture 须隔离 EXTRA_PATH
+
+## 2026-09-20 会话 6：路人闭环三件套（733a014）
+
+1. 公开题库包：data/question_bank_public.json 入 git（523 题/101 话题/3 册，
+   剔除 book_personal_ielts_answers 全部个人数据，脚本断言零泄露）；
+   load_bank 回落（私有快照缺失时用公开包）→ 路人 clone/zip 开箱即有题库
+2. 音色候选层：从 fish.audio 公共市场 500 条筛英语 TTS，人工选定 9 候选
+   （女 4：Sarah 官方/ALLE/Friendly Women/E-girl；男 5：Ethan 官方/ELITE/Slax/adam/美区克隆），
+   全部真实合成试听缓存；voices.json 加 tier 字段（preset/candidate），展台分组显示。
+   待 Bruce 试听定夺去留
+3. 一句话更新：VERSION(0.4.0) + health 返回 version + update_app.bat
+   （git pull --ff-only → pip 同步 → taskkill /T 杀进程树重启 → 健康检查 → 开浏览器）
+   + README「让 AI Agent 帮你装/帮你更新」段（给 Agent 的可复制指令）
+4. ROADMAP 新增 B05（UI 2.0，待 Bruce 具体不满点）与 B06（角色化音色选择——
+   提问者/回答者角色卡，Bruce 理想旅程唯一功能缺口）
+5. 坑：uvicorn 父子进程互拉，杀端口进程须 taskkill /F /T 杀树；
+   git checkout -- data/ 会复活已 git rm 的目录（01-persist 二次删除）
