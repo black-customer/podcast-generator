@@ -1,0 +1,279 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "62e700070c8786ad",
+  "audio_signature": "342979:1789786688",
+  "created_at": "2026-09-19T10:58:09",
+  "segments": [
+    {
+      "text": "Do you like wearing T-shirts?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.63
+    },
+    {
+      "text": "Yeah, of course. Like I said, I love wearing T-shirts. They're so easy — you just grab one and go. And when you do sports, they're really comfortable. Plus they match with lots of pants and trousers, so they're just a great thing to have.",
+      "speaker": "b",
+      "start": 2.08,
+      "end": 14.24
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "like",
+      "start": 0.32,
+      "end": 0.56
+    },
+    {
+      "text": "wearing",
+      "start": 0.56,
+      "end": 0.88
+    },
+    {
+      "text": "T",
+      "start": 0.88,
+      "end": 1.12
+    },
+    {
+      "text": "shirts",
+      "start": 1.12,
+      "end": 1.6
+    },
+    {
+      "text": "Yeah",
+      "start": 2.038,
+      "end": 2.518
+    },
+    {
+      "text": "of",
+      "start": 2.678,
+      "end": 2.758
+    },
+    {
+      "text": "course",
+      "start": 2.758,
+      "end": 3.398
+    },
+    {
+      "text": "Like",
+      "start": 3.638,
+      "end": 3.798
+    },
+    {
+      "text": "I",
+      "start": 3.798,
+      "end": 3.878
+    },
+    {
+      "text": "said",
+      "start": 3.878,
+      "end": 4.198
+    },
+    {
+      "text": "I",
+      "start": 4.278,
+      "end": 4.358
+    },
+    {
+      "text": "love",
+      "start": 4.358,
+      "end": 4.598
+    },
+    {
+      "text": "wearing",
+      "start": 4.598,
+      "end": 4.838
+    },
+    {
+      "text": "T",
+      "start": 4.838,
+      "end": 4.998
+    },
+    {
+      "text": "shirts",
+      "start": 4.998,
+      "end": 5.398
+    },
+    {
+      "text": "They're",
+      "start": 5.558,
+      "end": 5.718
+    },
+    {
+      "text": "so",
+      "start": 5.718,
+      "end": 5.958
+    },
+    {
+      "text": "easy",
+      "start": 5.958,
+      "end": 6.518
+    },
+    {
+      "text": "you",
+      "start": 6.518,
+      "end": 6.598
+    },
+    {
+      "text": "just",
+      "start": 6.598,
+      "end": 6.838
+    },
+    {
+      "text": "grab",
+      "start": 6.838,
+      "end": 7.078
+    },
+    {
+      "text": "one",
+      "start": 7.078,
+      "end": 7.238
+    },
+    {
+      "text": "and",
+      "start": 7.238,
+      "end": 7.318
+    },
+    {
+      "text": "go",
+      "start": 7.318,
+      "end": 7.798
+    },
+    {
+      "text": "And",
+      "start": 7.878,
+      "end": 7.958
+    },
+    {
+      "text": "when",
+      "start": 7.958,
+      "end": 8.118
+    },
+    {
+      "text": "you",
+      "start": 8.118,
+      "end": 8.198
+    },
+    {
+      "text": "do",
+      "start": 8.198,
+      "end": 8.278
+    },
+    {
+      "text": "sports",
+      "start": 8.278,
+      "end": 8.838
+    },
+    {
+      "text": "they're",
+      "start": 8.838,
+      "end": 8.918
+    },
+    {
+      "text": "really",
+      "start": 8.918,
+      "end": 9.158
+    },
+    {
+      "text": "comfortable",
+      "start": 9.158,
+      "end": 9.878
+    },
+    {
+      "text": "Plus",
+      "start": 9.878,
+      "end": 10.198
+    },
+    {
+      "text": "they",
+      "start": 10.198,
+      "end": 10.358
+    },
+    {
+      "text": "match",
+      "start": 10.358,
+      "end": 10.678
+    },
+    {
+      "text": "with",
+      "start": 10.678,
+      "end": 10.758
+    },
+    {
+      "text": "lots",
+      "start": 10.758,
+      "end": 10.998
+    },
+    {
+      "text": "of",
+      "start": 10.998,
+      "end": 11.078
+    },
+    {
+      "text": "pants",
+      "start": 11.078,
+      "end": 11.318
+    },
+    {
+      "text": "and",
+      "start": 11.318,
+      "end": 11.398
+    },
+    {
+      "text": "trousers",
+      "start": 11.398,
+      "end": 11.958
+    },
+    {
+      "text": "so",
+      "start": 12.038,
+      "end": 12.518
+    },
+    {
+      "text": "they're",
+      "start": 12.758,
+      "end": 12.918
+    },
+    {
+      "text": "just",
+      "start": 12.918,
+      "end": 13.078
+    },
+    {
+      "text": "a",
+      "start": 13.078,
+      "end": 13.158
+    },
+    {
+      "text": "great",
+      "start": 13.158,
+      "end": 13.398
+    },
+    {
+      "text": "thing",
+      "start": 13.398,
+      "end": 13.558
+    },
+    {
+      "text": "to",
+      "start": 13.558,
+      "end": 13.638
+    },
+    {
+      "text": "have",
+      "start": 13.638,
+      "end": 13.958
+    }
+  ]
+}

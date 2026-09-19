@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Does happy music make you feel more excited?",
+    "start": 0.0,
+    "end": 2.58,
+    "duration": 2.58,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yes, of course. When I'm already in a happy mood, listening to happy music makes me feel even happier. And when I'm just calm, happy music can lift me up and get me excited too. For example, when I get up early and need to go out to start my day, I put on my earphones and play happy music — I think that helps me begin a happy day.",
+    "start": 3.09,
+    "end": 21.29,
+    "duration": 18.2,
+    "mode": "sse"
+  }
+]

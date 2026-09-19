@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "In what conditions would you not use headphones?",
+    "start": 0.0,
+    "end": 2.83,
+    "duration": 2.83,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "When it's fine to let my phone play out loud — like in my dormitory or at home. Or when it's inappropriate to use headphones — like in a classroom when the teacher is giving a lecture right in front of you. Wearing headphones then is just disrespectful, I think. So in that case, I won't use them. I'll still play on my phone, but silently, without headphones.",
+    "start": 3.28,
+    "end": 21.5,
+    "duration": 18.22,
+    "mode": "sse"
+  }
+]

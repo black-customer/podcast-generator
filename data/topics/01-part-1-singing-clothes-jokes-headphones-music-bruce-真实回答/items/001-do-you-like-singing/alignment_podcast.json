@@ -1,0 +1,309 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "90f2a99bf5547c5f",
+  "audio_signature": "369937:1789786622",
+  "created_at": "2026-09-19T10:57:03",
+  "segments": [
+    {
+      "text": "Do you like singing? Why?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.78
+    },
+    {
+      "text": "Yeah, of course, I like singing. I sing every single day — there's always a song in my head when I wake up. I don't know why, but it's there. And I like singing because it lets me express my emotions at that moment — whatever I'm feeling, I can just sing it out.",
+      "speaker": "b",
+      "start": 2.12,
+      "end": 15.36
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "like",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "singing",
+      "start": 0.48,
+      "end": 1.04
+    },
+    {
+      "text": "Why",
+      "start": 1.12,
+      "end": 1.76
+    },
+    {
+      "text": "Yeah",
+      "start": 2.098,
+      "end": 2.498
+    },
+    {
+      "text": "of",
+      "start": 2.658,
+      "end": 2.738
+    },
+    {
+      "text": "course",
+      "start": 2.738,
+      "end": 3.058
+    },
+    {
+      "text": "I",
+      "start": 3.138,
+      "end": 3.218
+    },
+    {
+      "text": "like",
+      "start": 3.218,
+      "end": 3.378
+    },
+    {
+      "text": "singing",
+      "start": 3.378,
+      "end": 3.698
+    },
+    {
+      "text": "I",
+      "start": 3.698,
+      "end": 3.778
+    },
+    {
+      "text": "sing",
+      "start": 3.778,
+      "end": 4.178
+    },
+    {
+      "text": "every",
+      "start": 4.258,
+      "end": 4.498
+    },
+    {
+      "text": "single",
+      "start": 4.498,
+      "end": 4.738
+    },
+    {
+      "text": "day",
+      "start": 4.738,
+      "end": 4.898
+    },
+    {
+      "text": "there's",
+      "start": 4.898,
+      "end": 5.058
+    },
+    {
+      "text": "always",
+      "start": 5.058,
+      "end": 5.298
+    },
+    {
+      "text": "a",
+      "start": 5.298,
+      "end": 5.378
+    },
+    {
+      "text": "song",
+      "start": 5.378,
+      "end": 5.778
+    },
+    {
+      "text": "in",
+      "start": 5.778,
+      "end": 5.858
+    },
+    {
+      "text": "my",
+      "start": 5.858,
+      "end": 5.938
+    },
+    {
+      "text": "head",
+      "start": 5.938,
+      "end": 6.338
+    },
+    {
+      "text": "when",
+      "start": 6.418,
+      "end": 6.578
+    },
+    {
+      "text": "I",
+      "start": 6.578,
+      "end": 6.658
+    },
+    {
+      "text": "wake",
+      "start": 6.658,
+      "end": 6.818
+    },
+    {
+      "text": "up",
+      "start": 6.818,
+      "end": 7.138
+    },
+    {
+      "text": "I",
+      "start": 7.138,
+      "end": 7.218
+    },
+    {
+      "text": "don't",
+      "start": 7.218,
+      "end": 7.378
+    },
+    {
+      "text": "know",
+      "start": 7.378,
+      "end": 7.538
+    },
+    {
+      "text": "why",
+      "start": 7.538,
+      "end": 8.018
+    },
+    {
+      "text": "but",
+      "start": 8.258,
+      "end": 8.338
+    },
+    {
+      "text": "it's",
+      "start": 8.338,
+      "end": 8.498
+    },
+    {
+      "text": "there",
+      "start": 8.498,
+      "end": 8.898
+    },
+    {
+      "text": "And",
+      "start": 9.138,
+      "end": 9.298
+    },
+    {
+      "text": "I",
+      "start": 9.298,
+      "end": 9.378
+    },
+    {
+      "text": "like",
+      "start": 9.378,
+      "end": 9.538
+    },
+    {
+      "text": "singing",
+      "start": 9.538,
+      "end": 9.858
+    },
+    {
+      "text": "because",
+      "start": 9.858,
+      "end": 10.098
+    },
+    {
+      "text": "it",
+      "start": 10.098,
+      "end": 10.178
+    },
+    {
+      "text": "lets",
+      "start": 10.178,
+      "end": 10.498
+    },
+    {
+      "text": "me",
+      "start": 10.498,
+      "end": 10.658
+    },
+    {
+      "text": "express",
+      "start": 10.658,
+      "end": 11.458
+    },
+    {
+      "text": "my",
+      "start": 11.458,
+      "end": 11.778
+    },
+    {
+      "text": "emotions",
+      "start": 11.778,
+      "end": 12.338
+    },
+    {
+      "text": "at",
+      "start": 12.338,
+      "end": 12.418
+    },
+    {
+      "text": "that",
+      "start": 12.418,
+      "end": 12.578
+    },
+    {
+      "text": "moment",
+      "start": 12.578,
+      "end": 13.058
+    },
+    {
+      "text": "whatever",
+      "start": 13.218,
+      "end": 13.538
+    },
+    {
+      "text": "I'm",
+      "start": 13.538,
+      "end": 13.618
+    },
+    {
+      "text": "feeling",
+      "start": 13.618,
+      "end": 14.098
+    },
+    {
+      "text": "I",
+      "start": 14.098,
+      "end": 14.178
+    },
+    {
+      "text": "can",
+      "start": 14.178,
+      "end": 14.338
+    },
+    {
+      "text": "just",
+      "start": 14.338,
+      "end": 14.578
+    },
+    {
+      "text": "sing",
+      "start": 14.578,
+      "end": 14.818
+    },
+    {
+      "text": "it",
+      "start": 14.818,
+      "end": 14.818
+    },
+    {
+      "text": "out",
+      "start": 14.818,
+      "end": 15.218
+    }
+  ]
+}

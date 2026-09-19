@@ -1,0 +1,534 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "f2f9abe9507a462e",
+  "audio_signature": "655822:1789786789",
+  "created_at": "2026-09-19T10:59:50",
+  "segments": [
+    {
+      "text": "Do you prefer sad or happy music?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.34
+    },
+    {
+      "text": "Actually, I don't have a preference, but if you make me say it, I'd go with happy music. Although I think both kinds have a real reason to exist. When I'm sad, I want to listen to happy music — being sad already feels disgusting, and I need the vibe to match if I want to be emotional. And when I'm happy, happy music is very enjoyable. But if I'm happy and I listen to sad music, it just feels — wow, so out of place. So I think it depends on my emotion at the moment.",
+      "speaker": "b",
+      "start": 2.71,
+      "end": 27.27
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "prefer",
+      "start": 0.32,
+      "end": 0.64
+    },
+    {
+      "text": "sad",
+      "start": 0.64,
+      "end": 1.12
+    },
+    {
+      "text": "or",
+      "start": 1.12,
+      "end": 1.28
+    },
+    {
+      "text": "happy",
+      "start": 1.28,
+      "end": 1.68
+    },
+    {
+      "text": "music",
+      "start": 1.68,
+      "end": 2.32
+    },
+    {
+      "text": "Actually",
+      "start": 2.688,
+      "end": 3.088
+    },
+    {
+      "text": "I",
+      "start": 3.088,
+      "end": 3.248
+    },
+    {
+      "text": "don't",
+      "start": 3.248,
+      "end": 3.488
+    },
+    {
+      "text": "have",
+      "start": 3.488,
+      "end": 3.568
+    },
+    {
+      "text": "a",
+      "start": 3.568,
+      "end": 3.648
+    },
+    {
+      "text": "preference",
+      "start": 3.648,
+      "end": 4.208
+    },
+    {
+      "text": "but",
+      "start": 4.208,
+      "end": 4.608
+    },
+    {
+      "text": "if",
+      "start": 4.688,
+      "end": 4.848
+    },
+    {
+      "text": "you",
+      "start": 4.848,
+      "end": 4.928
+    },
+    {
+      "text": "make",
+      "start": 4.928,
+      "end": 5.088
+    },
+    {
+      "text": "me",
+      "start": 5.088,
+      "end": 5.248
+    },
+    {
+      "text": "say",
+      "start": 5.248,
+      "end": 5.648
+    },
+    {
+      "text": "it",
+      "start": 5.648,
+      "end": 5.728
+    },
+    {
+      "text": "I'd",
+      "start": 5.808,
+      "end": 6.048
+    },
+    {
+      "text": "go",
+      "start": 6.048,
+      "end": 6.208
+    },
+    {
+      "text": "with",
+      "start": 6.208,
+      "end": 6.288
+    },
+    {
+      "text": "happy",
+      "start": 6.288,
+      "end": 6.528
+    },
+    {
+      "text": "music",
+      "start": 6.528,
+      "end": 7.088
+    },
+    {
+      "text": "Although",
+      "start": 7.088,
+      "end": 7.488
+    },
+    {
+      "text": "I",
+      "start": 7.488,
+      "end": 7.648
+    },
+    {
+      "text": "think",
+      "start": 7.648,
+      "end": 7.888
+    },
+    {
+      "text": "both",
+      "start": 7.888,
+      "end": 8.128
+    },
+    {
+      "text": "kinds",
+      "start": 8.128,
+      "end": 8.448
+    },
+    {
+      "text": "have",
+      "start": 8.448,
+      "end": 8.528
+    },
+    {
+      "text": "a",
+      "start": 8.528,
+      "end": 8.608
+    },
+    {
+      "text": "real",
+      "start": 8.608,
+      "end": 8.768
+    },
+    {
+      "text": "reason",
+      "start": 8.848,
+      "end": 9.168
+    },
+    {
+      "text": "to",
+      "start": 9.248,
+      "end": 9.328
+    },
+    {
+      "text": "exist",
+      "start": 9.328,
+      "end": 9.888
+    },
+    {
+      "text": "When",
+      "start": 9.968,
+      "end": 10.128
+    },
+    {
+      "text": "I'm",
+      "start": 10.128,
+      "end": 10.208
+    },
+    {
+      "text": "sad",
+      "start": 10.208,
+      "end": 10.688
+    },
+    {
+      "text": "I",
+      "start": 10.768,
+      "end": 10.848
+    },
+    {
+      "text": "want",
+      "start": 10.848,
+      "end": 11.088
+    },
+    {
+      "text": "to",
+      "start": 11.088,
+      "end": 11.168
+    },
+    {
+      "text": "listen",
+      "start": 11.168,
+      "end": 11.408
+    },
+    {
+      "text": "to",
+      "start": 11.408,
+      "end": 11.488
+    },
+    {
+      "text": "happy",
+      "start": 11.488,
+      "end": 11.728
+    },
+    {
+      "text": "music",
+      "start": 11.728,
+      "end": 12.288
+    },
+    {
+      "text": "being",
+      "start": 12.288,
+      "end": 12.688
+    },
+    {
+      "text": "sad",
+      "start": 12.688,
+      "end": 13.088
+    },
+    {
+      "text": "already",
+      "start": 13.088,
+      "end": 13.408
+    },
+    {
+      "text": "feels",
+      "start": 13.408,
+      "end": 13.648
+    },
+    {
+      "text": "disgusting",
+      "start": 13.648,
+      "end": 14.448
+    },
+    {
+      "text": "and",
+      "start": 14.448,
+      "end": 14.528
+    },
+    {
+      "text": "I",
+      "start": 14.528,
+      "end": 14.688
+    },
+    {
+      "text": "need",
+      "start": 14.688,
+      "end": 14.928
+    },
+    {
+      "text": "the",
+      "start": 14.928,
+      "end": 15.008
+    },
+    {
+      "text": "vibe",
+      "start": 15.008,
+      "end": 15.248
+    },
+    {
+      "text": "to",
+      "start": 15.328,
+      "end": 15.328
+    },
+    {
+      "text": "match",
+      "start": 15.328,
+      "end": 15.728
+    },
+    {
+      "text": "if",
+      "start": 15.728,
+      "end": 15.808
+    },
+    {
+      "text": "I",
+      "start": 15.808,
+      "end": 15.888
+    },
+    {
+      "text": "want",
+      "start": 15.888,
+      "end": 16.128
+    },
+    {
+      "text": "to",
+      "start": 16.128,
+      "end": 16.128
+    },
+    {
+      "text": "be",
+      "start": 16.128,
+      "end": 16.288
+    },
+    {
+      "text": "emotional",
+      "start": 16.288,
+      "end": 16.848
+    },
+    {
+      "text": "And",
+      "start": 17.355,
+      "end": 17.515
+    },
+    {
+      "text": "when",
+      "start": 17.515,
+      "end": 17.675
+    },
+    {
+      "text": "I'm",
+      "start": 17.675,
+      "end": 17.755
+    },
+    {
+      "text": "happy",
+      "start": 17.755,
+      "end": 18.315
+    },
+    {
+      "text": "happy",
+      "start": 18.395,
+      "end": 18.555
+    },
+    {
+      "text": "music",
+      "start": 18.555,
+      "end": 18.875
+    },
+    {
+      "text": "is",
+      "start": 18.875,
+      "end": 19.035
+    },
+    {
+      "text": "very",
+      "start": 19.035,
+      "end": 19.275
+    },
+    {
+      "text": "enjoyable",
+      "start": 19.275,
+      "end": 19.835
+    },
+    {
+      "text": "But",
+      "start": 19.915,
+      "end": 20.315
+    },
+    {
+      "text": "if",
+      "start": 20.315,
+      "end": 20.475
+    },
+    {
+      "text": "I'm",
+      "start": 20.475,
+      "end": 20.555
+    },
+    {
+      "text": "happy",
+      "start": 20.555,
+      "end": 20.955
+    },
+    {
+      "text": "and",
+      "start": 20.955,
+      "end": 21.035
+    },
+    {
+      "text": "I",
+      "start": 21.035,
+      "end": 21.115
+    },
+    {
+      "text": "listen",
+      "start": 21.115,
+      "end": 21.435
+    },
+    {
+      "text": "to",
+      "start": 21.435,
+      "end": 21.515
+    },
+    {
+      "text": "sad",
+      "start": 21.515,
+      "end": 21.755
+    },
+    {
+      "text": "music",
+      "start": 21.755,
+      "end": 22.235
+    },
+    {
+      "text": "it",
+      "start": 22.315,
+      "end": 22.395
+    },
+    {
+      "text": "just",
+      "start": 22.395,
+      "end": 22.635
+    },
+    {
+      "text": "feels",
+      "start": 22.635,
+      "end": 23.195
+    },
+    {
+      "text": "wow",
+      "start": 23.355,
+      "end": 23.835
+    },
+    {
+      "text": "so",
+      "start": 23.835,
+      "end": 24.075
+    },
+    {
+      "text": "out",
+      "start": 24.075,
+      "end": 24.235
+    },
+    {
+      "text": "of",
+      "start": 24.235,
+      "end": 24.315
+    },
+    {
+      "text": "place",
+      "start": 24.315,
+      "end": 24.875
+    },
+    {
+      "text": "So",
+      "start": 24.875,
+      "end": 25.035
+    },
+    {
+      "text": "I",
+      "start": 25.035,
+      "end": 25.115
+    },
+    {
+      "text": "think",
+      "start": 25.115,
+      "end": 25.355
+    },
+    {
+      "text": "it",
+      "start": 25.355,
+      "end": 25.355
+    },
+    {
+      "text": "depends",
+      "start": 25.355,
+      "end": 25.755
+    },
+    {
+      "text": "on",
+      "start": 25.755,
+      "end": 25.835
+    },
+    {
+      "text": "my",
+      "start": 25.835,
+      "end": 26.075
+    },
+    {
+      "text": "emotion",
+      "start": 26.075,
+      "end": 26.395
+    },
+    {
+      "text": "at",
+      "start": 26.395,
+      "end": 26.475
+    },
+    {
+      "text": "the",
+      "start": 26.475,
+      "end": 26.555
+    },
+    {
+      "text": "moment",
+      "start": 26.555,
+      "end": 27.035
+    }
+  ]
+}

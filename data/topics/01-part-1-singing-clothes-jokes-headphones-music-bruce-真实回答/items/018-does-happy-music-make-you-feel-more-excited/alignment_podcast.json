@@ -1,0 +1,409 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "9994a33a192f3f93",
+  "audio_signature": "512253:1789786801",
+  "created_at": "2026-09-19T11:00:01",
+  "segments": [
+    {
+      "text": "Does happy music make you feel more excited?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.58
+    },
+    {
+      "text": "Yes, of course. When I'm already in a happy mood, listening to happy music makes me feel even happier. And when I'm just calm, happy music can lift me up and get me excited too. For example, when I get up early and need to go out to start my day, I put on my earphones and play happy music — I think that helps me begin a happy day.",
+      "speaker": "b",
+      "start": 3.09,
+      "end": 21.29
+    }
+  ],
+  "words": [
+    {
+      "text": "Does",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "happy",
+      "start": 0.24,
+      "end": 0.64
+    },
+    {
+      "text": "music",
+      "start": 0.64,
+      "end": 1.04
+    },
+    {
+      "text": "make",
+      "start": 1.04,
+      "end": 1.28
+    },
+    {
+      "text": "you",
+      "start": 1.28,
+      "end": 1.36
+    },
+    {
+      "text": "feel",
+      "start": 1.36,
+      "end": 1.68
+    },
+    {
+      "text": "more",
+      "start": 1.68,
+      "end": 1.92
+    },
+    {
+      "text": "excited",
+      "start": 1.92,
+      "end": 2.56
+    },
+    {
+      "text": "Yes",
+      "start": 3.06,
+      "end": 3.38
+    },
+    {
+      "text": "of",
+      "start": 3.38,
+      "end": 3.46
+    },
+    {
+      "text": "course",
+      "start": 3.46,
+      "end": 4.02
+    },
+    {
+      "text": "When",
+      "start": 4.1,
+      "end": 4.18
+    },
+    {
+      "text": "I'm",
+      "start": 4.18,
+      "end": 4.34
+    },
+    {
+      "text": "already",
+      "start": 4.34,
+      "end": 4.66
+    },
+    {
+      "text": "in",
+      "start": 4.66,
+      "end": 4.74
+    },
+    {
+      "text": "a",
+      "start": 4.74,
+      "end": 4.82
+    },
+    {
+      "text": "happy",
+      "start": 4.82,
+      "end": 5.14
+    },
+    {
+      "text": "mood",
+      "start": 5.14,
+      "end": 5.46
+    },
+    {
+      "text": "listening",
+      "start": 5.7,
+      "end": 6.18
+    },
+    {
+      "text": "to",
+      "start": 6.18,
+      "end": 6.26
+    },
+    {
+      "text": "happy",
+      "start": 6.26,
+      "end": 6.58
+    },
+    {
+      "text": "music",
+      "start": 6.58,
+      "end": 7.06
+    },
+    {
+      "text": "makes",
+      "start": 7.06,
+      "end": 7.38
+    },
+    {
+      "text": "me",
+      "start": 7.38,
+      "end": 7.46
+    },
+    {
+      "text": "feel",
+      "start": 7.46,
+      "end": 7.7
+    },
+    {
+      "text": "even",
+      "start": 7.7,
+      "end": 7.94
+    },
+    {
+      "text": "happier",
+      "start": 7.94,
+      "end": 8.58
+    },
+    {
+      "text": "And",
+      "start": 8.66,
+      "end": 8.82
+    },
+    {
+      "text": "when",
+      "start": 8.82,
+      "end": 8.98
+    },
+    {
+      "text": "I'm",
+      "start": 8.98,
+      "end": 9.14
+    },
+    {
+      "text": "just",
+      "start": 9.14,
+      "end": 9.3
+    },
+    {
+      "text": "calm",
+      "start": 9.3,
+      "end": 9.78
+    },
+    {
+      "text": "happy",
+      "start": 10.1,
+      "end": 10.42
+    },
+    {
+      "text": "music",
+      "start": 10.42,
+      "end": 10.74
+    },
+    {
+      "text": "can",
+      "start": 10.74,
+      "end": 10.98
+    },
+    {
+      "text": "lift",
+      "start": 10.98,
+      "end": 11.14
+    },
+    {
+      "text": "me",
+      "start": 11.14,
+      "end": 11.3
+    },
+    {
+      "text": "up",
+      "start": 11.3,
+      "end": 11.62
+    },
+    {
+      "text": "and",
+      "start": 11.62,
+      "end": 11.78
+    },
+    {
+      "text": "get",
+      "start": 11.78,
+      "end": 11.94
+    },
+    {
+      "text": "me",
+      "start": 11.94,
+      "end": 12.02
+    },
+    {
+      "text": "excited",
+      "start": 12.02,
+      "end": 12.5
+    },
+    {
+      "text": "too",
+      "start": 12.5,
+      "end": 12.82
+    },
+    {
+      "text": "For",
+      "start": 13.257,
+      "end": 13.337
+    },
+    {
+      "text": "example",
+      "start": 13.337,
+      "end": 13.977
+    },
+    {
+      "text": "when",
+      "start": 14.217,
+      "end": 14.377
+    },
+    {
+      "text": "I",
+      "start": 14.377,
+      "end": 14.457
+    },
+    {
+      "text": "get",
+      "start": 14.457,
+      "end": 14.617
+    },
+    {
+      "text": "up",
+      "start": 14.617,
+      "end": 14.697
+    },
+    {
+      "text": "early",
+      "start": 14.697,
+      "end": 15.097
+    },
+    {
+      "text": "and",
+      "start": 15.097,
+      "end": 15.257
+    },
+    {
+      "text": "need",
+      "start": 15.257,
+      "end": 15.417
+    },
+    {
+      "text": "to",
+      "start": 15.417,
+      "end": 15.417
+    },
+    {
+      "text": "go",
+      "start": 15.417,
+      "end": 15.577
+    },
+    {
+      "text": "out",
+      "start": 15.577,
+      "end": 15.737
+    },
+    {
+      "text": "to",
+      "start": 15.737,
+      "end": 15.817
+    },
+    {
+      "text": "start",
+      "start": 15.817,
+      "end": 16.057
+    },
+    {
+      "text": "my",
+      "start": 16.057,
+      "end": 16.217
+    },
+    {
+      "text": "day",
+      "start": 16.217,
+      "end": 16.537
+    },
+    {
+      "text": "I",
+      "start": 16.777,
+      "end": 16.857
+    },
+    {
+      "text": "put",
+      "start": 16.857,
+      "end": 17.097
+    },
+    {
+      "text": "on",
+      "start": 17.097,
+      "end": 17.177
+    },
+    {
+      "text": "my",
+      "start": 17.177,
+      "end": 17.337
+    },
+    {
+      "text": "earphones",
+      "start": 17.337,
+      "end": 17.897
+    },
+    {
+      "text": "and",
+      "start": 17.897,
+      "end": 18.057
+    },
+    {
+      "text": "play",
+      "start": 18.057,
+      "end": 18.297
+    },
+    {
+      "text": "happy",
+      "start": 18.297,
+      "end": 18.537
+    },
+    {
+      "text": "music",
+      "start": 18.537,
+      "end": 19.017
+    },
+    {
+      "text": "I",
+      "start": 19.257,
+      "end": 19.337
+    },
+    {
+      "text": "think",
+      "start": 19.337,
+      "end": 19.577
+    },
+    {
+      "text": "that",
+      "start": 19.577,
+      "end": 19.737
+    },
+    {
+      "text": "helps",
+      "start": 19.737,
+      "end": 20.057
+    },
+    {
+      "text": "me",
+      "start": 20.057,
+      "end": 20.137
+    },
+    {
+      "text": "begin",
+      "start": 20.137,
+      "end": 20.377
+    },
+    {
+      "text": "a",
+      "start": 20.377,
+      "end": 20.377
+    },
+    {
+      "text": "happy",
+      "start": 20.377,
+      "end": 20.697
+    },
+    {
+      "text": "day",
+      "start": 20.697,
+      "end": 21.097
+    }
+  ]
+}

@@ -1,50 +1,4 @@
 {
-  "1773169fb708": {
-    "id": "1773169fb708",
-    "kind": "assemble",
-    "topic_id": "01-e2e",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 0,
-    "current": "",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:53.847",
-    "finished_at": "2026-09-19T01:49:54.031",
-    "result": {
-      "topic_id": "01-e2e",
-      "topic_name": "E2E",
-      "track": "podcast",
-      "file": "01-e2e_podcast.mp3",
-      "total_sec": 1.93,
-      "item_count": 1,
-      "generated_at": "2026-09-19T01:49:54.029",
-      "items": [
-        {
-          "id": "001-q",
-          "title": "Q?",
-          "duration_sec": 1.93,
-          "offset_sec": 0.0,
-          "generated_at": "2026-09-19T01:49:52.924"
-        }
-      ]
-    }
-  },
-  "c19d427d4841": {
-    "id": "c19d427d4841",
-    "kind": "generate",
-    "topic_id": "01-align",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:58:00.534",
-    "finished_at": "2026-09-19T01:58:01.449"
-  },
   "542a49852dfd": {
     "id": "542a49852dfd",
     "kind": "generate",
@@ -1514,6 +1468,171 @@
           "duration_sec": 13.58,
           "offset_sec": 243.55,
           "generated_at": "2026-09-19T10:54:26.712"
+        }
+      ]
+    }
+  },
+  "6f4a2082ce0c": {
+    "id": "6f4a2082ce0c",
+    "kind": "generate",
+    "topic_id": "01-part-1-singing-clothes-jokes-headphones-music-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 18,
+    "done": 18,
+    "current": "018-does-happy-music-make-you-feel-more-excited",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:56:53.838",
+    "finished_at": "2026-09-19T11:00:01.879"
+  },
+  "d51bd67baa50": {
+    "id": "d51bd67baa50",
+    "kind": "assemble",
+    "topic_id": "01-part-1-singing-clothes-jokes-headphones-music-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T11:00:09.380",
+    "finished_at": "2026-09-19T11:00:17.602",
+    "result": {
+      "topic_id": "01-part-1-singing-clothes-jokes-headphones-music-bruce-真实回答",
+      "topic_name": "Part 1 · Singing, Clothes, Jokes, Headphones & Music（Bruce 真实回答）",
+      "track": "podcast",
+      "file": "01-part-1-singing-clothes-jokes-headphones-music-bruce-真实回答_podcast.mp3",
+      "total_sec": 289.68,
+      "item_count": 18,
+      "generated_at": "2026-09-19T11:00:17.599",
+      "items": [
+        {
+          "id": "001-do-you-like-singing",
+          "title": "Do you like singing?",
+          "duration_sec": 15.36,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T10:56:53.846"
+        },
+        {
+          "id": "002-have-you-ever-learned-how-to-sing",
+          "title": "Have you ever learned how to sing?",
+          "duration_sec": 17.55,
+          "offset_sec": 15.96,
+          "generated_at": "2026-09-19T10:57:03.326"
+        },
+        {
+          "id": "003-who-do-you-want-to-sing-for",
+          "title": "Who do you want to sing for?",
+          "duration_sec": 20.14,
+          "offset_sec": 34.11,
+          "generated_at": "2026-09-19T10:57:13.510"
+        },
+        {
+          "id": "004-do-you-think-singing-can-bring-happiness-to-people",
+          "title": "Do you think singing can bring happiness to people?",
+          "duration_sec": 29.65,
+          "offset_sec": 54.85,
+          "generated_at": "2026-09-19T10:57:24.775"
+        },
+        {
+          "id": "005-what-kind-of-clothes-do-you-like-to-wear",
+          "title": "What kind of clothes do you like to wear?",
+          "duration_sec": 14.45,
+          "offset_sec": 85.1,
+          "generated_at": "2026-09-19T10:57:40.237"
+        },
+        {
+          "id": "006-do-you-prefer-comfortable-and-casual-clothes-or-smart-clothe",
+          "title": "Do you prefer comfortable and casual clothes or smart clothes?",
+          "duration_sec": 23.77,
+          "offset_sec": 100.15,
+          "generated_at": "2026-09-19T10:57:49.301"
+        },
+        {
+          "id": "007-do-you-like-wearing-t-shirts",
+          "title": "Do you like wearing T-shirts?",
+          "duration_sec": 14.24,
+          "offset_sec": 124.52,
+          "generated_at": "2026-09-19T10:58:01.134"
+        },
+        {
+          "id": "008-do-you-spend-a-lot-of-time-choosing-clothes",
+          "title": "Do you spend a lot of time choosing clothes?",
+          "duration_sec": 19.44,
+          "offset_sec": 139.36,
+          "generated_at": "2026-09-19T10:58:09.201"
+        },
+        {
+          "id": "009-are-you-good-at-telling-jokes",
+          "title": "Are you good at telling jokes?",
+          "duration_sec": 15.96,
+          "offset_sec": 159.4,
+          "generated_at": "2026-09-19T10:58:19.198"
+        },
+        {
+          "id": "010-do-your-friends-like-to-tell-jokes",
+          "title": "Do your friends like to tell jokes?",
+          "duration_sec": 14.45,
+          "offset_sec": 175.96,
+          "generated_at": "2026-09-19T10:58:28.469"
+        },
+        {
+          "id": "011-do-you-like-to-watch-comedies",
+          "title": "Do you like to watch comedies?",
+          "duration_sec": 19.15,
+          "offset_sec": 191.01,
+          "generated_at": "2026-09-19T10:58:37.182"
+        },
+        {
+          "id": "012-have-you-ever-watched-a-live-show",
+          "title": "Have you ever watched a live show?",
+          "duration_sec": 28.53,
+          "offset_sec": 210.76,
+          "generated_at": "2026-09-19T10:58:47.240"
+        },
+        {
+          "id": "013-do-you-use-headphones",
+          "title": "Do you use headphones?",
+          "duration_sec": 13.27,
+          "offset_sec": 239.89,
+          "generated_at": "2026-09-19T10:59:01.755"
+        },
+        {
+          "id": "014-what-type-of-headphones-do-you-use",
+          "title": "What type of headphones do you use?",
+          "duration_sec": 14.34,
+          "offset_sec": 253.76,
+          "generated_at": "2026-09-19T10:59:10.163"
+        },
+        {
+          "id": "015-when-would-you-use-headphones",
+          "title": "When would you use headphones?",
+          "duration_sec": 9.51,
+          "offset_sec": 268.7,
+          "generated_at": "2026-09-19T10:59:18.989"
+        },
+        {
+          "id": "016-in-what-conditions-would-you-not-use-headphones",
+          "title": "In what conditions would you not use headphones?",
+          "duration_sec": 21.5,
+          "offset_sec": 278.81,
+          "generated_at": "2026-09-19T10:59:25.057"
+        },
+        {
+          "id": "017-do-you-prefer-sad-or-happy-music",
+          "title": "Do you prefer sad or happy music?",
+          "duration_sec": 27.27,
+          "offset_sec": 300.91,
+          "generated_at": "2026-09-19T10:59:36.046"
+        },
+        {
+          "id": "018-does-happy-music-make-you-feel-more-excited",
+          "title": "Does happy music make you feel more excited?",
+          "duration_sec": 21.29,
+          "offset_sec": 328.78,
+          "generated_at": "2026-09-19T10:59:50.514"
         }
       ]
     }

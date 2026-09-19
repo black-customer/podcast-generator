@@ -1,0 +1,494 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "762b5cb888e30b21",
+  "audio_signature": "685915:1789786741",
+  "created_at": "2026-09-19T10:59:01",
+  "segments": [
+    {
+      "text": "Have you ever watched a live show?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.78
+    },
+    {
+      "text": "Yes, I watched one when I was a freshman — my first time at a live show. It was in a huge place — like a stadium, I guess, not a museum, just a really, really enormous venue. When I sat there, I thought, wow, this feels so unreal. I couldn't believe I was sitting there watching my favorite singer right in front of me — well, there was still a distance, but I could actually see them. The vibe, the people around you, the performance — just amazing. Totally unreal.",
+      "speaker": "b",
+      "start": 2.17,
+      "end": 28.53
+    }
+  ],
+  "words": [
+    {
+      "text": "Have",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "ever",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "watched",
+      "start": 0.48,
+      "end": 0.8
+    },
+    {
+      "text": "a",
+      "start": 0.8,
+      "end": 0.88
+    },
+    {
+      "text": "live",
+      "start": 0.88,
+      "end": 1.28
+    },
+    {
+      "text": "show",
+      "start": 1.28,
+      "end": 1.76
+    },
+    {
+      "text": "Yes",
+      "start": 2.144,
+      "end": 2.544
+    },
+    {
+      "text": "I",
+      "start": 2.544,
+      "end": 2.624
+    },
+    {
+      "text": "watched",
+      "start": 2.624,
+      "end": 2.944
+    },
+    {
+      "text": "one",
+      "start": 2.944,
+      "end": 3.184
+    },
+    {
+      "text": "when",
+      "start": 3.184,
+      "end": 3.184
+    },
+    {
+      "text": "I",
+      "start": 3.184,
+      "end": 3.344
+    },
+    {
+      "text": "was",
+      "start": 3.344,
+      "end": 3.504
+    },
+    {
+      "text": "a",
+      "start": 3.504,
+      "end": 3.744
+    },
+    {
+      "text": "freshman",
+      "start": 3.904,
+      "end": 4.384
+    },
+    {
+      "text": "my",
+      "start": 4.384,
+      "end": 4.464
+    },
+    {
+      "text": "first",
+      "start": 4.464,
+      "end": 4.784
+    },
+    {
+      "text": "time",
+      "start": 4.784,
+      "end": 4.944
+    },
+    {
+      "text": "at",
+      "start": 4.944,
+      "end": 5.024
+    },
+    {
+      "text": "a",
+      "start": 5.024,
+      "end": 5.024
+    },
+    {
+      "text": "live",
+      "start": 5.024,
+      "end": 5.264
+    },
+    {
+      "text": "show",
+      "start": 5.264,
+      "end": 5.744
+    },
+    {
+      "text": "It",
+      "start": 6.064,
+      "end": 6.224
+    },
+    {
+      "text": "was",
+      "start": 6.224,
+      "end": 6.544
+    },
+    {
+      "text": "in",
+      "start": 6.624,
+      "end": 6.704
+    },
+    {
+      "text": "a",
+      "start": 6.704,
+      "end": 6.784
+    },
+    {
+      "text": "huge",
+      "start": 6.784,
+      "end": 7.184
+    },
+    {
+      "text": "place",
+      "start": 7.184,
+      "end": 7.824
+    },
+    {
+      "text": "like",
+      "start": 7.904,
+      "end": 8.064
+    },
+    {
+      "text": "a",
+      "start": 8.064,
+      "end": 8.064
+    },
+    {
+      "text": "stadium",
+      "start": 8.064,
+      "end": 8.544
+    },
+    {
+      "text": "I",
+      "start": 8.544,
+      "end": 8.624
+    },
+    {
+      "text": "guess",
+      "start": 8.624,
+      "end": 8.864
+    },
+    {
+      "text": "not",
+      "start": 9.264,
+      "end": 9.504
+    },
+    {
+      "text": "a",
+      "start": 9.504,
+      "end": 9.504
+    },
+    {
+      "text": "museum",
+      "start": 9.504,
+      "end": 9.984
+    },
+    {
+      "text": "just",
+      "start": 9.984,
+      "end": 10.144
+    },
+    {
+      "text": "a",
+      "start": 10.144,
+      "end": 10.224
+    },
+    {
+      "text": "really",
+      "start": 10.224,
+      "end": 10.544
+    },
+    {
+      "text": "really",
+      "start": 10.544,
+      "end": 10.864
+    },
+    {
+      "text": "enormous",
+      "start": 10.864,
+      "end": 11.504
+    },
+    {
+      "text": "venue",
+      "start": 11.504,
+      "end": 12.144
+    },
+    {
+      "text": "When",
+      "start": 12.464,
+      "end": 12.624
+    },
+    {
+      "text": "I",
+      "start": 12.624,
+      "end": 12.704
+    },
+    {
+      "text": "sat",
+      "start": 12.704,
+      "end": 13.024
+    },
+    {
+      "text": "there",
+      "start": 13.024,
+      "end": 13.184
+    },
+    {
+      "text": "I",
+      "start": 13.184,
+      "end": 13.264
+    },
+    {
+      "text": "thought",
+      "start": 13.264,
+      "end": 13.584
+    },
+    {
+      "text": "wow",
+      "start": 13.584,
+      "end": 14.064
+    },
+    {
+      "text": "this",
+      "start": 14.064,
+      "end": 14.224
+    },
+    {
+      "text": "feels",
+      "start": 14.224,
+      "end": 14.624
+    },
+    {
+      "text": "so",
+      "start": 14.944,
+      "end": 15.184
+    },
+    {
+      "text": "unreal",
+      "start": 15.184,
+      "end": 15.744
+    },
+    {
+      "text": "I",
+      "start": 16.287,
+      "end": 16.287
+    },
+    {
+      "text": "couldn't",
+      "start": 16.287,
+      "end": 16.527
+    },
+    {
+      "text": "believe",
+      "start": 16.527,
+      "end": 16.767
+    },
+    {
+      "text": "I",
+      "start": 16.767,
+      "end": 16.847
+    },
+    {
+      "text": "was",
+      "start": 16.847,
+      "end": 17.007
+    },
+    {
+      "text": "sitting",
+      "start": 17.007,
+      "end": 17.247
+    },
+    {
+      "text": "there",
+      "start": 17.247,
+      "end": 17.327
+    },
+    {
+      "text": "watching",
+      "start": 17.327,
+      "end": 17.727
+    },
+    {
+      "text": "my",
+      "start": 17.727,
+      "end": 17.887
+    },
+    {
+      "text": "favorite",
+      "start": 17.967,
+      "end": 18.287
+    },
+    {
+      "text": "singer",
+      "start": 18.287,
+      "end": 18.607
+    },
+    {
+      "text": "right",
+      "start": 18.607,
+      "end": 18.767
+    },
+    {
+      "text": "in",
+      "start": 18.767,
+      "end": 18.927
+    },
+    {
+      "text": "front",
+      "start": 18.927,
+      "end": 19.167
+    },
+    {
+      "text": "of",
+      "start": 19.167,
+      "end": 19.167
+    },
+    {
+      "text": "me",
+      "start": 19.167,
+      "end": 19.487
+    },
+    {
+      "text": "well",
+      "start": 19.807,
+      "end": 20.287
+    },
+    {
+      "text": "there",
+      "start": 20.367,
+      "end": 20.527
+    },
+    {
+      "text": "was",
+      "start": 20.527,
+      "end": 20.687
+    },
+    {
+      "text": "still",
+      "start": 20.687,
+      "end": 20.847
+    },
+    {
+      "text": "a",
+      "start": 20.847,
+      "end": 20.927
+    },
+    {
+      "text": "distance",
+      "start": 20.927,
+      "end": 21.487
+    },
+    {
+      "text": "but",
+      "start": 21.487,
+      "end": 21.807
+    },
+    {
+      "text": "I",
+      "start": 21.807,
+      "end": 21.967
+    },
+    {
+      "text": "could",
+      "start": 21.967,
+      "end": 22.047
+    },
+    {
+      "text": "actually",
+      "start": 22.047,
+      "end": 22.367
+    },
+    {
+      "text": "see",
+      "start": 22.367,
+      "end": 22.607
+    },
+    {
+      "text": "them",
+      "start": 22.607,
+      "end": 23.007
+    },
+    {
+      "text": "The",
+      "start": 23.167,
+      "end": 23.247
+    },
+    {
+      "text": "vibe",
+      "start": 23.247,
+      "end": 23.887
+    },
+    {
+      "text": "the",
+      "start": 23.887,
+      "end": 23.967
+    },
+    {
+      "text": "people",
+      "start": 23.967,
+      "end": 24.207
+    },
+    {
+      "text": "around",
+      "start": 24.207,
+      "end": 24.607
+    },
+    {
+      "text": "you",
+      "start": 24.607,
+      "end": 24.927
+    },
+    {
+      "text": "the",
+      "start": 25.167,
+      "end": 25.247
+    },
+    {
+      "text": "performance",
+      "start": 25.247,
+      "end": 25.967
+    },
+    {
+      "text": "just",
+      "start": 26.287,
+      "end": 26.447
+    },
+    {
+      "text": "amazing",
+      "start": 26.447,
+      "end": 27.167
+    },
+    {
+      "text": "Totally",
+      "start": 27.407,
+      "end": 27.727
+    },
+    {
+      "text": "unreal",
+      "start": 27.727,
+      "end": 28.207
+    }
+  ]
+}

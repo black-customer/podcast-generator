@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "What type of headphones do you use?",
+    "start": 0.0,
+    "end": 2.12,
+    "duration": 2.12,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I used to use wired headphones. But these days, most phones just don't have an entrance for wired headphones anymore, so I switched to wireless earphones — they connect through Bluetooth, and it's actually more convenient, I guess.",
+    "start": 2.55,
+    "end": 14.34,
+    "duration": 11.79,
+    "mode": "sse"
+  }
+]

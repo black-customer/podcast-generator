@@ -1,0 +1,399 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "a3c686324e75e398",
+  "audio_signature": "467740:1789786698",
+  "created_at": "2026-09-19T10:58:19",
+  "segments": [
+    {
+      "text": "Do you spend a lot of time choosing clothes?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.34
+    },
+    {
+      "text": "No, I don't, because I hate doing it. Even if I spent ages choosing clothes, I couldn't guarantee I'd pick the best one — after the choice is made, I'd still regret it, thinking maybe there was something better. So I just don't spend much time on it. I look over the options, pick the best one at the moment based on my feeling, and that's it.",
+      "speaker": "b",
+      "start": 2.72,
+      "end": 19.44
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "you",
+      "start": 0.08,
+      "end": 0.24
+    },
+    {
+      "text": "spend",
+      "start": 0.24,
+      "end": 0.56
+    },
+    {
+      "text": "a",
+      "start": 0.56,
+      "end": 0.56
+    },
+    {
+      "text": "lot",
+      "start": 0.56,
+      "end": 0.88
+    },
+    {
+      "text": "of",
+      "start": 0.88,
+      "end": 0.96
+    },
+    {
+      "text": "time",
+      "start": 0.96,
+      "end": 1.28
+    },
+    {
+      "text": "choosing",
+      "start": 1.28,
+      "end": 1.68
+    },
+    {
+      "text": "clothes",
+      "start": 1.68,
+      "end": 2.32
+    },
+    {
+      "text": "No",
+      "start": 2.701,
+      "end": 3.021
+    },
+    {
+      "text": "I",
+      "start": 3.021,
+      "end": 3.101
+    },
+    {
+      "text": "don't",
+      "start": 3.101,
+      "end": 3.501
+    },
+    {
+      "text": "because",
+      "start": 3.661,
+      "end": 3.901
+    },
+    {
+      "text": "I",
+      "start": 3.901,
+      "end": 3.981
+    },
+    {
+      "text": "hate",
+      "start": 3.981,
+      "end": 4.381
+    },
+    {
+      "text": "doing",
+      "start": 4.381,
+      "end": 4.701
+    },
+    {
+      "text": "it",
+      "start": 4.701,
+      "end": 4.861
+    },
+    {
+      "text": "Even",
+      "start": 5.021,
+      "end": 5.261
+    },
+    {
+      "text": "if",
+      "start": 5.261,
+      "end": 5.341
+    },
+    {
+      "text": "I",
+      "start": 5.341,
+      "end": 5.421
+    },
+    {
+      "text": "spent",
+      "start": 5.421,
+      "end": 5.661
+    },
+    {
+      "text": "ages",
+      "start": 5.741,
+      "end": 6.061
+    },
+    {
+      "text": "choosing",
+      "start": 6.061,
+      "end": 6.381
+    },
+    {
+      "text": "clothes",
+      "start": 6.381,
+      "end": 6.861
+    },
+    {
+      "text": "I",
+      "start": 7.101,
+      "end": 7.181
+    },
+    {
+      "text": "couldn't",
+      "start": 7.181,
+      "end": 7.581
+    },
+    {
+      "text": "guarantee",
+      "start": 7.581,
+      "end": 7.981
+    },
+    {
+      "text": "I'd",
+      "start": 7.981,
+      "end": 8.141
+    },
+    {
+      "text": "pick",
+      "start": 8.141,
+      "end": 8.301
+    },
+    {
+      "text": "the",
+      "start": 8.301,
+      "end": 8.381
+    },
+    {
+      "text": "best",
+      "start": 8.381,
+      "end": 8.701
+    },
+    {
+      "text": "one",
+      "start": 8.701,
+      "end": 9.181
+    },
+    {
+      "text": "after",
+      "start": 9.261,
+      "end": 9.581
+    },
+    {
+      "text": "the",
+      "start": 9.581,
+      "end": 9.661
+    },
+    {
+      "text": "choice",
+      "start": 9.661,
+      "end": 9.981
+    },
+    {
+      "text": "is",
+      "start": 9.981,
+      "end": 10.061
+    },
+    {
+      "text": "made",
+      "start": 10.061,
+      "end": 10.381
+    },
+    {
+      "text": "I'd",
+      "start": 10.381,
+      "end": 10.541
+    },
+    {
+      "text": "still",
+      "start": 10.541,
+      "end": 10.861
+    },
+    {
+      "text": "regret",
+      "start": 10.861,
+      "end": 11.181
+    },
+    {
+      "text": "it",
+      "start": 11.181,
+      "end": 11.341
+    },
+    {
+      "text": "thinking",
+      "start": 11.501,
+      "end": 11.821
+    },
+    {
+      "text": "maybe",
+      "start": 11.821,
+      "end": 12.061
+    },
+    {
+      "text": "there",
+      "start": 12.061,
+      "end": 12.141
+    },
+    {
+      "text": "was",
+      "start": 12.141,
+      "end": 12.301
+    },
+    {
+      "text": "something",
+      "start": 12.301,
+      "end": 12.541
+    },
+    {
+      "text": "better",
+      "start": 12.541,
+      "end": 12.941
+    },
+    {
+      "text": "So",
+      "start": 13.101,
+      "end": 13.341
+    },
+    {
+      "text": "I",
+      "start": 13.341,
+      "end": 13.501
+    },
+    {
+      "text": "just",
+      "start": 13.501,
+      "end": 13.661
+    },
+    {
+      "text": "don't",
+      "start": 13.661,
+      "end": 13.821
+    },
+    {
+      "text": "spend",
+      "start": 13.821,
+      "end": 13.981
+    },
+    {
+      "text": "much",
+      "start": 13.981,
+      "end": 14.141
+    },
+    {
+      "text": "time",
+      "start": 14.141,
+      "end": 14.381
+    },
+    {
+      "text": "on",
+      "start": 14.381,
+      "end": 14.621
+    },
+    {
+      "text": "it",
+      "start": 14.621,
+      "end": 14.701
+    },
+    {
+      "text": "I",
+      "start": 15.185,
+      "end": 15.265
+    },
+    {
+      "text": "look",
+      "start": 15.265,
+      "end": 15.425
+    },
+    {
+      "text": "over",
+      "start": 15.425,
+      "end": 15.585
+    },
+    {
+      "text": "the",
+      "start": 15.585,
+      "end": 15.745
+    },
+    {
+      "text": "options",
+      "start": 15.745,
+      "end": 16.305
+    },
+    {
+      "text": "pick",
+      "start": 16.305,
+      "end": 16.545
+    },
+    {
+      "text": "the",
+      "start": 16.545,
+      "end": 16.625
+    },
+    {
+      "text": "best",
+      "start": 16.625,
+      "end": 16.865
+    },
+    {
+      "text": "one",
+      "start": 16.865,
+      "end": 17.025
+    },
+    {
+      "text": "at",
+      "start": 17.025,
+      "end": 17.105
+    },
+    {
+      "text": "the",
+      "start": 17.105,
+      "end": 17.185
+    },
+    {
+      "text": "moment",
+      "start": 17.185,
+      "end": 17.585
+    },
+    {
+      "text": "based",
+      "start": 17.585,
+      "end": 17.825
+    },
+    {
+      "text": "on",
+      "start": 17.825,
+      "end": 17.905
+    },
+    {
+      "text": "my",
+      "start": 17.905,
+      "end": 17.985
+    },
+    {
+      "text": "feeling",
+      "start": 17.985,
+      "end": 18.545
+    },
+    {
+      "text": "and",
+      "start": 18.705,
+      "end": 18.785
+    },
+    {
+      "text": "that's",
+      "start": 18.785,
+      "end": 19.025
+    },
+    {
+      "text": "it",
+      "start": 19.025,
+      "end": 19.265
+    }
+  ]
+}

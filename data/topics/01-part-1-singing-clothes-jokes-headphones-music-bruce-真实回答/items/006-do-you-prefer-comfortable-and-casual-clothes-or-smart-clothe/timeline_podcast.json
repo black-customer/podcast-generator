@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you prefer to wear comfortable and casual clothes or smart clothes?",
+    "start": 0.0,
+    "end": 3.71,
+    "duration": 3.71,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I prefer comfortable clothes, because they help me feel relaxed — like this shirt I'm wearing right now, it's really comfortable. And about appearance: comfortable doesn't mean not smart, you know? With the right matching, you can wear comfortable clothes and still look good. But for specific occasions — like a job interview, or an opportunity, or meeting someone important — wearing smart clothes matters too.",
+    "start": 4.15,
+    "end": 23.77,
+    "duration": 19.62,
+    "mode": "sse"
+  }
+]

@@ -1,0 +1,324 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "36bc9c3d0d04fbf3",
+  "audio_signature": "422600:1789786633",
+  "created_at": "2026-09-19T10:57:13",
+  "segments": [
+    {
+      "text": "Have you ever learned how to sing?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.62
+    },
+    {
+      "text": "No, I haven't, not properly. School didn't really teach me how to sing — they just taught me knowledge about music, like how to recognize song types, how to learn a new song, its lyrics, the background story, stuff like that. But they never taught me how to sing a song better, you know.",
+      "speaker": "b",
+      "start": 1.97,
+      "end": 17.55
+    }
+  ],
+  "words": [
+    {
+      "text": "Have",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "ever",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "learned",
+      "start": 0.48,
+      "end": 0.8
+    },
+    {
+      "text": "how",
+      "start": 0.8,
+      "end": 0.96
+    },
+    {
+      "text": "to",
+      "start": 0.96,
+      "end": 0.96
+    },
+    {
+      "text": "sing",
+      "start": 0.96,
+      "end": 1.6
+    },
+    {
+      "text": "No",
+      "start": 1.945,
+      "end": 2.505
+    },
+    {
+      "text": "I",
+      "start": 2.505,
+      "end": 2.665
+    },
+    {
+      "text": "haven't",
+      "start": 2.665,
+      "end": 3.065
+    },
+    {
+      "text": "not",
+      "start": 3.065,
+      "end": 3.545
+    },
+    {
+      "text": "properly",
+      "start": 3.865,
+      "end": 4.585
+    },
+    {
+      "text": "School",
+      "start": 4.825,
+      "end": 5.145
+    },
+    {
+      "text": "didn't",
+      "start": 5.145,
+      "end": 5.305
+    },
+    {
+      "text": "really",
+      "start": 5.305,
+      "end": 5.465
+    },
+    {
+      "text": "teach",
+      "start": 5.465,
+      "end": 5.785
+    },
+    {
+      "text": "me",
+      "start": 5.785,
+      "end": 5.865
+    },
+    {
+      "text": "how",
+      "start": 5.865,
+      "end": 5.945
+    },
+    {
+      "text": "to",
+      "start": 5.945,
+      "end": 6.025
+    },
+    {
+      "text": "sing",
+      "start": 6.025,
+      "end": 6.585
+    },
+    {
+      "text": "they",
+      "start": 6.745,
+      "end": 6.905
+    },
+    {
+      "text": "just",
+      "start": 6.905,
+      "end": 7.065
+    },
+    {
+      "text": "taught",
+      "start": 7.065,
+      "end": 7.305
+    },
+    {
+      "text": "me",
+      "start": 7.305,
+      "end": 7.385
+    },
+    {
+      "text": "knowledge",
+      "start": 7.385,
+      "end": 7.865
+    },
+    {
+      "text": "about",
+      "start": 7.865,
+      "end": 8.105
+    },
+    {
+      "text": "music",
+      "start": 8.105,
+      "end": 8.825
+    },
+    {
+      "text": "like",
+      "start": 8.905,
+      "end": 9.065
+    },
+    {
+      "text": "how",
+      "start": 9.065,
+      "end": 9.145
+    },
+    {
+      "text": "to",
+      "start": 9.145,
+      "end": 9.225
+    },
+    {
+      "text": "recognize",
+      "start": 9.225,
+      "end": 9.785
+    },
+    {
+      "text": "song",
+      "start": 9.785,
+      "end": 10.105
+    },
+    {
+      "text": "types",
+      "start": 10.105,
+      "end": 10.585
+    },
+    {
+      "text": "how",
+      "start": 10.585,
+      "end": 10.745
+    },
+    {
+      "text": "to",
+      "start": 10.745,
+      "end": 10.825
+    },
+    {
+      "text": "learn",
+      "start": 10.825,
+      "end": 11.065
+    },
+    {
+      "text": "a",
+      "start": 11.065,
+      "end": 11.065
+    },
+    {
+      "text": "new",
+      "start": 11.065,
+      "end": 11.305
+    },
+    {
+      "text": "song",
+      "start": 11.305,
+      "end": 11.865
+    },
+    {
+      "text": "its",
+      "start": 11.865,
+      "end": 12.025
+    },
+    {
+      "text": "lyrics",
+      "start": 12.025,
+      "end": 12.585
+    },
+    {
+      "text": "the",
+      "start": 12.665,
+      "end": 12.665
+    },
+    {
+      "text": "background",
+      "start": 12.665,
+      "end": 13.145
+    },
+    {
+      "text": "story",
+      "start": 13.145,
+      "end": 13.705
+    },
+    {
+      "text": "stuff",
+      "start": 13.705,
+      "end": 13.945
+    },
+    {
+      "text": "like",
+      "start": 13.945,
+      "end": 14.105
+    },
+    {
+      "text": "that",
+      "start": 14.105,
+      "end": 14.425
+    },
+    {
+      "text": "But",
+      "start": 14.745,
+      "end": 14.825
+    },
+    {
+      "text": "they",
+      "start": 14.825,
+      "end": 14.905
+    },
+    {
+      "text": "never",
+      "start": 14.905,
+      "end": 15.065
+    },
+    {
+      "text": "taught",
+      "start": 15.065,
+      "end": 15.225
+    },
+    {
+      "text": "me",
+      "start": 15.225,
+      "end": 15.385
+    },
+    {
+      "text": "how",
+      "start": 15.385,
+      "end": 15.465
+    },
+    {
+      "text": "to",
+      "start": 15.465,
+      "end": 15.545
+    },
+    {
+      "text": "sing",
+      "start": 15.545,
+      "end": 15.865
+    },
+    {
+      "text": "a",
+      "start": 15.865,
+      "end": 15.865
+    },
+    {
+      "text": "song",
+      "start": 15.865,
+      "end": 16.265
+    },
+    {
+      "text": "better",
+      "start": 16.265,
+      "end": 16.825
+    },
+    {
+      "text": "you",
+      "start": 16.825,
+      "end": 16.985
+    },
+    {
+      "text": "know",
+      "start": 16.985,
+      "end": 17.305
+    }
+  ]
+}

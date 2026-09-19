@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "82f17b64cb98cb0a",
+  "audio_signature": "347995:1789786668",
+  "created_at": "2026-09-19T10:57:49",
+  "segments": [
+    {
+      "text": "What kind of clothes do you like to wear?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.87
+    },
+    {
+      "text": "I like wearing different kinds of clothes — T-shirts, shirts, coats, you know? It depends. Black, white — honestly, I don't have one particular style. I just like wearing clothes that make me look good. That's my only rule.",
+      "speaker": "b",
+      "start": 2.26,
+      "end": 14.45
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "kind",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "of",
+      "start": 0.32,
+      "end": 0.4
+    },
+    {
+      "text": "clothes",
+      "start": 0.4,
+      "end": 0.8
+    },
+    {
+      "text": "do",
+      "start": 0.8,
+      "end": 0.96
+    },
+    {
+      "text": "you",
+      "start": 0.96,
+      "end": 1.04
+    },
+    {
+      "text": "like",
+      "start": 1.04,
+      "end": 1.28
+    },
+    {
+      "text": "to",
+      "start": 1.28,
+      "end": 1.36
+    },
+    {
+      "text": "wear",
+      "start": 1.36,
+      "end": 1.84
+    },
+    {
+      "text": "I",
+      "start": 2.224,
+      "end": 2.384
+    },
+    {
+      "text": "like",
+      "start": 2.384,
+      "end": 2.624
+    },
+    {
+      "text": "wearing",
+      "start": 2.624,
+      "end": 3.024
+    },
+    {
+      "text": "different",
+      "start": 3.024,
+      "end": 3.344
+    },
+    {
+      "text": "kinds",
+      "start": 3.344,
+      "end": 3.584
+    },
+    {
+      "text": "of",
+      "start": 3.584,
+      "end": 3.664
+    },
+    {
+      "text": "clothes",
+      "start": 3.664,
+      "end": 4.224
+    },
+    {
+      "text": "T",
+      "start": 4.224,
+      "end": 4.464
+    },
+    {
+      "text": "shirts",
+      "start": 4.464,
+      "end": 5.104
+    },
+    {
+      "text": "shirts",
+      "start": 5.184,
+      "end": 5.664
+    },
+    {
+      "text": "coats",
+      "start": 5.664,
+      "end": 6.224
+    },
+    {
+      "text": "you",
+      "start": 6.224,
+      "end": 6.304
+    },
+    {
+      "text": "know",
+      "start": 6.304,
+      "end": 6.624
+    },
+    {
+      "text": "It",
+      "start": 6.704,
+      "end": 6.864
+    },
+    {
+      "text": "depends",
+      "start": 6.864,
+      "end": 7.424
+    },
+    {
+      "text": "Black",
+      "start": 7.584,
+      "end": 8.064
+    },
+    {
+      "text": "white",
+      "start": 8.064,
+      "end": 8.544
+    },
+    {
+      "text": "honestly",
+      "start": 8.624,
+      "end": 9.024
+    },
+    {
+      "text": "I",
+      "start": 9.024,
+      "end": 9.104
+    },
+    {
+      "text": "don't",
+      "start": 9.104,
+      "end": 9.344
+    },
+    {
+      "text": "have",
+      "start": 9.344,
+      "end": 9.504
+    },
+    {
+      "text": "one",
+      "start": 9.504,
+      "end": 9.744
+    },
+    {
+      "text": "particular",
+      "start": 9.744,
+      "end": 10.144
+    },
+    {
+      "text": "style",
+      "start": 10.144,
+      "end": 10.784
+    },
+    {
+      "text": "I",
+      "start": 10.864,
+      "end": 11.024
+    },
+    {
+      "text": "just",
+      "start": 11.024,
+      "end": 11.184
+    },
+    {
+      "text": "like",
+      "start": 11.184,
+      "end": 11.344
+    },
+    {
+      "text": "wearing",
+      "start": 11.344,
+      "end": 11.584
+    },
+    {
+      "text": "clothes",
+      "start": 11.584,
+      "end": 11.904
+    },
+    {
+      "text": "that",
+      "start": 11.904,
+      "end": 12.064
+    },
+    {
+      "text": "make",
+      "start": 12.064,
+      "end": 12.224
+    },
+    {
+      "text": "me",
+      "start": 12.224,
+      "end": 12.384
+    },
+    {
+      "text": "look",
+      "start": 12.384,
+      "end": 12.624
+    },
+    {
+      "text": "good",
+      "start": 12.624,
+      "end": 12.944
+    },
+    {
+      "text": "That's",
+      "start": 13.264,
+      "end": 13.424
+    },
+    {
+      "text": "my",
+      "start": 13.424,
+      "end": 13.584
+    },
+    {
+      "text": "only",
+      "start": 13.584,
+      "end": 13.824
+    },
+    {
+      "text": "rule",
+      "start": 13.824,
+      "end": 14.224
+    }
+  ]
+}

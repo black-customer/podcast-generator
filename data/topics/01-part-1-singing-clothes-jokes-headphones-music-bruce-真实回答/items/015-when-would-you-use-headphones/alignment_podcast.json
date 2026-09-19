@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "53039f74a41be0c3",
+  "audio_signature": "229503:1789786764",
+  "created_at": "2026-09-19T10:59:25",
+  "segments": [
+    {
+      "text": "When would you use headphones?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.64
+    },
+    {
+      "text": "I use them when I want to listen to music or watch videos. Basically whenever I'm using my phone in a public situation, I'll put on headphones.",
+      "speaker": "b",
+      "start": 2.04,
+      "end": 9.51
+    }
+  ],
+  "words": [
+    {
+      "text": "When",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "would",
+      "start": 0.24,
+      "end": 0.32
+    },
+    {
+      "text": "you",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "use",
+      "start": 0.48,
+      "end": 0.8
+    },
+    {
+      "text": "headphones",
+      "start": 0.8,
+      "end": 1.6
+    },
+    {
+      "text": "I",
+      "start": 1.992,
+      "end": 2.152
+    },
+    {
+      "text": "use",
+      "start": 2.152,
+      "end": 2.312
+    },
+    {
+      "text": "them",
+      "start": 2.312,
+      "end": 2.472
+    },
+    {
+      "text": "when",
+      "start": 2.472,
+      "end": 2.552
+    },
+    {
+      "text": "I",
+      "start": 2.552,
+      "end": 2.632
+    },
+    {
+      "text": "want",
+      "start": 2.632,
+      "end": 2.952
+    },
+    {
+      "text": "to",
+      "start": 2.952,
+      "end": 3.272
+    },
+    {
+      "text": "listen",
+      "start": 3.272,
+      "end": 3.672
+    },
+    {
+      "text": "to",
+      "start": 3.752,
+      "end": 3.832
+    },
+    {
+      "text": "music",
+      "start": 3.832,
+      "end": 4.312
+    },
+    {
+      "text": "or",
+      "start": 4.312,
+      "end": 4.472
+    },
+    {
+      "text": "watch",
+      "start": 4.472,
+      "end": 4.712
+    },
+    {
+      "text": "videos",
+      "start": 4.712,
+      "end": 5.272
+    },
+    {
+      "text": "Basically",
+      "start": 5.432,
+      "end": 5.832
+    },
+    {
+      "text": "whenever",
+      "start": 5.832,
+      "end": 6.152
+    },
+    {
+      "text": "I'm",
+      "start": 6.152,
+      "end": 6.232
+    },
+    {
+      "text": "using",
+      "start": 6.232,
+      "end": 6.472
+    },
+    {
+      "text": "my",
+      "start": 6.472,
+      "end": 6.632
+    },
+    {
+      "text": "phone",
+      "start": 6.632,
+      "end": 7.032
+    },
+    {
+      "text": "in",
+      "start": 7.032,
+      "end": 7.112
+    },
+    {
+      "text": "a",
+      "start": 7.112,
+      "end": 7.192
+    },
+    {
+      "text": "public",
+      "start": 7.192,
+      "end": 7.432
+    },
+    {
+      "text": "situation",
+      "start": 7.432,
+      "end": 8.152
+    },
+    {
+      "text": "I'll",
+      "start": 8.232,
+      "end": 8.312
+    },
+    {
+      "text": "put",
+      "start": 8.312,
+      "end": 8.472
+    },
+    {
+      "text": "on",
+      "start": 8.472,
+      "end": 8.552
+    },
+    {
+      "text": "headphones",
+      "start": 8.552,
+      "end": 9.272
+    }
+  ]
+}

@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "d92cab7f83e19406",
+  "audio_signature": "345487:1789786758",
+  "created_at": "2026-09-19T10:59:18",
+  "segments": [
+    {
+      "text": "What type of headphones do you use?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.12
+    },
+    {
+      "text": "I used to use wired headphones. But these days, most phones just don't have an entrance for wired headphones anymore, so I switched to wireless earphones — they connect through Bluetooth, and it's actually more convenient, I guess.",
+      "speaker": "b",
+      "start": 2.55,
+      "end": 14.34
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "type",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "of",
+      "start": 0.48,
+      "end": 0.56
+    },
+    {
+      "text": "headphones",
+      "start": 0.56,
+      "end": 1.12
+    },
+    {
+      "text": "do",
+      "start": 1.12,
+      "end": 1.2
+    },
+    {
+      "text": "you",
+      "start": 1.2,
+      "end": 1.44
+    },
+    {
+      "text": "use",
+      "start": 1.44,
+      "end": 2.08
+    },
+    {
+      "text": "I",
+      "start": 2.503,
+      "end": 2.663
+    },
+    {
+      "text": "used",
+      "start": 2.663,
+      "end": 2.983
+    },
+    {
+      "text": "to",
+      "start": 2.983,
+      "end": 3.063
+    },
+    {
+      "text": "use",
+      "start": 3.063,
+      "end": 3.223
+    },
+    {
+      "text": "wired",
+      "start": 3.223,
+      "end": 3.623
+    },
+    {
+      "text": "headphones",
+      "start": 3.623,
+      "end": 4.343
+    },
+    {
+      "text": "But",
+      "start": 4.423,
+      "end": 4.583
+    },
+    {
+      "text": "these",
+      "start": 4.583,
+      "end": 4.743
+    },
+    {
+      "text": "days",
+      "start": 4.743,
+      "end": 5.063
+    },
+    {
+      "text": "most",
+      "start": 5.063,
+      "end": 5.543
+    },
+    {
+      "text": "phones",
+      "start": 5.543,
+      "end": 5.863
+    },
+    {
+      "text": "just",
+      "start": 5.863,
+      "end": 6.103
+    },
+    {
+      "text": "don't",
+      "start": 6.103,
+      "end": 6.263
+    },
+    {
+      "text": "have",
+      "start": 6.423,
+      "end": 6.663
+    },
+    {
+      "text": "an",
+      "start": 6.663,
+      "end": 6.743
+    },
+    {
+      "text": "entrance",
+      "start": 6.743,
+      "end": 7.143
+    },
+    {
+      "text": "for",
+      "start": 7.143,
+      "end": 7.303
+    },
+    {
+      "text": "wired",
+      "start": 7.303,
+      "end": 7.623
+    },
+    {
+      "text": "headphones",
+      "start": 7.623,
+      "end": 8.023
+    },
+    {
+      "text": "anymore",
+      "start": 8.023,
+      "end": 8.583
+    },
+    {
+      "text": "so",
+      "start": 8.583,
+      "end": 8.823
+    },
+    {
+      "text": "I",
+      "start": 8.823,
+      "end": 9.063
+    },
+    {
+      "text": "switched",
+      "start": 9.063,
+      "end": 9.543
+    },
+    {
+      "text": "to",
+      "start": 9.543,
+      "end": 9.543
+    },
+    {
+      "text": "wireless",
+      "start": 9.543,
+      "end": 9.943
+    },
+    {
+      "text": "earphones",
+      "start": 9.943,
+      "end": 10.663
+    },
+    {
+      "text": "they",
+      "start": 10.663,
+      "end": 10.743
+    },
+    {
+      "text": "connect",
+      "start": 10.743,
+      "end": 11.143
+    },
+    {
+      "text": "through",
+      "start": 11.143,
+      "end": 11.303
+    },
+    {
+      "text": "Bluetooth",
+      "start": 11.303,
+      "end": 11.783
+    },
+    {
+      "text": "and",
+      "start": 12.183,
+      "end": 12.263
+    },
+    {
+      "text": "it's",
+      "start": 12.263,
+      "end": 12.423
+    },
+    {
+      "text": "actually",
+      "start": 12.423,
+      "end": 12.743
+    },
+    {
+      "text": "more",
+      "start": 12.743,
+      "end": 12.903
+    },
+    {
+      "text": "convenient",
+      "start": 12.903,
+      "end": 13.463
+    },
+    {
+      "text": "I",
+      "start": 13.543,
+      "end": 13.623
+    },
+    {
+      "text": "guess",
+      "start": 13.623,
+      "end": 14.103
+    }
+  ]
+}

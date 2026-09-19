@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you use headphones?",
+    "start": 0.0,
+    "end": 1.39,
+    "duration": 1.39,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yes, I always use headphones, because I like listening to music, listening to podcasts, and watching videos. And in public situations, it's important to wear headphones so your sound doesn't bother others. So I usually wear them.",
+    "start": 1.76,
+    "end": 13.27,
+    "duration": 11.51,
+    "mode": "sse"
+  }
+]

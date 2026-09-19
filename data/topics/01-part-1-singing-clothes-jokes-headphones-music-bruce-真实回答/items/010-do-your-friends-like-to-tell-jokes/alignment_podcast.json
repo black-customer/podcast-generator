@@ -1,0 +1,284 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "3bdb8ec9553a26de",
+  "audio_signature": "347995:1789786716",
+  "created_at": "2026-09-19T10:58:37",
+  "segments": [
+    {
+      "text": "Do your friends like to tell jokes?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.96
+    },
+    {
+      "text": "Some of them do, some of them don't. It's a kind of talent, I think — it's a feeling. I prefer friends who tell jokes, but telling a good joke is actually hard, you know? Telling a decent joke is a difficult thing, I would say.",
+      "speaker": "b",
+      "start": 2.45,
+      "end": 14.45
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "your",
+      "start": 0.16,
+      "end": 0.4
+    },
+    {
+      "text": "friends",
+      "start": 0.4,
+      "end": 0.72
+    },
+    {
+      "text": "like",
+      "start": 0.72,
+      "end": 0.96
+    },
+    {
+      "text": "to",
+      "start": 0.96,
+      "end": 0.96
+    },
+    {
+      "text": "tell",
+      "start": 0.96,
+      "end": 1.28
+    },
+    {
+      "text": "jokes",
+      "start": 1.28,
+      "end": 1.92
+    },
+    {
+      "text": "Some",
+      "start": 2.397,
+      "end": 2.557
+    },
+    {
+      "text": "of",
+      "start": 2.557,
+      "end": 2.637
+    },
+    {
+      "text": "them",
+      "start": 2.637,
+      "end": 2.877
+    },
+    {
+      "text": "do",
+      "start": 2.877,
+      "end": 3.357
+    },
+    {
+      "text": "some",
+      "start": 3.517,
+      "end": 3.757
+    },
+    {
+      "text": "of",
+      "start": 3.757,
+      "end": 3.837
+    },
+    {
+      "text": "them",
+      "start": 3.837,
+      "end": 3.997
+    },
+    {
+      "text": "don't",
+      "start": 3.997,
+      "end": 4.397
+    },
+    {
+      "text": "It's",
+      "start": 4.717,
+      "end": 4.877
+    },
+    {
+      "text": "a",
+      "start": 4.877,
+      "end": 4.877
+    },
+    {
+      "text": "kind",
+      "start": 4.877,
+      "end": 5.117
+    },
+    {
+      "text": "of",
+      "start": 5.117,
+      "end": 5.197
+    },
+    {
+      "text": "talent",
+      "start": 5.197,
+      "end": 5.837
+    },
+    {
+      "text": "I",
+      "start": 5.917,
+      "end": 5.997
+    },
+    {
+      "text": "think",
+      "start": 5.997,
+      "end": 6.477
+    },
+    {
+      "text": "it's",
+      "start": 6.477,
+      "end": 6.557
+    },
+    {
+      "text": "a",
+      "start": 6.557,
+      "end": 6.637
+    },
+    {
+      "text": "feeling",
+      "start": 6.637,
+      "end": 7.197
+    },
+    {
+      "text": "I",
+      "start": 7.597,
+      "end": 7.757
+    },
+    {
+      "text": "prefer",
+      "start": 7.757,
+      "end": 8.077
+    },
+    {
+      "text": "friends",
+      "start": 8.077,
+      "end": 8.397
+    },
+    {
+      "text": "who",
+      "start": 8.397,
+      "end": 8.397
+    },
+    {
+      "text": "tell",
+      "start": 8.397,
+      "end": 8.637
+    },
+    {
+      "text": "jokes",
+      "start": 8.637,
+      "end": 9.117
+    },
+    {
+      "text": "but",
+      "start": 9.117,
+      "end": 9.357
+    },
+    {
+      "text": "telling",
+      "start": 9.357,
+      "end": 9.677
+    },
+    {
+      "text": "a",
+      "start": 9.677,
+      "end": 9.677
+    },
+    {
+      "text": "good",
+      "start": 9.677,
+      "end": 9.917
+    },
+    {
+      "text": "joke",
+      "start": 9.917,
+      "end": 10.157
+    },
+    {
+      "text": "is",
+      "start": 10.157,
+      "end": 10.237
+    },
+    {
+      "text": "actually",
+      "start": 10.237,
+      "end": 10.637
+    },
+    {
+      "text": "hard",
+      "start": 10.637,
+      "end": 11.037
+    },
+    {
+      "text": "you",
+      "start": 11.197,
+      "end": 11.277
+    },
+    {
+      "text": "know",
+      "start": 11.277,
+      "end": 11.597
+    },
+    {
+      "text": "Telling",
+      "start": 11.997,
+      "end": 12.237
+    },
+    {
+      "text": "a",
+      "start": 12.237,
+      "end": 12.237
+    },
+    {
+      "text": "decent",
+      "start": 12.237,
+      "end": 12.557
+    },
+    {
+      "text": "joke",
+      "start": 12.557,
+      "end": 12.797
+    },
+    {
+      "text": "is",
+      "start": 12.797,
+      "end": 12.877
+    },
+    {
+      "text": "a",
+      "start": 12.877,
+      "end": 12.957
+    },
+    {
+      "text": "difficult",
+      "start": 12.957,
+      "end": 13.357
+    },
+    {
+      "text": "thing",
+      "start": 13.357,
+      "end": 13.597
+    },
+    {
+      "text": "I",
+      "start": 13.597,
+      "end": 13.677
+    },
+    {
+      "text": "would",
+      "start": 13.677,
+      "end": 13.837
+    },
+    {
+      "text": "say",
+      "start": 13.837,
+      "end": 14.157
+    }
+  ]
+}

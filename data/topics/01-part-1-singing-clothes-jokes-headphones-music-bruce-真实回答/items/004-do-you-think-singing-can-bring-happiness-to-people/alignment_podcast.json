@@ -1,0 +1,484 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "5818a8486846ed7d",
+  "audio_signature": "712873:1789786659",
+  "created_at": "2026-09-19T10:57:40",
+  "segments": [
+    {
+      "text": "Do you think singing can bring happiness to people?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.5
+    },
+    {
+      "text": "Yeah, absolutely, of course. That's the reason so many people love listening to music — it makes them feel better. Singing is, at its core, about expressing feelings, and when you sing, other people can feel what you feel — it's like a strengthened way of sharing emotions. And maybe some songs match exactly what you're going through. Then you realize that somewhere out there, someone has felt the same way as you — and you feel you're not alone. That's how singing brings people happiness.",
+      "speaker": "b",
+      "start": 2.89,
+      "end": 29.65
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "you",
+      "start": 0.08,
+      "end": 0.24
+    },
+    {
+      "text": "think",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "singing",
+      "start": 0.48,
+      "end": 0.88
+    },
+    {
+      "text": "can",
+      "start": 0.88,
+      "end": 1.04
+    },
+    {
+      "text": "bring",
+      "start": 1.04,
+      "end": 1.28
+    },
+    {
+      "text": "happiness",
+      "start": 1.28,
+      "end": 1.92
+    },
+    {
+      "text": "to",
+      "start": 1.92,
+      "end": 1.92
+    },
+    {
+      "text": "people",
+      "start": 1.92,
+      "end": 2.48
+    },
+    {
+      "text": "Yeah",
+      "start": 2.874,
+      "end": 3.114
+    },
+    {
+      "text": "absolutely",
+      "start": 3.114,
+      "end": 3.754
+    },
+    {
+      "text": "of",
+      "start": 3.754,
+      "end": 3.834
+    },
+    {
+      "text": "course",
+      "start": 3.834,
+      "end": 4.314
+    },
+    {
+      "text": "That's",
+      "start": 4.474,
+      "end": 4.714
+    },
+    {
+      "text": "the",
+      "start": 4.714,
+      "end": 4.794
+    },
+    {
+      "text": "reason",
+      "start": 4.794,
+      "end": 5.034
+    },
+    {
+      "text": "so",
+      "start": 5.034,
+      "end": 5.274
+    },
+    {
+      "text": "many",
+      "start": 5.274,
+      "end": 5.434
+    },
+    {
+      "text": "people",
+      "start": 5.434,
+      "end": 5.754
+    },
+    {
+      "text": "love",
+      "start": 5.754,
+      "end": 6.074
+    },
+    {
+      "text": "listening",
+      "start": 6.074,
+      "end": 6.474
+    },
+    {
+      "text": "to",
+      "start": 6.554,
+      "end": 6.554
+    },
+    {
+      "text": "music",
+      "start": 6.554,
+      "end": 7.114
+    },
+    {
+      "text": "it",
+      "start": 7.114,
+      "end": 7.194
+    },
+    {
+      "text": "makes",
+      "start": 7.194,
+      "end": 7.434
+    },
+    {
+      "text": "them",
+      "start": 7.434,
+      "end": 7.594
+    },
+    {
+      "text": "feel",
+      "start": 7.594,
+      "end": 7.834
+    },
+    {
+      "text": "better",
+      "start": 7.834,
+      "end": 8.314
+    },
+    {
+      "text": "Singing",
+      "start": 8.554,
+      "end": 9.114
+    },
+    {
+      "text": "is",
+      "start": 9.114,
+      "end": 9.274
+    },
+    {
+      "text": "at",
+      "start": 9.274,
+      "end": 9.434
+    },
+    {
+      "text": "its",
+      "start": 9.434,
+      "end": 9.514
+    },
+    {
+      "text": "core",
+      "start": 9.514,
+      "end": 9.834
+    },
+    {
+      "text": "about",
+      "start": 9.834,
+      "end": 10.074
+    },
+    {
+      "text": "expressing",
+      "start": 10.074,
+      "end": 10.634
+    },
+    {
+      "text": "feelings",
+      "start": 10.634,
+      "end": 11.274
+    },
+    {
+      "text": "and",
+      "start": 11.594,
+      "end": 11.754
+    },
+    {
+      "text": "when",
+      "start": 11.754,
+      "end": 11.834
+    },
+    {
+      "text": "you",
+      "start": 11.834,
+      "end": 11.914
+    },
+    {
+      "text": "sing",
+      "start": 11.914,
+      "end": 12.314
+    },
+    {
+      "text": "other",
+      "start": 12.314,
+      "end": 12.474
+    },
+    {
+      "text": "people",
+      "start": 12.474,
+      "end": 12.794
+    },
+    {
+      "text": "can",
+      "start": 12.794,
+      "end": 12.954
+    },
+    {
+      "text": "feel",
+      "start": 12.954,
+      "end": 13.274
+    },
+    {
+      "text": "what",
+      "start": 13.274,
+      "end": 13.514
+    },
+    {
+      "text": "you",
+      "start": 13.514,
+      "end": 13.594
+    },
+    {
+      "text": "feel",
+      "start": 13.594,
+      "end": 14.074
+    },
+    {
+      "text": "it's",
+      "start": 14.474,
+      "end": 14.714
+    },
+    {
+      "text": "like",
+      "start": 14.714,
+      "end": 14.954
+    },
+    {
+      "text": "a",
+      "start": 15.034,
+      "end": 15.034
+    },
+    {
+      "text": "strengthened",
+      "start": 15.034,
+      "end": 15.674
+    },
+    {
+      "text": "way",
+      "start": 15.674,
+      "end": 15.914
+    },
+    {
+      "text": "of",
+      "start": 15.914,
+      "end": 15.994
+    },
+    {
+      "text": "sharing",
+      "start": 15.994,
+      "end": 16.394
+    },
+    {
+      "text": "emotions",
+      "start": 16.394,
+      "end": 17.194
+    },
+    {
+      "text": "And",
+      "start": 17.536,
+      "end": 17.696
+    },
+    {
+      "text": "maybe",
+      "start": 17.696,
+      "end": 17.936
+    },
+    {
+      "text": "some",
+      "start": 17.936,
+      "end": 18.176
+    },
+    {
+      "text": "songs",
+      "start": 18.176,
+      "end": 18.576
+    },
+    {
+      "text": "match",
+      "start": 18.576,
+      "end": 18.896
+    },
+    {
+      "text": "exactly",
+      "start": 18.896,
+      "end": 19.456
+    },
+    {
+      "text": "what",
+      "start": 19.456,
+      "end": 19.536
+    },
+    {
+      "text": "you're",
+      "start": 19.536,
+      "end": 19.616
+    },
+    {
+      "text": "going",
+      "start": 19.616,
+      "end": 20.016
+    },
+    {
+      "text": "through",
+      "start": 20.016,
+      "end": 20.416
+    },
+    {
+      "text": "Then",
+      "start": 20.816,
+      "end": 20.976
+    },
+    {
+      "text": "you",
+      "start": 20.976,
+      "end": 21.056
+    },
+    {
+      "text": "realize",
+      "start": 21.056,
+      "end": 21.536
+    },
+    {
+      "text": "that",
+      "start": 21.536,
+      "end": 21.776
+    },
+    {
+      "text": "somewhere",
+      "start": 21.776,
+      "end": 22.256
+    },
+    {
+      "text": "out",
+      "start": 22.256,
+      "end": 22.496
+    },
+    {
+      "text": "there",
+      "start": 22.496,
+      "end": 22.816
+    },
+    {
+      "text": "someone",
+      "start": 23.056,
+      "end": 23.456
+    },
+    {
+      "text": "has",
+      "start": 23.536,
+      "end": 23.776
+    },
+    {
+      "text": "felt",
+      "start": 23.776,
+      "end": 24.016
+    },
+    {
+      "text": "the",
+      "start": 24.016,
+      "end": 24.096
+    },
+    {
+      "text": "same",
+      "start": 24.096,
+      "end": 24.416
+    },
+    {
+      "text": "way",
+      "start": 24.416,
+      "end": 24.576
+    },
+    {
+      "text": "as",
+      "start": 24.576,
+      "end": 24.736
+    },
+    {
+      "text": "you",
+      "start": 24.736,
+      "end": 25.136
+    },
+    {
+      "text": "and",
+      "start": 25.456,
+      "end": 25.616
+    },
+    {
+      "text": "you",
+      "start": 25.616,
+      "end": 25.696
+    },
+    {
+      "text": "feel",
+      "start": 25.696,
+      "end": 26.016
+    },
+    {
+      "text": "you're",
+      "start": 26.016,
+      "end": 26.176
+    },
+    {
+      "text": "not",
+      "start": 26.176,
+      "end": 26.336
+    },
+    {
+      "text": "alone",
+      "start": 26.336,
+      "end": 26.816
+    },
+    {
+      "text": "That's",
+      "start": 27.456,
+      "end": 27.696
+    },
+    {
+      "text": "how",
+      "start": 27.696,
+      "end": 27.776
+    },
+    {
+      "text": "singing",
+      "start": 27.776,
+      "end": 28.176
+    },
+    {
+      "text": "brings",
+      "start": 28.176,
+      "end": 28.416
+    },
+    {
+      "text": "people",
+      "start": 28.416,
+      "end": 28.736
+    },
+    {
+      "text": "happiness",
+      "start": 28.736,
+      "end": 29.456
+    }
+  ]
+}
