@@ -1,0 +1,544 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "a7a6aff6f70036da",
+  "audio_signature": "678391:1789787527",
+  "created_at": "2026-09-19T11:12:08",
+  "segments": [
+    {
+      "text": "Do you have any plans for your study in the next five years?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.5
+    },
+    {
+      "text": "Honestly, I don't have a five-year plan — only a two or three-year one. So my plan is to improve my English speaking, from IELTS band 6 to band 8 or 8.5. Then I'd work as an IELTS teacher, teaching English to others — that way I keep improving my own English while earning money from it. And in the meantime, AI is developing so fast that I think everyone should learn it. So I'll also study AI and try to become an AI expert in the next few years.",
+      "speaker": "b",
+      "start": 2.86,
+      "end": 28.21
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "have",
+      "start": 0.24,
+      "end": 0.32
+    },
+    {
+      "text": "any",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "plans",
+      "start": 0.48,
+      "end": 0.8
+    },
+    {
+      "text": "for",
+      "start": 0.8,
+      "end": 0.88
+    },
+    {
+      "text": "your",
+      "start": 0.88,
+      "end": 0.96
+    },
+    {
+      "text": "study",
+      "start": 0.96,
+      "end": 1.36
+    },
+    {
+      "text": "in",
+      "start": 1.36,
+      "end": 1.44
+    },
+    {
+      "text": "the",
+      "start": 1.44,
+      "end": 1.44
+    },
+    {
+      "text": "next",
+      "start": 1.44,
+      "end": 1.76
+    },
+    {
+      "text": "five",
+      "start": 1.76,
+      "end": 2.0
+    },
+    {
+      "text": "years",
+      "start": 2.0,
+      "end": 2.48
+    },
+    {
+      "text": "Honestly",
+      "start": 2.841,
+      "end": 3.321
+    },
+    {
+      "text": "I",
+      "start": 3.321,
+      "end": 3.401
+    },
+    {
+      "text": "don't",
+      "start": 3.401,
+      "end": 3.721
+    },
+    {
+      "text": "have",
+      "start": 3.721,
+      "end": 3.881
+    },
+    {
+      "text": "a",
+      "start": 3.881,
+      "end": 3.961
+    },
+    {
+      "text": "five",
+      "start": 3.961,
+      "end": 4.281
+    },
+    {
+      "text": "year",
+      "start": 4.281,
+      "end": 4.441
+    },
+    {
+      "text": "plan",
+      "start": 4.441,
+      "end": 4.921
+    },
+    {
+      "text": "only",
+      "start": 5.001,
+      "end": 5.321
+    },
+    {
+      "text": "a",
+      "start": 5.321,
+      "end": 5.401
+    },
+    {
+      "text": "two",
+      "start": 5.401,
+      "end": 5.641
+    },
+    {
+      "text": "or",
+      "start": 5.641,
+      "end": 5.721
+    },
+    {
+      "text": "three",
+      "start": 5.721,
+      "end": 6.041
+    },
+    {
+      "text": "year",
+      "start": 6.041,
+      "end": 6.201
+    },
+    {
+      "text": "one",
+      "start": 6.201,
+      "end": 6.681
+    },
+    {
+      "text": "So",
+      "start": 6.681,
+      "end": 6.841
+    },
+    {
+      "text": "my",
+      "start": 6.841,
+      "end": 7.081
+    },
+    {
+      "text": "plan",
+      "start": 7.081,
+      "end": 7.321
+    },
+    {
+      "text": "is",
+      "start": 7.321,
+      "end": 7.481
+    },
+    {
+      "text": "to",
+      "start": 7.481,
+      "end": 7.641
+    },
+    {
+      "text": "improve",
+      "start": 7.641,
+      "end": 7.961
+    },
+    {
+      "text": "my",
+      "start": 7.961,
+      "end": 8.121
+    },
+    {
+      "text": "English",
+      "start": 8.121,
+      "end": 8.521
+    },
+    {
+      "text": "speaking",
+      "start": 8.521,
+      "end": 9.081
+    },
+    {
+      "text": "from",
+      "start": 9.081,
+      "end": 9.241
+    },
+    {
+      "text": "IELTS",
+      "start": 9.241,
+      "end": 9.641
+    },
+    {
+      "text": "band",
+      "start": 9.641,
+      "end": 9.961
+    },
+    {
+      "text": "6",
+      "start": 9.961,
+      "end": 10.361
+    },
+    {
+      "text": "to",
+      "start": 10.361,
+      "end": 10.441
+    },
+    {
+      "text": "band",
+      "start": 10.441,
+      "end": 10.761
+    },
+    {
+      "text": "8",
+      "start": 10.761,
+      "end": 11.161
+    },
+    {
+      "text": "or",
+      "start": 11.161,
+      "end": 11.241
+    },
+    {
+      "text": "8",
+      "start": 11.241,
+      "end": 11.561
+    },
+    {
+      "text": "5",
+      "start": 11.561,
+      "end": 11.801
+    },
+    {
+      "text": "Then",
+      "start": 12.361,
+      "end": 12.601
+    },
+    {
+      "text": "I'd",
+      "start": 12.601,
+      "end": 12.681
+    },
+    {
+      "text": "work",
+      "start": 12.681,
+      "end": 12.921
+    },
+    {
+      "text": "as",
+      "start": 12.921,
+      "end": 13.081
+    },
+    {
+      "text": "an",
+      "start": 13.081,
+      "end": 13.161
+    },
+    {
+      "text": "IELTS",
+      "start": 13.161,
+      "end": 13.641
+    },
+    {
+      "text": "teacher",
+      "start": 13.641,
+      "end": 14.121
+    },
+    {
+      "text": "teaching",
+      "start": 14.121,
+      "end": 14.441
+    },
+    {
+      "text": "English",
+      "start": 14.441,
+      "end": 14.841
+    },
+    {
+      "text": "to",
+      "start": 14.841,
+      "end": 14.841
+    },
+    {
+      "text": "others",
+      "start": 14.841,
+      "end": 15.401
+    },
+    {
+      "text": "that",
+      "start": 15.481,
+      "end": 15.721
+    },
+    {
+      "text": "way",
+      "start": 15.721,
+      "end": 15.881
+    },
+    {
+      "text": "I",
+      "start": 15.881,
+      "end": 15.961
+    },
+    {
+      "text": "keep",
+      "start": 15.961,
+      "end": 16.201
+    },
+    {
+      "text": "improving",
+      "start": 16.201,
+      "end": 16.681
+    },
+    {
+      "text": "my",
+      "start": 16.681,
+      "end": 16.841
+    },
+    {
+      "text": "own",
+      "start": 16.841,
+      "end": 17.081
+    },
+    {
+      "text": "English",
+      "start": 17.081,
+      "end": 17.561
+    },
+    {
+      "text": "while",
+      "start": 17.641,
+      "end": 17.801
+    },
+    {
+      "text": "earning",
+      "start": 17.801,
+      "end": 18.041
+    },
+    {
+      "text": "money",
+      "start": 18.041,
+      "end": 18.361
+    },
+    {
+      "text": "from",
+      "start": 18.361,
+      "end": 18.601
+    },
+    {
+      "text": "it",
+      "start": 18.601,
+      "end": 18.841
+    },
+    {
+      "text": "And",
+      "start": 19.223,
+      "end": 19.383
+    },
+    {
+      "text": "in",
+      "start": 19.383,
+      "end": 19.463
+    },
+    {
+      "text": "the",
+      "start": 19.463,
+      "end": 19.543
+    },
+    {
+      "text": "meantime",
+      "start": 19.543,
+      "end": 20.183
+    },
+    {
+      "text": "AI",
+      "start": 20.183,
+      "end": 20.663
+    },
+    {
+      "text": "is",
+      "start": 20.663,
+      "end": 20.743
+    },
+    {
+      "text": "developing",
+      "start": 20.743,
+      "end": 21.223
+    },
+    {
+      "text": "so",
+      "start": 21.223,
+      "end": 21.463
+    },
+    {
+      "text": "fast",
+      "start": 21.463,
+      "end": 21.943
+    },
+    {
+      "text": "that",
+      "start": 21.943,
+      "end": 22.023
+    },
+    {
+      "text": "I",
+      "start": 22.023,
+      "end": 22.103
+    },
+    {
+      "text": "think",
+      "start": 22.103,
+      "end": 22.343
+    },
+    {
+      "text": "everyone",
+      "start": 22.343,
+      "end": 22.823
+    },
+    {
+      "text": "should",
+      "start": 22.823,
+      "end": 22.983
+    },
+    {
+      "text": "learn",
+      "start": 22.983,
+      "end": 23.303
+    },
+    {
+      "text": "it",
+      "start": 23.303,
+      "end": 23.463
+    },
+    {
+      "text": "So",
+      "start": 23.543,
+      "end": 23.783
+    },
+    {
+      "text": "I'll",
+      "start": 23.783,
+      "end": 23.863
+    },
+    {
+      "text": "also",
+      "start": 23.863,
+      "end": 24.263
+    },
+    {
+      "text": "study",
+      "start": 24.263,
+      "end": 24.583
+    },
+    {
+      "text": "AI",
+      "start": 24.743,
+      "end": 25.143
+    },
+    {
+      "text": "and",
+      "start": 25.143,
+      "end": 25.223
+    },
+    {
+      "text": "try",
+      "start": 25.223,
+      "end": 25.463
+    },
+    {
+      "text": "to",
+      "start": 25.463,
+      "end": 25.543
+    },
+    {
+      "text": "become",
+      "start": 25.543,
+      "end": 25.863
+    },
+    {
+      "text": "an",
+      "start": 25.863,
+      "end": 25.943
+    },
+    {
+      "text": "AI",
+      "start": 25.943,
+      "end": 26.343
+    },
+    {
+      "text": "expert",
+      "start": 26.343,
+      "end": 26.823
+    },
+    {
+      "text": "in",
+      "start": 26.823,
+      "end": 26.903
+    },
+    {
+      "text": "the",
+      "start": 26.903,
+      "end": 26.983
+    },
+    {
+      "text": "next",
+      "start": 26.983,
+      "end": 27.303
+    },
+    {
+      "text": "few",
+      "start": 27.303,
+      "end": 27.463
+    },
+    {
+      "text": "years",
+      "start": 27.463,
+      "end": 28.023
+    }
+  ]
+}

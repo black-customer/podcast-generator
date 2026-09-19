@@ -1,0 +1,319 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "9d397201a835211f",
+  "audio_signature": "485921:1789787587",
+  "created_at": "2026-09-19T11:13:08",
+  "segments": [
+    {
+      "text": "What technology do you use when you study?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.86
+    },
+    {
+      "text": "Absolutely AI — like ChatGPT, and Doubao here in China. AI is really, really useful and widely used. I think everyone in this generation must use AI — not \"should,\" must. I use it to solve problems I meet in my studies, to communicate in English, and to improve my English as well.",
+      "speaker": "b",
+      "start": 2.43,
+      "end": 20.19
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "technology",
+      "start": 0.24,
+      "end": 0.72
+    },
+    {
+      "text": "do",
+      "start": 0.72,
+      "end": 0.8
+    },
+    {
+      "text": "you",
+      "start": 0.8,
+      "end": 0.96
+    },
+    {
+      "text": "use",
+      "start": 0.96,
+      "end": 1.2
+    },
+    {
+      "text": "when",
+      "start": 1.2,
+      "end": 1.28
+    },
+    {
+      "text": "you",
+      "start": 1.28,
+      "end": 1.36
+    },
+    {
+      "text": "study",
+      "start": 1.36,
+      "end": 1.84
+    },
+    {
+      "text": "Absolutely",
+      "start": 2.41,
+      "end": 3.13
+    },
+    {
+      "text": "AI",
+      "start": 3.29,
+      "end": 3.69
+    },
+    {
+      "text": "like",
+      "start": 3.69,
+      "end": 3.93
+    },
+    {
+      "text": "ChatGPT",
+      "start": 3.93,
+      "end": 5.05
+    },
+    {
+      "text": "and",
+      "start": 5.05,
+      "end": 5.29
+    },
+    {
+      "text": "Doubao",
+      "start": 5.29,
+      "end": 5.77
+    },
+    {
+      "text": "here",
+      "start": 5.77,
+      "end": 5.93
+    },
+    {
+      "text": "in",
+      "start": 5.93,
+      "end": 6.09
+    },
+    {
+      "text": "China",
+      "start": 6.09,
+      "end": 6.57
+    },
+    {
+      "text": "AI",
+      "start": 6.65,
+      "end": 6.89
+    },
+    {
+      "text": "is",
+      "start": 7.13,
+      "end": 7.29
+    },
+    {
+      "text": "really",
+      "start": 7.29,
+      "end": 7.61
+    },
+    {
+      "text": "really",
+      "start": 7.61,
+      "end": 7.93
+    },
+    {
+      "text": "useful",
+      "start": 7.93,
+      "end": 8.49
+    },
+    {
+      "text": "and",
+      "start": 8.49,
+      "end": 8.65
+    },
+    {
+      "text": "widely",
+      "start": 8.65,
+      "end": 8.97
+    },
+    {
+      "text": "used",
+      "start": 8.97,
+      "end": 9.69
+    },
+    {
+      "text": "I",
+      "start": 9.69,
+      "end": 9.77
+    },
+    {
+      "text": "think",
+      "start": 9.77,
+      "end": 10.01
+    },
+    {
+      "text": "everyone",
+      "start": 10.01,
+      "end": 10.49
+    },
+    {
+      "text": "in",
+      "start": 10.49,
+      "end": 10.65
+    },
+    {
+      "text": "this",
+      "start": 10.65,
+      "end": 10.81
+    },
+    {
+      "text": "generation",
+      "start": 10.81,
+      "end": 11.53
+    },
+    {
+      "text": "must",
+      "start": 11.53,
+      "end": 11.85
+    },
+    {
+      "text": "use",
+      "start": 11.85,
+      "end": 12.09
+    },
+    {
+      "text": "AI",
+      "start": 12.09,
+      "end": 12.65
+    },
+    {
+      "text": "not",
+      "start": 12.73,
+      "end": 12.97
+    },
+    {
+      "text": "should",
+      "start": 12.97,
+      "end": 13.53
+    },
+    {
+      "text": "must",
+      "start": 13.61,
+      "end": 14.25
+    },
+    {
+      "text": "I",
+      "start": 14.25,
+      "end": 14.41
+    },
+    {
+      "text": "use",
+      "start": 14.41,
+      "end": 14.65
+    },
+    {
+      "text": "it",
+      "start": 14.65,
+      "end": 14.73
+    },
+    {
+      "text": "to",
+      "start": 14.73,
+      "end": 14.81
+    },
+    {
+      "text": "solve",
+      "start": 14.81,
+      "end": 15.21
+    },
+    {
+      "text": "problems",
+      "start": 15.21,
+      "end": 15.69
+    },
+    {
+      "text": "I",
+      "start": 15.69,
+      "end": 15.77
+    },
+    {
+      "text": "meet",
+      "start": 15.77,
+      "end": 16.01
+    },
+    {
+      "text": "in",
+      "start": 16.01,
+      "end": 16.01
+    },
+    {
+      "text": "my",
+      "start": 16.01,
+      "end": 16.17
+    },
+    {
+      "text": "studies",
+      "start": 16.17,
+      "end": 16.81
+    },
+    {
+      "text": "to",
+      "start": 16.89,
+      "end": 16.97
+    },
+    {
+      "text": "communicate",
+      "start": 16.97,
+      "end": 17.53
+    },
+    {
+      "text": "in",
+      "start": 17.53,
+      "end": 17.61
+    },
+    {
+      "text": "English",
+      "start": 17.61,
+      "end": 18.25
+    },
+    {
+      "text": "and",
+      "start": 18.25,
+      "end": 18.33
+    },
+    {
+      "text": "to",
+      "start": 18.41,
+      "end": 18.49
+    },
+    {
+      "text": "improve",
+      "start": 18.49,
+      "end": 18.89
+    },
+    {
+      "text": "my",
+      "start": 18.89,
+      "end": 19.05
+    },
+    {
+      "text": "English",
+      "start": 19.05,
+      "end": 19.45
+    },
+    {
+      "text": "as",
+      "start": 19.45,
+      "end": 19.53
+    },
+    {
+      "text": "well",
+      "start": 19.53,
+      "end": 20.01
+    }
+  ]
+}

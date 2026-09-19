@@ -1,0 +1,319 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "7f71d4bda765fb13",
+  "audio_signature": "414450:1789787560",
+  "created_at": "2026-09-19T11:12:40",
+  "segments": [
+    {
+      "text": "How much time do you spend on your studies each week?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.26
+    },
+    {
+      "text": "It really depends, because I'm not a very regular person — my study time depends on my mood. Sometimes I spend about four hours a day, which is 28 hours a week. But sometimes I study more, and sometimes less. So on average, maybe around 30 hours a week.",
+      "speaker": "b",
+      "start": 2.6,
+      "end": 17.21
+    }
+  ],
+  "words": [
+    {
+      "text": "How",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "much",
+      "start": 0.08,
+      "end": 0.32
+    },
+    {
+      "text": "time",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "do",
+      "start": 0.48,
+      "end": 0.56
+    },
+    {
+      "text": "you",
+      "start": 0.56,
+      "end": 0.64
+    },
+    {
+      "text": "spend",
+      "start": 0.64,
+      "end": 0.88
+    },
+    {
+      "text": "on",
+      "start": 0.88,
+      "end": 0.96
+    },
+    {
+      "text": "your",
+      "start": 0.96,
+      "end": 1.04
+    },
+    {
+      "text": "studies",
+      "start": 1.04,
+      "end": 1.6
+    },
+    {
+      "text": "each",
+      "start": 1.6,
+      "end": 1.84
+    },
+    {
+      "text": "week",
+      "start": 1.84,
+      "end": 2.24
+    },
+    {
+      "text": "It",
+      "start": 2.575,
+      "end": 2.735
+    },
+    {
+      "text": "really",
+      "start": 2.735,
+      "end": 2.975
+    },
+    {
+      "text": "depends",
+      "start": 2.975,
+      "end": 3.695
+    },
+    {
+      "text": "because",
+      "start": 3.695,
+      "end": 4.015
+    },
+    {
+      "text": "I'm",
+      "start": 4.015,
+      "end": 4.095
+    },
+    {
+      "text": "not",
+      "start": 4.095,
+      "end": 4.255
+    },
+    {
+      "text": "a",
+      "start": 4.255,
+      "end": 4.335
+    },
+    {
+      "text": "very",
+      "start": 4.335,
+      "end": 4.655
+    },
+    {
+      "text": "regular",
+      "start": 4.655,
+      "end": 5.055
+    },
+    {
+      "text": "person",
+      "start": 5.055,
+      "end": 5.615
+    },
+    {
+      "text": "my",
+      "start": 5.695,
+      "end": 5.855
+    },
+    {
+      "text": "study",
+      "start": 5.855,
+      "end": 6.175
+    },
+    {
+      "text": "time",
+      "start": 6.175,
+      "end": 6.495
+    },
+    {
+      "text": "depends",
+      "start": 6.495,
+      "end": 6.815
+    },
+    {
+      "text": "on",
+      "start": 6.815,
+      "end": 6.895
+    },
+    {
+      "text": "my",
+      "start": 6.895,
+      "end": 7.055
+    },
+    {
+      "text": "mood",
+      "start": 7.055,
+      "end": 7.615
+    },
+    {
+      "text": "Sometimes",
+      "start": 7.695,
+      "end": 8.175
+    },
+    {
+      "text": "I",
+      "start": 8.175,
+      "end": 8.255
+    },
+    {
+      "text": "spend",
+      "start": 8.255,
+      "end": 8.575
+    },
+    {
+      "text": "about",
+      "start": 8.575,
+      "end": 8.815
+    },
+    {
+      "text": "four",
+      "start": 8.815,
+      "end": 9.055
+    },
+    {
+      "text": "hours",
+      "start": 9.055,
+      "end": 9.375
+    },
+    {
+      "text": "a",
+      "start": 9.375,
+      "end": 9.455
+    },
+    {
+      "text": "day",
+      "start": 9.455,
+      "end": 9.855
+    },
+    {
+      "text": "which",
+      "start": 9.855,
+      "end": 10.015
+    },
+    {
+      "text": "is",
+      "start": 10.015,
+      "end": 10.175
+    },
+    {
+      "text": "28",
+      "start": 10.175,
+      "end": 10.735
+    },
+    {
+      "text": "hours",
+      "start": 10.735,
+      "end": 11.055
+    },
+    {
+      "text": "a",
+      "start": 11.055,
+      "end": 11.055
+    },
+    {
+      "text": "week",
+      "start": 11.055,
+      "end": 11.535
+    },
+    {
+      "text": "But",
+      "start": 11.615,
+      "end": 11.775
+    },
+    {
+      "text": "sometimes",
+      "start": 11.775,
+      "end": 12.255
+    },
+    {
+      "text": "I",
+      "start": 12.255,
+      "end": 12.335
+    },
+    {
+      "text": "study",
+      "start": 12.335,
+      "end": 12.655
+    },
+    {
+      "text": "more",
+      "start": 12.655,
+      "end": 13.135
+    },
+    {
+      "text": "and",
+      "start": 13.135,
+      "end": 13.295
+    },
+    {
+      "text": "sometimes",
+      "start": 13.295,
+      "end": 13.855
+    },
+    {
+      "text": "less",
+      "start": 13.855,
+      "end": 14.415
+    },
+    {
+      "text": "So",
+      "start": 14.415,
+      "end": 14.655
+    },
+    {
+      "text": "on",
+      "start": 14.655,
+      "end": 14.815
+    },
+    {
+      "text": "average",
+      "start": 14.815,
+      "end": 15.295
+    },
+    {
+      "text": "maybe",
+      "start": 15.295,
+      "end": 15.615
+    },
+    {
+      "text": "around",
+      "start": 15.615,
+      "end": 15.935
+    },
+    {
+      "text": "30",
+      "start": 15.935,
+      "end": 16.335
+    },
+    {
+      "text": "hours",
+      "start": 16.335,
+      "end": 16.655
+    },
+    {
+      "text": "a",
+      "start": 16.655,
+      "end": 16.655
+    },
+    {
+      "text": "week",
+      "start": 16.655,
+      "end": 17.055
+    }
+  ]
+}

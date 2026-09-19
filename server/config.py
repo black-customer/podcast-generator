@@ -40,6 +40,7 @@ DEFAULT_SETTINGS = {
     "episode_gap_ms": 600,  # 剧集中条目之间的停顿
     "dry_run": False,       # 手动强制 dry-run；fish_api_key 为空时也会自动 dry-run
     "temperature": None,    # 表现力 0-1（None = 服务默认）；调高更生动多变，调低更稳定
+    "answer_voice_male": True,  # Bruce 规则：对话中回答必须是男声（提问自动用女声）
 }
 
 # Fish Audio 开放模型头

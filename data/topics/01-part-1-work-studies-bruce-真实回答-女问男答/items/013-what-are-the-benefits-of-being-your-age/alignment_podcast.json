@@ -1,0 +1,434 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "0ad2490bb37c5c3c",
+  "audio_signature": "574320:1789787628",
+  "created_at": "2026-09-19T11:13:48",
+  "segments": [
+    {
+      "text": "What are the benefits of being your age?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.35
+    },
+    {
+      "text": "I'm twenty-one right now, so I think that's quite young. Being this age, we're able to do so many things legally, and we still have enough time. Compared with older people, we have more time to achieve what we want; compared with younger people, we have more experience and a broader horizon. So I think it's a good age — we can use our time to try things and explore different opportunities in life.",
+      "speaker": "b",
+      "start": 2.73,
+      "end": 23.88
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "are",
+      "start": 0.24,
+      "end": 0.32
+    },
+    {
+      "text": "the",
+      "start": 0.32,
+      "end": 0.4
+    },
+    {
+      "text": "benefits",
+      "start": 0.4,
+      "end": 0.96
+    },
+    {
+      "text": "of",
+      "start": 0.96,
+      "end": 1.12
+    },
+    {
+      "text": "being",
+      "start": 1.12,
+      "end": 1.44
+    },
+    {
+      "text": "your",
+      "start": 1.44,
+      "end": 1.68
+    },
+    {
+      "text": "age",
+      "start": 1.68,
+      "end": 2.32
+    },
+    {
+      "text": "I'm",
+      "start": 2.701,
+      "end": 2.941
+    },
+    {
+      "text": "twenty",
+      "start": 2.941,
+      "end": 3.261
+    },
+    {
+      "text": "one",
+      "start": 3.261,
+      "end": 3.581
+    },
+    {
+      "text": "right",
+      "start": 3.581,
+      "end": 3.741
+    },
+    {
+      "text": "now",
+      "start": 3.741,
+      "end": 4.221
+    },
+    {
+      "text": "so",
+      "start": 4.221,
+      "end": 4.301
+    },
+    {
+      "text": "I",
+      "start": 4.301,
+      "end": 4.461
+    },
+    {
+      "text": "think",
+      "start": 4.461,
+      "end": 4.701
+    },
+    {
+      "text": "that's",
+      "start": 4.701,
+      "end": 4.861
+    },
+    {
+      "text": "quite",
+      "start": 4.861,
+      "end": 5.261
+    },
+    {
+      "text": "young",
+      "start": 5.261,
+      "end": 5.741
+    },
+    {
+      "text": "Being",
+      "start": 5.821,
+      "end": 6.141
+    },
+    {
+      "text": "this",
+      "start": 6.141,
+      "end": 6.381
+    },
+    {
+      "text": "age",
+      "start": 6.381,
+      "end": 6.781
+    },
+    {
+      "text": "we're",
+      "start": 6.781,
+      "end": 7.021
+    },
+    {
+      "text": "able",
+      "start": 7.021,
+      "end": 7.181
+    },
+    {
+      "text": "to",
+      "start": 7.181,
+      "end": 7.261
+    },
+    {
+      "text": "do",
+      "start": 7.261,
+      "end": 7.501
+    },
+    {
+      "text": "so",
+      "start": 7.501,
+      "end": 7.741
+    },
+    {
+      "text": "many",
+      "start": 7.741,
+      "end": 7.981
+    },
+    {
+      "text": "things",
+      "start": 7.981,
+      "end": 8.301
+    },
+    {
+      "text": "legally",
+      "start": 8.301,
+      "end": 8.941
+    },
+    {
+      "text": "and",
+      "start": 8.941,
+      "end": 9.101
+    },
+    {
+      "text": "we",
+      "start": 9.101,
+      "end": 9.181
+    },
+    {
+      "text": "still",
+      "start": 9.181,
+      "end": 9.501
+    },
+    {
+      "text": "have",
+      "start": 9.501,
+      "end": 9.661
+    },
+    {
+      "text": "enough",
+      "start": 9.661,
+      "end": 9.981
+    },
+    {
+      "text": "time",
+      "start": 9.981,
+      "end": 10.541
+    },
+    {
+      "text": "Compared",
+      "start": 10.541,
+      "end": 10.941
+    },
+    {
+      "text": "with",
+      "start": 10.941,
+      "end": 11.101
+    },
+    {
+      "text": "older",
+      "start": 11.101,
+      "end": 11.421
+    },
+    {
+      "text": "people",
+      "start": 11.421,
+      "end": 11.901
+    },
+    {
+      "text": "we",
+      "start": 11.901,
+      "end": 12.061
+    },
+    {
+      "text": "have",
+      "start": 12.061,
+      "end": 12.221
+    },
+    {
+      "text": "more",
+      "start": 12.221,
+      "end": 12.461
+    },
+    {
+      "text": "time",
+      "start": 12.461,
+      "end": 12.701
+    },
+    {
+      "text": "to",
+      "start": 12.781,
+      "end": 12.861
+    },
+    {
+      "text": "achieve",
+      "start": 12.861,
+      "end": 13.261
+    },
+    {
+      "text": "what",
+      "start": 13.261,
+      "end": 13.421
+    },
+    {
+      "text": "we",
+      "start": 13.421,
+      "end": 13.581
+    },
+    {
+      "text": "want",
+      "start": 13.581,
+      "end": 14.061
+    },
+    {
+      "text": "compared",
+      "start": 14.141,
+      "end": 14.461
+    },
+    {
+      "text": "with",
+      "start": 14.461,
+      "end": 14.621
+    },
+    {
+      "text": "younger",
+      "start": 14.621,
+      "end": 14.941
+    },
+    {
+      "text": "people",
+      "start": 14.941,
+      "end": 15.421
+    },
+    {
+      "text": "we",
+      "start": 15.421,
+      "end": 15.581
+    },
+    {
+      "text": "have",
+      "start": 15.581,
+      "end": 15.741
+    },
+    {
+      "text": "more",
+      "start": 15.741,
+      "end": 15.981
+    },
+    {
+      "text": "experience",
+      "start": 15.981,
+      "end": 16.541
+    },
+    {
+      "text": "and",
+      "start": 16.541,
+      "end": 16.701
+    },
+    {
+      "text": "a",
+      "start": 16.701,
+      "end": 16.701
+    },
+    {
+      "text": "broader",
+      "start": 16.701,
+      "end": 17.181
+    },
+    {
+      "text": "horizon",
+      "start": 17.181,
+      "end": 17.901
+    },
+    {
+      "text": "So",
+      "start": 18.411,
+      "end": 18.491
+    },
+    {
+      "text": "I",
+      "start": 18.491,
+      "end": 18.571
+    },
+    {
+      "text": "think",
+      "start": 18.571,
+      "end": 18.811
+    },
+    {
+      "text": "it's",
+      "start": 18.811,
+      "end": 18.971
+    },
+    {
+      "text": "a",
+      "start": 18.971,
+      "end": 18.971
+    },
+    {
+      "text": "good",
+      "start": 18.971,
+      "end": 19.291
+    },
+    {
+      "text": "age",
+      "start": 19.291,
+      "end": 19.851
+    },
+    {
+      "text": "we",
+      "start": 19.851,
+      "end": 20.011
+    },
+    {
+      "text": "can",
+      "start": 20.011,
+      "end": 20.171
+    },
+    {
+      "text": "use",
+      "start": 20.171,
+      "end": 20.411
+    },
+    {
+      "text": "our",
+      "start": 20.411,
+      "end": 20.491
+    },
+    {
+      "text": "time",
+      "start": 20.491,
+      "end": 20.811
+    },
+    {
+      "text": "to",
+      "start": 20.891,
+      "end": 20.891
+    },
+    {
+      "text": "try",
+      "start": 20.891,
+      "end": 21.211
+    },
+    {
+      "text": "things",
+      "start": 21.211,
+      "end": 21.611
+    },
+    {
+      "text": "and",
+      "start": 21.611,
+      "end": 21.691
+    },
+    {
+      "text": "explore",
+      "start": 21.691,
+      "end": 22.091
+    },
+    {
+      "text": "different",
+      "start": 22.091,
+      "end": 22.491
+    },
+    {
+      "text": "opportunities",
+      "start": 22.491,
+      "end": 23.131
+    },
+    {
+      "text": "in",
+      "start": 23.131,
+      "end": 23.291
+    },
+    {
+      "text": "life",
+      "start": 23.291,
+      "end": 23.611
+    }
+  ]
+}

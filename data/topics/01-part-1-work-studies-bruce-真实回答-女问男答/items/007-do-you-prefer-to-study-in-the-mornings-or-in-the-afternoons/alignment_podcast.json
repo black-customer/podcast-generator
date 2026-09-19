@@ -1,0 +1,504 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "6124380b7a5cd403",
+  "audio_signature": "657075:1789787550",
+  "created_at": "2026-09-19T11:12:30",
+  "segments": [
+    {
+      "text": "Do you prefer to study in the mornings or in the afternoons?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.82
+    },
+    {
+      "text": "Basically, I like studying in the mornings — but here's the funny part: I don't get up in the mornings. I often wake up too late, like 9 a.m. or even 11 a.m., so I usually sleep through the morning and study in the afternoon. But in theory, I prefer mornings, because they're much quieter than afternoons. A quiet space and waking up early to study gives me this sense that I'm a better person, that I have better execution ability, you know.",
+      "speaker": "b",
+      "start": 3.31,
+      "end": 27.32
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.16
+    },
+    {
+      "text": "prefer",
+      "start": 0.16,
+      "end": 0.56
+    },
+    {
+      "text": "to",
+      "start": 0.56,
+      "end": 0.64
+    },
+    {
+      "text": "study",
+      "start": 0.64,
+      "end": 0.96
+    },
+    {
+      "text": "in",
+      "start": 0.96,
+      "end": 1.04
+    },
+    {
+      "text": "the",
+      "start": 1.04,
+      "end": 1.12
+    },
+    {
+      "text": "mornings",
+      "start": 1.12,
+      "end": 1.6
+    },
+    {
+      "text": "or",
+      "start": 1.6,
+      "end": 1.76
+    },
+    {
+      "text": "in",
+      "start": 1.76,
+      "end": 1.92
+    },
+    {
+      "text": "the",
+      "start": 1.92,
+      "end": 2.0
+    },
+    {
+      "text": "afternoons",
+      "start": 2.0,
+      "end": 2.8
+    },
+    {
+      "text": "Basically",
+      "start": 3.292,
+      "end": 3.852
+    },
+    {
+      "text": "I",
+      "start": 3.852,
+      "end": 3.932
+    },
+    {
+      "text": "like",
+      "start": 3.932,
+      "end": 4.172
+    },
+    {
+      "text": "studying",
+      "start": 4.172,
+      "end": 4.572
+    },
+    {
+      "text": "in",
+      "start": 4.572,
+      "end": 4.732
+    },
+    {
+      "text": "the",
+      "start": 4.732,
+      "end": 4.732
+    },
+    {
+      "text": "mornings",
+      "start": 4.732,
+      "end": 5.372
+    },
+    {
+      "text": "but",
+      "start": 5.372,
+      "end": 5.532
+    },
+    {
+      "text": "here's",
+      "start": 5.532,
+      "end": 5.772
+    },
+    {
+      "text": "the",
+      "start": 5.772,
+      "end": 5.852
+    },
+    {
+      "text": "funny",
+      "start": 5.852,
+      "end": 6.172
+    },
+    {
+      "text": "part",
+      "start": 6.172,
+      "end": 6.492
+    },
+    {
+      "text": "I",
+      "start": 6.652,
+      "end": 6.732
+    },
+    {
+      "text": "don't",
+      "start": 6.732,
+      "end": 7.052
+    },
+    {
+      "text": "get",
+      "start": 7.052,
+      "end": 7.212
+    },
+    {
+      "text": "up",
+      "start": 7.212,
+      "end": 7.372
+    },
+    {
+      "text": "in",
+      "start": 7.372,
+      "end": 7.452
+    },
+    {
+      "text": "the",
+      "start": 7.452,
+      "end": 7.532
+    },
+    {
+      "text": "mornings",
+      "start": 7.532,
+      "end": 8.172
+    },
+    {
+      "text": "I",
+      "start": 8.252,
+      "end": 8.412
+    },
+    {
+      "text": "often",
+      "start": 8.412,
+      "end": 8.732
+    },
+    {
+      "text": "wake",
+      "start": 8.732,
+      "end": 8.892
+    },
+    {
+      "text": "up",
+      "start": 8.892,
+      "end": 9.132
+    },
+    {
+      "text": "too",
+      "start": 9.132,
+      "end": 9.292
+    },
+    {
+      "text": "late",
+      "start": 9.292,
+      "end": 9.692
+    },
+    {
+      "text": "like",
+      "start": 9.692,
+      "end": 9.852
+    },
+    {
+      "text": "9",
+      "start": 9.852,
+      "end": 10.012
+    },
+    {
+      "text": "a",
+      "start": 10.012,
+      "end": 10.252
+    },
+    {
+      "text": "m",
+      "start": 10.252,
+      "end": 10.812
+    },
+    {
+      "text": "or",
+      "start": 10.812,
+      "end": 10.972
+    },
+    {
+      "text": "even",
+      "start": 10.972,
+      "end": 11.212
+    },
+    {
+      "text": "11",
+      "start": 11.212,
+      "end": 11.692
+    },
+    {
+      "text": "a",
+      "start": 11.932,
+      "end": 11.932
+    },
+    {
+      "text": "m",
+      "start": 11.932,
+      "end": 12.092
+    },
+    {
+      "text": "so",
+      "start": 12.172,
+      "end": 12.332
+    },
+    {
+      "text": "I",
+      "start": 12.332,
+      "end": 12.412
+    },
+    {
+      "text": "usually",
+      "start": 12.412,
+      "end": 12.892
+    },
+    {
+      "text": "sleep",
+      "start": 12.892,
+      "end": 13.212
+    },
+    {
+      "text": "through",
+      "start": 13.212,
+      "end": 13.372
+    },
+    {
+      "text": "the",
+      "start": 13.372,
+      "end": 13.452
+    },
+    {
+      "text": "morning",
+      "start": 13.452,
+      "end": 13.932
+    },
+    {
+      "text": "and",
+      "start": 13.932,
+      "end": 14.012
+    },
+    {
+      "text": "study",
+      "start": 14.012,
+      "end": 14.412
+    },
+    {
+      "text": "in",
+      "start": 14.412,
+      "end": 14.492
+    },
+    {
+      "text": "the",
+      "start": 14.492,
+      "end": 14.652
+    },
+    {
+      "text": "afternoon",
+      "start": 14.652,
+      "end": 15.372
+    },
+    {
+      "text": "But",
+      "start": 15.788,
+      "end": 15.948
+    },
+    {
+      "text": "in",
+      "start": 15.948,
+      "end": 16.108
+    },
+    {
+      "text": "theory",
+      "start": 16.108,
+      "end": 16.588
+    },
+    {
+      "text": "I",
+      "start": 16.588,
+      "end": 16.748
+    },
+    {
+      "text": "prefer",
+      "start": 16.748,
+      "end": 17.068
+    },
+    {
+      "text": "mornings",
+      "start": 17.068,
+      "end": 17.628
+    },
+    {
+      "text": "because",
+      "start": 17.708,
+      "end": 18.028
+    },
+    {
+      "text": "they're",
+      "start": 18.028,
+      "end": 18.108
+    },
+    {
+      "text": "much",
+      "start": 18.108,
+      "end": 18.348
+    },
+    {
+      "text": "quieter",
+      "start": 18.348,
+      "end": 18.908
+    },
+    {
+      "text": "than",
+      "start": 18.908,
+      "end": 19.068
+    },
+    {
+      "text": "afternoons",
+      "start": 19.068,
+      "end": 19.948
+    },
+    {
+      "text": "A",
+      "start": 19.948,
+      "end": 20.028
+    },
+    {
+      "text": "quiet",
+      "start": 20.028,
+      "end": 20.508
+    },
+    {
+      "text": "space",
+      "start": 20.508,
+      "end": 20.908
+    },
+    {
+      "text": "and",
+      "start": 20.908,
+      "end": 21.068
+    },
+    {
+      "text": "waking",
+      "start": 21.068,
+      "end": 21.388
+    },
+    {
+      "text": "up",
+      "start": 21.388,
+      "end": 21.548
+    },
+    {
+      "text": "early",
+      "start": 21.548,
+      "end": 21.868
+    },
+    {
+      "text": "to",
+      "start": 21.868,
+      "end": 21.948
+    },
+    {
+      "text": "study",
+      "start": 21.948,
+      "end": 22.428
+    },
+    {
+      "text": "gives",
+      "start": 22.428,
+      "end": 22.748
+    },
+    {
+      "text": "me",
+      "start": 22.748,
+      "end": 22.828
+    },
+    {
+      "text": "this",
+      "start": 22.828,
+      "end": 22.988
+    },
+    {
+      "text": "sense",
+      "start": 22.988,
+      "end": 23.388
+    },
+    {
+      "text": "that",
+      "start": 23.388,
+      "end": 23.468
+    },
+    {
+      "text": "I'm",
+      "start": 23.468,
+      "end": 23.628
+    },
+    {
+      "text": "a",
+      "start": 23.628,
+      "end": 23.628
+    },
+    {
+      "text": "better",
+      "start": 23.628,
+      "end": 23.948
+    },
+    {
+      "text": "person",
+      "start": 23.948,
+      "end": 24.588
+    },
+    {
+      "text": "that",
+      "start": 24.668,
+      "end": 24.748
+    },
+    {
+      "text": "I",
+      "start": 24.748,
+      "end": 24.908
+    },
+    {
+      "text": "have",
+      "start": 24.908,
+      "end": 25.068
+    },
+    {
+      "text": "better",
+      "start": 25.068,
+      "end": 25.388
+    },
+    {
+      "text": "execution",
+      "start": 25.388,
+      "end": 26.028
+    },
+    {
+      "text": "ability",
+      "start": 26.028,
+      "end": 26.588
+    },
+    {
+      "text": "you",
+      "start": 26.588,
+      "end": 26.748
+    },
+    {
+      "text": "know",
+      "start": 26.748,
+      "end": 27.148
+    }
+  ]
+}

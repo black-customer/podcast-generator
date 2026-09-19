@@ -1,0 +1,289 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "f79be67feb35cc71",
+  "audio_signature": "450186:1789787476",
+  "created_at": "2026-09-19T11:11:17",
+  "segments": [
+    {
+      "text": "What do you study?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.21
+    },
+    {
+      "text": "My major is computer science, so I study a lot of subjects related to computers — like AI-assisted coding, which people call vibe coding now. It's a new term. And software development as well. Also, I'm preparing for the IELTS, so I'm studying English — speaking, reading, listening, and writing.",
+      "speaker": "b",
+      "start": 1.55,
+      "end": 18.7
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.32
+    },
+    {
+      "text": "do",
+      "start": 0.32,
+      "end": 0.4
+    },
+    {
+      "text": "you",
+      "start": 0.4,
+      "end": 0.48
+    },
+    {
+      "text": "study",
+      "start": 0.48,
+      "end": 1.2
+    },
+    {
+      "text": "My",
+      "start": 1.54,
+      "end": 1.86
+    },
+    {
+      "text": "major",
+      "start": 1.86,
+      "end": 2.26
+    },
+    {
+      "text": "is",
+      "start": 2.26,
+      "end": 2.34
+    },
+    {
+      "text": "computer",
+      "start": 2.34,
+      "end": 2.82
+    },
+    {
+      "text": "science",
+      "start": 2.82,
+      "end": 3.38
+    },
+    {
+      "text": "so",
+      "start": 3.46,
+      "end": 3.62
+    },
+    {
+      "text": "I",
+      "start": 3.62,
+      "end": 3.78
+    },
+    {
+      "text": "study",
+      "start": 3.78,
+      "end": 4.18
+    },
+    {
+      "text": "a",
+      "start": 4.18,
+      "end": 4.18
+    },
+    {
+      "text": "lot",
+      "start": 4.18,
+      "end": 4.42
+    },
+    {
+      "text": "of",
+      "start": 4.42,
+      "end": 4.5
+    },
+    {
+      "text": "subjects",
+      "start": 4.5,
+      "end": 5.06
+    },
+    {
+      "text": "related",
+      "start": 5.06,
+      "end": 5.46
+    },
+    {
+      "text": "to",
+      "start": 5.46,
+      "end": 5.54
+    },
+    {
+      "text": "computers",
+      "start": 5.54,
+      "end": 6.26
+    },
+    {
+      "text": "like",
+      "start": 6.34,
+      "end": 6.5
+    },
+    {
+      "text": "AI",
+      "start": 6.58,
+      "end": 6.74
+    },
+    {
+      "text": "assisted",
+      "start": 6.9,
+      "end": 7.38
+    },
+    {
+      "text": "coding",
+      "start": 7.38,
+      "end": 7.86
+    },
+    {
+      "text": "which",
+      "start": 7.94,
+      "end": 8.1
+    },
+    {
+      "text": "people",
+      "start": 8.1,
+      "end": 8.42
+    },
+    {
+      "text": "call",
+      "start": 8.42,
+      "end": 8.66
+    },
+    {
+      "text": "vibe",
+      "start": 8.66,
+      "end": 8.98
+    },
+    {
+      "text": "coding",
+      "start": 8.98,
+      "end": 9.38
+    },
+    {
+      "text": "now",
+      "start": 9.38,
+      "end": 9.78
+    },
+    {
+      "text": "It's",
+      "start": 9.78,
+      "end": 9.94
+    },
+    {
+      "text": "a",
+      "start": 10.02,
+      "end": 10.02
+    },
+    {
+      "text": "new",
+      "start": 10.02,
+      "end": 10.26
+    },
+    {
+      "text": "term",
+      "start": 10.26,
+      "end": 10.74
+    },
+    {
+      "text": "And",
+      "start": 10.9,
+      "end": 10.98
+    },
+    {
+      "text": "software",
+      "start": 10.98,
+      "end": 11.46
+    },
+    {
+      "text": "development",
+      "start": 11.46,
+      "end": 12.02
+    },
+    {
+      "text": "as",
+      "start": 12.02,
+      "end": 12.18
+    },
+    {
+      "text": "well",
+      "start": 12.18,
+      "end": 12.66
+    },
+    {
+      "text": "Also",
+      "start": 12.74,
+      "end": 13.3
+    },
+    {
+      "text": "I'm",
+      "start": 13.3,
+      "end": 13.46
+    },
+    {
+      "text": "preparing",
+      "start": 13.46,
+      "end": 13.86
+    },
+    {
+      "text": "for",
+      "start": 13.86,
+      "end": 13.94
+    },
+    {
+      "text": "the",
+      "start": 13.94,
+      "end": 14.1
+    },
+    {
+      "text": "IELTS",
+      "start": 14.1,
+      "end": 14.74
+    },
+    {
+      "text": "so",
+      "start": 14.74,
+      "end": 14.9
+    },
+    {
+      "text": "I'm",
+      "start": 14.98,
+      "end": 15.06
+    },
+    {
+      "text": "studying",
+      "start": 15.06,
+      "end": 15.54
+    },
+    {
+      "text": "English",
+      "start": 15.54,
+      "end": 16.1
+    },
+    {
+      "text": "speaking",
+      "start": 16.18,
+      "end": 16.82
+    },
+    {
+      "text": "reading",
+      "start": 16.82,
+      "end": 17.38
+    },
+    {
+      "text": "listening",
+      "start": 17.38,
+      "end": 17.86
+    },
+    {
+      "text": "and",
+      "start": 17.86,
+      "end": 17.94
+    },
+    {
+      "text": "writing",
+      "start": 17.94,
+      "end": 18.58
+    }
+  ]
+}

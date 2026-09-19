@@ -1,0 +1,494 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "1229335a6678e39e",
+  "audio_signature": "626982:1789787601",
+  "created_at": "2026-09-19T11:13:22",
+  "segments": [
+    {
+      "text": "What changes would you like to see in your school?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.93
+    },
+    {
+      "text": "I have a lot to say about this, but mainly — the takeout situation. I usually order takeout at school, but my school doesn't offer a proper place to put it. Everything just gets left at the gate, and some people go there and pick up takeout that isn't even theirs — they basically steal other people's food. So I really wish my school would build a takeout cupboard, or at least a better place to store it, so our takeout doesn't get stolen so easily.",
+      "speaker": "b",
+      "start": 2.47,
+      "end": 26.07
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "changes",
+      "start": 0.16,
+      "end": 0.48
+    },
+    {
+      "text": "would",
+      "start": 0.48,
+      "end": 0.64
+    },
+    {
+      "text": "you",
+      "start": 0.64,
+      "end": 0.72
+    },
+    {
+      "text": "like",
+      "start": 0.72,
+      "end": 0.88
+    },
+    {
+      "text": "to",
+      "start": 0.88,
+      "end": 0.96
+    },
+    {
+      "text": "see",
+      "start": 0.96,
+      "end": 1.12
+    },
+    {
+      "text": "in",
+      "start": 1.12,
+      "end": 1.28
+    },
+    {
+      "text": "your",
+      "start": 1.28,
+      "end": 1.44
+    },
+    {
+      "text": "school",
+      "start": 1.44,
+      "end": 1.92
+    },
+    {
+      "text": "I",
+      "start": 2.456,
+      "end": 2.696
+    },
+    {
+      "text": "have",
+      "start": 2.696,
+      "end": 2.776
+    },
+    {
+      "text": "a",
+      "start": 2.776,
+      "end": 2.776
+    },
+    {
+      "text": "lot",
+      "start": 2.776,
+      "end": 3.096
+    },
+    {
+      "text": "to",
+      "start": 3.096,
+      "end": 3.176
+    },
+    {
+      "text": "say",
+      "start": 3.176,
+      "end": 3.416
+    },
+    {
+      "text": "about",
+      "start": 3.416,
+      "end": 3.736
+    },
+    {
+      "text": "this",
+      "start": 3.736,
+      "end": 4.056
+    },
+    {
+      "text": "but",
+      "start": 4.056,
+      "end": 4.216
+    },
+    {
+      "text": "mainly",
+      "start": 4.216,
+      "end": 4.856
+    },
+    {
+      "text": "the",
+      "start": 4.856,
+      "end": 5.016
+    },
+    {
+      "text": "takeout",
+      "start": 5.016,
+      "end": 5.496
+    },
+    {
+      "text": "situation",
+      "start": 5.496,
+      "end": 6.376
+    },
+    {
+      "text": "I",
+      "start": 6.456,
+      "end": 6.616
+    },
+    {
+      "text": "usually",
+      "start": 6.616,
+      "end": 7.016
+    },
+    {
+      "text": "order",
+      "start": 7.016,
+      "end": 7.256
+    },
+    {
+      "text": "takeout",
+      "start": 7.256,
+      "end": 7.736
+    },
+    {
+      "text": "at",
+      "start": 7.736,
+      "end": 7.816
+    },
+    {
+      "text": "school",
+      "start": 7.816,
+      "end": 8.296
+    },
+    {
+      "text": "but",
+      "start": 8.296,
+      "end": 8.456
+    },
+    {
+      "text": "my",
+      "start": 8.456,
+      "end": 8.696
+    },
+    {
+      "text": "school",
+      "start": 8.696,
+      "end": 8.936
+    },
+    {
+      "text": "doesn't",
+      "start": 8.936,
+      "end": 9.176
+    },
+    {
+      "text": "offer",
+      "start": 9.176,
+      "end": 9.576
+    },
+    {
+      "text": "a",
+      "start": 9.576,
+      "end": 9.656
+    },
+    {
+      "text": "proper",
+      "start": 9.656,
+      "end": 9.976
+    },
+    {
+      "text": "place",
+      "start": 9.976,
+      "end": 10.376
+    },
+    {
+      "text": "to",
+      "start": 10.376,
+      "end": 10.376
+    },
+    {
+      "text": "put",
+      "start": 10.376,
+      "end": 10.696
+    },
+    {
+      "text": "it",
+      "start": 10.696,
+      "end": 10.856
+    },
+    {
+      "text": "Everything",
+      "start": 11.185,
+      "end": 11.585
+    },
+    {
+      "text": "just",
+      "start": 11.585,
+      "end": 11.825
+    },
+    {
+      "text": "gets",
+      "start": 11.825,
+      "end": 12.065
+    },
+    {
+      "text": "left",
+      "start": 12.065,
+      "end": 12.305
+    },
+    {
+      "text": "at",
+      "start": 12.305,
+      "end": 12.385
+    },
+    {
+      "text": "the",
+      "start": 12.385,
+      "end": 12.465
+    },
+    {
+      "text": "gate",
+      "start": 12.465,
+      "end": 12.945
+    },
+    {
+      "text": "and",
+      "start": 13.025,
+      "end": 13.185
+    },
+    {
+      "text": "some",
+      "start": 13.185,
+      "end": 13.425
+    },
+    {
+      "text": "people",
+      "start": 13.425,
+      "end": 13.665
+    },
+    {
+      "text": "go",
+      "start": 13.665,
+      "end": 13.905
+    },
+    {
+      "text": "there",
+      "start": 13.905,
+      "end": 14.225
+    },
+    {
+      "text": "and",
+      "start": 14.225,
+      "end": 14.385
+    },
+    {
+      "text": "pick",
+      "start": 14.385,
+      "end": 14.545
+    },
+    {
+      "text": "up",
+      "start": 14.545,
+      "end": 14.705
+    },
+    {
+      "text": "takeout",
+      "start": 14.705,
+      "end": 15.185
+    },
+    {
+      "text": "that",
+      "start": 15.185,
+      "end": 15.345
+    },
+    {
+      "text": "isn't",
+      "start": 15.345,
+      "end": 15.585
+    },
+    {
+      "text": "even",
+      "start": 15.585,
+      "end": 15.825
+    },
+    {
+      "text": "theirs",
+      "start": 15.825,
+      "end": 16.465
+    },
+    {
+      "text": "they",
+      "start": 16.465,
+      "end": 16.625
+    },
+    {
+      "text": "basically",
+      "start": 16.625,
+      "end": 17.105
+    },
+    {
+      "text": "steal",
+      "start": 17.105,
+      "end": 17.585
+    },
+    {
+      "text": "other",
+      "start": 17.585,
+      "end": 17.745
+    },
+    {
+      "text": "people's",
+      "start": 17.745,
+      "end": 18.145
+    },
+    {
+      "text": "food",
+      "start": 18.145,
+      "end": 18.705
+    },
+    {
+      "text": "So",
+      "start": 18.785,
+      "end": 18.945
+    },
+    {
+      "text": "I",
+      "start": 18.945,
+      "end": 19.025
+    },
+    {
+      "text": "really",
+      "start": 19.025,
+      "end": 19.345
+    },
+    {
+      "text": "wish",
+      "start": 19.345,
+      "end": 19.585
+    },
+    {
+      "text": "my",
+      "start": 19.585,
+      "end": 19.745
+    },
+    {
+      "text": "school",
+      "start": 19.745,
+      "end": 20.145
+    },
+    {
+      "text": "would",
+      "start": 20.145,
+      "end": 20.225
+    },
+    {
+      "text": "build",
+      "start": 20.225,
+      "end": 20.465
+    },
+    {
+      "text": "a",
+      "start": 20.465,
+      "end": 20.545
+    },
+    {
+      "text": "takeout",
+      "start": 20.545,
+      "end": 21.025
+    },
+    {
+      "text": "cupboard",
+      "start": 21.025,
+      "end": 21.425
+    },
+    {
+      "text": "or",
+      "start": 21.505,
+      "end": 21.665
+    },
+    {
+      "text": "at",
+      "start": 21.665,
+      "end": 21.825
+    },
+    {
+      "text": "least",
+      "start": 21.825,
+      "end": 22.065
+    },
+    {
+      "text": "a",
+      "start": 22.065,
+      "end": 22.145
+    },
+    {
+      "text": "better",
+      "start": 22.145,
+      "end": 22.385
+    },
+    {
+      "text": "place",
+      "start": 22.385,
+      "end": 22.785
+    },
+    {
+      "text": "to",
+      "start": 22.785,
+      "end": 22.785
+    },
+    {
+      "text": "store",
+      "start": 22.785,
+      "end": 23.185
+    },
+    {
+      "text": "it",
+      "start": 23.185,
+      "end": 23.345
+    },
+    {
+      "text": "so",
+      "start": 23.425,
+      "end": 23.665
+    },
+    {
+      "text": "our",
+      "start": 23.665,
+      "end": 23.745
+    },
+    {
+      "text": "takeout",
+      "start": 23.745,
+      "end": 24.225
+    },
+    {
+      "text": "doesn't",
+      "start": 24.225,
+      "end": 24.545
+    },
+    {
+      "text": "get",
+      "start": 24.545,
+      "end": 24.625
+    },
+    {
+      "text": "stolen",
+      "start": 24.625,
+      "end": 25.105
+    },
+    {
+      "text": "so",
+      "start": 25.105,
+      "end": 25.345
+    },
+    {
+      "text": "easily",
+      "start": 25.345,
+      "end": 25.905
+    }
+  ]
+}

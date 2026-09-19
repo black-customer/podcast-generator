@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "What do you study?",
+    "start": 0.0,
+    "end": 1.21,
+    "duration": 1.21,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "My major is computer science, so I study a lot of subjects related to computers — like AI-assisted coding, which people call vibe coding now. It's a new term. And software development as well. Also, I'm preparing for the IELTS, so I'm studying English — speaking, reading, listening, and writing.",
+    "start": 1.55,
+    "end": 18.7,
+    "duration": 17.15,
+    "mode": "sse"
+  }
+]

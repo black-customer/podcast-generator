@@ -57,6 +57,7 @@ class SettingsIn(BaseModel):
     episode_gap_ms: float | None = None
     dry_run: bool | None = None
     temperature: float | None = None
+    answer_voice_male: bool | None = None
 
     @field_validator("speed")
     @classmethod

@@ -1,0 +1,349 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "77461590c12b47de",
+  "audio_signature": "505356:1789787513",
+  "created_at": "2026-09-19T11:11:54",
+  "segments": [
+    {
+      "text": "Is your subject popular in your country?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.69
+    },
+    {
+      "text": "Oh, it's very popular in China. Everybody knows about computer science, and a lot of people want to study it. Some people — like me — switched majors into it, and there are many others who made the same choice. Because everybody believes computer science means a high-paying job, and everybody loves money, actually. So yes, it's very popular.",
+      "speaker": "b",
+      "start": 2.16,
+      "end": 21.0
+    }
+  ],
+  "words": [
+    {
+      "text": "Is",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "your",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "subject",
+      "start": 0.24,
+      "end": 0.64
+    },
+    {
+      "text": "popular",
+      "start": 0.64,
+      "end": 1.04
+    },
+    {
+      "text": "in",
+      "start": 1.04,
+      "end": 1.12
+    },
+    {
+      "text": "your",
+      "start": 1.12,
+      "end": 1.2
+    },
+    {
+      "text": "country",
+      "start": 1.2,
+      "end": 1.68
+    },
+    {
+      "text": "Oh",
+      "start": 2.144,
+      "end": 2.544
+    },
+    {
+      "text": "it's",
+      "start": 2.544,
+      "end": 2.704
+    },
+    {
+      "text": "very",
+      "start": 2.704,
+      "end": 3.104
+    },
+    {
+      "text": "popular",
+      "start": 3.104,
+      "end": 3.584
+    },
+    {
+      "text": "in",
+      "start": 3.584,
+      "end": 3.664
+    },
+    {
+      "text": "China",
+      "start": 3.664,
+      "end": 4.224
+    },
+    {
+      "text": "Everybody",
+      "start": 4.304,
+      "end": 4.784
+    },
+    {
+      "text": "knows",
+      "start": 4.784,
+      "end": 5.024
+    },
+    {
+      "text": "about",
+      "start": 5.024,
+      "end": 5.264
+    },
+    {
+      "text": "computer",
+      "start": 5.264,
+      "end": 5.664
+    },
+    {
+      "text": "science",
+      "start": 5.664,
+      "end": 6.224
+    },
+    {
+      "text": "and",
+      "start": 6.224,
+      "end": 6.384
+    },
+    {
+      "text": "a",
+      "start": 6.384,
+      "end": 6.384
+    },
+    {
+      "text": "lot",
+      "start": 6.384,
+      "end": 6.624
+    },
+    {
+      "text": "of",
+      "start": 6.624,
+      "end": 6.704
+    },
+    {
+      "text": "people",
+      "start": 6.704,
+      "end": 7.024
+    },
+    {
+      "text": "want",
+      "start": 7.024,
+      "end": 7.264
+    },
+    {
+      "text": "to",
+      "start": 7.264,
+      "end": 7.264
+    },
+    {
+      "text": "study",
+      "start": 7.264,
+      "end": 7.744
+    },
+    {
+      "text": "it",
+      "start": 7.744,
+      "end": 7.904
+    },
+    {
+      "text": "Some",
+      "start": 8.064,
+      "end": 8.304
+    },
+    {
+      "text": "people",
+      "start": 8.304,
+      "end": 8.704
+    },
+    {
+      "text": "like",
+      "start": 8.784,
+      "end": 9.024
+    },
+    {
+      "text": "me",
+      "start": 9.024,
+      "end": 9.424
+    },
+    {
+      "text": "switched",
+      "start": 9.424,
+      "end": 9.824
+    },
+    {
+      "text": "majors",
+      "start": 9.824,
+      "end": 10.224
+    },
+    {
+      "text": "into",
+      "start": 10.224,
+      "end": 10.624
+    },
+    {
+      "text": "it",
+      "start": 10.624,
+      "end": 10.784
+    },
+    {
+      "text": "and",
+      "start": 10.864,
+      "end": 11.024
+    },
+    {
+      "text": "there",
+      "start": 11.024,
+      "end": 11.184
+    },
+    {
+      "text": "are",
+      "start": 11.184,
+      "end": 11.184
+    },
+    {
+      "text": "many",
+      "start": 11.184,
+      "end": 11.504
+    },
+    {
+      "text": "others",
+      "start": 11.504,
+      "end": 11.904
+    },
+    {
+      "text": "who",
+      "start": 11.904,
+      "end": 11.984
+    },
+    {
+      "text": "made",
+      "start": 11.984,
+      "end": 12.224
+    },
+    {
+      "text": "the",
+      "start": 12.224,
+      "end": 12.304
+    },
+    {
+      "text": "same",
+      "start": 12.304,
+      "end": 12.624
+    },
+    {
+      "text": "choice",
+      "start": 12.624,
+      "end": 13.264
+    },
+    {
+      "text": "Because",
+      "start": 13.57,
+      "end": 13.89
+    },
+    {
+      "text": "everybody",
+      "start": 13.89,
+      "end": 14.29
+    },
+    {
+      "text": "believes",
+      "start": 14.29,
+      "end": 14.77
+    },
+    {
+      "text": "computer",
+      "start": 14.77,
+      "end": 15.17
+    },
+    {
+      "text": "science",
+      "start": 15.17,
+      "end": 15.57
+    },
+    {
+      "text": "means",
+      "start": 15.57,
+      "end": 15.89
+    },
+    {
+      "text": "a",
+      "start": 15.89,
+      "end": 15.97
+    },
+    {
+      "text": "high",
+      "start": 15.97,
+      "end": 16.21
+    },
+    {
+      "text": "paying",
+      "start": 16.21,
+      "end": 16.61
+    },
+    {
+      "text": "job",
+      "start": 16.61,
+      "end": 17.09
+    },
+    {
+      "text": "and",
+      "start": 17.17,
+      "end": 17.25
+    },
+    {
+      "text": "everybody",
+      "start": 17.25,
+      "end": 17.65
+    },
+    {
+      "text": "loves",
+      "start": 17.65,
+      "end": 17.97
+    },
+    {
+      "text": "money",
+      "start": 17.97,
+      "end": 18.45
+    },
+    {
+      "text": "actually",
+      "start": 18.45,
+      "end": 19.09
+    },
+    {
+      "text": "So",
+      "start": 19.09,
+      "end": 19.25
+    },
+    {
+      "text": "yes",
+      "start": 19.25,
+      "end": 19.73
+    },
+    {
+      "text": "it's",
+      "start": 19.73,
+      "end": 19.89
+    },
+    {
+      "text": "very",
+      "start": 19.89,
+      "end": 20.21
+    },
+    {
+      "text": "popular",
+      "start": 20.21,
+      "end": 20.85
+    }
+  ]
+}

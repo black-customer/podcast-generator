@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you like your subject?",
+    "start": 0.08,
+    "end": 1.37,
+    "duration": 1.29,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I enjoy my subjects because they were my deliberate choice, not something the school imposed on me. And AI-assisted coding is empowering — it means anyone, not just computer science students, can create a real app or a real website using natural language, using English. That's impressive. English is also one of my favorite things — I can use it to explore the world and communicate with people from different countries, to access their culture. That's very interesting to me.",
+    "start": 1.81,
+    "end": 28.0,
+    "duration": 26.19,
+    "mode": "sse"
+  }
+]

@@ -96,7 +96,8 @@ def parse_batch(markdown: str) -> list[dict]:
             if cur is None:
                 continue
             name = line[4:].strip()
-            cur_field = SECTION_ALIASES.get(name.lower().replace(" ", ""), SECTION_ALIASES.get(name.lower(), name.lower()))
+            key = name.lower().replace(" ", "")
+            cur_field = SECTION_ALIASES.get(key, SECTION_ALIASES.get(name.lower(), name.lower()))
             cur["_buf"].setdefault(cur_field, [])
             continue
         if cur is None:

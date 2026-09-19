@@ -206,8 +206,13 @@ def fish_tts_sse(
     elif is_dialogue:
         va = (settings.get("reference_id") or "").strip()
         vb = (settings.get("reference_id_b") or "").strip()
+        # Bruce 规则：回答必须男声方便模仿 → 男声放数组第 0 位（对应 <|speaker:0|>）。
+        # 脚本约定仍是 A:提问 / B:回答，发送时把回答行标记为 speaker:0、提问行为 speaker:1。
         if va and vb:
-            payload["reference_id"] = [va, vb]
+            if settings.get("answer_voice_male", True):
+                payload["reference_id"] = [va, vb]
+            else:
+                payload["reference_id"] = [vb, va]
     try:
         temperature = settings.get("temperature")
         if temperature is not None and temperature != "":
@@ -350,9 +355,19 @@ def test_connection(settings: dict) -> dict:
 
 
 def _speaker_ref(settings: dict, speaker: str) -> str:
+    """逐行回退路径的音色映射。Bruce 规则：回答（B 行）用男声 reference_id。"""
+    answer_is_male = bool(settings.get("answer_voice_male", True))
+    if speaker == "a":
+        # 提问行：answer_voice_male 开 → 提问用女声 B
+        return (
+            (settings.get("reference_id_b") or "").strip()
+            if answer_is_male
+            else (settings.get("reference_id") or "").strip()
+        )
+    # 回答行
     return (
         (settings.get("reference_id") or "").strip()
-        if speaker == "a"
+        if answer_is_male
         else (settings.get("reference_id_b") or "").strip()
     )
 
@@ -388,8 +403,12 @@ def _synthesize_source(
     line_map: list[int] = []  # 每个计划段属于哪个对话行（独白为空）
     if dialogue and not dry:
         try:
+            # Bruce 规则（answer_voice_male，默认开）：回答（B 行）必须是男声。
+            # 男声=reference_id 放数组位 0 → 回答行发 speaker:0，提问行发 speaker:1。
+            answer_is_male = bool(settings.get("answer_voice_male", True))
+            q_idx, a_idx = (1, 0) if answer_is_male else (0, 1)
             tagged = "\n".join(
-                f"<|speaker:{0 if spk == 'a' else 1}|>{body}" for spk, body in dialogue
+                f"<|speaker:{q_idx if spk == 'a' else a_idx}|>{body}" for spk, body in dialogue
             )
             single_pass_bytes, single_pass_words = fish_tts_sse(
                 tagged, settings, is_dialogue=True, cancel=cancel

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "What are the benefits of being your age?",
+    "start": 0.0,
+    "end": 2.35,
+    "duration": 2.35,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I'm twenty-one right now, so I think that's quite young. Being this age, we're able to do so many things legally, and we still have enough time. Compared with older people, we have more time to achieve what we want; compared with younger people, we have more experience and a broader horizon. So I think it's a good age — we can use our time to try things and explore different opportunities in life.",
+    "start": 2.73,
+    "end": 23.88,
+    "duration": 21.15,
+    "mode": "sse"
+  }
+]

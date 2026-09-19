@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Are you looking forward to working?",
+    "start": 0.0,
+    "end": 1.53,
+    "duration": 1.53,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "That's an interesting one. I'm not exactly looking forward to working — I'm looking forward to earning money. I don't want to work for others doing jobs that aren't my type, you know. What I'm eager for is the autonomy and the financial independence that work brings. I look forward to creating value for people and getting paid in return — whether that's through employment or my own ventures. In short, I anticipate the outcomes that work enables, not the work itself.",
+    "start": 1.96,
+    "end": 26.7,
+    "duration": 24.74,
+    "mode": "sse"
+  }
+]

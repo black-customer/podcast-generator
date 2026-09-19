@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "How much time do you spend on your studies each week?",
+    "start": 0.0,
+    "end": 2.26,
+    "duration": 2.26,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "It really depends, because I'm not a very regular person — my study time depends on my mood. Sometimes I spend about four hours a day, which is 28 hours a week. But sometimes I study more, and sometimes less. So on average, maybe around 30 hours a week.",
+    "start": 2.6,
+    "end": 17.21,
+    "duration": 14.61,
+    "mode": "sse"
+  }
+]

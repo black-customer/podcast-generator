@@ -1,0 +1,444 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "5c62a2c17a2c8ea1",
+  "audio_signature": "673376:1789787490",
+  "created_at": "2026-09-19T11:11:31",
+  "segments": [
+    {
+      "text": "Do you like your subject?",
+      "speaker": "a",
+      "start": 0.08,
+      "end": 1.37
+    },
+    {
+      "text": "I enjoy my subjects because they were my deliberate choice, not something the school imposed on me. And AI-assisted coding is empowering — it means anyone, not just computer science students, can create a real app or a real website using natural language, using English. That's impressive. English is also one of my favorite things — I can use it to explore the world and communicate with people from different countries, to access their culture. That's very interesting to me.",
+      "speaker": "b",
+      "start": 1.81,
+      "end": 28.0
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.08,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "like",
+      "start": 0.24,
+      "end": 0.48
+    },
+    {
+      "text": "your",
+      "start": 0.48,
+      "end": 0.64
+    },
+    {
+      "text": "subject",
+      "start": 0.64,
+      "end": 1.36
+    },
+    {
+      "text": "I",
+      "start": 1.806,
+      "end": 1.966
+    },
+    {
+      "text": "enjoy",
+      "start": 1.966,
+      "end": 2.286
+    },
+    {
+      "text": "my",
+      "start": 2.286,
+      "end": 2.526
+    },
+    {
+      "text": "subjects",
+      "start": 2.526,
+      "end": 3.086
+    },
+    {
+      "text": "because",
+      "start": 3.086,
+      "end": 3.406
+    },
+    {
+      "text": "they",
+      "start": 3.406,
+      "end": 3.566
+    },
+    {
+      "text": "were",
+      "start": 3.566,
+      "end": 3.646
+    },
+    {
+      "text": "my",
+      "start": 3.646,
+      "end": 3.806
+    },
+    {
+      "text": "deliberate",
+      "start": 3.806,
+      "end": 4.446
+    },
+    {
+      "text": "choice",
+      "start": 4.446,
+      "end": 5.006
+    },
+    {
+      "text": "not",
+      "start": 5.006,
+      "end": 5.246
+    },
+    {
+      "text": "something",
+      "start": 5.246,
+      "end": 5.566
+    },
+    {
+      "text": "the",
+      "start": 5.566,
+      "end": 5.646
+    },
+    {
+      "text": "school",
+      "start": 5.646,
+      "end": 6.046
+    },
+    {
+      "text": "imposed",
+      "start": 6.046,
+      "end": 6.526
+    },
+    {
+      "text": "on",
+      "start": 6.526,
+      "end": 6.686
+    },
+    {
+      "text": "me",
+      "start": 6.686,
+      "end": 7.006
+    },
+    {
+      "text": "And",
+      "start": 7.086,
+      "end": 7.166
+    },
+    {
+      "text": "AI",
+      "start": 7.166,
+      "end": 7.566
+    },
+    {
+      "text": "assisted",
+      "start": 7.566,
+      "end": 8.046
+    },
+    {
+      "text": "coding",
+      "start": 8.046,
+      "end": 8.526
+    },
+    {
+      "text": "is",
+      "start": 8.526,
+      "end": 8.686
+    },
+    {
+      "text": "empowering",
+      "start": 8.686,
+      "end": 9.406
+    },
+    {
+      "text": "it",
+      "start": 9.406,
+      "end": 9.566
+    },
+    {
+      "text": "means",
+      "start": 9.566,
+      "end": 9.886
+    },
+    {
+      "text": "anyone",
+      "start": 9.886,
+      "end": 10.526
+    },
+    {
+      "text": "not",
+      "start": 10.606,
+      "end": 10.846
+    },
+    {
+      "text": "just",
+      "start": 10.846,
+      "end": 11.006
+    },
+    {
+      "text": "computer",
+      "start": 11.006,
+      "end": 11.406
+    },
+    {
+      "text": "science",
+      "start": 11.406,
+      "end": 11.886
+    },
+    {
+      "text": "students",
+      "start": 11.886,
+      "end": 12.286
+    },
+    {
+      "text": "can",
+      "start": 12.286,
+      "end": 12.526
+    },
+    {
+      "text": "create",
+      "start": 12.526,
+      "end": 12.846
+    },
+    {
+      "text": "a",
+      "start": 12.846,
+      "end": 12.846
+    },
+    {
+      "text": "real",
+      "start": 12.846,
+      "end": 13.246
+    },
+    {
+      "text": "app",
+      "start": 13.246,
+      "end": 13.646
+    },
+    {
+      "text": "or",
+      "start": 13.646,
+      "end": 13.886
+    },
+    {
+      "text": "a",
+      "start": 13.886,
+      "end": 13.886
+    },
+    {
+      "text": "real",
+      "start": 13.886,
+      "end": 14.206
+    },
+    {
+      "text": "website",
+      "start": 14.206,
+      "end": 14.846
+    },
+    {
+      "text": "using",
+      "start": 14.846,
+      "end": 15.166
+    },
+    {
+      "text": "natural",
+      "start": 15.166,
+      "end": 15.646
+    },
+    {
+      "text": "language",
+      "start": 15.646,
+      "end": 16.206
+    },
+    {
+      "text": "using",
+      "start": 16.286,
+      "end": 16.606
+    },
+    {
+      "text": "English",
+      "start": 16.606,
+      "end": 17.246
+    },
+    {
+      "text": "That's",
+      "start": 17.246,
+      "end": 17.486
+    },
+    {
+      "text": "impressive",
+      "start": 17.486,
+      "end": 18.206
+    },
+    {
+      "text": "English",
+      "start": 18.682,
+      "end": 19.082
+    },
+    {
+      "text": "is",
+      "start": 19.082,
+      "end": 19.162
+    },
+    {
+      "text": "also",
+      "start": 19.162,
+      "end": 19.562
+    },
+    {
+      "text": "one",
+      "start": 19.562,
+      "end": 19.802
+    },
+    {
+      "text": "of",
+      "start": 19.802,
+      "end": 19.802
+    },
+    {
+      "text": "my",
+      "start": 19.802,
+      "end": 20.042
+    },
+    {
+      "text": "favorite",
+      "start": 20.042,
+      "end": 20.442
+    },
+    {
+      "text": "things",
+      "start": 20.442,
+      "end": 20.922
+    },
+    {
+      "text": "I",
+      "start": 20.922,
+      "end": 21.082
+    },
+    {
+      "text": "can",
+      "start": 21.082,
+      "end": 21.242
+    },
+    {
+      "text": "use",
+      "start": 21.242,
+      "end": 21.482
+    },
+    {
+      "text": "it",
+      "start": 21.482,
+      "end": 21.642
+    },
+    {
+      "text": "to",
+      "start": 21.642,
+      "end": 21.722
+    },
+    {
+      "text": "explore",
+      "start": 21.722,
+      "end": 22.122
+    },
+    {
+      "text": "the",
+      "start": 22.122,
+      "end": 22.202
+    },
+    {
+      "text": "world",
+      "start": 22.202,
+      "end": 22.682
+    },
+    {
+      "text": "and",
+      "start": 22.682,
+      "end": 22.762
+    },
+    {
+      "text": "communicate",
+      "start": 22.762,
+      "end": 23.322
+    },
+    {
+      "text": "with",
+      "start": 23.322,
+      "end": 23.482
+    },
+    {
+      "text": "people",
+      "start": 23.482,
+      "end": 23.802
+    },
+    {
+      "text": "from",
+      "start": 23.802,
+      "end": 23.962
+    },
+    {
+      "text": "different",
+      "start": 23.962,
+      "end": 24.362
+    },
+    {
+      "text": "countries",
+      "start": 24.362,
+      "end": 25.002
+    },
+    {
+      "text": "to",
+      "start": 25.082,
+      "end": 25.162
+    },
+    {
+      "text": "access",
+      "start": 25.162,
+      "end": 25.562
+    },
+    {
+      "text": "their",
+      "start": 25.562,
+      "end": 25.722
+    },
+    {
+      "text": "culture",
+      "start": 25.722,
+      "end": 26.282
+    },
+    {
+      "text": "That's",
+      "start": 26.362,
+      "end": 26.522
+    },
+    {
+      "text": "very",
+      "start": 26.522,
+      "end": 26.922
+    },
+    {
+      "text": "interesting",
+      "start": 26.922,
+      "end": 27.402
+    },
+    {
+      "text": "to",
+      "start": 27.482,
+      "end": 27.482
+    },
+    {
+      "text": "me",
+      "start": 27.482,
+      "end": 27.882
+    }
+  ]
+}

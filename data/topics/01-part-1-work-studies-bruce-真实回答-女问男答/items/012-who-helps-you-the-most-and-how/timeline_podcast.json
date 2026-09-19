@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Who helps you the most and how?",
+    "start": 0.0,
+    "end": 2.02,
+    "duration": 2.02,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "My first thought is my parents — my father and mother help me the most, of course. But recently, the thing that helps me the most is AI, definitely AI. Whenever I have a question, I just ask AI and it helps me solve the problem — it gives me the answer, or the instructions, and I follow them and get it done. So in this area, AI definitely helps me the most.",
+    "start": 2.52,
+    "end": 23.51,
+    "duration": 20.99,
+    "mode": "sse"
+  }
+]

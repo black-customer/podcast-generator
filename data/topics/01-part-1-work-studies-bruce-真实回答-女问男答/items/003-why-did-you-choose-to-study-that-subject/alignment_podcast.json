@@ -1,0 +1,429 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "3b3b9c084906c4c3",
+  "audio_signature": "577454:1789787503",
+  "created_at": "2026-09-19T11:11:43",
+  "segments": [
+    {
+      "text": "Why did you choose to study that subject?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.93
+    },
+    {
+      "text": "Two reasons, really. One, in China everybody thinks computer science leads to a high-paid job — that's part of it. And two, I like computers. Fun fact: I was actually a chemistry student when I was a freshman, and then I switched to computer science. I chose it because I use computers every day, and I wanted to become a better user of them. So that's why — plus the high-paid job thing.",
+      "speaker": "b",
+      "start": 2.47,
+      "end": 24.01
+    }
+  ],
+  "words": [
+    {
+      "text": "Why",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "did",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "you",
+      "start": 0.32,
+      "end": 0.4
+    },
+    {
+      "text": "choose",
+      "start": 0.4,
+      "end": 0.72
+    },
+    {
+      "text": "to",
+      "start": 0.72,
+      "end": 0.8
+    },
+    {
+      "text": "study",
+      "start": 0.8,
+      "end": 1.12
+    },
+    {
+      "text": "that",
+      "start": 1.2,
+      "end": 1.36
+    },
+    {
+      "text": "subject",
+      "start": 1.36,
+      "end": 1.92
+    },
+    {
+      "text": "Two",
+      "start": 2.456,
+      "end": 2.616
+    },
+    {
+      "text": "reasons",
+      "start": 2.616,
+      "end": 3.176
+    },
+    {
+      "text": "really",
+      "start": 3.176,
+      "end": 3.656
+    },
+    {
+      "text": "One",
+      "start": 3.736,
+      "end": 4.136
+    },
+    {
+      "text": "in",
+      "start": 4.216,
+      "end": 4.376
+    },
+    {
+      "text": "China",
+      "start": 4.376,
+      "end": 4.696
+    },
+    {
+      "text": "everybody",
+      "start": 4.696,
+      "end": 5.176
+    },
+    {
+      "text": "thinks",
+      "start": 5.176,
+      "end": 5.496
+    },
+    {
+      "text": "computer",
+      "start": 5.496,
+      "end": 5.896
+    },
+    {
+      "text": "science",
+      "start": 5.896,
+      "end": 6.376
+    },
+    {
+      "text": "leads",
+      "start": 6.376,
+      "end": 6.616
+    },
+    {
+      "text": "to",
+      "start": 6.696,
+      "end": 6.776
+    },
+    {
+      "text": "a",
+      "start": 6.776,
+      "end": 6.776
+    },
+    {
+      "text": "high",
+      "start": 6.776,
+      "end": 7.096
+    },
+    {
+      "text": "paid",
+      "start": 7.096,
+      "end": 7.336
+    },
+    {
+      "text": "job",
+      "start": 7.336,
+      "end": 7.816
+    },
+    {
+      "text": "that's",
+      "start": 7.896,
+      "end": 8.136
+    },
+    {
+      "text": "part",
+      "start": 8.136,
+      "end": 8.456
+    },
+    {
+      "text": "of",
+      "start": 8.456,
+      "end": 8.536
+    },
+    {
+      "text": "it",
+      "start": 8.536,
+      "end": 8.856
+    },
+    {
+      "text": "And",
+      "start": 8.936,
+      "end": 9.096
+    },
+    {
+      "text": "two",
+      "start": 9.096,
+      "end": 9.576
+    },
+    {
+      "text": "I",
+      "start": 9.656,
+      "end": 9.816
+    },
+    {
+      "text": "like",
+      "start": 9.816,
+      "end": 10.056
+    },
+    {
+      "text": "computers",
+      "start": 10.056,
+      "end": 10.776
+    },
+    {
+      "text": "Fun",
+      "start": 10.856,
+      "end": 11.096
+    },
+    {
+      "text": "fact",
+      "start": 11.096,
+      "end": 11.656
+    },
+    {
+      "text": "I",
+      "start": 11.656,
+      "end": 11.816
+    },
+    {
+      "text": "was",
+      "start": 11.816,
+      "end": 11.896
+    },
+    {
+      "text": "actually",
+      "start": 11.896,
+      "end": 12.296
+    },
+    {
+      "text": "a",
+      "start": 12.296,
+      "end": 12.376
+    },
+    {
+      "text": "chemistry",
+      "start": 12.376,
+      "end": 12.856
+    },
+    {
+      "text": "student",
+      "start": 12.856,
+      "end": 13.256
+    },
+    {
+      "text": "when",
+      "start": 13.256,
+      "end": 13.336
+    },
+    {
+      "text": "I",
+      "start": 13.336,
+      "end": 13.496
+    },
+    {
+      "text": "was",
+      "start": 13.496,
+      "end": 13.576
+    },
+    {
+      "text": "a",
+      "start": 13.576,
+      "end": 13.656
+    },
+    {
+      "text": "freshman",
+      "start": 13.656,
+      "end": 14.296
+    },
+    {
+      "text": "and",
+      "start": 14.296,
+      "end": 14.456
+    },
+    {
+      "text": "then",
+      "start": 14.456,
+      "end": 14.616
+    },
+    {
+      "text": "I",
+      "start": 14.616,
+      "end": 14.776
+    },
+    {
+      "text": "switched",
+      "start": 14.776,
+      "end": 15.096
+    },
+    {
+      "text": "to",
+      "start": 15.096,
+      "end": 15.176
+    },
+    {
+      "text": "computer",
+      "start": 15.176,
+      "end": 15.576
+    },
+    {
+      "text": "science",
+      "start": 15.576,
+      "end": 16.216
+    },
+    {
+      "text": "I",
+      "start": 16.667,
+      "end": 16.747
+    },
+    {
+      "text": "chose",
+      "start": 16.747,
+      "end": 17.147
+    },
+    {
+      "text": "it",
+      "start": 17.147,
+      "end": 17.227
+    },
+    {
+      "text": "because",
+      "start": 17.227,
+      "end": 17.547
+    },
+    {
+      "text": "I",
+      "start": 17.547,
+      "end": 17.627
+    },
+    {
+      "text": "use",
+      "start": 17.627,
+      "end": 17.867
+    },
+    {
+      "text": "computers",
+      "start": 17.867,
+      "end": 18.347
+    },
+    {
+      "text": "every",
+      "start": 18.347,
+      "end": 18.587
+    },
+    {
+      "text": "day",
+      "start": 18.587,
+      "end": 18.987
+    },
+    {
+      "text": "and",
+      "start": 18.987,
+      "end": 19.147
+    },
+    {
+      "text": "I",
+      "start": 19.147,
+      "end": 19.227
+    },
+    {
+      "text": "wanted",
+      "start": 19.227,
+      "end": 19.627
+    },
+    {
+      "text": "to",
+      "start": 19.627,
+      "end": 19.627
+    },
+    {
+      "text": "become",
+      "start": 19.627,
+      "end": 19.947
+    },
+    {
+      "text": "a",
+      "start": 19.947,
+      "end": 20.027
+    },
+    {
+      "text": "better",
+      "start": 20.027,
+      "end": 20.267
+    },
+    {
+      "text": "user",
+      "start": 20.267,
+      "end": 20.667
+    },
+    {
+      "text": "of",
+      "start": 20.667,
+      "end": 20.907
+    },
+    {
+      "text": "them",
+      "start": 20.907,
+      "end": 21.147
+    },
+    {
+      "text": "So",
+      "start": 21.307,
+      "end": 21.467
+    },
+    {
+      "text": "that's",
+      "start": 21.467,
+      "end": 21.787
+    },
+    {
+      "text": "why",
+      "start": 21.787,
+      "end": 22.187
+    },
+    {
+      "text": "plus",
+      "start": 22.267,
+      "end": 22.507
+    },
+    {
+      "text": "the",
+      "start": 22.507,
+      "end": 22.587
+    },
+    {
+      "text": "high",
+      "start": 22.587,
+      "end": 22.827
+    },
+    {
+      "text": "paid",
+      "start": 22.827,
+      "end": 23.067
+    },
+    {
+      "text": "job",
+      "start": 23.067,
+      "end": 23.467
+    },
+    {
+      "text": "thing",
+      "start": 23.467,
+      "end": 23.867
+    }
+  ]
+}
