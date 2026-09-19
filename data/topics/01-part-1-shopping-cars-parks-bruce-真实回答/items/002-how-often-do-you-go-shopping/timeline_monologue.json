@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Very, very rarely — if you mean going to an actual physical store.",
+    "start": 0.0,
+    "end": 4.6,
+    "duration": 4.6
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That almost never happens.",
+    "start": 4.6,
+    "end": 6.3,
+    "duration": 1.7
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Sometimes I need new clothes or new pants, you know, new things — then I'll just shop online.",
+    "start": 6.3,
+    "end": 12.66,
+    "duration": 6.36
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And if I don't have a need, if there's no requirement, then I won't go shopping at all.",
+    "start": 12.66,
+    "end": 18.34,
+    "duration": 5.68
+  }
+]

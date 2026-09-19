@@ -1,0 +1,110 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "The singer I like is J.",
+    "start": 0.0,
+    "end": 1.53,
+    "duration": 1.53
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Cole.",
+    "start": 1.53,
+    "end": 1.86,
+    "duration": 0.33
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I don't know if that's feasible, because he's not exactly a singer — he's a rapper.",
+    "start": 1.86,
+    "end": 7.67,
+    "duration": 5.81
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I don't know if rappers count as singers.",
+    "start": 7.67,
+    "end": 10.39,
+    "duration": 2.72
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But J.",
+    "start": 10.39,
+    "end": 10.79,
+    "duration": 0.4
+  },
+  {
+    "id": 5,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Cole is the artist I like.",
+    "start": 10.79,
+    "end": 12.52,
+    "duration": 1.73
+  },
+  {
+    "id": 6,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "His personality — I think he's honest, kind, and thoughtful.",
+    "start": 12.52,
+    "end": 16.8,
+    "duration": 4.28
+  },
+  {
+    "id": 7,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "His songs carry so many deep thoughts from his own experience, and he thinks about a lot of things, extracts his thoughts, and passes them on to educate other people — to give the audience power to live on, to live a good life.",
+    "start": 16.8,
+    "end": 32.16,
+    "duration": 15.36
+  },
+  {
+    "id": 8,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "His music belongs to hip-hop.",
+    "start": 32.16,
+    "end": 34.08,
+    "duration": 1.92
+  },
+  {
+    "id": 9,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And why do I like him?",
+    "start": 34.08,
+    "end": 35.54,
+    "duration": 1.46
+  },
+  {
+    "id": 10,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Well, first, his songs are amazing — they have rhythm, you can just move your body to them.",
+    "start": 35.54,
+    "end": 41.88,
+    "duration": 6.34
+  },
+  {
+    "id": 11,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And you can learn a lot from his lyrics: they give you power, help you handle stress, live a better life, and have the energy to become whoever you want to be.",
+    "start": 41.88,
+    "end": 52.43,
+    "duration": 10.55
+  }
+]

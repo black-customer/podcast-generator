@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think from primary school — from education.",
+    "start": 0.0,
+    "end": 2.96,
+    "duration": 2.96
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Back then, teachers taught us things about the world.",
+    "start": 2.96,
+    "end": 6.13,
+    "duration": 3.17
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Like, there's this dead lake where people just float on the water — they don't sink at all, because of the salt.",
+    "start": 6.13,
+    "end": 13.09,
+    "duration": 6.96
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That's when I started learning about science.",
+    "start": 13.09,
+    "end": 15.78,
+    "duration": 2.69
+  }
+]

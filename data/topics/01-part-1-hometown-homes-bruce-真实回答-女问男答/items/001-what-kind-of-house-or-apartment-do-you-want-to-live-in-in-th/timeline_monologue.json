@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Actually, I don't have a typical favorite, because I haven't explored many options yet.",
+    "start": 0.0,
+    "end": 5.63,
+    "duration": 5.63
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "But I think it should be big, and it should have a good view — that would be enough.",
+    "start": 5.63,
+    "end": 11.36,
+    "duration": 5.73
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Big, a nice view, and clean.",
+    "start": 11.36,
+    "end": 13.17,
+    "duration": 1.81
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "That's it, really.",
+    "start": 13.17,
+    "end": 14.33,
+    "duration": 1.16
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Oh, and it should be in the city center — definitely not in the suburbs.",
+    "start": 14.33,
+    "end": 19.28,
+    "duration": 4.95
+  }
+]

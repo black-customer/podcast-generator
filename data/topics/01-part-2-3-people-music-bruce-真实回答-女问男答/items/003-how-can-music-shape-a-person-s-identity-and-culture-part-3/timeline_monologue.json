@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Well, everybody knows that reading books or studying courses can shape people's identities and cultures.",
+    "start": 0.0,
+    "end": 6.35,
+    "duration": 6.35
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "I think listening to music works the same way.",
+    "start": 6.35,
+    "end": 9.16,
+    "duration": 2.81
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Music is not only about the rhythms — there are lyrics too, and singers are expressing themselves, expressing their thoughts through the lyrics.",
+    "start": 9.16,
+    "end": 18.22,
+    "duration": 9.06
+  },
+  {
+    "id": 3,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "So if you listen to more music, more types of music, you get exposed to more styles that people live by, more ways that people think.",
+    "start": 18.22,
+    "end": 26.34,
+    "duration": 8.12
+  },
+  {
+    "id": 4,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "And that shapes your identity and culture.",
+    "start": 26.34,
+    "end": 28.89,
+    "duration": 2.55
+  }
+]

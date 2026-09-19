@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Once or twice a week, I guess.",
+    "start": 0.0,
+    "end": 2.18,
+    "duration": 2.18
+  },
+  {
+    "id": 1,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "We usually play games together or grab something to eat.",
+    "start": 2.18,
+    "end": 6.25,
+    "duration": 4.07
+  },
+  {
+    "id": 2,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Nothing fancy, just hanging out.",
+    "start": 6.25,
+    "end": 8.57,
+    "duration": 2.32
+  }
+]
