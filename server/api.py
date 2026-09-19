@@ -14,6 +14,7 @@ from . import (
     exports_media,
     jobs,
     library,
+    pack,
     production,
     timeline,
     tts,
@@ -496,6 +497,7 @@ def api_bank_questions(
     q: str | None = None,
     page: int = 1,
     page_size: int = bank.PAGE_SIZE,
+    random_pick: bool = False,
 ):
     try:
         snapshot = bank.load_bank()
@@ -516,6 +518,7 @@ def api_bank_questions(
         page=page,
         page_size=page_size,
         answered=bank.answered_norms(),
+        random_pick=random_pick,
     )
     result["available"] = True
     result["topics"] = bank.bank_topics(snapshot, part=part)
@@ -549,6 +552,24 @@ def api_bank_answer(body: BankAnswerIn):
         "topic_name": target["name"],
         "question": question["text"],
     }
+
+
+# ---------------------------------------------------------------- pack（B02 手机语料包）
+
+
+@router.get("/pack/export")
+def api_pack_export(topics: str | None = None):
+    """导出语料包 zip：topics=all 或逗号分隔话题 id。"""
+    topic_ids: list[str] | None = None
+    if topics and topics != "all":
+        topic_ids = [s.strip() for s in topics.split(",") if s.strip()]
+    try:
+        result = pack.build_pack(topic_ids=topic_ids)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    return FileResponse(
+        result["path"], media_type="application/zip", filename="corpus.pack.zip"
+    )
 
 
 @router.get("/exports/{filename}")

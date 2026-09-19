@@ -1,5 +1,6 @@
 """FastAPI 应用入口。"""
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -12,6 +13,13 @@ cleanup_stale_tmp()
 jobs.recover_from_disk()  # 上次未完成任务 → interrupted，前端轮询不再悬死
 
 app = FastAPI(title="Bruce English Corpus 播客生成器", docs_url="/api/docs")
+# 手机 APP 壳内源为 https://localhost，局域网直传语料包属跨源——本地工具放开 CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(router)
 app.mount("/static", StaticFiles(directory=str(WEB_DIR)), name="static")
 

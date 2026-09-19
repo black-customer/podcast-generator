@@ -52,3 +52,6 @@ data/episodes/*.mp3
 
 # 题库快照：可再生（python -m server.bank --sync），且源自 Bruce 私有 RoastDuck 数据，不入库
 data/question_bank.json
+
+# 任务运行态：服务重启恢复用，非产品数据
+data/jobs.json

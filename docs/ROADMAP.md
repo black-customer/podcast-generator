@@ -138,7 +138,7 @@ WP：导入脚本；`GET /api/bank/questions?part=&topic=&q=&page=` + `GET /api/
 （改写仍由 Agent 会话完成）。
 AC：导入只读幂等（单测）；API 过滤/分页/搜索测试；e2e 浏览→筛选→提交→条目出现。tag b01。
 
-### B02 手机 APP（Capacitor 独立 Android 应用）— PENDING（依赖 B01 题库快照）
+### B02 手机 APP（Capacitor 独立 Android 应用）— DONE (2026-09-19, tag b02；APK 模拟器实测全流程通过)
 价值：走路/通勤离线收听（Bruce 优先级 2）；形态=独立 APP，局域网网页只是过渡。
 WP：语料包格式（zip：manifest 版本/指纹 + 条目文本 + timeline/alignment + 音频 + 题库快照）
 与 `GET /api/pack/export`；前端 DataSource 抽象（server 模式=fetch API ↔ pack 模式=本地导入，

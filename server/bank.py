@@ -149,8 +149,12 @@ def query_questions(
     page: int = 1,
     page_size: int = PAGE_SIZE,
     answered: set[str] | None = None,
+    random_pick: bool = False,
 ) -> dict:
-    """题库查询：part/topic 精确过滤，q 中英不区分大小写子串，页参数钳制。"""
+    """题库查询：part/topic 精确过滤，q 中英不区分大小写子串，页参数钳制。
+
+    random_pick=True 时从过滤结果随机取一题（items 单条，total 保持过滤总数）。
+    """
     needle = (q or "").strip().casefold()
     rows: list[dict] = []
     for row in snapshot.get("questions", []):
@@ -173,6 +177,11 @@ def query_questions(
             }
         )
     total = len(rows)
+    if random_pick and rows:
+        import random as _random
+
+        rows = [_random.choice(rows)]
+        return {"items": rows, "total": total, "page": 1, "pageCount": 1, "page_size": 1}
     size = min(max(1, page_size), 100)
     page_count = max(1, math.ceil(total / size)) if total else 0
     page = min(max(1, page), page_count) if total else 1

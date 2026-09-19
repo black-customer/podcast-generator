@@ -1,0 +1,12 @@
+{
+  "appId": "com.bruce.ieltspod",
+  "appName": "IELTS Pod",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": true
+  },
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  }
+}

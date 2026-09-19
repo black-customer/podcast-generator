@@ -33,6 +33,10 @@ function esc(s) {
 }
 
 async function api(method, url, body = null) {
+  // 离线包模式（B02）：拦截请求走本地数据层，视图代码零改动复用
+  if (typeof PackState !== "undefined" && PackState.active) {
+    return packApi(method, url);
+  }
   const opts = { method };
   if (body) {
     opts.headers = { "Content-Type": "application/json" };
@@ -416,8 +420,9 @@ async function playItem(topicId, item, autoPlay = true) {
   $globalPlayer.style.display = "flex";
 
   const track = PlayerState.track;
-  const audioUrl = `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(item.id)}/audio/${track}`;
-  
+  let audioUrl = mediaUrl(`/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(item.id)}/audio/${track}`);
+  if (!audioUrl) audioUrl = `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(item.id)}/audio/${track}`;
+
   $audio.src = audioUrl;
   $audio.playbackRate = PlayerState.playbackRate;
   if (autoPlay) {
@@ -618,6 +623,14 @@ async function TopicsGalleryView(token) {
 }
 
 // 2. 专辑详情与曲目列表
+let topicRandomCtx = { topicId: "", items: [] };
+function topicRandomPlay() {
+  const { topicId, items } = topicRandomCtx;
+  if (!items.length) { toast("本话题还没有已生成的音频"); return; }
+  const pick = items[Math.floor(Math.random() * items.length)];
+  location.hash = `#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(pick.id)}`;
+}
+
 async function TopicDetailView(topicId, token) {
   $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载专辑详情中…</p>`;
   let topic, manifestMono = null, manifestPod = null;
@@ -635,6 +648,7 @@ async function TopicDetailView(topicId, token) {
   PlayerState.currentTopic = topic;
   // 只把已生成音频的条目放进播放列表，避免连播时切到无声条目
   PlayerState.playlist = topic.items.filter(it => it.status === "generated");
+  topicRandomCtx = { topicId, items: PlayerState.playlist };
 
   const rowsHtml = topic.items.map((it, idx) => `
     <div class="track-row" data-id="${esc(it.id)}" onclick="location.hash='#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}'">
@@ -667,6 +681,9 @@ async function TopicDetailView(topicId, token) {
     </div>
 
     <div class="action-bar">
+      ${PlayerState.playlist.length ? `
+        <button class="btn-pill" onclick="topicRandomPlay()">🎲 随机播一题</button>
+      ` : ""}
       ${manifestPod ? `
         <a class="btn-round-play" id="btn-play-all-pod" title="打开整集播放器" href="#/episode/${encodeURIComponent(topicId)}/podcast" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">▶</a>
         <span style="font-weight:700;font-size:15px;color:#fff;">播客整集 (${fmtDur(manifestPod.total_sec)})${manifestPod.stale ? ' <span class="track-pill" style="color:var(--warn)">条目已更新，建议重建</span>' : ""}</span>
@@ -731,7 +748,12 @@ async function TrackPlayerView(topicId, itemId, token) {
         </div>
 
         <div style="width:100%;display:flex;flex-direction:column;gap:10px;">
-          <a class="btn-pill" style="display:block;text-align:center;" href="/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/audio/${PlayerState.track}" download>⬇ 下载当前高音质 MP3</a>
+          ${(() => {
+            const dl = mediaUrl(`/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/audio/${PlayerState.track}`);
+            return dl
+              ? `<a class="btn-pill" style="display:block;text-align:center;" href="${dl}" download="track.mp3">⬇ 下载当前高音质 MP3</a>`
+              : "";
+          })()}
         </div>
       </div>
 
@@ -1274,6 +1296,7 @@ async function mgLoadTopic(topicId, keepEditorClosed = false, token = null) {
       <button class="mg-btn" id="mg-ep-mono">🎬 合成独白整集</button>
       <button class="mg-btn" id="mg-export-pod-m4b">📚 导出 M4B（播客）</button>
       <button class="mg-btn" id="mg-export-srt">🎞 导出 SRT 字幕（当前条目）</button>
+      <button class="mg-btn" id="mg-export-pack">📱 导出手机语料包（全部话题）</button>
     </div>
     <div id="mg-job-box"></div>
     <div class="mg-divider"></div>
@@ -1318,6 +1341,10 @@ async function mgLoadTopic(topicId, keepEditorClosed = false, token = null) {
     } catch (e) { toast("导出失败：" + e.message); }
   };
   document.getElementById("mg-ep-mono").onclick = () => mgAssemble(topicId, "monologue");
+  document.getElementById("mg-export-pack").onclick = () => {
+    window.open("/api/pack/export", "_blank");
+    toast("语料包生成中——下载完成后传到手机，或手机端直接局域网拉取");
+  };
 
   document.getElementById("mg-create-item").onclick = async () => {
     const $q = document.getElementById("mg-new-q");
@@ -1581,6 +1608,22 @@ function bankGo(overrides) {
   location.hash = `#/bank?${qs.toString()}`;
 }
 
+// 随机来一题（保持当前 part/topic 过滤，随机结果钉在作答卡展示）
+let bankRandomPick = null;
+async function bankRandomGo() {
+  const p = bankParams();
+  const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&random=1` +
+    (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "");
+  try {
+    const res = await api("GET", query);
+    if (!res.items || !res.items.length) { toast("该筛选下没有题目"); return; }
+    bankRandomPick = res.items[0];
+    BankView(null); // 程序性重渲染（null 不受路由令牌约束）
+  } catch (e) {
+    toast(`随机取题失败：${e.message}`);
+  }
+}
+
 async function bankSubmitAnswer(questionId) {
   const input = document.getElementById("bank-answer-input");
   const btn = document.getElementById("bank-answer-submit");
@@ -1635,11 +1678,13 @@ async function BankView(token) {
       (t) => `<option value="${esc(t.id)}" ${p.topic === t.id ? "selected" : ""}>${esc(t.name_zh)}（${t.count}）</option>`
     )).join("");
 
-  const selItem = p.sel ? (data.items.find((it) => it.id === p.sel) || null) : null;
+  const selItem = (p.sel && data.items.find((it) => it.id === p.sel)) || bankRandomPick;
+  const packMode = typeof PackState !== "undefined" && PackState.active;
   const answerCard = selItem ? `
     <div class="bank-answer-card">
       <div class="bank-answer-q">${esc(selItem.text)}</div>
       ${selItem.text_zh ? `<div class="bank-answer-zh">${esc(selItem.text_zh)}</div>` : ""}
+      ${packMode ? `<p class="bank-answer-hint">📱 APP 浏览模式：随机练题口头作答即可，提交作答请在电脑端进行。</p>` : `
       <textarea id="bank-answer-input" rows="6"
         placeholder="用中文或英文自由作答——说出你想表达的意思，母语者版本由 Agent 会话改写后生成音频"></textarea>
       <div class="bank-answer-actions">
@@ -1647,7 +1692,7 @@ async function BankView(token) {
         <button class="btn-pill" onclick="bankGo({sel: ''})">收起</button>
       </div>
       <p class="bank-answer-hint">提交后条目进入话题「${esc(selItem.topic_name_en || selItem.topic_name)}」；
-      改写与音频生成在工作台或 Agent 会话中完成。</p>
+      改写与音频生成在工作台或 Agent 会话中完成。</p>`}
     </div>` : "";
 
   const rowsHtml = data.items.map((it) => `
@@ -1677,6 +1722,7 @@ async function BankView(token) {
           onkeydown="if(event.key==='Enter')bankGo({q: document.getElementById('bank-q').value.trim()})">
         <button class="btn-pill" onclick="bankGo({q: document.getElementById('bank-q').value.trim()})">搜索</button>
       </div>
+      <button class="bank-tab" onclick="bankRandomGo()" title="从当前筛选中随机抽一题">🎲 随机来一题</button>
     </div>
 
     ${answerCard}
@@ -1692,6 +1738,102 @@ async function BankView(token) {
       <button class="btn-pill" ${hasNext ? "" : "disabled"} onclick="bankGo({page: ${data.page + 1}})">下一页</button>
     </div>` : ""}
   `;
+}
+
+// 9. 语料包导入管理（B02）：LAN 直传 / 文件导入 / 存档清除
+async function packImportFromBuffer(buffer) {
+  await packLoadBuffer(buffer);
+  await packPersist(buffer);
+  toast(`语料包导入成功：${PackState.manifest.counts.topics} 话题 / ${PackState.manifest.counts.items} 条目`);
+  const prev = location.hash;
+  location.hash = "#/topics";
+  if (prev === location.hash) route(); // hash 未变不触发 hashchange，手动渲染
+}
+
+async function packImportFromServer(addrRaw) {
+  const addr = (addrRaw || "").trim().replace(/\/+$/, "");
+  if (!/^https?:\/\/.+/i.test(addr)) throw new Error("地址需以 http:// 开头，如 http://192.168.1.5:8765");
+  const resp = await fetch(`${addr}/api/pack/export`);
+  if (!resp.ok) throw new Error(`服务器返回 ${resp.status}（电脑端服务需以 --host 0.0.0.0 启动）`);
+  await packImportFromBuffer(await resp.arrayBuffer());
+}
+
+async function packImportFromFile(file) {
+  if (!file) return;
+  await packImportFromBuffer(await file.arrayBuffer());
+}
+
+async function packClearAll() {
+  await packDeletePersisted();
+  packUnload();
+  toast("已清除离线语料包");
+  const prev = location.hash;
+  location.hash = "#/import";
+  if (prev === location.hash) route();
+}
+
+async function ImportView(token) {
+  if (viewStale(token)) return;
+  const info = PackState.active ? `
+    <div class="bank-answer-card" style="border-color:var(--accent);">
+      <div class="bank-answer-q">📦 当前离线语料包</div>
+      <div class="bank-row-meta" style="margin-top:10px;">
+        <span class="bank-topic-tag">${PackState.manifest.counts.topics} 话题</span>
+        <span class="bank-topic-tag">${PackState.manifest.counts.items} 条目</span>
+        <span class="bank-topic-tag">${PackState.bank ? "含题库" : "无题库"}</span>
+        <span class="bank-topic-tag">指纹 ${esc(PackState.manifest.content_hash)}</span>
+      </div>
+      <p class="bank-answer-hint">导入于 ${esc(new Date(PackState.importedAt).toLocaleString())}。清除后回到在线模式。</p>
+      <div class="bank-answer-actions">
+        <button class="btn-pill" onclick="packClearAll()">清除离线包</button>
+        <a class="btn-pill" href="#/topics" style="text-decoration:none;">去媒体库 →</a>
+      </div>
+    </div>` : `
+    <div class="bank-answer-card">
+      <div class="bank-answer-q">尚未导入语料包</div>
+      <p class="bank-answer-hint">导入后无需网络即可离线收听，媒体库与播放页全部可用。</p>
+    </div>`;
+
+  $app.innerHTML = `
+    <div class="hero-banner">
+      <div class="hero-title">语料包管理</div>
+      <div class="hero-desc">从电脑端拉取语料包（同一 Wi-Fi），或导入之前下载的 .zip 包文件。</div>
+    </div>
+    ${info}
+    <div class="bank-answer-card">
+      <div class="bank-answer-q">📶 方式一：局域网直传</div>
+      <p class="bank-answer-hint">电脑端运行 <code>python run.py --host 0.0.0.0</code>，
+      在下方输入它显示的地址（手机与电脑须同一 Wi-Fi）。</p>
+      <div class="bank-search" style="margin-top:10px;">
+        <input id="pack-addr" placeholder="http://192.168.1.5:8765"
+          onkeydown="if(event.key==='Enter')packImportClick('lan')">
+        <button class="bank-submit-btn" id="pack-lan-btn" onclick="packImportClick('lan')">拉取语料包</button>
+      </div>
+    </div>
+    <div class="bank-answer-card">
+      <div class="bank-answer-q">📁 方式二：导入 zip 文件</div>
+      <p class="bank-answer-hint">电脑端「工作台管理」导出，或用任意方式（QQ/微信/USB）把 corpus.pack.zip 传到手机。</p>
+      <div class="bank-answer-actions">
+        <input type="file" id="pack-file" accept=".zip" style="display:none;" onchange="packImportClick('file')">
+        <button class="bank-submit-btn" onclick="document.getElementById('pack-file').click()">选择文件导入</button>
+      </div>
+    </div>
+  `;
+}
+
+async function packImportClick(kind) {
+  const btn = document.getElementById(kind === "lan" ? "pack-lan-btn" : "pack-file");
+  if (kind === "lan") btn.disabled = true, btn.textContent = "拉取中…";
+  try {
+    if (kind === "lan") {
+      await packImportFromServer(document.getElementById("pack-addr").value);
+    } else {
+      await packImportFromFile(btn.files && btn.files[0]);
+    }
+  } catch (e) {
+    toast(`导入失败：${e.message}`);
+    if (kind === "lan") { btn.disabled = false; btn.textContent = "拉取语料包"; }
+  }
 }
 
 // 过期即放弃写入（修审计 A21——快速导航时旧视图覆盖新视图）。
@@ -1728,6 +1870,11 @@ function route() {
   if (!hash.startsWith("#/manage") && ManageState.pollTimer) {
     clearInterval(ManageState.pollTimer);
     ManageState.pollTimer = null;
+  }
+
+  if (hash.startsWith("#/import")) {
+    ImportView(token);
+    return;
   }
 
   if (hash.startsWith("#/bank")) {
@@ -1771,7 +1918,19 @@ function route() {
 }
 
 window.addEventListener("hashchange", route);
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
   initGlobalPlayer();
+  // APP 离线包恢复：IndexedDB 有存档则激活 pack 模式（失败静默按在线模式启动）
+  if (typeof packRestore === "function") {
+    await packRestore();
+  }
+  // 壳内（Capacitor APP）且无离线包：没有服务端可连，首屏直接落在语料包导入页
+  const inAppShell = typeof window.Capacitor !== "undefined";
+  if (inAppShell && !PackState.active) {
+    document.body.classList.add("app-shell");
+    if (!location.hash || location.hash === "#/" || location.hash === "#/topics") {
+      location.hash = "#/import";
+    }
+  }
   route();
 });

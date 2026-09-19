@@ -45,6 +45,9 @@
         <a href="#/manage" class="nav-item" data-filter="manage">
           <span class="icon">🛠️</span> 工作台管理
         </a>
+        <a href="#/import" class="nav-item" id="nav-import">
+          <span class="icon">📥</span> 语料包管理
+        </a>
       </nav>
 
       <div class="sidebar-footer">
@@ -106,6 +109,8 @@
       window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
     }
   </script>
+  <script src="/static/packreader.js"></script>
+  <script src="/static/packmode.js"></script>
   <script src="/static/app.js"></script>
 </body>
 </html>

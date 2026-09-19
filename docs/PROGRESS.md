@@ -49,7 +49,23 @@
    - 测试：tests/test_bank.py 17 个（同步只读幂等/查询过滤分页搜索/徽标匹配/语言分派/API）
      + tests/e2e/test_bank_ui.py（浏览→Part 切换→搜索→作答→话题出现，含清理）
    - 已作答徽标在真实库验证有效：Bruce 的 Wave 语料题目与题库 norm 匹配命中
-4. ⏳ B02 手机 APP（进行中）；5. B03 分享开源（待做）
+4. ✅ B02 手机 APP（tag b02）：
+   - server/pack.py：语料包导出（ZIP_STORED；pack.json manifest + content_hash + bank.json +
+     条目 item.json[文本/meta/预计算双轨时间轴{lines,words,mode}] + audio_<track>.mp3）；
+     GET /api/pack/export（topics=all 或逗号分隔）
+   - web/packreader.js：零依赖 ZIP 读取器（只支持 STORED）；web/packmode.js：packApi
+     （模拟 /api 契约子集）+ mediaUrl（blob URL）+ IndexedDB 持久化（存原始 zip）+ packRestore
+   - app.js：api() 在 pack 模式拦截转发；壳内（Capacitor）无包首屏落导入页；
+     #/import 视图（LAN 直传 + zip 文件导入 + 清除存档）；随机来一题/随机播一题；
+     导航降级（pack/app-shell 模式隐藏服务端专属入口）
+   - mobile/：Capacitor 7 工程（appId com.bruce.ieltspod；usesCleartextTraffic 放行 http 直传）；
+     scripts/sync_mobile.py（web→www 同步 + Java17 补丁）
+   - server/main.py 加 CORSMiddleware（壳内源 https://localhost 跨源拉包必需）
+   - APK 实测（emulator API36）：首屏引导→LAN 拉包→媒体库→播放页逐词卡拉OK（blob 音频+
+     当前句高亮+词点亮）→杀进程重启 IndexedDB 恢复，全链路通过
+   - 测试：tests/test_pack.py 4 个（结构/幂等哈希/缺失话题/API）；tests/e2e/test_pack_ui.py
+     （文件导入→列表→播放页 blob+时间轴→题库随机→导航降级）
+5. ⏳ B03 分享开源（进行中）
 
 ## B01 补充工程事实
 
@@ -57,3 +73,14 @@
   console 过滤需排除 "Failed to load resource"；话题页条目列表异步加载须 wait_for_selector
 - 题库快照不入 git（.gitignore），公开仓库用户无 RoastDuck 时题库页显示导入引导卡——
   B03 时决定是否把快照附 Release 供下载
+
+## B02 补充工程事实（持续有效）
+
+- 构建顺序铁律：`npx cap sync android` 会重新生成 Java21 配置 → 必须再跑
+  `python scripts/sync_mobile.py`（Java17 补丁 + www 同步）→ `gradlew assembleDebug`
+- Capacitor 7.6.9 也要求 Java 21；本机 JDK17 → 三处 gradle 文件补丁回 17（sync_mobile.py 自动）
+- npmmirror 可用（npm 官方源不通）；gradle 缓存在 D:/Apps/DevCaches/gradle
+- 壳内 fetch 局域网 http 是跨源（页面源 https://localhost）→ 服务端 CORSMiddleware 必需
+- Android 输入框自动首字母大写：URL 校验正则必须加 i 标志
+- mini player 覆盖底部导航（z-index 更高），UI 自动化点导航前要先让播放器消失
+- WebView 无可达性树，UI 自动化用坐标（截图比例 900x2000 → 设备 1080x2400，×1.2）
