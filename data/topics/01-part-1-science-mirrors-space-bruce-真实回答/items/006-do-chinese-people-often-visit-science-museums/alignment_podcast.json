@@ -1,0 +1,344 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "5aa79168fa07d151",
+  "audio_signature": "548615:1789786400",
+  "created_at": "2026-09-19T10:53:21",
+  "segments": [
+    {
+      "text": "Do Chinese people often visit science museums?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 3.06
+    },
+    {
+      "text": "Yeah, I think a lot of Chinese people visit science museums. Because parents believe it helps children become smarter — you know, helps grow their IQ. And schools organize trips there too, for the same reason: people think visiting science museums makes you more logical and smarter. So they have this belief, and that's why they go often.",
+      "speaker": "b",
+      "start": 3.44,
+      "end": 22.8
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.32
+    },
+    {
+      "text": "Chinese",
+      "start": 0.32,
+      "end": 0.8
+    },
+    {
+      "text": "people",
+      "start": 0.8,
+      "end": 1.2
+    },
+    {
+      "text": "often",
+      "start": 1.2,
+      "end": 1.6
+    },
+    {
+      "text": "visit",
+      "start": 1.6,
+      "end": 1.84
+    },
+    {
+      "text": "science",
+      "start": 1.84,
+      "end": 2.24
+    },
+    {
+      "text": "museums",
+      "start": 2.24,
+      "end": 3.04
+    },
+    {
+      "text": "Yeah",
+      "start": 3.419,
+      "end": 3.899
+    },
+    {
+      "text": "I",
+      "start": 3.899,
+      "end": 4.059
+    },
+    {
+      "text": "think",
+      "start": 4.059,
+      "end": 4.219
+    },
+    {
+      "text": "a",
+      "start": 4.219,
+      "end": 4.219
+    },
+    {
+      "text": "lot",
+      "start": 4.219,
+      "end": 4.459
+    },
+    {
+      "text": "of",
+      "start": 4.459,
+      "end": 4.539
+    },
+    {
+      "text": "Chinese",
+      "start": 4.539,
+      "end": 4.859
+    },
+    {
+      "text": "people",
+      "start": 4.859,
+      "end": 5.339
+    },
+    {
+      "text": "visit",
+      "start": 5.339,
+      "end": 5.739
+    },
+    {
+      "text": "science",
+      "start": 5.739,
+      "end": 6.059
+    },
+    {
+      "text": "museums",
+      "start": 6.059,
+      "end": 6.619
+    },
+    {
+      "text": "Because",
+      "start": 6.699,
+      "end": 7.099
+    },
+    {
+      "text": "parents",
+      "start": 7.179,
+      "end": 7.579
+    },
+    {
+      "text": "believe",
+      "start": 7.579,
+      "end": 7.979
+    },
+    {
+      "text": "it",
+      "start": 7.979,
+      "end": 7.979
+    },
+    {
+      "text": "helps",
+      "start": 7.979,
+      "end": 8.299
+    },
+    {
+      "text": "children",
+      "start": 8.299,
+      "end": 8.779
+    },
+    {
+      "text": "become",
+      "start": 8.779,
+      "end": 9.099
+    },
+    {
+      "text": "smarter",
+      "start": 9.099,
+      "end": 9.739
+    },
+    {
+      "text": "you",
+      "start": 9.899,
+      "end": 10.059
+    },
+    {
+      "text": "know",
+      "start": 10.059,
+      "end": 10.219
+    },
+    {
+      "text": "helps",
+      "start": 10.219,
+      "end": 10.539
+    },
+    {
+      "text": "grow",
+      "start": 10.539,
+      "end": 10.699
+    },
+    {
+      "text": "their",
+      "start": 10.699,
+      "end": 10.859
+    },
+    {
+      "text": "IQ",
+      "start": 10.859,
+      "end": 11.419
+    },
+    {
+      "text": "And",
+      "start": 11.659,
+      "end": 11.819
+    },
+    {
+      "text": "schools",
+      "start": 11.819,
+      "end": 12.299
+    },
+    {
+      "text": "organize",
+      "start": 12.299,
+      "end": 12.779
+    },
+    {
+      "text": "trips",
+      "start": 12.779,
+      "end": 13.099
+    },
+    {
+      "text": "there",
+      "start": 13.099,
+      "end": 13.259
+    },
+    {
+      "text": "too",
+      "start": 13.259,
+      "end": 13.659
+    },
+    {
+      "text": "for",
+      "start": 13.819,
+      "end": 13.979
+    },
+    {
+      "text": "the",
+      "start": 13.979,
+      "end": 14.059
+    },
+    {
+      "text": "same",
+      "start": 14.059,
+      "end": 14.379
+    },
+    {
+      "text": "reason",
+      "start": 14.379,
+      "end": 14.939
+    },
+    {
+      "text": "people",
+      "start": 15.179,
+      "end": 15.419
+    },
+    {
+      "text": "think",
+      "start": 15.419,
+      "end": 15.739
+    },
+    {
+      "text": "visiting",
+      "start": 15.739,
+      "end": 16.139
+    },
+    {
+      "text": "science",
+      "start": 16.139,
+      "end": 16.539
+    },
+    {
+      "text": "museums",
+      "start": 16.539,
+      "end": 17.019
+    },
+    {
+      "text": "makes",
+      "start": 17.019,
+      "end": 17.339
+    },
+    {
+      "text": "you",
+      "start": 17.339,
+      "end": 17.419
+    },
+    {
+      "text": "more",
+      "start": 17.419,
+      "end": 17.739
+    },
+    {
+      "text": "logical",
+      "start": 17.819,
+      "end": 18.379
+    },
+    {
+      "text": "and",
+      "start": 18.379,
+      "end": 18.459
+    },
+    {
+      "text": "smarter",
+      "start": 18.459,
+      "end": 19.099
+    },
+    {
+      "text": "So",
+      "start": 19.628,
+      "end": 19.708
+    },
+    {
+      "text": "they",
+      "start": 19.708,
+      "end": 19.788
+    },
+    {
+      "text": "have",
+      "start": 19.788,
+      "end": 19.948
+    },
+    {
+      "text": "this",
+      "start": 19.948,
+      "end": 20.108
+    },
+    {
+      "text": "belief",
+      "start": 20.108,
+      "end": 20.588
+    },
+    {
+      "text": "and",
+      "start": 20.988,
+      "end": 21.068
+    },
+    {
+      "text": "that's",
+      "start": 21.068,
+      "end": 21.308
+    },
+    {
+      "text": "why",
+      "start": 21.308,
+      "end": 21.468
+    },
+    {
+      "text": "they",
+      "start": 21.468,
+      "end": 21.548
+    },
+    {
+      "text": "go",
+      "start": 21.548,
+      "end": 21.948
+    },
+    {
+      "text": "often",
+      "start": 22.028,
+      "end": 22.668
+    }
+  ]
+}

@@ -1,0 +1,279 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "99c2bd05ad811f64",
+  "audio_signature": "330440:1789786419",
+  "created_at": "2026-09-19T10:53:39",
+  "segments": [
+    {
+      "text": "Have you ever bought mirrors?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 1.55
+    },
+    {
+      "text": "Yes, of course. I bought one for shaving — I need to see whether I've shaved cleanly. And also when I put on facial cream, I need to check that I've applied it properly and there's no white stuff left on my face. That would look strange.",
+      "speaker": "b",
+      "start": 1.9,
+      "end": 13.71
+    }
+  ],
+  "words": [
+    {
+      "text": "Have",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "ever",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "bought",
+      "start": 0.48,
+      "end": 0.8
+    },
+    {
+      "text": "mirrors",
+      "start": 0.8,
+      "end": 1.52
+    },
+    {
+      "text": "Yes",
+      "start": 1.865,
+      "end": 2.185
+    },
+    {
+      "text": "of",
+      "start": 2.185,
+      "end": 2.265
+    },
+    {
+      "text": "course",
+      "start": 2.265,
+      "end": 2.905
+    },
+    {
+      "text": "I",
+      "start": 3.065,
+      "end": 3.145
+    },
+    {
+      "text": "bought",
+      "start": 3.145,
+      "end": 3.385
+    },
+    {
+      "text": "one",
+      "start": 3.385,
+      "end": 3.545
+    },
+    {
+      "text": "for",
+      "start": 3.545,
+      "end": 3.785
+    },
+    {
+      "text": "shaving",
+      "start": 3.785,
+      "end": 4.585
+    },
+    {
+      "text": "I",
+      "start": 4.985,
+      "end": 5.065
+    },
+    {
+      "text": "need",
+      "start": 5.065,
+      "end": 5.225
+    },
+    {
+      "text": "to",
+      "start": 5.225,
+      "end": 5.225
+    },
+    {
+      "text": "see",
+      "start": 5.225,
+      "end": 5.385
+    },
+    {
+      "text": "whether",
+      "start": 5.385,
+      "end": 5.625
+    },
+    {
+      "text": "I've",
+      "start": 5.625,
+      "end": 5.785
+    },
+    {
+      "text": "shaved",
+      "start": 5.785,
+      "end": 6.265
+    },
+    {
+      "text": "cleanly",
+      "start": 6.265,
+      "end": 6.905
+    },
+    {
+      "text": "And",
+      "start": 6.985,
+      "end": 7.065
+    },
+    {
+      "text": "also",
+      "start": 7.065,
+      "end": 7.385
+    },
+    {
+      "text": "when",
+      "start": 7.385,
+      "end": 7.465
+    },
+    {
+      "text": "I",
+      "start": 7.465,
+      "end": 7.545
+    },
+    {
+      "text": "put",
+      "start": 7.545,
+      "end": 7.625
+    },
+    {
+      "text": "on",
+      "start": 7.625,
+      "end": 7.785
+    },
+    {
+      "text": "facial",
+      "start": 7.785,
+      "end": 8.185
+    },
+    {
+      "text": "cream",
+      "start": 8.185,
+      "end": 8.425
+    },
+    {
+      "text": "I",
+      "start": 8.425,
+      "end": 8.505
+    },
+    {
+      "text": "need",
+      "start": 8.505,
+      "end": 8.745
+    },
+    {
+      "text": "to",
+      "start": 8.745,
+      "end": 8.745
+    },
+    {
+      "text": "check",
+      "start": 8.745,
+      "end": 9.065
+    },
+    {
+      "text": "that",
+      "start": 9.065,
+      "end": 9.145
+    },
+    {
+      "text": "I've",
+      "start": 9.145,
+      "end": 9.225
+    },
+    {
+      "text": "applied",
+      "start": 9.225,
+      "end": 9.625
+    },
+    {
+      "text": "it",
+      "start": 9.625,
+      "end": 9.705
+    },
+    {
+      "text": "properly",
+      "start": 9.705,
+      "end": 10.105
+    },
+    {
+      "text": "and",
+      "start": 10.105,
+      "end": 10.185
+    },
+    {
+      "text": "there's",
+      "start": 10.185,
+      "end": 10.425
+    },
+    {
+      "text": "no",
+      "start": 10.425,
+      "end": 10.585
+    },
+    {
+      "text": "white",
+      "start": 10.585,
+      "end": 10.825
+    },
+    {
+      "text": "stuff",
+      "start": 10.825,
+      "end": 11.145
+    },
+    {
+      "text": "left",
+      "start": 11.145,
+      "end": 11.305
+    },
+    {
+      "text": "on",
+      "start": 11.305,
+      "end": 11.385
+    },
+    {
+      "text": "my",
+      "start": 11.385,
+      "end": 11.545
+    },
+    {
+      "text": "face",
+      "start": 11.545,
+      "end": 12.105
+    },
+    {
+      "text": "That",
+      "start": 12.425,
+      "end": 12.665
+    },
+    {
+      "text": "would",
+      "start": 12.665,
+      "end": 12.745
+    },
+    {
+      "text": "look",
+      "start": 12.745,
+      "end": 12.825
+    },
+    {
+      "text": "strange",
+      "start": 12.825,
+      "end": 13.465
+    }
+  ]
+}

@@ -1,0 +1,454 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "ed2b3a9ab5add799",
+  "audio_signature": "601278:1789786380",
+  "created_at": "2026-09-19T10:53:01",
+  "segments": [
+    {
+      "text": "What interesting things have you done with science?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.68
+    },
+    {
+      "text": "Oh, this one takes me back. The most interesting thing — I remember I once used a concave mirror, you know, the kind that can focus things. I used it to concentrate sunlight onto a piece of paper and tried to burn it. I did that when I was a pupil. And also, whenever I saw an interesting science video, I would retell the whole thing to my classmates, my desk mates, and they were all amazed by it.",
+      "speaker": "b",
+      "start": 3.15,
+      "end": 25.0
+    }
+  ],
+  "words": [
+    {
+      "text": "What",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "interesting",
+      "start": 0.24,
+      "end": 0.8
+    },
+    {
+      "text": "things",
+      "start": 0.8,
+      "end": 1.12
+    },
+    {
+      "text": "have",
+      "start": 1.2,
+      "end": 1.28
+    },
+    {
+      "text": "you",
+      "start": 1.28,
+      "end": 1.44
+    },
+    {
+      "text": "done",
+      "start": 1.44,
+      "end": 1.76
+    },
+    {
+      "text": "with",
+      "start": 1.76,
+      "end": 1.84
+    },
+    {
+      "text": "science",
+      "start": 1.84,
+      "end": 2.64
+    },
+    {
+      "text": "Oh",
+      "start": 3.106,
+      "end": 3.186
+    },
+    {
+      "text": "this",
+      "start": 3.186,
+      "end": 3.346
+    },
+    {
+      "text": "one",
+      "start": 3.346,
+      "end": 3.426
+    },
+    {
+      "text": "takes",
+      "start": 3.426,
+      "end": 3.666
+    },
+    {
+      "text": "me",
+      "start": 3.666,
+      "end": 3.746
+    },
+    {
+      "text": "back",
+      "start": 3.746,
+      "end": 4.226
+    },
+    {
+      "text": "The",
+      "start": 4.546,
+      "end": 4.546
+    },
+    {
+      "text": "most",
+      "start": 4.546,
+      "end": 4.946
+    },
+    {
+      "text": "interesting",
+      "start": 4.946,
+      "end": 5.346
+    },
+    {
+      "text": "thing",
+      "start": 5.346,
+      "end": 5.746
+    },
+    {
+      "text": "I",
+      "start": 5.826,
+      "end": 5.986
+    },
+    {
+      "text": "remember",
+      "start": 5.986,
+      "end": 6.306
+    },
+    {
+      "text": "I",
+      "start": 6.306,
+      "end": 6.466
+    },
+    {
+      "text": "once",
+      "start": 6.466,
+      "end": 6.866
+    },
+    {
+      "text": "used",
+      "start": 6.866,
+      "end": 7.266
+    },
+    {
+      "text": "a",
+      "start": 7.266,
+      "end": 7.266
+    },
+    {
+      "text": "concave",
+      "start": 7.266,
+      "end": 7.906
+    },
+    {
+      "text": "mirror",
+      "start": 7.906,
+      "end": 8.466
+    },
+    {
+      "text": "you",
+      "start": 8.546,
+      "end": 8.626
+    },
+    {
+      "text": "know",
+      "start": 8.626,
+      "end": 8.786
+    },
+    {
+      "text": "the",
+      "start": 8.786,
+      "end": 8.866
+    },
+    {
+      "text": "kind",
+      "start": 8.866,
+      "end": 9.266
+    },
+    {
+      "text": "that",
+      "start": 9.266,
+      "end": 9.426
+    },
+    {
+      "text": "can",
+      "start": 9.426,
+      "end": 9.666
+    },
+    {
+      "text": "focus",
+      "start": 9.666,
+      "end": 9.986
+    },
+    {
+      "text": "things",
+      "start": 9.986,
+      "end": 10.466
+    },
+    {
+      "text": "I",
+      "start": 10.866,
+      "end": 10.946
+    },
+    {
+      "text": "used",
+      "start": 10.946,
+      "end": 11.186
+    },
+    {
+      "text": "it",
+      "start": 11.186,
+      "end": 11.426
+    },
+    {
+      "text": "to",
+      "start": 11.426,
+      "end": 11.426
+    },
+    {
+      "text": "concentrate",
+      "start": 11.426,
+      "end": 12.066
+    },
+    {
+      "text": "sunlight",
+      "start": 12.066,
+      "end": 12.546
+    },
+    {
+      "text": "onto",
+      "start": 12.546,
+      "end": 12.866
+    },
+    {
+      "text": "a",
+      "start": 12.866,
+      "end": 12.866
+    },
+    {
+      "text": "piece",
+      "start": 12.866,
+      "end": 13.106
+    },
+    {
+      "text": "of",
+      "start": 13.106,
+      "end": 13.186
+    },
+    {
+      "text": "paper",
+      "start": 13.186,
+      "end": 13.586
+    },
+    {
+      "text": "and",
+      "start": 13.586,
+      "end": 13.746
+    },
+    {
+      "text": "tried",
+      "start": 13.746,
+      "end": 13.986
+    },
+    {
+      "text": "to",
+      "start": 13.986,
+      "end": 13.986
+    },
+    {
+      "text": "burn",
+      "start": 13.986,
+      "end": 14.306
+    },
+    {
+      "text": "it",
+      "start": 14.306,
+      "end": 14.466
+    },
+    {
+      "text": "I",
+      "start": 14.866,
+      "end": 14.946
+    },
+    {
+      "text": "did",
+      "start": 14.946,
+      "end": 15.106
+    },
+    {
+      "text": "that",
+      "start": 15.106,
+      "end": 15.186
+    },
+    {
+      "text": "when",
+      "start": 15.186,
+      "end": 15.266
+    },
+    {
+      "text": "I",
+      "start": 15.266,
+      "end": 15.346
+    },
+    {
+      "text": "was",
+      "start": 15.346,
+      "end": 15.506
+    },
+    {
+      "text": "a",
+      "start": 15.506,
+      "end": 15.506
+    },
+    {
+      "text": "pupil",
+      "start": 15.506,
+      "end": 16.066
+    },
+    {
+      "text": "And",
+      "start": 16.708,
+      "end": 16.868
+    },
+    {
+      "text": "also",
+      "start": 16.868,
+      "end": 17.268
+    },
+    {
+      "text": "whenever",
+      "start": 17.268,
+      "end": 17.588
+    },
+    {
+      "text": "I",
+      "start": 17.588,
+      "end": 17.668
+    },
+    {
+      "text": "saw",
+      "start": 17.668,
+      "end": 18.068
+    },
+    {
+      "text": "an",
+      "start": 18.068,
+      "end": 18.228
+    },
+    {
+      "text": "interesting",
+      "start": 18.228,
+      "end": 18.708
+    },
+    {
+      "text": "science",
+      "start": 18.708,
+      "end": 19.028
+    },
+    {
+      "text": "video",
+      "start": 19.028,
+      "end": 19.508
+    },
+    {
+      "text": "I",
+      "start": 19.828,
+      "end": 19.908
+    },
+    {
+      "text": "would",
+      "start": 19.908,
+      "end": 20.068
+    },
+    {
+      "text": "retell",
+      "start": 20.068,
+      "end": 20.468
+    },
+    {
+      "text": "the",
+      "start": 20.468,
+      "end": 20.548
+    },
+    {
+      "text": "whole",
+      "start": 20.548,
+      "end": 20.788
+    },
+    {
+      "text": "thing",
+      "start": 20.788,
+      "end": 21.108
+    },
+    {
+      "text": "to",
+      "start": 21.188,
+      "end": 21.268
+    },
+    {
+      "text": "my",
+      "start": 21.268,
+      "end": 21.348
+    },
+    {
+      "text": "classmates",
+      "start": 21.348,
+      "end": 22.068
+    },
+    {
+      "text": "my",
+      "start": 22.068,
+      "end": 22.228
+    },
+    {
+      "text": "desk",
+      "start": 22.228,
+      "end": 22.548
+    },
+    {
+      "text": "mates",
+      "start": 22.548,
+      "end": 22.868
+    },
+    {
+      "text": "and",
+      "start": 23.188,
+      "end": 23.348
+    },
+    {
+      "text": "they",
+      "start": 23.348,
+      "end": 23.428
+    },
+    {
+      "text": "were",
+      "start": 23.428,
+      "end": 23.588
+    },
+    {
+      "text": "all",
+      "start": 23.588,
+      "end": 23.828
+    },
+    {
+      "text": "amazed",
+      "start": 23.828,
+      "end": 24.308
+    },
+    {
+      "text": "by",
+      "start": 24.308,
+      "end": 24.628
+    },
+    {
+      "text": "it",
+      "start": 24.628,
+      "end": 24.628
+    }
+  ]
+}

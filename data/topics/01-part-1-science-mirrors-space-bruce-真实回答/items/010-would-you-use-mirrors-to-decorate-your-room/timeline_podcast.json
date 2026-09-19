@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Would you use mirrors to decorate your room?",
+    "start": 0.0,
+    "end": 2.35,
+    "duration": 2.35,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "No, absolutely not. That's kind of a weird thing for us, because in China there's feng shui — you know, traditional beliefs. We have stories and tales that if you leave a mirror open in your room, bad things might come out of it. It's a terrifying thought for a lot of people. So we just don't do that.",
+    "start": 2.82,
+    "end": 18.21,
+    "duration": 15.39,
+    "mode": "sse"
+  }
+]

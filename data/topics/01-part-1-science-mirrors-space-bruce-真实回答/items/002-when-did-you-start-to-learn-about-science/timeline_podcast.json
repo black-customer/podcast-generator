@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "When did you start to learn about science?",
+    "start": 0.0,
+    "end": 2.28,
+    "duration": 2.28,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I think from primary school — from education. Back then, teachers taught us things about the world. Like, there's this dead lake where people just float on the water — they don't sink at all, because of the salt. That's when I started learning about science.",
+    "start": 2.69,
+    "end": 15.78,
+    "duration": 13.09,
+    "mode": "sse"
+  }
+]

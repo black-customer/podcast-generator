@@ -1,0 +1,284 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "33355d408d02e600",
+  "audio_signature": "379969:1789786357",
+  "created_at": "2026-09-19T10:52:38",
+  "segments": [
+    {
+      "text": "When did you start to learn about science?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.28
+    },
+    {
+      "text": "I think from primary school — from education. Back then, teachers taught us things about the world. Like, there's this dead lake where people just float on the water — they don't sink at all, because of the salt. That's when I started learning about science.",
+      "speaker": "b",
+      "start": 2.69,
+      "end": 15.78
+    }
+  ],
+  "words": [
+    {
+      "text": "When",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "did",
+      "start": 0.24,
+      "end": 0.4
+    },
+    {
+      "text": "you",
+      "start": 0.4,
+      "end": 0.48
+    },
+    {
+      "text": "start",
+      "start": 0.48,
+      "end": 0.88
+    },
+    {
+      "text": "to",
+      "start": 0.88,
+      "end": 0.88
+    },
+    {
+      "text": "learn",
+      "start": 0.88,
+      "end": 1.2
+    },
+    {
+      "text": "about",
+      "start": 1.2,
+      "end": 1.44
+    },
+    {
+      "text": "science",
+      "start": 1.44,
+      "end": 2.24
+    },
+    {
+      "text": "I",
+      "start": 2.642,
+      "end": 2.722
+    },
+    {
+      "text": "think",
+      "start": 2.722,
+      "end": 2.882
+    },
+    {
+      "text": "from",
+      "start": 2.882,
+      "end": 3.042
+    },
+    {
+      "text": "primary",
+      "start": 3.042,
+      "end": 3.442
+    },
+    {
+      "text": "school",
+      "start": 3.442,
+      "end": 3.922
+    },
+    {
+      "text": "from",
+      "start": 4.002,
+      "end": 4.162
+    },
+    {
+      "text": "education",
+      "start": 4.162,
+      "end": 4.962
+    },
+    {
+      "text": "Back",
+      "start": 5.122,
+      "end": 5.362
+    },
+    {
+      "text": "then",
+      "start": 5.362,
+      "end": 5.682
+    },
+    {
+      "text": "teachers",
+      "start": 5.682,
+      "end": 6.162
+    },
+    {
+      "text": "taught",
+      "start": 6.162,
+      "end": 6.322
+    },
+    {
+      "text": "us",
+      "start": 6.322,
+      "end": 6.482
+    },
+    {
+      "text": "things",
+      "start": 6.482,
+      "end": 6.882
+    },
+    {
+      "text": "about",
+      "start": 6.882,
+      "end": 7.122
+    },
+    {
+      "text": "the",
+      "start": 7.122,
+      "end": 7.202
+    },
+    {
+      "text": "world",
+      "start": 7.202,
+      "end": 7.602
+    },
+    {
+      "text": "Like",
+      "start": 7.922,
+      "end": 8.242
+    },
+    {
+      "text": "there's",
+      "start": 8.322,
+      "end": 8.562
+    },
+    {
+      "text": "this",
+      "start": 8.562,
+      "end": 8.722
+    },
+    {
+      "text": "dead",
+      "start": 8.882,
+      "end": 9.202
+    },
+    {
+      "text": "lake",
+      "start": 9.202,
+      "end": 9.602
+    },
+    {
+      "text": "where",
+      "start": 9.602,
+      "end": 9.682
+    },
+    {
+      "text": "people",
+      "start": 9.682,
+      "end": 10.002
+    },
+    {
+      "text": "just",
+      "start": 10.002,
+      "end": 10.162
+    },
+    {
+      "text": "float",
+      "start": 10.162,
+      "end": 10.482
+    },
+    {
+      "text": "on",
+      "start": 10.482,
+      "end": 10.642
+    },
+    {
+      "text": "the",
+      "start": 10.642,
+      "end": 10.642
+    },
+    {
+      "text": "water",
+      "start": 10.642,
+      "end": 11.042
+    },
+    {
+      "text": "they",
+      "start": 11.042,
+      "end": 11.202
+    },
+    {
+      "text": "don't",
+      "start": 11.202,
+      "end": 11.442
+    },
+    {
+      "text": "sink",
+      "start": 11.442,
+      "end": 11.682
+    },
+    {
+      "text": "at",
+      "start": 11.682,
+      "end": 11.762
+    },
+    {
+      "text": "all",
+      "start": 11.762,
+      "end": 12.082
+    },
+    {
+      "text": "because",
+      "start": 12.322,
+      "end": 12.562
+    },
+    {
+      "text": "of",
+      "start": 12.562,
+      "end": 12.722
+    },
+    {
+      "text": "the",
+      "start": 12.722,
+      "end": 12.722
+    },
+    {
+      "text": "salt",
+      "start": 12.722,
+      "end": 13.282
+    },
+    {
+      "text": "That's",
+      "start": 13.602,
+      "end": 13.842
+    },
+    {
+      "text": "when",
+      "start": 13.842,
+      "end": 13.922
+    },
+    {
+      "text": "I",
+      "start": 13.922,
+      "end": 14.002
+    },
+    {
+      "text": "started",
+      "start": 14.002,
+      "end": 14.402
+    },
+    {
+      "text": "learning",
+      "start": 14.402,
+      "end": 14.642
+    },
+    {
+      "text": "about",
+      "start": 14.642,
+      "end": 14.882
+    },
+    {
+      "text": "science",
+      "start": 14.882,
+      "end": 15.522
+    }
+  ]
+}

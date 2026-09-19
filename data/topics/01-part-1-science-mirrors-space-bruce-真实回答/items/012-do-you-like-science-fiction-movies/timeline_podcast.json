@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you like science fiction movies, and why?",
+    "start": 0.0,
+    "end": 2.85,
+    "duration": 2.85,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yes, I like science fiction movies. They're very interesting — the most important thing is they show you things you've never seen before. They broaden your horizon and motivate you to hope something about the future. Not too hopeful, but just... a kind of thought that makes you imagine how amazing the future could be.",
+    "start": 3.25,
+    "end": 18.94,
+    "duration": 15.69,
+    "mode": "sse"
+  }
+]

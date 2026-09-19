@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Have you ever learned about outer space and stars?",
+    "start": 0.0,
+    "end": 2.53,
+    "duration": 2.53,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yeah, I have. I've watched a lot of videos about them, and through school I also learned things like the Big Bang theory, gravity, and just the normal stuff. But most of what I know, I learned from YouTube and Bilibili.",
+    "start": 2.9,
+    "end": 15.07,
+    "duration": 12.17,
+    "mode": "sse"
+  }
+]

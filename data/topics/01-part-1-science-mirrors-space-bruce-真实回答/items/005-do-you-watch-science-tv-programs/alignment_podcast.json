@@ -1,0 +1,249 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "b59e1e41d38dea3b",
+  "audio_signature": "307871:1789786388",
+  "created_at": "2026-09-19T10:53:09",
+  "segments": [
+    {
+      "text": "Do you watch science TV programs?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.12
+    },
+    {
+      "text": "Yes, I watch a lot of science programs. They're really interesting — they can explain so many things in real life, help you think about them from a science angle. And they motivate you to think, which I really like.",
+      "speaker": "b",
+      "start": 2.58,
+      "end": 12.77
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "watch",
+      "start": 0.24,
+      "end": 0.56
+    },
+    {
+      "text": "science",
+      "start": 0.56,
+      "end": 0.96
+    },
+    {
+      "text": "TV",
+      "start": 0.96,
+      "end": 1.28
+    },
+    {
+      "text": "programs",
+      "start": 1.28,
+      "end": 2.08
+    },
+    {
+      "text": "Yes",
+      "start": 2.536,
+      "end": 2.936
+    },
+    {
+      "text": "I",
+      "start": 3.016,
+      "end": 3.096
+    },
+    {
+      "text": "watch",
+      "start": 3.096,
+      "end": 3.336
+    },
+    {
+      "text": "a",
+      "start": 3.336,
+      "end": 3.336
+    },
+    {
+      "text": "lot",
+      "start": 3.336,
+      "end": 3.576
+    },
+    {
+      "text": "of",
+      "start": 3.576,
+      "end": 3.576
+    },
+    {
+      "text": "science",
+      "start": 3.576,
+      "end": 3.896
+    },
+    {
+      "text": "programs",
+      "start": 3.896,
+      "end": 4.536
+    },
+    {
+      "text": "They're",
+      "start": 4.776,
+      "end": 4.856
+    },
+    {
+      "text": "really",
+      "start": 4.856,
+      "end": 5.176
+    },
+    {
+      "text": "interesting",
+      "start": 5.176,
+      "end": 5.816
+    },
+    {
+      "text": "they",
+      "start": 5.816,
+      "end": 5.896
+    },
+    {
+      "text": "can",
+      "start": 5.896,
+      "end": 5.976
+    },
+    {
+      "text": "explain",
+      "start": 5.976,
+      "end": 6.456
+    },
+    {
+      "text": "so",
+      "start": 6.456,
+      "end": 6.696
+    },
+    {
+      "text": "many",
+      "start": 6.696,
+      "end": 6.856
+    },
+    {
+      "text": "things",
+      "start": 6.856,
+      "end": 7.176
+    },
+    {
+      "text": "in",
+      "start": 7.176,
+      "end": 7.336
+    },
+    {
+      "text": "real",
+      "start": 7.336,
+      "end": 7.576
+    },
+    {
+      "text": "life",
+      "start": 7.576,
+      "end": 7.896
+    },
+    {
+      "text": "help",
+      "start": 8.136,
+      "end": 8.296
+    },
+    {
+      "text": "you",
+      "start": 8.296,
+      "end": 8.376
+    },
+    {
+      "text": "think",
+      "start": 8.376,
+      "end": 8.536
+    },
+    {
+      "text": "about",
+      "start": 8.536,
+      "end": 8.776
+    },
+    {
+      "text": "them",
+      "start": 8.776,
+      "end": 8.856
+    },
+    {
+      "text": "from",
+      "start": 8.856,
+      "end": 9.016
+    },
+    {
+      "text": "a",
+      "start": 9.016,
+      "end": 9.096
+    },
+    {
+      "text": "science",
+      "start": 9.096,
+      "end": 9.496
+    },
+    {
+      "text": "angle",
+      "start": 9.496,
+      "end": 9.976
+    },
+    {
+      "text": "And",
+      "start": 10.136,
+      "end": 10.296
+    },
+    {
+      "text": "they",
+      "start": 10.296,
+      "end": 10.376
+    },
+    {
+      "text": "motivate",
+      "start": 10.376,
+      "end": 10.776
+    },
+    {
+      "text": "you",
+      "start": 10.776,
+      "end": 10.936
+    },
+    {
+      "text": "to",
+      "start": 10.936,
+      "end": 10.936
+    },
+    {
+      "text": "think",
+      "start": 11.016,
+      "end": 11.416
+    },
+    {
+      "text": "which",
+      "start": 11.576,
+      "end": 11.736
+    },
+    {
+      "text": "I",
+      "start": 11.736,
+      "end": 11.816
+    },
+    {
+      "text": "really",
+      "start": 11.816,
+      "end": 12.056
+    },
+    {
+      "text": "like",
+      "start": 12.056,
+      "end": 12.536
+    }
+  ]
+}

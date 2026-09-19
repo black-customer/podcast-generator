@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "What interesting things have you done with science?",
+    "start": 0.0,
+    "end": 2.68,
+    "duration": 2.68,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Oh, this one takes me back. The most interesting thing — I remember I once used a concave mirror, you know, the kind that can focus things. I used it to concentrate sunlight onto a piece of paper and tried to burn it. I did that when I was a pupil. And also, whenever I saw an interesting science video, I would retell the whole thing to my classmates, my desk mates, and they were all amazed by it.",
+    "start": 3.15,
+    "end": 25.0,
+    "duration": 21.85,
+    "mode": "sse"
+  }
+]

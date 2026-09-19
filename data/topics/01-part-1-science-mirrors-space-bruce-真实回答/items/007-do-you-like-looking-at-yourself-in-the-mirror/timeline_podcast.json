@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you like looking at yourself in the mirror? How often?",
+    "start": 0.0,
+    "end": 2.77,
+    "duration": 2.77,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I wouldn't say I love doing it, because I'm not that handsome, honestly. But I do it often — maybe twice a day. Because when I go out, I need to check that I look fine, you know? It's not that I enjoy looking at myself — it's more like a necessity. I just need to make sure I look presentable.",
+    "start": 3.08,
+    "end": 17.58,
+    "duration": 14.5,
+    "mode": "sse"
+  }
+]

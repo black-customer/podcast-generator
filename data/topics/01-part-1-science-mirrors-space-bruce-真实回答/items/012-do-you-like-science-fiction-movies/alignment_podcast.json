@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "4e21f7aa6784a1d6",
+  "audio_signature": "455828:1789786457",
+  "created_at": "2026-09-19T10:54:17",
+  "segments": [
+    {
+      "text": "Do you like science fiction movies, and why?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.85
+    },
+    {
+      "text": "Yes, I like science fiction movies. They're very interesting — the most important thing is they show you things you've never seen before. They broaden your horizon and motivate you to hope something about the future. Not too hopeful, but just... a kind of thought that makes you imagine how amazing the future could be.",
+      "speaker": "b",
+      "start": 3.25,
+      "end": 18.94
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "like",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "science",
+      "start": 0.48,
+      "end": 0.88
+    },
+    {
+      "text": "fiction",
+      "start": 0.88,
+      "end": 1.28
+    },
+    {
+      "text": "movies",
+      "start": 1.28,
+      "end": 1.92
+    },
+    {
+      "text": "and",
+      "start": 2.0,
+      "end": 2.24
+    },
+    {
+      "text": "why",
+      "start": 2.24,
+      "end": 2.8
+    },
+    {
+      "text": "Yes",
+      "start": 3.199,
+      "end": 3.519
+    },
+    {
+      "text": "I",
+      "start": 3.519,
+      "end": 3.679
+    },
+    {
+      "text": "like",
+      "start": 3.679,
+      "end": 3.839
+    },
+    {
+      "text": "science",
+      "start": 3.839,
+      "end": 4.079
+    },
+    {
+      "text": "fiction",
+      "start": 4.159,
+      "end": 4.399
+    },
+    {
+      "text": "movies",
+      "start": 4.399,
+      "end": 4.879
+    },
+    {
+      "text": "They're",
+      "start": 4.959,
+      "end": 5.119
+    },
+    {
+      "text": "very",
+      "start": 5.119,
+      "end": 5.439
+    },
+    {
+      "text": "interesting",
+      "start": 5.439,
+      "end": 6.079
+    },
+    {
+      "text": "the",
+      "start": 6.159,
+      "end": 6.239
+    },
+    {
+      "text": "most",
+      "start": 6.239,
+      "end": 6.559
+    },
+    {
+      "text": "important",
+      "start": 6.559,
+      "end": 7.039
+    },
+    {
+      "text": "thing",
+      "start": 7.039,
+      "end": 7.199
+    },
+    {
+      "text": "is",
+      "start": 7.199,
+      "end": 7.439
+    },
+    {
+      "text": "they",
+      "start": 7.439,
+      "end": 7.599
+    },
+    {
+      "text": "show",
+      "start": 7.599,
+      "end": 7.839
+    },
+    {
+      "text": "you",
+      "start": 7.839,
+      "end": 7.999
+    },
+    {
+      "text": "things",
+      "start": 7.999,
+      "end": 8.319
+    },
+    {
+      "text": "you've",
+      "start": 8.319,
+      "end": 8.399
+    },
+    {
+      "text": "never",
+      "start": 8.399,
+      "end": 8.719
+    },
+    {
+      "text": "seen",
+      "start": 8.719,
+      "end": 8.959
+    },
+    {
+      "text": "before",
+      "start": 8.959,
+      "end": 9.439
+    },
+    {
+      "text": "They",
+      "start": 9.599,
+      "end": 9.759
+    },
+    {
+      "text": "broaden",
+      "start": 9.759,
+      "end": 10.239
+    },
+    {
+      "text": "your",
+      "start": 10.239,
+      "end": 10.319
+    },
+    {
+      "text": "horizon",
+      "start": 10.319,
+      "end": 10.959
+    },
+    {
+      "text": "and",
+      "start": 10.959,
+      "end": 11.199
+    },
+    {
+      "text": "motivate",
+      "start": 11.199,
+      "end": 11.599
+    },
+    {
+      "text": "you",
+      "start": 11.599,
+      "end": 11.759
+    },
+    {
+      "text": "to",
+      "start": 11.759,
+      "end": 11.759
+    },
+    {
+      "text": "hope",
+      "start": 11.759,
+      "end": 12.079
+    },
+    {
+      "text": "something",
+      "start": 12.079,
+      "end": 12.399
+    },
+    {
+      "text": "about",
+      "start": 12.399,
+      "end": 12.639
+    },
+    {
+      "text": "the",
+      "start": 12.639,
+      "end": 12.639
+    },
+    {
+      "text": "future",
+      "start": 12.639,
+      "end": 13.199
+    },
+    {
+      "text": "Not",
+      "start": 13.359,
+      "end": 13.679
+    },
+    {
+      "text": "too",
+      "start": 13.679,
+      "end": 13.839
+    },
+    {
+      "text": "hopeful",
+      "start": 13.839,
+      "end": 14.399
+    },
+    {
+      "text": "but",
+      "start": 14.479,
+      "end": 14.559
+    },
+    {
+      "text": "just",
+      "start": 14.559,
+      "end": 15.119
+    },
+    {
+      "text": "a",
+      "start": 15.495,
+      "end": 15.575
+    },
+    {
+      "text": "kind",
+      "start": 15.575,
+      "end": 15.735
+    },
+    {
+      "text": "of",
+      "start": 15.735,
+      "end": 15.815
+    },
+    {
+      "text": "thought",
+      "start": 15.815,
+      "end": 16.295
+    },
+    {
+      "text": "that",
+      "start": 16.375,
+      "end": 16.535
+    },
+    {
+      "text": "makes",
+      "start": 16.535,
+      "end": 16.775
+    },
+    {
+      "text": "you",
+      "start": 16.775,
+      "end": 16.855
+    },
+    {
+      "text": "imagine",
+      "start": 16.855,
+      "end": 17.255
+    },
+    {
+      "text": "how",
+      "start": 17.255,
+      "end": 17.495
+    },
+    {
+      "text": "amazing",
+      "start": 17.495,
+      "end": 17.815
+    },
+    {
+      "text": "the",
+      "start": 17.815,
+      "end": 17.895
+    },
+    {
+      "text": "future",
+      "start": 17.895,
+      "end": 18.215
+    },
+    {
+      "text": "could",
+      "start": 18.215,
+      "end": 18.375
+    },
+    {
+      "text": "be",
+      "start": 18.375,
+      "end": 18.615
+    }
+  ]
+}

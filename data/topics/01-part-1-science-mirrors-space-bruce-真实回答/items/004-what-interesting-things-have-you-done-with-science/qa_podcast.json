@@ -1,0 +1,34 @@
+{
+  "checked_at": "2026-09-19T10:53:01",
+  "duration_sec": 25.0,
+  "verdict": "pass",
+  "issues": [],
+  "checks": [
+    {
+      "kind": "duration_ratio",
+      "ok": true,
+      "expected_sec": 32.64,
+      "actual_sec": 25.0,
+      "ratio": 0.77,
+      "severity": "high"
+    },
+    {
+      "kind": "silence_island",
+      "ok": true,
+      "islands": [],
+      "severity": "low"
+    },
+    {
+      "kind": "clipping",
+      "ok": true,
+      "peak_db": -8.01728,
+      "severity": "medium"
+    },
+    {
+      "kind": "vad_island",
+      "ok": true,
+      "skipped": "silero-vad 未安装",
+      "severity": "low"
+    }
+  ]
+}

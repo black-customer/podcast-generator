@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Which science subject is interesting to you?",
+    "start": 0.0,
+    "end": 2.52,
+    "duration": 2.52,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Hmm, maybe physics. Because physics is everywhere in real life — you can see it in anything. Like, why can Spider-Man climb walls without falling? Stuff like that. You can find so many scenes in daily life that show physics, and I think that's really interesting.",
+    "start": 3.05,
+    "end": 17.42,
+    "duration": 14.37,
+    "mode": "sse"
+  }
+]

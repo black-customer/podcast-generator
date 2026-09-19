@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you want to go into outer space in the future?",
+    "start": 0.0,
+    "end": 2.36,
+    "duration": 2.36,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yes, if I had the choice. But you know, it depends on the price and the safety, because going to outer space is a big deal. If it were convenient, safe, and not that expensive, then I would definitely go.",
+    "start": 2.91,
+    "end": 13.58,
+    "duration": 10.67,
+    "mode": "sse"
+  }
+]

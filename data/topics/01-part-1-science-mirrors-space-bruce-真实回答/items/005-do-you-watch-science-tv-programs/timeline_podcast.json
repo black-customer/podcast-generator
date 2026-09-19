@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you watch science TV programs?",
+    "start": 0.0,
+    "end": 2.12,
+    "duration": 2.12,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Yes, I watch a lot of science programs. They're really interesting — they can explain so many things in real life, help you think about them from a science angle. And they motivate you to think, which I really like.",
+    "start": 2.58,
+    "end": 12.77,
+    "duration": 10.19,
+    "mode": "sse"
+  }
+]

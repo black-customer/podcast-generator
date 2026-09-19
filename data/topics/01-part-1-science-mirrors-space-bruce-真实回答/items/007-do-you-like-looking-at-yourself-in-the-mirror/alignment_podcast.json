@@ -1,0 +1,374 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "7123a059291545c5",
+  "audio_signature": "423227:1789786411",
+  "created_at": "2026-09-19T10:53:31",
+  "segments": [
+    {
+      "text": "Do you like looking at yourself in the mirror? How often?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 2.77
+    },
+    {
+      "text": "I wouldn't say I love doing it, because I'm not that handsome, honestly. But I do it often — maybe twice a day. Because when I go out, I need to check that I look fine, you know? It's not that I enjoy looking at myself — it's more like a necessity. I just need to make sure I look presentable.",
+      "speaker": "b",
+      "start": 3.08,
+      "end": 17.58
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.08
+    },
+    {
+      "text": "you",
+      "start": 0.08,
+      "end": 0.24
+    },
+    {
+      "text": "like",
+      "start": 0.24,
+      "end": 0.4
+    },
+    {
+      "text": "looking",
+      "start": 0.4,
+      "end": 0.72
+    },
+    {
+      "text": "at",
+      "start": 0.72,
+      "end": 0.8
+    },
+    {
+      "text": "yourself",
+      "start": 0.8,
+      "end": 1.2
+    },
+    {
+      "text": "in",
+      "start": 1.2,
+      "end": 1.28
+    },
+    {
+      "text": "the",
+      "start": 1.28,
+      "end": 1.36
+    },
+    {
+      "text": "mirror",
+      "start": 1.36,
+      "end": 1.84
+    },
+    {
+      "text": "How",
+      "start": 1.92,
+      "end": 2.32
+    },
+    {
+      "text": "often",
+      "start": 2.32,
+      "end": 2.72
+    },
+    {
+      "text": "I",
+      "start": 3.026,
+      "end": 3.106
+    },
+    {
+      "text": "wouldn't",
+      "start": 3.106,
+      "end": 3.426
+    },
+    {
+      "text": "say",
+      "start": 3.426,
+      "end": 3.746
+    },
+    {
+      "text": "I",
+      "start": 3.746,
+      "end": 3.906
+    },
+    {
+      "text": "love",
+      "start": 3.906,
+      "end": 4.386
+    },
+    {
+      "text": "doing",
+      "start": 4.386,
+      "end": 4.946
+    },
+    {
+      "text": "it",
+      "start": 4.946,
+      "end": 5.026
+    },
+    {
+      "text": "because",
+      "start": 5.026,
+      "end": 5.346
+    },
+    {
+      "text": "I'm",
+      "start": 5.346,
+      "end": 5.506
+    },
+    {
+      "text": "not",
+      "start": 5.506,
+      "end": 5.746
+    },
+    {
+      "text": "that",
+      "start": 5.746,
+      "end": 5.906
+    },
+    {
+      "text": "handsome",
+      "start": 5.906,
+      "end": 6.466
+    },
+    {
+      "text": "honestly",
+      "start": 6.546,
+      "end": 7.106
+    },
+    {
+      "text": "But",
+      "start": 7.186,
+      "end": 7.266
+    },
+    {
+      "text": "I",
+      "start": 7.266,
+      "end": 7.346
+    },
+    {
+      "text": "do",
+      "start": 7.346,
+      "end": 7.506
+    },
+    {
+      "text": "it",
+      "start": 7.506,
+      "end": 7.506
+    },
+    {
+      "text": "often",
+      "start": 7.506,
+      "end": 7.906
+    },
+    {
+      "text": "maybe",
+      "start": 7.906,
+      "end": 8.146
+    },
+    {
+      "text": "twice",
+      "start": 8.146,
+      "end": 8.466
+    },
+    {
+      "text": "a",
+      "start": 8.466,
+      "end": 8.546
+    },
+    {
+      "text": "day",
+      "start": 8.546,
+      "end": 8.946
+    },
+    {
+      "text": "Because",
+      "start": 9.026,
+      "end": 9.266
+    },
+    {
+      "text": "when",
+      "start": 9.266,
+      "end": 9.346
+    },
+    {
+      "text": "I",
+      "start": 9.346,
+      "end": 9.506
+    },
+    {
+      "text": "go",
+      "start": 9.506,
+      "end": 9.666
+    },
+    {
+      "text": "out",
+      "start": 9.666,
+      "end": 10.066
+    },
+    {
+      "text": "I",
+      "start": 10.066,
+      "end": 10.226
+    },
+    {
+      "text": "need",
+      "start": 10.226,
+      "end": 10.466
+    },
+    {
+      "text": "to",
+      "start": 10.466,
+      "end": 10.466
+    },
+    {
+      "text": "check",
+      "start": 10.466,
+      "end": 10.866
+    },
+    {
+      "text": "that",
+      "start": 10.866,
+      "end": 10.946
+    },
+    {
+      "text": "I",
+      "start": 10.946,
+      "end": 11.026
+    },
+    {
+      "text": "look",
+      "start": 11.026,
+      "end": 11.186
+    },
+    {
+      "text": "fine",
+      "start": 11.186,
+      "end": 11.746
+    },
+    {
+      "text": "you",
+      "start": 11.746,
+      "end": 11.906
+    },
+    {
+      "text": "know",
+      "start": 11.906,
+      "end": 12.226
+    },
+    {
+      "text": "It's",
+      "start": 12.306,
+      "end": 12.386
+    },
+    {
+      "text": "not",
+      "start": 12.386,
+      "end": 12.626
+    },
+    {
+      "text": "that",
+      "start": 12.626,
+      "end": 12.706
+    },
+    {
+      "text": "I",
+      "start": 12.706,
+      "end": 12.786
+    },
+    {
+      "text": "enjoy",
+      "start": 12.786,
+      "end": 13.106
+    },
+    {
+      "text": "looking",
+      "start": 13.106,
+      "end": 13.346
+    },
+    {
+      "text": "at",
+      "start": 13.346,
+      "end": 13.426
+    },
+    {
+      "text": "myself",
+      "start": 13.426,
+      "end": 13.986
+    },
+    {
+      "text": "it's",
+      "start": 14.066,
+      "end": 14.226
+    },
+    {
+      "text": "more",
+      "start": 14.226,
+      "end": 14.386
+    },
+    {
+      "text": "like",
+      "start": 14.386,
+      "end": 14.626
+    },
+    {
+      "text": "a",
+      "start": 14.626,
+      "end": 14.626
+    },
+    {
+      "text": "necessity",
+      "start": 14.626,
+      "end": 15.346
+    },
+    {
+      "text": "I",
+      "start": 15.426,
+      "end": 15.586
+    },
+    {
+      "text": "just",
+      "start": 15.586,
+      "end": 15.746
+    },
+    {
+      "text": "need",
+      "start": 15.746,
+      "end": 15.986
+    },
+    {
+      "text": "to",
+      "start": 15.986,
+      "end": 15.986
+    },
+    {
+      "text": "make",
+      "start": 15.986,
+      "end": 16.146
+    },
+    {
+      "text": "sure",
+      "start": 16.146,
+      "end": 16.306
+    },
+    {
+      "text": "I",
+      "start": 16.306,
+      "end": 16.386
+    },
+    {
+      "text": "look",
+      "start": 16.386,
+      "end": 16.546
+    },
+    {
+      "text": "presentable",
+      "start": 16.546,
+      "end": 17.266
+    }
+  ]
+}

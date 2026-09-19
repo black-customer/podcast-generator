@@ -1,32 +1,4 @@
 {
-  "82be8910d213": {
-    "id": "82be8910d213",
-    "kind": "generate",
-    "topic_id": "01-qa",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:50.290",
-    "finished_at": "2026-09-19T01:49:52.393"
-  },
-  "9611190e29b4": {
-    "id": "9611190e29b4",
-    "kind": "generate",
-    "topic_id": "01-e2e",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-q",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T01:49:52.917",
-    "finished_at": "2026-09-19T01:49:53.724"
-  },
   "1773169fb708": {
     "id": "1773169fb708",
     "kind": "assemble",
@@ -1405,6 +1377,143 @@
           "duration_sec": 12.07,
           "offset_sec": 211.46,
           "generated_at": "2026-09-19T10:49:45.287"
+        }
+      ]
+    }
+  },
+  "7b929c2cd471": {
+    "id": "7b929c2cd471",
+    "kind": "generate",
+    "topic_id": "01-part-1-science-mirrors-space-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 14,
+    "done": 14,
+    "current": "014-do-you-want-to-go-into-outer-space-in-the-future",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:52:14.764",
+    "finished_at": "2026-09-19T10:54:34.746"
+  },
+  "7c11a97e682c": {
+    "id": "7c11a97e682c",
+    "kind": "assemble",
+    "topic_id": "01-part-1-science-mirrors-space-bruce-真实回答",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T10:55:07.436",
+    "finished_at": "2026-09-19T10:55:15.826",
+    "result": {
+      "topic_id": "01-part-1-science-mirrors-space-bruce-真实回答",
+      "topic_name": "Part 1 · Science, Mirrors & Space（Bruce 真实回答）",
+      "track": "podcast",
+      "file": "01-part-1-science-mirrors-space-bruce-真实回答_podcast.mp3",
+      "total_sec": 210.98,
+      "item_count": 14,
+      "generated_at": "2026-09-19T10:55:15.824",
+      "items": [
+        {
+          "id": "001-do-you-like-science",
+          "title": "Do you like science?",
+          "duration_sec": 22.26,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T10:52:14.773"
+        },
+        {
+          "id": "002-when-did-you-start-to-learn-about-science",
+          "title": "When did you start to learn about science?",
+          "duration_sec": 15.78,
+          "offset_sec": 22.86,
+          "generated_at": "2026-09-19T10:52:28.262"
+        },
+        {
+          "id": "003-which-science-subject-is-interesting-to-you",
+          "title": "Which science subject is interesting to you?",
+          "duration_sec": 17.42,
+          "offset_sec": 39.24,
+          "generated_at": "2026-09-19T10:52:38.319"
+        },
+        {
+          "id": "004-what-interesting-things-have-you-done-with-science",
+          "title": "What interesting things have you done with science?",
+          "duration_sec": 25.0,
+          "offset_sec": 57.26,
+          "generated_at": "2026-09-19T10:52:48.364"
+        },
+        {
+          "id": "005-do-you-watch-science-tv-programs",
+          "title": "Do you watch science TV programs?",
+          "duration_sec": 12.77,
+          "offset_sec": 82.86,
+          "generated_at": "2026-09-19T10:53:01.460"
+        },
+        {
+          "id": "006-do-chinese-people-often-visit-science-museums",
+          "title": "Do Chinese people often visit science museums?",
+          "duration_sec": 22.8,
+          "offset_sec": 96.23,
+          "generated_at": "2026-09-19T10:53:09.086"
+        },
+        {
+          "id": "007-do-you-like-looking-at-yourself-in-the-mirror",
+          "title": "Do you like looking at yourself in the mirror?",
+          "duration_sec": 17.58,
+          "offset_sec": 119.63,
+          "generated_at": "2026-09-19T10:53:21.441"
+        },
+        {
+          "id": "008-have-you-ever-bought-mirrors",
+          "title": "Have you ever bought mirrors?",
+          "duration_sec": 13.71,
+          "offset_sec": 137.81,
+          "generated_at": "2026-09-19T10:53:31.495"
+        },
+        {
+          "id": "009-do-you-usually-take-a-mirror-with-you",
+          "title": "Do you usually take a mirror with you?",
+          "duration_sec": 19.7,
+          "offset_sec": 152.12,
+          "generated_at": "2026-09-19T10:53:39.655"
+        },
+        {
+          "id": "010-would-you-use-mirrors-to-decorate-your-room",
+          "title": "Would you use mirrors to decorate your room?",
+          "duration_sec": 18.21,
+          "offset_sec": 172.42,
+          "generated_at": "2026-09-19T10:53:50.426"
+        },
+        {
+          "id": "011-have-you-ever-learned-about-outer-space-and-stars",
+          "title": "Have you ever learned about outer space and stars?",
+          "duration_sec": 15.07,
+          "offset_sec": 191.23,
+          "generated_at": "2026-09-19T10:53:59.614"
+        },
+        {
+          "id": "012-do-you-like-science-fiction-movies",
+          "title": "Do you like science fiction movies?",
+          "duration_sec": 18.94,
+          "offset_sec": 206.9,
+          "generated_at": "2026-09-19T10:54:07.973"
+        },
+        {
+          "id": "013-do-you-want-to-know-more-about-outer-space",
+          "title": "Do you want to know more about outer space?",
+          "duration_sec": 16.51,
+          "offset_sec": 226.44,
+          "generated_at": "2026-09-19T10:54:17.600"
+        },
+        {
+          "id": "014-do-you-want-to-go-into-outer-space-in-the-future",
+          "title": "Do you want to go into outer space in the future?",
+          "duration_sec": 13.58,
+          "offset_sec": 243.55,
+          "generated_at": "2026-09-19T10:54:26.712"
         }
       ]
     }
