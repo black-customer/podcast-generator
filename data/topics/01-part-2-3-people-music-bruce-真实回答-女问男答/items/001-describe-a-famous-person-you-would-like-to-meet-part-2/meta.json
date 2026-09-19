@@ -1,0 +1,12 @@
+{
+  "status": "generated",
+  "error": "",
+  "duration_sec": 46.92,
+  "created_at": "2026-09-19T11:19:28.882",
+  "updated_at": "2026-09-19T11:19:28.882",
+  "generated_at": "2026-09-19T11:19:30.222",
+  "stale": false,
+  "dry_run": false,
+  "duration_sec_podcast": 46.92,
+  "qa_podcast": "pass"
+}

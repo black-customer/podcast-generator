@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Describe a singer you like. You should say who he or she is, what his or her personality is like, what style of music he or she performs, and explain why you like this person.",
+    "start": 0.0,
+    "end": 9.86,
+    "duration": 9.86,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "The singer I like is J. Cole. I don't know if that's feasible, because he's not exactly a singer — he's a rapper. I don't know if rappers count as singers. But J. Cole is the artist I like. His personality — I think he's honest, kind, and thoughtful. His songs carry so many deep thoughts from his own experience, and he thinks about a lot of things, extracts his thoughts, and passes them on to educate other people — to give the audience power to live on, to live a good life. His music belongs to hip-hop. And why do I like him? Well, first, his songs are amazing — they have rhythm, you can just move your body to them. And you can learn a lot from his lyrics: they give you power, help you handle stress, live a better life, and have the energy to become whoever you want to be.",
+    "start": 10.37,
+    "end": 52.43,
+    "duration": 42.06,
+    "mode": "sse"
+  }
+]

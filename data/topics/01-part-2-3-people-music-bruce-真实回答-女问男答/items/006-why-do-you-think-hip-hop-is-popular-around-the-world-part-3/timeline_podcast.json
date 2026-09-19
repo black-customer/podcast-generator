@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Some people say hip-hop is popular around the world now. Why do you think that is?",
+    "start": 0.0,
+    "end": 3.86,
+    "duration": 3.86,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Oh, that's a very deep question. That's a good one. I think music is a kind of culture, and globalization will definitely influence culture. Different countries have different cultures, and globalization spreads cultures around and influences them. Music is one of the ways that happens. Like in America, there's hip-hop — it developed because there were people who wanted to express their feelings in a stronger way. And in China, with the economy developing, people face the same needs. So hip-hop music came to China and developed here, because we now have the same need to express ourselves — just like America did before.",
+    "start": 4.31,
+    "end": 36.86,
+    "duration": 32.55,
+    "mode": "sse"
+  }
+]

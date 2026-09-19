@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Let's move on. How can music shape a person's identity and culture?",
+    "start": 0.0,
+    "end": 3.3,
+    "duration": 3.3,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "Well, everybody knows that reading books or studying courses can shape people's identities and cultures. I think listening to music works the same way. Music is not only about the rhythms — there are lyrics too, and singers are expressing themselves, expressing their thoughts through the lyrics. So if you listen to more music, more types of music, you get exposed to more styles that people live by, more ways that people think. And that shapes your identity and culture.",
+    "start": 3.65,
+    "end": 28.89,
+    "duration": 25.24,
+    "mode": "sse"
+  }
+]

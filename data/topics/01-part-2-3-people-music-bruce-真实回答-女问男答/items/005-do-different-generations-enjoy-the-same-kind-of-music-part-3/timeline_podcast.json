@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Do you think different generations enjoy the same kind of music?",
+    "start": 0.0,
+    "end": 3.21,
+    "duration": 3.21,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I think music isn't that different from books in this sense — different generations face different problems. The older generation might have worried about earning money, about moving to a bigger city to make a living. The new generation faces more problems about emotions, private affairs, personal relationships. Because life has gotten better, the country has developed, so we face different problems now. And music is created by singers to share their experiences and express their emotions. So different generations have different music — there are some common things, but there are differences too. It's because of the generation, because of the era, I think.",
+    "start": 3.6,
+    "end": 39.71,
+    "duration": 36.11,
+    "mode": "sse"
+  }
+]

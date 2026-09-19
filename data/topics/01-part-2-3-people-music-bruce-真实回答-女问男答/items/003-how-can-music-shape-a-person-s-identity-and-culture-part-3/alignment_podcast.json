@@ -1,0 +1,479 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "80f4848f703011d3",
+  "audio_signature": "694692:1789788029",
+  "created_at": "2026-09-19T11:20:30",
+  "segments": [
+    {
+      "text": "Let's move on. How can music shape a person's identity and culture?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 3.3
+    },
+    {
+      "text": "Well, everybody knows that reading books or studying courses can shape people's identities and cultures. I think listening to music works the same way. Music is not only about the rhythms — there are lyrics too, and singers are expressing themselves, expressing their thoughts through the lyrics. So if you listen to more music, more types of music, you get exposed to more styles that people live by, more ways that people think. And that shapes your identity and culture.",
+      "speaker": "b",
+      "start": 3.65,
+      "end": 28.89
+    }
+  ],
+  "words": [
+    {
+      "text": "Let's",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "move",
+      "start": 0.24,
+      "end": 0.4
+    },
+    {
+      "text": "on",
+      "start": 0.4,
+      "end": 0.8
+    },
+    {
+      "text": "How",
+      "start": 0.96,
+      "end": 1.12
+    },
+    {
+      "text": "can",
+      "start": 1.12,
+      "end": 1.28
+    },
+    {
+      "text": "music",
+      "start": 1.28,
+      "end": 1.6
+    },
+    {
+      "text": "shape",
+      "start": 1.6,
+      "end": 1.84
+    },
+    {
+      "text": "a",
+      "start": 1.84,
+      "end": 1.84
+    },
+    {
+      "text": "person's",
+      "start": 1.84,
+      "end": 2.16
+    },
+    {
+      "text": "identity",
+      "start": 2.16,
+      "end": 2.56
+    },
+    {
+      "text": "and",
+      "start": 2.64,
+      "end": 2.72
+    },
+    {
+      "text": "culture",
+      "start": 2.72,
+      "end": 3.28
+    },
+    {
+      "text": "Well",
+      "start": 3.63,
+      "end": 3.95
+    },
+    {
+      "text": "everybody",
+      "start": 3.95,
+      "end": 4.43
+    },
+    {
+      "text": "knows",
+      "start": 4.43,
+      "end": 4.83
+    },
+    {
+      "text": "that",
+      "start": 4.83,
+      "end": 4.99
+    },
+    {
+      "text": "reading",
+      "start": 4.99,
+      "end": 5.31
+    },
+    {
+      "text": "books",
+      "start": 5.31,
+      "end": 5.79
+    },
+    {
+      "text": "or",
+      "start": 5.79,
+      "end": 5.95
+    },
+    {
+      "text": "studying",
+      "start": 5.95,
+      "end": 6.35
+    },
+    {
+      "text": "courses",
+      "start": 6.35,
+      "end": 6.91
+    },
+    {
+      "text": "can",
+      "start": 6.91,
+      "end": 7.07
+    },
+    {
+      "text": "shape",
+      "start": 7.07,
+      "end": 7.39
+    },
+    {
+      "text": "people's",
+      "start": 7.39,
+      "end": 7.71
+    },
+    {
+      "text": "identities",
+      "start": 7.71,
+      "end": 8.27
+    },
+    {
+      "text": "and",
+      "start": 8.27,
+      "end": 8.43
+    },
+    {
+      "text": "cultures",
+      "start": 8.43,
+      "end": 9.15
+    },
+    {
+      "text": "I",
+      "start": 9.23,
+      "end": 9.31
+    },
+    {
+      "text": "think",
+      "start": 9.31,
+      "end": 9.55
+    },
+    {
+      "text": "listening",
+      "start": 9.55,
+      "end": 10.03
+    },
+    {
+      "text": "to",
+      "start": 10.03,
+      "end": 10.11
+    },
+    {
+      "text": "music",
+      "start": 10.11,
+      "end": 10.51
+    },
+    {
+      "text": "works",
+      "start": 10.51,
+      "end": 10.83
+    },
+    {
+      "text": "the",
+      "start": 10.83,
+      "end": 10.91
+    },
+    {
+      "text": "same",
+      "start": 10.91,
+      "end": 11.23
+    },
+    {
+      "text": "way",
+      "start": 11.23,
+      "end": 11.71
+    },
+    {
+      "text": "Music",
+      "start": 11.71,
+      "end": 12.11
+    },
+    {
+      "text": "is",
+      "start": 12.11,
+      "end": 12.19
+    },
+    {
+      "text": "not",
+      "start": 12.19,
+      "end": 12.43
+    },
+    {
+      "text": "only",
+      "start": 12.43,
+      "end": 12.67
+    },
+    {
+      "text": "about",
+      "start": 12.67,
+      "end": 12.99
+    },
+    {
+      "text": "the",
+      "start": 12.99,
+      "end": 13.07
+    },
+    {
+      "text": "rhythms",
+      "start": 13.07,
+      "end": 13.71
+    },
+    {
+      "text": "there",
+      "start": 13.71,
+      "end": 13.95
+    },
+    {
+      "text": "are",
+      "start": 13.95,
+      "end": 14.03
+    },
+    {
+      "text": "lyrics",
+      "start": 14.03,
+      "end": 14.51
+    },
+    {
+      "text": "too",
+      "start": 14.51,
+      "end": 14.99
+    },
+    {
+      "text": "and",
+      "start": 14.99,
+      "end": 15.15
+    },
+    {
+      "text": "singers",
+      "start": 15.15,
+      "end": 15.63
+    },
+    {
+      "text": "are",
+      "start": 15.63,
+      "end": 15.79
+    },
+    {
+      "text": "expressing",
+      "start": 15.79,
+      "end": 16.27
+    },
+    {
+      "text": "themselves",
+      "start": 16.27,
+      "end": 16.99
+    },
+    {
+      "text": "expressing",
+      "start": 16.99,
+      "end": 17.55
+    },
+    {
+      "text": "their",
+      "start": 17.55,
+      "end": 17.63
+    },
+    {
+      "text": "thoughts",
+      "start": 17.63,
+      "end": 18.11
+    },
+    {
+      "text": "through",
+      "start": 18.11,
+      "end": 18.27
+    },
+    {
+      "text": "the",
+      "start": 18.27,
+      "end": 18.35
+    },
+    {
+      "text": "lyrics",
+      "start": 18.35,
+      "end": 18.99
+    },
+    {
+      "text": "So",
+      "start": 19.432,
+      "end": 19.672
+    },
+    {
+      "text": "if",
+      "start": 19.672,
+      "end": 19.752
+    },
+    {
+      "text": "you",
+      "start": 19.752,
+      "end": 19.832
+    },
+    {
+      "text": "listen",
+      "start": 19.832,
+      "end": 20.152
+    },
+    {
+      "text": "to",
+      "start": 20.152,
+      "end": 20.232
+    },
+    {
+      "text": "more",
+      "start": 20.232,
+      "end": 20.472
+    },
+    {
+      "text": "music",
+      "start": 20.472,
+      "end": 21.032
+    },
+    {
+      "text": "more",
+      "start": 21.032,
+      "end": 21.352
+    },
+    {
+      "text": "types",
+      "start": 21.352,
+      "end": 21.672
+    },
+    {
+      "text": "of",
+      "start": 21.672,
+      "end": 21.832
+    },
+    {
+      "text": "music",
+      "start": 21.832,
+      "end": 22.312
+    },
+    {
+      "text": "you",
+      "start": 22.312,
+      "end": 22.472
+    },
+    {
+      "text": "get",
+      "start": 22.472,
+      "end": 22.632
+    },
+    {
+      "text": "exposed",
+      "start": 22.632,
+      "end": 23.112
+    },
+    {
+      "text": "to",
+      "start": 23.112,
+      "end": 23.112
+    },
+    {
+      "text": "more",
+      "start": 23.112,
+      "end": 23.432
+    },
+    {
+      "text": "styles",
+      "start": 23.432,
+      "end": 23.992
+    },
+    {
+      "text": "that",
+      "start": 23.992,
+      "end": 24.152
+    },
+    {
+      "text": "people",
+      "start": 24.152,
+      "end": 24.472
+    },
+    {
+      "text": "live",
+      "start": 24.472,
+      "end": 24.712
+    },
+    {
+      "text": "by",
+      "start": 24.712,
+      "end": 25.112
+    },
+    {
+      "text": "more",
+      "start": 25.112,
+      "end": 25.352
+    },
+    {
+      "text": "ways",
+      "start": 25.352,
+      "end": 25.832
+    },
+    {
+      "text": "that",
+      "start": 25.832,
+      "end": 25.912
+    },
+    {
+      "text": "people",
+      "start": 25.912,
+      "end": 26.232
+    },
+    {
+      "text": "think",
+      "start": 26.232,
+      "end": 26.632
+    },
+    {
+      "text": "And",
+      "start": 26.712,
+      "end": 26.872
+    },
+    {
+      "text": "that",
+      "start": 26.872,
+      "end": 27.032
+    },
+    {
+      "text": "shapes",
+      "start": 27.032,
+      "end": 27.352
+    },
+    {
+      "text": "your",
+      "start": 27.352,
+      "end": 27.512
+    },
+    {
+      "text": "identity",
+      "start": 27.512,
+      "end": 27.992
+    },
+    {
+      "text": "and",
+      "start": 27.992,
+      "end": 28.152
+    },
+    {
+      "text": "culture",
+      "start": 28.152,
+      "end": 28.712
+    }
+  ]
+}

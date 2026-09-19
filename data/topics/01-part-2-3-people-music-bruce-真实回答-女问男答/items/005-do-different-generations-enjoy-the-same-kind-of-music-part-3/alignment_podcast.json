@@ -1,0 +1,594 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "2ecd4cb5c6f41087",
+  "audio_signature": "954244:1789788063",
+  "created_at": "2026-09-19T11:21:05",
+  "segments": [
+    {
+      "text": "Do you think different generations enjoy the same kind of music?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 3.21
+    },
+    {
+      "text": "I think music isn't that different from books in this sense — different generations face different problems. The older generation might have worried about earning money, about moving to a bigger city to make a living. The new generation faces more problems about emotions, private affairs, personal relationships. Because life has gotten better, the country has developed, so we face different problems now. And music is created by singers to share their experiences and express their emotions. So different generations have different music — there are some common things, but there are differences too. It's because of the generation, because of the era, I think.",
+      "speaker": "b",
+      "start": 3.6,
+      "end": 39.71
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "you",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "think",
+      "start": 0.32,
+      "end": 0.64
+    },
+    {
+      "text": "different",
+      "start": 0.8,
+      "end": 1.12
+    },
+    {
+      "text": "generations",
+      "start": 1.12,
+      "end": 1.76
+    },
+    {
+      "text": "enjoy",
+      "start": 1.76,
+      "end": 2.0
+    },
+    {
+      "text": "the",
+      "start": 2.0,
+      "end": 2.08
+    },
+    {
+      "text": "same",
+      "start": 2.08,
+      "end": 2.4
+    },
+    {
+      "text": "kind",
+      "start": 2.4,
+      "end": 2.56
+    },
+    {
+      "text": "of",
+      "start": 2.56,
+      "end": 2.64
+    },
+    {
+      "text": "music",
+      "start": 2.64,
+      "end": 3.2
+    },
+    {
+      "text": "I",
+      "start": 3.584,
+      "end": 3.744
+    },
+    {
+      "text": "think",
+      "start": 3.744,
+      "end": 3.984
+    },
+    {
+      "text": "music",
+      "start": 3.984,
+      "end": 4.464
+    },
+    {
+      "text": "isn't",
+      "start": 4.464,
+      "end": 4.784
+    },
+    {
+      "text": "that",
+      "start": 4.784,
+      "end": 4.944
+    },
+    {
+      "text": "different",
+      "start": 4.944,
+      "end": 5.344
+    },
+    {
+      "text": "from",
+      "start": 5.344,
+      "end": 5.504
+    },
+    {
+      "text": "books",
+      "start": 5.504,
+      "end": 5.824
+    },
+    {
+      "text": "in",
+      "start": 5.824,
+      "end": 5.984
+    },
+    {
+      "text": "this",
+      "start": 5.984,
+      "end": 6.144
+    },
+    {
+      "text": "sense",
+      "start": 6.144,
+      "end": 6.624
+    },
+    {
+      "text": "different",
+      "start": 6.624,
+      "end": 7.024
+    },
+    {
+      "text": "generations",
+      "start": 7.024,
+      "end": 7.664
+    },
+    {
+      "text": "face",
+      "start": 7.664,
+      "end": 7.904
+    },
+    {
+      "text": "different",
+      "start": 7.904,
+      "end": 8.304
+    },
+    {
+      "text": "problems",
+      "start": 8.304,
+      "end": 8.944
+    },
+    {
+      "text": "The",
+      "start": 9.024,
+      "end": 9.184
+    },
+    {
+      "text": "older",
+      "start": 9.184,
+      "end": 9.424
+    },
+    {
+      "text": "generation",
+      "start": 9.424,
+      "end": 10.064
+    },
+    {
+      "text": "might",
+      "start": 10.064,
+      "end": 10.304
+    },
+    {
+      "text": "have",
+      "start": 10.304,
+      "end": 10.384
+    },
+    {
+      "text": "worried",
+      "start": 10.384,
+      "end": 10.784
+    },
+    {
+      "text": "about",
+      "start": 10.784,
+      "end": 11.024
+    },
+    {
+      "text": "earning",
+      "start": 11.024,
+      "end": 11.344
+    },
+    {
+      "text": "money",
+      "start": 11.344,
+      "end": 11.744
+    },
+    {
+      "text": "about",
+      "start": 11.824,
+      "end": 12.064
+    },
+    {
+      "text": "moving",
+      "start": 12.064,
+      "end": 12.464
+    },
+    {
+      "text": "to",
+      "start": 12.464,
+      "end": 12.544
+    },
+    {
+      "text": "a",
+      "start": 12.544,
+      "end": 12.624
+    },
+    {
+      "text": "bigger",
+      "start": 12.624,
+      "end": 12.944
+    },
+    {
+      "text": "city",
+      "start": 12.944,
+      "end": 13.344
+    },
+    {
+      "text": "to",
+      "start": 13.344,
+      "end": 13.424
+    },
+    {
+      "text": "make",
+      "start": 13.424,
+      "end": 13.584
+    },
+    {
+      "text": "a",
+      "start": 13.584,
+      "end": 13.664
+    },
+    {
+      "text": "living",
+      "start": 13.664,
+      "end": 14.224
+    },
+    {
+      "text": "The",
+      "start": 14.624,
+      "end": 14.704
+    },
+    {
+      "text": "new",
+      "start": 14.704,
+      "end": 14.944
+    },
+    {
+      "text": "generation",
+      "start": 14.944,
+      "end": 15.584
+    },
+    {
+      "text": "faces",
+      "start": 15.584,
+      "end": 15.984
+    },
+    {
+      "text": "more",
+      "start": 15.984,
+      "end": 16.224
+    },
+    {
+      "text": "problems",
+      "start": 16.224,
+      "end": 16.704
+    },
+    {
+      "text": "about",
+      "start": 16.704,
+      "end": 16.944
+    },
+    {
+      "text": "emotions",
+      "start": 16.944,
+      "end": 17.664
+    },
+    {
+      "text": "private",
+      "start": 17.744,
+      "end": 18.144
+    },
+    {
+      "text": "affairs",
+      "start": 18.144,
+      "end": 18.704
+    },
+    {
+      "text": "personal",
+      "start": 18.784,
+      "end": 19.184
+    },
+    {
+      "text": "relationships",
+      "start": 19.184,
+      "end": 20.224
+    },
+    {
+      "text": "Because",
+      "start": 20.224,
+      "end": 20.544
+    },
+    {
+      "text": "life",
+      "start": 20.544,
+      "end": 20.864
+    },
+    {
+      "text": "has",
+      "start": 20.864,
+      "end": 21.024
+    },
+    {
+      "text": "gotten",
+      "start": 21.024,
+      "end": 21.344
+    },
+    {
+      "text": "better",
+      "start": 21.344,
+      "end": 21.824
+    },
+    {
+      "text": "the",
+      "start": 21.824,
+      "end": 21.984
+    },
+    {
+      "text": "country",
+      "start": 21.984,
+      "end": 22.384
+    },
+    {
+      "text": "has",
+      "start": 22.384,
+      "end": 22.464
+    },
+    {
+      "text": "developed",
+      "start": 22.464,
+      "end": 23.104
+    },
+    {
+      "text": "so",
+      "start": 23.184,
+      "end": 23.344
+    },
+    {
+      "text": "we",
+      "start": 23.344,
+      "end": 23.504
+    },
+    {
+      "text": "face",
+      "start": 23.504,
+      "end": 23.824
+    },
+    {
+      "text": "different",
+      "start": 23.824,
+      "end": 24.224
+    },
+    {
+      "text": "problems",
+      "start": 24.224,
+      "end": 24.704
+    },
+    {
+      "text": "now",
+      "start": 24.704,
+      "end": 25.104
+    },
+    {
+      "text": "And",
+      "start": 25.184,
+      "end": 25.344
+    },
+    {
+      "text": "music",
+      "start": 25.344,
+      "end": 25.744
+    },
+    {
+      "text": "is",
+      "start": 25.744,
+      "end": 25.824
+    },
+    {
+      "text": "created",
+      "start": 25.824,
+      "end": 26.304
+    },
+    {
+      "text": "by",
+      "start": 26.304,
+      "end": 26.464
+    },
+    {
+      "text": "singers",
+      "start": 26.464,
+      "end": 26.944
+    },
+    {
+      "text": "to",
+      "start": 26.944,
+      "end": 27.024
+    },
+    {
+      "text": "share",
+      "start": 27.024,
+      "end": 27.264
+    },
+    {
+      "text": "their",
+      "start": 27.264,
+      "end": 27.424
+    },
+    {
+      "text": "experiences",
+      "start": 27.424,
+      "end": 28.304
+    },
+    {
+      "text": "and",
+      "start": 28.304,
+      "end": 28.384
+    },
+    {
+      "text": "express",
+      "start": 28.384,
+      "end": 28.864
+    },
+    {
+      "text": "their",
+      "start": 28.864,
+      "end": 29.024
+    },
+    {
+      "text": "emotions",
+      "start": 29.024,
+      "end": 29.824
+    },
+    {
+      "text": "So",
+      "start": 30.092,
+      "end": 30.412
+    },
+    {
+      "text": "different",
+      "start": 30.412,
+      "end": 30.892
+    },
+    {
+      "text": "generations",
+      "start": 30.892,
+      "end": 31.612
+    },
+    {
+      "text": "have",
+      "start": 31.612,
+      "end": 31.852
+    },
+    {
+      "text": "different",
+      "start": 31.852,
+      "end": 32.252
+    },
+    {
+      "text": "music",
+      "start": 32.252,
+      "end": 32.892
+    },
+    {
+      "text": "there",
+      "start": 32.972,
+      "end": 33.132
+    },
+    {
+      "text": "are",
+      "start": 33.132,
+      "end": 33.212
+    },
+    {
+      "text": "some",
+      "start": 33.212,
+      "end": 33.532
+    },
+    {
+      "text": "common",
+      "start": 33.532,
+      "end": 33.932
+    },
+    {
+      "text": "things",
+      "start": 33.932,
+      "end": 34.412
+    },
+    {
+      "text": "but",
+      "start": 34.412,
+      "end": 34.652
+    },
+    {
+      "text": "there",
+      "start": 34.652,
+      "end": 34.812
+    },
+    {
+      "text": "are",
+      "start": 34.812,
+      "end": 34.972
+    },
+    {
+      "text": "differences",
+      "start": 34.972,
+      "end": 35.692
+    },
+    {
+      "text": "too",
+      "start": 35.692,
+      "end": 36.172
+    },
+    {
+      "text": "It's",
+      "start": 36.252,
+      "end": 36.412
+    },
+    {
+      "text": "because",
+      "start": 36.412,
+      "end": 36.812
+    },
+    {
+      "text": "of",
+      "start": 36.812,
+      "end": 36.892
+    },
+    {
+      "text": "the",
+      "start": 36.892,
+      "end": 36.972
+    },
+    {
+      "text": "generation",
+      "start": 36.972,
+      "end": 37.852
+    },
+    {
+      "text": "because",
+      "start": 37.852,
+      "end": 38.172
+    },
+    {
+      "text": "of",
+      "start": 38.172,
+      "end": 38.252
+    },
+    {
+      "text": "the",
+      "start": 38.252,
+      "end": 38.492
+    },
+    {
+      "text": "era",
+      "start": 38.492,
+      "end": 38.892
+    },
+    {
+      "text": "I",
+      "start": 38.892,
+      "end": 39.052
+    },
+    {
+      "text": "think",
+      "start": 39.132,
+      "end": 39.532
+    }
+  ]
+}

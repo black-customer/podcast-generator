@@ -1,50 +1,4 @@
 {
-  "19accdad0375": {
-    "id": "19accdad0375",
-    "kind": "assemble",
-    "topic_id": "01-e2e",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 0,
-    "current": "",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T02:02:35.785",
-    "finished_at": "2026-09-19T02:02:35.938",
-    "result": {
-      "topic_id": "01-e2e",
-      "topic_name": "E2E",
-      "track": "podcast",
-      "file": "01-e2e_podcast.mp3",
-      "total_sec": 1.93,
-      "item_count": 1,
-      "generated_at": "2026-09-19T02:02:35.937",
-      "items": [
-        {
-          "id": "001-q",
-          "title": "Q?",
-          "duration_sec": 1.93,
-          "offset_sec": 0.0,
-          "generated_at": "2026-09-19T02:02:34.860"
-        }
-      ]
-    }
-  },
-  "dd8286c70e8c": {
-    "id": "dd8286c70e8c",
-    "kind": "generate",
-    "topic_id": "01-align",
-    "track": "podcast",
-    "state": "done",
-    "total": 1,
-    "done": 1,
-    "current": "001-item",
-    "errors": [],
-    "cancel": false,
-    "started_at": "2026-09-19T02:04:57.915",
-    "finished_at": "2026-09-19T02:04:58.814"
-  },
   "254769349e91": {
     "id": "254769349e91",
     "kind": "generate",
@@ -1809,6 +1763,87 @@
           "duration_sec": 5.72,
           "offset_sec": 138.4,
           "generated_at": "2026-09-19T11:16:51.570"
+        }
+      ]
+    }
+  },
+  "359e58920301": {
+    "id": "359e58920301",
+    "kind": "generate",
+    "topic_id": "01-part-2-3-people-music-bruce-真实回答-女问男答",
+    "track": "podcast",
+    "state": "done",
+    "total": 6,
+    "done": 6,
+    "current": "006-why-do-you-think-hip-hop-is-popular-around-the-world-part-3",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T11:19:30.214",
+    "finished_at": "2026-09-19T11:21:22.258"
+  },
+  "f3c71ebaa6b3": {
+    "id": "f3c71ebaa6b3",
+    "kind": "assemble",
+    "topic_id": "01-part-2-3-people-music-bruce-真实回答-女问男答",
+    "track": "podcast",
+    "state": "done",
+    "total": 1,
+    "done": 0,
+    "current": "",
+    "errors": [],
+    "cancel": false,
+    "started_at": "2026-09-19T11:21:32.558",
+    "finished_at": "2026-09-19T11:21:38.459",
+    "result": {
+      "topic_id": "01-part-2-3-people-music-bruce-真实回答-女问男答",
+      "topic_name": "Part 2 & 3 · People & Music（Bruce 真实回答 · 女问男答）",
+      "track": "podcast",
+      "file": "01-part-2-3-people-music-bruce-真实回答-女问男答_podcast.mp3",
+      "total_sec": 220.56,
+      "item_count": 6,
+      "generated_at": "2026-09-19T11:21:38.457",
+      "items": [
+        {
+          "id": "001-describe-a-famous-person-you-would-like-to-meet-part-2",
+          "title": "Describe a famous person you would like to meet (Part 2)",
+          "duration_sec": 46.92,
+          "offset_sec": 0.0,
+          "generated_at": "2026-09-19T11:19:30.222"
+        },
+        {
+          "id": "002-describe-a-singer-you-like-part-2",
+          "title": "Describe a singer you like (Part 2)",
+          "duration_sec": 52.43,
+          "offset_sec": 47.52,
+          "generated_at": "2026-09-19T11:19:52.040"
+        },
+        {
+          "id": "003-how-can-music-shape-a-person-s-identity-and-culture-part-3",
+          "title": "How can music shape a person's identity and culture? (Part 3)",
+          "duration_sec": 28.89,
+          "offset_sec": 100.55,
+          "generated_at": "2026-09-19T11:20:16.141"
+        },
+        {
+          "id": "004-how-has-modern-technology-changed-the-way-people-experience",
+          "title": "How has modern technology changed the way people experience music? (Part 3)",
+          "duration_sec": 30.43,
+          "offset_sec": 130.04,
+          "generated_at": "2026-09-19T11:20:30.786"
+        },
+        {
+          "id": "005-do-different-generations-enjoy-the-same-kind-of-music-part-3",
+          "title": "Do different generations enjoy the same kind of music? (Part 3)",
+          "duration_sec": 39.71,
+          "offset_sec": 161.07,
+          "generated_at": "2026-09-19T11:20:46.106"
+        },
+        {
+          "id": "006-why-do-you-think-hip-hop-is-popular-around-the-world-part-3",
+          "title": "Why do you think hip-hop is popular around the world? (Part 3)",
+          "duration_sec": 36.86,
+          "offset_sec": 201.38,
+          "generated_at": "2026-09-19T11:21:05.033"
         }
       ]
     }

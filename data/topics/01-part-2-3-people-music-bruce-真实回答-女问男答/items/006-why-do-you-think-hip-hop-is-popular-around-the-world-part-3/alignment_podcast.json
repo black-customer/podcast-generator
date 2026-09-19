@@ -1,0 +1,629 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "cb3c5a5b213f5242",
+  "audio_signature": "885908:1789788081",
+  "created_at": "2026-09-19T11:21:22",
+  "segments": [
+    {
+      "text": "Some people say hip-hop is popular around the world now. Why do you think that is?",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 3.86
+    },
+    {
+      "text": "Oh, that's a very deep question. That's a good one. I think music is a kind of culture, and globalization will definitely influence culture. Different countries have different cultures, and globalization spreads cultures around and influences them. Music is one of the ways that happens. Like in America, there's hip-hop — it developed because there were people who wanted to express their feelings in a stronger way. And in China, with the economy developing, people face the same needs. So hip-hop music came to China and developed here, because we now have the same need to express ourselves — just like America did before.",
+      "speaker": "b",
+      "start": 4.31,
+      "end": 36.86
+    }
+  ],
+  "words": [
+    {
+      "text": "Some",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "people",
+      "start": 0.16,
+      "end": 0.32
+    },
+    {
+      "text": "say",
+      "start": 0.32,
+      "end": 0.48
+    },
+    {
+      "text": "hip",
+      "start": 0.48,
+      "end": 0.72
+    },
+    {
+      "text": "hop",
+      "start": 0.72,
+      "end": 0.96
+    },
+    {
+      "text": "is",
+      "start": 0.96,
+      "end": 1.04
+    },
+    {
+      "text": "popular",
+      "start": 1.04,
+      "end": 1.44
+    },
+    {
+      "text": "around",
+      "start": 1.44,
+      "end": 1.76
+    },
+    {
+      "text": "the",
+      "start": 1.76,
+      "end": 1.76
+    },
+    {
+      "text": "world",
+      "start": 1.76,
+      "end": 2.08
+    },
+    {
+      "text": "now",
+      "start": 2.08,
+      "end": 2.48
+    },
+    {
+      "text": "Why",
+      "start": 2.8,
+      "end": 3.04
+    },
+    {
+      "text": "do",
+      "start": 3.04,
+      "end": 3.12
+    },
+    {
+      "text": "you",
+      "start": 3.12,
+      "end": 3.2
+    },
+    {
+      "text": "think",
+      "start": 3.2,
+      "end": 3.44
+    },
+    {
+      "text": "that",
+      "start": 3.44,
+      "end": 3.52
+    },
+    {
+      "text": "is",
+      "start": 3.52,
+      "end": 3.84
+    },
+    {
+      "text": "Oh",
+      "start": 4.293,
+      "end": 4.613
+    },
+    {
+      "text": "that's",
+      "start": 4.613,
+      "end": 4.773
+    },
+    {
+      "text": "a",
+      "start": 4.773,
+      "end": 4.773
+    },
+    {
+      "text": "very",
+      "start": 4.773,
+      "end": 5.173
+    },
+    {
+      "text": "deep",
+      "start": 5.173,
+      "end": 5.413
+    },
+    {
+      "text": "question",
+      "start": 5.413,
+      "end": 6.133
+    },
+    {
+      "text": "That's",
+      "start": 6.213,
+      "end": 6.373
+    },
+    {
+      "text": "a",
+      "start": 6.373,
+      "end": 6.453
+    },
+    {
+      "text": "good",
+      "start": 6.453,
+      "end": 6.693
+    },
+    {
+      "text": "one",
+      "start": 6.693,
+      "end": 7.093
+    },
+    {
+      "text": "I",
+      "start": 7.093,
+      "end": 7.253
+    },
+    {
+      "text": "think",
+      "start": 7.253,
+      "end": 7.493
+    },
+    {
+      "text": "music",
+      "start": 7.493,
+      "end": 7.813
+    },
+    {
+      "text": "is",
+      "start": 7.813,
+      "end": 7.973
+    },
+    {
+      "text": "a",
+      "start": 7.973,
+      "end": 7.973
+    },
+    {
+      "text": "kind",
+      "start": 7.973,
+      "end": 8.293
+    },
+    {
+      "text": "of",
+      "start": 8.293,
+      "end": 8.373
+    },
+    {
+      "text": "culture",
+      "start": 8.373,
+      "end": 8.933
+    },
+    {
+      "text": "and",
+      "start": 9.013,
+      "end": 9.173
+    },
+    {
+      "text": "globalization",
+      "start": 9.173,
+      "end": 10.053
+    },
+    {
+      "text": "will",
+      "start": 10.053,
+      "end": 10.133
+    },
+    {
+      "text": "definitely",
+      "start": 10.133,
+      "end": 10.693
+    },
+    {
+      "text": "influence",
+      "start": 10.693,
+      "end": 11.173
+    },
+    {
+      "text": "culture",
+      "start": 11.173,
+      "end": 11.733
+    },
+    {
+      "text": "Different",
+      "start": 11.813,
+      "end": 12.133
+    },
+    {
+      "text": "countries",
+      "start": 12.133,
+      "end": 12.533
+    },
+    {
+      "text": "have",
+      "start": 12.533,
+      "end": 12.773
+    },
+    {
+      "text": "different",
+      "start": 12.773,
+      "end": 13.093
+    },
+    {
+      "text": "cultures",
+      "start": 13.093,
+      "end": 13.653
+    },
+    {
+      "text": "and",
+      "start": 13.653,
+      "end": 13.813
+    },
+    {
+      "text": "globalization",
+      "start": 13.813,
+      "end": 14.533
+    },
+    {
+      "text": "spreads",
+      "start": 14.533,
+      "end": 14.933
+    },
+    {
+      "text": "cultures",
+      "start": 14.933,
+      "end": 15.333
+    },
+    {
+      "text": "around",
+      "start": 15.333,
+      "end": 15.813
+    },
+    {
+      "text": "and",
+      "start": 15.813,
+      "end": 15.973
+    },
+    {
+      "text": "influences",
+      "start": 15.973,
+      "end": 16.613
+    },
+    {
+      "text": "them",
+      "start": 16.613,
+      "end": 16.933
+    },
+    {
+      "text": "Music",
+      "start": 17.013,
+      "end": 17.413
+    },
+    {
+      "text": "is",
+      "start": 17.413,
+      "end": 17.493
+    },
+    {
+      "text": "one",
+      "start": 17.493,
+      "end": 17.653
+    },
+    {
+      "text": "of",
+      "start": 17.653,
+      "end": 17.733
+    },
+    {
+      "text": "the",
+      "start": 17.733,
+      "end": 17.813
+    },
+    {
+      "text": "ways",
+      "start": 17.813,
+      "end": 18.213
+    },
+    {
+      "text": "that",
+      "start": 18.213,
+      "end": 18.373
+    },
+    {
+      "text": "happens",
+      "start": 18.373,
+      "end": 19.013
+    },
+    {
+      "text": "Like",
+      "start": 19.425,
+      "end": 19.665
+    },
+    {
+      "text": "in",
+      "start": 19.665,
+      "end": 19.745
+    },
+    {
+      "text": "America",
+      "start": 19.745,
+      "end": 20.305
+    },
+    {
+      "text": "there's",
+      "start": 20.305,
+      "end": 20.545
+    },
+    {
+      "text": "hip",
+      "start": 20.545,
+      "end": 20.785
+    },
+    {
+      "text": "hop",
+      "start": 20.785,
+      "end": 21.105
+    },
+    {
+      "text": "it",
+      "start": 21.105,
+      "end": 21.265
+    },
+    {
+      "text": "developed",
+      "start": 21.265,
+      "end": 21.745
+    },
+    {
+      "text": "because",
+      "start": 21.745,
+      "end": 22.065
+    },
+    {
+      "text": "there",
+      "start": 22.065,
+      "end": 22.145
+    },
+    {
+      "text": "were",
+      "start": 22.145,
+      "end": 22.225
+    },
+    {
+      "text": "people",
+      "start": 22.225,
+      "end": 22.545
+    },
+    {
+      "text": "who",
+      "start": 22.545,
+      "end": 22.705
+    },
+    {
+      "text": "wanted",
+      "start": 22.705,
+      "end": 23.025
+    },
+    {
+      "text": "to",
+      "start": 23.025,
+      "end": 23.105
+    },
+    {
+      "text": "express",
+      "start": 23.105,
+      "end": 23.505
+    },
+    {
+      "text": "their",
+      "start": 23.505,
+      "end": 23.665
+    },
+    {
+      "text": "feelings",
+      "start": 23.665,
+      "end": 24.065
+    },
+    {
+      "text": "in",
+      "start": 24.065,
+      "end": 24.145
+    },
+    {
+      "text": "a",
+      "start": 24.145,
+      "end": 24.145
+    },
+    {
+      "text": "stronger",
+      "start": 24.145,
+      "end": 24.625
+    },
+    {
+      "text": "way",
+      "start": 24.625,
+      "end": 25.105
+    },
+    {
+      "text": "And",
+      "start": 25.185,
+      "end": 25.345
+    },
+    {
+      "text": "in",
+      "start": 25.345,
+      "end": 25.425
+    },
+    {
+      "text": "China",
+      "start": 25.505,
+      "end": 26.065
+    },
+    {
+      "text": "with",
+      "start": 26.065,
+      "end": 26.225
+    },
+    {
+      "text": "the",
+      "start": 26.225,
+      "end": 26.305
+    },
+    {
+      "text": "economy",
+      "start": 26.305,
+      "end": 26.785
+    },
+    {
+      "text": "developing",
+      "start": 26.785,
+      "end": 27.425
+    },
+    {
+      "text": "people",
+      "start": 27.425,
+      "end": 27.745
+    },
+    {
+      "text": "face",
+      "start": 27.745,
+      "end": 27.985
+    },
+    {
+      "text": "the",
+      "start": 27.985,
+      "end": 28.145
+    },
+    {
+      "text": "same",
+      "start": 28.145,
+      "end": 28.545
+    },
+    {
+      "text": "needs",
+      "start": 28.545,
+      "end": 29.025
+    },
+    {
+      "text": "So",
+      "start": 29.49,
+      "end": 29.65
+    },
+    {
+      "text": "hip",
+      "start": 29.65,
+      "end": 29.89
+    },
+    {
+      "text": "hop",
+      "start": 29.89,
+      "end": 30.05
+    },
+    {
+      "text": "music",
+      "start": 30.05,
+      "end": 30.45
+    },
+    {
+      "text": "came",
+      "start": 30.45,
+      "end": 30.69
+    },
+    {
+      "text": "to",
+      "start": 30.69,
+      "end": 30.69
+    },
+    {
+      "text": "China",
+      "start": 30.69,
+      "end": 31.25
+    },
+    {
+      "text": "and",
+      "start": 31.25,
+      "end": 31.33
+    },
+    {
+      "text": "developed",
+      "start": 31.33,
+      "end": 31.81
+    },
+    {
+      "text": "here",
+      "start": 31.81,
+      "end": 32.21
+    },
+    {
+      "text": "because",
+      "start": 32.21,
+      "end": 32.53
+    },
+    {
+      "text": "we",
+      "start": 32.53,
+      "end": 32.69
+    },
+    {
+      "text": "now",
+      "start": 32.69,
+      "end": 32.93
+    },
+    {
+      "text": "have",
+      "start": 32.93,
+      "end": 33.09
+    },
+    {
+      "text": "the",
+      "start": 33.09,
+      "end": 33.17
+    },
+    {
+      "text": "same",
+      "start": 33.17,
+      "end": 33.49
+    },
+    {
+      "text": "need",
+      "start": 33.49,
+      "end": 33.73
+    },
+    {
+      "text": "to",
+      "start": 33.73,
+      "end": 33.89
+    },
+    {
+      "text": "express",
+      "start": 33.89,
+      "end": 34.29
+    },
+    {
+      "text": "ourselves",
+      "start": 34.29,
+      "end": 34.93
+    },
+    {
+      "text": "just",
+      "start": 35.01,
+      "end": 35.25
+    },
+    {
+      "text": "like",
+      "start": 35.25,
+      "end": 35.41
+    },
+    {
+      "text": "America",
+      "start": 35.41,
+      "end": 35.89
+    },
+    {
+      "text": "did",
+      "start": 35.89,
+      "end": 36.13
+    },
+    {
+      "text": "before",
+      "start": 36.13,
+      "end": 36.69
+    }
+  ]
+}

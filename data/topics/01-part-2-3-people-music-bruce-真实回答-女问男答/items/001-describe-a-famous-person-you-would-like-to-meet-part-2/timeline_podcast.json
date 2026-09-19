@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "Now, describe a famous person you would like to meet. You should say who he or she is, how you knew him or her, and explain why you would like to meet this person.",
+    "start": 0.0,
+    "end": 8.99,
+    "duration": 8.99,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "The famous person I'd like to meet is Elon Musk. Everybody knows him, I think — he's the richest person in the world. I knew him through the news, you know, I follow who the richest people in the world are. And I've watched so many videos and interviews about him. How would I like to meet him? I think on a street, or maybe in a restaurant — say he's eating somewhere in disguise, so nobody recognizes him. But I would. I'd walk up and say, \"Oh, you're Elon, right?\" And he'd be shocked. Then we'd talk, and I'd introduce myself. Because I think he's a really smart person — being the richest man in the world, there's no doubt about that. I'd love to see how he thinks, and learn something from him.",
+    "start": 9.38,
+    "end": 46.92,
+    "duration": 37.54,
+    "mode": "sse"
+  }
+]

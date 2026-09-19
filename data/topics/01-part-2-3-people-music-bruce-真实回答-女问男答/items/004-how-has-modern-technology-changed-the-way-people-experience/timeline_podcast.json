@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Alex",
+    "text": "How has modern technology changed the way people experience and interact with music compared to the past?",
+    "start": 0.0,
+    "end": 5.63,
+    "duration": 5.63,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Mia",
+    "text": "I think it's mostly about the way people communicate with the singer. In the past, if you listened to music, you could only listen — maybe you were surprised by a singer, maybe you liked them, but you couldn't communicate with them. But now, with music apps, you can sometimes interact with those singers directly. It's like reading a book and being able to talk with the writer. And it's also just way more convenient to listen through apps now, instead of cassettes or MP3 players.",
+    "start": 5.85,
+    "end": 30.43,
+    "duration": 24.58,
+    "mode": "sse"
+  }
+]

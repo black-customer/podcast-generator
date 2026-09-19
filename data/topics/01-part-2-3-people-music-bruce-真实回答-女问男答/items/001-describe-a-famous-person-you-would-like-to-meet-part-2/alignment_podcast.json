@@ -1,0 +1,854 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "1362259a6e91769f",
+  "audio_signature": "1127280:1789787991",
+  "created_at": "2026-09-19T11:19:52",
+  "segments": [
+    {
+      "text": "Now, describe a famous person you would like to meet. You should say who he or she is, how you knew him or her, and explain why you would like to meet this person.",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 8.99
+    },
+    {
+      "text": "The famous person I'd like to meet is Elon Musk. Everybody knows him, I think — he's the richest person in the world. I knew him through the news, you know, I follow who the richest people in the world are. And I've watched so many videos and interviews about him. How would I like to meet him? I think on a street, or maybe in a restaurant — say he's eating somewhere in disguise, so nobody recognizes him. But I would. I'd walk up and say, \"Oh, you're Elon, right?\" And he'd be shocked. Then we'd talk, and I'd introduce myself. Because I think he's a really smart person — being the richest man in the world, there's no doubt about that. I'd love to see how he thinks, and learn something from him.",
+      "speaker": "b",
+      "start": 9.38,
+      "end": 46.92
+    }
+  ],
+  "words": [
+    {
+      "text": "Now",
+      "start": 0.0,
+      "end": 0.56
+    },
+    {
+      "text": "describe",
+      "start": 0.64,
+      "end": 1.2
+    },
+    {
+      "text": "a",
+      "start": 1.2,
+      "end": 1.28
+    },
+    {
+      "text": "famous",
+      "start": 1.28,
+      "end": 1.6
+    },
+    {
+      "text": "person",
+      "start": 1.6,
+      "end": 2.0
+    },
+    {
+      "text": "you",
+      "start": 2.0,
+      "end": 2.08
+    },
+    {
+      "text": "would",
+      "start": 2.08,
+      "end": 2.24
+    },
+    {
+      "text": "like",
+      "start": 2.24,
+      "end": 2.48
+    },
+    {
+      "text": "to",
+      "start": 2.48,
+      "end": 2.56
+    },
+    {
+      "text": "meet",
+      "start": 2.56,
+      "end": 2.88
+    },
+    {
+      "text": "You",
+      "start": 3.04,
+      "end": 3.2
+    },
+    {
+      "text": "should",
+      "start": 3.2,
+      "end": 3.36
+    },
+    {
+      "text": "say",
+      "start": 3.36,
+      "end": 3.68
+    },
+    {
+      "text": "who",
+      "start": 3.68,
+      "end": 3.84
+    },
+    {
+      "text": "he",
+      "start": 3.84,
+      "end": 4.08
+    },
+    {
+      "text": "or",
+      "start": 4.08,
+      "end": 4.16
+    },
+    {
+      "text": "she",
+      "start": 4.16,
+      "end": 4.32
+    },
+    {
+      "text": "is",
+      "start": 4.32,
+      "end": 4.72
+    },
+    {
+      "text": "how",
+      "start": 5.04,
+      "end": 5.2
+    },
+    {
+      "text": "you",
+      "start": 5.2,
+      "end": 5.28
+    },
+    {
+      "text": "knew",
+      "start": 5.28,
+      "end": 5.52
+    },
+    {
+      "text": "him",
+      "start": 5.52,
+      "end": 5.76
+    },
+    {
+      "text": "or",
+      "start": 5.76,
+      "end": 5.84
+    },
+    {
+      "text": "her",
+      "start": 5.84,
+      "end": 6.24
+    },
+    {
+      "text": "and",
+      "start": 6.48,
+      "end": 6.64
+    },
+    {
+      "text": "explain",
+      "start": 6.64,
+      "end": 7.28
+    },
+    {
+      "text": "why",
+      "start": 7.28,
+      "end": 7.44
+    },
+    {
+      "text": "you",
+      "start": 7.44,
+      "end": 7.6
+    },
+    {
+      "text": "would",
+      "start": 7.6,
+      "end": 7.68
+    },
+    {
+      "text": "like",
+      "start": 7.68,
+      "end": 7.92
+    },
+    {
+      "text": "to",
+      "start": 7.92,
+      "end": 8.0
+    },
+    {
+      "text": "meet",
+      "start": 8.0,
+      "end": 8.16
+    },
+    {
+      "text": "this",
+      "start": 8.16,
+      "end": 8.4
+    },
+    {
+      "text": "person",
+      "start": 8.4,
+      "end": 8.96
+    },
+    {
+      "text": "The",
+      "start": 9.342,
+      "end": 9.422
+    },
+    {
+      "text": "famous",
+      "start": 9.422,
+      "end": 9.822
+    },
+    {
+      "text": "person",
+      "start": 9.822,
+      "end": 10.222
+    },
+    {
+      "text": "I'd",
+      "start": 10.222,
+      "end": 10.382
+    },
+    {
+      "text": "like",
+      "start": 10.382,
+      "end": 10.542
+    },
+    {
+      "text": "to",
+      "start": 10.542,
+      "end": 10.622
+    },
+    {
+      "text": "meet",
+      "start": 10.622,
+      "end": 10.942
+    },
+    {
+      "text": "is",
+      "start": 10.942,
+      "end": 11.182
+    },
+    {
+      "text": "Elon",
+      "start": 11.182,
+      "end": 11.582
+    },
+    {
+      "text": "Musk",
+      "start": 11.582,
+      "end": 12.222
+    },
+    {
+      "text": "Everybody",
+      "start": 12.222,
+      "end": 12.702
+    },
+    {
+      "text": "knows",
+      "start": 12.702,
+      "end": 13.022
+    },
+    {
+      "text": "him",
+      "start": 13.022,
+      "end": 13.262
+    },
+    {
+      "text": "I",
+      "start": 13.262,
+      "end": 13.342
+    },
+    {
+      "text": "think",
+      "start": 13.342,
+      "end": 13.742
+    },
+    {
+      "text": "he's",
+      "start": 13.742,
+      "end": 13.982
+    },
+    {
+      "text": "the",
+      "start": 13.982,
+      "end": 14.062
+    },
+    {
+      "text": "richest",
+      "start": 14.062,
+      "end": 14.462
+    },
+    {
+      "text": "person",
+      "start": 14.462,
+      "end": 14.782
+    },
+    {
+      "text": "in",
+      "start": 14.782,
+      "end": 14.862
+    },
+    {
+      "text": "the",
+      "start": 14.862,
+      "end": 14.942
+    },
+    {
+      "text": "world",
+      "start": 14.942,
+      "end": 15.502
+    },
+    {
+      "text": "I",
+      "start": 15.582,
+      "end": 15.742
+    },
+    {
+      "text": "knew",
+      "start": 15.742,
+      "end": 15.902
+    },
+    {
+      "text": "him",
+      "start": 15.902,
+      "end": 16.062
+    },
+    {
+      "text": "through",
+      "start": 16.062,
+      "end": 16.222
+    },
+    {
+      "text": "the",
+      "start": 16.222,
+      "end": 16.302
+    },
+    {
+      "text": "news",
+      "start": 16.302,
+      "end": 16.782
+    },
+    {
+      "text": "you",
+      "start": 16.782,
+      "end": 16.942
+    },
+    {
+      "text": "know",
+      "start": 16.942,
+      "end": 17.262
+    },
+    {
+      "text": "I",
+      "start": 17.262,
+      "end": 17.422
+    },
+    {
+      "text": "follow",
+      "start": 17.422,
+      "end": 17.822
+    },
+    {
+      "text": "who",
+      "start": 17.822,
+      "end": 17.982
+    },
+    {
+      "text": "the",
+      "start": 17.982,
+      "end": 18.062
+    },
+    {
+      "text": "richest",
+      "start": 18.062,
+      "end": 18.462
+    },
+    {
+      "text": "people",
+      "start": 18.462,
+      "end": 18.782
+    },
+    {
+      "text": "in",
+      "start": 18.782,
+      "end": 18.862
+    },
+    {
+      "text": "the",
+      "start": 18.862,
+      "end": 18.862
+    },
+    {
+      "text": "world",
+      "start": 18.862,
+      "end": 19.262
+    },
+    {
+      "text": "are",
+      "start": 19.262,
+      "end": 19.582
+    },
+    {
+      "text": "And",
+      "start": 19.662,
+      "end": 19.742
+    },
+    {
+      "text": "I've",
+      "start": 19.742,
+      "end": 19.902
+    },
+    {
+      "text": "watched",
+      "start": 19.902,
+      "end": 20.222
+    },
+    {
+      "text": "so",
+      "start": 20.222,
+      "end": 20.302
+    },
+    {
+      "text": "many",
+      "start": 20.542,
+      "end": 20.782
+    },
+    {
+      "text": "videos",
+      "start": 20.782,
+      "end": 21.342
+    },
+    {
+      "text": "and",
+      "start": 21.342,
+      "end": 21.502
+    },
+    {
+      "text": "interviews",
+      "start": 21.502,
+      "end": 22.062
+    },
+    {
+      "text": "about",
+      "start": 22.062,
+      "end": 22.302
+    },
+    {
+      "text": "him",
+      "start": 22.302,
+      "end": 22.622
+    },
+    {
+      "text": "How",
+      "start": 22.702,
+      "end": 22.942
+    },
+    {
+      "text": "would",
+      "start": 22.942,
+      "end": 23.022
+    },
+    {
+      "text": "I",
+      "start": 23.022,
+      "end": 23.102
+    },
+    {
+      "text": "like",
+      "start": 23.102,
+      "end": 23.342
+    },
+    {
+      "text": "to",
+      "start": 23.342,
+      "end": 23.342
+    },
+    {
+      "text": "meet",
+      "start": 23.342,
+      "end": 23.662
+    },
+    {
+      "text": "him",
+      "start": 23.662,
+      "end": 23.982
+    },
+    {
+      "text": "I",
+      "start": 24.437,
+      "end": 24.597
+    },
+    {
+      "text": "think",
+      "start": 24.597,
+      "end": 24.837
+    },
+    {
+      "text": "on",
+      "start": 24.837,
+      "end": 24.917
+    },
+    {
+      "text": "a",
+      "start": 24.917,
+      "end": 24.997
+    },
+    {
+      "text": "street",
+      "start": 24.997,
+      "end": 25.477
+    },
+    {
+      "text": "or",
+      "start": 25.557,
+      "end": 25.637
+    },
+    {
+      "text": "maybe",
+      "start": 25.637,
+      "end": 26.037
+    },
+    {
+      "text": "in",
+      "start": 26.037,
+      "end": 26.117
+    },
+    {
+      "text": "a",
+      "start": 26.117,
+      "end": 26.117
+    },
+    {
+      "text": "restaurant",
+      "start": 26.117,
+      "end": 26.757
+    },
+    {
+      "text": "say",
+      "start": 26.837,
+      "end": 27.157
+    },
+    {
+      "text": "he's",
+      "start": 27.157,
+      "end": 27.397
+    },
+    {
+      "text": "eating",
+      "start": 27.397,
+      "end": 27.717
+    },
+    {
+      "text": "somewhere",
+      "start": 27.717,
+      "end": 28.117
+    },
+    {
+      "text": "in",
+      "start": 28.117,
+      "end": 28.197
+    },
+    {
+      "text": "disguise",
+      "start": 28.197,
+      "end": 28.997
+    },
+    {
+      "text": "so",
+      "start": 28.997,
+      "end": 29.157
+    },
+    {
+      "text": "nobody",
+      "start": 29.157,
+      "end": 29.557
+    },
+    {
+      "text": "recognizes",
+      "start": 29.557,
+      "end": 30.277
+    },
+    {
+      "text": "him",
+      "start": 30.277,
+      "end": 30.597
+    },
+    {
+      "text": "But",
+      "start": 30.677,
+      "end": 30.837
+    },
+    {
+      "text": "I",
+      "start": 30.837,
+      "end": 30.997
+    },
+    {
+      "text": "would",
+      "start": 30.997,
+      "end": 31.477
+    },
+    {
+      "text": "I'd",
+      "start": 31.557,
+      "end": 31.717
+    },
+    {
+      "text": "walk",
+      "start": 31.717,
+      "end": 32.037
+    },
+    {
+      "text": "up",
+      "start": 32.037,
+      "end": 32.117
+    },
+    {
+      "text": "and",
+      "start": 32.117,
+      "end": 32.197
+    },
+    {
+      "text": "say",
+      "start": 32.197,
+      "end": 32.677
+    },
+    {
+      "text": "Oh",
+      "start": 32.677,
+      "end": 33.157
+    },
+    {
+      "text": "you're",
+      "start": 33.237,
+      "end": 33.397
+    },
+    {
+      "text": "Elon",
+      "start": 33.397,
+      "end": 33.957
+    },
+    {
+      "text": "right",
+      "start": 33.957,
+      "end": 34.357
+    },
+    {
+      "text": "And",
+      "start": 34.437,
+      "end": 34.597
+    },
+    {
+      "text": "he'd",
+      "start": 34.597,
+      "end": 34.757
+    },
+    {
+      "text": "be",
+      "start": 34.757,
+      "end": 34.917
+    },
+    {
+      "text": "shocked",
+      "start": 34.917,
+      "end": 35.477
+    },
+    {
+      "text": "Then",
+      "start": 35.477,
+      "end": 35.717
+    },
+    {
+      "text": "we'd",
+      "start": 35.717,
+      "end": 35.957
+    },
+    {
+      "text": "talk",
+      "start": 35.957,
+      "end": 36.357
+    },
+    {
+      "text": "and",
+      "start": 36.437,
+      "end": 36.517
+    },
+    {
+      "text": "I'd",
+      "start": 36.517,
+      "end": 36.677
+    },
+    {
+      "text": "introduce",
+      "start": 36.677,
+      "end": 37.157
+    },
+    {
+      "text": "myself",
+      "start": 37.157,
+      "end": 37.797
+    },
+    {
+      "text": "Because",
+      "start": 38.268,
+      "end": 38.508
+    },
+    {
+      "text": "I",
+      "start": 38.508,
+      "end": 38.668
+    },
+    {
+      "text": "think",
+      "start": 38.668,
+      "end": 38.988
+    },
+    {
+      "text": "he's",
+      "start": 38.988,
+      "end": 39.148
+    },
+    {
+      "text": "a",
+      "start": 39.148,
+      "end": 39.228
+    },
+    {
+      "text": "really",
+      "start": 39.228,
+      "end": 39.628
+    },
+    {
+      "text": "smart",
+      "start": 39.628,
+      "end": 39.948
+    },
+    {
+      "text": "person",
+      "start": 39.948,
+      "end": 40.588
+    },
+    {
+      "text": "being",
+      "start": 40.588,
+      "end": 40.908
+    },
+    {
+      "text": "the",
+      "start": 40.908,
+      "end": 40.988
+    },
+    {
+      "text": "richest",
+      "start": 40.988,
+      "end": 41.388
+    },
+    {
+      "text": "man",
+      "start": 41.388,
+      "end": 41.628
+    },
+    {
+      "text": "in",
+      "start": 41.628,
+      "end": 41.708
+    },
+    {
+      "text": "the",
+      "start": 41.708,
+      "end": 41.788
+    },
+    {
+      "text": "world",
+      "start": 41.788,
+      "end": 42.268
+    },
+    {
+      "text": "there's",
+      "start": 42.348,
+      "end": 42.588
+    },
+    {
+      "text": "no",
+      "start": 42.588,
+      "end": 42.828
+    },
+    {
+      "text": "doubt",
+      "start": 42.828,
+      "end": 43.068
+    },
+    {
+      "text": "about",
+      "start": 43.068,
+      "end": 43.468
+    },
+    {
+      "text": "that",
+      "start": 43.468,
+      "end": 43.708
+    },
+    {
+      "text": "I'd",
+      "start": 43.788,
+      "end": 44.028
+    },
+    {
+      "text": "love",
+      "start": 44.028,
+      "end": 44.268
+    },
+    {
+      "text": "to",
+      "start": 44.268,
+      "end": 44.268
+    },
+    {
+      "text": "see",
+      "start": 44.268,
+      "end": 44.508
+    },
+    {
+      "text": "how",
+      "start": 44.508,
+      "end": 44.668
+    },
+    {
+      "text": "he",
+      "start": 44.668,
+      "end": 44.828
+    },
+    {
+      "text": "thinks",
+      "start": 44.828,
+      "end": 45.308
+    },
+    {
+      "text": "and",
+      "start": 45.308,
+      "end": 45.468
+    },
+    {
+      "text": "learn",
+      "start": 45.468,
+      "end": 45.788
+    },
+    {
+      "text": "something",
+      "start": 45.788,
+      "end": 46.188
+    },
+    {
+      "text": "from",
+      "start": 46.188,
+      "end": 46.428
+    },
+    {
+      "text": "him",
+      "start": 46.428,
+      "end": 46.748
+    }
+  ]
+}

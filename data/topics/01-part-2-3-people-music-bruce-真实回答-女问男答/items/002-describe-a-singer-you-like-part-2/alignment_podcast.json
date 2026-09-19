@@ -1,0 +1,954 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "e2e6651a4dc6768d",
+  "audio_signature": "1259564:1789788015",
+  "created_at": "2026-09-19T11:20:16",
+  "segments": [
+    {
+      "text": "Describe a singer you like. You should say who he or she is, what his or her personality is like, what style of music he or she performs, and explain why you like this person.",
+      "speaker": "a",
+      "start": 0.0,
+      "end": 9.86
+    },
+    {
+      "text": "The singer I like is J. Cole. I don't know if that's feasible, because he's not exactly a singer — he's a rapper. I don't know if rappers count as singers. But J. Cole is the artist I like. His personality — I think he's honest, kind, and thoughtful. His songs carry so many deep thoughts from his own experience, and he thinks about a lot of things, extracts his thoughts, and passes them on to educate other people — to give the audience power to live on, to live a good life. His music belongs to hip-hop. And why do I like him? Well, first, his songs are amazing — they have rhythm, you can just move your body to them. And you can learn a lot from his lyrics: they give you power, help you handle stress, live a better life, and have the energy to become whoever you want to be.",
+      "speaker": "b",
+      "start": 10.37,
+      "end": 52.43
+    }
+  ],
+  "words": [
+    {
+      "text": "Describe",
+      "start": 0.0,
+      "end": 0.4
+    },
+    {
+      "text": "a",
+      "start": 0.4,
+      "end": 0.48
+    },
+    {
+      "text": "singer",
+      "start": 0.48,
+      "end": 0.88
+    },
+    {
+      "text": "you",
+      "start": 0.88,
+      "end": 1.04
+    },
+    {
+      "text": "like",
+      "start": 1.04,
+      "end": 1.44
+    },
+    {
+      "text": "You",
+      "start": 1.6,
+      "end": 1.68
+    },
+    {
+      "text": "should",
+      "start": 1.68,
+      "end": 1.92
+    },
+    {
+      "text": "say",
+      "start": 1.92,
+      "end": 2.32
+    },
+    {
+      "text": "who",
+      "start": 2.32,
+      "end": 2.56
+    },
+    {
+      "text": "he",
+      "start": 2.56,
+      "end": 2.72
+    },
+    {
+      "text": "or",
+      "start": 2.8,
+      "end": 2.88
+    },
+    {
+      "text": "she",
+      "start": 2.88,
+      "end": 3.12
+    },
+    {
+      "text": "is",
+      "start": 3.12,
+      "end": 3.44
+    },
+    {
+      "text": "what",
+      "start": 3.68,
+      "end": 3.84
+    },
+    {
+      "text": "his",
+      "start": 3.84,
+      "end": 4.08
+    },
+    {
+      "text": "or",
+      "start": 4.08,
+      "end": 4.16
+    },
+    {
+      "text": "her",
+      "start": 4.16,
+      "end": 4.32
+    },
+    {
+      "text": "personality",
+      "start": 4.32,
+      "end": 4.88
+    },
+    {
+      "text": "is",
+      "start": 4.88,
+      "end": 5.04
+    },
+    {
+      "text": "like",
+      "start": 5.04,
+      "end": 5.44
+    },
+    {
+      "text": "what",
+      "start": 5.68,
+      "end": 5.84
+    },
+    {
+      "text": "style",
+      "start": 5.84,
+      "end": 6.32
+    },
+    {
+      "text": "of",
+      "start": 6.32,
+      "end": 6.4
+    },
+    {
+      "text": "music",
+      "start": 6.4,
+      "end": 6.72
+    },
+    {
+      "text": "he",
+      "start": 6.72,
+      "end": 6.88
+    },
+    {
+      "text": "or",
+      "start": 6.88,
+      "end": 6.96
+    },
+    {
+      "text": "she",
+      "start": 6.96,
+      "end": 7.12
+    },
+    {
+      "text": "performs",
+      "start": 7.12,
+      "end": 7.84
+    },
+    {
+      "text": "and",
+      "start": 7.84,
+      "end": 8.0
+    },
+    {
+      "text": "explain",
+      "start": 8.0,
+      "end": 8.56
+    },
+    {
+      "text": "why",
+      "start": 8.56,
+      "end": 8.8
+    },
+    {
+      "text": "you",
+      "start": 8.8,
+      "end": 8.96
+    },
+    {
+      "text": "like",
+      "start": 8.96,
+      "end": 9.12
+    },
+    {
+      "text": "this",
+      "start": 9.12,
+      "end": 9.28
+    },
+    {
+      "text": "person",
+      "start": 9.28,
+      "end": 9.84
+    },
+    {
+      "text": "The",
+      "start": 10.351,
+      "end": 10.431
+    },
+    {
+      "text": "singer",
+      "start": 10.431,
+      "end": 10.751
+    },
+    {
+      "text": "I",
+      "start": 10.831,
+      "end": 10.911
+    },
+    {
+      "text": "like",
+      "start": 10.911,
+      "end": 11.231
+    },
+    {
+      "text": "is",
+      "start": 11.231,
+      "end": 11.471
+    },
+    {
+      "text": "J",
+      "start": 11.471,
+      "end": 11.791
+    },
+    {
+      "text": "Cole",
+      "start": 11.791,
+      "end": 12.351
+    },
+    {
+      "text": "I",
+      "start": 12.431,
+      "end": 12.591
+    },
+    {
+      "text": "don't",
+      "start": 12.591,
+      "end": 12.751
+    },
+    {
+      "text": "know",
+      "start": 12.751,
+      "end": 12.911
+    },
+    {
+      "text": "if",
+      "start": 12.911,
+      "end": 12.991
+    },
+    {
+      "text": "that's",
+      "start": 12.991,
+      "end": 13.151
+    },
+    {
+      "text": "feasible",
+      "start": 13.151,
+      "end": 13.871
+    },
+    {
+      "text": "because",
+      "start": 13.871,
+      "end": 14.191
+    },
+    {
+      "text": "he's",
+      "start": 14.191,
+      "end": 14.271
+    },
+    {
+      "text": "not",
+      "start": 14.271,
+      "end": 14.511
+    },
+    {
+      "text": "exactly",
+      "start": 14.511,
+      "end": 14.991
+    },
+    {
+      "text": "a",
+      "start": 14.991,
+      "end": 15.071
+    },
+    {
+      "text": "singer",
+      "start": 15.071,
+      "end": 15.551
+    },
+    {
+      "text": "he's",
+      "start": 15.551,
+      "end": 15.791
+    },
+    {
+      "text": "a",
+      "start": 15.791,
+      "end": 15.871
+    },
+    {
+      "text": "rapper",
+      "start": 15.871,
+      "end": 16.431
+    },
+    {
+      "text": "I",
+      "start": 16.511,
+      "end": 16.671
+    },
+    {
+      "text": "don't",
+      "start": 16.671,
+      "end": 16.831
+    },
+    {
+      "text": "know",
+      "start": 16.831,
+      "end": 16.991
+    },
+    {
+      "text": "if",
+      "start": 16.991,
+      "end": 17.071
+    },
+    {
+      "text": "rappers",
+      "start": 17.071,
+      "end": 17.471
+    },
+    {
+      "text": "count",
+      "start": 17.471,
+      "end": 17.791
+    },
+    {
+      "text": "as",
+      "start": 17.791,
+      "end": 17.871
+    },
+    {
+      "text": "singers",
+      "start": 17.871,
+      "end": 18.511
+    },
+    {
+      "text": "But",
+      "start": 18.591,
+      "end": 18.831
+    },
+    {
+      "text": "J",
+      "start": 18.831,
+      "end": 19.071
+    },
+    {
+      "text": "Cole",
+      "start": 19.071,
+      "end": 19.471
+    },
+    {
+      "text": "is",
+      "start": 19.471,
+      "end": 19.631
+    },
+    {
+      "text": "the",
+      "start": 19.631,
+      "end": 19.791
+    },
+    {
+      "text": "artist",
+      "start": 19.791,
+      "end": 20.111
+    },
+    {
+      "text": "I",
+      "start": 20.111,
+      "end": 20.271
+    },
+    {
+      "text": "like",
+      "start": 20.271,
+      "end": 20.751
+    },
+    {
+      "text": "His",
+      "start": 20.751,
+      "end": 20.911
+    },
+    {
+      "text": "personality",
+      "start": 20.911,
+      "end": 21.871
+    },
+    {
+      "text": "I",
+      "start": 21.951,
+      "end": 22.111
+    },
+    {
+      "text": "think",
+      "start": 22.111,
+      "end": 22.271
+    },
+    {
+      "text": "he's",
+      "start": 22.271,
+      "end": 22.511
+    },
+    {
+      "text": "honest",
+      "start": 22.511,
+      "end": 23.071
+    },
+    {
+      "text": "kind",
+      "start": 23.071,
+      "end": 23.471
+    },
+    {
+      "text": "and",
+      "start": 23.471,
+      "end": 23.631
+    },
+    {
+      "text": "thoughtful",
+      "start": 23.631,
+      "end": 24.271
+    },
+    {
+      "text": "His",
+      "start": 24.732,
+      "end": 24.892
+    },
+    {
+      "text": "songs",
+      "start": 24.892,
+      "end": 25.292
+    },
+    {
+      "text": "carry",
+      "start": 25.292,
+      "end": 25.532
+    },
+    {
+      "text": "so",
+      "start": 25.532,
+      "end": 25.772
+    },
+    {
+      "text": "many",
+      "start": 25.772,
+      "end": 26.012
+    },
+    {
+      "text": "deep",
+      "start": 26.012,
+      "end": 26.332
+    },
+    {
+      "text": "thoughts",
+      "start": 26.332,
+      "end": 26.652
+    },
+    {
+      "text": "from",
+      "start": 26.652,
+      "end": 26.812
+    },
+    {
+      "text": "his",
+      "start": 26.812,
+      "end": 26.892
+    },
+    {
+      "text": "own",
+      "start": 26.892,
+      "end": 27.052
+    },
+    {
+      "text": "experience",
+      "start": 27.052,
+      "end": 27.852
+    },
+    {
+      "text": "and",
+      "start": 27.852,
+      "end": 28.012
+    },
+    {
+      "text": "he",
+      "start": 28.012,
+      "end": 28.092
+    },
+    {
+      "text": "thinks",
+      "start": 28.092,
+      "end": 28.412
+    },
+    {
+      "text": "about",
+      "start": 28.412,
+      "end": 28.652
+    },
+    {
+      "text": "a",
+      "start": 28.652,
+      "end": 28.652
+    },
+    {
+      "text": "lot",
+      "start": 28.652,
+      "end": 28.892
+    },
+    {
+      "text": "of",
+      "start": 28.892,
+      "end": 29.052
+    },
+    {
+      "text": "things",
+      "start": 29.052,
+      "end": 29.532
+    },
+    {
+      "text": "extracts",
+      "start": 29.612,
+      "end": 30.092
+    },
+    {
+      "text": "his",
+      "start": 30.092,
+      "end": 30.252
+    },
+    {
+      "text": "thoughts",
+      "start": 30.252,
+      "end": 30.652
+    },
+    {
+      "text": "and",
+      "start": 30.652,
+      "end": 30.812
+    },
+    {
+      "text": "passes",
+      "start": 30.812,
+      "end": 31.212
+    },
+    {
+      "text": "them",
+      "start": 31.212,
+      "end": 31.372
+    },
+    {
+      "text": "on",
+      "start": 31.372,
+      "end": 31.612
+    },
+    {
+      "text": "to",
+      "start": 31.612,
+      "end": 31.612
+    },
+    {
+      "text": "educate",
+      "start": 31.612,
+      "end": 32.172
+    },
+    {
+      "text": "other",
+      "start": 32.172,
+      "end": 32.412
+    },
+    {
+      "text": "people",
+      "start": 32.412,
+      "end": 32.892
+    },
+    {
+      "text": "to",
+      "start": 33.052,
+      "end": 33.052
+    },
+    {
+      "text": "give",
+      "start": 33.052,
+      "end": 33.372
+    },
+    {
+      "text": "the",
+      "start": 33.372,
+      "end": 33.532
+    },
+    {
+      "text": "audience",
+      "start": 33.532,
+      "end": 33.852
+    },
+    {
+      "text": "power",
+      "start": 33.852,
+      "end": 34.252
+    },
+    {
+      "text": "to",
+      "start": 34.332,
+      "end": 34.332
+    },
+    {
+      "text": "live",
+      "start": 34.332,
+      "end": 34.652
+    },
+    {
+      "text": "on",
+      "start": 34.652,
+      "end": 35.052
+    },
+    {
+      "text": "to",
+      "start": 35.132,
+      "end": 35.212
+    },
+    {
+      "text": "live",
+      "start": 35.212,
+      "end": 35.452
+    },
+    {
+      "text": "a",
+      "start": 35.452,
+      "end": 35.532
+    },
+    {
+      "text": "good",
+      "start": 35.532,
+      "end": 35.772
+    },
+    {
+      "text": "life",
+      "start": 35.772,
+      "end": 36.172
+    },
+    {
+      "text": "His",
+      "start": 36.332,
+      "end": 36.492
+    },
+    {
+      "text": "music",
+      "start": 36.492,
+      "end": 36.892
+    },
+    {
+      "text": "belongs",
+      "start": 36.892,
+      "end": 37.372
+    },
+    {
+      "text": "to",
+      "start": 37.372,
+      "end": 37.452
+    },
+    {
+      "text": "hip",
+      "start": 37.452,
+      "end": 37.692
+    },
+    {
+      "text": "hop",
+      "start": 37.692,
+      "end": 38.012
+    },
+    {
+      "text": "And",
+      "start": 38.172,
+      "end": 38.332
+    },
+    {
+      "text": "why",
+      "start": 38.332,
+      "end": 38.492
+    },
+    {
+      "text": "do",
+      "start": 38.492,
+      "end": 38.652
+    },
+    {
+      "text": "I",
+      "start": 38.652,
+      "end": 38.732
+    },
+    {
+      "text": "like",
+      "start": 38.732,
+      "end": 38.972
+    },
+    {
+      "text": "him",
+      "start": 38.972,
+      "end": 39.292
+    },
+    {
+      "text": "Well",
+      "start": 39.768,
+      "end": 40.008
+    },
+    {
+      "text": "first",
+      "start": 40.008,
+      "end": 40.568
+    },
+    {
+      "text": "his",
+      "start": 40.568,
+      "end": 40.728
+    },
+    {
+      "text": "songs",
+      "start": 40.728,
+      "end": 41.048
+    },
+    {
+      "text": "are",
+      "start": 41.048,
+      "end": 41.208
+    },
+    {
+      "text": "amazing",
+      "start": 41.208,
+      "end": 41.848
+    },
+    {
+      "text": "they",
+      "start": 41.848,
+      "end": 41.928
+    },
+    {
+      "text": "have",
+      "start": 41.928,
+      "end": 42.088
+    },
+    {
+      "text": "rhythm",
+      "start": 42.088,
+      "end": 42.648
+    },
+    {
+      "text": "you",
+      "start": 42.648,
+      "end": 42.808
+    },
+    {
+      "text": "can",
+      "start": 42.808,
+      "end": 42.888
+    },
+    {
+      "text": "just",
+      "start": 42.888,
+      "end": 43.128
+    },
+    {
+      "text": "move",
+      "start": 43.128,
+      "end": 43.448
+    },
+    {
+      "text": "your",
+      "start": 43.448,
+      "end": 43.528
+    },
+    {
+      "text": "body",
+      "start": 43.528,
+      "end": 43.928
+    },
+    {
+      "text": "to",
+      "start": 44.008,
+      "end": 44.088
+    },
+    {
+      "text": "them",
+      "start": 44.088,
+      "end": 44.408
+    },
+    {
+      "text": "And",
+      "start": 44.408,
+      "end": 44.568
+    },
+    {
+      "text": "you",
+      "start": 44.568,
+      "end": 44.568
+    },
+    {
+      "text": "can",
+      "start": 44.568,
+      "end": 44.808
+    },
+    {
+      "text": "learn",
+      "start": 44.808,
+      "end": 45.048
+    },
+    {
+      "text": "a",
+      "start": 45.048,
+      "end": 45.048
+    },
+    {
+      "text": "lot",
+      "start": 45.048,
+      "end": 45.368
+    },
+    {
+      "text": "from",
+      "start": 45.368,
+      "end": 45.528
+    },
+    {
+      "text": "his",
+      "start": 45.528,
+      "end": 45.688
+    },
+    {
+      "text": "lyrics",
+      "start": 45.688,
+      "end": 46.248
+    },
+    {
+      "text": "they",
+      "start": 46.248,
+      "end": 46.408
+    },
+    {
+      "text": "give",
+      "start": 46.408,
+      "end": 46.568
+    },
+    {
+      "text": "you",
+      "start": 46.568,
+      "end": 46.728
+    },
+    {
+      "text": "power",
+      "start": 46.728,
+      "end": 47.208
+    },
+    {
+      "text": "help",
+      "start": 47.288,
+      "end": 47.528
+    },
+    {
+      "text": "you",
+      "start": 47.528,
+      "end": 47.608
+    },
+    {
+      "text": "handle",
+      "start": 47.608,
+      "end": 47.928
+    },
+    {
+      "text": "stress",
+      "start": 47.928,
+      "end": 48.488
+    },
+    {
+      "text": "live",
+      "start": 48.568,
+      "end": 48.728
+    },
+    {
+      "text": "a",
+      "start": 48.728,
+      "end": 48.808
+    },
+    {
+      "text": "better",
+      "start": 48.808,
+      "end": 49.128
+    },
+    {
+      "text": "life",
+      "start": 49.128,
+      "end": 49.528
+    },
+    {
+      "text": "and",
+      "start": 49.528,
+      "end": 49.688
+    },
+    {
+      "text": "have",
+      "start": 49.688,
+      "end": 49.928
+    },
+    {
+      "text": "the",
+      "start": 49.928,
+      "end": 50.088
+    },
+    {
+      "text": "energy",
+      "start": 50.088,
+      "end": 50.488
+    },
+    {
+      "text": "to",
+      "start": 50.568,
+      "end": 50.568
+    },
+    {
+      "text": "become",
+      "start": 50.568,
+      "end": 50.968
+    },
+    {
+      "text": "whoever",
+      "start": 50.968,
+      "end": 51.368
+    },
+    {
+      "text": "you",
+      "start": 51.368,
+      "end": 51.528
+    },
+    {
+      "text": "want",
+      "start": 51.528,
+      "end": 51.768
+    },
+    {
+      "text": "to",
+      "start": 51.768,
+      "end": 51.768
+    },
+    {
+      "text": "be",
+      "start": 51.768,
+      "end": 52.328
+    }
+  ]
+}
