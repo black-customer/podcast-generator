@@ -14,11 +14,14 @@ OUT = BASE / "dist" / "bruce-corpus-share.zip"
 INCLUDE_DIRS = ["server", "web", "prompts", "docs", "scripts", "tests", "mobile"]
 INCLUDE_FILES = [
     "README.md", "AGENTS.md", "requirements.txt", "requirements-dev.txt",
-    "run.py", "pipeline.py", "start.bat", "pyproject.toml", ".gitignore",
+    "run.py", "pipeline.py", "start.bat", "open_app.bat", "app.ico",
+    "pyproject.toml", ".gitignore",
 ]
 INCLUDE_DATA = ["data/voices.json", "data/settings.example.json"]
 
-EXCLUDE_PARTS = {"__pycache__", ".pytest_cache", ".ruff_cache", "node_modules", "www", "build", ".gradle"}
+EXCLUDE_PARTS = {
+    "__pycache__", ".pytest_cache", ".ruff_cache", "node_modules", "www", "build", ".gradle",
+}
 
 
 def main() -> int:

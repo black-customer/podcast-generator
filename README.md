@@ -14,6 +14,8 @@
 ## 快速开始
 
 双击 `start.bat`（首次自动建 venv 装依赖），浏览器打开 `http://127.0.0.1:8765`。
+日常使用建议装桌面快捷方式：`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/make_shortcut.ps1`
+（桌面出现「IELTS Pod」图标，双击=服务没起就后台拉起、起了直接开浏览器）。
 
 手动：`python -m venv .venv && .venv\Scripts\pip install -r requirements.txt && .venv\Scripts\python run.py`
 
