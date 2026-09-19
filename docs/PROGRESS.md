@@ -112,3 +112,14 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
 4. 顺带修复：RoastDuck personal 题册 5 道空题干题（text 回退 text_zh；answer 端点拒空题干）；
    服务端 CORS 后 01-persist 孤儿测试话题与 jobs.json 运行态出库（.gitignore）
 5. e2e 教训：hash 路由 hashchange 异步派发，点击行后须等 fetch 渲染完成再断言（wait 700ms）
+
+## 2026-09-20 会话 5：9–12月新题入库 + 必考题定义修正
+
+- data/question_bank_extra.json（入 git）：麦门雅思 9–12月 Part1 新题整理件，
+  16 话题 74 题（只题目不回答）；bank.sync_from_db 合并之（话题/题干去重、
+  重复题挂考季、稳定 id q_x26q3_*）→ 快照 546 题/107 话题/3 题集（9–12月 71 题）
+- 必考题定义修正（Bruce 定稿）：必考 = 固定五话题（Work or studies / Home-accommodation /
+  Hometown / The area you live in / The city you live in），共 70 题；
+  撤销之前"跨考季重复=必考"的自作主张定义；CORE_TOPIC_NORMS 全等匹配，
+  Part3 的 "Work, Career & Success" 不会误伤；packmode.js 同步
+- 教训：merge_extra 原地修改传入列表，测试需 deepcopy 基线；fixture 须隔离 EXTRA_PATH
