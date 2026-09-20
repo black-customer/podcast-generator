@@ -30,6 +30,10 @@ INSTRUCTION = (
     "Speak in a warm, natural, conversational podcast tone, like chatting with "
     "a close friend. Relaxed pacing, genuine emotion."
 )
+DLG_INSTRUCTION = (
+    "This is one person's line in an ongoing friendly two-person chat. Speak "
+    "naturally as if mid-conversation: flow into the line, no formal ending tone."
+)
 MAX_CHARS = 950  # 官方上限 1000，留余量
 
 # 音色映射：fish 女提问 → lively-girl；男回答两个变体
@@ -44,7 +48,7 @@ DLG_ITEM = ("02-sleep-healthy-eating", "001-sleep-and-healthy-eating-dialogue") 
 _last_call = 0.0
 
 
-def synth(text: str, voice: str, key: str) -> bytes:
+def synth(text: str, voice: str, key: str, instruction: str = INSTRUCTION) -> bytes:
     """单段合成。StepFun 免费档限 10 RPM → 强制 6.5s 间隔 + 429 退避重试。"""
     global _last_call
     for attempt in range(6):
@@ -62,7 +66,7 @@ def synth(text: str, voice: str, key: str) -> bytes:
                     "voice": voice,
                     "response_format": "mp3",
                     "sample_rate": 24000,
-                    "instruction": INSTRUCTION,
+                    "instruction": instruction,
                 },
                 timeout=120,
             )
@@ -81,6 +85,22 @@ def synth(text: str, voice: str, key: str) -> bytes:
 def _clean(text: str) -> str:
     cleaned, _removed = strip_all_tags(text)
     return cleaned.strip()
+
+
+def _clean_dlg_line(text: str) -> str:
+    """对话行专用：除 [tag] 外，还清掉 fish 表演层专属拖腔标记。
+
+    em-dash/省略号是 fish 模型的演绎标记（会拖腔）；StepFun 不认识，
+    急收听感像"话讲一半没了"。替换成逗号保留停顿语义。
+    """
+    cleaned, _ = strip_all_tags(text)
+    cleaned = cleaned.replace("—", ",").replace("—", ",")
+    cleaned = cleaned.replace("...", ", ").replace("…", ", ")
+    import re as _re
+
+    cleaned = _re.sub(r",\s*,+", ",", cleaned)
+    cleaned = _re.sub(r"\s+", " ", cleaned)
+    return cleaned.strip().strip(",").strip()
 
 
 def synth_long(text: str, voice: str, key: str, tag: str, out_dir: Path) -> list[Path]:
@@ -159,6 +179,22 @@ def main() -> int:
         concat_mp3(entries, out)
         normalize_loudness(out)
         results.append((f"对话 Sleep & healthy eating · A=女 B={vname}", fish_dlg, out))
+
+    # ---------- 2.5) v2：拼接质量上限实验（Bruce 喜欢的 gentleman 男声） ----------
+    # 清拖腔标记 + 行内语境指令 + 更紧的行间停顿——验证逐行拼接最好能做到什么程度
+    if only in ("", "dlg", "v2"):
+        male_voice = MALE_VARIANTS["gentleman"]
+        out = OUT / "dlg_stepfun_gentleman_v2.mp3"
+        print(f"[dialog/v2] A={FEMALE_VOICE} B={male_voice} 清标记+语境指令+0.22s gap")
+        entries = []
+        for i, (spk, body) in enumerate(lines):
+            voice = FEMALE_VOICE if spk == "a" else male_voice
+            f = OUT / f"dlg_v2_l{i:02d}.mp3"
+            f.write_bytes(synth(_clean_dlg_line(body), voice, key, instruction=DLG_INSTRUCTION))
+            entries.append({"path": f, "gap_before": 0.22 if i else 0.0})
+        concat_mp3(entries, out)
+        normalize_loudness(out)
+        results.append(("对话 v2 拼接上限实验 · gentleman", fish_dlg, out))
 
     # ---------- 清单 ----------
     print("\n===== A/B 对照清单（均已 -16 LUFS 归一，直接对听） =====")
