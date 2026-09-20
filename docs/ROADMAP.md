@@ -176,7 +176,31 @@ WP：视觉稿选型定稿为「阅读札记 · Reading Notes」；题库/列表
 无框架、无 CDN、不做全站模块化重写。
 AC：桌面与移动截图走查通过；相关 Playwright e2e 4/4 全绿；check.sh 全量门禁绿。tag q03。
 
-### B04 教学内容（下一轮）— PENDING（依赖 B01-B03、Q01-Q03）
+> 2026-09-21 复验发现移动播放器溢出且公开用户主链仍过于复杂。历史 tag 保留，
+> 后续由 R01/R04 接续，不移动或重写 q03。
+
+## 可分享版重构 R01–R05（2026-09-21 Bruce 定稿）
+
+### R01 验收修复与产品契约 — DONE (2026-09-21, tag r01)
+移动完整播放页隐藏底栏并增加双视口边界回归；check.sh E2E 独立端口与可靠清理；
+更新产品契约、DESIGN 和受版本控制的十张概念图。AC：全量门禁绿。tag r01。
+
+### R02 StepFun 正式语音引擎 — ACTIVE（依赖 R01）
+StepAudio 2.5 TTS 默认、Fish 兼容；角色化音色、provider-aware 设置/试听；真实 5 条听感门。
+tag r02。
+
+### R03 Agent/API 双模式生成 — PENDING（依赖 R02）
+original_answer；统一 generation request；Agent Skill/CLI；StepFun JSON Mode API 流程。
+tag r03。
+
+### R04 已批准 Web/Android UI — PENDING（依赖 R03）
+实现 docs/design/v1 全套界面；普通 UI 隐藏教学/独白/多轨；Android 文件与手动 LAN 导入。
+tag r04。
+
+### R05 公开分享闭环 — PENDING（依赖 R04）
+真实 GitHub 安装指令、环境诊断、可移植 ZIP、beta APK、干净安装全链验收。tag r05。
+
+### B04 教学内容（下一轮）— PENDING（暂停至 R05 完成）
 依据：CONSTITUTION「教学内容设计原则」。
 WP：diff 机制（两种教学模式共用的原料库——我的表达 vs 母语者表达）；
 纯英文双主持教学播客模板（锚定具体雅思题，主持人拓展同类表达变体）；

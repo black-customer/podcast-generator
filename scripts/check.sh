@@ -21,9 +21,15 @@ echo "=== [3/4] 导入冒烟 ==="
 
 echo "=== [4/4] 服务启动冒烟 ==="
 PORT=8799
+SERVER_PID=""
+E2E_PID=""
+cleanup() {
+  if [ -n "$E2E_PID" ]; then kill "$E2E_PID" 2>/dev/null || true; fi
+  if [ -n "$SERVER_PID" ]; then kill "$SERVER_PID" 2>/dev/null || true; fi
+}
+trap cleanup EXIT
 "$PY" -m uvicorn server.main:app --host 127.0.0.1 --port $PORT --log-level error &
 SERVER_PID=$!
-trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
 sleep 3
 if curl -sf "http://127.0.0.1:$PORT/api/health" > /dev/null; then
   echo "health OK"
@@ -33,12 +39,29 @@ else
 fi
 
 if [ "${1:-}" = "--with-e2e" ]; then
-  echo "=== [extra] Playwright e2e（自起 8765 服务）==="
-  "$PY" run.py --no-open --port 8765 > /dev/null 2>&1 &
+  E2E_PORT="${E2E_PORT:-8877}"
+  echo "=== [extra] Playwright e2e（独立端口 $E2E_PORT）==="
+  if curl -sf "http://127.0.0.1:$E2E_PORT/api/health" > /dev/null 2>&1; then
+    echo "E2E 端口 $E2E_PORT 已被占用，拒绝对旧服务运行测试" >&2
+    exit 1
+  fi
+  "$PY" run.py --no-open --port "$E2E_PORT" > /dev/null 2>&1 &
   E2E_PID=$!
-  sleep 3
-  "$PY" -m pytest tests/e2e -q
+  for _ in 1 2 3 4 5 6 7 8 9 10; do
+    if ! kill -0 "$E2E_PID" 2>/dev/null; then
+      echo "E2E 服务启动失败" >&2
+      exit 1
+    fi
+    if curl -sf "http://127.0.0.1:$E2E_PORT/api/health" > /dev/null; then break; fi
+    sleep 1
+  done
+  if ! curl -sf "http://127.0.0.1:$E2E_PORT/api/health" > /dev/null; then
+    echo "E2E 服务健康检查超时" >&2
+    exit 1
+  fi
+  BASE_URL="http://127.0.0.1:$E2E_PORT" "$PY" -m pytest tests/e2e -q
   kill $E2E_PID 2>/dev/null || true
+  E2E_PID=""
 fi
 
 echo "=== CHECK GREEN ==="

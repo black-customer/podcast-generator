@@ -5,6 +5,7 @@
 """
 import os
 
+import pytest
 from playwright.sync_api import sync_playwright
 
 BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8765")
@@ -108,6 +109,33 @@ def test_full_player_workflow():
 
         # 11. 全程无 JS 运行时异常
         assert len(console_errors) == 0, f"Captured console errors: {console_errors}"
+        browser.close()
+
+
+@pytest.mark.parametrize(
+    "viewport",
+    [{"width": 390, "height": 844}, {"width": 412, "height": 915}],
+)
+def test_mobile_full_player_controls_stay_inside_player(viewport):
+    """完整播放页隐藏底栏，固定播放器的可见控件不得溢出或互相覆盖。"""
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(viewport=viewport)
+        page.goto(f"{BASE_URL}/#/play/{TOPIC}/{ITEM}")
+        page.wait_for_selector("#global-player", state="visible", timeout=5000)
+        page.wait_for_selector("#pod-stream .transcript-row", timeout=5000)
+
+        assert page.locator(".sidebar").is_hidden(), "移动完整播放页不应同时显示底部导航"
+        player = page.locator("#global-player").bounding_box()
+        assert player is not None
+        assert abs(player["y"] + player["height"] - viewport["height"]) <= 1
+
+        for selector in (".player-left", ".player-progress", ".player-transport"):
+            box = page.locator(f"#global-player {selector}").bounding_box()
+            assert box is not None
+            assert box["y"] >= player["y"] - 1, selector
+            assert box["y"] + box["height"] <= player["y"] + player["height"] + 1, selector
+
         browser.close()
 
 

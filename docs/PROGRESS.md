@@ -193,3 +193,15 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
 - 测试与门禁：修复 `test_pack_ui.py` 中的文稿选择器兼容，Playwright 4 个 E2E 全绿（13.94s）；
   Playwright 桌面（1280x800）与移动端（390x844）全视图截图走查通过；
   `scripts/check.sh --with-e2e` 全量门禁全绿；打 tag `q03`。
+
+## 2026-09-21 会话 9：可分享版 R01–R05 启动
+
+- Bruce 定稿新主链：安装配置 → 选题 → 回答 → Agent/API → StepFun 音频 →
+  网页下载/精听 → Android 导入。
+- 产品决策：Agent 模式默认；API 模式共用 StepFun Key；StepFun TTS 2.5 默认、Fish 备选；
+  提问者/回答者性别与音色独立；普通 UI 隐藏独白、多轨、整集与 TTS 表演稿。
+- 已批准十张 v1 概念图；03 修订为双模式，Android v1 只做文件与手动局域网导入。
+- R01 回归测试已先红后绿：390×844、412×915 完整播放器隐藏底栏且控件不溢出。
+- R01 完成：产品契约、DESIGN、概念图、移动修复与 check.sh 独立 E2E 端口已落地。
+- 完整门禁：ruff 绿；108 passed、1 skipped；独立端口 Playwright 6 passed；服务冒烟绿。
+- 下一步：R02 将 StepFun 实验提取为正式 provider；真实调用留到 5 条听感验收门。

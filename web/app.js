@@ -1953,6 +1953,7 @@ function viewStale(token) {
 function route() {
   const token = ++routeToken;
   const hash = location.hash || "#/bank";
+  document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
   document.querySelectorAll(".nav-item").forEach(el => {
     const href = el.getAttribute("href");
     if (href === hash || (hash.startsWith("#/bank") && href === "#/bank")) {

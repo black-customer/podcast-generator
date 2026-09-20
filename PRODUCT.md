@@ -12,8 +12,9 @@ Primary user: Bruce, a Chinese English learner preparing IELTS speaking answers 
 personal corpus. He uses the PC to choose questions, write his real thoughts, manage generation,
 and review content; he uses the Android wrapper while walking or commuting to listen repeatedly.
 
-Open-source users may run the same local workflow with their own Fish Audio key and corpus, but
-Bruce's daily learning loop remains the product's first priority.
+Open-source users run the same local workflow with their own StepFun or Fish key and corpus.
+Bruce remains the first user, but a fresh user must be able to understand and complete the core
+loop without learning the project's internal track or script terminology.
 
 ## Product Purpose
 
@@ -33,9 +34,10 @@ native-like input that contains expressions the user actually wants to say.
 
 ## Operating Context
 
-The core loop is: choose an IELTS question → answer freely → use an Agent conversation to produce
-natural English and a Fish-ready script → generate audio with Fish S2.1 Pro Free → replay, imitate,
-and shadow it. Text files under `data/` are the interface between the app and Agent sessions.
+The core loop is: choose an IELTS or daily-life question → answer freely → use Agent mode or the
+optional StepFun API mode to produce natural English and a hidden performance script → generate
+audio with StepAudio 2.5 TTS (Fish remains a fallback) → replay, imitate, download, or import it
+into Android. Text files under `data/` remain the common interface for both modes.
 
 The same web frontend runs against the local FastAPI server on PC and against imported corpus packs
 inside a Capacitor Android shell. Bruce is involved at perceptual gates: voice choice, listening
@@ -44,9 +46,9 @@ acceptance, visual direction, and milestone acceptance.
 ## Capabilities and Constraints
 
 - Python 3.11, FastAPI, native JavaScript, no frontend build step, no CDN, no framework.
-- Local-first and zero-server; Fish Audio `s2.1-pro-free` is the only external generation service.
-- No LLM API integration; rewriting stays in Agent conversations and plain-text files.
-- Female interviewer and male answer voice; the answer voice must be easy for Bruce to imitate.
+- Local-first and zero-server; external calls use the user's own StepFun/Fish credentials.
+- Agent mode is the default and has no text-API cost; optional API mode uses StepFun JSON output.
+- Questioner and answerer are independent roles with user-selected gender and voice.
 - Existing alignment, word highlighting, sentence seeking, bilingual display, server/pack data
   sources, exports, and Android packaging must remain functional.
 - `data/` is product data and must remain human-readable, Agent-editable, atomic, and compatible.
@@ -54,9 +56,9 @@ acceptance, visual direction, and milestone acceptance.
 
 ## Brand Commitments
 
-The product should feel like a private editorial listening desk: calm, intelligent, useful, and
-personal. It must not imitate Spotify, look like an admin dashboard, or present itself as a flashy
-AI product. The selected visual direction is "安静编辑部"; the build workflow is comp-first.
+The product should feel like a personal language recording studio: calm, precise, useful, and
+personal. It must not imitate Spotify, look like an admin dashboard, or foreground AI machinery.
+The approved v1 visual direction is documented in `DESIGN.md` and `docs/design/v1/`.
 
 ## Evidence on Hand
 
@@ -74,7 +76,7 @@ AI product. The selected visual direction is "安静编辑部"; the build workfl
 3. Content and transcript are the interface; decoration must yield to reading, listening, and
    selection.
 4. Prefer the smallest implementation that makes the user more willing to listen repeatedly.
-5. Preserve local ownership, zero extra API cost, and backwards-compatible product data.
+5. Preserve local ownership, user-controlled API spend, and backwards-compatible product data.
 
 ## Accessibility & Inclusion
 
