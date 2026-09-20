@@ -4,8 +4,8 @@ import logging
 import threading
 import uuid
 
-from . import assemble, library, tts
-from .config import DATA_DIR, atomic_write_text
+from . import assemble, library, rewrite, tts
+from .config import DATA_DIR, atomic_write_text, load_settings
 
 logger = logging.getLogger(__name__)
 
@@ -215,6 +215,95 @@ def start_generate(
     )
     t.start()
     return {"job_id": job_id, "total": len(targets)}
+
+
+def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, answer: str) -> None:
+    """API 模式：StepFun JSON Mode 改写 → 校验落盘 → 自动 TTS。
+
+    改写失败保留原始回答，不产生或覆盖任何音频。
+    """
+    with JOBS_LOCK:
+        job = JOBS.get(job_id)
+        cancel_event = (job or {}).get("cancel_event")
+    if job is None:
+        return
+
+    def _set_phase(phase: str) -> None:
+        with JOBS_LOCK:
+            job["phase"] = phase
+            _persist_locked()
+
+    try:
+        _set_phase("rewrite")
+        texts, _repairs = rewrite.generate_texts(
+            load_settings(), question, answer, cancel=cancel_event
+        )
+        _set_phase("save")
+        texts["original_answer"] = answer
+        library.update_item_texts(topic_id, item_id, texts)
+        _set_phase("tts")
+        tts.generate_item_audio(topic_id, item_id, track="podcast", cancel=cancel_event)
+    except tts.TTSCancelled:
+        with JOBS_LOCK:
+            _finish(job, "cancelled")
+        return
+    except rewrite.TextPermissionError as exc:
+        with JOBS_LOCK:
+            job["errors"].append({"item_id": item_id, "message": str(exc)[:300]})
+            _persist_locked()
+            library_update_error(topic_id, item_id, str(exc))
+            _finish(job, "error")
+        return
+    except Exception as exc:
+        msg = str(exc)
+        with JOBS_LOCK:
+            job["errors"].append({"item_id": item_id, "message": msg[:300]})
+            _persist_locked()
+            library_update_error(topic_id, item_id, msg)
+            _finish(job, "error")
+        return
+    with JOBS_LOCK:
+        job["done"] = 1
+        _finish(job, "done")
+
+
+def library_update_error(topic_id: str, item_id: str, message: str) -> None:
+    try:
+        library.update_item_meta(topic_id, item_id, error=message[:300])
+    except Exception:
+        pass
+
+
+def start_api_generation(topic_id: str, item_id: str, question: str, answer: str) -> dict:
+    """API 模式生成任务；同话题互斥。"""
+    with JOBS_LOCK:
+        active_id = _ACTIVE_TOPICS.get(topic_id)
+        if active_id and active_id in JOBS and JOBS[active_id]["state"] == "running":
+            raise JobConflict("该话题已有运行中的生成任务")
+        job_id = uuid.uuid4().hex[:12]
+        JOBS[job_id] = {
+            "id": job_id,
+            "kind": "api_generate",
+            "topic_id": topic_id,
+            "track": "podcast",
+            "phase": "rewrite",
+            "state": "running",
+            "total": 1,
+            "done": 0,
+            "current": item_id,
+            "errors": [],
+            "cancel": False,
+            "cancel_event": threading.Event(),
+            "started_at": _now(),
+            "finished_at": None,
+        }
+        _ACTIVE_TOPICS[topic_id] = job_id
+        _prune_finished_locked()
+        _persist_locked()
+    threading.Thread(
+        target=_run_api_generate, args=(job_id, topic_id, item_id, question, answer), daemon=True
+    ).start()
+    return {"job_id": job_id, "total": 1}
 
 
 def _run_assemble(job_id: str, topic_id: str, track: str) -> None:

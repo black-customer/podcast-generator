@@ -16,6 +16,7 @@ from . import (
     library,
     pack,
     production,
+    rewrite,
     stepfun,
     timeline,
     tts,
@@ -670,6 +671,93 @@ def api_bank_answer(body: BankAnswerIn):
         "item_id": created["id"],
         "topic_name": target["name"],
         "question": question["text"],
+    }
+
+
+# ------------------------------------------------- generation-requests（R03 统一入口)
+
+
+class GenerationRequestIn(BaseModel):
+    question_id: str | None = None
+    question: str | None = None
+    topic: str | None = None
+    answer: str
+    mode: Literal["agent", "api"] = "agent"
+
+
+@router.post("/generation-requests")
+def api_generation_requests(body: GenerationRequestIn):
+    """统一创建条目：Agent 模式返回可复制指令（绝不调用文本 API），API 模式返回 job。"""
+    answer = (body.answer or "").strip()
+    if not answer:
+        raise _err(422, "回答不能为空")
+    if body.question_id:
+        try:
+            snapshot = bank.load_bank()
+        except FileNotFoundError as e:
+            raise _err(404, "题库未导入：先运行 python -m server.bank --sync") from e
+        question = bank.find_question(snapshot, body.question_id)
+        if question is None:
+            raise _err(404, "题目不存在")
+        question_text = (question.get("text") or "").strip()
+        if not question_text:
+            raise _err(422, "该题目题干缺失，无法入库")
+        topic_name = bank.answer_topic_name(snapshot, question)
+    elif (body.question or "").strip():
+        question_text = body.question.strip()
+        topic_name = (body.topic or "").strip()
+        if not topic_name:
+            raise _err(422, "自定义题目需要同时提供 topic 话题名")
+    else:
+        raise _err(422, "需要 question_id 或 question")
+
+    target = next(
+        (
+            t
+            for t in library.list_topics()
+            if t["name"].strip().casefold() == topic_name.casefold()
+        ),
+        None,
+    )
+    if target is None:
+        target = library.create_topic(topic_name)
+    fields = {"question": question_text, "original_answer": answer, **bank.answer_fields(answer)}
+    created = library.create_item(target["id"], fields)
+    out = {
+        "topic_id": target["id"],
+        "item_id": created["id"],
+        "topic_name": target["name"],
+        "mode": body.mode,
+        "result_url": f"#/done/{target['id']}/{created['id']}",
+    }
+    if body.mode == "agent":
+        out["agent_prompt"] = rewrite.build_agent_prompt(
+            target["id"], created["id"], question_text, answer
+        )
+        return out
+    try:
+        job = jobs.start_api_generation(target["id"], created["id"], question_text, answer)
+    except jobs.JobConflict as e:
+        raise _err(409, str(e)) from e
+    out["job_id"] = job["job_id"]
+    return out
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/agent-task")
+def api_agent_task(topic_id: str, item_id: str):
+    """Agent 任务指令可随时重新获取（刷新/换机器后仍可复制）。"""
+    try:
+        full = library.get_item_full(topic_id, item_id)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    answer = rewrite.original_answer_of(full)
+    question = (full.get("question") or "").strip()
+    return {
+        "topic_id": topic_id,
+        "item_id": item_id,
+        "question": question,
+        "answer": answer,
+        "agent_prompt": rewrite.build_agent_prompt(topic_id, item_id, question, answer),
     }
 
 

@@ -219,3 +219,24 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   A/B 清单交付 data/.tmp/r02_acceptance/MANIFEST.md 待 Bruce 听感门（4/5 偏好）。
 - 完整门禁：ruff 绿；116 passed 1 skipped；e2e 6 passed；服务冒烟绿。
 - tag r02（DONE*：4/5 听感门待 Bruce，工程不阻塞 R03）。
+
+## 2026-09-21 会话 10（续）：R03 Agent/API 双模式闭环完成（tag r03）
+
+- 数据层：original_answer.txt 入 FIELD_FILES/TEXT_FIELDS（不入 STALE——改原始回答不使音频过期）；
+  旧条目回退语义 original_answer → chinese → natural_english（rewrite.original_answer_of）。
+- server/rewrite.py：StepFun JSON Mode（step-3.7-flash）一次产出 natural_english/podcast_text/
+  podcast_script；校验=字段完整+A/B 对话格式+可见文本零标签+表演稿白名单标签+词义一致性
+  （内容词 jaccard≥0.35）；结构失败带错误清单修复重试一次；401/403/无 Key → TextPermissionError
+  显式提示改用 Agent 模式，不静默降级。
+- POST /api/generation-requests：question_id 或 question+topic → 建条目（original_answer 永存）
+  → Agent 模式返回 agent_prompt（绝不调文本 API）；API 模式走 jobs.start_api_generation
+  （rewrite→save→tts 三阶段 phase），失败保留原始回答不产生音频。
+- GET /api/topics/{t}/items/{i}/agent-task：指令刷新后可重取。
+- pipeline.py complete 子命令：先校验后原子写入再合成（--no-audio 支持），输出 play_url+mp3_path。
+- canonical skills/ielts-audio/SKILL.md + 根 AGENTS 路由段 + .qoder 薄包装。
+- 前端：题库作答卡双模式（Agent 默认/API 可选）；Agent 等待态（复制指令+2s 轮询+focus 立即检查
+  →自动跳完成页）；API 三阶段进度+失败显式回退按钮；#/done 统一完成页（干净英文阅读版显示层
+  剥离旧数据残留标签，表演稿无入口，下载 MP3 + 精听入口）。
+- 测试：test_generation_modes.py 18 个（数据回退/校验/修复重试/权限快速失败/双模式全链 mock/
+  CLI/同构断言）；e2e test_dual_mode.py（复制→CLI 完成→占位音频→自动跳完成页→无表演稿泄露）；
+  既有 bank e2e 第 5 步同步新流程。134 passed 1 skipped + e2e 7 passed 全绿。tag r03。

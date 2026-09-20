@@ -1774,17 +1774,125 @@ async function bankRandomGo() {
   }
 }
 
+// R03 双模式等待状态：路由切换时必须清理轮询定时器
+const GenWaitState = { pollTimer: null };
+
+function genWaitStop() {
+  if (GenWaitState.pollTimer) {
+    clearInterval(GenWaitState.pollTimer);
+    GenWaitState.pollTimer = null;
+  }
+  window.onfocus = null;
+}
+
+async function genWaitCheckItem(topicId, itemId) {
+  try {
+    const item = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`);
+    if (item.has_audio) {
+      genWaitStop();
+      location.hash = `#/done/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}`;
+    }
+  } catch (_) { /* 条目暂不可读，下轮重试 */ }
+}
+
+function showAgentWait(res) {
+  genWaitStop();
+  const card = document.querySelector(".bank-answer-card");
+  if (!card) return;
+  card.innerHTML = `
+    <div class="bank-answer-q">条目已创建，把下面的完整指令复制给你的 Agent（Codex / ZCode / WorkBuddy…）</div>
+    <pre id="agent-prompt-box" class="agent-prompt-box">${esc(res.agent_prompt)}</pre>
+    <div class="bank-answer-actions">
+      <button id="agent-copy-btn" class="bank-submit-btn" onclick="copyAgentPrompt(this)">一键复制给 Agent</button>
+      <a class="btn-pill" href="#/topic/${encodeURIComponent(res.topic_id)}" style="text-decoration:none;">查看话题</a>
+    </div>
+    <p class="bank-answer-hint" id="agent-wait-hint">⏳ 等待 Agent 执行完成……检测到音频后自动进入完成页（切回本窗口会立即检查）。</p>`;
+  window.onfocus = () => genWaitCheckItem(res.topic_id, res.item_id);
+  GenWaitState.pollTimer = setInterval(() => genWaitCheckItem(res.topic_id, res.item_id), 2000);
+}
+
+window.copyAgentPrompt = async function (btn) {
+  const box = document.getElementById("agent-prompt-box");
+  const text = box ? box.textContent : "";
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (_) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+  if (btn) {
+    btn.textContent = "已复制 ✓";
+    setTimeout(() => { btn.textContent = "一键复制给 Agent"; }, 1500);
+  }
+};
+
+function showApiJobWait(res) {
+  genWaitStop();
+  const card = document.querySelector(".bank-answer-card");
+  if (!card) return;
+  card.innerHTML = `
+    <div class="bank-answer-q">API 模式生成中（StepFun 改写 → 校验 → 音频合成）</div>
+    <div class="api-stage-row" id="api-stage-row">
+      <span class="api-stage" data-phase="rewrite">① 母语者改写</span>
+      <span class="api-stage" data-phase="save">② 写入语料</span>
+      <span class="api-stage" data-phase="tts">③ 合成音频</span>
+    </div>
+    <p class="bank-answer-hint" id="api-job-hint">⏳ 正在处理……</p>
+    <div class="bank-answer-actions" id="api-job-fallback" style="display:none;">
+      <button class="bank-submit-btn" onclick="switchToAgentMode('${encodeURIComponent(res.topic_id)}', '${encodeURIComponent(res.item_id)}')">改用 Agent 模式</button>
+    </div>`;
+  const mark = (phase) => {
+    const order = ["rewrite", "save", "tts"];
+    const idx = order.indexOf(phase);
+    document.querySelectorAll("#api-stage-row .api-stage").forEach((el, i) => {
+      el.classList.toggle("active", i <= idx);
+    });
+  };
+  mark("rewrite");
+  GenWaitState.pollTimer = setInterval(async () => {
+    try {
+      const job = await api("GET", `/api/jobs/${encodeURIComponent(res.job_id)}`);
+      if (job.phase) mark(job.phase);
+      if (job.state === "done") {
+        genWaitStop();
+        location.hash = `#/done/${encodeURIComponent(res.topic_id)}/${encodeURIComponent(res.item_id)}`;
+      } else if (job.state === "error" || job.state === "cancelled" || job.state === "interrupted") {
+        genWaitStop();
+        const msg = (job.errors || []).map((e) => e.message).join("；") || "任务失败";
+        const hint = document.getElementById("api-job-hint");
+        if (hint) hint.textContent = `✗ ${msg}`;
+        const fb = document.getElementById("api-job-fallback");
+        if (fb) fb.style.display = "";
+      }
+    } catch (_) { /* 下轮重试 */ }
+  }, 1000);
+}
+
+async function switchToAgentMode(topicId, itemId) {
+  try {
+    const task = await api("GET", `/api/topics/${decodeURIComponent(topicId)}/items/${decodeURIComponent(itemId)}/agent-task`);
+    showAgentWait(task);
+  } catch (e) {
+    toast("获取 Agent 指令失败：" + e.message);
+  }
+}
+
 async function bankSubmitAnswer(questionId) {
   const input = document.getElementById("bank-answer-input");
   const btn = document.getElementById("bank-answer-submit");
+  const mode = ((document.querySelector('input[name="bank-gen-mode"]:checked') || {}).value) || "agent";
   const answer = (input && input.value || "").trim();
   if (!answer) { toast("先写下你的回答（中文或英文都可以）"); return; }
   btn.disabled = true;
-  btn.textContent = "提交中…";
+  btn.textContent = mode === "api" ? "启动生成中…" : "创建条目中…";
   try {
-    const res = await api("POST", "/api/bank/answer", { question_id: questionId, answer });
-    toast(`已入库：话题「${res.topic_name}」`);
-    location.hash = `#/topic/${encodeURIComponent(res.topic_id)}`;
+    const res = await api("POST", "/api/generation-requests", { question_id: questionId, answer, mode });
+    if (mode === "api") showApiJobWait(res);
+    else showAgentWait(res);
   } catch (e) {
     toast(`提交失败：${e.message}`);
     btn.disabled = false;
@@ -1850,13 +1958,17 @@ async function BankView(token) {
       ${selJump}
       ${packMode ? `<p class="bank-answer-hint">📱 APP 浏览模式：随机练题口头作答即可，提交作答请在电脑端进行。</p>` : `
       <textarea id="bank-answer-input" rows="6"
-        placeholder="用中文或英文自由作答——说出你想表达的意思，母语者版本由 Agent 会话改写后生成音频"></textarea>
+        placeholder="用中文或英文自由作答——说出你想表达的意思，母语者版本由 Agent 或 API 改写后生成音频"></textarea>
+      <div class="bank-answer-actions bank-mode-pick">
+        <label><input type="radio" name="bank-gen-mode" value="agent" checked> Agent 模式（默认：复制指令给 Codex / ZCode 等 Agent）</label>
+        <label><input type="radio" name="bank-gen-mode" value="api"> API 模式（StepFun 一键改写 + 音频）</label>
+      </div>
       <div class="bank-answer-actions">
         <button id="bank-answer-submit" class="bank-submit-btn" onclick="bankSubmitAnswer('${esc(selItem.id)}')">提交作答</button>
         <button class="btn-pill" onclick="bankGo({sel: ''})">收起</button>
       </div>
-      <p class="bank-answer-hint">提交后条目进入话题「${esc(selItem.topic_name_en || selItem.topic_name)}」；
-      改写与音频生成在工作台或 Agent 会话中完成。</p>`}
+      <p class="bank-answer-hint">提交后条目进入话题「${esc(selItem.topic_name_en || selItem.topic_name)}」。
+      Agent 模式复制指令给你的 AI Agent，完成后本页自动跳转；API 模式用已配置的 StepFun Key 一次完成改写与音频。</p>`}
     </div>` : "";
 
   const rowsHtml = data.items.map((it) => `
@@ -2039,10 +2151,20 @@ function route() {
     clearInterval(ManageState.pollTimer);
     ManageState.pollTimer = null;
   }
+  // 离开题库视图时清理双模式等待轮询（R03）
+  if (!hash.startsWith("#/bank")) genWaitStop();
 
   if (hash.startsWith("#/import")) {
     ImportView(token);
     return;
+  }
+
+  if (hash.startsWith("#/done/")) {
+    const parts = hash.slice(7).split("/");
+    if (parts.length >= 2) {
+      DoneView(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
+      return;
+    }
   }
 
   if (hash.startsWith("#/bank")) {
@@ -2083,6 +2205,43 @@ function route() {
   }
 
   TopicsGalleryView(token);
+}
+
+// R03 统一完成页：最终英文只在完成页/播放器呈现；表演稿无入口。
+async function DoneView(topicId, itemId, token) {
+  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载完成页…</p>`;
+  let item;
+  try {
+    item = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`);
+  } catch (e) {
+    if (viewStale(token)) return;
+    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
+    return;
+  }
+  if (viewStale(token)) return;
+  const hasAudio = !!item.has_audio;
+  // 显示层剥离表演标签：旧条目的可见文本可能残留 [tag]，阅读版必须干净（数据不动）
+  const cleanRead = t => (t || "").replace(/\[[^\]]*\]/g, "").replace(/[ \t]{2,}/g, " ").trim();
+  $app.innerHTML = `
+    <a class="back-link" href="#/topic/${encodeURIComponent(topicId)}">← 返回话题</a>
+    <div class="done-wrap">
+      <div class="done-badge ${hasAudio ? "ok" : "wait"}">${hasAudio ? "✓ 音频已生成" : "⏳ 音频还在生成中"}</div>
+      <h2 class="done-title">${esc(item.title || item.question || "条目")}</h2>
+      ${item.question && item.title !== item.question ? `<div class="bank-answer-q" style="margin:8px 0 16px;">${esc(item.question)}</div>` : ""}
+      ${item.natural_english ? `
+        <div class="done-section-label">跟读文本 · 干净英文，可背诵</div>
+        <p class="done-natural">${esc(cleanRead(item.natural_english))}</p>` : ""}
+      ${item.podcast_text ? `
+        <details class="done-dialogue"><summary>查看完整问答对话</summary>
+          <pre class="done-dialogue-pre">${esc(cleanRead(item.podcast_text))}</pre></details>` : ""}
+      <div class="bank-answer-actions">
+        ${hasAudio ? `
+          <a class="bank-submit-btn" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}" style="text-decoration:none;">▶ 打开精听播放器</a>
+          <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/audio/podcast" download="podcast.mp3" style="text-decoration:none;">⬇ 下载 MP3</a>`
+        : `<button class="btn-pill" onclick="location.reload()">刷新状态</button>`}
+        <a class="btn-pill" href="#/bank" style="text-decoration:none;">再练一题</a>
+      </div>
+    </div>`;
 }
 
 window.addEventListener("hashchange", route);

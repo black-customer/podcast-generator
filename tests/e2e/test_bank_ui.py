@@ -99,14 +99,18 @@ def test_bank_view_flow():
             page.wait_for_timeout(700)
             page.wait_for_selector("#bank-answer-input", timeout=5000)
 
-            # 5. 提交中文作答 → 跳转到话题页（真实入库，finally 清理）
+            # 5. 提交中文作答（Agent 模式默认）→ 出现 Agent 指令与等待态（真实入库，finally 清理）
             page.fill("#bank-answer-input", f"e2e 题库作答冒烟 {stamp}")
             page.click("#bank-answer-submit")
-            page.wait_for_url(re.compile(r"#/topic/"), timeout=5000)
-            topic_id = page.url.split("#/topic/")[1]
-            created_topics.append(topic_id)
-            page.wait_for_selector(".track-row", timeout=5000)
-            assert page.locator(".track-row").count() >= 1, "作答应出现在话题条目列表"
+            page.wait_for_selector("#agent-prompt-box", timeout=5000)
+            prompt_text = page.locator("#agent-prompt-box").inner_text()
+            assert "pipeline.py complete" in prompt_text
+            m_topic = re.search(r"--topic-id (\S+)", prompt_text)
+            m_item = re.search(r"--item-id (\S+)", prompt_text)
+            assert m_topic and m_item, prompt_text
+            created_topics.append(m_topic.group(1))
+            assert "api_key" not in prompt_text.lower(), "Agent 指令不得包含密钥字段"
+            assert page.locator("#agent-copy-btn").count() == 1
         finally:
             for tid in created_topics:
                 try:

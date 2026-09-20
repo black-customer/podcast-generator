@@ -1853,3 +1853,89 @@ body.hide-zh .rail-block-zh { display: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* ===================== R03 双模式生成（Agent 指令 / API 三阶段 / 完成页） ===================== */
+.bank-mode-pick { gap: 14px; flex-wrap: wrap; }
+.bank-mode-pick label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--ink-soft); cursor: pointer; white-space: nowrap;
+}
+.bank-mode-pick input { accent-color: var(--blue); }
+
+.agent-prompt-box {
+  margin: 12px 0;
+  padding: 14px 16px;
+  max-height: 260px;
+  overflow: auto;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--paper-soft);
+  color: var(--ink);
+  font: 12.5px/1.65 "Cascadia Code", Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.api-stage-row { display: flex; gap: 8px; margin: 14px 0 10px; flex-wrap: wrap; }
+.api-stage {
+  padding: 6px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--ink-faint);
+  background: var(--paper-raised);
+  transition: all .25s ease;
+}
+.api-stage.active {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--blue-soft);
+  font-weight: 600;
+}
+
+.done-wrap { max-width: 720px; margin: 0 auto; padding: 8px 4px 48px; }
+.done-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.done-badge.ok { background: var(--blue-soft); color: var(--blue); }
+.done-badge.wait { background: var(--current-line); color: var(--ink-soft); }
+.done-title { font-size: 22px; line-height: 1.4; margin-bottom: 6px; }
+.done-section-label {
+  margin: 22px 0 8px;
+  font-size: 12.5px;
+  letter-spacing: .06em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.done-natural {
+  font-size: 16.5px;
+  line-height: 1.9;
+  color: var(--ink);
+  padding: 16px 18px;
+  border-left: 3px solid var(--blue);
+  border-radius: 0 10px 10px 0;
+  background: var(--paper-raised);
+  white-space: pre-line;
+}
+.done-dialogue { margin-top: 16px; }
+.done-dialogue summary { cursor: pointer; font-size: 13.5px; color: var(--ink-soft); }
+.done-dialogue-pre {
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--paper-raised);
+  font: 13.5px/1.8 inherit;
+  font-family: inherit;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 640px) {
+  .done-natural { padding: 12px 14px; font-size: 15.5px; }
+  .api-stage { padding: 5px 10px; font-size: 12px; }
+}

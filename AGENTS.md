@@ -62,3 +62,11 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 <file>
 3. `bash scripts/check.sh` 绿 → 更新 PROGRESS/ROADMAP → 一任务一提交 → 里程碑 tag
 4. 升级规则（只有这些情况找 Bruce）：宪法冲突、要花钱、破坏性操作、
    连续 3 次门禁红（停下写复盘到 PROGRESS）
+
+## ielts-audio 任务路由（R03）
+
+凡任务是「把用户的回答改写并生成播客音频」（或提到 natural_english /
+podcast_text / podcast_script / pipeline.py complete），一律以
+`skills/ielts-audio/SKILL.md` 为唯一规范：产出三份文本 JSON，执行
+`pipeline.py complete --topic-id ... --item-id ... --result-json ...`。
+禁止读取/打印任何 API Key；禁止绕过校验直改 data/。

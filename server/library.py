@@ -25,6 +25,7 @@ STALE_TEXT_FIELDS = (
 TEXT_FIELDS = [
     "question",
     "chinese",
+    "original_answer",
     "natural_english",
     "fish_script",
     "monologue_text",
@@ -35,6 +36,7 @@ TEXT_FIELDS = [
 FIELD_FILES = {
     "question": "question.txt",
     "chinese": "chinese.txt",
+    "original_answer": "original_answer.txt",
     "natural_english": "natural_english.txt",
     "fish_script": "fish_script.txt",
     "monologue_text": "monologue_text.txt",
