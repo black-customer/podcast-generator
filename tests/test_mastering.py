@@ -31,6 +31,31 @@ def test_mastering_produces_valid_audio(tmp_path):
     dur = mastering.apply_mastering(src, out, is_dialogue=False)
     assert out.exists() and out.stat().st_size > 5000
     assert dur > 2.0
+    probe = subprocess.run(
+        [
+            "ffprobe", "-v", "error", "-select_streams", "a:0",
+            "-show_entries", "stream=channels", "-of", "csv=p=0", str(out),
+        ],
+        capture_output=True, text=True, timeout=30,
+    )
+    assert probe.stdout.strip() == "1"
+
+
+@pytest.mark.skipif(not FFMPEG, reason="需要 ffmpeg")
+def test_mastering_targets_learning_audio_loudness(tmp_path):
+    src = tmp_path / "tone.mp3"
+    audio.make_tone(4.0, src)
+    out = tmp_path / "mastered.mp3"
+    mastering.apply_mastering(src, out, is_dialogue=True)
+
+    measured = subprocess.run(
+        ["ffmpeg", "-hide_banner", "-i", str(out), "-af", "ebur128", "-f", "null", "-"],
+        capture_output=True, text=True, timeout=60,
+    )
+    import re
+    matches = re.findall(r"I:\s*(-?[\d.]+) LUFS", measured.stderr or "")
+    assert matches, measured.stderr[-1000:]
+    assert abs(float(matches[-1]) - (-16.0)) <= 1.0
 
 
 @pytest.mark.skipif(not FFMPEG, reason="需要 ffmpeg")

@@ -17,6 +17,8 @@ from server import jobs, library, tts
 
 @pytest.fixture()
 def job_env(tmp_path, monkeypatch):
+    jobs.JOBS.clear()
+    jobs._ACTIVE_TOPICS.clear()
     topics = tmp_path / "topics"
     episodes = tmp_path / "episodes"
     for d in (topics, episodes, tmp_path / ".tmp"):
@@ -35,6 +37,12 @@ def job_env(tmp_path, monkeypatch):
             json={"dry_run": True, "reference_id": "a", "reference_id_b": "b"},
         )
         yield c
+        deadline = time.time() + 30
+        while jobs._ACTIVE_TOPICS and time.time() < deadline:
+            time.sleep(0.05)
+        assert not jobs._ACTIVE_TOPICS, "后台任务必须在临时目录 monkeypatch 恢复前退出"
+        jobs.JOBS.clear()
+        jobs._ACTIVE_TOPICS.clear()
 
 
 def _mk_item(c, topic_id, text="A: Hello there friend.\nB: Oh hi!"):
@@ -73,6 +81,16 @@ def test_topic_mutex_prevents_duplicate_jobs(job_env):
 
 def test_jobs_persist_and_recover_as_interrupted(job_env, monkeypatch):
     c = job_env
+
+    class DormantThread:
+        def __init__(self, *args, **kwargs):
+            del args, kwargs
+
+        def start(self):
+            return None
+
+    # 这里只验证磁盘恢复语义，不应真的启动跨 fixture 的 daemon 合成线程。
+    monkeypatch.setattr(jobs.threading, "Thread", DormantThread)
     tid = c.post("/api/topics", json={"name": "Persist"}).json()["id"]
     _mk_item(c, tid)
     r = c.post(f"/api/topics/{tid}/generate", json={"track": "podcast"}).json()
@@ -81,7 +99,7 @@ def test_jobs_persist_and_recover_as_interrupted(job_env, monkeypatch):
     monkeypatch.setattr(jobs, "JOBS", {})
     jobs.recover_from_disk()
     j = c.get(f"/api/jobs/{job_id}").json()
-    assert j["state"] in ("interrupted", "done", "cancelled")
+    assert j["state"] == "interrupted"
 
 
 # ---------------------------------------------------------------- 取消令牌

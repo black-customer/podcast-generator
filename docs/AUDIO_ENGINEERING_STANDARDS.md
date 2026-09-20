@@ -1,90 +1,51 @@
-# 工业级 AI 播客声音工程标准 (Audio Engineering Standards)
+# 学习音频质量标准 v2
 
-> **版本**：v1.0  
-> **适用范围**：本项目所有后续播客剧本生成、TTS 渲染及音频母带处理。所有生成任务必须严格遵照本规范执行。
+本项目不是专业播客制作平台。目标是把 Bruce 的真实意思变成**愿意反复听、适合模仿的
+年轻母语者口语音频**。自然度高于广播包装，清晰度高于戏剧表演。
 
----
+## 文本职责
 
-## 核心设计哲学：如何打破“AI 念稿感”？
+- `natural_english`：干净、可阅读、完整保留意思的自然口语。
+- `podcast_text`：可读的 `A:` 女声提问 / `B:` 男声回答。
+- `podcast_script`：Fish 实际使用的轻量表演稿；新语料应与 podcast_text 同时产出。
+- 旧条目缺少表演稿时允许回退到 podcast_text，不批量改写或重生。
 
-传统 AI 语音之所以听起来像机器在“背课文”，根本原因在于以下三点：
-1. **伪对话（Monologue Hand-off）**：每个人一口气读 3~5 句话（20~30秒），缺乏真实人类交谈的微对话轮换。
-2. **绝对数字死寂（Digital Silence）**：句子间的停顿是振幅为 0 的纯数学空白，引发耳蜗的生理性排异反应。
-3. **单声道声像重叠（Mono Center）**：两个主播的声音从同一个声学点挤出来，缺乏物理录音室的空间纵深。
+口头禅、自我修正和重复必须承担真实的话语功能。禁止为了“像真人”随机堆叠 filler，
+也禁止把回答整理成 IELTS 范文、新闻播报或逻辑过度完美的演讲稿。
 
-为此，本项目全面实施**工业级 4 层声学与剧本工程体系**：
+## 主轨形态
 
-```
-Layer 1: 语音前置剧本工程 (Speech Acts & Micro-Turns)
-   ↓
-Layer 2: 韵律与副语言声学引导 (Paralinguistic Latent)
-   ↓
-Layer 3: 广播级物理母带流水线 (Studio Room Tone & Stereo Panning)
-   ↓
-Layer 4: 活力音色基准库 (College-Age Conversational Reference)
-```
+- 默认是一次女问男答：A 只问问题，B 完整表达 Bruce 的答案。
+- 问题和回答优先在同一次多说话人请求中生成，让问题成为回答的韵律上下文。
+- 逐行合成只作网络或模型失败时的回退。
+- 教学播客的多轮接茬属于 B04，不得反向污染个人答案主轨。
 
----
+## 表演指令
 
-## 第一层：语音前置剧本规范 (Scriptwriting & Speech Acts)
+- A 可在开头使用一次 `[curious]`；B 可在开头使用一次 `[relaxed]`。
+- B 全文最多再使用两个 `[uncertain]`、`[emphasis]` 或 `[break]`。
+- 优先使用逗号、句号、破折号和自然分句控制节奏。
+- prompt 禁止笑声、呼吸、叹气和戏剧化表演；旧文本中的历史标签仍由 QA 兼容处理。
 
-1. **单次话轮熔断机制（Strict Micro-turn Limit）**：
-   - **硬性上限**：任何一个说话人，单次发言严禁超过 **2 句话** 或 **25 个单词**。
-   - 必须由另一位搭档以反应词、打断或接茬形式切入。
-2. **高频反向接茬（Backchanneling & Interjections）**：
-   - 频繁使用真实大学生的语气接茬词：
-     - 赞同：*“Dude, 100%.”*, *“Right? Exactly.”*, *“Totally.”*
-     - 震惊/质疑：*“Wait, what?”*, *“Wait, are you serious?”*, *“No way.”*
-     - 思考过渡：*“I mean... honestly?”*, *“Here's the crazy part—”*
-3. **思维假起步与自我修正（False Starts & Self-Correction）**：
-   - 真人说话是边想边组织语言，绝不是事先写好的逻辑严密小作文。
-   - 规范写法示例：
-     - *❌ 错误（报告腔）*：`"When I was chatting with AI, I realized that I had no idea how to say whole grains."`
-     - *✔ 正确（口语假起步）*：`"So I was talking to this AI, and I was like—wait, how do I actually say 'whole grains'? Total brain freeze."`
+## Fish 参数
 
----
+- 只允许 `s2.1-pro-free`，永不自动回退到付费模型。
+- 默认 `top_p=0.70`、`repetition_penalty=1.20`、
+  `condition_on_previous_chunks=true`、`latency=normal`。
+- speed 与 temperature 绑定到音色预设；普通 TTS、SSE、试听共用同一 payload 构造器。
+- `quality-guard` 可用时启用；后端不支持时只移除该 feature 重试，不更换模型。
 
-## 第二层：韵律与副语言标记规范 (Paralinguistic Tags)
+## 近讲清晰母带
 
-1. **声学物理动作标记**：
-   - `[sigh]`：自嘲、无奈、反思。
-   - `[slight pause]`：思考时的自然呼吸顿挫（约 200~300ms）。
-   - `[speaking slightly faster]`：情绪高涨、吐槽时的语速突变。
-   - `[chuckle]`：⚠️ **高危标签，仅在 Fish Script 表演层谨慎使用**。Fish TTS 偶发
-     5~6 秒失控长笑（已发生过真实事故）。系统 QA 门禁（`server/audioqa.py`）会检测
-     时长比与 VAD 非语音孤岛，失控自动隔离并剥离全部标签重试一次。
-     三份生成类 prompt 一律禁止源头产出该标签（幽默感用词句传达）。
-2. **标点符号隐式驱动**：
-   - 破折号 `—`：用于**截断急停（Abrupt Stop）**或**思维跳跃**。
-   - 省略号 `...`：用于句尾拖音或寻找词汇时的犹豫。
-   - 逗号 `,`：用于短促呼吸断句，防止长句被平铺念出。
+- 70Hz 高通，去除无用低频。
+- 2:1 轻压缩，避免通勤收听时轻声漏词。
+- 目标约 -16 LUFS、True Peak 不高于 -1.5dB、LRA 7。
+- 输出 44.1kHz 单声道 192kbps MP3。
+- 不注入人工底噪，不做 220Hz 胸腔增益，不做假立体声展宽。
 
----
+## 音色与验收
 
-## 第三层：广播级物理母带流水线 (Acoustic Mastering Chain)
-
-所有由 TTS 生成的原始干音频（Dry Audio），必须通过 `server/mastering.py` 执行无损后处理：
-
-1. **录音室微底噪注入（Studio Room Tone Injection）**：
-   - 在人声音轨下方，全程混合一条经过高低切滤波（40Hz~8000Hz）的录音棚空气感微底噪（电平控制在 `-54dBFS ~ -56dBFS`）。
-   - **作用**：彻底消除句子间隔处的绝对数字死寂，使整个音频拥有物理实体的温暖空间感。
-2. **双人立体声场分离（Stereo Panning）**：
-   - **Speaker A**：微偏移至 `左声道 15%`（`c0=0.85*c0+0.15*c1, c1=0.15*c0+0.85*c1`）；
-   - **Speaker B**：微偏移至 `右声道 15%`；
-   - **作用**：模拟两位主播坐在专业电台圆桌两侧面对面交流的真实 3D 声像。
-3. **广播级人声 EQ 润色与动态压限**：
-   - **高通滤波（High-pass 75Hz）**：彻底切除低频麦克风喷麦杂音与低频嗡鸣；
-   - **温润胸腔增益（+2.0dB @ 220Hz, Q=1.2）**：赋予人声如 Shure SM7B 般的磁性与厚度；
-   - **齿音柔化（-2.5dB @ 5.5kHz, Q=2.0）**：平滑过锐的 "s/sh/ch" 尖刺高频；
-   - **动态平滑压限（Dynamic Normalization）**：平衡轻声笑语与大声吐槽之间的动态，确保通勤收听不刺耳、不漏词。
-
----
-
-## 第四层：音色选型标准 (Voice Selection Criteria)
-
-1. **男声（Voice A）**：
-   - 必须为 **美式年轻大学生（General American College-Age / 20-25岁）**；
-   - 音色特征：清亮、松弛、语调略带上扬（Upspeak）、带自然呼吸声与少年感，严禁低沉严肃的中年播音腔。
-2. **女声（Voice B）**：
-   - 必须具备中英双语无缝切换能力；
-   - 音色特征：灵动、亲和、思维敏捷，适合教学点拨与幽默吐槽。
+- 回答男声目标：20 多岁、General American、清亮松弛、方便跟读；避免中年低沉播音腔。
+- 提问女声保持 Mia，除非 Bruce 另行验收新候选。
+- 候选试听必须使用同一文本和候选自己的参数；最终音色由 Bruce 盲听选择。
+- 自动 QA 只证明文件可用。涉及自然度、青年感和模仿舒适度时，必须经过固定语料 A/B 听感门。

@@ -65,7 +65,7 @@ def test_api():
     assert r_voices.status_code == 200
     voices = r_voices.json()
     assert len(voices) >= 4
-    assert any(v["id"] == "tom_holland_vibe" for v in voices)
+    assert any(v["id"] == "cand_ethan" for v in voices)
     print("Voices endpoint OK, count:", len(voices))
 
     # 7. 测试时间戳 Live Transcript 对齐路由

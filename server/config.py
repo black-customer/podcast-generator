@@ -53,8 +53,13 @@ DEFAULT_SETTINGS = {
     "answer_voice_male": True,  # Bruce 规则：对话中回答必须是男声（提问自动用女声）
 }
 
+LEGACY_REFERENCE_ID_MAP = {
+    # Q02：用户明确淘汰旧少年感预设；读取时无损迁移到官方 Ethan。
+    "078eaa5208ca42a1909d2e6fac9c93f7": "536d3a5e000945adb7038665781a4aca",
+}
+
 # Fish Audio 开放模型头
-FISH_MODELS = ["s2.1-pro-free", "s2.1-pro", "s2-pro", "s1"]
+FISH_MODELS = ["s2.1-pro-free"]
 FISH_TTS_URL = "https://api.fish.audio/v1/tts"
 FISH_MODELS_URL = "https://api.fish.audio/model"
 
@@ -101,6 +106,9 @@ def load_settings() -> dict:
                     settings.update({k: v for k, v in stored.items() if k in settings})
             except (json.JSONDecodeError, OSError):
                 pass
+        settings["reference_id"] = LEGACY_REFERENCE_ID_MAP.get(
+            settings.get("reference_id"), settings.get("reference_id")
+        )
         return settings
 
 

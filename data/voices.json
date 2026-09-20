@@ -1,17 +1,5 @@
 [
   {
-    "id": "tom_holland_vibe",
-    "tier": "preset",
-    "name": "Peter Parker (荷兰弟少年感)",
-    "gender": "male",
-    "accent": "American",
-    "tag": "高能少年 · 碎碎念 · 语速轻快",
-    "description": "极具活力、语调跳跃、说话带气声与好奇心，完全不沉闷的年轻少年感",
-    "reference_id": "078eaa5208ca42a1909d2e6fac9c93f7",
-    "speed": 1.08,
-    "temperature": 0.88
-  },
-  {
     "id": "alex_young_adult",
     "tier": "preset",
     "name": "Alex (加州大学极客)",
@@ -21,19 +9,7 @@
     "description": "加州大学本科生日常 Vlog 风格，清亮松弛，带自然少年感",
     "reference_id": "ef3a6f9897314ec3ba0819c905ab21bd",
     "speed": 1.0,
-    "temperature": 0.82
-  },
-  {
-    "id": "london_scholar",
-    "tier": "preset",
-    "name": "Arthur (英伦阳光青年)",
-    "gender": "male",
-    "accent": "British",
-    "tag": "英音青年 · 自信从容",
-    "description": "伦敦年轻大学学者风格，发音考究但毫无距离感",
-    "reference_id": "4aee64c0c03c47288fa04f0b6d240a19",
-    "speed": 1.0,
-    "temperature": 0.8
+    "temperature": 0.7
   },
   {
     "id": "mia_bilingual",
@@ -95,7 +71,9 @@
     "accent": "American",
     "tag": "好奇讲解 · 官方基准",
     "description": "fish.audio 官方高人气男声，好奇心讲解者，Bruce 当前回答音色",
-    "reference_id": "536d3a5e000945adb7038665781a4aca"
+    "reference_id": "536d3a5e000945adb7038665781a4aca",
+    "speed": 1.0,
+    "temperature": 0.7
   },
   {
     "id": "cand_elite",
@@ -105,17 +83,9 @@
     "accent": "American",
     "tag": "自信干练 · 清晰职业",
     "description": "自信有活力的年轻男声，音色清脆、专业感强",
-    "reference_id": "d8a1340984ee4b63ad1ffae27a6a4339"
-  },
-  {
-    "id": "cand_slax",
-    "tier": "candidate",
-    "name": "Slax (沉稳叙事系)",
-    "gender": "male",
-    "accent": "American",
-    "tag": "清晰沉稳 · 叙事节奏",
-    "description": "清晰、精准、有分寸的叙事男声，适合讲解与陈述",
-    "reference_id": "c5f56a6cc2ec4fa8920cb4c5889a3fb7"
+    "reference_id": "d8a1340984ee4b63ad1ffae27a6a4339",
+    "speed": 1.0,
+    "temperature": 0.7
   },
   {
     "id": "cand_adam",
@@ -125,16 +95,8 @@
     "accent": "American",
     "tag": "友好口语 · 日常对话",
     "description": "自信有活力的年轻男声，友好、口语化、对话感强",
-    "reference_id": "9259a7392c454a1eb6436141abb5a558"
-  },
-  {
-    "id": "cand_us_clone",
-    "tier": "candidate",
-    "name": "美区克隆 (成熟低沉系)",
-    "gender": "male",
-    "accent": "American",
-    "tag": "成熟低沉 · 平滑专业",
-    "description": "专业沉稳的中年男声，音色平滑低沉",
-    "reference_id": "692a2e659a8748558a1abc97ec051e0e"
+    "reference_id": "9259a7392c454a1eb6436141abb5a558",
+    "speed": 1.0,
+    "temperature": 0.7
   }
 ]

@@ -163,7 +163,7 @@ WP：精简强化根 AGENTS；按领域完成标准 playbook；Qoder 项目 Skil
 明确不做：自定义子 Agent、复杂 Hook、审查包或新任务系统。
 AC：ZCode/Qoder 都能读取根规则；Skill 校验通过；全量门禁绿。tag q01。
 
-### Q02 学习音频质量 2.0 [G2/G5] — PENDING（依赖 Q01）
+### Q02 学习音频质量 2.0 [G2/G5] — ACTIVE（工程门禁已绿，待 Bruce 听感门）
 价值：以最低复杂度改善母语口语自然度、青年男声和长期收听意愿。
 WP：自然英文与轻量表演 prompt；统一 TTS payload 并修 SSE speed；候选男声盲选；
 近讲清晰母带；播放页单条安全重制。旧语料不批量重生。

@@ -32,6 +32,7 @@ def test_full_player_workflow():
         assert page.is_visible("#vinyl-disk")
         assert page.is_visible("#pod-stream")
         assert page.is_visible("#btn-tab-pod")
+        assert page.is_visible("#remake-item")
 
         # 3. 全局播放器与新控制按钮
         assert page.is_visible("#global-player")

@@ -72,6 +72,13 @@ class SettingsIn(BaseModel):
     temperature: float | None = None
     answer_voice_male: bool | None = None
 
+    @field_validator("model")
+    @classmethod
+    def _v_model(cls, v: str | None) -> str | None:
+        if v is not None and v != "s2.1-pro-free":
+            raise ValueError("零额外成本模式只允许 s2.1-pro-free")
+        return v
+
     @field_validator("speed")
     @classmethod
     def _v_speed(cls, v: float | None) -> float | None:
@@ -334,7 +341,7 @@ def api_voice_sample(ref_id: str, regen: bool = False):
     if not re.fullmatch(r"[0-9a-f]{16,64}", ref_id):
         raise _err(400, "非法的音色 id")
 
-    cache = DATA_DIR / "voice_samples" / f"{ref_id}.mp3"
+    cache = DATA_DIR / "voice_samples" / f"{ref_id}-q02-v1.mp3"
     if not regen and cache.exists() and cache.stat().st_size > 1000:
         return FileResponse(cache, media_type="audio/mpeg")
 
@@ -344,9 +351,16 @@ def api_voice_sample(ref_id: str, regen: bool = False):
     # 1) 现场合成一句（与真实生成同管线——听感即所得）
     if key and not is_dry_run(s):
         try:
+            voice_settings = production.voice_generation_settings(s, ref_id)
             audio_bytes = tts.fish_tts_segment(
-                "Hi there! This is a short preview of my voice. Pretty natural, right?",
-                s,
+                (
+                    "Hey, that's a good question. I don't have a perfect answer yet—well, "
+                    "not exactly. I guess I'd want something practical, but still a little "
+                    "exciting. You know, the kind of thing that feels easy to live with every "
+                    "day. Oh, and one more thing: it should feel like me, not like I'm trying "
+                    "too hard to impress anyone."
+                ),
+                voice_settings,
                 reference_id=ref_id,
             )
             cache.parent.mkdir(parents=True, exist_ok=True)
@@ -673,4 +687,5 @@ def api_voice_direct_request(topic_id: str, item_id: str):
     else:  # pragma: no cover
         template = "TEXT:\n{{NATURAL_ENGLISH}}"
     text = template.replace("{{NATURAL_ENGLISH}}", item["natural_english"])
+    text = text.replace("{{IELTS_QUESTION}}", item.get("question") or "(Question not provided)")
     return {"text": text}

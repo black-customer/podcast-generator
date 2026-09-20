@@ -23,6 +23,7 @@ const PlayerState = {
   programmaticScrollUntil: 0, // 程序性滚动窗口：期间 onscroll 不视为用户翻阅
   loopA: null,
   loopB: null,
+  mediaRevision: 0,
 };
 
 /* ---------------- 基础工具 ---------------- */
@@ -73,6 +74,16 @@ function toast(msg) {
     div.style.opacity = "0";
     setTimeout(() => div.remove(), 300);
   }, 2500);
+}
+
+async function waitForJob(jobId, timeoutMs = 180000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const job = await api("GET", `/api/jobs/${encodeURIComponent(jobId)}`);
+    if (job.state !== "running") return job;
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+  throw new Error("生成任务等待超时");
 }
 
 /* ---------------- 全局播放器驱动 ---------------- */
@@ -422,6 +433,9 @@ async function playItem(topicId, item, autoPlay = true) {
   const track = PlayerState.track;
   let audioUrl = mediaUrl(`/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(item.id)}/audio/${track}`);
   if (!audioUrl) audioUrl = `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(item.id)}/audio/${track}`;
+  if (!(typeof PackState !== "undefined" && PackState.active) && PlayerState.mediaRevision) {
+    audioUrl += `?v=${PlayerState.mediaRevision}`;
+  }
 
   $audio.src = audioUrl;
   $audio.playbackRate = PlayerState.playbackRate;
@@ -754,6 +768,9 @@ async function TrackPlayerView(topicId, itemId, token) {
               ? `<a class="btn-pill" style="display:block;text-align:center;" href="${dl}" download="track.mp3">⬇ 下载当前高音质 MP3</a>`
               : "";
           })()}
+          ${typeof PackState !== "undefined" && PackState.active ? "" : `
+            <button class="btn-pill" id="remake-item">使用当前音色重制此条</button>
+          `}
         </div>
       </div>
 
@@ -816,6 +833,34 @@ async function TrackPlayerView(topicId, itemId, token) {
   document.getElementById("btn-tab-mono").onclick = () => {
     setTrack("monologue");
   };
+
+  const remakeButton = document.getElementById("remake-item");
+  if (remakeButton) {
+    remakeButton.onclick = async () => {
+      const track = PlayerState.track;
+      remakeButton.disabled = true;
+      remakeButton.textContent = "正在重制…";
+      try {
+        const started = await api(
+          "POST",
+          `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/generate`,
+          { force: true, track },
+        );
+        const job = await waitForJob(started.job_id);
+        if (job.state !== "done" || (job.errors && job.errors.length)) {
+          const detail = job.errors && job.errors.length ? job.errors[0].message : job.state;
+          throw new Error(detail || "生成失败");
+        }
+        PlayerState.mediaRevision = Date.now();
+        toast("重制完成，已载入新音频");
+        route();
+      } catch (e) {
+        remakeButton.disabled = false;
+        remakeButton.textContent = "使用当前音色重制此条";
+        toast(`重制失败：${e.message}`);
+      }
+    };
+  }
 
   // 自动开始播放当前曲目并载入时间轴
   playItem(topicId, item, true);
@@ -928,9 +973,7 @@ async function VoicesShowcaseView(token) {
     const isCurB = v.reference_id === curVoiceB;
 
     const avatars = {
-      tom_holland_vibe: "🕷️",
       alex_young_adult: "💻",
-      london_scholar: "🎓",
       mia_bilingual: "🎙️",
       cand_sarah: "🎓",
       cand_alle: "✨",
@@ -938,9 +981,7 @@ async function VoicesShowcaseView(token) {
       cand_egirl: "🌸",
       cand_ethan: "🧑‍🏫",
       cand_elite: "👔",
-      cand_slax: "📖",
       cand_adam: "☕",
-      cand_us_clone: "🎩",
     };
     const avatar = avatars[v.id] || "🗣️";
 

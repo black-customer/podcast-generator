@@ -1,4 +1,4 @@
-"""M03 AC：注入异常音频（时长失控 + 违规标签）→ QA 检出 → 隔离 → 去标签重试。"""
+"""M03/Q02 AC：异常音频触发去标签重试，旧成品不被失败过程覆盖。"""
 import sys
 import time
 from pathlib import Path
@@ -38,7 +38,7 @@ def qa_env(tmp_path, monkeypatch):
         yield c
 
 
-def test_anomalous_audio_triggers_quarantine_and_retry(qa_env, monkeypatch):
+def test_anomalous_audio_triggers_safe_retry(qa_env, monkeypatch):
     tid = qa_env.post("/api/topics", json={"name": "QA"}).json()["id"]
     src = "A: Hello there friend. [evil laughter]\nB: Oh hi!"
     iid = qa_env.post(
@@ -84,8 +84,8 @@ def test_anomalous_audio_triggers_quarantine_and_retry(qa_env, monkeypatch):
     assert calls["n"] == 2, f"应触发重试，实际调用 {calls['n']} 次"
     assert "[evil laughter]" in calls["texts"][0]
     assert "[evil laughter]" not in calls["texts"][1]
-    # 异常音频被隔离
-    assert (ipath / "audio_podcast.rejected.mp3").exists()
+    # 中间异常音频不泄漏进条目目录
+    assert not (ipath / "audio_podcast.rejected.mp3").exists()
     # 最终音频是重试产物（不含 12s 静音，时长正常）
     dur = audio_mod.probe_duration(ipath / "audio_podcast.mp3")
     assert dur < 10, f"重试后时长应正常，实际 {dur:.1f}s"

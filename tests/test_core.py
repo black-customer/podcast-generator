@@ -180,6 +180,24 @@ def test_health(client):
     assert r.json()["mode"] == "dry_run"  # 隔离环境下没有 key
 
 
+def test_voice_direct_request_contains_question_and_light_direction(client):
+    tid = client.post("/api/topics", json={"name": "Prompt"}).json()["id"]
+    iid = client.post(
+        f"/api/topics/{tid}/items",
+        json={"question": "Do you like your hometown?", "natural_english": "Yeah, I do."},
+    ).json()["id"]
+    r = client.get(f"/api/topics/{tid}/items/{iid}/voice-direct-request")
+    assert r.status_code == 200
+    text = r.json()["text"]
+    assert "Do you like your hometown?" in text
+    assert "[relaxed]" in text and "[curious]" in text
+
+
+def test_settings_reject_paid_tts_model(client):
+    r = client.put("/api/settings", json={"model": "s2.1-pro"})
+    assert r.status_code == 422
+
+
 def test_api_patch_partial_update_regression(client, lib_env):
     """回归：PATCH 只传一个字段时，其他字段不能被清空。"""
     tid = client.post("/api/topics", json={"name": "T"}).json()["id"]

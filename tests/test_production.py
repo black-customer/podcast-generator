@@ -77,6 +77,15 @@ def test_parse_batch(prod_env):
     assert "我还是学生" in entries[0]["chinese"]
 
 
+def test_lint_warns_when_podcast_script_is_missing(prod_env):
+    report = production.lint_batch_item({
+        "chinese": "我喜欢这里。",
+        "podcast_text": "A: Do you like it here?\nB: Yeah, I do.",
+        "podcast_script": "",
+    })
+    assert any(w.get("kind") == "missing_podcast_script" for w in report["warnings"])
+
+
 def test_import_batch_creates_items(prod_env):
     c = prod_env
     r = c.post("/api/import-batch", json={"topic": "BatchT", "text": BATCH})

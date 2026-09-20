@@ -27,6 +27,7 @@ TAG_ALLOWLIST = {
     "slight pause", "short pause", "pause", "long pause",
     "chuckle", "laughs", "laugh", "sigh", "inhale", "exhale",
     "softly", "thoughtful", "speaking slightly faster", "speaking slightly slower",
+    "curious", "relaxed", "uncertain", "emphasis", "break", "long-break",
 }
 
 _TAG_RE = re.compile(r"\[([^\[\]]*)\]")

@@ -23,6 +23,10 @@ logger = logging.getLogger(__name__)
 
 # 语速范围（Fish prosody.speed）
 SPEED_MIN, SPEED_MAX = 0.8, 2.0
+FREE_MODEL = "s2.1-pro-free"
+DEFAULT_TEMPERATURE = 0.70
+DEFAULT_TOP_P = 0.70
+DEFAULT_REPETITION_PENALTY = 1.20
 
 # 支持的合成轨道
 VALID_TRACKS = ("default", "monologue", "podcast", "all")
@@ -135,25 +139,82 @@ def estimate_seconds(text: str) -> float:
     return max(1.0, len(text or "") / 14.0)
 
 
+def _tts_headers(settings: dict) -> dict[str, str]:
+    """构造 Fish 请求头，并硬性阻止误用付费模型。"""
+    model = (settings.get("model") or FREE_MODEL).strip()
+    if model != FREE_MODEL:
+        raise TTSError(f"零额外成本模式只允许免费模型 {FREE_MODEL}，当前为 {model}")
+    return {
+        "Authorization": f"Bearer {real_api_key(settings)}",
+        "model": model,
+        "Content-Type": "application/json",
+    }
+
+
+def _number_setting(settings: dict, key: str, default: float) -> float:
+    try:
+        value = settings.get(key)
+        return default if value in (None, "") else float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _build_tts_payload(
+    text: str,
+    settings: dict,
+    reference_id: str | list[str] | None = None,
+    **overrides,
+) -> dict:
+    """所有 Fish 合成路径共享的质量参数。"""
+    speed = max(SPEED_MIN, min(SPEED_MAX, _number_setting(settings, "speed", 1.0)))
+    temperature = max(
+        0.0,
+        min(1.0, _number_setting(settings, "temperature", DEFAULT_TEMPERATURE)),
+    )
+    payload: dict = {
+        "text": text,
+        "format": "mp3",
+        "mp3_bitrate": 128,
+        "latency": "normal",
+        "normalize": True,
+        "chunk_length": 200,
+        "temperature": temperature,
+        "top_p": DEFAULT_TOP_P,
+        "repetition_penalty": DEFAULT_REPETITION_PENALTY,
+        "condition_on_previous_chunks": True,
+        "features": ["quality-guard"],
+        "prosody": {
+            "speed": speed,
+            "volume": 0,
+            "normalize_loudness": True,
+        },
+    }
+    if reference_id:
+        payload["reference_id"] = reference_id
+    payload.update(overrides)
+    return payload
+
+
+def _dialogue_reference_ids(settings: dict) -> list[str]:
+    """多说话人数组固定为音色 A、B；speaker 标签决定谁提问/回答。"""
+    voice_a = (settings.get("reference_id") or "").strip()
+    voice_b = (settings.get("reference_id_b") or "").strip()
+    if not voice_a or not voice_b:
+        raise TTSError("多说话人模式需要同时配置音色 A 与音色 B")
+    return [voice_a, voice_b]
+
+
 def _post_tts(
     payload: dict, settings: dict, cancel: threading.Event | None = None
 ) -> bytes:
-    headers = {
-        "Authorization": f"Bearer {real_api_key(settings)}",
-        "model": settings.get("model") or "s2.1-pro-free",
-        "Content-Type": "application/json",
-    }
-    payload = dict(payload)
-    payload.setdefault("format", "mp3")
-    payload.setdefault("mp3_bitrate", 128)
-    payload.setdefault("latency", "normal")
-    payload.setdefault("normalize", True)
-    try:
-        temperature = settings.get("temperature")
-        if temperature is not None and temperature != "":
-            payload["temperature"] = max(0.0, min(1.0, float(temperature)))
-    except (TypeError, ValueError):
-        pass
+    headers = _tts_headers(settings)
+    supplied = dict(payload)
+    payload = _build_tts_payload(
+        str(supplied.pop("text", "")),
+        settings,
+        reference_id=supplied.pop("reference_id", None),
+        **supplied,
+    )
 
     last_err = ""
     for attempt in range(4):
@@ -171,6 +232,10 @@ def _post_tts(
             continue
         if r.status_code == 200:
             return r.content
+        if r.status_code in (400, 422) and payload.get("features"):
+            payload.pop("features", None)
+            last_err = "当前 Fish 后端未启用 quality-guard，已降级重试"
+            continue
         if r.status_code in (429, 500, 502, 503, 504):
             last_err = f"Fish API {r.status_code}: {(r.text or '')[:200]}"
             continue
@@ -193,32 +258,15 @@ def fish_tts_sse(
     words 来自最后一个 SSE 事件的 alignment（实测为全局时间戳、累积词表）。
     任何解析失败都返回 words=[]（上层回退到估算），音频本身照常可用。
     """
-    headers = {
-        "Authorization": f"Bearer {real_api_key(settings)}",
-        "model": settings.get("model") or "s2.1-pro-free",
-        "Content-Type": "application/json",
-    }
-    payload: dict = {"text": text, "format": "mp3", "mp3_bitrate": 128,
-                     "latency": "normal", "normalize": True, "chunk_length": 200}
+    headers = _tts_headers(settings)
     ref = (reference_id or "").strip()
     if ref:
-        payload["reference_id"] = ref
+        resolved_ref: str | list[str] | None = ref
     elif is_dialogue:
-        va = (settings.get("reference_id") or "").strip()
-        vb = (settings.get("reference_id_b") or "").strip()
-        # Bruce 规则：回答必须男声方便模仿 → 男声放数组第 0 位（对应 <|speaker:0|>）。
-        # 脚本约定仍是 A:提问 / B:回答，发送时把回答行标记为 speaker:0、提问行为 speaker:1。
-        if va and vb:
-            if settings.get("answer_voice_male", True):
-                payload["reference_id"] = [va, vb]
-            else:
-                payload["reference_id"] = [vb, va]
-    try:
-        temperature = settings.get("temperature")
-        if temperature is not None and temperature != "":
-            payload["temperature"] = max(0.0, min(1.0, float(temperature)))
-    except (TypeError, ValueError):
-        pass
+        resolved_ref = _dialogue_reference_ids(settings)
+    else:
+        resolved_ref = (settings.get("reference_id") or "").strip() or None
+    payload = _build_tts_payload(text, settings, reference_id=resolved_ref)
 
     last_err = ""
     for attempt in range(3):
@@ -233,6 +281,11 @@ def fish_tts_sse(
                               timeout=httpx.Timeout(300, connect=30)) as resp:
                 if resp.status_code in (429, 500, 502, 503, 504):
                     last_err = f"Fish SSE {resp.status_code}"
+                    resp.read()
+                    continue
+                if resp.status_code in (400, 422) and payload.get("features"):
+                    payload.pop("features", None)
+                    last_err = "Fish SSE 未启用 quality-guard，已降级重试"
                     resp.read()
                     continue
                 if resp.status_code != 200:
@@ -288,19 +341,8 @@ def fish_tts_segment(
     reference_id: str = "",
     cancel: threading.Event | None = None,
 ) -> bytes:
-    payload: dict = {
-        "text": text,
-        "chunk_length": 200,
-    }
     ref = (reference_id or "").strip() or (settings.get("reference_id") or "").strip()
-    if ref:
-        payload["reference_id"] = ref
-    try:
-        speed = float(settings.get("speed") or 1.0)
-    except (TypeError, ValueError):
-        speed = 1.0
-    if speed != 1.0:
-        payload["prosody"] = {"speed": max(SPEED_MIN, min(SPEED_MAX, speed))}
+    payload = _build_tts_payload(text, settings, reference_id=ref or None)
     return _post_tts(payload, settings, cancel=cancel)
 
 
@@ -313,19 +355,14 @@ def fish_tts_dialogue(
 
     模型看到整段对话上下文，接话节奏、反应、停顿由模型自己演绎（NotebookLM 式）。
     """
-    voice_a = (settings.get("reference_id") or "").strip()
-    voice_b = (settings.get("reference_id_b") or "").strip()
-    if not voice_a or not voice_b:
-        raise TTSError("多说话人模式需要同时配置音色 A 与音色 B")
-
+    refs = _dialogue_reference_ids(settings)
+    answer_is_male = bool(settings.get("answer_voice_male", True))
+    q_idx, a_idx = (1, 0) if answer_is_male else (0, 1)
     parts = []
     for speaker, line in lines:
-        idx = 0 if speaker == "a" else 1
+        idx = q_idx if speaker == "a" else a_idx
         parts.append(f"<|speaker:{idx}|>{line}")
-    payload: dict = {
-        "text": "\n".join(parts),
-        "reference_id": [voice_a, voice_b],
-    }
+    payload = _build_tts_payload("\n".join(parts), settings, reference_id=refs)
     return _post_tts(payload, settings, cancel=cancel)
 
 
@@ -333,16 +370,18 @@ def test_connection(settings: dict) -> dict:
     """用最小请求验证 key（生成 1 秒音频）。"""
     if not real_api_key(settings):
         return {"ok": True, "mode": "dry_run", "message": "未配置 API key，当前为 dry-run 模式"}
-    headers = {
-        "Authorization": f"Bearer {real_api_key(settings)}",
-        "model": settings.get("model") or "s2.1-pro-free",
-        "Content-Type": "application/json",
-    }
+    try:
+        headers = _tts_headers(settings)
+    except TTSError as exc:
+        return {"ok": False, "message": str(exc)}
+    payload = _build_tts_payload(
+        "Hi.", settings, reference_id=(settings.get("reference_id") or "").strip() or None
+    )
     try:
         r = httpx.post(
             FISH_TTS_URL,
             headers=headers,
-            json={"text": "Hi.", "format": "mp3", "latency": "normal"},
+            json=payload,
             timeout=120,
         )
     except httpx.HTTPError as exc:
@@ -505,7 +544,7 @@ def _synthesize_source(
         if align_segments:
             align_segments = alignment.rescale_spans(align_segments, duration)
 
-        # 广播级母带处理：Room Tone 注入 + 录音棚温暖 EQ + 动态压缩 + 立体声场展宽
+        # 学习音频母带：保持居中清晰、轻压缩并统一响度。
         try:
             duration = mastering.apply_mastering(out_path, out_path, is_dialogue=bool(dialogue))
         except Exception:
@@ -534,36 +573,42 @@ def _synthesize_with_qa(
     force_monologue: bool = False,
     cancel: threading.Event | None = None,
 ) -> tuple[tuple, dict, str, list[dict]]:
-    """合成 + QA 门禁：异常音频隔离（.rejected.mp3）、去违规标签重试一次。
+    """合成 + QA 门禁：临时文件验收、去违规标签重试、通过后原子替换。
     追加返回 align_words。
 
     返回 (合成结果元组, QA 报告, 实际使用的源文本)。
     """
     dry = not real_api_key(settings) or bool(settings.get("dry_run"))
-    result = _synthesize_source(src, out_path, settings, force_monologue, cancel=cancel)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    staged = out_path.with_name(f".{out_path.stem}.{uuid.uuid4().hex}.staging.mp3")
+    retry_path = out_path.with_name(f".{out_path.stem}.{uuid.uuid4().hex}.retry.mp3")
+    chosen = staged
     effective_src = src
-    align_words = result[5] or []
-    # 时长必须探测最终产物（母带/外部因素可能改变它），不能用合成时的返回值
-    report = audioqa.run_qa(out_path, src, duration_sec=None, skip_vad=dry)
-    if report["verdict"] == "retry":
-        # 恢复路径：剥离全部标签（含白名单内的 [chuckle]——失控笑声最常见来源）
-        cleaned, removed = audioqa.strip_all_tags(src)
-        if removed and cleaned.strip() and cleaned != src:
-            logger.warning("QA 不通过，隔离并去标签重试: %s removed=%s", out_path.name, removed)
-            quarantine = out_path.with_suffix(".rejected.mp3")
-            out_path.replace(quarantine)
-            try:
-                result = _synthesize_source(
-                    cleaned, out_path, settings, force_monologue, cancel=cancel
-                )
-                effective_src = cleaned
-                align_words = result[5] or []
-                report = audioqa.run_qa(out_path, cleaned, duration_sec=None, skip_vad=dry)
-            except Exception:
-                # 重试失败：恢复被隔离的原始音频，记录但不再阻断
-                quarantine.replace(out_path)
-                report["retry_error"] = "重试合成失败，已恢复原始音频"
-    return result, report, effective_src, align_words
+    try:
+        result = _synthesize_source(src, staged, settings, force_monologue, cancel=cancel)
+        align_words = result[5] or []
+        report = audioqa.run_qa(staged, src, duration_sec=None, skip_vad=dry)
+        if report["verdict"] == "retry":
+            cleaned, removed = audioqa.strip_all_tags(src)
+            if not removed or not cleaned.strip() or cleaned == src:
+                raise TTSError("音频 QA 未通过，且没有可剥离的表演标签")
+            logger.warning("QA 不通过，去标签安全重试: %s removed=%s", out_path.name, removed)
+            result = _synthesize_source(
+                cleaned, retry_path, settings, force_monologue, cancel=cancel
+            )
+            effective_src = cleaned
+            align_words = result[5] or []
+            report = audioqa.run_qa(
+                retry_path, cleaned, duration_sec=None, skip_vad=dry
+            )
+            if report["verdict"] == "retry":
+                raise TTSError("去标签重试后音频 QA 仍未通过")
+            chosen = retry_path
+        chosen.replace(out_path)
+        return result, report, effective_src, align_words
+    finally:
+        staged.unlink(missing_ok=True)
+        retry_path.unlink(missing_ok=True)
 
 
 def _save_track_outputs(

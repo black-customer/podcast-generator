@@ -151,3 +151,17 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
 - Q01 验收：Qoder Skill 校验通过；`scripts/check.sh` 全绿（94 passed, 1 skipped；
   ruff、导入、启动冒烟均通过）。
 - 下一步：TDD 实现 Q02；真实 TTS 与最终音色选择留给 Bruce 听感门。
+
+## 2026-09-20 会话 8：Q02 工程完成，等待听感门
+
+- Prompt A/B 收敛为“自然但略经整理”的学习口语 + 稀疏 Fish 表演指令；
+  `podcast_script` 优先、旧 `podcast_text` 回退语义保持兼容。
+- TTS 三条路径统一 payload：speed/temperature/top_p/repetition penalty/上下文连续性；
+  只允许 `s2.1-pro-free`，quality-guard 不可用时仅移除该 feature 重试。
+- 男声收敛为 Alex/Ethan/ELITE/Adam 四个美式青年候选；旧 Peter 设置读取时迁移到 Ethan；
+  试听改用候选独立参数与固定长试听稿，未调用真实 TTS。
+- 母带改为单声道近讲清晰链；播放页增加单条安全重制，QA 通过前不覆盖旧成品。
+- 修复 `test_jobs_v2` daemon 线程跨 fixture 污染真实 data/；完整门禁后确认 `ORPHAN_CLEAN`。
+- 工程验收：`scripts/check.sh` 全绿（108 passed, 1 skipped），播放器 E2E 1 passed。
+- 待 Bruce：在音色展台生成/试听新版四男声，选定一个并完成 5 条真实语料 A/B；
+  通过后将 Q02 标记 DONE 并打 tag q02。

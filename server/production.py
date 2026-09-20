@@ -38,6 +38,13 @@ def lint_batch_item(item: dict) -> dict:
                 warnings.append({"field": field, **w})
     if not (item.get("chinese") or "").strip():
         warnings.append({"kind": "missing_chinese", "detail": "缺少中文回答（建议补全语料）"})
+    if (item.get("podcast_text") or "").strip() and not (
+        item.get("podcast_script") or ""
+    ).strip():
+        warnings.append({
+            "kind": "missing_podcast_script",
+            "detail": "缺少播客表演稿；旧条目可回退，新语料建议同时生成",
+        })
     return {"ok": not warnings, "warnings": warnings}
 
 
@@ -185,6 +192,17 @@ def find_voice(reference_id: str) -> dict | None:
         if v.get("reference_id") == reference_id:
             return v
     return None
+
+
+def voice_generation_settings(settings: dict, reference_id: str) -> dict:
+    """试听使用候选音色自己的参数，避免被当前全局预设污染。"""
+    resolved = dict(settings)
+    voice = find_voice(reference_id)
+    resolved["reference_id"] = reference_id
+    resolved["speed"] = float((voice or {}).get("speed") or 1.0)
+    temperature = (voice or {}).get("temperature")
+    resolved["temperature"] = 0.70 if temperature in (None, "") else float(temperature)
+    return resolved
 
 
 # ---------------------------------------------------------------- 自媒体草稿 (M16)
