@@ -185,7 +185,7 @@ AC：桌面与移动截图走查通过；相关 Playwright e2e 4/4 全绿；chec
 移动完整播放页隐藏底栏并增加双视口边界回归；check.sh E2E 独立端口与可靠清理；
 更新产品契约、DESIGN 和受版本控制的十张概念图。AC：全量门禁绿。tag r01。
 
-### R02 StepFun 正式语音引擎 — ACTIVE（依赖 R01）
+### R02 StepFun 正式语音引擎 — DONE* (2026-09-21, tag r02；*工程+技术验收绿：5/5 QA pass、时长比 1.02–1.19 无变速截断；4/5 听感门待 Bruce，A/B 清单在 data/.tmp/r02_acceptance/MANIFEST.md)
 StepAudio 2.5 TTS 默认、Fish 兼容；角色化音色、provider-aware 设置/试听；真实 5 条听感门。
 tag r02。
 

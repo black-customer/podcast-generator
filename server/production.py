@@ -182,14 +182,18 @@ VOICES_FILE = DATA_DIR / "voices.json"
 def get_voice_catalog() -> list[dict]:
     voices = library.read_voices()
     for v in voices:
+        v.setdefault("provider", "fish")
+        v.setdefault("voice_id", v.get("reference_id", ""))
         v.setdefault("speed", 1.0)
         v.setdefault("temperature", None)
     return voices
 
 
-def find_voice(reference_id: str) -> dict | None:
+def find_voice(reference_id: str, provider: str | None = None) -> dict | None:
     for v in get_voice_catalog():
-        if v.get("reference_id") == reference_id:
+        if provider and v.get("provider") != provider:
+            continue
+        if v.get("reference_id") == reference_id or v.get("voice_id") == reference_id:
             return v
     return None
 

@@ -205,3 +205,17 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
 - R01 完成：产品契约、DESIGN、概念图、移动修复与 check.sh 独立 E2E 端口已落地。
 - 完整门禁：ruff 绿；108 passed、1 skipped；独立端口 Playwright 6 passed；服务冒烟绿。
 - 下一步：R02 将 StepFun 实验提取为正式 provider；真实调用留到 5 条听感验收门。
+
+## 2026-09-21 会话 10：R02 StepFun 正式语音引擎完成（tag r02）
+
+- 上会话遗留的工作树改动经审阅确认为 R02 半成品，全部保留并续完：stepfun.py 客户端
+  （950 字符/429 Retry-After 退避/取消/24k→44.1k mono 128k 标准化）、config provider 默认值
+  （旧安装有 Fish Key 保持 fish，不迁移密钥）、tts.py 逐行角色合成路径（问/答独立音色、
+  280ms gap、QA+母带复用）、api.py provider-aware voices/sample/settings-test 与双 key 脱敏。
+- 本会话补齐：设置页 provider 化（语音服务切换 + StepFun Key + 提问者/回答者音色下拉 +
+  provider 连接测试；fish 参数收入折叠卡）；voices.json StepFun 2 女 2 男（含全部规范字段）。
+- 真实验收 scripts/r02_acceptance.py（key 内存注入不落盘）：5 条代表语料（2 独白 + 3 对话，
+  含 CJK 路径）全 PASS：QA verdict pass、无静音孤岛/削波、与 Fish 时长比 1.02–1.19。
+  A/B 清单交付 data/.tmp/r02_acceptance/MANIFEST.md 待 Bruce 听感门（4/5 偏好）。
+- 完整门禁：ruff 绿；116 passed 1 skipped；e2e 6 passed；服务冒烟绿。
+- tag r02（DONE*：4/5 听感门待 Bruce，工程不阻塞 R03）。

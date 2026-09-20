@@ -1,4 +1,11 @@
 {
+  "tts_provider": "stepfun",
+  "stepfun_api_key": "YOUR_STEPFUN_API_KEY_HERE",
+  "stepfun_text_model": "step-3.7-flash",
+  "stepfun_tts_model": "stepaudio-2.5-tts",
+  "question_voice_id": "lively-girl",
+  "answer_voice_id": "vibrant-youth",
+  "stepfun_gap_ms": 280,
   "fish_api_key": "YOUR_FISH_API_KEY_HERE",
   "reference_id": "536d3a5e000945adb7038665781a4aca",
   "reference_id_b": "570b8ac5c3ff4e46849b0763a60b86b7",

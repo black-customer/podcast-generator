@@ -11,10 +11,11 @@ from pathlib import Path
 
 import httpx
 
-from . import alignment, audio, audioqa, library, mastering, timeline
+from . import alignment, audio, audioqa, library, mastering, stepfun, timeline
 from .config import (
     FISH_TTS_URL,
     TMP_DIR,
+    is_dry_run,
     load_settings,
     real_api_key,
 )
@@ -411,6 +412,128 @@ def _speaker_ref(settings: dict, speaker: str) -> str:
     )
 
 
+def _synthesize_stepfun_source(
+    src: str,
+    out_path: Path,
+    settings: dict,
+    force_monologue: bool = False,
+    cancel: threading.Event | None = None,
+) -> tuple[float, int, bool, str, list[dict] | None, list[dict]]:
+    """StepFun 逐行/逐段合成；每段标准化后再拼接，避免 24kHz 变速。"""
+    dry = is_dry_run(settings)
+    dialogue = parse_dialogue(src) if not force_monologue else None
+    question_voice = (settings.get("question_voice_id") or "lively-girl").strip()
+    answer_voice = (settings.get("answer_voice_id") or "vibrant-youth").strip()
+    try:
+        gap_ms = float(settings.get("stepfun_gap_ms") or 280)
+    except (TypeError, ValueError):
+        gap_ms = 280.0
+
+    plan: list[tuple[str, str, float, str, int | None, str]] = []
+    if dialogue:
+        previous_line = False
+        for line_index, (speaker, body) in enumerate(dialogue):
+            cleaned = stepfun.clean_text(body)
+            role = "question" if speaker == "a" else "answer"
+            voice = question_voice if speaker == "a" else answer_voice
+            for part_index, part in enumerate(split_text(cleaned, stepfun.MAX_CHARS)):
+                gap = 0.0
+                if previous_line and part_index == 0:
+                    gap = gap_ms / 1000.0
+                elif part_index:
+                    gap = 0.12
+                plan.append(
+                    (part, voice, gap, stepfun.role_instruction(role, body), line_index, speaker)
+                )
+                previous_line = True
+    else:
+        cleaned = stepfun.clean_text(src)
+        for part_index, part in enumerate(split_text(cleaned, stepfun.MAX_CHARS)):
+            plan.append(
+                (
+                    part,
+                    answer_voice,
+                    0.12 if part_index else 0.0,
+                    stepfun.role_instruction("answer", src),
+                    None,
+                    "b",
+                )
+            )
+    if not plan:
+        raise TTSError("没有可合成的 StepFun 文本")
+
+    work = TMP_DIR / f"stepfun-{uuid.uuid4().hex}"
+    work.mkdir(parents=True, exist_ok=True)
+    entries: list[dict] = []
+    durations: list[float] = []
+    try:
+        for index, (part, voice, gap, instruction, _line_index, _speaker) in enumerate(plan):
+            if cancel is not None and cancel.is_set():
+                raise TTSCancelled("已取消")
+            segment = work / f"seg-{index:03d}.mp3"
+            if dry:
+                audio.make_tone(estimate_seconds(part), segment)
+            else:
+                try:
+                    segment.write_bytes(
+                        stepfun.synthesize(
+                            part,
+                            voice=voice,
+                            settings=settings,
+                            instruction=instruction,
+                            cancel=cancel,
+                        )
+                    )
+                except stepfun.StepFunCancelled as exc:
+                    raise TTSCancelled(str(exc)) from exc
+                except stepfun.StepFunError as exc:
+                    raise TTSError(str(exc)) from exc
+                stepfun.standardize_mp3(segment)
+            durations.append(audio.probe_duration(segment))
+            entries.append({"path": segment, "gap_before": gap})
+
+        spans = alignment.spans_from_measured_segments(
+            durations, [entry["gap_before"] for entry in entries]
+        )
+        if dialogue:
+            line_map = [int(row[4]) for row in plan if row[4] is not None]
+            line_spans = alignment.aggregate_dialogue_lines(line_map, spans)
+            align_segments = [
+                {"text": body, "speaker": speaker, **span}
+                for (speaker, body), span in zip(dialogue, line_spans, strict=False)
+            ]
+            mode = "stepfun_dialogue_per_line"
+        else:
+            align_segments = []
+            for (part, *_rest), span in zip(plan, spans, strict=False):
+                align_segments.extend(
+                    alignment.distribute_sentences_within_segment(
+                        alignment.split_sentences(part), span["start"], span["end"]
+                    )
+                )
+            mode = "stepfun_monologue"
+
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        audio.concat_mp3(entries, out_path)
+        duration = audio.probe_duration(out_path)
+        if duration <= 0:
+            raise TTSError("StepFun 生成的音频时长为 0")
+        if align_segments:
+            align_segments = alignment.rescale_spans(align_segments, duration)
+        try:
+            duration = mastering.apply_mastering(out_path, out_path, is_dialogue=bool(dialogue))
+        except Exception:
+            logger.warning("StepFun 母带处理失败，保留基础音频: %s", out_path, exc_info=True)
+        return duration, len(entries), bool(dialogue), mode, align_segments, []
+    finally:
+        for path in work.glob("*"):
+            path.unlink(missing_ok=True)
+        try:
+            work.rmdir()
+        except OSError:
+            pass
+
+
 def _synthesize_source(
     src: str,
     out_path: Path,
@@ -423,7 +546,11 @@ def _synthesize_source(
 
     alignment_segments：逐段实测的句级/行级跨度（单次合成模式为 None，由上层降级估算）。
     """
-    dry = not real_api_key(settings) or bool(settings.get("dry_run"))
+    if settings.get("tts_provider") == "stepfun":
+        return _synthesize_stepfun_source(
+            src, out_path, settings, force_monologue=force_monologue, cancel=cancel
+        )
+    dry = is_dry_run(settings)
     try:
         seg_chars = int(settings.get("segment_chars") or 700)
     except (TypeError, ValueError):
@@ -578,7 +705,7 @@ def _synthesize_with_qa(
 
     返回 (合成结果元组, QA 报告, 实际使用的源文本)。
     """
-    dry = not real_api_key(settings) or bool(settings.get("dry_run"))
+    dry = is_dry_run(settings)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     staged = out_path.with_name(f".{out_path.stem}.{uuid.uuid4().hex}.staging.mp3")
     retry_path = out_path.with_name(f".{out_path.stem}.{uuid.uuid4().hex}.retry.mp3")
@@ -659,7 +786,7 @@ def generate_item_audio(
     if track not in VALID_TRACKS:
         raise TTSError(f"未知轨道: {track}（可选 {VALID_TRACKS}）")
     settings = load_settings()
-    dry = not real_api_key(settings) or bool(settings.get("dry_run"))
+    dry = is_dry_run(settings)
     full = library.get_item_full(topic_id, item_id)
     ipath = library.item_path(topic_id, item_id)
 

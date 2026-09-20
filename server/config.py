@@ -40,6 +40,13 @@ def atomic_write_text(path: Path, content: str) -> None:
     os.replace(tmp, path)
 
 DEFAULT_SETTINGS = {
+    "tts_provider": "stepfun",
+    "stepfun_api_key": "",
+    "stepfun_text_model": "step-3.7-flash",
+    "stepfun_tts_model": "stepaudio-2.5-tts",
+    "question_voice_id": "lively-girl",
+    "answer_voice_id": "vibrant-youth",
+    "stepfun_gap_ms": 280,
     "fish_api_key": "",
     "reference_id": "",     # 音色 A（独白用这一个；对话中扮演 A）
     "reference_id_b": "",   # 音色 B（可选：对话中扮演 B，留空则按单音色处理）
@@ -91,6 +98,7 @@ def cleanup_stale_tmp(max_age_hours: float = 24) -> None:
 def load_settings() -> dict:
     with SETTINGS_LOCK:
         settings = dict(DEFAULT_SETTINGS)
+        stored: dict = {}
         if SETTINGS_FILE.exists():
             try:
                 stored = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
@@ -106,6 +114,9 @@ def load_settings() -> dict:
                     settings.update({k: v for k, v in stored.items() if k in settings})
             except (json.JSONDecodeError, OSError):
                 pass
+        if "tts_provider" not in stored and _real_key(stored.get("fish_api_key")):
+            # 升级旧安装时保持 Fish 行为；全新安装才默认 StepFun。
+            settings["tts_provider"] = "fish"
         settings["reference_id"] = LEGACY_REFERENCE_ID_MAP.get(
             settings.get("reference_id"), settings.get("reference_id")
         )
@@ -134,14 +145,35 @@ def settings_keys():
 
 
 # 占位符 key（settings.example.json 复制后未替换的情况）一律视为未配置
-_PLACEHOLDER_KEYS = {"", "your_fish_api_key_here", "your-fish-api-key"}
+_PLACEHOLDER_KEYS = {
+    "",
+    "your_fish_api_key_here",
+    "your-fish-api-key",
+    "your_stepfun_api_key_here",
+    "your-stepfun-api-key",
+}
+
+
+def _real_key(value: object) -> str:
+    key = str(value or "").strip()
+    return "" if key.lower() in _PLACEHOLDER_KEYS else key
 
 
 def real_api_key(settings: dict | None = None) -> str:
-    key = ((settings or {}).get("fish_api_key") or "").strip()
-    return "" if key.lower() in _PLACEHOLDER_KEYS else key
+    return _real_key((settings or {}).get("fish_api_key"))
+
+
+def real_stepfun_api_key(settings: dict | None = None) -> str:
+    return _real_key((settings or {}).get("stepfun_api_key"))
+
+
+def real_tts_api_key(settings: dict | None = None) -> str:
+    s = settings or load_settings()
+    if s.get("tts_provider") == "fish":
+        return real_api_key(s)
+    return real_stepfun_api_key(s)
 
 
 def is_dry_run(settings: dict | None = None) -> bool:
     s = settings or load_settings()
-    return bool(s.get("dry_run")) or not real_api_key(s)
+    return bool(s.get("dry_run")) or not real_tts_api_key(s)

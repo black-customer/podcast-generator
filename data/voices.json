@@ -98,5 +98,61 @@
     "reference_id": "9259a7392c454a1eb6436141abb5a558",
     "speed": 1.0,
     "temperature": 0.7
+  },
+  {
+    "id": "step_lively_girl",
+    "tier": "preset",
+    "provider": "stepfun",
+    "name": "Lively Girl",
+    "gender": "female",
+    "accent": "English",
+    "age_tone": "young-adult",
+    "tag": "明快自然 · 友好提问",
+    "description": "StepFun 内置女声，语气明快，适合作为轻松自然的提问者。",
+    "voice_id": "lively-girl",
+    "speed": 1.0,
+    "instruction": "Friendly, clear, curious, and natural."
+  },
+  {
+    "id": "step_lively_breezy",
+    "tier": "candidate",
+    "provider": "stepfun",
+    "name": "Lively Breezy",
+    "gender": "female",
+    "accent": "English",
+    "age_tone": "young-adult",
+    "tag": "轻快清晰 · 日常交流",
+    "description": "StepFun 内置女声候选，轻快清晰，适合日常问答。",
+    "voice_id": "lively-breezy",
+    "speed": 1.0,
+    "instruction": "Light, conversational, and clear."
+  },
+  {
+    "id": "step_vibrant_youth",
+    "tier": "preset",
+    "provider": "stepfun",
+    "name": "Vibrant Youth",
+    "gender": "male",
+    "accent": "English",
+    "age_tone": "young-adult",
+    "tag": "年轻有活力 · 自然口语",
+    "description": "StepFun 内置青年男声，适合作为自然、轻松的回答者。",
+    "voice_id": "vibrant-youth",
+    "speed": 1.0,
+    "instruction": "Young, relaxed, conversational, and sincere."
+  },
+  {
+    "id": "step_soft_spoken_gentleman",
+    "tier": "candidate",
+    "provider": "stepfun",
+    "name": "Soft-spoken Gentleman",
+    "gender": "male",
+    "accent": "English",
+    "age_tone": "adult",
+    "tag": "温和沉稳 · 清晰克制",
+    "description": "StepFun 内置男声候选，语气温和、节奏沉稳。",
+    "voice_id": "soft-spoken-gentleman",
+    "speed": 1.0,
+    "instruction": "Warm, calm, conversational, and unforced."
   }
 ]

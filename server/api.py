@@ -16,6 +16,7 @@ from . import (
     library,
     pack,
     production,
+    stepfun,
     timeline,
     tts,
 )
@@ -27,6 +28,7 @@ from .config import (
     is_dry_run,
     load_settings,
     real_api_key,
+    real_stepfun_api_key,
     save_settings,
 )
 
@@ -60,6 +62,13 @@ class GenerateIn(BaseModel):
 
 
 class SettingsIn(BaseModel):
+    tts_provider: Literal["stepfun", "fish"] | None = None
+    stepfun_api_key: str | None = None
+    stepfun_text_model: str | None = None
+    stepfun_tts_model: str | None = None
+    question_voice_id: str | None = None
+    answer_voice_id: str | None = None
+    stepfun_gap_ms: float | None = None
     fish_api_key: str | None = None
     reference_id: str | None = None
     reference_id_b: str | None = None
@@ -77,6 +86,13 @@ class SettingsIn(BaseModel):
     def _v_model(cls, v: str | None) -> str | None:
         if v is not None and v != "s2.1-pro-free":
             raise ValueError("零额外成本模式只允许 s2.1-pro-free")
+        return v
+
+    @field_validator("stepfun_tts_model")
+    @classmethod
+    def _v_stepfun_model(cls, v: str | None) -> str | None:
+        if v is not None and v != "stepaudio-2.5-tts":
+            raise ValueError("当前固定使用 stepaudio-2.5-tts")
         return v
 
     @field_validator("speed")
@@ -101,7 +117,7 @@ class SettingsIn(BaseModel):
             raise ValueError("segment_chars 必须在 100–5000")
         return v
 
-    @field_validator("gap_ms", "episode_gap_ms")
+    @field_validator("gap_ms", "episode_gap_ms", "stepfun_gap_ms")
     @classmethod
     def _v_gap(cls, v: float | None) -> float | None:
         if v is not None and not 0 <= v <= 10000:
@@ -319,8 +335,53 @@ def api_episode_audio(topic_id: str, track: TrackParam = "default"):
 # ---------------------------------------------------------------- voices
 
 @router.get("/voices")
-def api_get_voices():
-    return library.read_voices()
+def api_get_voices(provider: str | None = None, gender: str | None = None):
+    voices = production.get_voice_catalog()
+    if provider:
+        voices = [voice for voice in voices if voice.get("provider") == provider]
+    if gender:
+        voices = [voice for voice in voices if voice.get("gender") == gender]
+    return voices
+
+
+@router.get("/voices/{provider}/{voice_id}/sample")
+def api_provider_voice_sample(provider: str, voice_id: str, regen: bool = False):
+    if provider == "fish":
+        return api_voice_sample(voice_id, regen=regen)
+    if provider != "stepfun":
+        raise _err(404, "未知语音服务")
+    if not re.fullmatch(r"[a-z0-9-]{2,64}", voice_id):
+        raise _err(400, "非法的 StepFun 音色 id")
+    cache = DATA_DIR / "voice_samples" / f"stepfun-{voice_id}-v1.mp3"
+    if not regen and cache.exists() and cache.stat().st_size > 1000:
+        return FileResponse(cache, media_type="audio/mpeg")
+    settings = load_settings()
+    if not real_stepfun_api_key(settings) or bool(settings.get("dry_run")):
+        raise _err(400, "请先配置 StepFun Key 后试听")
+    voice = production.find_voice(voice_id, provider="stepfun") or {}
+    voice_settings = dict(settings)
+    voice_settings["speed"] = float(voice.get("speed") or 1.0)
+    text = (
+        "Hey, that's a good question. I don't have a perfect answer yet, well, not exactly. "
+        "I guess I'd want something practical, but still a little exciting."
+    )
+    try:
+        raw = stepfun.synthesize(
+            text,
+            voice=voice_id,
+            settings=voice_settings,
+            instruction=str(voice.get("instruction") or stepfun.role_instruction("answer")),
+        )
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        staged = cache.with_suffix(".staging.mp3")
+        staged.write_bytes(raw)
+        stepfun.standardize_mp3(staged)
+        staged.replace(cache)
+    except (stepfun.StepFunError, audio.FFmpegError) as exc:
+        raise _err(502, str(exc)) from exc
+    finally:
+        cache.with_suffix(".staging.mp3").unlink(missing_ok=True)
+    return FileResponse(cache, media_type="audio/mpeg")
 
 
 @router.get("/voices/{ref_id}/sample")
@@ -349,7 +410,7 @@ def api_voice_sample(ref_id: str, regen: bool = False):
     key = real_api_key(s)
 
     # 1) 现场合成一句（与真实生成同管线——听感即所得）
-    if key and not is_dry_run(s):
+    if key and not bool(s.get("dry_run")):
         try:
             voice_settings = production.voice_generation_settings(s, ref_id)
             audio_bytes = tts.fish_tts_segment(
@@ -399,6 +460,8 @@ def _masked_settings(s: dict) -> dict:
     out = dict(s)
     out["fish_api_key"] = ""
     out["fish_api_key_set"] = bool(real_api_key(s))
+    out["stepfun_api_key"] = ""
+    out["stepfun_api_key_set"] = bool(real_stepfun_api_key(s))
     out["models"] = FISH_MODELS
     return out
 
@@ -414,14 +477,29 @@ def api_put_settings(body: SettingsIn):
     # 空 key 不覆盖已存 key（脱敏模式下前端回传空串属正常）
     if "fish_api_key" in update and not (update["fish_api_key"] or "").strip():
         update.pop("fish_api_key")
+    if "stepfun_api_key" in update and not (update["stepfun_api_key"] or "").strip():
+        update.pop("stepfun_api_key")
     saved = save_settings(update)
     return _masked_settings(saved)
 
 
 @router.post("/settings/test")
-def api_test_settings():
+def api_test_settings(
+    provider: Literal["stepfun", "fish"] | None = None,
+    capability: Literal["tts", "text"] = "tts",
+):
     s = load_settings()
     ff_ok, ff_msg = audio.check_ffmpeg()
+    selected = provider or s.get("tts_provider") or "stepfun"
+    if selected == "stepfun":
+        result = (
+            stepfun.test_text_connection(s)
+            if capability == "text"
+            else stepfun.test_connection(s)
+        )
+        return {"ffmpeg": {"ok": ff_ok, "message": ff_msg}, "stepfun": result}
+    if capability == "text":
+        raise _err(422, "Fish 仅作为 TTS 备选，不提供文本改写")
     return {
         "ffmpeg": {"ok": ff_ok, "message": ff_msg},
         "fish": tts.test_connection(s),

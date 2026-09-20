@@ -79,7 +79,11 @@ def test_voice_specific_settings_override_global_defaults(monkeypatch):
 
 
 def test_male_voice_catalog_is_the_fixed_youthful_shortlist():
-    males = [v for v in production.get_voice_catalog() if v.get("gender") == "male"]
+    males = [
+        v
+        for v in production.get_voice_catalog()
+        if v.get("provider") == "fish" and v.get("gender") == "male"
+    ]
     assert {v["id"] for v in males} == {
         "alex_young_adult",
         "cand_ethan",

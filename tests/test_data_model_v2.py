@@ -70,10 +70,18 @@ def test_meta_write_is_atomic_no_corrupt_on_concurrent_writes(env):
 
 def test_get_settings_masks_api_key(env):
     c = env["client"]
-    c.put("/api/settings", json={"fish_api_key": "sk-fish-SECRETKEY123"})
+    c.put(
+        "/api/settings",
+        json={
+            "fish_api_key": "sk-fish-SECRETKEY123",
+            "stepfun_api_key": "sk-step-SECRETKEY456",
+        },
+    )
     s = c.get("/api/settings").json()
     assert "SECRETKEY123" not in str(s)
+    assert "SECRETKEY456" not in str(s)
     assert s.get("fish_api_key_set") is True
+    assert s.get("stepfun_api_key_set") is True
     # test_connection 端点也不回传
     r = c.post("/api/settings/test").json()
     assert "SECRETKEY123" not in str(r)
@@ -106,3 +114,31 @@ def test_settings_validation_rejects_bad_values(env):
     # 合法值照常通过
     assert c.put("/api/settings", json={"segment_chars": 500}).status_code == 200
     assert c.put("/api/settings", json={"speed": 1.05, "temperature": 0.7}).status_code == 200
+
+
+def test_stepfun_settings_and_voice_filters(env):
+    c = env["client"]
+    saved = c.put(
+        "/api/settings",
+        json={
+            "tts_provider": "stepfun",
+            "question_voice_id": "lively-girl",
+            "answer_voice_id": "vibrant-youth",
+        },
+    )
+    assert saved.status_code == 200
+    assert saved.json()["tts_provider"] == "stepfun"
+
+    female = c.get("/api/voices", params={"provider": "stepfun", "gender": "female"})
+    assert female.status_code == 200
+    assert len(female.json()) >= 2
+    assert all(v["provider"] == "stepfun" and v["gender"] == "female" for v in female.json())
+
+    sample = c.get("/api/voices/stepfun/lively-girl/sample")
+    assert sample.status_code == 400
+    assert "StepFun Key" in sample.json()["detail"]
+
+    connection = c.post("/api/settings/test", params={"provider": "stepfun"})
+    assert connection.status_code == 200
+    assert connection.json()["stepfun"]["mode"] == "dry_run"
+    assert c.put("/api/settings", json={"stepfun_tts_model": "stepaudio-3-tts"}).status_code == 422

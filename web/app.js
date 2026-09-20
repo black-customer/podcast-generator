@@ -966,12 +966,19 @@ async function VoicesShowcaseView(token) {
   }
   if (viewStale(token)) return;
 
-  const curVoiceA = (settings.reference_id || "").trim();
-  const curVoiceB = (settings.reference_id_b || "").trim();
+  const curVoiceA = settings.tts_provider === "stepfun"
+    ? (settings.answer_voice_id || "").trim()
+    : (settings.reference_id || "").trim();
+  const curVoiceB = settings.tts_provider === "stepfun"
+    ? (settings.question_voice_id || "").trim()
+    : (settings.reference_id_b || "").trim();
 
   const cardHtml = v => {
-    const isCurA = v.reference_id === curVoiceA;
-    const isCurB = v.reference_id === curVoiceB;
+    const voiceId = v.voice_id || v.reference_id;
+    const provider = v.provider || "fish";
+    const isCurrentProvider = provider === (settings.tts_provider || "fish");
+    const isCurA = isCurrentProvider && voiceId === curVoiceA;
+    const isCurB = isCurrentProvider && voiceId === curVoiceB;
 
     const avatar = esc((v.name || "Voice").split(/\s|\(/)[0].slice(0, 2).toUpperCase());
 
@@ -992,13 +999,13 @@ async function VoicesShowcaseView(token) {
           ${v.temperature != null ? `<span>温度: ${v.temperature}</span>` : ""}
         </div>
         <div>
-          <button class="voice-btn" onclick="previewVoice('${esc(v.reference_id)}', this)" title="播放统一试听稿">试听</button>
+          <button class="voice-btn" onclick="previewVoice('${esc(provider)}', '${esc(voiceId)}', this)" title="播放统一试听稿">试听</button>
           ${v.gender === 'male' ? `
-            <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'male', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
+            <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(provider)}', '${esc(voiceId)}', 'male', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
               ${isCurA ? "当前回答男声" : "设为回答男声"}
             </button>
           ` : `
-            <button class="voice-btn ${isCurB ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'female', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
+            <button class="voice-btn ${isCurB ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(provider)}', '${esc(voiceId)}', 'female', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
               ${isCurB ? "当前提问女声" : "设为提问女声"}
             </button>
           `}
@@ -1047,7 +1054,7 @@ async function VoicesShowcaseView(token) {
   `;
 }
 
-window.previewVoice = function(referenceId, btn) {
+window.previewVoice = function(provider, referenceId, btn) {
   // 单例试听：同一时间只播一个样本；再次点击停止
   let player = window.__voicePreview;
   if (player && !player.paused && player.dataset.ref === referenceId) {
@@ -1055,7 +1062,7 @@ window.previewVoice = function(referenceId, btn) {
     return;
   }
   if (player) { player.pause(); }
-  player = new Audio(`/api/voices/${encodeURIComponent(referenceId)}/sample`);
+  player = new Audio(`/api/voices/${encodeURIComponent(provider)}/${encodeURIComponent(referenceId)}/sample`);
   player.dataset.ref = referenceId;
   window.__voicePreview = player;
   if (btn) {
@@ -1073,10 +1080,13 @@ window.previewVoice = function(referenceId, btn) {
   });
 };
 
-window.applyVoicePreset = async function(referenceId, gender, voiceName, speed, temperature) {
+window.applyVoicePreset = async function(provider, referenceId, gender, voiceName, speed, temperature) {
   try {
-    const payload = {};
-    if (gender === "male") {
+    const payload = { tts_provider: provider };
+    if (provider === "stepfun") {
+      if (gender === "male") payload.answer_voice_id = referenceId;
+      else payload.question_voice_id = referenceId;
+    } else if (gender === "male") {
       payload.reference_id = referenceId;
     } else {
       payload.reference_id_b = referenceId;
@@ -1173,20 +1183,44 @@ async function ManageView(token) {
         <div class="mg-card">
           <div class="voice-setting-lead">
             <div>
-              <h3>提问与回答音色</h3>
-              <p>当前回答使用男声，提问使用女声。试听后再固定长期模仿对象。</p>
+              <h3>语音服务与角色音色</h3>
+              <p>默认使用 StepFun 合成；提问与回答分别选择音色，试听后再固定。</p>
             </div>
-            <a class="mg-btn primary" href="#/voices">选择音色</a>
+            <a class="mg-btn primary" href="#/voices">音色展台</a>
           </div>
-          <details class="mg-advanced">
-            <summary>高级生成设置</summary>
-            <form id="mg-settings-form">
-            <label class="mg-label">fish.audio API Key ${settings.fish_api_key_set ? '<span class="mg-chip">已配置（留空 = 不变）</span>' : ""}
-              <input class="mg-input" type="password" id="mg-s-key" value="" placeholder="${settings.fish_api_key_set ? "已保存（输入新值可替换）" : "留空即 dry-run 模式"}" autocomplete="off">
-            </label>
-            <label class="mg-label">音色 A Reference ID（独白 / 对话中的 A 声）
-              <input class="mg-input" id="mg-s-refa" value="${esc(settings.reference_id || "")}">
-            </label>
+          <form id="mg-settings-form">
+            <div class="mg-row2">
+              <label class="mg-label">语音服务
+                <select class="mg-input" id="mg-s-provider">
+                  <option value="stepfun">StepFun（默认）</option>
+                  <option value="fish">fish.audio（备选）</option>
+                </select>
+              </label>
+              <label class="mg-label">StepFun API Key ${settings.stepfun_api_key_set ? '<span class="mg-chip">已配置（留空 = 不变）</span>' : ""}
+                <input class="mg-input" type="password" id="mg-s-stepkey" value="" placeholder="${settings.stepfun_api_key_set ? "已保存（输入新值可替换）" : "未配置时生成走 dry-run"}" autocomplete="off">
+              </label>
+            </div>
+            <div class="mg-row2">
+              <label class="mg-label">提问者音色
+                <select class="mg-input" id="mg-s-qvoice"></select>
+              </label>
+              <label class="mg-label">回答者音色
+                <select class="mg-input" id="mg-s-avoice"></select>
+              </label>
+            </div>
+            <div class="mg-actions">
+              <button type="submit" class="mg-btn primary">保存设置</button>
+              <button type="button" class="mg-btn" id="mg-test-btn">测试连接</button>
+              <span class="mg-hint" id="mg-test-result"></span>
+            </div>
+            <details class="mg-advanced">
+              <summary>高级设置（fish.audio 备选与生成参数）</summary>
+              <label class="mg-label">fish.audio API Key ${settings.fish_api_key_set ? '<span class="mg-chip">已配置（留空 = 不变）</span>' : ""}
+                <input class="mg-input" type="password" id="mg-s-key" value="" placeholder="${settings.fish_api_key_set ? "已保存（输入新值可替换）" : "留空即 dry-run 模式"}" autocomplete="off">
+              </label>
+              <label class="mg-label">音色 A Reference ID（独白 / 对话中的 A 声）
+                <input class="mg-input" id="mg-s-refa" value="${esc(settings.reference_id || "")}">
+              </label>
             <label class="mg-label">音色 B Reference ID（可选：对话中的 B 声，留空按单音色）
               <input class="mg-input" id="mg-s-refb" value="${esc(settings.reference_id_b || "")}">
             </label>
@@ -1215,13 +1249,8 @@ async function ManageView(token) {
               </label>
             </div>
             <label class="mg-check"><input type="checkbox" id="mg-s-dry" ${settings.dry_run ? "checked" : ""}> 强制 dry-run（生成占位音频，不调用 API）</label>
-            <div class="mg-actions">
-              <button type="submit" class="mg-btn primary">保存设置</button>
-              <button type="button" class="mg-btn" id="mg-test-btn">测试连接</button>
-              <span class="mg-hint" id="mg-test-result"></span>
-            </div>
-            </form>
-          </details>
+            </details>
+          </form>
         </div>
 
         <!-- 话题卡片 -->
@@ -1244,10 +1273,44 @@ async function ManageView(token) {
   `;
 
   // ---- 设置表单 ----
+  const $providerSel = document.getElementById("mg-s-provider");
+  const mgFillRoleVoices = async (provider) => {
+    const $q = document.getElementById("mg-s-qvoice");
+    const $a = document.getElementById("mg-s-avoice");
+    if (provider !== "stepfun") {
+      $q.disabled = true;
+      $a.disabled = true;
+      $q.innerHTML = $a.innerHTML = `<option value="">fish 备选模式请在高级设置配置音色 A/B</option>`;
+      return;
+    }
+    $q.disabled = false;
+    $a.disabled = false;
+    try {
+      const voices = await api("GET", "/api/voices?provider=stepfun");
+      const opt = v =>
+        `<option value="${esc(v.voice_id)}" ${v.voice_id === settings.question_voice_id ? "data-cur-q" : ""} ${v.voice_id === settings.answer_voice_id ? "data-cur-a" : ""}>${esc(v.name)} · ${v.gender === "male" ? "男声" : "女声"}</option>`;
+      $q.innerHTML = voices.map(opt).join("");
+      $a.innerHTML = voices.map(opt).join("");
+      const $curQ = $q.querySelector("[data-cur-q]");
+      const $curA = $a.querySelector("[data-cur-a]");
+      if ($curQ) $q.value = $curQ.value;
+      if ($curA) $a.value = $curA.value;
+    } catch (_) {
+      $q.innerHTML = $a.innerHTML = `<option value="">音色加载失败，可保存后刷新重试</option>`;
+    }
+  };
+  $providerSel.value = settings.tts_provider === "fish" ? "fish" : "stepfun";
+  mgFillRoleVoices($providerSel.value);
+  $providerSel.onchange = () => mgFillRoleVoices($providerSel.value);
+
   document.getElementById("mg-settings-form").onsubmit = async (e) => {
     e.preventDefault();
     const tempRaw = document.getElementById("mg-s-temp").value.trim();
+    const qVoice = document.getElementById("mg-s-qvoice").value;
+    const aVoice = document.getElementById("mg-s-avoice").value;
     const payload = {
+      tts_provider: $providerSel.value,
+      stepfun_api_key: document.getElementById("mg-s-stepkey").value,
       fish_api_key: document.getElementById("mg-s-key").value,
       reference_id: document.getElementById("mg-s-refa").value.trim(),
       reference_id_b: document.getElementById("mg-s-refb").value.trim(),
@@ -1258,6 +1321,8 @@ async function ManageView(token) {
       episode_gap_ms: parseFloat(document.getElementById("mg-s-egap").value) || 0,
       dry_run: document.getElementById("mg-s-dry").checked,
     };
+    if (qVoice) payload.question_voice_id = qVoice;
+    if (aVoice) payload.answer_voice_id = aVoice;
     if (tempRaw !== "") payload.temperature = parseFloat(tempRaw);
     try {
       await api("PUT", "/api/settings", payload);
@@ -1269,10 +1334,16 @@ async function ManageView(token) {
   document.getElementById("mg-test-btn").onclick = async () => {
     const $r = document.getElementById("mg-test-result");
     $r.textContent = "测试中…";
+    const provider = $providerSel.value;
     try {
-      const r = await api("POST", "/api/settings/test");
-      const fish = r.fish || {};
-      $r.textContent = `ffmpeg ${r.ffmpeg.ok ? "✓" : "✗"} · fish ${fish.ok ? "✓" : "✗"} ${fish.message || ""}`;
+      const r = await api("POST", `/api/settings/test?provider=${encodeURIComponent(provider)}`);
+      let msg = `ffmpeg ${r.ffmpeg.ok ? "✓" : "✗"}`;
+      if (r.stepfun) {
+        msg += ` · StepFun TTS ${r.stepfun.ok ? "✓" : "✗"} ${r.stepfun.message || ""}`;
+      } else if (r.fish) {
+        msg += ` · fish ${r.fish.ok ? "✓" : "✗"} ${r.fish.message || ""}`;
+      }
+      $r.textContent = msg;
     } catch (err) {
       $r.textContent = "失败：" + err.message;
     }
