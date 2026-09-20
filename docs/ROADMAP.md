@@ -195,8 +195,12 @@ API 模式 StepFun JSON Mode step-3.7-flash 一次三文本+修复重试一次+�
 agent-task 可重取；pipeline.py complete 先校验后原子写入；canonical skills/ielts-audio +
 AGENTS 路由 + Qoder 薄包装；#/done 统一完成页。18 单测 + e2e 全绿。tag r03。
 
-### R04 已批准 Web/Android UI — PENDING（依赖 R03）
-实现 docs/design/v1 全套界面；普通 UI 隐藏教学/独白/多轨；Android 文件与手动 LAN 导入。
+### R04 已批准 Web/Android UI — DONE (2026-09-21, tag r04)
+按 docs/design/v1 概念图实现：IELTS Pod 品牌、导航收敛为开始练习/我的语料/正在播放/设置
+（#/bank 保留别名、默认入口 #/practice）、今天想聊什么选题页、我的语料双分类
+（雅思口语/日常表达，题干命中题库自动归类）、设置页双引擎卡+提问者/回答者角色卡
+（性别→音色联动→试听，fish 模式映射 A/B reference）、首配向导 #/setup、普通界面删除
+独白/女问男答/整集/章节术语；Android = ZIP+手动 LAN 导入、模拟器实测导入与逐词点亮播放。
 tag r04。
 
 ### R05 公开分享闭环 — PENDING（依赖 R04）

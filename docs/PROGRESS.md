@@ -240,3 +240,22 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
 - 测试：test_generation_modes.py 18 个（数据回退/校验/修复重试/权限快速失败/双模式全链 mock/
   CLI/同构断言）；e2e test_dual_mode.py（复制→CLI 完成→占位音频→自动跳完成页→无表演稿泄露）；
   既有 bank e2e 第 5 步同步新流程。134 passed 1 skipped + e2e 7 passed 全绿。tag r03。
+
+## 2026-09-21 会话 10（续 2）：R04 已批准 Web/Android UI 完成（tag r04）
+
+- Web（按 docs/design/v1 十张概念图 + 计划文本）：品牌换 IELTS Pod（Speak·Practice·Progress）；
+  导航固定为开始练习/我的语料/正在播放/设置，默认入口 #/practice（#/bank 别名保留）；
+  选题页标题「今天想聊什么？」；我的语料 = 雅思口语/日常表达双分类（bank.category_index +
+  topic_category：题干 norm 命中题库或名称启发；pack 模式默认 ielts）；继续上次收听卡
+  （localStorage）；话题页删除独白/女问男答/整集/章节播放术语，单一「可精听」状态。
+- 设置页（概念 07）：双引擎卡（StepFun 推荐 / Fish 备选，各自 key+测试连接）主层；
+  提问的人/回答的人两张角色卡 = 性别切换→音色网格→试听→选中（fish 模式自动映射 A/B
+  reference——B06 旅程在双引擎下打通）；语速/模型名/fish ID/dry-run 收入高级折叠。
+- 首配向导 #/setup（概念 01）：三步单页（连接服务→提问者→回答者→保存并开始选题）；
+  练习页无 Key 时显示引导横幅。
+- Android：构建顺序修正——webDir=www，必须 sync_mobile → cap sync → sync_mobile（Java17 补丁）
+  → gradlew；APK 更新必须卸载重装（WebView service worker 缓存旧资产导致白屏）。
+  模拟器 API36 实测：LAN 导入（10.0.2.2:8766）→ 我的语料双分类 → 播放页逐词点亮+
+  黄底当前句高亮+精听栏；播放路由无底部导航。
+- 门禁：ruff 绿；134 passed 1 skipped；e2e 7 passed（manage 断言更新为双引擎测试按钮）。
+  截图走查：设置/向导/练习/语料/完成页（桌面+移动）。tag r04。

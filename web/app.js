@@ -489,7 +489,7 @@ async function playItem(topicId, item, autoPlay = true) {
   setTimeout(updateMediaSession, 0);
   const topicName = (PlayerState.currentTopic && PlayerState.currentTopic.name) || "";
   document.getElementById("gp-sub").textContent = [
-    "语料库", topicName, track === "podcast" ? "女问男答" : "独白",
+    "IELTS Pod", topicName,
   ].filter(Boolean).join(" / ");
   document.getElementById("gp-download").href = audioUrl;
 
@@ -796,7 +796,7 @@ async function TrackPlayerView(topicId, itemId, token) {
       <main class="reading-sheet">
         <header class="sheet-head">
           <a class="reading-breadcrumb" href="#/topics">
-            <span>语料库</span><i>/</i>${partLabel ? `<span>${esc(partLabel)}</span><i>/</i>` : ""}<span>${esc(topic.name)}</span>
+            <span>我的语料</span><i>/</i>${partLabel ? `<span>${esc(partLabel)}</span><i>/</i>` : ""}<span>${esc(topic.name)}</span>
           </a>
           ${stamp ? `<div class="sheet-stamp">${esc(stamp)} 收录</div>` : ""}
         </header>
@@ -804,7 +804,6 @@ async function TrackPlayerView(topicId, itemId, token) {
         <div class="reading-tags">
           ${partLabel ? `<span>${esc(partLabel)}</span>` : ""}
           <span>${esc(topic.name)}</span>
-          <span>${PlayerState.track === "podcast" ? "女问男答" : "独白"}</span>
           <span id="tl-mode-chip">对齐模式…</span>
           ${item.stale ? `<span class="chip-stale">待更新</span>` : ""}
         </div>
