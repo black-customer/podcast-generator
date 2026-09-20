@@ -2,9 +2,11 @@
 
 运行：服务已启动后 .venv/Scripts/python -m pytest tests/e2e/test_manage_ui.py -q
 """
+import os
+
 from playwright.sync_api import sync_playwright
 
-BASE_URL = "http://127.0.0.1:8765"
+BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8765")
 
 
 def test_manage_view_workflow():
@@ -20,10 +22,11 @@ def test_manage_view_workflow():
 
         # 1. 打开工作台
         page.goto(f"{BASE_URL}/#/manage")
-        page.wait_for_selector("#mg-settings-form", timeout=5000)
+        page.wait_for_selector("#mg-settings-form", state="attached", timeout=5000)
         assert page.is_visible("#mg-topic-list")
 
         # 2. 设置表单应载入当前值且模型下拉有选项
+        page.locator(".mg-advanced summary").click()
         assert page.locator("#mg-s-model option").count() >= 1
         assert page.is_visible("#mg-test-btn")
 

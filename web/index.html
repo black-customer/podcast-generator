@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bruce Audio Hub · 个人高质感英语媒体库</title>
+  <title>Bruce Corpus · 个性化英语输入</title>
   <link rel="manifest" href="/manifest.webmanifest" />
   <meta name="theme-color" content="#0f1115" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -11,50 +11,41 @@
   <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
   <link rel="stylesheet" href="/static/style.css" />
 </head>
-<body class="spotify-theme">
+<body class="reading-notes-theme">
   <div class="app-shell">
-    <!-- 左侧 Spotify 风格侧边栏 -->
     <aside class="sidebar">
       <div class="brand">
-        <span class="brand-icon">🎙️</span>
         <div class="brand-text">
-          <div class="brand-title">Audio Hub</div>
-          <div class="brand-sub">Bruce Corpus</div>
+          <div class="brand-title">Bruce Corpus</div>
+          <div class="brand-sub">阅读札记 · Reading Notes</div>
         </div>
       </div>
 
       <nav class="nav-menu">
-        <div class="menu-label">媒体库</div>
-        <a href="#/topics" class="nav-item active" data-filter="all">
-          <span class="icon">📻</span> 全部专辑
+        <a href="#/bank" class="nav-item active" data-filter="bank">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22V5.5Z"/><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22V5.5Z"/></svg>
+          <span>雅思题库</span>
         </a>
-        <a href="#/topics?cat=ielts" class="nav-item" data-filter="ielts">
-          <span class="icon">🎯</span> 雅思专项
+        <a href="#/topics" class="nav-item" data-filter="all">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v7c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/><path d="M5 12v7c0 1.7 3.1 3 7 3s7-1.3 7-3v-7"/></svg>
+          <span>语料库</span>
         </a>
-        <a href="#/topics?cat=daily" class="nav-item" data-filter="daily">
-          <span class="icon">☕</span> 日常闲聊
-        </a>
-        <div class="menu-label">学习入口</div>
-        <a href="#/bank" class="nav-item" data-filter="bank">
-          <span class="icon">📚</span> 雅思题库
-        </a>
-        <div class="menu-label">声学系统</div>
-        <a href="#/voices" class="nav-item" data-filter="voices">
-          <span class="icon">🎭</span> 音色展台
+        <a href="#/topics" class="nav-item" id="nav-now-playing">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4V8Z"/></svg>
+          <span>正在播放</span>
         </a>
         <a href="#/manage" class="nav-item" data-filter="manage">
-          <span class="icon">🛠️</span> 工作台管理
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+          <span>设置</span>
         </a>
         <a href="#/import" class="nav-item" id="nav-import">
-          <span class="icon">📥</span> 语料包管理
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v4h16v-4"/></svg>
+          <span>导入</span>
         </a>
       </nav>
 
       <div class="sidebar-footer">
-        <div class="mastering-badge">
-          <span class="status-dot"></span>
-          <span>广播级母带处理链路</span>
-        </div>
+        <div class="margin-note">Better English.<br>A brighter you.</div>
       </div>
     </aside>
 
@@ -67,7 +58,7 @@
   <!-- 全局固定底部播放器 (Mini Player) -->
   <footer class="global-player" id="global-player" style="display:none">
     <div class="player-left">
-      <div class="player-cover" id="gp-cover">🎧</div>
+      <div class="player-cover" id="gp-cover" aria-hidden="true"></div>
       <div class="player-info">
         <div class="player-title" id="gp-title">未选择曲目</div>
         <div class="player-sub" id="gp-sub">双轨英语媒体库</div>
@@ -75,16 +66,16 @@
     </div>
     <div class="player-center">
       <div class="player-controls">
-        <button class="ctrl-btn" id="gp-prev" title="上一首">⏮</button>
-        <button class="ctrl-btn ctrl-skip" id="gp-rewind" title="快退 15 秒">⏪ 15s</button>
-        <button class="ctrl-btn play-btn" id="gp-play" title="播放/暂停 (空格)">▶</button>
-        <button class="ctrl-btn ctrl-skip" id="gp-forward" title="快进 15 秒">15s ⏩</button>
-        <button class="ctrl-btn" id="gp-next" title="下一首">⏭</button>
+        <button class="ctrl-btn" id="gp-prev" title="上一首" aria-label="上一首">‹</button>
+        <button class="ctrl-btn ctrl-skip" id="gp-rewind" title="快退 15 秒">−15</button>
+        <button class="ctrl-btn play-btn" id="gp-play" title="播放/暂停 (空格)">播放</button>
+        <button class="ctrl-btn ctrl-skip" id="gp-forward" title="快进 15 秒">+15</button>
+        <button class="ctrl-btn" id="gp-next" title="下一首" aria-label="下一首">›</button>
         <button class="speed-toggle-btn" id="gp-speed" title="切换播放倍速 (0.8x / 1.0x / 1.2x / 1.5x)">1.0x</button>
-        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-a" title="设 A-B 循环起点 (A)">A·</button>
-        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-b" title="设 A-B 循环终点 (B)">·B</button>
+        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-a" title="设 A-B 循环起点 (A)">A点</button>
+        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-b" title="设 A-B 循环终点 (B)">B点</button>
         <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-clear" title="清除循环 (L)" style="display:none;">✕循环</button>
-        <button class="ctrl-btn ctrl-skip" id="gp-replay-line" title="重播当前句 (R)">🔁句</button>
+        <button class="ctrl-btn ctrl-skip" id="gp-replay-line" title="重播当前句 (R)">重播句</button>
       </div>
       <div class="progress-bar-wrap">
         <span class="time-label" id="gp-cur-time">0:00</span>
@@ -98,7 +89,7 @@
     </div>
     <div class="player-right">
       <button class="track-switch-pill" id="gp-track-switch">切换为播客版</button>
-      <a class="download-link" id="gp-download" href="#" download title="下载高音质 MP3">⬇</a>
+      <a class="download-link" id="gp-download" href="#" download title="下载 MP3">下载</a>
     </div>
     <audio id="core-audio" preload="auto"></audio>
   </footer>

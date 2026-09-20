@@ -127,7 +127,7 @@ function initGlobalPlayer() {
     toast("音频加载失败（可能尚未生成该音轨）");
     PlayerState.isPlaying = false;
     const pb = document.getElementById("gp-play");
-    if (pb) pb.textContent = "▶";
+    if (pb) pb.textContent = "播放";
   };
 
   if ("mediaSession" in navigator) {
@@ -155,14 +155,14 @@ function initGlobalPlayer() {
 
   $audio.onplay = () => {
     PlayerState.isPlaying = true;
-    $playBtn.textContent = "⏸";
+    $playBtn.textContent = "暂停";
     const disk = document.getElementById("vinyl-disk");
     if (disk) disk.classList.add("playing");
   };
 
   $audio.onpause = () => {
     PlayerState.isPlaying = false;
-    $playBtn.textContent = "▶";
+    $playBtn.textContent = "播放";
     const disk = document.getElementById("vinyl-disk");
     if (disk) disk.classList.remove("playing");
   };
@@ -429,6 +429,12 @@ async function playItem(topicId, item, autoPlay = true) {
     PlayerState.currentIndex = PlayerState.playlist.findIndex(it => it.id === item.id);
   }
   $globalPlayer.style.display = "flex";
+  const nowPlayingNav = document.getElementById("nav-now-playing");
+  if (nowPlayingNav) {
+    nowPlayingNav.href = `#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(item.id)}`;
+    document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+    nowPlayingNav.classList.add("active");
+  }
 
   const track = PlayerState.track;
   let audioUrl = mediaUrl(`/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(item.id)}/audio/${track}`);
@@ -446,9 +452,8 @@ async function playItem(topicId, item, autoPlay = true) {
   document.getElementById("gp-title").textContent = item.title || "未命名曲目";
   setTimeout(updateMediaSession, 0);
   document.getElementById("gp-sub").textContent = track === "podcast"
-    ? "🎙️ 双人对话播客版"
-    : "🎧 纯英母语独白版";
-  document.getElementById("gp-cover").textContent = track === "podcast" ? "🎙️" : "🎧";
+    ? "女问男答 · Native English"
+    : "纯英母语独白";
   document.getElementById("gp-download").href = audioUrl;
 
   const disk = document.getElementById("vinyl-disk");
@@ -527,7 +532,7 @@ function renderLiveTimelineUI() {
   const chip = document.getElementById("tl-mode-chip");
   if (chip) {
     const measured = PlayerState.timelineMode === "measured";
-    chip.textContent = measured ? "🎯 实测对齐" : "≈ 估算对齐（重生成后升级为实测）";
+    chip.textContent = measured ? "实测对齐" : "估算对齐（重生成后升级）";
     chip.style.color = measured ? "var(--ok, #34c37e)" : "var(--text-muted, #8b93a5)";
   }
 
@@ -535,7 +540,7 @@ function renderLiveTimelineUI() {
     podStream.innerHTML = timeline.map(line => {
       const isA = line.speaker === "A";
       const spkClass = isA ? "a" : "b";
-      const displayName = line.name || (isA ? "Alex" : "Mia");
+      const displayName = isA ? "Mia" : "Ethan";
 
       return `
         <div class="dialogue-bubble" id="pod-line-${line.id}" onclick="seekToTime(${line.start})">
@@ -544,7 +549,7 @@ function renderLiveTimelineUI() {
             <div class="line-meta">
               <span>${esc(displayName)}</span>
               <span class="time-tag">${fmtDur(line.start)} - ${fmtDur(line.end)}</span>
-              <span class="play-hint">▶ 点击跳播此句</span>
+              <span class="play-hint">点击跳播此句</span>
             </div>
             <div style="font-size:14.5px;line-height:1.65;">${renderLineText(line, line.id)}</div>
           </div>
@@ -558,7 +563,7 @@ function renderLiveTimelineUI() {
       <div class="monologue-line" id="mono-line-${line.id}" onclick="seekToTime(${line.start})" style="margin-bottom:12px;display:flex;flex-direction:column;gap:4px;">
         <div class="line-meta">
           <span class="time-tag">${fmtDur(line.start)} - ${fmtDur(line.end)}</span>
-          <span class="play-hint">▶ 点击跳播</span>
+          <span class="play-hint">点击跳播</span>
         </div>
         <div style="font-size:15px;line-height:1.8;">${renderLineText(line, line.id)}</div>
       </div>
@@ -584,9 +589,9 @@ window.seekToTime = function(seconds) {
 
 /* ---------------- 视图层 ---------------- */
 
-// 1. 媒体库首页：专辑卡片画廊
+// 1. 语料库：阅读索引
 async function TopicsGalleryView(token) {
-  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载媒体库专辑中…</p>`;
+  $app.innerHTML = `<p class="view-loading">正在整理语料索引…</p>`;
   let topics = [];
   try {
     topics = await api("GET", "/api/topics");
@@ -605,33 +610,29 @@ async function TopicsGalleryView(token) {
     filtered = topics.filter(t => !t.name.toLowerCase().includes("ielts") && !t.name.toLowerCase().includes("雅思"));
   }
 
-  const cardsHtml = filtered.map((t, idx) => {
-    const icons = ["🎙️", "🎧", "☕", "🎓", "🚀", "💡"];
-    const icon = icons[idx % icons.length];
-    return `
-      <div class="album-card" onclick="location.hash='#/topic/${encodeURIComponent(t.id)}'">
-        <div class="album-art">
-          ${icon}
-          <button class="album-play-btn" title="进入专辑">▶</button>
-        </div>
-        <div class="album-name">${esc(t.name)}</div>
-        <div class="album-meta">${t.stats.total} 篇语料 · ${fmtDur(t.total_sec)}</div>
-      </div>
-    `;
-  }).join("");
+  const cardsHtml = filtered.map((t, idx) => `
+    <button class="album-card corpus-index-row"
+      onclick="location.hash='#/topic/${encodeURIComponent(t.id)}'">
+      <span class="corpus-index-number">${String(idx + 1).padStart(2, "0")}</span>
+      <span class="corpus-index-copy">
+        <span class="album-name">${esc(t.name)}</span>
+        <span class="album-meta">${t.stats.total} 条语料 · ${fmtDur(t.total_sec)} · 已生成 ${t.stats.generated}</span>
+      </span>
+      <span class="corpus-index-action">打开</span>
+    </button>
+  `).join("");
 
   $app.innerHTML = `
-    <div class="hero-banner">
-      <div class="hero-title">高保真母语口语媒体库</div>
-      <div class="hero-desc">输入真实心声，经过工业级 4 层声学母带处理，呈现如置身电台录音棚般的鲜活对话与纯正英语输入。</div>
-    </div>
-
-    <div class="section-header">
-      <div class="section-title">精选专辑</div>
-    </div>
+    <header class="page-heading">
+      <div>
+        <h1>语料库</h1>
+        <p>把自己的表达整理成可以反复听的英语札记。</p>
+      </div>
+      <a class="text-action" href="#/bank">去题库选一道题</a>
+    </header>
 
     <div class="album-grid">
-      ${cardsHtml || `<p style="color:var(--text-sub)">暂无匹配专辑</p>`}
+      ${cardsHtml || `<p class="empty-state">还没有语料。先从题库选一道题开始。</p>`}
     </div>
   `;
 }
@@ -669,8 +670,8 @@ async function TopicDetailView(topicId, token) {
       <div class="track-num">${idx + 1}</div>
       <div class="track-title">${esc(it.title)}</div>
       <div class="track-tags">
-        ${it.has_monologue ? '<span class="track-pill mono">🎧 独白</span>' : ""}
-        ${it.has_podcast ? '<span class="track-pill pod">🎙️ 播客</span>' : ""}
+        ${it.has_monologue ? '<span class="track-pill mono">独白</span>' : ""}
+        ${it.has_podcast ? '<span class="track-pill pod">女问男答</span>' : ""}
         ${it.stale ? '<span class="track-pill" style="color:var(--warn)">待更新</span>' : ""}
         ${it.error ? '<span class="track-pill" style="color:var(--err)">错误</span>' : ""}
         ${!it.has_monologue && !it.has_podcast ? '<span class="track-pill">—</span>' : ""}
@@ -681,32 +682,30 @@ async function TopicDetailView(topicId, token) {
   `).join("");
 
   $app.innerHTML = `
-    <div class="album-header">
-      <div class="header-art">🎙️</div>
+    <div class="album-header reading-topic-header">
       <div class="header-details">
-        <div class="header-tag">专辑 · 英语口语语料库</div>
         <div class="header-title">${esc(topic.name)}</div>
         <div class="header-meta">
-          <span>共 ${topic.items.length} 首曲目</span>
+          <span>共 ${topic.items.length} 条表达</span>
           <span>·</span>
-          <span>录音室母带版</span>
+          <span>点击标题开始阅读与收听</span>
         </div>
       </div>
     </div>
 
     <div class="action-bar">
       ${PlayerState.playlist.length ? `
-        <button class="btn-pill" onclick="topicRandomPlay()">🎲 随机播一题</button>
+        <button class="btn-pill" onclick="topicRandomPlay()">随机听一题</button>
       ` : ""}
       ${manifestPod ? `
         <a class="btn-round-play" id="btn-play-all-pod" title="打开整集播放器" href="#/episode/${encodeURIComponent(topicId)}/podcast" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">▶</a>
-        <span style="font-weight:700;font-size:15px;color:#fff;">播客整集 (${fmtDur(manifestPod.total_sec)})${manifestPod.stale ? ' <span class="track-pill" style="color:var(--warn)">条目已更新，建议重建</span>' : ""}</span>
-        <a class="btn-pill" href="#/episode/${encodeURIComponent(topicId)}/podcast">▶ 章节播放</a>
-        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=podcast" download>⬇ MP3</a>
+        <span class="episode-summary">整集 ${fmtDur(manifestPod.total_sec)}${manifestPod.stale ? ' <span class="track-pill" style="color:var(--warn)">建议重建</span>' : ""}</span>
+        <a class="btn-pill" href="#/episode/${encodeURIComponent(topicId)}/podcast">章节播放</a>
+        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=podcast" download>下载 MP3</a>
       ` : ""}
       ${manifestMono ? `
-        <a class="btn-pill" href="#/episode/${encodeURIComponent(topicId)}/monologue">🎧 独白整集 (${fmtDur(manifestMono.total_sec)})${manifestMono.stale ? " ⚠️已过期" : ""}</a>
-        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=monologue" download>⬇ MP3</a>
+        <a class="btn-pill" href="#/episode/${encodeURIComponent(topicId)}/monologue">独白整集 ${fmtDur(manifestMono.total_sec)}${manifestMono.stale ? " · 已过期" : ""}</a>
+        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=monologue" download>下载 MP3</a>
       ` : ""}
     </div>
 
@@ -743,62 +742,62 @@ async function TrackPlayerView(topicId, itemId, token) {
   PlayerState.playlist = topic.items.filter(it => it.status === "generated");
 
   $app.innerHTML = `
-    <div style="margin-bottom:20px;">
-      <a href="#/topic/${encodeURIComponent(topicId)}" style="color:var(--text-sub);font-size:13px;font-weight:600;">← 返回专辑: ${esc(topic.name)}</a>
-    </div>
-
     <div class="player-detail-container">
-      <!-- 左侧：黑胶唱片与音轨控制卡 -->
-      <div class="vinyl-card">
-        <div class="vinyl-disk" id="vinyl-disk">🎙️</div>
-        <div class="song-title">${esc(item.title)}</div>
-        <div class="song-artist">Bruce English Corpus · 工业级母带版</div>
+      <main class="reading-sheet">
+        <a class="reading-breadcrumb" href="#/topic/${encodeURIComponent(topicId)}">语料库 / ${esc(topic.name)}</a>
+        <h1 class="player-question">${esc(item.title)}</h1>
+        <div class="reading-tags">
+          <span>IELTS Speaking</span>
+          <span>${PlayerState.track === "podcast" ? "女问男答" : "独白"}</span>
+          <span id="tl-mode-chip">对齐模式…</span>
+        </div>
+        <div class="lyrics-panel" id="lyrics-panel">
+          <div id="pod-stream" class="bubble-stream" style="display:${PlayerState.track === 'podcast' ? 'flex' : 'none'}">
+            <p class="view-loading">正在整理时间轴…</p>
+          </div>
+          <div id="mono-stream" style="display:${PlayerState.track === 'monologue' ? 'block' : 'none'};">
+            <p class="view-loading">正在整理时间轴…</p>
+          </div>
+        </div>
+      </main>
 
+      <aside class="reference-rail">
+        <div class="reference-tabs" role="tablist" aria-label="参考信息">
+          <button class="reference-tab active" type="button">中文参考</button>
+          <button class="reference-tab" type="button" disabled>重点词汇</button>
+          <button class="reference-tab" type="button" disabled>相关表达</button>
+        </div>
+        <div class="reference-heading">参考译文</div>
+        <div id="zh-panel" class="zh-panel">${item.chinese ? esc(item.chinese) : '<p>该条目暂无中文参考</p>'}</div>
+        <label class="reference-toggle">
+          <input type="checkbox" id="zh-toggle" checked>
+          <span>显示中文参考</span>
+        </label>
+        <div class="reference-divider"></div>
+        <div class="reference-heading">音频信息</div>
         <div class="track-toggle-group">
           <button class="track-toggle-btn ${PlayerState.track === 'podcast' ? 'active' : ''}" id="btn-tab-pod"
-            ${item.has_audio_podcast ? "" : 'disabled title="该条目没有播客轨音频"'}>🎙️ 播客</button>
+            ${item.has_audio_podcast ? "" : 'disabled title="该条目没有播客轨音频"'}>女问男答</button>
           <button class="track-toggle-btn ${PlayerState.track === 'monologue' ? 'active' : ''}" id="btn-tab-mono"
-            ${item.has_audio_monologue ? "" : 'disabled title="该条目没有独白轨音频"'}>🎧 独白</button>
+            ${item.has_audio_monologue ? "" : 'disabled title="该条目没有独白轨音频"'}>独白</button>
         </div>
-
-        <div style="width:100%;display:flex;flex-direction:column;gap:10px;">
+        <dl class="audio-facts">
+          <div><dt>状态</dt><dd>${item.status === "generated" ? "已生成" : "待生成"}</dd></div>
+          <div><dt>时长</dt><dd>${fmtDur(item.duration_sec_podcast || item.duration_sec || 0)}</dd></div>
+          <div><dt>语速</dt><dd>${PlayerState.playbackRate.toFixed(1)}x</dd></div>
+        </dl>
+        <div class="reference-actions">
           ${(() => {
             const dl = mediaUrl(`/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/audio/${PlayerState.track}`);
             return dl
-              ? `<a class="btn-pill" style="display:block;text-align:center;" href="${dl}" download="track.mp3">⬇ 下载当前高音质 MP3</a>`
+              ? `<a class="btn-pill" href="${dl}" download="track.mp3">下载当前 MP3</a>`
               : "";
           })()}
           ${typeof PackState !== "undefined" && PackState.active ? "" : `
             <button class="btn-pill" id="remake-item">使用当前音色重制此条</button>
           `}
         </div>
-      </div>
-
-      <!-- 右侧：实时卡拉OK歌词剧本面板 -->
-      <div class="lyrics-panel" id="lyrics-panel">
-        <div class="lyrics-header">
-          <span id="script-panel-title">${PlayerState.track === 'podcast' ? '🎙️ 播客剧本实录' : '🎧 纯英母语独白文本'}</span>
-          <span style="font-size:12px;display:flex;align-items:center;gap:12px;">
-            <label style="display:flex;align-items:center;gap:5px;cursor:pointer;color:var(--text-sub);">
-              <input type="checkbox" id="zh-toggle" checked> 中文参考
-            </label>
-            <span style="display:flex;align-items:center;gap:6px;">
-              <span class="status-dot"></span>
-              <span id="tl-mode-chip">对齐模式…</span>
-            </span>
-          </span>
-        </div>
-
-        <div id="zh-panel" class="zh-panel">${item.chinese ? esc(item.chinese) : '<p style="color:var(--text-sub)">该条目暂无中文参考</p>'}</div>
-
-        <div id="pod-stream" class="bubble-stream" style="display:${PlayerState.track === 'podcast' ? 'flex' : 'none'}">
-          <p style="color:var(--text-sub);padding:20px;">正在加载时间轴...</p>
-        </div>
-
-        <div id="mono-stream" style="display:${PlayerState.track === 'monologue' ? 'block' : 'none'};">
-          <p style="color:var(--text-sub);padding:20px;">正在加载时间轴...</p>
-        </div>
-      </div>
+      </aside>
     </div>
   `;
 
@@ -972,18 +971,7 @@ async function VoicesShowcaseView(token) {
     const isCurA = v.reference_id === curVoiceA;
     const isCurB = v.reference_id === curVoiceB;
 
-    const avatars = {
-      alex_young_adult: "💻",
-      mia_bilingual: "🎙️",
-      cand_sarah: "🎓",
-      cand_alle: "✨",
-      cand_friendly_w: "💼",
-      cand_egirl: "🌸",
-      cand_ethan: "🧑‍🏫",
-      cand_elite: "👔",
-      cand_adam: "☕",
-    };
-    const avatar = avatars[v.id] || "🗣️";
+    const avatar = esc((v.name || "Voice").split(/\s|\(/)[0].slice(0, 2).toUpperCase());
 
     return `
       <div class="voice-card ${isCurA || isCurB ? 'active-voice' : ''}">
@@ -1002,14 +990,14 @@ async function VoicesShowcaseView(token) {
           ${v.temperature != null ? `<span>温度: ${v.temperature}</span>` : ""}
         </div>
         <div>
-          <button class="voice-btn" onclick="previewVoice('${esc(v.reference_id)}', this)" title="播放该音色的试听样本（真实合成）">▶ 试听</button>
+          <button class="voice-btn" onclick="previewVoice('${esc(v.reference_id)}', this)" title="播放统一试听稿">试听</button>
           ${v.gender === 'male' ? `
             <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'male', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
-              ${isCurA ? "✓ 当前默认男声 (Speaker A)" : "设为默认男声 (Speaker A)"}
+              ${isCurA ? "当前回答男声" : "设为回答男声"}
             </button>
           ` : `
             <button class="voice-btn ${isCurB ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(v.reference_id)}', 'female', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
-              ${isCurB ? "✓ 当前默认女声" : "设为默认女声 (Speaker B)"}
+              ${isCurB ? "当前提问女声" : "设为提问女声"}
             </button>
           `}
         </div>
@@ -1019,28 +1007,40 @@ async function VoicesShowcaseView(token) {
 
   const presets = voices.filter(v => v.tier !== "candidate");
   const candidates = voices.filter(v => v.tier === "candidate");
+  const maleCandidates = candidates.filter(v => v.gender === "male");
+  const femaleCandidates = candidates.filter(v => v.gender === "female");
 
   $app.innerHTML = `
-    <div class="hero-banner" style="background: linear-gradient(135deg, rgba(30, 215, 96, 0.25) 0%, rgba(61, 123, 246, 0.2) 100%);">
-      <div class="hero-title">🎭 声学音色预设展台 (Voice Preset Registry)</div>
-      <div class="hero-desc">选择并保存你的长期发音模仿对象：语色一旦定版，整套语料的听感与 shadowing 基准就稳定了。搭配双音色可生成双人对话播客。</div>
+    <div class="hero-banner voice-page-intro">
+      <a class="reading-breadcrumb" href="#/manage">设置 / 音色</a>
+      <div class="hero-title">选择长期模仿的声音</div>
+      <div class="hero-desc">重点听年龄感、自然度和久听是否疲劳。候选使用同一试听稿与各自参数。</div>
     </div>
 
     <div class="section-header">
-      <div class="section-title">内置大师级音色库</div>
+      <div class="section-title">当前预设</div>
     </div>
 
     <div class="voice-grid">
       ${presets.map(cardHtml).join("")}
     </div>
 
-    ${candidates.length ? `
+    ${maleCandidates.length ? `
     <div class="section-header" style="margin-top:28px;">
-      <div class="section-title">候选音色 · 试听定夺中</div>
-      <div style="font-size:12px;color:var(--text-sub);">从 fish.audio 公共市场筛选，试听满意可直接设为 A/B</div>
+      <div class="section-title">回答男声候选</div>
+      <div class="section-description">四个美式青年声使用同一试听稿</div>
     </div>
     <div class="voice-grid">
-      ${candidates.map(cardHtml).join("")}
+      ${maleCandidates.map(cardHtml).join("")}
+    </div>` : ""}
+
+    ${femaleCandidates.length ? `
+    <div class="section-header" style="margin-top:28px;">
+      <div class="section-title">提问女声候选</div>
+      <div class="section-description">Mia 暂不更换，可按需试听其他方向</div>
+    </div>
+    <div class="voice-grid">
+      ${femaleCandidates.map(cardHtml).join("")}
     </div>` : ""}
   `;
 }
@@ -1057,17 +1057,17 @@ window.previewVoice = function(referenceId, btn) {
   player.dataset.ref = referenceId;
   window.__voicePreview = player;
   if (btn) {
-    btn.textContent = "⏳ 加载中…";
+    btn.textContent = "加载中…";
     btn.disabled = true;
-    player.addEventListener("canplay", () => { btn.textContent = "⏸ 停止"; btn.disabled = false; }, { once: true });
+    player.addEventListener("canplay", () => { btn.textContent = "停止"; btn.disabled = false; }, { once: true });
   }
   player.play().catch(() => {
     toast("试听加载失败，稍后再试");
-    if (btn) { btn.textContent = "▶ 试听"; btn.disabled = false; }
+    if (btn) { btn.textContent = "试听"; btn.disabled = false; }
   });
   player.addEventListener("ended", () => {
     const cards = document.querySelectorAll(".voice-btn");
-    cards.forEach(b => { if (b.textContent === "⏸ 停止") b.textContent = "▶ 试听"; });
+    cards.forEach(b => { if (b.textContent === "停止") b.textContent = "试听"; });
   });
 };
 
@@ -1083,7 +1083,7 @@ window.applyVoicePreset = async function(referenceId, gender, voiceName, speed, 
     if (speed && speed !== 1.0) payload.speed = speed;
     if (temperature != null) payload.temperature = temperature;
     await api("PUT", "/api/settings", payload);
-    toast(`已将【${voiceName}】设为${gender === "male" ? "男声 A" : "女声 B"}`);
+    toast(`已将【${voiceName}】设为${gender === "male" ? "回答男声" : "提问女声"}`);
     VoicesShowcaseView();
   } catch (e) {
     toast(`设置失败：${e.message}`);
@@ -1158,16 +1158,27 @@ async function ManageView(token) {
     : "";
 
   $app.innerHTML = `
-    <div class="section-header">
-      <div class="section-title">🛠️ 工作台管理</div>
+    <div class="section-header settings-page-head">
+      <div>
+        <div class="section-title">设置与内容管理</div>
+        <p class="section-description">先选择长期模仿音色；技术参数只在需要排错时调整。</p>
+      </div>
       <div>${modeBadge}</div>
     </div>
     <div class="manage-grid">
       <div class="mg-col">
         <!-- 设置卡片 -->
         <div class="mg-card">
-          <h3>⚙️ 设置</h3>
-          <form id="mg-settings-form">
+          <div class="voice-setting-lead">
+            <div>
+              <h3>提问与回答音色</h3>
+              <p>当前回答使用男声，提问使用女声。试听后再固定长期模仿对象。</p>
+            </div>
+            <a class="mg-btn primary" href="#/voices">选择音色</a>
+          </div>
+          <details class="mg-advanced">
+            <summary>高级生成设置</summary>
+            <form id="mg-settings-form">
             <label class="mg-label">fish.audio API Key ${settings.fish_api_key_set ? '<span class="mg-chip">已配置（留空 = 不变）</span>' : ""}
               <input class="mg-input" type="password" id="mg-s-key" value="" placeholder="${settings.fish_api_key_set ? "已保存（输入新值可替换）" : "留空即 dry-run 模式"}" autocomplete="off">
             </label>
@@ -1207,12 +1218,13 @@ async function ManageView(token) {
               <button type="button" class="mg-btn" id="mg-test-btn">测试连接</button>
               <span class="mg-hint" id="mg-test-result"></span>
             </div>
-          </form>
+            </form>
+          </details>
         </div>
 
         <!-- 话题卡片 -->
         <div class="mg-card">
-          <h3>📚 话题（= 一集）</h3>
+          <h3>话题与语料</h3>
           <div class="mg-inline">
             <input class="mg-input grow" id="mg-new-topic" placeholder="新话题名称，如：03-travel">
             <button class="mg-btn primary" id="mg-create-topic">新建</button>
@@ -1804,7 +1816,7 @@ async function BankView(token) {
           onkeydown="if(event.key==='Enter')bankGo({q: document.getElementById('bank-q').value.trim()})">
         <button class="btn-pill" onclick="bankGo({q: document.getElementById('bank-q').value.trim()})">搜索</button>
       </div>
-      <button class="bank-tab" onclick="bankRandomGo()" title="从当前筛选中随机抽一题">🎲 随机来一题</button>
+      <button class="bank-tab bank-random" onclick="bankRandomGo()" title="从当前筛选中随机抽一题">随机来一题</button>
     </div>
 
     ${answerCard}
@@ -1938,7 +1950,7 @@ function viewStale(token) {
 
 function route() {
   const token = ++routeToken;
-  const hash = location.hash || "#/topics";
+  const hash = location.hash || "#/bank";
   document.querySelectorAll(".nav-item").forEach(el => {
     const href = el.getAttribute("href");
     if (href === hash || (hash.startsWith("#/bank") && href === "#/bank")) {

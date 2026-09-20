@@ -3,6 +3,7 @@
 运行：服务已启动后 .venv/Scripts/python -m pytest tests/e2e/test_bank_ui.py -q
 依赖题库快照 data/question_bank.json（python -m server.bank --sync）；缺失时跳过。
 """
+import os
 import re
 import time
 
@@ -10,7 +11,7 @@ import pytest
 import requests
 from playwright.sync_api import sync_playwright
 
-BASE_URL = "http://127.0.0.1:8765"
+BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8765")
 
 
 def _bank_ready() -> bool:

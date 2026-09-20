@@ -4,6 +4,7 @@
 覆盖 packreader.js（stored zip 解析）、packmode.js（packApi 契约模拟、mediaUrl）、
 app.js 的 api() 拦截与视图复用。浏览器上下文每次新建，IndexedDB 存档互不污染。
 """
+import os
 import re
 from pathlib import Path
 
@@ -11,7 +12,7 @@ import pytest
 import requests
 from playwright.sync_api import sync_playwright
 
-BASE_URL = "http://127.0.0.1:8765"
+BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8765")
 EXPORT_TOPIC = "01-my-studies"  # 小体积全生成话题（3 条目 86 秒）
 
 
@@ -59,7 +60,7 @@ def test_pack_mode_offline_flow(pack_zip: Path):
 
             # 4. 播放页：音频 src 是 blob URL（不落服务器），时间轴渲染（预计算数据直出）
             page.click(".track-row >> nth=0")
-            page.wait_for_selector(".vinyl-card", timeout=5000)
+            page.wait_for_selector(".reading-sheet", timeout=5000)
             page.wait_for_timeout(600)
             src = page.evaluate("document.getElementById('core-audio').src")
             assert src.startswith("blob:"), f"pack 模式音频应为 blob URL，实际 {src[:60]}"

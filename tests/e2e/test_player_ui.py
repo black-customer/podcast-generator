@@ -3,9 +3,11 @@
 运行：服务已启动后 .venv/Scripts/python -m pytest tests/e2e/test_player_ui.py -q
 依赖真实库中已有条目（02-sleep-healthy-eating / 001-...，Bruce 主语料）。
 """
+import os
+
 from playwright.sync_api import sync_playwright
 
-BASE_URL = "http://127.0.0.1:8765"
+BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8765")
 TOPIC = "02-sleep-healthy-eating"
 ITEM = "001-sleep-and-healthy-eating-dialogue"
 
@@ -29,7 +31,8 @@ def test_full_player_workflow():
         # 2. 直接进入目标条目的沉浸播放页
         page.goto(f"{BASE_URL}/#/play/{TOPIC}/{ITEM}")
         page.wait_for_selector("#lyrics-panel", timeout=5000)
-        assert page.is_visible("#vinyl-disk")
+        assert page.is_visible(".player-question")
+        assert page.is_visible(".reference-rail")
         assert page.is_visible("#pod-stream")
         assert page.is_visible("#btn-tab-pod")
         assert page.is_visible("#remake-item")

@@ -619,8 +619,8 @@ def _save_track_outputs(
     dur: float,
     align_segments: list[dict] | None,
     words: list[dict] | None = None,
-    speaker_a: str = "Alex",
-    speaker_b: str = "Mia",
+    speaker_a: str = "Mia",
+    speaker_b: str = "Ethan",
     mode: str = "measured",
 ) -> list[dict]:
     """写 alignment_{track}.json（真实/估算标记 + 可选逐词）+ timeline_{track}.json。"""

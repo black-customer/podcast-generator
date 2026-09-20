@@ -41,6 +41,10 @@ desktop.ini
 .idea/
 .vscode/
 .zcode/
+.impeccable/
+
+# Temporary exported packs
+data/exports/*.zip
 
 # Lint cache
 .ruff_cache/
