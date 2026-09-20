@@ -165,3 +165,15 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
 - 工程验收：`scripts/check.sh` 全绿（108 passed, 1 skipped），播放器 E2E 1 passed。
 - 待 Bruce：在音色展台生成/试听新版四男声，选定一个并完成 5 条真实语料 A/B；
   通过后将 Q02 标记 DONE 并打 tag q02。
+
+## 2026-09-20 会话 7：StepFun TTS 2.5 A/B 对比基线
+
+- scripts/ab_stepfun.py：控制变量对比（同文本/同性别角色/同 -16 LUFS 母带链），
+  key 存 data/.tmp/stepfun_api_key.txt（gitignored，不进 git/日志/回显）
+- StepFun API：POST api.stepfun.com/v1/audio/speech，model=stepaudio-2.5-tts，
+  Bearer 认证；voice 官方音色名；instruction 全局情绪指令（≤200字）；
+  SSE + 词级 timestamp（未来集成对齐层的路径）；免费档限流 10 RPM（脚本 6.5s 节流+429退避）
+- 对照产物 data/.tmp/ab_stepfun/：独白×2 男声变体（vibrant-youth/soft-spoken-gentleman）
+  + 对话×2（A=lively-girl）——对话源必须用 fish_script.txt（fish 生成对话轨的真实源，
+  首跑误用 natural_english 导致文本不同已修正）
+- 待 Bruce 试听裁决：引擎去留 + StepFun 男声变体偏好
