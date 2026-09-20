@@ -65,7 +65,7 @@ def test_pack_mode_offline_flow(pack_zip: Path):
             src = page.evaluate("document.getElementById('core-audio').src")
             assert src.startswith("blob:"), f"pack 模式音频应为 blob URL，实际 {src[:60]}"
             lyrics = page.evaluate("""() => {
-              const pods = document.querySelectorAll('.dialogue-bubble').length;
+              const pods = document.querySelectorAll('.transcript-row, .dialogue-bubble').length;
               const mono = (document.getElementById('mono-stream') || {}).innerText || '';
               return { pods, monoHasText: mono.length > 0 && !mono.includes('正在加载') };
             }""")

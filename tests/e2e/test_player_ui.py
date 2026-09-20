@@ -42,15 +42,17 @@ def test_full_player_workflow():
         assert page.is_visible("#gp-loop-a")
         assert page.is_visible("#gp-loop-b")
         assert page.is_visible("#gp-replay-line")
+        assert page.is_visible("#gp-volume")
+        assert page.is_visible("#gp-zh-toggle")
 
         # 4. 时间轴渲染 + 对齐模式标志（诚实显示 measured/estimated）
-        page.wait_for_selector("#pod-stream .dialogue-bubble", timeout=5000)
-        bubbles = page.locator("#pod-stream .dialogue-bubble")
-        assert bubbles.count() >= 5
+        page.wait_for_selector("#pod-stream .transcript-row", timeout=5000)
+        rows = page.locator("#pod-stream .transcript-row")
+        assert rows.count() >= 5
         assert page.locator("#tl-mode-chip").inner_text() != ""
 
         # 5. 点击第 3 句跳播
-        bubbles.nth(2).click()
+        rows.nth(2).click()
         page.wait_for_timeout(400)
         cur = page.evaluate("() => document.getElementById('core-audio').currentTime")
         assert cur > 0, "点击句子后 currentTime 应变化"

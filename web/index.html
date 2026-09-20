@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bruce Corpus · 个性化英语输入</title>
   <link rel="manifest" href="/manifest.webmanifest" />
-  <meta name="theme-color" content="#0f1115" />
+  <meta name="theme-color" content="#f7f8f8" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
   <link rel="stylesheet" href="/static/style.css" />
 </head>
@@ -17,7 +17,7 @@
       <div class="brand">
         <div class="brand-text">
           <div class="brand-title">Bruce Corpus</div>
-          <div class="brand-sub">阅读札记 · Reading Notes</div>
+          <div class="brand-sub">阅读札记<span class="brand-sep">/</span>Reading Notes</div>
         </div>
       </div>
 
@@ -38,14 +38,10 @@
           <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
           <span>设置</span>
         </a>
-        <a href="#/import" class="nav-item" id="nav-import">
-          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v4h16v-4"/></svg>
-          <span>导入</span>
-        </a>
       </nav>
 
       <div class="sidebar-footer">
-        <div class="margin-note">Better English.<br>A brighter you.</div>
+        <div class="margin-note"><span>Better</span><span>English</span><span class="margin-note-tail">A Brighter You.</span></div>
       </div>
     </aside>
 
@@ -55,42 +51,73 @@
     </main>
   </div>
 
-  <!-- 全局固定底部播放器 (Mini Player) -->
+  <!-- 全局固定底部播放器：文档标记 / 传送带 / 进度 / 音量 / 精听控制 / 重制 -->
   <footer class="global-player" id="global-player" style="display:none">
     <div class="player-left">
-      <div class="player-cover" id="gp-cover" aria-hidden="true"></div>
+      <div class="player-cover" id="gp-cover" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M6 3.5h8L19 8.5V20.5H6z"/><path d="M14 3.5V9h5"/><path d="M9 13h6M9 16.5h4"/></svg>
+      </div>
       <div class="player-info">
         <div class="player-title" id="gp-title">未选择曲目</div>
-        <div class="player-sub" id="gp-sub">双轨英语媒体库</div>
+        <div class="player-sub" id="gp-sub">阅读札记 · 双轨语料库</div>
       </div>
     </div>
-    <div class="player-center">
-      <div class="player-controls">
-        <button class="ctrl-btn" id="gp-prev" title="上一首" aria-label="上一首">‹</button>
-        <button class="ctrl-btn ctrl-skip" id="gp-rewind" title="快退 15 秒">−15</button>
-        <button class="ctrl-btn play-btn" id="gp-play" title="播放/暂停 (空格)">播放</button>
-        <button class="ctrl-btn ctrl-skip" id="gp-forward" title="快进 15 秒">+15</button>
-        <button class="ctrl-btn" id="gp-next" title="下一首" aria-label="下一首">›</button>
-        <button class="speed-toggle-btn" id="gp-speed" title="切换播放倍速 (0.8x / 1.0x / 1.2x / 1.5x)">1.0x</button>
-        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-a" title="设 A-B 循环起点 (A)">A点</button>
-        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-b" title="设 A-B 循环终点 (B)">B点</button>
-        <button class="ctrl-btn ctrl-skip loop-btn" id="gp-loop-clear" title="清除循环 (L)" style="display:none;">✕循环</button>
-        <button class="ctrl-btn ctrl-skip" id="gp-replay-line" title="重播当前句 (R)">重播句</button>
-      </div>
-      <div class="progress-bar-wrap">
-        <span class="time-label" id="gp-cur-time">0:00</span>
-        <div class="progress-track" id="gp-progress-track">
-          <div class="progress-fill" id="gp-progress-fill"></div>
-          <div class="loop-marker" id="gp-loop-a-mark" style="display:none;"></div>
-          <div class="loop-marker" id="gp-loop-b-mark" style="display:none;"></div>
-        </div>
-        <span class="time-label" id="gp-total-time">0:00</span>
+
+    <div class="player-transport">
+      <button class="icon-btn" id="gp-prev" title="上一句/上一首" aria-label="上一首">
+        <svg viewBox="0 0 24 24"><path d="M18.5 5.5v13L9 12z"/><path d="M5.5 5.5v13"/></svg>
+      </button>
+      <button class="nudge-btn" id="gp-rewind" title="快退 15 秒">−15</button>
+      <button class="play-btn" id="gp-play" title="播放/暂停 (空格)">
+        <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5 19 12 8 18.5z"/></svg>
+        <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5.5v13M15 5.5v13"/></svg>
+        <span class="sr-only">播放/暂停</span>
+      </button>
+      <button class="nudge-btn" id="gp-forward" title="快进 15 秒">+15</button>
+      <button class="icon-btn" id="gp-next" title="下一首" aria-label="下一首">
+        <svg viewBox="0 0 24 24"><path d="M5.5 5.5v13L15 12z"/><path d="M18.5 5.5v13"/></svg>
+      </button>
+    </div>
+
+    <div class="player-progress">
+      <div class="time-label"><span id="gp-cur-time">00:00</span> / <span id="gp-total-time">00:00</span></div>
+      <div class="progress-track" id="gp-progress-track">
+        <div class="progress-fill" id="gp-progress-fill"></div>
+        <div class="loop-marker" id="gp-loop-a-mark" style="display:none;"></div>
+        <div class="loop-marker" id="gp-loop-b-mark" style="display:none;"></div>
       </div>
     </div>
-    <div class="player-right">
-      <button class="track-switch-pill" id="gp-track-switch">切换为播客版</button>
-      <a class="download-link" id="gp-download" href="#" download title="下载 MP3">下载</a>
+
+    <div class="player-volume" id="gp-volume-wrap">
+      <svg class="volume-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M16 9c1.4 1.6 1.4 4.4 0 6"/></svg>
+      <input type="range" id="gp-volume" min="0" max="1" step="0.05" value="1" aria-label="音量">
     </div>
+
+    <div class="player-aux">
+      <button class="bar-pill" id="gp-speed" title="切换播放倍速 (0.8x / 1.0x / 1.2x / 1.5x)">1.0x</button>
+      <button class="bar-pill" id="gp-zh-toggle" type="button" aria-pressed="true" title="显示/隐藏中文参考">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.5h15v13h-15z"/><path d="M8 9.5h8M8 13h5"/></svg>
+        <span>中文参考</span>
+      </button>
+      <button class="bar-pill" id="gp-replay-line" title="重播当前句 (R)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4.5V9h-4.5"/></svg>
+        <span>单句重播</span>
+      </button>
+      <div class="bar-pill bar-seg" role="group" aria-label="A-B 循环">
+        <button id="gp-loop-a" title="设 A-B 循环起点 (A)">A</button>
+        <button id="gp-loop-b" title="设 A-B 循环终点 (B)">B</button>
+        <button id="gp-loop-clear" title="清除循环 (L)" style="display:none;">×</button>
+      </div>
+      <a class="bar-pill bar-icon" id="gp-download" href="#" download title="下载 MP3">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4.5 19.5h15"/></svg>
+        <span class="sr-only">下载 MP3</span>
+      </a>
+    </div>
+
+    <button class="bar-cta" id="remake-item" title="用当前音色重新生成本条音频">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v4M12 16.5v4M3.5 12h4M16.5 12h4M6.1 6.1l2.8 2.8M15.1 15.1l2.8 2.8M17.9 6.1l-2.8 2.8M8.9 15.1l-2.8 2.8"/></svg>
+      <span>使用当前音色重制此条</span>
+    </button>
     <audio id="core-audio" preload="auto"></audio>
   </footer>
 

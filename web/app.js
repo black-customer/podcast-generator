@@ -62,6 +62,12 @@ function fmtDur(sec) {
   return `${m}:${String(s % 60).padStart(2, "0")}`;
 }
 
+// 等宽时间戳：札记正文与播放条需要固定列宽（00:08 而非 0:08）
+function fmtPad(sec) {
+  const s = Math.max(0, Math.round(sec || 0));
+  return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+}
+
 function toast(msg) {
   const root = document.getElementById("toast-root");
   if (!root) return;
@@ -107,11 +113,16 @@ function initGlobalPlayer() {
   const $rewindBtn = document.getElementById("gp-rewind");
   const $forwardBtn = document.getElementById("gp-forward");
   const $speedBtn = document.getElementById("gp-speed");
-  const $trackSwitch = document.getElementById("gp-track-switch");
+  const $volumeInput = document.getElementById("gp-volume");
+  const $zhToggleBtn = document.getElementById("gp-zh-toggle");
   const $progressTrack = document.getElementById("gp-progress-track");
   const $progressFill = document.getElementById("gp-progress-fill");
   const $curTime = document.getElementById("gp-cur-time");
   const $totalTime = document.getElementById("gp-total-time");
+
+  function syncPlayButton() {
+    $playBtn.classList.toggle("is-playing", !$audio.paused);
+  }
 
   $playBtn.onclick = () => {
     if (!$audio.src) return;
@@ -126,8 +137,7 @@ function initGlobalPlayer() {
     if (!$audio.src) return;
     toast("音频加载失败（可能尚未生成该音轨）");
     PlayerState.isPlaying = false;
-    const pb = document.getElementById("gp-play");
-    if (pb) pb.textContent = "播放";
+    syncPlayButton();
   };
 
   if ("mediaSession" in navigator) {
@@ -155,16 +165,12 @@ function initGlobalPlayer() {
 
   $audio.onplay = () => {
     PlayerState.isPlaying = true;
-    $playBtn.textContent = "暂停";
-    const disk = document.getElementById("vinyl-disk");
-    if (disk) disk.classList.add("playing");
+    syncPlayButton();
   };
 
   $audio.onpause = () => {
     PlayerState.isPlaying = false;
-    $playBtn.textContent = "播放";
-    const disk = document.getElementById("vinyl-disk");
-    if (disk) disk.classList.remove("playing");
+    syncPlayButton();
   };
 
   // 快退 15 秒
@@ -172,7 +178,7 @@ function initGlobalPlayer() {
     $rewindBtn.onclick = () => {
       if (!$audio.duration) return;
       $audio.currentTime = Math.max(0, $audio.currentTime - 15);
-      toast("⏪ 快退 15 秒");
+      toast("快退 15 秒");
     };
   }
 
@@ -181,7 +187,7 @@ function initGlobalPlayer() {
     $forwardBtn.onclick = () => {
       if (!$audio.duration) return;
       $audio.currentTime = Math.min($audio.duration, $audio.currentTime + 15);
-      toast("⏩ 快进 15 秒");
+      toast("快进 15 秒");
     };
   }
 
@@ -205,8 +211,8 @@ function initGlobalPlayer() {
     const cur = $audio.currentTime;
     const pct = (cur / $audio.duration) * 100;
     $progressFill.style.width = `${pct}%`;
-    $curTime.textContent = fmtDur(cur);
-    $totalTime.textContent = fmtDur($audio.duration);
+    $curTime.textContent = fmtPad(cur);
+    $totalTime.textContent = fmtPad($audio.duration);
 
     // A-B 循环：到 B 点回跳 A 点
     if (PlayerState.loopA !== null && PlayerState.loopB !== null && PlayerState.loopB > PlayerState.loopA) {
@@ -224,7 +230,7 @@ function initGlobalPlayer() {
         PlayerState.activeWordIndex = -1;
         const line = PlayerState.timeline[idx];
 
-        document.querySelectorAll(".dialogue-bubble.active, .monologue-line.active").forEach(el => {
+        document.querySelectorAll(".transcript-row.active").forEach(el => {
           el.classList.remove("active");
         });
 
@@ -284,18 +290,59 @@ function initGlobalPlayer() {
     }
   };
 
-  $trackSwitch.onclick = async () => {
-    const nextTrack = PlayerState.track === "podcast" ? "monologue" : "podcast";
-    // 守卫：目标音轨不存在时提示（修 404 静默失败）
-    if (PlayerState.currentTopic && PlayerState.currentItem) {
+  // 音量（播放条常驻控制）
+  if ($volumeInput) {
+    const applyVolume = () => {
+      const v = Number($volumeInput.value);
+      $audio.volume = v;
+      $volumeInput.style.setProperty("--vol", String(v));
+    };
+    $volumeInput.oninput = applyVolume;
+    applyVolume();
+  }
+
+  // 中文参考显隐：播放条与右栏共用同一开关语义
+  if ($zhToggleBtn) {
+    $zhToggleBtn.onclick = () => {
+      const on = $zhToggleBtn.getAttribute("aria-pressed") !== "true";
+      $zhToggleBtn.setAttribute("aria-pressed", String(on));
+      document.body.classList.toggle("hide-zh", !on);
+    };
+  }
+
+  // 重制此条：常驻播放条，作用对象始终是当前曲目
+  const $remakeBtn = document.getElementById("remake-item");
+  if ($remakeBtn) {
+    $remakeBtn.onclick = async () => {
+      const topic = PlayerState.currentTopic;
+      const item = PlayerState.currentItem;
+      if (!topic || !item) { toast("还没有选中曲目"); return; }
+      const track = PlayerState.track;
+      const label = $remakeBtn.querySelector("span") || $remakeBtn;
+      $remakeBtn.disabled = true;
+      label.textContent = "正在重制…";
       try {
-        const full = await api("GET", `/api/topics/${encodeURIComponent(PlayerState.currentTopic.id)}/items/${encodeURIComponent(PlayerState.currentItem.id)}`);
-        const ok = nextTrack === "monologue" ? full.has_audio_monologue : full.has_audio_podcast;
-        if (!ok) { toast("该条目没有另一条音轨"); return; }
-      } catch (_) { /* 查询失败则照常尝试切换 */ }
-    }
-    setTrack(nextTrack);
-  };
+        const started = await api(
+          "POST",
+          `/api/topics/${encodeURIComponent(topic.id)}/items/${encodeURIComponent(item.id)}/generate`,
+          { force: true, track },
+        );
+        const job = await waitForJob(started.job_id);
+        if (job.state !== "done" || (job.errors && job.errors.length)) {
+          const detail = job.errors && job.errors.length ? job.errors[0].message : job.state;
+          throw new Error(detail || "生成失败");
+        }
+        PlayerState.mediaRevision = Date.now();
+        toast("重制完成，已载入新音频");
+        route();
+      } catch (e) {
+        toast(`重制失败：${e.message}`);
+      } finally {
+        $remakeBtn.disabled = false;
+        label.textContent = "使用当前音色重制此条";
+      }
+    };
+  }
 
   // ---- A-B 循环与句子导航（M06）----
   const $loopA = document.getElementById("gp-loop-a");
@@ -344,7 +391,7 @@ function initGlobalPlayer() {
     const idx = PlayerState.activeLineIndex;
     if (idx === -1 || !PlayerState.timeline[idx]) { toast("当前没有高亮句子"); return; }
     seekToTime(PlayerState.timeline[idx].start);
-    toast("🔁 重播当前句");
+    toast("重播当前句");
   };
 
   window.seekLine = function(delta) {
@@ -397,34 +444,23 @@ function initGlobalPlayer() {
 
 function setTrack(newTrack) {
   PlayerState.track = newTrack;
-  const $switch = document.getElementById("gp-track-switch");
-  if ($switch) {
-    $switch.textContent = newTrack === "podcast" ? "切换为独白版" : "切换为播客版";
-  }
   const shouldPlay = PlayerState.isPlaying || (!$audio.paused && $audio.src);
   if (PlayerState.currentItem && PlayerState.currentTopic) {
     playItem(PlayerState.currentTopic.id, PlayerState.currentItem, shouldPlay);
   }
-  // 如果在详情页，同步选项卡
+  // 同步右栏音轨按钮
   const monoBtn = document.getElementById("btn-tab-mono");
   const podBtn = document.getElementById("btn-tab-pod");
-  const scriptTitle = document.getElementById("script-panel-title");
   if (monoBtn && podBtn) {
-    if (newTrack === "monologue") {
-      monoBtn.classList.add("active");
-      podBtn.classList.remove("active");
-      if (scriptTitle) scriptTitle.textContent = "🎧 纯英母语独白文本 (Alex)";
-    } else {
-      podBtn.classList.add("active");
-      monoBtn.classList.remove("active");
-      if (scriptTitle) scriptTitle.textContent = "🎙️ 播客剧本实录";
-    }
+    monoBtn.classList.toggle("active", newTrack === "monologue");
+    podBtn.classList.toggle("active", newTrack === "podcast");
   }
 }
 
 async function playItem(topicId, item, autoPlay = true) {
   PlayerState.currentItem = item;
-  PlayerState.currentTopic = { id: topicId };
+  const known = PlayerState.currentTopic;
+  PlayerState.currentTopic = (known && known.id === topicId) ? known : { id: topicId };
   if (PlayerState.playlist) {
     PlayerState.currentIndex = PlayerState.playlist.findIndex(it => it.id === item.id);
   }
@@ -451,15 +487,16 @@ async function playItem(topicId, item, autoPlay = true) {
 
   document.getElementById("gp-title").textContent = item.title || "未命名曲目";
   setTimeout(updateMediaSession, 0);
-  document.getElementById("gp-sub").textContent = track === "podcast"
-    ? "女问男答 · Native English"
-    : "纯英母语独白";
+  const topicName = (PlayerState.currentTopic && PlayerState.currentTopic.name) || "";
+  document.getElementById("gp-sub").textContent = [
+    "语料库", topicName, track === "podcast" ? "女问男答" : "独白",
+  ].filter(Boolean).join(" / ");
   document.getElementById("gp-download").href = audioUrl;
 
-  const disk = document.getElementById("vinyl-disk");
-  if (disk) {
-    if (autoPlay) disk.classList.add("playing");
-    else disk.classList.remove("playing");
+  const remakeBtn = document.getElementById("remake-item");
+  if (remakeBtn) {
+    const offline = typeof PackState !== "undefined" && PackState.active;
+    remakeBtn.style.display = offline ? "none" : "";
   }
 
   // 高亮列表中当前项
@@ -532,42 +569,32 @@ function renderLiveTimelineUI() {
   const chip = document.getElementById("tl-mode-chip");
   if (chip) {
     const measured = PlayerState.timelineMode === "measured";
-    chip.textContent = measured ? "实测对齐" : "估算对齐（重生成后升级）";
-    chip.style.color = measured ? "var(--ok, #34c37e)" : "var(--text-muted, #8b93a5)";
+    chip.textContent = measured ? "实测对齐" : "估算对齐";
+    chip.classList.toggle("chip-estimated", !measured);
   }
 
-  if (PlayerState.track === "podcast" && podStream) {
-    podStream.innerHTML = timeline.map(line => {
-      const isA = line.speaker === "A";
-      const spkClass = isA ? "a" : "b";
-      const displayName = isA ? "Mia" : "Ethan";
+  // 音频信息里的发音：时间轴自带说话人名字
+  const voiceCell = document.getElementById("rail-voice");
+  const names = [...new Set(timeline.map(l => l.name).filter(Boolean))];
+  if (voiceCell && names.length) {
+    voiceCell.textContent = `${PlayerState.track === "podcast" ? "女问男答" : "独白"}（${names.join(" / ")}）`;
+  }
 
-      return `
-        <div class="dialogue-bubble" id="pod-line-${line.id}" onclick="seekToTime(${line.start})">
-          <div class="speaker-avatar ${spkClass}">${isA ? "A" : "B"}</div>
-          <div class="bubble-content ${spkClass}">
-            <div class="line-meta">
-              <span>${esc(displayName)}</span>
-              <span class="time-tag">${fmtDur(line.start)} - ${fmtDur(line.end)}</span>
-              <span class="play-hint">点击跳播此句</span>
-            </div>
-            <div style="font-size:14.5px;line-height:1.65;">${renderLineText(line, line.id)}</div>
-          </div>
-        </div>
-      `;
-    }).join("");
-    podStream.style.display = "flex";
+  const rowsHtml = timeline.map(line => `
+    <div class="transcript-row" id="${PlayerState.track === 'podcast' ? 'pod' : 'mono'}-line-${line.id}"
+         data-start="${line.start}" onclick="seekToTime(${line.start})" title="跳播此句">
+      <span class="row-marker" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5 19 12 8 18.5z"/></svg></span>
+      <span class="row-time">${fmtPad(line.start)}</span>
+      <span class="row-text">${renderLineText(line, line.id)}</span>
+    </div>
+  `).join("");
+
+  if (PlayerState.track === "podcast" && podStream) {
+    podStream.innerHTML = rowsHtml;
+    podStream.style.display = "block";
     if (monoStream) monoStream.style.display = "none";
   } else if (PlayerState.track === "monologue" && monoStream) {
-    monoStream.innerHTML = timeline.map(line => `
-      <div class="monologue-line" id="mono-line-${line.id}" onclick="seekToTime(${line.start})" style="margin-bottom:12px;display:flex;flex-direction:column;gap:4px;">
-        <div class="line-meta">
-          <span class="time-tag">${fmtDur(line.start)} - ${fmtDur(line.end)}</span>
-          <span class="play-hint">点击跳播</span>
-        </div>
-        <div style="font-size:15px;line-height:1.8;">${renderLineText(line, line.id)}</div>
-      </div>
-    `).join("");
+    monoStream.innerHTML = rowsHtml;
     monoStream.style.display = "block";
     if (podStream) podStream.style.display = "none";
   }
@@ -741,21 +768,33 @@ async function TrackPlayerView(topicId, itemId, token) {
   PlayerState.currentTopic = topic;
   PlayerState.playlist = topic.items.filter(it => it.status === "generated");
 
+  const sibling = (topic.items || []).find(it => it.id === itemId) || {};
+  const partMatch = /part[-_ ](\d)/i.exec(topic.id) || /part\s*(\d)/i.exec(topic.name);
+  const partLabel = partMatch ? `Part ${partMatch[1]}` : "";
+  const stamp = (sibling.generated_at || "").slice(0, 10).replace(/-/g, ".");
+
   $app.innerHTML = `
     <div class="player-detail-container">
       <main class="reading-sheet">
-        <a class="reading-breadcrumb" href="#/topic/${encodeURIComponent(topicId)}">语料库 / ${esc(topic.name)}</a>
-        <h1 class="player-question">${esc(item.title)}</h1>
+        <header class="sheet-head">
+          <a class="reading-breadcrumb" href="#/topics">
+            <span>语料库</span><i>/</i>${partLabel ? `<span>${esc(partLabel)}</span><i>/</i>` : ""}<span>${esc(topic.name)}</span>
+          </a>
+          ${stamp ? `<div class="sheet-stamp">${esc(stamp)} 收录</div>` : ""}
+        </header>
+        <h1 class="player-question">${esc(item.question || item.title)}</h1>
         <div class="reading-tags">
-          <span>IELTS Speaking</span>
+          ${partLabel ? `<span>${esc(partLabel)}</span>` : ""}
+          <span>${esc(topic.name)}</span>
           <span>${PlayerState.track === "podcast" ? "女问男答" : "独白"}</span>
           <span id="tl-mode-chip">对齐模式…</span>
+          ${item.stale ? `<span class="chip-stale">待更新</span>` : ""}
         </div>
         <div class="lyrics-panel" id="lyrics-panel">
-          <div id="pod-stream" class="bubble-stream" style="display:${PlayerState.track === 'podcast' ? 'flex' : 'none'}">
+          <div id="pod-stream" class="transcript" style="display:${PlayerState.track === 'podcast' ? 'block' : 'none'}">
             <p class="view-loading">正在整理时间轴…</p>
           </div>
-          <div id="mono-stream" style="display:${PlayerState.track === 'monologue' ? 'block' : 'none'};">
+          <div id="mono-stream" class="transcript" style="display:${PlayerState.track === 'monologue' ? 'block' : 'none'};">
             <p class="view-loading">正在整理时间轴…</p>
           </div>
         </div>
@@ -764,51 +803,42 @@ async function TrackPlayerView(topicId, itemId, token) {
       <aside class="reference-rail">
         <div class="reference-tabs" role="tablist" aria-label="参考信息">
           <button class="reference-tab active" type="button">中文参考</button>
-          <button class="reference-tab" type="button" disabled>重点词汇</button>
-          <button class="reference-tab" type="button" disabled>相关表达</button>
+          <button class="reference-tab" type="button" disabled title="尚未整理">重点词汇</button>
+          <button class="reference-tab" type="button" disabled title="尚未整理">相关表达</button>
         </div>
-        <div class="reference-heading">参考译文</div>
-        <div id="zh-panel" class="zh-panel">${item.chinese ? esc(item.chinese) : '<p>该条目暂无中文参考</p>'}</div>
-        <label class="reference-toggle">
-          <input type="checkbox" id="zh-toggle" checked>
-          <span>显示中文参考</span>
-        </label>
-        <div class="reference-divider"></div>
-        <div class="reference-heading">音频信息</div>
-        <div class="track-toggle-group">
-          <button class="track-toggle-btn ${PlayerState.track === 'podcast' ? 'active' : ''}" id="btn-tab-pod"
-            ${item.has_audio_podcast ? "" : 'disabled title="该条目没有播客轨音频"'}>女问男答</button>
-          <button class="track-toggle-btn ${PlayerState.track === 'monologue' ? 'active' : ''}" id="btn-tab-mono"
-            ${item.has_audio_monologue ? "" : 'disabled title="该条目没有独白轨音频"'}>独白</button>
-        </div>
-        <dl class="audio-facts">
-          <div><dt>状态</dt><dd>${item.status === "generated" ? "已生成" : "待生成"}</dd></div>
-          <div><dt>时长</dt><dd>${fmtDur(item.duration_sec_podcast || item.duration_sec || 0)}</dd></div>
-          <div><dt>语速</dt><dd>${PlayerState.playbackRate.toFixed(1)}x</dd></div>
-        </dl>
-        <div class="reference-actions">
-          ${(() => {
-            const dl = mediaUrl(`/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/audio/${PlayerState.track}`);
-            return dl
-              ? `<a class="btn-pill" href="${dl}" download="track.mp3">下载当前 MP3</a>`
-              : "";
-          })()}
-          ${typeof PackState !== "undefined" && PackState.active ? "" : `
-            <button class="btn-pill" id="remake-item">使用当前音色重制此条</button>
-          `}
-        </div>
+
+        <section class="rail-block rail-block-zh">
+          <h2 class="reference-heading">参考译文</h2>
+          <div id="zh-panel" class="zh-panel">${item.chinese ? esc(item.chinese) : '<p class="rail-empty">该条目暂无中文参考。</p>'}</div>
+        </section>
+
+        <section class="rail-block">
+          <h2 class="reference-heading">同话题其他题</h2>
+          <ul class="rail-list">
+            ${(topic.items || []).filter(it => it.id !== itemId).slice(0, 5).map(it => `
+              <li><a href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">${esc(it.title)}</a></li>
+            `).join("") || `<li class="rail-empty">本话题只有这一题。</li>`}
+          </ul>
+        </section>
+
+        <section class="rail-block">
+          <h2 class="reference-heading">音频信息</h2>
+          <dl class="audio-facts">
+            <div><dt>话题</dt><dd>${esc(topic.name)}</dd></div>
+            <div><dt>时长</dt><dd>${fmtPad(item.duration_sec_podcast || item.duration_sec || 0)}</dd></div>
+            <div><dt>发音</dt><dd id="rail-voice">${PlayerState.track === 'podcast' ? "女问男答" : "独白"}</dd></div>
+            <div><dt>语速</dt><dd>${PlayerState.playbackRate === 1 ? "正常语速（1.0x）" : `${PlayerState.playbackRate}x`}</dd></div>
+          </dl>
+          <div class="track-toggle-group">
+            <button class="track-toggle-btn ${PlayerState.track === 'podcast' ? 'active' : ''}" id="btn-tab-pod"
+              ${item.has_audio_podcast ? "" : 'disabled title="该条目没有播客轨音频"'}>女问男答</button>
+            <button class="track-toggle-btn ${PlayerState.track === 'monologue' ? 'active' : ''}" id="btn-tab-mono"
+              ${item.has_audio_monologue ? "" : 'disabled title="该条目没有独白轨音频"'}>独白</button>
+          </div>
+        </section>
       </aside>
     </div>
   `;
-
-  // 中文参考折叠
-  const zhToggle = document.getElementById("zh-toggle");
-  const zhPanel = document.getElementById("zh-panel");
-  if (zhToggle && zhPanel) {
-    zhToggle.addEventListener("change", () => {
-      zhPanel.style.display = zhToggle.checked ? "block" : "none";
-    });
-  }
 
   // 监听用户手动翻阅滚动，短时间内暂停自动居中抢焦
   // （程序性 scrollIntoView 落在 programmaticScrollUntil 窗口内，不算用户翻阅——修 A24）
@@ -832,34 +862,6 @@ async function TrackPlayerView(topicId, itemId, token) {
   document.getElementById("btn-tab-mono").onclick = () => {
     setTrack("monologue");
   };
-
-  const remakeButton = document.getElementById("remake-item");
-  if (remakeButton) {
-    remakeButton.onclick = async () => {
-      const track = PlayerState.track;
-      remakeButton.disabled = true;
-      remakeButton.textContent = "正在重制…";
-      try {
-        const started = await api(
-          "POST",
-          `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/generate`,
-          { force: true, track },
-        );
-        const job = await waitForJob(started.job_id);
-        if (job.state !== "done" || (job.errors && job.errors.length)) {
-          const detail = job.errors && job.errors.length ? job.errors[0].message : job.state;
-          throw new Error(detail || "生成失败");
-        }
-        PlayerState.mediaRevision = Date.now();
-        toast("重制完成，已载入新音频");
-        route();
-      } catch (e) {
-        remakeButton.disabled = false;
-        remakeButton.textContent = "使用当前音色重制此条";
-        toast(`重制失败：${e.message}`);
-      }
-    };
-  }
 
   // 自动开始播放当前曲目并载入时间轴
   playItem(topicId, item, true);
@@ -1163,7 +1165,7 @@ async function ManageView(token) {
         <div class="section-title">设置与内容管理</div>
         <p class="section-description">先选择长期模仿音色；技术参数只在需要排错时调整。</p>
       </div>
-      <div>${modeBadge}</div>
+      <div class="settings-head-actions">${modeBadge}<a class="text-action" href="#/import">离线语料包</a></div>
     </div>
     <div class="manage-grid">
       <div class="mg-col">
