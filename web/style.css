@@ -1939,3 +1939,97 @@ body.hide-zh .rail-block-zh { display: none; }
   .done-natural { padding: 12px 14px; font-size: 15.5px; }
   .api-stage { padding: 5px 10px; font-size: 12px; }
 }
+
+/* ===================== R04 已批准 v1 界面（引擎卡/角色卡/向导/我的语料） ===================== */
+.engine-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 4px; }
+.engine-card {
+  display: block; padding: 14px 16px; border: 1.5px solid var(--rule);
+  border-radius: 12px; background: var(--paper-raised); cursor: pointer;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.engine-card.selected { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+.engine-card input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+.engine-head { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--ink); }
+.engine-desc { margin: 6px 0 10px; font-size: 12.5px; color: var(--ink-soft); }
+.engine-row { display: flex; gap: 8px; align-items: center; }
+.engine-row .mg-input { flex: 1; min-width: 0; }
+
+.role-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.role-card {
+  padding: 14px 16px; border: 1px solid var(--rule); border-radius: 12px;
+  background: var(--paper-raised);
+}
+.role-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.role-head h4 { font-size: 15px; color: var(--ink); }
+.role-head p { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+.seg-gender { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; flex: 0 0 auto; }
+.seg-gender button {
+  border: 0; background: transparent; padding: 5px 14px; font-size: 12.5px;
+  color: var(--ink-soft); cursor: pointer;
+}
+.seg-gender button.active { background: var(--blue); color: #fff; font-weight: 600; }
+.voice-pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.voice-pick {
+  position: relative; padding: 12px; border: 1.5px solid var(--rule); border-radius: 10px;
+  background: var(--paper); cursor: pointer; transition: border-color .15s ease;
+}
+.voice-pick.selected { border-color: var(--blue); background: var(--blue-soft); }
+.voice-pick-name { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.voice-pick-meta { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+.voice-pick-desc {
+  font-size: 11.5px; color: var(--ink-soft); margin-top: 6px; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.voice-pick-play {
+  position: absolute; top: 8px; right: 8px; width: 26px; height: 26px;
+  border: 0; border-radius: 50%; background: var(--blue); color: #fff;
+  font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.voice-summary { margin-top: 10px; color: var(--blue); }
+
+.setup-steps { display: flex; gap: 10px; align-items: center; margin: 4px 0 14px; flex-wrap: wrap; }
+.setup-steps i { color: var(--ink-faint); }
+.setup-step {
+  padding: 5px 14px; border-radius: 999px; font-size: 13px;
+  background: var(--paper-soft); color: var(--ink-soft);
+}
+.setup-step.active { background: var(--blue); color: #fff; font-weight: 600; }
+.setup-role { margin-bottom: 12px; }
+.setup-actions { margin-top: 6px; }
+.setup-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 16px; padding: 12px 18px; border: 1px solid var(--blue);
+  border-radius: 12px; background: var(--blue-soft); color: var(--ink);
+  text-decoration: none; font-size: 13.5px;
+}
+.setup-banner strong { color: var(--blue); white-space: nowrap; }
+
+.corpus-tabs { display: flex; gap: 10px; margin: 14px 0; }
+.corpus-tab {
+  flex: 1; max-width: 420px; padding: 10px 18px; border: 1px solid var(--rule);
+  border-radius: 12px; background: var(--paper-raised); color: var(--ink-soft);
+  font-size: 14px; cursor: pointer; text-align: center;
+}
+.corpus-tab small { display: block; font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+.corpus-tab.active { border-color: var(--blue); background: var(--blue); color: #fff; font-weight: 600; }
+.corpus-tab.active small { color: rgba(255, 255, 255, .8); }
+.continue-card {
+  display: flex; align-items: center; gap: 14px; width: 100%; margin-bottom: 14px;
+  padding: 14px 18px; border: 1px solid var(--rule); border-left: 4px solid var(--blue);
+  border-radius: 12px; background: var(--paper-raised); cursor: pointer; text-align: left;
+}
+.continue-label { font-size: 12px; color: var(--ink-faint); white-space: nowrap; }
+.continue-title {
+  flex: 1; min-width: 0; font-size: 14.5px; font-weight: 600; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.continue-action {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 13px; flex: 0 0 auto;
+}
+
+@media (max-width: 760px) {
+  .engine-cards, .role-cards { grid-template-columns: 1fr; }
+  .voice-pick-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+}
+.settings-voice-card { margin-bottom: 18px; }

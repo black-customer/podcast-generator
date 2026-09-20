@@ -616,7 +616,7 @@ window.seekToTime = function(seconds) {
 
 /* ---------------- 视图层 ---------------- */
 
-// 1. 语料库：阅读索引
+// 1. 我的语料：雅思口语 / 日常表达 两个用户概念（R04）
 async function TopicsGalleryView(token) {
   $app.innerHTML = `<p class="view-loading">正在整理语料索引…</p>`;
   let topics = [];
@@ -630,12 +630,20 @@ async function TopicsGalleryView(token) {
   if (viewStale(token)) return;
 
   const hash = location.hash;
-  let filtered = topics;
-  if (hash.includes("cat=ielts")) {
-    filtered = topics.filter(t => t.name.toLowerCase().includes("ielts") || t.name.toLowerCase().includes("雅思"));
-  } else if (hash.includes("cat=daily")) {
-    filtered = topics.filter(t => !t.name.toLowerCase().includes("ielts") && !t.name.toLowerCase().includes("雅思"));
-  }
+  const params = new URLSearchParams(hash.split("?")[1] || "");
+  const cat = params.get("cat") || "ielts";
+  const ielts = topics.filter(t => (t.category || "ielts") === "ielts");
+  const daily = topics.filter(t => (t.category || "ielts") === "daily");
+  const filtered = cat === "daily" ? daily : ielts;
+
+  const last = (() => {
+    try { return JSON.parse(localStorage.getItem("ielts-pod-last") || "null"); }
+    catch (_) { return null; }
+  })();
+
+  const tab = (value, label, count) => `
+    <button class="corpus-tab ${cat === value ? "active" : ""}"
+      onclick="location.hash='#/topics?cat=${value}'">${label}<small>${count}</small></button>`;
 
   const cardsHtml = filtered.map((t, idx) => `
     <button class="album-card corpus-index-row"
@@ -643,7 +651,7 @@ async function TopicsGalleryView(token) {
       <span class="corpus-index-number">${String(idx + 1).padStart(2, "0")}</span>
       <span class="corpus-index-copy">
         <span class="album-name">${esc(t.name)}</span>
-        <span class="album-meta">${t.stats.total} 条语料 · ${fmtDur(t.total_sec)} · 已生成 ${t.stats.generated}</span>
+        <span class="album-meta">${t.stats.total} 条回答 · ${fmtDur(t.total_sec)}</span>
       </span>
       <span class="corpus-index-action">打开</span>
     </button>
@@ -652,14 +660,26 @@ async function TopicsGalleryView(token) {
   $app.innerHTML = `
     <header class="page-heading">
       <div>
-        <h1>语料库</h1>
-        <p>把自己的表达整理成可以反复听的英语札记。</p>
+        <h1>我的语料</h1>
+        <p>在这里管理你录下的回答，反复收听，不断进步。</p>
       </div>
-      <a class="text-action" href="#/bank">去题库选一道题</a>
+      <a class="text-action" href="#/practice">去开始练习 →</a>
     </header>
 
+    ${last && last.topic_id ? `
+    <button class="continue-card" onclick="location.hash='#/play/${encodeURIComponent(last.topic_id)}/${encodeURIComponent(last.item_id)}'">
+      <span class="continue-label">继续上次收听</span>
+      <span class="continue-title">${esc(last.title || "")}</span>
+      <span class="continue-action">▶</span>
+    </button>` : ""}
+
+    <div class="corpus-tabs">
+      ${tab("ielts", "雅思口语", ielts.length)}
+      ${tab("daily", "日常表达", daily.length)}
+    </div>
+
     <div class="album-grid">
-      ${cardsHtml || `<p class="empty-state">还没有语料。先从题库选一道题开始。</p>`}
+      ${cardsHtml || `<p class="empty-state">这个分类还没有语料。先去「开始练习」作答一题。</p>`}
     </div>
   `;
 }
@@ -675,10 +695,9 @@ function topicRandomPlay() {
 
 async function TopicDetailView(topicId, token) {
   $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载专辑详情中…</p>`;
-  let topic, manifestMono = null, manifestPod = null;
+  let topic, manifestPod = null;
   try {
     topic = await api("GET", `/api/topics/${encodeURIComponent(topicId)}`);
-    try { manifestMono = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/episode?track=monologue`); } catch (_) {}
     try { manifestPod = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/episode?track=podcast`); } catch (_) {}
   } catch (e) {
     if (viewStale(token)) return;
@@ -697,11 +716,9 @@ async function TopicDetailView(topicId, token) {
       <div class="track-num">${idx + 1}</div>
       <div class="track-title">${esc(it.title)}</div>
       <div class="track-tags">
-        ${it.has_monologue ? '<span class="track-pill mono">独白</span>' : ""}
-        ${it.has_podcast ? '<span class="track-pill pod">女问男答</span>' : ""}
         ${it.stale ? '<span class="track-pill" style="color:var(--warn)">待更新</span>' : ""}
         ${it.error ? '<span class="track-pill" style="color:var(--err)">错误</span>' : ""}
-        ${!it.has_monologue && !it.has_podcast ? '<span class="track-pill">—</span>' : ""}
+        ${it.has_audio ? '<span class="track-pill ok">可精听</span>' : '<span class="track-pill">待生成</span>'}
       </div>
       <div>${it.duration_sec_podcast ? fmtDur(it.duration_sec_podcast) : (it.duration_sec ? fmtDur(it.duration_sec) : "—")}</div>
       <div><a class="btn-pill" style="padding:4px 12px;font-size:12px;" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">播放</a></div>
@@ -715,7 +732,7 @@ async function TopicDetailView(topicId, token) {
         <div class="header-meta">
           <span>共 ${topic.items.length} 条表达</span>
           <span>·</span>
-          <span>点击标题开始阅读与收听</span>
+          <span>点击标题开始精听</span>
         </div>
       </div>
     </div>
@@ -725,14 +742,7 @@ async function TopicDetailView(topicId, token) {
         <button class="btn-pill" onclick="topicRandomPlay()">随机听一题</button>
       ` : ""}
       ${manifestPod ? `
-        <a class="btn-round-play" id="btn-play-all-pod" title="打开整集播放器" href="#/episode/${encodeURIComponent(topicId)}/podcast" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">▶</a>
-        <span class="episode-summary">整集 ${fmtDur(manifestPod.total_sec)}${manifestPod.stale ? ' <span class="track-pill" style="color:var(--warn)">建议重建</span>' : ""}</span>
-        <a class="btn-pill" href="#/episode/${encodeURIComponent(topicId)}/podcast">章节播放</a>
-        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=podcast" download>下载 MP3</a>
-      ` : ""}
-      ${manifestMono ? `
-        <a class="btn-pill" href="#/episode/${encodeURIComponent(topicId)}/monologue">独白整集 ${fmtDur(manifestMono.total_sec)}${manifestMono.stale ? " · 已过期" : ""}</a>
-        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=monologue" download>下载 MP3</a>
+        <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/episode/audio?track=podcast" download>下载全部音频（连播）</a>
       ` : ""}
     </div>
 
@@ -767,6 +777,14 @@ async function TrackPlayerView(topicId, itemId, token) {
   // 深链/刷新进入播放页也要有播放列表与话题上下文（修 A23：prev/next/连播不再失灵）
   PlayerState.currentTopic = topic;
   PlayerState.playlist = topic.items.filter(it => it.status === "generated");
+
+  // 「继续上次收听」记录点（我的语料页顶部卡片，R04）
+  try {
+    localStorage.setItem(
+      "ielts-pod-last",
+      JSON.stringify({ topic_id: topicId, item_id: itemId, title: item.title || "" })
+    );
+  } catch (_) {}
 
   const sibling = (topic.items || []).find(it => it.id === itemId) || {};
   const partMatch = /part[-_ ](\d)/i.exec(topic.id) || /part\s*(\d)/i.exec(topic.name);
@@ -1177,82 +1195,87 @@ async function ManageView(token) {
       </div>
       <div class="settings-head-actions">${modeBadge}<a class="text-action" href="#/import">离线语料包</a></div>
     </div>
-    <div class="manage-grid">
-      <div class="mg-col">
-        <!-- 设置卡片 -->
-        <div class="mg-card">
-          <div class="voice-setting-lead">
-            <div>
-              <h3>语音服务与角色音色</h3>
-              <p>默认使用 StepFun 合成；提问与回答分别选择音色，试听后再固定。</p>
+    <!-- 设置卡片：语音引擎 + 角色声音（概念 07，全宽） -->
+    <div class="mg-card settings-voice-card">
+      <div class="voice-setting-lead">
+        <div>
+          <h3>声音与生成设置</h3>
+          <p>选择语音引擎和角色声音，让练习更贴近真实考场。</p>
+        </div>
+        <a class="mg-btn primary" href="#/voices">音色展台</a>
+      </div>
+      <form id="mg-settings-form">
+        <div class="engine-cards" id="engine-cards">
+          <label class="engine-card ${settings.tts_provider !== "fish" ? "selected" : ""}">
+            <input type="radio" name="mg-engine" value="stepfun" ${settings.tts_provider !== "fish" ? "checked" : ""}>
+            <div class="engine-head"><strong>StepFun</strong><span class="mg-chip">推荐 · 更自然</span></div>
+            <p class="engine-desc">自然流畅，适合对话与口语练习 · StepAudio TTS 2.5</p>
+            <div class="engine-row">
+              <input class="mg-input" type="password" id="mg-s-stepkey" value="" autocomplete="off"
+                placeholder="${settings.stepfun_api_key_set ? "已保存（输入新值可替换）" : "粘贴 StepFun API Key"}">
+              <button type="button" class="mg-btn" id="mg-test-stepfun">测试连接</button>
             </div>
-            <a class="mg-btn primary" href="#/voices">音色展台</a>
-          </div>
-          <form id="mg-settings-form">
-            <div class="mg-row2">
-              <label class="mg-label">语音服务
-                <select class="mg-input" id="mg-s-provider">
-                  <option value="stepfun">StepFun（默认）</option>
-                  <option value="fish">fish.audio（备选）</option>
-                </select>
-              </label>
-              <label class="mg-label">StepFun API Key ${settings.stepfun_api_key_set ? '<span class="mg-chip">已配置（留空 = 不变）</span>' : ""}
-                <input class="mg-input" type="password" id="mg-s-stepkey" value="" placeholder="${settings.stepfun_api_key_set ? "已保存（输入新值可替换）" : "未配置时生成走 dry-run"}" autocomplete="off">
-              </label>
+            <span class="mg-hint" id="mg-test-stepfun-result">${settings.stepfun_api_key_set ? "已配置 Key" : "未配置"}</span>
+          </label>
+          <label class="engine-card ${settings.tts_provider === "fish" ? "selected" : ""}">
+            <input type="radio" name="mg-engine" value="fish" ${settings.tts_provider === "fish" ? "checked" : ""}>
+            <div class="engine-head"><strong>Fish Audio</strong><span class="mg-chip">备选</span></div>
+            <p class="engine-desc">高质量多语音选择，作为备用方案</p>
+            <div class="engine-row">
+              <input class="mg-input" type="password" id="mg-s-key" value="" autocomplete="off"
+                placeholder="${settings.fish_api_key_set ? "已保存（输入新值可替换）" : "fish.audio API Key（可选）"}">
+              <button type="button" class="mg-btn" id="mg-test-fish">测试连接</button>
             </div>
-            <div class="mg-row2">
-              <label class="mg-label">提问者音色
-                <select class="mg-input" id="mg-s-qvoice"></select>
-              </label>
-              <label class="mg-label">回答者音色
-                <select class="mg-input" id="mg-s-avoice"></select>
-              </label>
-            </div>
-            <div class="mg-actions">
-              <button type="submit" class="mg-btn primary">保存设置</button>
-              <button type="button" class="mg-btn" id="mg-test-btn">测试连接</button>
-              <span class="mg-hint" id="mg-test-result"></span>
-            </div>
-            <details class="mg-advanced">
-              <summary>高级设置（fish.audio 备选与生成参数）</summary>
-              <label class="mg-label">fish.audio API Key ${settings.fish_api_key_set ? '<span class="mg-chip">已配置（留空 = 不变）</span>' : ""}
-                <input class="mg-input" type="password" id="mg-s-key" value="" placeholder="${settings.fish_api_key_set ? "已保存（输入新值可替换）" : "留空即 dry-run 模式"}" autocomplete="off">
-              </label>
-              <label class="mg-label">音色 A Reference ID（独白 / 对话中的 A 声）
-                <input class="mg-input" id="mg-s-refa" value="${esc(settings.reference_id || "")}">
-              </label>
-            <label class="mg-label">音色 B Reference ID（可选：对话中的 B 声，留空按单音色）
-              <input class="mg-input" id="mg-s-refb" value="${esc(settings.reference_id_b || "")}">
-            </label>
-            <div class="mg-row2">
-              <label class="mg-label">模型
-                <select class="mg-input" id="mg-s-model">${modelOpts}</select>
-              </label>
-              <label class="mg-label">语速
-                <input class="mg-input" type="number" step="0.05" min="0.8" max="2" id="mg-s-speed" value="${esc(String(settings.speed ?? 1.0))}">
-              </label>
-            </div>
-            <div class="mg-row2">
-              <label class="mg-label">temperature（0–1，留空=服务默认）
-                <input class="mg-input" type="number" step="0.01" min="0" max="1" id="mg-s-temp" value="${settings.temperature == null ? "" : esc(String(settings.temperature))}">
-              </label>
-              <label class="mg-label">分段字符数
-                <input class="mg-input" type="number" min="100" id="mg-s-seg" value="${esc(String(settings.segment_chars ?? 700))}">
-              </label>
-            </div>
-            <div class="mg-row2">
-              <label class="mg-label">段间停顿 (ms)
-                <input class="mg-input" type="number" min="0" id="mg-s-gap" value="${esc(String(settings.gap_ms ?? 350))}">
-              </label>
-              <label class="mg-label">整集条目间停顿 (ms)
-                <input class="mg-input" type="number" min="0" id="mg-s-egap" value="${esc(String(settings.episode_gap_ms ?? 600))}">
-              </label>
-            </div>
-            <label class="mg-check"><input type="checkbox" id="mg-s-dry" ${settings.dry_run ? "checked" : ""}> 强制 dry-run（生成占位音频，不调用 API）</label>
-            </details>
-          </form>
+            <span class="mg-hint" id="mg-test-fish-result">${settings.fish_api_key_set ? "已配置 Key" : "未配置"}</span>
+          </label>
         </div>
 
+        <div class="role-cards" id="role-cards"></div>
+        <div class="voice-summary mg-hint" id="voice-summary"></div>
+
+        <div class="mg-actions">
+          <button type="submit" class="mg-btn primary">保存声音设置</button>
+          <span class="mg-hint" id="mg-test-result"></span>
+        </div>
+        <details class="mg-advanced">
+          <summary>高级设置（语速 · 模型名 · fish 音色 ID · 生成参数）</summary>
+          <label class="mg-label">音色 A Reference ID（fish 独白 / 对话 A 声）
+            <input class="mg-input" id="mg-s-refa" value="${esc(settings.reference_id || "")}">
+          </label>
+          <label class="mg-label">音色 B Reference ID（fish 对话 B 声，留空按单音色）
+            <input class="mg-input" id="mg-s-refb" value="${esc(settings.reference_id_b || "")}">
+          </label>
+          <div class="mg-row2">
+            <label class="mg-label">模型
+              <select class="mg-input" id="mg-s-model">${modelOpts}</select>
+            </label>
+            <label class="mg-label">语速
+              <input class="mg-input" type="number" step="0.05" min="0.8" max="2" id="mg-s-speed" value="${esc(String(settings.speed ?? 1.0))}">
+            </label>
+          </div>
+          <div class="mg-row2">
+            <label class="mg-label">temperature（0–1，留空=服务默认）
+              <input class="mg-input" type="number" step="0.01" min="0" max="1" id="mg-s-temp" value="${settings.temperature == null ? "" : esc(String(settings.temperature))}">
+            </label>
+            <label class="mg-label">分段字符数
+              <input class="mg-input" type="number" min="100" id="mg-s-seg" value="${esc(String(settings.segment_chars ?? 700))}">
+            </label>
+          </div>
+          <div class="mg-row2">
+            <label class="mg-label">段间停顿 (ms)
+              <input class="mg-input" type="number" min="0" id="mg-s-gap" value="${esc(String(settings.gap_ms ?? 350))}">
+            </label>
+            <label class="mg-label">条目间停顿 (ms)
+              <input class="mg-input" type="number" min="0" id="mg-s-egap" value="${esc(String(settings.episode_gap_ms ?? 600))}">
+            </label>
+          </div>
+          <label class="mg-check"><input type="checkbox" id="mg-s-dry" ${settings.dry_run ? "checked" : ""}> 强制 dry-run（生成占位音频，不调用 API）</label>
+        </details>
+      </form>
+    </div>
+
+    <div class="manage-grid">
+      <div class="mg-col">
         <!-- 话题卡片 -->
         <div class="mg-card">
           <h3>话题与语料</h3>
@@ -1272,44 +1295,91 @@ async function ManageView(token) {
     </div>
   `;
 
-  // ---- 设置表单 ----
-  const $providerSel = document.getElementById("mg-s-provider");
-  const mgFillRoleVoices = async (provider) => {
-    const $q = document.getElementById("mg-s-qvoice");
-    const $a = document.getElementById("mg-s-avoice");
-    if (provider !== "stepfun") {
-      $q.disabled = true;
-      $a.disabled = true;
-      $q.innerHTML = $a.innerHTML = `<option value="">fish 备选模式请在高级设置配置音色 A/B</option>`;
+  // ---- 设置表单：引擎卡 + 角色卡（概念 07 / B06 旅程）----
+  const engineOf = () => ((document.querySelector('input[name="mg-engine"]:checked') || {}).value) || "stepfun";
+  let curQ = settings.question_voice_id || "lively-girl";
+  let curA = settings.answer_voice_id || "vibrant-youth";
+  const pick = { qGender: "female", aGender: "male" };
+  let voicesCache = null;
+  const mgVoices = async (provider) => {
+    if (!voicesCache || voicesCache.provider !== provider) {
+      voicesCache = { provider, list: await api("GET", `/api/voices?provider=${encodeURIComponent(provider)}`) };
+    }
+    return voicesCache.list;
+  };
+  const mgSummary = () => {
+    const el = document.getElementById("voice-summary");
+    if (el) el.textContent = `最终音频：${curQ} 提问，${curA} 回答。你可以随时更换声音组合。`;
+  };
+  const mgRenderRoles = async () => {
+    const box = document.getElementById("role-cards");
+    if (!box) return;
+    const provider = engineOf();
+    box.innerHTML = `<p class="mg-hint">加载音色库…</p>`;
+    let voices;
+    try {
+      voices = await mgVoices(provider);
+    } catch (_) {
+      box.innerHTML = `<p class="mg-hint">音色库加载失败，保存后刷新重试</p>`;
       return;
     }
-    $q.disabled = false;
-    $a.disabled = false;
-    try {
-      const voices = await api("GET", "/api/voices?provider=stepfun");
-      const opt = v =>
-        `<option value="${esc(v.voice_id)}" ${v.voice_id === settings.question_voice_id ? "data-cur-q" : ""} ${v.voice_id === settings.answer_voice_id ? "data-cur-a" : ""}>${esc(v.name)} · ${v.gender === "male" ? "男声" : "女声"}</option>`;
-      $q.innerHTML = voices.map(opt).join("");
-      $a.innerHTML = voices.map(opt).join("");
-      const $curQ = $q.querySelector("[data-cur-q]");
-      const $curA = $a.querySelector("[data-cur-a]");
-      if ($curQ) $q.value = $curQ.value;
-      if ($curA) $a.value = $curA.value;
-    } catch (_) {
-      $q.innerHTML = $a.innerHTML = `<option value="">音色加载失败，可保存后刷新重试</option>`;
-    }
+    const renderRole = (role, title, sub) => {
+      const gender = pick[role + "Gender"];
+      const list = voices.filter(v => (v.gender || "") === gender);
+      const cur = role === "q" ? curQ : curA;
+      const cards = list.map(v => {
+        const vid = v.voice_id || v.reference_id;
+        return `<div class="voice-pick ${vid === cur ? "selected" : ""}" data-vid="${esc(vid)}" data-role="${role}">
+          <button type="button" class="voice-pick-play" onclick="previewVoice('${esc(provider)}','${esc(vid)}', this)" title="试听">▶</button>
+          <div class="voice-pick-name">${esc(v.name || vid)}</div>
+          <div class="voice-pick-meta">${esc(v.accent || "English")} · ${esc(v.age_tone || "")}</div>
+          <div class="voice-pick-desc">${esc(v.description || v.tag || "")}</div>
+        </div>`;
+      }).join("") || `<p class="mg-hint">该性别暂无可用音色</p>`;
+      return `<div class="role-card">
+        <div class="role-head"><div><h4>${title}</h4><p>${sub}</p></div>
+          <div class="seg-gender" data-role="${role}">
+            <button type="button" class="${gender === "male" ? "active" : ""}" data-g="male">男声</button>
+            <button type="button" class="${gender === "female" ? "active" : ""}" data-g="female">女声</button>
+          </div></div>
+        <div class="voice-pick-grid">${cards}</div>
+      </div>`;
+    };
+    box.innerHTML = renderRole("q", "提问的人", "Interviewer · 与你对话的考官声音")
+      + renderRole("a", "回答的人", "Candidate · 你自己的回答声音");
+    box.querySelectorAll(".seg-gender button").forEach(b => {
+      b.onclick = () => {
+        pick[b.closest(".seg-gender").dataset.role + "Gender"] = b.dataset.g;
+        mgRenderRoles();
+      };
+    });
+    box.querySelectorAll(".voice-pick").forEach(el => {
+      el.onclick = (ev) => {
+        if (ev.target.closest(".voice-pick-play")) return;
+        const role = el.dataset.role;
+        if (role === "q") curQ = el.dataset.vid;
+        else curA = el.dataset.vid;
+        box.querySelectorAll(`.voice-pick[data-role="${role}"]`).forEach(x => x.classList.toggle("selected", x === el));
+        mgSummary();
+      };
+    });
+    mgSummary();
   };
-  $providerSel.value = settings.tts_provider === "fish" ? "fish" : "stepfun";
-  mgFillRoleVoices($providerSel.value);
-  $providerSel.onchange = () => mgFillRoleVoices($providerSel.value);
+  document.querySelectorAll('input[name="mg-engine"]').forEach(r => {
+    r.onchange = () => {
+      document.querySelectorAll(".engine-card").forEach(c =>
+        c.classList.toggle("selected", c.querySelector("input").checked));
+      mgRenderRoles();
+    };
+  });
+  mgRenderRoles();
 
   document.getElementById("mg-settings-form").onsubmit = async (e) => {
     e.preventDefault();
     const tempRaw = document.getElementById("mg-s-temp").value.trim();
-    const qVoice = document.getElementById("mg-s-qvoice").value;
-    const aVoice = document.getElementById("mg-s-avoice").value;
+    const provider = engineOf();
     const payload = {
-      tts_provider: $providerSel.value,
+      tts_provider: provider,
       stepfun_api_key: document.getElementById("mg-s-stepkey").value,
       fish_api_key: document.getElementById("mg-s-key").value,
       reference_id: document.getElementById("mg-s-refa").value.trim(),
@@ -1321,33 +1391,42 @@ async function ManageView(token) {
       episode_gap_ms: parseFloat(document.getElementById("mg-s-egap").value) || 0,
       dry_run: document.getElementById("mg-s-dry").checked,
     };
-    if (qVoice) payload.question_voice_id = qVoice;
-    if (aVoice) payload.answer_voice_id = aVoice;
+    if (provider === "stepfun") {
+      payload.question_voice_id = curQ;
+      payload.answer_voice_id = curA;
+    } else {
+      // fish：角色卡选择映射到 A/B reference（男=回答 A，女=提问 B）
+      try {
+        const list = await mgVoices("fish");
+        const qv = list.find(v => (v.voice_id || v.reference_id) === curQ);
+        const av = list.find(v => (v.voice_id || v.reference_id) === curA);
+        if (qv && qv.gender === "female") payload.reference_id_b = qv.reference_id;
+        if (av && av.gender === "male") payload.reference_id = av.reference_id;
+      } catch (_) { /* 保持高级设置里的手工 ID */ }
+    }
     if (tempRaw !== "") payload.temperature = parseFloat(tempRaw);
     try {
       await api("PUT", "/api/settings", payload);
-      toast("设置已保存");
+      toast("声音设置已保存");
     } catch (err) {
       toast("保存失败：" + err.message);
     }
   };
-  document.getElementById("mg-test-btn").onclick = async () => {
-    const $r = document.getElementById("mg-test-result");
-    $r.textContent = "测试中…";
-    const provider = $providerSel.value;
-    try {
-      const r = await api("POST", `/api/settings/test?provider=${encodeURIComponent(provider)}`);
-      let msg = `ffmpeg ${r.ffmpeg.ok ? "✓" : "✗"}`;
-      if (r.stepfun) {
-        msg += ` · StepFun TTS ${r.stepfun.ok ? "✓" : "✗"} ${r.stepfun.message || ""}`;
-      } else if (r.fish) {
-        msg += ` · fish ${r.fish.ok ? "✓" : "✗"} ${r.fish.message || ""}`;
+  const mgTestEngine = (provider, btnId, resultId) => {
+    document.getElementById(btnId).onclick = async () => {
+      const $r = document.getElementById(resultId);
+      $r.textContent = "测试中…";
+      try {
+        const r = await api("POST", `/api/settings/test?provider=${provider}`);
+        const res = r.stepfun || r.fish || {};
+        $r.textContent = `${res.ok ? "✓ 连接成功" : "✗ 失败"} · ${res.message || ""}`;
+      } catch (err) {
+        $r.textContent = "失败：" + err.message;
       }
-      $r.textContent = msg;
-    } catch (err) {
-      $r.textContent = "失败：" + err.message;
-    }
+    };
   };
+  mgTestEngine("stepfun", "mg-test-stepfun", "mg-test-stepfun-result");
+  mgTestEngine("fish", "mg-test-fish", "mg-test-fish-result");
 
   // ---- 话题 ----
   document.getElementById("mg-create-topic").onclick = async () => {
@@ -1920,9 +1999,9 @@ async function BankView(token) {
   if (!data.available) {
     $app.innerHTML = `
       <div class="hero-banner">
-        <div class="hero-title">雅思题库</div>
-        <div class="hero-desc">题库快照尚未导入。在项目目录运行 <code>python -m server.bank --sync</code>
-        从 RoastDuck 导入题库后刷新本页。</div>
+        <div class="hero-title">今天想聊什么？</div>
+        <div class="hero-desc">公开题库尚未就绪。确认 data/question_bank_public.json 存在后刷新本页，
+        或在项目目录运行 <code>python -m server.bank --sync</code> 导入完整题库。</div>
       </div>`;
     return;
   }
@@ -1944,6 +2023,20 @@ async function BankView(token) {
 
   const selItem = (p.sel && data.items.find((it) => it.id === p.sel)) || bankRandomPick;
   const packMode = typeof PackState !== "undefined" && PackState.active;
+  // 首次使用引导：一个 key 都没配时引导去设置向导（R04 概念 01）
+  let setupBanner = "";
+  if (!packMode) {
+    try {
+      const st = await api("GET", "/api/settings");
+      if (!st.stepfun_api_key_set && !st.fish_api_key_set) {
+        setupBanner = `
+        <a class="setup-banner" href="#/setup">
+          <span>👋 欢迎使用 IELTS Pod！开始前，先完成 3 项设置（连接语音服务 · 选择提问者 · 选择回答者）</span>
+          <strong>去设置 →</strong>
+        </a>`;
+      }
+    } catch (_) { /* 设置读取失败不打断题库 */ }
+  }
   const selJump = selItem && selItem.answered_item ? `
       <div class="bank-answer-actions" style="margin-top:12px;">
         ${selItem.answered_item.has_audio
@@ -1988,8 +2081,8 @@ async function BankView(token) {
 
   $app.innerHTML = `
     <div class="hero-banner">
-      <div class="hero-title">雅思题库</div>
-      <div class="hero-desc">选题 → 自由作答 → 母语者音频。题目来自本地 RoastDuck 题库快照。</div>
+      <div class="hero-title">今天想聊什么？</div>
+      <div class="hero-desc">选一道雅思口语题，用你最自然的方式作答——母语者版本由 Agent 或 API 改写后生成可反复听的音频。</div>
     </div>
 
     <div class="bank-toolbar">
@@ -2003,6 +2096,8 @@ async function BankView(token) {
       </div>
       <button class="bank-tab bank-random" onclick="bankRandomGo()" title="从当前筛选中随机抽一题">随机来一题</button>
     </div>
+
+    ${setupBanner}
 
     ${answerCard}
 
@@ -2135,11 +2230,12 @@ function viewStale(token) {
 
 function route() {
   const token = ++routeToken;
-  const hash = location.hash || "#/bank";
+  const hash = location.hash || "#/practice";
   document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
   document.querySelectorAll(".nav-item").forEach(el => {
     const href = el.getAttribute("href");
-    if (href === hash || (hash.startsWith("#/bank") && href === "#/bank")) {
+    if (href === hash || (hash.startsWith("#/bank") && href === "#/practice")
+        || (hash.startsWith("#/practice") && href === "#/practice")) {
       el.classList.add("active");
     } else {
       el.classList.remove("active");
@@ -2152,7 +2248,7 @@ function route() {
     ManageState.pollTimer = null;
   }
   // 离开题库视图时清理双模式等待轮询（R03）
-  if (!hash.startsWith("#/bank")) genWaitStop();
+  if (!hash.startsWith("#/bank") && !hash.startsWith("#/practice")) genWaitStop();
 
   if (hash.startsWith("#/import")) {
     ImportView(token);
@@ -2167,8 +2263,14 @@ function route() {
     }
   }
 
-  if (hash.startsWith("#/bank")) {
+  if (hash.startsWith("#/bank") || hash.startsWith("#/practice")) {
+    // #/practice 为 R04 默认入口；#/bank 保留旧链接别名
     BankView(token);
+    return;
+  }
+
+  if (hash.startsWith("#/setup")) {
+    SetupView(token);
     return;
   }
 
@@ -2207,7 +2309,138 @@ function route() {
   TopicsGalleryView(token);
 }
 
-// R03 统一完成页：最终英文只在完成页/播放器呈现；表演稿无入口。
+// R04 首次配置向导（概念 01）：连接语音服务 → 选择提问者 → 选择回答者
+async function SetupView(token) {
+  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载设置向导…</p>`;
+  let settings;
+  try {
+    settings = await api("GET", "/api/settings");
+  } catch (e) {
+    if (viewStale(token)) return;
+    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
+    return;
+  }
+  if (viewStale(token)) return;
+
+  const state = {
+    provider: "stepfun",
+    qGender: "female", aGender: "male",
+    q: settings.question_voice_id || "lively-girl",
+    a: settings.answer_voice_id || "vibrant-youth",
+  };
+
+  const roleBlock = (role, title, sub) => `
+    <div class="mg-card setup-role">
+      <div class="role-head"><div><h4>${title}</h4><p>${sub}</p></div>
+        <div class="seg-gender" data-role="${role}">
+          <button type="button" class="${state[role + "Gender"] === "male" ? "active" : ""}" data-g="male">男声</button>
+          <button type="button" class="${state[role + "Gender"] === "female" ? "active" : ""}" data-g="female">女声</button>
+        </div></div>
+      <div class="voice-pick-grid" id="setup-grid-${role}"><p class="mg-hint">加载音色…</p></div>
+    </div>`;
+
+  $app.innerHTML = `
+    <header class="page-heading">
+      <div>
+        <h1>开始前，先完成 3 项设置</h1>
+        <p>只需几分钟，即可拥有你的个性化英语口语练习体验。所有数据只保存在本机。</p>
+      </div>
+    </header>
+    <div class="setup-steps">
+      <span class="setup-step active">1 连接语音服务</span><i>→</i>
+      <span class="setup-step">2 选择提问者</span><i>→</i>
+      <span class="setup-step">3 选择回答者</span>
+    </div>
+    <div class="mg-card">
+      <h3>1. 连接语音服务</h3>
+      <p class="mg-hint">选择一个语音服务提供商，用于生成提问和回答的语音。</p>
+      <div class="engine-row" style="margin-top:10px;">
+        <input class="mg-input grow" type="password" id="setup-key" autocomplete="off"
+          placeholder="${settings.stepfun_api_key_set ? "StepFun Key 已保存，可直接下一步" : "粘贴 StepFun API Key（platform.stepfun.com 申请）"}">
+        <button type="button" class="mg-btn" id="setup-test">测试连接</button>
+      </div>
+      <span class="mg-hint" id="setup-test-result">${settings.stepfun_api_key_set ? "已配置 StepFun Key" : "没有 Key 也可先体验 dry-run 模式"}</span>
+    </div>
+    ${roleBlock("q", "2. 选择提问者", "这是与你对话的 AI 考官声音，用于提出雅思口语问题")}
+    ${roleBlock("a", "3. 选择回答者", "这是你自己的回答声音，用于朗读你的作答内容")}
+    <div class="mg-actions setup-actions">
+      <button class="mg-btn primary" id="setup-finish">保存并开始选题 →</button>
+      <span class="mg-hint" id="setup-finish-hint"></span>
+    </div>
+  `;
+
+  const renderGrid = async (role) => {
+    const grid = document.getElementById(`setup-grid-${role}`);
+    let voices;
+    try {
+      voices = await api("GET", `/api/voices?provider=${encodeURIComponent(state.provider)}`);
+    } catch (_) {
+      grid.innerHTML = `<p class="mg-hint">音色库加载失败</p>`;
+      return;
+    }
+    const gender = state[role + "Gender"];
+    const cur = role === "q" ? state.q : state.a;
+    grid.innerHTML = voices.filter(v => (v.gender || "") === gender).map(v => {
+      const vid = v.voice_id || v.reference_id;
+      return `<div class="voice-pick ${vid === cur ? "selected" : ""}" data-vid="${esc(vid)}" data-role="${role}">
+        <button type="button" class="voice-pick-play" onclick="previewVoice('${esc(state.provider)}','${esc(vid)}', this)" title="试听">▶</button>
+        <div class="voice-pick-name">${esc(v.name || vid)}</div>
+        <div class="voice-pick-meta">${esc(v.accent || "English")} · ${esc(v.age_tone || "")}</div>
+        <div class="voice-pick-desc">${esc(v.description || v.tag || "")}</div>
+      </div>`;
+    }).join("") || `<p class="mg-hint">该性别暂无可用音色</p>`;
+    grid.querySelectorAll(".voice-pick").forEach(el => {
+      el.onclick = (ev) => {
+        if (ev.target.closest(".voice-pick-play")) return;
+        state[el.dataset.role] = el.dataset.vid;
+        grid.querySelectorAll(".voice-pick").forEach(x => x.classList.toggle("selected", x === el));
+      };
+    });
+  };
+  document.querySelectorAll(".seg-gender button").forEach(b => {
+    b.onclick = () => {
+      const role = b.closest(".seg-gender").dataset.role;
+      state[role + "Gender"] = b.dataset.g;
+      b.parentElement.querySelectorAll("button").forEach(x => x.classList.toggle("active", x === b));
+      renderGrid(role);
+    };
+  });
+  renderGrid("q");
+  renderGrid("a");
+  document.getElementById("setup-test").onclick = async () => {
+    const $r = document.getElementById("setup-test-result");
+    $r.textContent = "测试中…";
+    try {
+      const key = document.getElementById("setup-key").value.trim();
+      if (key) await api("PUT", "/api/settings", { stepfun_api_key: key });
+      const r = await api("POST", "/api/settings/test?provider=stepfun");
+      const res = r.stepfun || {};
+      $r.textContent = `${res.ok ? "✓" : "✗"} ${res.message || ""}${res.mode === "dry_run" ? "（dry-run：生成占位音频，不调 API）" : ""}`;
+      await renderGrid("q");
+      await renderGrid("a");
+    } catch (err) {
+      $r.textContent = "失败：" + err.message;
+    }
+  };
+  document.getElementById("setup-finish").onclick = async () => {
+    const hint = document.getElementById("setup-finish-hint");
+    try {
+      const key = document.getElementById("setup-key").value.trim();
+      const payload = {
+        tts_provider: state.provider,
+        question_voice_id: state.q,
+        answer_voice_id: state.a,
+      };
+      if (key) payload.stepfun_api_key = key;
+      await api("PUT", "/api/settings", payload);
+      location.hash = "#/practice";
+    } catch (err) {
+      hint.textContent = "保存失败：" + err.message;
+    }
+  };
+}
+
+
 async function DoneView(topicId, itemId, token) {
   $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载完成页…</p>`;
   let item;

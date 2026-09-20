@@ -189,9 +189,11 @@ AC：桌面与移动截图走查通过；相关 Playwright e2e 4/4 全绿；chec
 StepAudio 2.5 TTS 默认、Fish 兼容；角色化音色、provider-aware 设置/试听；真实 5 条听感门。
 tag r02。
 
-### R03 Agent/API 双模式生成 — PENDING（依赖 R02）
-original_answer；统一 generation request；Agent Skill/CLI；StepFun JSON Mode API 流程。
-tag r03。
+### R03 Agent/API 双模式生成 — DONE (2026-09-21, tag r03)
+original_answer 永存与回退；POST /api/generation-requests 统一入口（Agent 默认不调文本 API、
+API 模式 StepFun JSON Mode step-3.7-flash 一次三文本+修复重试一次+权限显式降级提示）；
+agent-task 可重取；pipeline.py complete 先校验后原子写入；canonical skills/ielts-audio +
+AGENTS 路由 + Qoder 薄包装；#/done 统一完成页。18 单测 + e2e 全绿。tag r03。
 
 ### R04 已批准 Web/Android UI — PENDING（依赖 R03）
 实现 docs/design/v1 全套界面；普通 UI 隐藏教学/独白/多轨；Android 文件与手动 LAN 导入。

@@ -427,6 +427,45 @@ def answer_topic_name(snapshot: dict, question: dict) -> str:
     return "Bank imports"
 
 
+def is_bank_topic(topic_name: str, snapshot: dict | None = None) -> bool:
+    """话题名是否来自题库（英文名全等匹配，忽略大小写）→ 语料库「雅思口语」分类。"""
+    name = (topic_name or "").strip().casefold()
+    if not name:
+        return False
+    if snapshot is None:
+        try:
+            snapshot = load_bank()
+        except Exception:
+            return False
+    for t in snapshot.get("topics", []):
+        match = (t.get("name_en") or "").strip().casefold()
+        if match and match == name:
+            return True
+    return False
+
+
+def category_index(snapshot: dict) -> dict:
+    """语料库 ielts/daily 分类索引：题库题干 norm 集合 + 话题英文名集合。"""
+    norms = {norm_title(q.get("text") or "") for q in snapshot.get("questions", [])}
+    names = {(t.get("name_en") or "").strip().casefold() for t in snapshot.get("topics", [])}
+    return {"norms": {n for n in norms if n}, "names": {n for n in names if n}}
+
+
+def topic_category(name: str, item_titles: list[str], index: dict) -> str:
+    """话题分类：题干命中题库或名称启发（ielts/雅思/Part N）→ 雅思口语；否则日常表达。"""
+    import re as _re
+
+    label = (name or "").strip()
+    if label.casefold() in index["names"] or _re.search(
+        r"ielts|雅思|part[-_ ]?\d", label, _re.I
+    ):
+        return "ielts"
+    for title in item_titles[:5]:
+        if norm_title(title) in index["norms"]:
+            return "ielts"
+    return "daily"
+
+
 def main() -> None:
     import argparse
 

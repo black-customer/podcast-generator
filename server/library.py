@@ -177,6 +177,7 @@ def item_summary(d: Path) -> dict:
         "generated_at": meta.get("generated_at") or "",
         "updated_at": meta.get("updated_at") or "",
     }
+    entry["has_audio"] = entry["has_monologue"] or entry["has_podcast"]
     _SUMMARY_CACHE[str(d)] = (sig, entry, now)
     return entry
 

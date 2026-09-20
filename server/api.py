@@ -146,7 +146,17 @@ def health():
 
 @router.get("/topics")
 def api_list_topics():
-    return library.list_topics()
+    topics = library.list_topics()
+    try:
+        index = bank.category_index(bank.load_bank())
+    except Exception:
+        index = {"norms": set(), "names": set()}
+    for t in topics:
+        # 语料库用户概念只有「雅思口语 / 日常表达」两类（R04）；题库来源话题归前者
+        full = library.get_topic(t["id"])
+        titles = [it.get("title") or "" for it in full.get("items", [])]
+        t["category"] = bank.topic_category(t.get("name") or "", titles, index)
+    return topics
 
 
 @router.post("/topics")

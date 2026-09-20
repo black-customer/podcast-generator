@@ -25,10 +25,12 @@ def test_manage_view_workflow():
         page.wait_for_selector("#mg-settings-form", state="attached", timeout=5000)
         assert page.is_visible("#mg-topic-list")
 
-        # 2. 设置表单应载入当前值且模型下拉有选项
+        # 2. 设置表单应载入当前值且模型下拉有选项；双引擎测试按钮在主层（R04）
         page.locator(".mg-advanced summary").click()
         assert page.locator("#mg-s-model option").count() >= 1
-        assert page.is_visible("#mg-test-btn")
+        assert page.is_visible("#mg-test-stepfun")
+        assert page.is_visible("#mg-test-fish")
+        assert page.is_visible("#role-cards")
 
         # 3. 新建话题 → 自动选中 → 面板出现生成工具栏
         import time as _t
