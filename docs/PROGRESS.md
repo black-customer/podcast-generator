@@ -259,3 +259,21 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   黄底当前句高亮+精听栏；播放路由无底部导航。
 - 门禁：ruff 绿；134 passed 1 skipped；e2e 7 passed（manage 断言更新为双引擎测试按钮）。
   截图走查：设置/向导/练习/语料/完成页（桌面+移动）。tag r04。
+
+## 2026-09-21 会话 10（续 3）：R05 公开分享闭环完成（tag r05, v0.5.0 beta）
+
+- scripts/doctor.py 只读诊断：Python/ffmpeg/依赖/引擎配置（脱敏）/音色库/题库/语料目录/端口
+  占用（探活 /api/health），每项带下一步提示；密钥只出现前 3 位+长度，测试断言零明文、零写入。
+- run.py 前置检查：端口被占直接报错并给两条出路（旧服务在跑→直接开网页；否则换端口），
+  绝不静默测试旧服务；ffmpeg 缺失给出 winget 安装提示。
+- README 重写：真实仓库 https://github.com/black-customer/podcast-generator、一条主流程、
+  Agent 安装指令带真实地址、StepFun 主 / Fish 备、doctor 排错入口；移除旧工作流描述。
+- package.py 重写 → dist/ielts-pod-portable.zip：收入 skills/ielts-audio、.qoder 适配、
+  question_bank_public.json、start.bat；打包后逐条审计 zip 内容（settings.json/个人语料/
+  voice_samples/.tmp/私有题库/音频 APK 任一命中即失败并删除产物）。
+- 干净安装冒烟：解压到临时目录 → python -m venv → pip install → run.py 起服务 →
+  health 返回 0.5.0 且 data_dir 隔离 → doctor 全项可读 → 端口冲突报错符合预期。
+- 产物：ielts-pod-portable.zip (1.4MB/182 文件) + ielts-pod-beta.apk (4.2MB)。
+  git push 与 GitHub Release 由 Bruce 决定（AGENTS.md 禁止 agent push）。
+- 门禁：ruff 绿（scripts/ 新文件均达标；acceptance_sweep.py 一处历史超长行在门禁范围外）；
+  136 passed 1 skipped；e2e 7 passed。tag r05 → R01–R05 全部完成。

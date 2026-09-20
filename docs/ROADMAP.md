@@ -203,8 +203,13 @@ AGENTS 路由 + Qoder 薄包装；#/done 统一完成页。18 单测 + e2e 全�
 独白/女问男答/整集/章节术语；Android = ZIP+手动 LAN 导入、模拟器实测导入与逐词点亮播放。
 tag r04。
 
-### R05 公开分享闭环 — PENDING（依赖 R04）
-真实 GitHub 安装指令、环境诊断、可移植 ZIP、beta APK、干净安装全链验收。tag r05。
+### R05 公开分享闭环 — DONE (2026-09-21, tag r05; v0.5.0 beta)
+README 重写（真实仓库地址 black-customer/podcast-generator、一条主流程、Agent 安装指令）；
+scripts/doctor.py 只读诊断（密钥零明文，回归测试）；run.py 启动前置检查（端口占用显式报错/
+ffmpeg 缺失提示）；package.py → dist/ielts-pod-portable.zip（内置审计：零密钥/个人语料/音频，
+含 canonical Skill+Qoder 适配+公开题库+start.bat）；干净安装冒烟通过（临时目录解压→venv→
+依赖→服务健康→诊断）；dist/ielts-pod-beta.apk；版本 0.5.0 + docs/RELEASE_NOTES.md。
+Agent 不执行 git push，交付可推送状态。tag r05。
 
 ### B04 教学内容（下一轮）— PENDING（暂停至 R05 完成）
 依据：CONSTITUTION「教学内容设计原则」。

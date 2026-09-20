@@ -1,26 +1,40 @@
 #!/usr/bin/env python
-"""M19：一键打包可分享的 zip（不含密钥/个人语料/大文件）。
+"""R05/M19：一键打包 Windows 可移植 zip（不含密钥/个人语料/试听缓存/生成音频）。
 
 用法：.venv/Scripts/python scripts/package.py
-输出：dist/bruce-corpus-share.zip
+输出：dist/ielts-pod-portable.zip
+打包完成后自动审计：zip 内绝不出现 settings.json、个人语料、voice_samples、.tmp、
+question_bank.json（私有快照）、任何 audio 文件。
 """
 import sys
 import zipfile
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
-OUT = BASE / "dist" / "bruce-corpus-share.zip"
+OUT = BASE / "dist" / "ielts-pod-portable.zip"
 
-INCLUDE_DIRS = ["server", "web", "prompts", "docs", "scripts", "tests", "mobile"]
+INCLUDE_DIRS = [
+    "server", "web", "prompts", "docs", "scripts", "tests", "mobile", "skills", ".qoder",
+]
 INCLUDE_FILES = [
     "README.md", "AGENTS.md", "requirements.txt", "requirements-dev.txt",
     "run.py", "pipeline.py", "start.bat", "open_app.bat", "update_app.bat",
     "app.ico", "VERSION", "pyproject.toml", ".gitignore",
 ]
-INCLUDE_DATA = ["data/voices.json", "data/settings.example.json"]
+INCLUDE_DATA = [
+    "data/voices.json",
+    "data/settings.example.json",
+    "data/question_bank_public.json",
+]
 
 EXCLUDE_PARTS = {
     "__pycache__", ".pytest_cache", ".ruff_cache", "node_modules", "www", "build", ".gradle",
+}
+
+# 审计：zip 内任何路径命中这些规则即为打包事故
+FORBIDDEN_PARTS = {
+    "settings.json", "voice_samples", ".tmp", "episodes", "topics",
+    "question_bank.json", "question_bank_extra.json", "jobs.json", "exports",
 }
 
 
@@ -29,9 +43,13 @@ def main() -> int:
     if OUT.exists():
         OUT.unlink()
     count = 0
+    violations: list[str] = []
     with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as zf:
         for d in INCLUDE_DIRS:
-            for f in sorted((BASE / d).rglob("*")):
+            src = BASE / d
+            if not src.exists():
+                continue
+            for f in sorted(src.rglob("*")):
                 if not f.is_file():
                     continue
                 rel = f.relative_to(BASE)
@@ -44,9 +62,26 @@ def main() -> int:
             if f.exists():
                 zf.write(f, name)
                 count += 1
+
+        # 审计（打包事故 = 泄漏）：逐条检查 zip 内路径
+        for info in zf.infolist():
+            parts = set(Path(info.filename).parts)
+            hit = parts & FORBIDDEN_PARTS
+            if hit:
+                violations.append(f"{info.filename}（命中 {hit}）")
+            if info.filename.endswith((".mp3", ".m4b", ".wav", ".apk")):
+                violations.append(f"{info.filename}（音频/APK 不应入包）")
+
+    if violations:
+        print("审计失败：分享包包含禁止内容！", file=sys.stderr)
+        for v in violations[:20]:
+            print(f"  ✗ {v}", file=sys.stderr)
+        OUT.unlink()
+        return 1
+
     print(f"打包完成: {OUT} ({OUT.stat().st_size // 1024} KB, {count} 个文件)")
-    print("接收方解压后: python -m venv .venv")
-    print("然后 .venv\\Scripts\\pip install -r requirements.txt 并填入 data/settings.json")
+    print("审计通过：无 settings.json / 个人语料 / 试听缓存 / .tmp / 音频文件")
+    print("接收方：解压 → 双击 start.bat（自动建 venv 装依赖并启动）→ 浏览器自动打开")
     return 0
 
 

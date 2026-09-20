@@ -16,8 +16,12 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE))
 
-from server import library, stepfun, tts  # noqa: E402
-from server import audioqa  # noqa: E402
+from server import (  # noqa: E402
+    audioqa,  # noqa: E402
+    library,
+    stepfun,
+    tts,
+)
 from server.config import load_settings  # noqa: E402
 
 KEY_FILE = BASE / "data" / ".tmp" / "stepfun_api_key.txt"
