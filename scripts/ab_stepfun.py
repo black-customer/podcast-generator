@@ -9,6 +9,7 @@ StepFun 侧用官方音色表中性别对应的近似音色，并提供两个男
 Key：读 data/.tmp/stepfun_api_key.txt（gitignored，绝不入 git/日志/回显）。
 产物：data/.tmp/ab_stepfun/（gitignored），打印 fish vs stepfun 对照清单。
 """
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -46,6 +47,27 @@ DLG_ITEM = ("02-sleep-healthy-eating", "001-sleep-and-healthy-eating-dialogue") 
 
 
 _last_call = 0.0
+
+
+def _to_std(src: Path) -> Path:
+    """统一重编码 44.1kHz/mono/128k。
+
+    StepFun 返回 24kHz mp3；concat 管线按 44.1kHz 处理，混拼会以 1.84 倍速
+    解码（44100/24000）——v1/v2 对话"没讲完就冲下一句"的真因。每块先转标准格式。
+    """
+    dst = src.with_suffix(".std.mp3")
+    subprocess.run(
+        ["ffmpeg", "-y", "-i", str(src), "-ar", "44100", "-ac", "1", "-b:a", "128k",
+         str(dst)],
+        capture_output=True, timeout=120, check=True,
+    )
+    dst.replace(src)
+    return src
+
+
+def _save_std(raw: bytes, path: Path) -> Path:
+    path.write_bytes(raw)
+    return _to_std(path)
 
 
 def synth(text: str, voice: str, key: str, instruction: str = INSTRUCTION) -> bytes:
@@ -123,7 +145,7 @@ def synth_long(text: str, voice: str, key: str, tag: str, out_dir: Path) -> list
     files = []
     for i, part in enumerate(parts):
         f = out_dir / f"{tag}_p{i}.mp3"
-        f.write_bytes(synth(part, voice, key))
+        _save_std(synth(part, voice, key), f)
         files.append(f)
     return files
 
@@ -180,21 +202,34 @@ def main() -> int:
         normalize_loudness(out)
         results.append((f"对话 Sleep & healthy eating · A=女 B={vname}", fish_dlg, out))
 
-    # ---------- 2.5) v2：拼接质量上限实验（Bruce 喜欢的 gentleman 男声） ----------
-    # 清拖腔标记 + 行内语境指令 + 更紧的行间停顿——验证逐行拼接最好能做到什么程度
-    if only in ("", "dlg", "v2"):
+    # ---------- 2.5) v3：修复采样率变速后的正式拼接版 ----------
+    # v1/v2 的"没讲完就冲下一句"真因是 24kHz 行文件进 44.1kHz concat 管线被
+    # 1.84 倍速解码；现每行已统一重编码（_save_std）。v3 = 清拖腔标记+中性指令+0.28s gap
+    if only in ("", "dlg", "v3"):
         male_voice = MALE_VARIANTS["gentleman"]
-        out = OUT / "dlg_stepfun_gentleman_v2.mp3"
-        print(f"[dialog/v2] A={FEMALE_VOICE} B={male_voice} 清标记+语境指令+0.22s gap")
+        out = OUT / "dlg_stepfun_gentleman_v3.mp3"
+        print(f"[dialog/v3] A={FEMALE_VOICE} B={male_voice} 44.1kHz对齐+清标记+0.28s gap")
         entries = []
+        line_total = 0.0
         for i, (spk, body) in enumerate(lines):
             voice = FEMALE_VOICE if spk == "a" else male_voice
-            f = OUT / f"dlg_v2_l{i:02d}.mp3"
-            f.write_bytes(synth(_clean_dlg_line(body), voice, key, instruction=DLG_INSTRUCTION))
-            entries.append({"path": f, "gap_before": 0.22 if i else 0.0})
+            f = OUT / f"dlg_v3_l{i:02d}.mp3"
+            _save_std(synth(_clean_dlg_line(body), voice, key), f)
+            line_total += float(subprocess.run(
+                ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                 "-of", "csv=p=0", str(f)], capture_output=True, text=True
+            ).stdout.strip())
+            entries.append({"path": f, "gap_before": 0.28 if i else 0.0})
         concat_mp3(entries, out)
         normalize_loudness(out)
-        results.append(("对话 v2 拼接上限实验 · gentleman", fish_dlg, out))
+        out_dur = float(subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+             "-of", "csv=p=0", str(out)], capture_output=True, text=True).stdout.strip())
+        expect = line_total + 0.28 * (len(lines) - 1)
+        print(f"    对账: 行总和 {line_total:.1f}s + gap {expect - line_total:.1f}s "
+              f"= {expect:.1f}s | 输出 {out_dur:.1f}s | 偏差 "
+              f"{abs(out_dur - expect) / expect * 100:.1f}%（应 <3%，>5% 即异常）")
+        results.append(("对话 v3 修复变速版 · gentleman", fish_dlg, out))
 
     # ---------- 清单 ----------
     print("\n===== A/B 对照清单（均已 -16 LUFS 归一，直接对听） =====")
