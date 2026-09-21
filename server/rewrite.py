@@ -32,9 +32,9 @@ SYSTEM_SCHEMA = (
     "with 'A:' (the interviewer asking) and 'B:' (the user answering, based strictly on "
     "their raw answer). No brackets.\n"
     "- podcast_script: the SAME dialogue as podcast_text for a TTS engine, keeping the "
-    "same words and meaning, optionally with sparse performance tags from this "
-    "allowlist only: [pause] [short pause] [long pause] [break] [chuckle] [sigh] "
-    "[softly] [uncertain] [emphasis] [curious] [relaxed] [thoughtful].\n"
+    "same words and meaning. A may begin once with [curious]. B may begin once with "
+    "[relaxed] and may use at most two extra cues chosen from [uncertain], [emphasis], "
+    "and [break]. Never add laughter, breaths, sighs, or theatrical tags.\n"
     "Keep the user's real experiences, opinions and level of detail; never invent facts."
 )
 
@@ -55,6 +55,7 @@ class TextPermissionError(RewriteError):
 REQUIRED_FIELDS = ("natural_english", "podcast_text", "podcast_script")
 _DIALOGUE_RE = re.compile(r"^\s*[ab]\s*[:：]", re.IGNORECASE | re.MULTILINE)
 _TAG_TEXT_RE = re.compile(r"\[([^\[\]]*)\]")
+GENERATION_TAGS = frozenset({"curious", "relaxed", "uncertain", "emphasis", "break"})
 _WORD_RE = re.compile(r"[a-z']{3,}")
 _STOPWORDS = frozenset({
     "the", "and", "was", "were", "she", "her", "his", "him", "you", "your", "yor",
@@ -116,6 +117,19 @@ def validate_texts(texts: dict) -> list[str]:
     for field in ("podcast_text", "podcast_script"):
         if not _DIALOGUE_RE.search(texts[field]):
             errors.append(f"{field} 必须是 A:/B: 对话格式（A=提问者，B=回答者）")
+
+    generated_tags = [tag.strip().lower() for tag in _TAG_TEXT_RE.findall(texts["podcast_script"])]
+    unsafe = [tag for tag in generated_tags if tag not in GENERATION_TAGS]
+    if unsafe:
+        errors.append(
+            f"podcast_script 含新生成策略禁用标签 {unsafe[:3]}，"
+            "只允许 curious/relaxed/uncertain/emphasis/break"
+        )
+    if generated_tags.count("curious") > 1 or generated_tags.count("relaxed") > 1:
+        errors.append("curious/relaxed 开场标签各最多使用一次")
+    extras = sum(generated_tags.count(tag) for tag in ("uncertain", "emphasis", "break"))
+    if extras > 2:
+        errors.append("回答中的 uncertain/emphasis/break 合计最多使用两个")
 
     _cleaned_script, removed = strip_disallowed_tags(texts["podcast_script"])
     if removed:
@@ -229,8 +243,8 @@ def build_agent_prompt(topic_id: str, item_id: str, question: str, answer: str) 
 {{
   "natural_english": "干净、可背诵的地道英文回答（第一人称口语，无任何方括号标签）",
   "podcast_text": "A:/B: 对话格式（A=提问者，B=基于我的回答作答），无标签",
-  "podcast_script": "与 podcast_text 同一句话的 TTS 表演稿，
-只允许白名单标签如 [pause] [break] [chuckle]"
+  "podcast_script": "与 podcast_text 同一句话的 TTS 表演稿；A 可用一次 [curious]，
+B 可用一次 [relaxed]，并最多再用两个 [uncertain]/[emphasis]/[break]"
 }}
 然后执行（先校验，通过才会原子写入并合成音频）：
 .venv/Scripts/python pipeline.py complete \\
@@ -240,4 +254,5 @@ def build_agent_prompt(topic_id: str, item_id: str, question: str, answer: str) 
 ## 硬性约束
 - 三份文本的词句与我的回答保持一致，不得编造新经历
 - podcast_text / natural_english 内不允许任何 [tag]
+- 禁止笑声、呼吸、叹气和戏剧化标签；口头禅必须有实际语义功能
 - 不要在文件、指令或回复中出现任何 API Key"""

@@ -33,9 +33,11 @@ def test_full_player_workflow():
         page.goto(f"{BASE_URL}/#/play/{TOPIC}/{ITEM}")
         page.wait_for_selector("#lyrics-panel", timeout=5000)
         assert page.is_visible(".player-question")
+        assert "A/B dialogue" not in page.locator(".player-question").inner_text()
         assert page.is_visible(".reference-rail")
         assert page.is_visible("#pod-stream")
-        assert page.is_visible("#btn-tab-pod")
+        assert page.locator("#btn-tab-pod").is_hidden(), "普通播放页不展示内部音轨切换"
+        assert page.locator("#btn-tab-mono").is_hidden()
         assert page.is_visible("#remake-item")
 
         # 3. 全局播放器与新控制按钮
@@ -106,6 +108,7 @@ def test_full_player_workflow():
         page.goto(f"{BASE_URL}/#/voices")
         page.wait_for_selector(".voice-card", timeout=5000)
         assert page.locator(".voice-card").count() >= 1
+        assert page.locator("#global-player").is_hidden(), "非播放页不应被旧播放器覆盖"
 
         # 11. 全程无 JS 运行时异常
         assert len(console_errors) == 0, f"Captured console errors: {console_errors}"

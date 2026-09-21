@@ -277,3 +277,15 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   git push 与 GitHub Release 由 Bruce 决定（AGENTS.md 禁止 agent push）。
 - 门禁：ruff 绿（scripts/ 新文件均达标；acceptance_sweep.py 一处历史超长行在门禁范围外）；
   136 passed 1 skipped；e2e 7 passed。tag r05 → R01–R05 全部完成。
+
+## 2026-09-21 会话 11：R01–R05 独立复验与发布前修复
+
+- 独立复验确认五个里程碑提交/tag 和分享产物存在；重新运行当前 HEAD 完整门禁。
+- 修复生成策略回归：API Prompt、Agent task 与 canonical Skill 不再允许 `[chuckle]`、
+  `[sigh]`、呼吸或通用 `[pause]`；新稿只允许 Q02 定稿的五种轻量标签与数量上限。
+- 修复公开 UI：题库隐藏 5 条“原问句缺失”内部占位；非播放页隐藏旧播放器；完整播放页
+  隐藏多轨/独白控件与 A/B dialogue 后缀；设置角色摘要按当前 provider 显示真实音色名；
+  旧内容管理默认折叠并保持展开状态；题库改为双列任务卡，移动导航不换行。
+- 修复 Windows 分享闭环：doctor.py 改用 GBK 安全的 ASCII 状态标记，真实默认控制台运行通过。
+- Android 重新 sync + Gradle assembleDebug 成功；beta APK 和 portable ZIP 已用最终源码重建。
+- 最终门禁：ruff 绿；143 passed、1 skipped；Playwright 7 passed；服务冒烟绿。

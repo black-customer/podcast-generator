@@ -25,8 +25,8 @@ VALID_TEXTS = {
         "pushed us to ask better questions instead of just memorizing answers."
     ),
     "podcast_script": (
-        "A: Who was your favorite teacher [pause] growing up?\n"
-        "B: Definitely my high school English teacher [break] She was patient, and she "
+        "A: [curious] Who was your favorite teacher growing up?\n"
+        "B: [relaxed] Definitely my high school English teacher [break] She was patient, and she "
         "always pushed us to ask better questions instead of just memorizing answers."
     ),
 }
@@ -135,6 +135,19 @@ def test_validate_texts_rejects_tags_in_visible_and_offlist_tags_in_script():
     bad_tag = dict(VALID_TEXTS, podcast_script="A: Hi [whisper] there.\nB: Hello.")
     errs = rewrite.validate_texts(bad_tag)
     assert any("whisper" in e for e in errs)
+
+
+@pytest.mark.parametrize("unsafe_tag", ["chuckle", "laugh", "sigh", "inhale", "pause"])
+def test_validate_texts_rejects_legacy_audio_risk_tags(unsafe_tag):
+    """旧数据可兼容宽白名单，但新生成稿必须遵守 Q02 的轻量标签政策。"""
+    from server import rewrite
+
+    bad = dict(
+        VALID_TEXTS,
+        podcast_script=f"A: [curious] Hi there.\nB: [relaxed] Hello [{unsafe_tag}].",
+    )
+    errors = rewrite.validate_texts(bad)
+    assert any(unsafe_tag in error for error in errors)
 
 
 def test_validate_texts_rejects_semantic_mismatch_between_text_and_script():

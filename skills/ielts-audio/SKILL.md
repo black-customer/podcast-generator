@@ -14,11 +14,11 @@ description: Canonical workflow for completing an IELTS answer → native-Englis
 | `original_answer.txt` | 用户原始回答（中/英/混合） | 永远保留，改写失败也不得清除或覆盖 |
 | `natural_english.txt` | 干净、可背诵的地道英文回答 | 第一人称口语；**不允许任何 `[tag]`** |
 | `podcast_text.txt` | 用户可见的完整问答 | `A:` 提问行 + `B:` 回答行；**不允许任何 `[tag]`** |
-| `podcast_script.txt` | TTS 表演稿（对普通用户隐藏） | 与 podcast_text 同一句子；只允许白名单标签：`[pause] [short pause] [long pause] [break] [chuckle] [sigh] [softly] [uncertain] [emphasis] [curious] [relaxed] [thoughtful]` |
+| `podcast_script.txt` | TTS 表演稿（对普通用户隐藏） | 与 podcast_text 同一句子；A 可在开头使用一次 `[curious]`，B 可在开头使用一次 `[relaxed]`，B 全文最多再用两个 `[uncertain]`、`[emphasis]` 或 `[break]` |
 
 - 三份英文文本的词句必须与用户原始回答语义一致：保留用户的真实经历、观点和细节，**不得虚构**。
 - 对话进对话出：题目是问答，就输出 A/B 对话；B 行内容 = 用户回答的地道改写。
-- 表演标签稀疏使用（自然口语不需要密集导演指令）。
+- 禁止笑声、呼吸、叹气和戏剧化标签；表演标签稀疏使用，主要依靠自然标点和分句。
 
 ## 完成命令（唯一入口）
 

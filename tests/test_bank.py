@@ -165,6 +165,25 @@ def test_query_search_en_zh(snapshot_file: Path):
     assert bank.query_questions(snap, q="")["total"] == 4
 
 
+def test_query_hides_placeholder_questions(snapshot_file: Path):
+    """内部数据修复提示不能作为可练习的 IELTS 题目出现在公开界面。"""
+    snap = bank.load_bank(snapshot_file)
+    snap["questions"].append(
+        {
+            "id": "broken",
+            "book_id": "book1",
+            "topic_id": "t1",
+            "part": 1,
+            "text": "原问句缺失：关于课程的开场回答",
+            "text_zh": "",
+            "normText": "broken",
+        }
+    )
+    result = bank.query_questions(snap, part=1)
+    assert result["total"] == 2
+    assert all("原问句缺失" not in item["text"] for item in result["items"])
+
+
 def test_query_pagination_clamps(snapshot_file: Path):
     snap = bank.load_bank(snapshot_file)
     res = bank.query_questions(snap, page_size=2)

@@ -34,3 +34,8 @@
 - R02 的「5 条中至少 4 条更愿意反复听 StepFun」听感门待 Bruce 确认（A/B 清单在
   `data/.tmp/r02_acceptance/MANIFEST.md`）。
 - Android APK 为 beta；更新安装前建议先卸载旧版（WebView 缓存）。
+
+### 发布前复验补丁
+- 新生成表演稿重新收紧为五种轻量标签，禁止笑声、呼吸、叹气和通用停顿标签。
+- 公开题库过滤内部缺题占位，播放器隐藏独白/多轨术语，非播放页不再被旧播放器覆盖。
+- `doctor.py` 在 Windows 默认 GBK 控制台可直接运行；最终 APK 与 portable ZIP 已重建。

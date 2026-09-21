@@ -33,8 +33,8 @@ RESULT_JSON = {
         "always pushed us to ask better questions instead of just memorizing answers."
     ),
     "podcast_script": (
-        "A: Who was your favorite teacher [pause] then?\n"
-        "B: My high school English teacher, for sure [break] She was really patient, and "
+        "A: [curious] Who was your favorite teacher then?\n"
+        "B: [relaxed] My high school English teacher, for sure [break] She was really patient, and "
         "she always pushed us to ask better questions instead of just memorizing answers."
     ),
 }
@@ -120,7 +120,7 @@ def test_agent_mode_copy_cli_complete_and_done_page():
             assert page.locator("text=下载 MP3").count() >= 1
             # 表演稿对普通用户不可见
             body_text = page.locator("body").inner_text()
-            assert "[pause]" not in body_text and "[break]" not in body_text
+            assert "[curious]" not in body_text and "[break]" not in body_text
         finally:
             for tid in created_topics:
                 try:

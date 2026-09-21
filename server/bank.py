@@ -327,6 +327,8 @@ def query_questions(
     core_tids = _core_topic_ids(snapshot)
     rows: list[dict] = []
     for row in snapshot.get("questions", []):
+        if "原问句缺失" in (row.get("text") or ""):
+            continue
         if part is not None and row["part"] != part:
             continue
         if topic_id and row["topic_id"] != topic_id:

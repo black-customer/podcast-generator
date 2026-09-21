@@ -23,14 +23,18 @@ def test_manage_view_workflow():
         # 1. 打开工作台
         page.goto(f"{BASE_URL}/#/manage")
         page.wait_for_selector("#mg-settings-form", state="attached", timeout=5000)
-        assert page.is_visible("#mg-topic-list")
+        assert page.locator("#mg-topic-list").is_hidden(), "旧内容管理默认应折叠"
 
         # 2. 设置表单应载入当前值且模型下拉有选项；双引擎测试按钮在主层（R04）
-        page.locator(".mg-advanced summary").click()
+        page.locator("#mg-settings-form .mg-advanced > summary").click()
         assert page.locator("#mg-s-model option").count() >= 1
         assert page.is_visible("#mg-test-stepfun")
         assert page.is_visible("#mg-test-fish")
         assert page.is_visible("#role-cards")
+
+        # 旧内容管理保留在高级折叠中，不干扰普通用户的声音设置任务
+        page.locator(".content-admin > summary").click()
+        assert page.is_visible("#mg-topic-list")
 
         # 3. 新建话题 → 自动选中 → 面板出现生成工具栏
         import time as _t

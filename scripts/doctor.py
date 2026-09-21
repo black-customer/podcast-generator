@@ -169,10 +169,9 @@ def main() -> int:
     print("IELTS Pod 环境诊断（只读，不输出密钥）\n" + "=" * 46)
     failed = 0
     for item in collect():
-        mark = {"OK": "✓", "WARN": "!", "FAIL": "✗"}[item["level"]]
-        print(f"[{mark}] {item['name']}: {item['detail']}")
+        print(f"[{item['level']}] {item['name']}: {item['detail']}")
         if item["hint"]:
-            print(f"    → {item['hint']}")
+            print(f"    -> {item['hint']}")
         if item["level"] == FAIL:
             failed += 1
     print("=" * 46)

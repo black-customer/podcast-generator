@@ -68,6 +68,13 @@ function fmtPad(sec) {
   return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 }
 
+function publicTitle(value) {
+  return String(value || "")
+    .replace(/\s*[（(](?:a\s*\/\s*b\s*)?dialogue[）)]\s*$/i, "")
+    .replace(/\s*[（(](?:monologue|女问男答|独白)[）)]\s*$/i, "")
+    .trim();
+}
+
 function toast(msg) {
   const root = document.getElementById("toast-root");
   if (!root) return;
@@ -99,7 +106,7 @@ function updateMediaSession() {
   if (!("mediaSession" in navigator) || !PlayerState.currentItem) return;
   try {
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: PlayerState.currentItem.title || "未命名曲目",
+      title: publicTitle(PlayerState.currentItem.title) || "未命名曲目",
       artist: "Bruce English Corpus",
       album: (PlayerState.currentTopic && PlayerState.currentTopic.name) || "English Corpus",
     });
@@ -485,7 +492,7 @@ async function playItem(topicId, item, autoPlay = true) {
     $audio.play().catch(() => {});
   }
 
-  document.getElementById("gp-title").textContent = item.title || "未命名曲目";
+  document.getElementById("gp-title").textContent = publicTitle(item.title) || "未命名曲目";
   setTimeout(updateMediaSession, 0);
   const topicName = (PlayerState.currentTopic && PlayerState.currentTopic.name) || "";
   document.getElementById("gp-sub").textContent = [
@@ -515,7 +522,7 @@ async function loadTimeline(topicId, itemId, track) {
   PlayerState.activeLineIndex = -1;
   PlayerState.timelineMode = "";
 
-  const emptyHtml = `<p style="color:var(--text-sub);padding:20px;">该条目暂无${track === "podcast" ? "播客" : "独白"}音频或剧本，可在工作台先生成。</p>`;
+  const emptyHtml = `<p style="color:var(--text-sub);padding:20px;">该条目暂无可播放音频，请先完成生成。</p>`;
   try {
     const data = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/timeline/${track}`);
     if (data && Array.isArray(data.lines) && data.lines.length > 0) {
@@ -565,11 +572,11 @@ function renderLiveTimelineUI() {
   const timeline = PlayerState.timeline;
   if (!timeline || timeline.length === 0) return;
 
-  // 对齐模式标志：诚实显示数据可信度（measured=实测 / estimated=估算）
+  // 对齐模式保留真实状态，但用学习者能理解的产品语言呈现。
   const chip = document.getElementById("tl-mode-chip");
   if (chip) {
     const measured = PlayerState.timelineMode === "measured";
-    chip.textContent = measured ? "实测对齐" : "估算对齐";
+    chip.textContent = measured ? "逐句同步" : "基础同步";
     chip.classList.toggle("chip-estimated", !measured);
   }
 
@@ -577,7 +584,7 @@ function renderLiveTimelineUI() {
   const voiceCell = document.getElementById("rail-voice");
   const names = [...new Set(timeline.map(l => l.name).filter(Boolean))];
   if (voiceCell && names.length) {
-    voiceCell.textContent = `${PlayerState.track === "podcast" ? "女问男答" : "独白"}（${names.join(" / ")}）`;
+    voiceCell.textContent = names.join(" / ");
   }
 
   const rowsHtml = timeline.map(line => `
@@ -669,7 +676,7 @@ async function TopicsGalleryView(token) {
     ${last && last.topic_id ? `
     <button class="continue-card" onclick="location.hash='#/play/${encodeURIComponent(last.topic_id)}/${encodeURIComponent(last.item_id)}'">
       <span class="continue-label">继续上次收听</span>
-      <span class="continue-title">${esc(last.title || "")}</span>
+      <span class="continue-title">${esc(publicTitle(last.title))}</span>
       <span class="continue-action">▶</span>
     </button>` : ""}
 
@@ -714,7 +721,7 @@ async function TopicDetailView(topicId, token) {
   const rowsHtml = topic.items.map((it, idx) => `
     <div class="track-row" data-id="${esc(it.id)}" onclick="location.hash='#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}'">
       <div class="track-num">${idx + 1}</div>
-      <div class="track-title">${esc(it.title)}</div>
+      <div class="track-title">${esc(publicTitle(it.title))}</div>
       <div class="track-tags">
         ${it.stale ? '<span class="track-pill" style="color:var(--warn)">待更新</span>' : ""}
         ${it.error ? '<span class="track-pill" style="color:var(--err)">错误</span>' : ""}
@@ -750,7 +757,7 @@ async function TopicDetailView(topicId, token) {
       <div class="track-header">
         <div>#</div>
         <div>标题</div>
-        <div>可用音轨</div>
+        <div>状态</div>
         <div>时长</div>
         <div>操作</div>
       </div>
@@ -800,7 +807,7 @@ async function TrackPlayerView(topicId, itemId, token) {
           </a>
           ${stamp ? `<div class="sheet-stamp">${esc(stamp)} 收录</div>` : ""}
         </header>
-        <h1 class="player-question">${esc(item.question || item.title)}</h1>
+        <h1 class="player-question">${esc(publicTitle(item.question || item.title))}</h1>
         <div class="reading-tags">
           ${partLabel ? `<span>${esc(partLabel)}</span>` : ""}
           <span>${esc(topic.name)}</span>
@@ -833,7 +840,7 @@ async function TrackPlayerView(topicId, itemId, token) {
           <h2 class="reference-heading">同话题其他题</h2>
           <ul class="rail-list">
             ${(topic.items || []).filter(it => it.id !== itemId).slice(0, 5).map(it => `
-              <li><a href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">${esc(it.title)}</a></li>
+              <li><a href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">${esc(publicTitle(it.title))}</a></li>
             `).join("") || `<li class="rail-empty">本话题只有这一题。</li>`}
           </ul>
         </section>
@@ -843,10 +850,10 @@ async function TrackPlayerView(topicId, itemId, token) {
           <dl class="audio-facts">
             <div><dt>话题</dt><dd>${esc(topic.name)}</dd></div>
             <div><dt>时长</dt><dd>${fmtPad(item.duration_sec_podcast || item.duration_sec || 0)}</dd></div>
-            <div><dt>发音</dt><dd id="rail-voice">${PlayerState.track === 'podcast' ? "女问男答" : "独白"}</dd></div>
+            <div><dt>声音</dt><dd id="rail-voice">提问者 / 回答者</dd></div>
             <div><dt>语速</dt><dd>${PlayerState.playbackRate === 1 ? "正常语速（1.0x）" : `${PlayerState.playbackRate}x`}</dd></div>
           </dl>
-          <div class="track-toggle-group">
+          <div class="track-toggle-group" hidden aria-hidden="true">
             <button class="track-toggle-btn ${PlayerState.track === 'podcast' ? 'active' : ''}" id="btn-tab-pod"
               ${item.has_audio_podcast ? "" : 'disabled title="该条目没有播客轨音频"'}>女问男答</button>
             <button class="track-toggle-btn ${PlayerState.track === 'monologue' ? 'active' : ''}" id="btn-tab-mono"
@@ -1124,6 +1131,7 @@ const ManageState = {
   topicId: null,
   pollTimer: null,
   job: null,
+  adminOpen: false,
 };
 
 const MG_FIELDS = [
@@ -1189,8 +1197,8 @@ async function ManageView(token) {
   $app.innerHTML = `
     <div class="section-header settings-page-head">
       <div>
-        <div class="section-title">设置与内容管理</div>
-        <p class="section-description">先选择长期模仿音色；技术参数只在需要排错时调整。</p>
+        <div class="section-title">声音与生成设置</div>
+        <p class="section-description">选择语音引擎与两个角色的声音；技术参数只在排错时调整。</p>
       </div>
       <div class="settings-head-actions">${modeBadge}<a class="text-action" href="#/import">离线语料包</a></div>
     </div>
@@ -1273,6 +1281,9 @@ async function ManageView(token) {
       </form>
     </div>
 
+    <details class="content-admin mg-advanced" ${ManageState.adminOpen ? "open" : ""}>
+      <summary>高级内容管理</summary>
+      <p class="mg-hint">仅在手动维护旧语料时使用；日常生成请从「开始练习」进入。</p>
     <div class="manage-grid">
       <div class="mg-col">
         <!-- 话题卡片 -->
@@ -1292,12 +1303,26 @@ async function ManageView(token) {
         </div>
       </div>
     </div>
+    </details>
   `;
+
+  const adminDetails = document.querySelector(".content-admin");
+  if (adminDetails) {
+    adminDetails.ontoggle = () => { ManageState.adminOpen = adminDetails.open; };
+  }
 
   // ---- 设置表单：引擎卡 + 角色卡（概念 07 / B06 旅程）----
   const engineOf = () => ((document.querySelector('input[name="mg-engine"]:checked') || {}).value) || "stepfun";
-  let curQ = settings.question_voice_id || "lively-girl";
-  let curA = settings.answer_voice_id || "vibrant-youth";
+  const chosenVoices = {
+    stepfun: {
+      q: settings.question_voice_id || "lively-girl",
+      a: settings.answer_voice_id || "vibrant-youth",
+    },
+    fish: {
+      q: settings.reference_id_b || "",
+      a: settings.reference_id || "",
+    },
+  };
   const pick = { qGender: "female", aGender: "male" };
   let voicesCache = null;
   const mgVoices = async (provider) => {
@@ -1308,7 +1333,14 @@ async function ManageView(token) {
   };
   const mgSummary = () => {
     const el = document.getElementById("voice-summary");
-    if (el) el.textContent = `最终音频：${curQ} 提问，${curA} 回答。你可以随时更换声音组合。`;
+    const provider = engineOf();
+    const pair = chosenVoices[provider];
+    const voices = voicesCache && voicesCache.provider === provider ? voicesCache.list : [];
+    const nameOf = id => {
+      const found = voices.find(v => (v.voice_id || v.reference_id) === id);
+      return found ? found.name : (id || "未选择");
+    };
+    if (el) el.textContent = `最终音频：${nameOf(pair.q)} 提问，${nameOf(pair.a)} 回答。`;
   };
   const mgRenderRoles = async () => {
     const box = document.getElementById("role-cards");
@@ -1325,7 +1357,7 @@ async function ManageView(token) {
     const renderRole = (role, title, sub) => {
       const gender = pick[role + "Gender"];
       const list = voices.filter(v => (v.gender || "") === gender);
-      const cur = role === "q" ? curQ : curA;
+      const cur = chosenVoices[provider][role];
       const cards = list.map(v => {
         const vid = v.voice_id || v.reference_id;
         return `<div class="voice-pick ${vid === cur ? "selected" : ""}" data-vid="${esc(vid)}" data-role="${role}">
@@ -1356,8 +1388,7 @@ async function ManageView(token) {
       el.onclick = (ev) => {
         if (ev.target.closest(".voice-pick-play")) return;
         const role = el.dataset.role;
-        if (role === "q") curQ = el.dataset.vid;
-        else curA = el.dataset.vid;
+        chosenVoices[provider][role] = el.dataset.vid;
         box.querySelectorAll(`.voice-pick[data-role="${role}"]`).forEach(x => x.classList.toggle("selected", x === el));
         mgSummary();
       };
@@ -1391,14 +1422,14 @@ async function ManageView(token) {
       dry_run: document.getElementById("mg-s-dry").checked,
     };
     if (provider === "stepfun") {
-      payload.question_voice_id = curQ;
-      payload.answer_voice_id = curA;
+      payload.question_voice_id = chosenVoices.stepfun.q;
+      payload.answer_voice_id = chosenVoices.stepfun.a;
     } else {
       // fish：角色卡选择映射到 A/B reference（男=回答 A，女=提问 B）
       try {
         const list = await mgVoices("fish");
-        const qv = list.find(v => (v.voice_id || v.reference_id) === curQ);
-        const av = list.find(v => (v.voice_id || v.reference_id) === curA);
+        const qv = list.find(v => (v.voice_id || v.reference_id) === chosenVoices.fish.q);
+        const av = list.find(v => (v.voice_id || v.reference_id) === chosenVoices.fish.a);
         if (qv && qv.gender === "female") payload.reference_id_b = qv.reference_id;
         if (av && av.gender === "male") payload.reference_id = av.reference_id;
       } catch (_) { /* 保持高级设置里的手工 ID */ }
@@ -2073,6 +2104,7 @@ async function BankView(token) {
         ${(it.set_labels || []).map((l) => `<span class="bank-topic-tag">${esc(l)}</span>`).join("")}
         ${it.part !== 1 ? `<span class="bank-part-tag">Part ${it.part}</span>` : ""}
       </div>
+      <span class="bank-row-action">回答这道题 →</span>
     </div>`).join("");
 
   const hasPrev = data.page > 1;
@@ -2458,7 +2490,7 @@ async function DoneView(topicId, itemId, token) {
     <a class="back-link" href="#/topic/${encodeURIComponent(topicId)}">← 返回话题</a>
     <div class="done-wrap">
       <div class="done-badge ${hasAudio ? "ok" : "wait"}">${hasAudio ? "✓ 音频已生成" : "⏳ 音频还在生成中"}</div>
-      <h2 class="done-title">${esc(item.title || item.question || "条目")}</h2>
+      <h2 class="done-title">${esc(publicTitle(item.title || item.question || "条目"))}</h2>
       ${item.question && item.title !== item.question ? `<div class="bank-answer-q" style="margin:8px 0 16px;">${esc(item.question)}</div>` : ""}
       ${item.natural_english ? `
         <div class="done-section-label">跟读文本 · 干净英文，可背诵</div>

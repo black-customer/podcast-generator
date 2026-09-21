@@ -55,9 +55,11 @@ def test_doctor_main_exit_code_reflects_failures(isolated, monkeypatch, capsys):
     assert doctor.main() == 1
     out = capsys.readouterr().out
     assert "do this" in out and "B" in out
+    out.encode("gbk")  # Windows 默认控制台必须可直接打印，不能依赖 UTF-8 code page
 
     monkeypatch.setattr(
         doctor, "collect",
         lambda: [{"level": "OK", "name": "A", "detail": "ok", "hint": ""}],
     )
     assert doctor.main() == 0
+    capsys.readouterr().out.encode("gbk")

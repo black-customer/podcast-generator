@@ -203,7 +203,7 @@ AGENTS 路由 + Qoder 薄包装；#/done 统一完成页。18 单测 + e2e 全�
 独白/女问男答/整集/章节术语；Android = ZIP+手动 LAN 导入、模拟器实测导入与逐词点亮播放。
 tag r04。
 
-### R05 公开分享闭环 — DONE (2026-09-21, tag r05; v0.5.0 beta)
+### R05 公开分享闭环 — DONE (2026-09-21, tag r05; v0.5.0 beta；发布前复验补丁见 PROGRESS 会话 11)
 README 重写（真实仓库地址 black-customer/podcast-generator、一条主流程、Agent 安装指令）；
 scripts/doctor.py 只读诊断（密钥零明文，回归测试）；run.py 启动前置检查（端口占用显式报错/
 ffmpeg 缺失提示）；package.py → dist/ielts-pod-portable.zip（内置审计：零密钥/个人语料/音频，
