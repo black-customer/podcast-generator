@@ -91,6 +91,24 @@ cd workflows/qoder-one-question/scripts
 **我没有动它们，也没有提交它们。** 你要不要合并成一套是你的决定——
 现在两边是两套并行实现，建议先各看一遍再定留哪个。
 
+## 并发事故（重要，影响你怎么安排多个 Agent）
+
+我按你的要求建了 `workflow/qoder-one-question` 分支并切过去。但**另一个会话在我们中间
+把同一个工作目录切到了 `glm-workflow` 分支**，所以我那次 `git commit` 落到了它的分支上。
+
+已经修正：我的提交 `74f4011` 现在在 `workflow/qoder-one-question` 上，HEAD 也在这条分支。
+`glm-workflow` 上仍留有同一个提交（只是多一个指针，没有复制文件，也不影响它的历史）。
+要清掉的话你自己决定，一条命令：`git branch -f glm-workflow 3392181`——我没动它，
+因为那是别的会话的分支，我不该替它决定。
+
+**根因**：同一个工作目录里切分支，会连带改变所有会话看到的文件树。
+另一个会话用的是 `git worktree`（`workflow/glm-question-coach` 挂在
+`D:/project/podcastGenerate-glm`），那才是对的并发方式。
+
+**建议**：以后每个 Agent 一条独立 worktree，别共用主目录。约定可以是
+`git worktree add ../podcastGenerate-<agent名> -b workflow/<agent名>-<用途>`。
+命名按 agent 身份而不是模型名——Qoder 不对外暴露底层模型，我也不会去猜。
+
 ## 还没做的
 
 - 单题音频实听（网络阻塞，见上）

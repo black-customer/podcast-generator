@@ -1,0 +1,81 @@
+{
+  "id": "q-smartphones",
+  "part": 3,
+  "question": "Do you think children should have their own smartphones?",
+  "question_zh": "你认为孩子应该有自己的智能手机吗？",
+  "original_answer": "yeah, I think it depends depends how the children self-disciplining ability developed. you know, I think maybe in general, there's a age range. for example, if you are under like 16 or 18, then you should have a limited on using smartphones. but actually, I think age doesn't stand for everything, because different children have different parents, and the parents' education method is different. So, if a parents are good at educating, and maybe their children will be, you know, more self-discipline, then they could have their own smartphone quickly. Because we all know that smartphone is a double-edged sword. So, if you think your children is able to control this sword, and use it to benefit your life, then I think you could have your own own smartphone. but I think both of the children's don't have ability. So, II if I recommend children's at least in primary school should not have their own smartphones. actually, I have my own smartphone in 2016 when I'm in, when I'm about to graduate from primary school and going to the junior school.",
+  "fixes": [
+    {
+      "wrong": "it depends how the children self-disciplining ability developed",
+      "right": "It really depends on how well a kid can discipline themselves.",
+      "rule": "depend on 加 how well 加完整从句；别把名词短语硬塞进动词后面。"
+    },
+    {
+      "wrong": "age doesn't stand for everything",
+      "right": "Age isn't everything.",
+      "rule": "stand for 是代表缩写的意思；年龄说明不了一切，直接说 age isn't everything。"
+    },
+    {
+      "wrong": "I have my own smartphone in 2016",
+      "right": "I got my first smartphone in 2016.",
+      "rule": "过去的时间点配过去式；第一台手机，用 got my first smartphone。"
+    }
+  ],
+  "chunks": [
+    {
+      "chunk": "It really depends on how well a kid can discipline themselves.",
+      "meaning_zh": "这取决于孩子自律能力有多强——思辨题万能开场，先给有条件的立场",
+      "transfer_zh": "任何 depends 题都能换装：时间、金钱、天气，全部通用。听迁移版：",
+      "transfer": "It really depends on how much free time you have."
+    },
+    {
+      "chunk": "set clear limits on something",
+      "meaning_zh": "对某事设明确限制——直接修你卡壳的 have a limited on",
+      "transfer_zh": "家长管手机、公司管加班、政府管平台，全都能用。听迁移版：",
+      "transfer": "Parents should set clear limits on screen time."
+    }
+  ],
+  "model_answer": "It really depends on how well a kid can discipline themselves—that would be my honest first answer. My default position is no: kids in primary school shouldn't own a smartphone, and parents should set clear limits on screen time instead. But age isn't everything, because different children have different parents, and the parenting style makes a huge difference. We all know a smartphone is a double-edged sword: if a kid is mature enough to control it, it becomes a useful tool; if not, they'll just end up glued to the screen. For what it's worth, I got my first smartphone in 2016, right before junior high, and that timing worked pretty well for me.",
+  "model_segments": [
+    ["p", "It really depends on how well a kid can discipline themselves"],
+    ["p", "—that would be my honest first answer. My default position is no: kids in primary school shouldn't own a smartphone, and parents should "],
+    ["c", "set clear limits on"],
+    ["p", " screen time instead. But age isn't everything, because different children have different parents, and the parenting style makes a huge difference. We all know a smartphone is a double-edged sword: if a kid is mature enough to control it, it becomes a useful tool; if not, they'll just end up glued to the screen. For what it's worth, I got my first smartphone in 2016, right before junior high, and that timing worked pretty well for me."]
+  ],
+  "takeaway": "It really depends on how well a kid can discipline themselves—either way, parents should set clear limits.",
+  "audio": {
+    "hook_zh": "这道题，考官不想听 yes 或者 no。八点五分的回答，第一句就亮出一个有条件的立场。来，用你自己的真实回答做教材，把这道题打穿。",
+    "contrast_intro_zh": "先听你的原句：",
+    "contrast_mid_zh": "意思全对，零件装反了。听母语者版本：",
+    "model_intro_zh": "现在把零件全部组装起来，听八点五分的完整版。注意，内容还是你的内容，你的 double-edged sword 用得很好，我原样保留了。",
+    "retrieval_zh": "轮到你了。八秒钟，用上至少一个语块，开口回答这道题。必须出声。预备——",
+    "takeaway_intro_zh": "带走句来了，闭上眼睛听三遍，让它刻进肌肉记忆。",
+    "outro_zh": "这道题打穿了。明天早上，先背带走句，再重听一遍模范答案。就一道题，值得你学三遍。"
+  },
+  "media": {
+    "titles": [
+      "孩子几岁该有手机？8.5 分的雅思答案，第一句就赢了一半",
+      "雅思 Part 3 杀手题：该给孩子买手机吗？别说 yes 或 no",
+      "考官问 Should kids have smartphones？一个句式直接把答案拉到 7 分以上"
+    ],
+    "script_en": [
+      ["a", "[curious] Should children have their own smartphones? Yes or no?"],
+      ["b", "Most people pick a side. Band 8 answers refuse to—and here's the exact sentence they open with."],
+      ["b", "It really depends on how well a kid can discipline themselves."],
+      ["a", "Wait—so the answer is... no answer?"],
+      ["b", "No, the answer is a condition. Primary schoolers? No—parents should set clear limits on screen time instead. But age isn't everything: good parenting changes everything, because a smartphone is a double-edged sword."],
+      ["a", "So don't defend a position—define the condition."],
+      ["b", "Exactly. It really depends on how well a kid can discipline themselves. Either way—set clear limits."],
+      ["a", "What would YOUR answer be? Comment below."]
+    ],
+    "script_zh_variant": [
+      ["a", "考官问：孩子该有自己的手机吗？中国考生的第一反应是 yes 或 no——从这句话开始就已经输了。"],
+      ["b", "It really depends on how well a kid can discipline themselves."],
+      ["a", "听到没有，第一句不给立场，给条件。这就是七分和六点五的分水岭。后面再加一句："],
+      ["b", "Parents should set clear limits on screen time."],
+      ["a", "家长该对屏幕时间设明确限制。一个条件，一个方案，三十秒，答案立住了。完整版在音频里。你的答案是什么？评论区交作业。"]
+    ],
+    "caption_zh": "雅思口语 Part 3 遇到“该不该”题型，别说 yes 或 no——8.5 分的开场是给一个有条件的立场：It really depends on how well a kid can discipline themselves. 再补一个方案 set clear limits on screen time，三十秒答案立住。完整训练音频看主页。",
+    "tags": ["雅思口语", "雅思Part3", "IELTS", "雅思备考", "英语口语", "出国留学", "亲子教育"]
+  }
+}
