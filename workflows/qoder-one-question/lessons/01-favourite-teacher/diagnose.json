@@ -1,0 +1,142 @@
+{
+  "question": "Do you have a favourite teacher?",
+  "words": 54,
+  "metrics": {
+    "filler_hits": {
+      "you know": 1,
+      "like（填充）": 0,
+      "kind of / sort of": 2,
+      "actually": 1,
+      "stuff / things": 0
+    },
+    "filler_per_100_words": 7.41,
+    "vague_nouns": 0,
+    "concession_markers": 0,
+    "advance_markers": 0,
+    "opinion_markers": {
+      "I think": 0,
+      "I'd say": 0,
+      "in my opinion": 0,
+      "the way I see it": 0,
+      "from where I stand": 0,
+      "personally": 0,
+      "it seems to me": 0
+    },
+    "opinion_variety": 0,
+    "mean_clause_words": 13.5,
+    "longest_clause_words": 21,
+    "repeated_content_words": []
+  },
+  "structure": {
+    "有立场": true,
+    "给理由": false,
+    "举例子": false,
+    "作让步": false,
+    "再推进": false
+  },
+  "missing_moves": [
+    "给理由",
+    "举例子",
+    "作让步",
+    "再推进"
+  ],
+  "issues": [
+    {
+      "rule_id": "c_kind_of_noun",
+      "family": "含糊限定",
+      "impact": 2,
+      "count": 2,
+      "score": 4,
+      "examples": [
+        "kind of favorite teacher"
+      ],
+      "why_zh": "kind of 后面不能这样套名词；想说「算不上」用 I wouldn't exactly call it a ..."
+    },
+    {
+      "rule_id": "c_no_such_thing",
+      "family": "否定含糊",
+      "impact": 2,
+      "count": 2,
+      "score": 4,
+      "examples": [
+        "don't have kind of favorite teacher"
+      ],
+      "why_zh": "自然说法是 I don't really have a favourite ... ，really 放在 have 前面"
+    },
+    {
+      "rule_id": "c_interacts_noun",
+      "family": "词性",
+      "impact": 2,
+      "count": 1,
+      "score": 2,
+      "examples": [
+        "common interacts"
+      ],
+      "why_zh": "interact 是动词，名词是 interaction(s)；这里更自然是 the usual exchanges"
+    },
+    {
+      "rule_id": "c_learn_knowledge",
+      "family": "中式直译",
+      "impact": 2,
+      "count": 1,
+      "score": 2,
+      "examples": [
+        "learn knowledge"
+      ],
+      "why_zh": "说 gain knowledge 或 learn things"
+    },
+    {
+      "rule_id": "c_teach_knowledge",
+      "family": "中式直译",
+      "impact": 2,
+      "count": 1,
+      "score": 2,
+      "examples": [
+        "teach me knowledge"
+      ],
+      "why_zh": "teach me knowledge 不成立；说 teach me things 或 pass on knowledge"
+    },
+    {
+      "rule_id": "c_deep_relationship",
+      "family": "搭配",
+      "impact": 1,
+      "count": 1,
+      "score": 1,
+      "examples": [
+        "a deep relationship"
+      ],
+      "why_zh": "关系好用 close relationship；deep 偏中文「关系深」"
+    },
+    {
+      "rule_id": "c_introvert_person",
+      "family": "词性",
+      "impact": 1,
+      "count": 1,
+      "score": 1,
+      "examples": [
+        "an introvert person"
+      ],
+      "why_zh": "说 I'm quite introverted"
+    },
+    {
+      "rule_id": "c_sit_on_chair",
+      "family": "介词",
+      "impact": 1,
+      "count": 1,
+      "score": 1,
+      "examples": [
+        "sit on my chair"
+      ],
+      "why_zh": "带扶手的椅子用 in the chair；on the chair 听着像刚放下东西"
+    }
+  ],
+  "top3_suggested": [
+    "c_kind_of_noun",
+    "c_no_such_thing",
+    "c_interacts_noun"
+  ],
+  "warnings": [
+    "填充词密度 7.41/百词，母语者 casual 口语约 0.2–0.5——这一项比任何单个语法错都更影响流利度分",
+    "全篇没有让步或转折连接词，Part 3 逻辑层次上不去"
+  ]
+}

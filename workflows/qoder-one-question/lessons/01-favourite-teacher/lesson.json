@@ -1,0 +1,77 @@
+{
+  "id": "01-favourite-teacher",
+  "part": 1,
+  "question": "Do you have a favourite teacher?",
+  "follow_ups": [
+    "Do you want to be a teacher in the future?",
+    "Are you still in touch with your primary school teachers?"
+  ],
+  "target_band": 7.5,
+  "diagnosis_line_zh": "54 个词里你把同一句「我没有喜欢的老师」说了两遍，理由 0 次、例子 0 次、让步 0 次。你这道题的问题不是语法，是说完就没有了。",
+  "answer_raw": "Actually, I don't have kind of favorite teacher. I'm an introvert person, so you know, I don't have a deep relationship with my favorite teachers. They just teach me knowledge, I just sit on my chair and listen to them and learn knowledge, just common interacts. And I don't have kind of favorite teacher.",
+  "scaffold_zh": "否定（as such）→ 给原因（我不亲近）→ 给细节（上课·记笔记）→ 转向（真正教我最多的不是人）",
+  "fixes": [
+    {
+      "id": "as-such",
+      "label_zh": "否定不要套 kind of",
+      "original": "I don't have kind of favorite teacher",
+      "fixed": "I don't really have a favourite teacher, as such.",
+      "core": "I don't really have a favourite teacher, as such.",
+      "rule_zh": "「没有那种最喜欢的老师」不是 don't have kind of ...。really 放在 have 前面，句尾补一个 as such，就是母语者的否定方式。kind of 只能修饰形容词，不能套名词。",
+      "prompt_zh": "严格说来，我没有什么特别喜欢的老师。"
+    },
+    {
+      "id": "be-close-to",
+      "label_zh": "关系不深不是 deep relationship",
+      "original": "I don't have a deep relationship with my favorite teachers",
+      "fixed": "I was never close to any of them.",
+      "core": "I was never close to any of them.",
+      "rule_zh": "be close to somebody 是万能搭配。deep relationship 在英语里指灵魂层面的深交，用来说师生关系会过重，考官会愣一下。",
+      "prompt_zh": "我跟他们当中任何一个都不亲近。"
+    },
+    {
+      "id": "deliver-the-lesson",
+      "label_zh": "「教我知识」这句不成立",
+      "original": "They just teach me knowledge",
+      "fixed": "They delivered the lesson, I took the notes, and that was that.",
+      "core": "They delivered the lesson.",
+      "rule_zh": "teach me knowledge 是中文直译，knowledge 不可数也不这么用。把动作具体化：deliver the lesson 上课、take notes 记笔记、explain a concept 讲概念。具体动词比 knowledge 这种大词值钱得多。",
+      "prompt_zh": "他们就是上课，我记笔记，然后就结束了。"
+    }
+  ],
+  "chunks": [
+    {
+      "chunk": "as such",
+      "zh": "严格说来／算不上",
+      "wrong": "I don't have kind of favorite teacher",
+      "example": "I don't have a favourite teacher as such — I had plenty of good ones, just none I'd single out.",
+      "usage_zh": "放在名词后面，表示「谈不上是这个东西，但有相近的」。任何 Part 1 否定题都能救场：I'm not a big reader as such, but..."
+    },
+    {
+      "chunk": "be close to",
+      "zh": "跟某人亲近",
+      "wrong": "have a deep relationship with my teachers",
+      "example": "I was never close to my teachers; I sat at the back and left without saying anything.",
+      "usage_zh": "关系好用 close to，主语是人：We're not close. / I've never been close to him. 名词形式是 closeness。"
+    },
+    {
+      "chunk": "what comes to mind",
+      "zh": "脑子里第一个冒出来的",
+      "wrong": "it just comes out in my mind that my parents help me the most",
+      "example": "When someone asks who shaped me, what comes to mind is a screen, not a classroom.",
+      "usage_zh": "come to mind 不需要介词，更不说 come out in my mind。万能开头：What comes to mind is... / The first thing that comes to mind is..."
+    }
+  ],
+  "model_answer": [
+    "I don't really have a favourite teacher, as such.",
+    "I've had good teachers, but I was never close to any of them — I'm the quiet one who sits at the back.",
+    "They delivered the lesson, I took the notes, and that was that.",
+    "If you ask who's actually taught me the most recently, what comes to mind isn't a person at all — it's an AI.",
+    "It answers questions without judging me for asking them, which is exactly what I couldn't do in a classroom."
+  ],
+  "answer_note_zh": "最后两句没有编任何东西：你自己在另一份稿子里说过「最近帮我最多的就是 AI，它给我答案，我就照做」。把这句话放进「你最喜欢的老师」里，就从一个没话说的回答变成了一个有观点的回答。这才是 7 分到 8 分的路。",
+  "publish": {
+    "aha_fix_id": "as-such",
+    "hook_zh": "「我没有特别喜欢的老师」\n你的第一句会怎么说？"
+  }
+}

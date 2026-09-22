@@ -1,0 +1,32 @@
+{
+  "lesson_id": "01-favourite-teacher",
+  "aha_fix_id": "as-such",
+  "why": "publish.aha_fix_id",
+  "aspect": "9:16",
+  "scenes": [
+    {
+      "id": "hook",
+      "target_seconds": 3
+    },
+    {
+      "id": "wrong",
+      "target_seconds": 9
+    },
+    {
+      "id": "right",
+      "target_seconds": 18
+    },
+    {
+      "id": "chunk",
+      "target_seconds": 20
+    },
+    {
+      "id": "ask",
+      "target_seconds": 12
+    },
+    {
+      "id": "cta",
+      "target_seconds": 6
+    }
+  ]
+}

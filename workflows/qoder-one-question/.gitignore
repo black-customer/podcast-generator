@@ -1,0 +1,18 @@
+.cache/
+.html
+.narration/
+*.m4a
+__pycache__/
+*.pyc
+
+# 生成物：音频/图片/视频都能从 lesson.json 重跑出来，不进 git
+lessons/**/*.mp3
+lessons/**/*.mp4
+lessons/**/*.png
+lessons/**/page.html
+.narration/
+*.m4a
+lessons/**/PENDING.json
+
+# 个人全套材料（锚定本人真实语料，不对外）
+kit/learning_kit_bruce/
