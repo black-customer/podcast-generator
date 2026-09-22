@@ -1,0 +1,33 @@
+{
+  "id": "EP5",
+  "slug": "my-story-native",
+  "title": "我的故事，母语者讲法：转专业与第一场演唱会",
+  "anchor": "Part 2: A change / A live show you attended",
+  "takeaway": "I made the switch, and honestly, it's the best decision I've made.",
+  "blocks": [
+    { "t": "dlg", "lines": [
+      ["a", "Bruce，今天的材料百分之百是你的人生，我一个字都没编。第一个故事：化学转计算机。你原来的讲法是 I was a chemical student, then I choose to switch my major。意思全对，但母语者有一个专门的动词搭配，今天第一个特写语块："],
+      ["b", "I made the switch from chemistry to computer science."],
+      ["a", "Make the switch，完成转型。换工作、换城市、换赛道，都能用。顺便，你两次想说\"高薪工作\"，说的是 high-paid job。地道的说法是 well-paid，或者 a high-paying job："],
+      ["b", "Everyone says coding leads to well-paid jobs—that was part of the appeal, I won't lie."],
+      ["a", "注意这个收尾：that was part of the appeal, I won't lie。诚实又可爱，考官就吃这套。来，你的完整故事，八点五分版："]
+    ]},
+    { "t": "dlg", "lines": [
+      ["b", "So originally I was a chemistry major, but I made the switch to computer science in my first year. Part of it was practical, I'll be honest—everyone said coding leads to well-paid jobs. But the bigger reason was that I've always been the guy tinkering with computers, and I wanted to understand what's going on under the hood, instead of just being a user. Best decision I've made, honestly."],
+      ["a", "Under the hood，引擎盖下面，引申为\"底层原理\"。这个意象母语者超爱。好，第二个故事，你的第一场演唱会。你当时激动到词穷：it's really unrealistic... it's very fancy... a very huge place。其实三个词就够：stadium 场馆；surreal 震撼到不真实；vibe 氛围——vibe 你已经会用而且用得很好。第二个特写语块来了："],
+      ["b", "It felt completely surreal."],
+      ["a", "It felt surreal。比 unrealistic 高级一个段位。完整版听好："],
+      ["b", "I went to my first live show as a freshman. The moment I walked into the stadium, I just stood there—it felt completely surreal. The lights, the crowd, the vibe—everyone singing together. Watching my favorite singer from the stands was a once-in-a-lifetime feeling, and honestly, no video has ever come close."]
+    ]},
+    { "t": "dlg", "lines": [
+      ["a", "Once in a lifetime，一生一次。好，八秒实战。用 make the switch 或者 it felt surreal，讲一件你自己的转变或震撼经历。必须出声。预备——"]
+    ]},
+    { "t": "sil", "sec": 8 },
+    { "t": "beep", "freq": 880, "dur": 0.25 },
+    { "t": "dlg", "lines": [
+      ["a", "带走句，闭眼三遍。"],
+      ["b", "I made the switch, and honestly, it's the best decision I've made."],
+      ["a", "五集正课，到此完结。接下来是两个特训日：影子跟读带，和考前五分钟热身带。你的英语不是不行，是还没穿上西装，Bruce。坚持住。"]
+    ]}
+  ]
+}

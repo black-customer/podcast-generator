@@ -1,0 +1,34 @@
+{
+  "id": "EP3",
+  "slug": "opinion-arsenal",
+  "title": "Part 3 军火库：That said 与 I'd go as far as to say",
+  "anchor": "Part 3: Technology / Education / Languages",
+  "takeaway": "I'd go as far as to say that AI will reshape education. That said, teachers will always matter.",
+  "blocks": [
+    { "t": "dlg", "lines": [
+      ["a", "Bruce，Part 3 观点题军火库，开库。先说一个我自己发现的隐患：你所有的转折只有一把武器，but。But 来 but 去，考官听得毫无波澜。今天给你两把新武器。第一把："],
+      ["b", "That said, ..."],
+      ["a", "话虽如此。它专门放在回答的后半段：先让一步，再扳回来。你上次聊孩子用手机，开头说得很好，smartphone is a double-edged sword，这个保留。但后半段别再 but 了，听母语者怎么接："],
+      ["b", "Smartphones are a double-edged sword. That said, if a kid has been taught self-discipline, there's no reason to panic."],
+      ["a", "先承认有刀刃，再给出不慌的理由。这就是 Part 3 要的思辨感。第二把武器，升级观点强度。当你想说\"我甚至认为\"，别只说 I think："]
+    ]},
+    { "t": "dlg", "lines": [
+      ["b", "I'd go as far as to say that..."],
+      ["a", "我甚至敢说。你上次聊 AI 改变教育，说的是 absolutely, 100%。用上新武器就是：I'd go as far as to say that AI will reshape education entirely. 顺便修一个旧伤。你说过：it depends how the children self-disciplining ability developed。意思全对，零件装反了。拆开重装："],
+      ["b", "It really depends on how well a kid can discipline themselves."],
+      ["a", "Depends on，加 how，加从句。这个骨架能接住一半的 Part 3。来，实战。真题打样，注意数武器："],
+      ["a", "Do you think technology will change education in the future?"],
+      ["b", "Absolutely, and I'd go as far as to say that AI will reshape education completely within a decade. Lessons can already be tailored to each student's pace, which traditional classrooms simply can't do. That said, I don't think teachers will disappear, because education isn't just about transferring knowledge—it's also about motivation and human connection. So my prediction is a hybrid model: AI handles the drilling, and teachers focus on thinking and character. Whether that happens smoothly really depends on how quickly schools can adapt."]
+    ]},
+    { "t": "dlg", "lines": [
+      ["a", "看到骨架了吗？I'd go as far as to say 开局亮剑，That said 中场让步，really depends on how 收尾留思。三件武器，一次打光，这就是考官想听的 Part 3。好，八秒实战。用 That said 或者 I'd go as far as to say，回答：Is it necessary for children to learn a foreign language? 必须出声。预备——"]
+    ]},
+    { "t": "sil", "sec": 8 },
+    { "t": "beep", "freq": 880, "dur": 0.25 },
+    { "t": "dlg", "lines": [
+      ["a", "带走句，闭眼三遍。"],
+      ["b", "I'd go as far as to say that AI will reshape education. That said, teachers will always matter."],
+      ["a", "明天上手术台。手术对象，是你每分钟说八遍的 you know。Bruce，明天见。"]
+    ]}
+  ]
+}

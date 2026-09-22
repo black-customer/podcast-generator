@@ -59,3 +59,7 @@ data/question_bank.json
 
 # 任务运行态：服务重启恢复用，非产品数据
 data/jobs.json
+
+# Bruce 个性化学习包：脚本与文本入库，可再生的音频与卡片不入库
+bruce_kit/audio/
+bruce_kit/cards/

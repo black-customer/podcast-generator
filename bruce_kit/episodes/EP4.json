@@ -1,0 +1,29 @@
+{
+  "id": "EP4",
+  "slug": "fluency-surgery",
+  "title": "流利度手术：接管 your you know，装上 AREA 骨架",
+  "anchor": "Part 1: Music / Singing",
+  "takeaway": "Music is how I set my mood—it starts my day on the right foot.",
+  "blocks": [
+    { "t": "dlg", "lines": [
+      ["a", "Bruce，今天不教新词，今天做流利度手术。手术对象，是你每分钟要说八遍的 you know。先说清楚，you know 本身无罪，母语者也说。问题是它已经变成了你思考的拐杖：一拿开，你就不会走路了。所以手术分两步。第一步，把\"买时间\"的工作从 you know 手里接管过来。考官问完，你需要三秒想内容，这时候母语者说的是："],
+      ["b", "That's a good question. Let me think for a second. How should I put this..."],
+      ["a", "这三句轮流用，比二十个 you know 都体面，而且考官听着是沉稳，不是卡壳。第二步，是让内容自己长出来。框架四个字母，AREA。A，Answer，第一句直接给答案。R，Reason，一个理由。E，Example，一个你自己的例子。最后一个 A，Attitude，加一句你的态度或感受。任何 Part 1 题，AREA 四步，二十秒，饱满完整还有个人味。"]
+    ]},
+    { "t": "dlg", "lines": [
+      ["a", "拿你真实的题试一次。Do you prefer sad or happy music? 你原来的回答绕了很多圈，还有一句很危险：when I'm sad, listening to sad music is very disgusting。你想说的其实是\"违和、不上头\"，那个词是 it feels off。来，听母语者用 AREA 把你的答案重打一遍："],
+      ["b", "Happy music, no contest. Honestly, music is how I set my mood, and sad songs when I'm already down just make everything heavier. Like, every morning when I get up, I put on something upbeat while I get ready—it genuinely starts my day on the right foot. So for me, music is a tool, not just entertainment."],
+      ["a", "拆解一下：Happy music, no contest，答案。Music is how I set my mood，理由。Every morning I put on something upbeat，例子。Music is a tool, not just entertainment，态度。四句话，二十秒，没有一个 you know，但每一秒都在得分。"]
+    ]},
+    { "t": "dlg", "lines": [
+      ["a", "好，八秒实战。心里用 AREA 搭骨架，开口回答：Do you like singing? 记住，答案第一句就给，别绕。预备——"]
+    ]},
+    { "t": "sil", "sec": 8 },
+    { "t": "beep", "freq": 880, "dur": 0.25 },
+    { "t": "dlg", "lines": [
+      ["a", "带走句，闭眼三遍。"],
+      ["b", "Music is how I set my mood—it starts my day on the right foot."],
+      ["a", "明天是温情集：把你自己的故事，讲成母语者的版本。Bruce，手术很成功。"]
+    ]}
+  ]
+}

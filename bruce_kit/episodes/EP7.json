@@ -1,0 +1,28 @@
+{
+  "id": "EP7",
+  "slug": "warmup",
+  "title": "考前五分钟热身：快速检索十一连",
+  "anchor": "Daily warm-up — rapid retrieval of all chunks",
+  "takeaway": "每天出门前一遍，考试当天早上必做。",
+  "blocks": [
+    { "t": "dlg", "lines": [
+      ["a", "Bruce，考前五分钟热身。规则：我说中文提示，提示音之后，五秒内把英文说出来。快，狠，出声。这是你上场前的最后一道工序。开始。"]
+    ]},
+    { "t": "warmup", "cue": "提示一：选项太多，得用 many。", "answer": "There are too many options." },
+    { "t": "warmup", "cue": "提示二：每个学生都得学。", "answer": "Every student learns English at school." },
+    { "t": "warmup", "cue": "提示三：科技改变了我们的生活。", "answer": "Technology has changed our lives." },
+    { "t": "warmup", "cue": "提示四：我算不上爱逛街的人。", "answer": "I'm not much of a shopping person." },
+    { "t": "warmup", "cue": "提示五：卡壳救星，不加思索地讲。", "answer": "Off the top of my head, I'd say..." },
+    { "t": "warmup", "cue": "提示六：话虽如此。", "answer": "That said, ..." },
+    { "t": "warmup", "cue": "提示七：我甚至敢说。", "answer": "I'd go as far as to say that..." },
+    { "t": "warmup", "cue": "提示八：这取决于孩子能不能自律。", "answer": "It really depends on how well a kid can discipline themselves." },
+    { "t": "warmup", "cue": "提示九：好问题，让我想两秒。", "answer": "That's a good question—let me think for a second." },
+    { "t": "warmup", "cue": "提示十：我转专业了。", "answer": "I made the switch to computer science." },
+    { "t": "warmup", "cue": "提示十一：震撼到不真实。", "answer": "It felt completely surreal." },
+    { "t": "dlg", "lines": [
+      ["a", "十一连，完成。最后三十秒，听一遍今天的终极带走句，然后你就上场。"],
+      ["b", "I'd go as far as to say this training works. That said, it only works if you speak out loud."],
+      ["a", "听见了吗，It only works if you speak out loud。出声，是你和普通听众唯一的区别。去吧 Bruce，你已经不是一周前的你了。"]
+    ]}
+  ]
+}

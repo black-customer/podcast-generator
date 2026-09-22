@@ -1,0 +1,38 @@
+{
+  "id": "EP1",
+  "slug": "grammar-clinic",
+  "title": "语法急诊室：五针缝合你的高频伤口",
+  "anchor": "Part 1: Studies / Age / Mornings",
+  "takeaway": "Technology has changed how I learn—it's made everything more accessible.",
+  "blocks": [
+    { "t": "dlg", "lines": [
+      ["a", "Bruce，欢迎收听你的专属语法急诊室，我是你的教练 Mia。今天的手术方案很简单：不动你的想法，只修你的语法。因为我翻了你的全部口语记录之后发现，你的想法已经是七分的想法了，是语法没跟上。来，五个最高频的伤口，一个一个缝。第一针，可数名词。你说过：There are too much options。停。Options 是可数名词，必须用 many。跟我读："],
+      ["b", "There are too many options."],
+      ["a", "第二针，every 后面永远跟单数。你说过 every students will learn English。改成："],
+      ["b", "Every student learns English at school."],
+      ["a", "注意，动词还要加 s。第三针，单数主语配单数动词。你说过 technology have changed our life。Technology 是单数，life 在这种语境下用复数更好："]
+    ]},
+    { "t": "dlg", "lines": [
+      ["b", "Technology has changed our lives."],
+      ["a", "第四针，现在完成时要用过去分词。你说过 I have sing some songs。Sing 的分词是 sung：I've sung some songs。第五针，也是最有画面感的一针，代词性别。你聊你妈妈的时候说：he kind of spoiled me。Bruce，你妈妈是 she。She kind of spoiled me. 好，五针缝完，把它们缝进一句口诀：可数用 many，every 后单数，单数主语加 s，完成时分词，妈妈是 she。现在听母语者把五针连起来打一遍："],
+      ["b", "Too many options. Every student learns. Technology has changed our lives. I've sung it before. She spoiled me—she just cleaned up after me."],
+      ["a", "漂亮。现在实战。考官来了，先别急着开口，听八点五分的母语者怎么答同一道题。注意，他说的每一个细节都是你的真实生活，只是语法穿了西装。"]
+    ]},
+    { "t": "dlg", "lines": [
+      ["a", "How much time do you spend on your studies each week?"],
+      ["b", "Honestly, it really depends on my mood, because I'm not the most disciplined person. On a good day I'll put in about four hours, which adds up to around thirty hours a week. Lately I've been using AI tools pretty much every day—whenever I get stuck, I just ask, and it walks me through the solution step by step. Some people say that's cheating, but I disagree. Technology has genuinely changed how I learn. It's made everything more accessible."],
+      ["a", "听到了吗？I've been using，完成进行时。It's made everything more accessible，has 加分词。Around thirty hours a week，单复数干净利落。同样的内容，语法穿上西装，气质完全不一样了。"]
+    ]},
+    { "t": "beep", "freq": 660, "dur": 0.25 },
+    { "t": "dlg", "lines": [
+      ["a", "轮到你了。八秒钟，用今天缝的任何一针，开口回答刚才那道题。记住，必须出声。预备——"]
+    ]},
+    { "t": "sil", "sec": 8 },
+    { "t": "beep", "freq": 880, "dur": 0.25 },
+    { "t": "dlg", "lines": [
+      ["a", "很好。今天的带走句来了，闭上眼睛听三遍，让它刻进肌肉记忆。"],
+      ["b", "Technology has changed how I learn—it's made everything more accessible."],
+      ["a", "明天同一时间，词汇打假现场。你的 sceneries，有麻烦了。训练结束，Bruce，做得好。"]
+    ]}
+  ]
+}

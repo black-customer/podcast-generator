@@ -289,3 +289,27 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
 - 修复 Windows 分享闭环：doctor.py 改用 GBK 安全的 ASCII 状态标记，真实默认控制台运行通过。
 - Android 重新 sync + Gradle assembleDebug 成功；beta APK 和 portable ZIP 已用最终源码重建。
 - 最终门禁：ruff 绿；143 passed、1 skipped；Playwright 7 passed；服务冒烟绿。
+
+## 2026-09-23 会话 12：Bruce 个性化口语学习包一期（7 音频 + 22 卡）
+
+- 输入：三份雅思口语真实转写（Desktop/雅思，约 2 万词），逐句建立错误清单（十大高频伤口：
+  可数性/三单/完成时分词/he-she/sceneries 假朋友/learn knowledge 直译/词汇缺口卡死/
+  转折单一/you know 依赖/depend-suggest 句型）。
+- 设计依据（检索于 Web）：Noticing 假说（Schmidt 1990）、检索练习+间隔重复（测试效应
+  30-50% 保留提升；Nakata 2017）、语块训练提升口语流利度（Albelihi 2022 Frontiers）、
+  shadowing 系统综述（Whitworth 2025）。每集结构=错误对比→语块特写→提示音+8s 强制
+  开口检索→8.5 分母语者示范（Bruce 真实内容）→带走句。
+- 交付 bruce_kit/：00_START_HERE 诊断与使用指南；episodes/EP1-EP7 文稿 JSON（入库）；
+  audio/ 七条 MP3 共 19.2 分钟（不入库，可由脚本再生）：EP1 语法急诊室 / EP2 词汇打假 /
+  EP3 Part3 军火库 / EP4 流利度手术+AREA 框架 / EP5 我的故事母语者版 / EP6 影子跟读十四句 /
+  EP7 热身十一连；cards/ 22 张 1080x1350 PNG（A 错误修补 x10 + B 语块 x8 + C 总览 x4）；
+  index.html 播放索引 + 打开学习包.bat。
+- 脚本：scripts/generate_bruce_learning_kit.py（Fish 免费档 s2.1-pro-free 真实合成，
+  内容哈希缓存于 data/.tmp/bruce_kit_cache，断点续跑；dlg 多说话人单次生成/shadow 逐句
+  +等比停顿/warmup 提示-窗口-答案）；scripts/generate_bruce_kit_cards.py（PIL 生成 22 卡，
+  西文整词换行器，全部可再生）。
+- 质检：响度 -16 LUFS、峰值 -1.8 dB 无削波；EP1 恰一条 8.3s 检索静音、EP7 恰 11 条 5s 窗口；
+  卡片经 judge 三轮验收全过（修复：英文断词换行、C1 页脚碰撞、C2 中文字体豆腐块与行溢出、
+  C4 页脚文案重复）；check.sh 全量绿（143 passed 1 skipped + 冒烟）。
+- 未做（刻意）：视频版（与音频图卡内容重合，宪法已取消字幕卡渲染器）；发音专项（转写掩盖
+  发音证据，待 Bruce 录音后做二期）。git push 与是否试听后调整，由 Bruce 决定。

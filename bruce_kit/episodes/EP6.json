@@ -1,0 +1,29 @@
+{
+  "id": "EP6",
+  "slug": "shadowing-drill",
+  "title": "影子跟读特训：十四个核心句，刻进嘴型",
+  "anchor": "Shadowing drill — reuse of EP1–EP5 core sentences",
+  "takeaway": "每天跟读一轮，直到不看稿也能脱口而出。",
+  "blocks": [
+    { "t": "dlg", "lines": [
+      ["a", "Bruce，影子跟读特训，开始。规则很简单：每句话，先听母语者读一遍，停顿的时候，你立刻跟着读一遍。重点不是单词，是节奏、连读和语调——像影子一样贴着他。每句话跟读完就过了，不许回头纠结。十四个核心句，全部来自前五集。准备好了吗？开始。"]
+    ]},
+    { "t": "shadow", "text": "There are too many options." },
+    { "t": "shadow", "text": "Every student learns English at school." },
+    { "t": "shadow", "text": "Technology has changed our lives." },
+    { "t": "shadow", "text": "Technology has changed how I learn—it's made everything more accessible." },
+    { "t": "shadow", "text": "I'm not much of a shopping person." },
+    { "t": "shadow", "text": "Off the top of my head, I'd say my city could use more parks." },
+    { "t": "shadow", "text": "My watch tells me how many calories I've burned." },
+    { "t": "shadow", "text": "I watched my first live show in a huge stadium, and the vibe was unreal." },
+    { "t": "shadow", "text": "Smartphones are a double-edged sword. That said, with self-discipline, kids can handle them." },
+    { "t": "shadow", "text": "I'd go as far as to say that AI will reshape education." },
+    { "t": "shadow", "text": "It really depends on how well a kid can discipline themselves." },
+    { "t": "shadow", "text": "That's a good question—let me think for a second." },
+    { "t": "shadow", "text": "Music is how I set my mood—it starts my day on the right foot." },
+    { "t": "shadow", "text": "I made the switch from chemistry to computer science, and honestly, it's the best decision I've made." },
+    { "t": "dlg", "lines": [
+      ["a", "十四句，全部拿下。最后一遍，闭上眼睛，不看任何稿子，在脑子里把这十四句再过一遍。能回忆起几句？明天再听这条带，目标是全部。影子跟读的意义就在于：嘴型比记忆更长寿。Bruce，特训完成。"]
+    ]}
+  ]
+}

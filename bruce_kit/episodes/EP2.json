@@ -1,0 +1,38 @@
+{
+  "id": "EP2",
+  "slug": "vocab-fraud",
+  "title": "词汇打假现场：sceneries 不是\"情况\"",
+  "anchor": "Part 1: Parks / Science / Shopping",
+  "takeaway": "I'm not much of a shopping person—off the top of my head, I shop online maybe twice a year.",
+  "blocks": [
+    { "t": "dlg", "lines": [
+      ["a", "Bruce，欢迎回到词汇打假现场。今天要打的第一假，是你口语里出镜率最高的假货，sceneries。你几乎所有想说\"情况、场景\"的地方都用了它：in some specific sceneries，different sceneries。但 scenery 在英语里只有一个意思：自然风景。山、湖、公园里的景色。你真正想说的\"情况\"，是 situation，或者 scenario。听母语者示范："],
+      ["b", "It really depends on the situation. In that kind of scenario, I'd just walk away."],
+      ["a", "situation，scenario。下次想说\"在某些特定情况下\"，就说 in certain situations。好，第二个假货，你聊演唱会的时候找不到词，卡在了那里：it's a sport museum, I can say it's not museum... it's just a very huge place。Bruce，那个词四秒就能说完："]
+    ]},
+    { "t": "dlg", "lines": [
+      ["b", "Stadium. I watched my first live show in a huge stadium, and the vibe was unreal."],
+      ["a", "Stadium，体育场。顺便，看演唱会是 live show，现场。你以前说的是 life show，那是人生秀。还有三个假货，快速清仓。第一，你聊手表说 know what carry I actually spend——你想说的是卡路里，calories："],
+      ["b", "My watch tells me how many calories I've burned."],
+      ["a", "第二，你想说死海，说的是 dead lake。它有名字：the Dead Sea。第三，你两次想表达\"我不是爱逛街的人\"，说的是 I'm not kind of shopping person。就差一步！正确的说法是今天第一个特写语块："],
+      ["b", "I'm not much of a shopping person."]
+    ]},
+    { "t": "dlg", "lines": [
+      ["a", "Not much of a，算不上是某种人。这个框架能套住你整个人设：I'm not much of a city person. I'm not much of a morning person. I'm not much of a car person. 一句话，人格立住了。第二个特写语块，专治卡壳。下次考官问了道你一时想不出答案的题，别 um um um，体面地买五秒钟："],
+      ["b", "Off the top of my head, I'd say..."],
+      ["a", "不加思索地讲。考官听到这句反而觉得你流利。现在实战。考官问你真实聊过的题，先听母语者打样："],
+      ["a", "Do you like going to parks? Would you like to see more parks in your city?"],
+      ["b", "To be honest, I'm not much of an outdoorsy person—I grew up glued to video games. But these days I've really come around, because going to a park gives me a sense of peace. I like watching people, the scenery, the animals—it's a nice break from screens. Off the top of my head, I'd say my city could always use more parks. A lot of them are pretty far from where I live, so if there were more green spaces nearby, I'd definitely go more often."]
+    ]},
+    { "t": "dlg", "lines": [
+      ["a", "数一数：not much of an outdoorsy person，off the top of my head，还有真正的 scenery——这次是真的风景。你的内容，母语者的料。好，八秒实战。用 not much of a 或者 off the top of my head，回答这道题：Do you like shopping? 必须出声。预备——"]
+    ]},
+    { "t": "sil", "sec": 8 },
+    { "t": "beep", "freq": 880, "dur": 0.25 },
+    { "t": "dlg", "lines": [
+      ["a", "收工。今天的带走句，闭眼听三遍。"],
+      ["b", "I'm not much of a shopping person—off the top of my head, I shop online maybe twice a year."],
+      ["a", "明天，Part 3 观点题军火库开库。Bruce，今天打得漂亮。"]
+    ]}
+  ]
+}
