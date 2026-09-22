@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "speaker": "A",
+    "name": "Mia",
+    "text": "[curious] Do you like buying shoes? How often do you buy them?",
+    "start": 0.16,
+    "end": 3.06,
+    "duration": 2.9,
+    "mode": "sse"
+  },
+  {
+    "id": 1,
+    "speaker": "B",
+    "name": "Ethan",
+    "text": "[relaxed] Not really. I don't really have the habit of buying shoes, because my family isn't actually that rich. I usually just wear a pair until they don't feel good to wear anymore, like after a year or two, when the leather gets a bit worn out. I mean, it's not like they're falling apart or anything, but once they start to look a little worn, I'll switch to a new pair. [uncertain] So, I'd say I buy a new pair of shoes maybe every two or three years.",
+    "start": 3.36,
+    "end": 25.78,
+    "duration": 22.42,
+    "mode": "sse"
+  }
+]

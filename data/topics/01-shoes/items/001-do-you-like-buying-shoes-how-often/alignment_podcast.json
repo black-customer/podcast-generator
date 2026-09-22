@@ -1,0 +1,514 @@
+{
+  "version": 1,
+  "track": "podcast",
+  "mode": "sse",
+  "text_fingerprint": "cce863ccddaa2a97",
+  "audio_signature": "620086:1789978233",
+  "created_at": "2026-09-21T16:10:33",
+  "segments": [
+    {
+      "text": "[curious] Do you like buying shoes? How often do you buy them?",
+      "speaker": "a",
+      "start": 0.16,
+      "end": 3.06
+    },
+    {
+      "text": "[relaxed] Not really. I don't really have the habit of buying shoes, because my family isn't actually that rich. I usually just wear a pair until they don't feel good to wear anymore, like after a year or two, when the leather gets a bit worn out. I mean, it's not like they're falling apart or anything, but once they start to look a little worn, I'll switch to a new pair. [uncertain] So, I'd say I buy a new pair of shoes maybe every two or three years.",
+      "speaker": "b",
+      "start": 3.36,
+      "end": 25.78
+    }
+  ],
+  "words": [
+    {
+      "text": "Do",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "you",
+      "start": 0.24,
+      "end": 0.32
+    },
+    {
+      "text": "like",
+      "start": 0.32,
+      "end": 0.56
+    },
+    {
+      "text": "buying",
+      "start": 0.56,
+      "end": 0.8
+    },
+    {
+      "text": "shoes",
+      "start": 0.8,
+      "end": 1.44
+    },
+    {
+      "text": "How",
+      "start": 1.76,
+      "end": 1.92
+    },
+    {
+      "text": "often",
+      "start": 1.92,
+      "end": 2.24
+    },
+    {
+      "text": "do",
+      "start": 2.24,
+      "end": 2.32
+    },
+    {
+      "text": "you",
+      "start": 2.32,
+      "end": 2.4
+    },
+    {
+      "text": "buy",
+      "start": 2.4,
+      "end": 2.64
+    },
+    {
+      "text": "them",
+      "start": 2.64,
+      "end": 3.04
+    },
+    {
+      "text": "Not",
+      "start": 3.343,
+      "end": 3.583
+    },
+    {
+      "text": "really",
+      "start": 3.583,
+      "end": 4.143
+    },
+    {
+      "text": "I",
+      "start": 4.383,
+      "end": 4.463
+    },
+    {
+      "text": "don't",
+      "start": 4.463,
+      "end": 4.623
+    },
+    {
+      "text": "really",
+      "start": 4.623,
+      "end": 4.863
+    },
+    {
+      "text": "have",
+      "start": 4.863,
+      "end": 5.023
+    },
+    {
+      "text": "the",
+      "start": 5.023,
+      "end": 5.103
+    },
+    {
+      "text": "habit",
+      "start": 5.103,
+      "end": 5.423
+    },
+    {
+      "text": "of",
+      "start": 5.423,
+      "end": 5.503
+    },
+    {
+      "text": "buying",
+      "start": 5.503,
+      "end": 5.823
+    },
+    {
+      "text": "shoes",
+      "start": 5.823,
+      "end": 6.303
+    },
+    {
+      "text": "because",
+      "start": 6.543,
+      "end": 6.783
+    },
+    {
+      "text": "my",
+      "start": 6.783,
+      "end": 6.943
+    },
+    {
+      "text": "family",
+      "start": 6.943,
+      "end": 7.343
+    },
+    {
+      "text": "isn't",
+      "start": 7.343,
+      "end": 7.423
+    },
+    {
+      "text": "actually",
+      "start": 7.423,
+      "end": 7.983
+    },
+    {
+      "text": "that",
+      "start": 7.983,
+      "end": 8.063
+    },
+    {
+      "text": "rich",
+      "start": 8.063,
+      "end": 8.543
+    },
+    {
+      "text": "I",
+      "start": 8.943,
+      "end": 9.023
+    },
+    {
+      "text": "usually",
+      "start": 9.023,
+      "end": 9.343
+    },
+    {
+      "text": "just",
+      "start": 9.343,
+      "end": 9.583
+    },
+    {
+      "text": "wear",
+      "start": 9.583,
+      "end": 9.743
+    },
+    {
+      "text": "a",
+      "start": 9.743,
+      "end": 9.823
+    },
+    {
+      "text": "pair",
+      "start": 9.823,
+      "end": 10.063
+    },
+    {
+      "text": "until",
+      "start": 10.063,
+      "end": 10.383
+    },
+    {
+      "text": "they",
+      "start": 10.383,
+      "end": 10.463
+    },
+    {
+      "text": "don't",
+      "start": 10.463,
+      "end": 10.623
+    },
+    {
+      "text": "feel",
+      "start": 10.623,
+      "end": 10.943
+    },
+    {
+      "text": "good",
+      "start": 10.943,
+      "end": 11.183
+    },
+    {
+      "text": "to",
+      "start": 11.183,
+      "end": 11.183
+    },
+    {
+      "text": "wear",
+      "start": 11.183,
+      "end": 11.423
+    },
+    {
+      "text": "anymore",
+      "start": 11.423,
+      "end": 11.983
+    },
+    {
+      "text": "like",
+      "start": 12.223,
+      "end": 12.383
+    },
+    {
+      "text": "after",
+      "start": 12.383,
+      "end": 12.623
+    },
+    {
+      "text": "a",
+      "start": 12.623,
+      "end": 12.703
+    },
+    {
+      "text": "year",
+      "start": 12.703,
+      "end": 12.943
+    },
+    {
+      "text": "or",
+      "start": 12.943,
+      "end": 13.023
+    },
+    {
+      "text": "two",
+      "start": 13.023,
+      "end": 13.343
+    },
+    {
+      "text": "when",
+      "start": 13.503,
+      "end": 13.663
+    },
+    {
+      "text": "the",
+      "start": 13.663,
+      "end": 13.743
+    },
+    {
+      "text": "leather",
+      "start": 13.743,
+      "end": 13.983
+    },
+    {
+      "text": "gets",
+      "start": 13.983,
+      "end": 14.223
+    },
+    {
+      "text": "a",
+      "start": 14.223,
+      "end": 14.223
+    },
+    {
+      "text": "bit",
+      "start": 14.223,
+      "end": 14.383
+    },
+    {
+      "text": "worn",
+      "start": 14.383,
+      "end": 14.623
+    },
+    {
+      "text": "out",
+      "start": 14.623,
+      "end": 14.943
+    },
+    {
+      "text": "I",
+      "start": 15.405,
+      "end": 15.565
+    },
+    {
+      "text": "mean",
+      "start": 15.565,
+      "end": 15.805
+    },
+    {
+      "text": "it's",
+      "start": 15.885,
+      "end": 16.045
+    },
+    {
+      "text": "not",
+      "start": 16.045,
+      "end": 16.205
+    },
+    {
+      "text": "like",
+      "start": 16.205,
+      "end": 16.365
+    },
+    {
+      "text": "they're",
+      "start": 16.365,
+      "end": 16.445
+    },
+    {
+      "text": "falling",
+      "start": 16.445,
+      "end": 16.845
+    },
+    {
+      "text": "apart",
+      "start": 16.845,
+      "end": 17.165
+    },
+    {
+      "text": "or",
+      "start": 17.165,
+      "end": 17.245
+    },
+    {
+      "text": "anything",
+      "start": 17.245,
+      "end": 17.805
+    },
+    {
+      "text": "but",
+      "start": 17.965,
+      "end": 18.125
+    },
+    {
+      "text": "once",
+      "start": 18.125,
+      "end": 18.365
+    },
+    {
+      "text": "they",
+      "start": 18.365,
+      "end": 18.445
+    },
+    {
+      "text": "start",
+      "start": 18.445,
+      "end": 18.845
+    },
+    {
+      "text": "to",
+      "start": 18.845,
+      "end": 18.845
+    },
+    {
+      "text": "look",
+      "start": 18.845,
+      "end": 19.085
+    },
+    {
+      "text": "a",
+      "start": 19.085,
+      "end": 19.085
+    },
+    {
+      "text": "little",
+      "start": 19.085,
+      "end": 19.325
+    },
+    {
+      "text": "worn",
+      "start": 19.325,
+      "end": 19.805
+    },
+    {
+      "text": "I'll",
+      "start": 20.045,
+      "end": 20.205
+    },
+    {
+      "text": "switch",
+      "start": 20.205,
+      "end": 20.525
+    },
+    {
+      "text": "to",
+      "start": 20.525,
+      "end": 20.605
+    },
+    {
+      "text": "a",
+      "start": 20.605,
+      "end": 20.605
+    },
+    {
+      "text": "new",
+      "start": 20.605,
+      "end": 20.845
+    },
+    {
+      "text": "pair",
+      "start": 20.845,
+      "end": 21.245
+    },
+    {
+      "text": "So",
+      "start": 21.965,
+      "end": 22.365
+    },
+    {
+      "text": "I'd",
+      "start": 22.525,
+      "end": 22.685
+    },
+    {
+      "text": "say",
+      "start": 22.685,
+      "end": 22.845
+    },
+    {
+      "text": "I",
+      "start": 22.845,
+      "end": 23.005
+    },
+    {
+      "text": "buy",
+      "start": 23.005,
+      "end": 23.245
+    },
+    {
+      "text": "a",
+      "start": 23.245,
+      "end": 23.245
+    },
+    {
+      "text": "new",
+      "start": 23.245,
+      "end": 23.405
+    },
+    {
+      "text": "pair",
+      "start": 23.405,
+      "end": 23.645
+    },
+    {
+      "text": "of",
+      "start": 23.645,
+      "end": 23.725
+    },
+    {
+      "text": "shoes",
+      "start": 23.725,
+      "end": 24.045
+    },
+    {
+      "text": "maybe",
+      "start": 24.045,
+      "end": 24.445
+    },
+    {
+      "text": "every",
+      "start": 24.445,
+      "end": 24.605
+    },
+    {
+      "text": "two",
+      "start": 24.605,
+      "end": 24.845
+    },
+    {
+      "text": "or",
+      "start": 24.845,
+      "end": 24.925
+    },
+    {
+      "text": "three",
+      "start": 24.925,
+      "end": 25.165
+    },
+    {
+      "text": "years",
+      "start": 25.165,
+      "end": 25.645
+    }
+  ]
+}
