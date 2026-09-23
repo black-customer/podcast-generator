@@ -143,6 +143,7 @@
     }
   ],
   "scheduled": 388.37,
+  "provider": "stepfun",
   "api_calls": 0,
   "cache_hits": 19,
   "lesson_id": "01-favourite-teacher"

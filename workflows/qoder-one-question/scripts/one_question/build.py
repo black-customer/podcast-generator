@@ -281,16 +281,21 @@ def _hl(chunk: str, sentence: str) -> str:
 
 
 # ---------------------------------------------------------------- 页面
-def page(lesson: dict, info: dict | None) -> str:
+def page(lesson: dict, info: dict | None, extras: list[tuple[str, str]] | None = None) -> str:
     if info:
         wins = len(info["windows"])
         step1 = (f"① 听完整音频 {int(info['duration']) // 60} 分 {int(info['duration']) % 60:02d} 秒，"
                  f"{wins} 个窗口全部出声 →")
-        audio_block = '<audio controls src="audio.mp3"></audio>'
+        audio_block = (f'<h3 class="eng">TTS 后端：{E(str(info.get("provider", "stepfun")))}'
+                       f' · {int(info["duration"])}s · {wins} 个窗口</h3>'
+                       '<audio controls src="audio.mp3"></audio>')
     else:
         step1 = "①（音频待生成）先照卡片练，看中文提示自己说，录音 →"
         audio_block = ('<p class="lead">音频还没生成。卡片和页面已经可用；'
                        '重跑一次构建命令即可补上：<code>python -m one_question.build lesson.json</code></p>')
+    for label, fname in (extras or []):
+        audio_block += (f'<h3 class="eng">同一份内容 · TTS 后端：{E(label)}</h3>'
+                        f'<audio controls src="{E(fname)}"></audio>')
     rows = "".join(
         f"<tr><td>{E(f['label_zh'])}</td><td class='b'>{E(f['original'])}</td>"
         f"<td class='g'>{E(f['fixed'])}</td></tr>" for f in lesson["fixes"])
@@ -310,7 +315,8 @@ table{{width:100%;border-collapse:collapse;font-size:15px}}
 td{{padding:10px 10px 10px 0;border-bottom:1px solid #171e27;vertical-align:top}}
 .b{{color:#e28c8c;text-decoration:line-through}}.g{{color:#4DD0C7;font-weight:600}}
 .loop{{background:#10151d;border:1px solid #1c2531;border-radius:14px;padding:16px 20px;font-size:16px}}
-.loop b{{color:#E8A33D}}</style></head><body><div class="w">
+.loop b{{color:#E8A33D}}
+h3.eng{{font-size:13px;letter-spacing:.1em;color:#4DD0C7;margin:14px 0 6px;font-weight:600;text-transform:uppercase}}<body><div class="w">
 <h1>{E(lesson['question'])}</h1>
 <p class="lead">{E(lesson['diagnosis_line_zh'])}</p>
 <div class="loop"><b>12 分钟一轮：</b>{step1} ② 拿答案卡遮住英文，看中文提示自己说一遍，录音 →
@@ -327,7 +333,8 @@ td{{padding:10px 10px 10px 0;border-bottom:1px solid #171e27;vertical-align:top}
 
 # ---------------------------------------------------------------- 入口
 def run(lesson_path: Path, dry: bool = False, cards_only: bool = False,
-        wait_network: float = 0.0) -> int:
+        wait_network: float = 0.0, provider: str | None = None,
+        audio_name: str = "audio.mp3") -> int:
     lesson = json.loads(lesson_path.read_text(encoding="utf-8"))
     errors = validate(lesson)
     if errors:
@@ -347,12 +354,14 @@ def run(lesson_path: Path, dry: bool = False, cards_only: bool = False,
                   f"强制输出窗口 ≤{CAPS['windows_max']} 个")
         return _render_assets(lesson, out, None)
 
-    info = None if cards_only else _attempt_audio(lesson, lesson_path, out, wait_network)
+    info = None if cards_only else _attempt_audio(lesson, lesson_path, out, wait_network,
+                                                  provider, audio_name)
     return _render_assets(lesson, out, info)
 
 
-def _attempt_audio(lesson: dict, lesson_path: Path, out: Path,
-                   wait_network: float) -> dict | None:
+def _attempt_audio(lesson: dict, lesson_path: Path, out: Path, wait_network: float,
+                   provider: str | None = None,
+                   audio_name: str = "audio.mp3") -> dict | None:
     """合成音频。失败不抛异常——卡片和页面不该被网络卡死。"""
     deadline = time.monotonic() + max(0.0, wait_network)
     attempt, last = 0, ""
@@ -360,11 +369,15 @@ def _attempt_audio(lesson: dict, lesson_path: Path, out: Path,
         attempt += 1
         try:
             from server.config import load_settings
-            synth = En.Synth(load_settings(), out / ".cache")
+            settings = load_settings()
+            if provider:
+                settings["tts_provider"] = provider
+            synth = En.Synth(settings, out / ".cache")
             tl = En.Timeline()
             build_audio(lesson, synth, tl)
-            info = tl.render(out / "audio.mp3")
+            info = tl.render(out / audio_name)
             info.update({"scheduled": round(tl.scheduled, 2),
+                         "provider": provider or settings.get("tts_provider"),
                          "api_calls": synth.stats["api_calls"],
                          "cache_hits": synth.stats["cache_hits"]})
             if info["duration"] > CAPS["audio_seconds_max"]:
@@ -372,9 +385,10 @@ def _attempt_audio(lesson: dict, lesson_path: Path, out: Path,
                           f"该减解释文字，不是加纠错点")
             if len(info["windows"]) > CAPS["windows_max"]:
                 En.say_ok(f"! 输出窗口 {len(info['windows'])} 个，超过上限 {CAPS['windows_max']}")
-            (out / "audio_manifest.json").write_text(
-                json.dumps({**info, "lesson_id": lesson["id"]}, ensure_ascii=False, indent=2),
-                encoding="utf-8")
+            if audio_name == "audio.mp3":
+                (out / "audio_manifest.json").write_text(
+                    json.dumps({**info, "lesson_id": lesson["id"]},
+                               ensure_ascii=False, indent=2), encoding="utf-8")
             (out / "PENDING.json").unlink(missing_ok=True)
             return info
         except Exception as exc:  # noqa: BLE001  网络、配额、上游 5xx 都走这里
@@ -401,10 +415,15 @@ def _render_assets(lesson: dict, out: Path, info: dict | None) -> int:
         (out / "card_2_chunks.png", card_chunks(lesson), {"width": 1080, "height": 1350, "fit": True}),
         (out / "card_3_before_after.png", card_before(lesson), {"width": 1080, "height": 1350, "fit": True}),
     ])
-    (out / "page.html").write_text(page(lesson, info), encoding="utf-8")
+    extras = [(f.stem.replace("audio_", ""), f.name)
+              for f in sorted(out.glob("audio_*.mp3")) if f.name != "audio.mp3"]
+    if not info or info.get("file", "audio.mp3") == "audio.mp3":
+        (out / "page.html").write_text(page(lesson, info, extras), encoding="utf-8")
     if info:
-        En.say_ok(f"✓ audio.mp3  {info['duration']:.0f}s  窗口 {len(info['windows'])} 个  "
-                  f"响度 {En.loudness(out / 'audio.mp3')['integrated_lufs']} LUFS  "
+        name = info.get("file", "audio.mp3")
+        En.say_ok(f"✓ {name} [{info.get('provider')}]  {info['duration']:.0f}s  "
+                  f"窗口 {len(info['windows'])} 个  "
+                  f"响度 {En.loudness(out / name)['integrated_lufs']} LUFS  "
                   f"TTS {info['api_calls']} 次/缓存 {info['cache_hits']} 次")
     En.say_ok(f"✓ 3 张卡 + page.html → {out}")
     return 0
@@ -431,6 +450,10 @@ def main() -> int:
     ap.add_argument("--cards-only", action="store_true", help="只出卡片和页面，不碰 TTS")
     ap.add_argument("--wait-network", type=float, default=0.0,
                     help="TTS 失败后最多再等这么多秒（代理刚重启时有用）")
+    ap.add_argument("--provider", choices=("stepfun", "qwen", "fish"),
+                    help="覆盖本次合成的 TTS 后端")
+    ap.add_argument("--out", default="audio.mp3",
+                    help="输出音频文件名（换后端做 A/B 时用，如 audio_qwen.mp3）")
     a = ap.parse_args()
     for s in (sys.stdout, sys.stderr):
         try:
@@ -438,7 +461,7 @@ def main() -> int:
         except Exception:  # noqa: BLE001
             pass
     return run(a.lesson, dry=a.dry_run, cards_only=a.cards_only,
-               wait_network=a.wait_network)
+               wait_network=a.wait_network, provider=a.provider, audio_name=a.out)
 
 
 if __name__ == "__main__":

@@ -14,5 +14,8 @@ lessons/**/page.html
 *.m4a
 lessons/**/PENDING.json
 
+# 测评音频：可由 eval_qwen_tts.py 重跑，只留 results.json 与 index.html
+eval/*.wav
+
 # 个人全套材料（锚定本人真实语料，不对外）
 kit/learning_kit_bruce/

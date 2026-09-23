@@ -51,8 +51,12 @@ class Synth:
             self.stats["cache_hits"] += 1
             return out
         settings = dict(self.settings) if speed is None else {**self.settings, "speed": speed}
-        audio = (_stepfun_dialogue(lines, settings) if provider == "stepfun"
-                 else fish_tts_dialogue([(s, for_tts(t)) for s, t in lines], settings))
+        if provider == "stepfun":
+            audio = _stepfun_dialogue(lines, settings)
+        elif provider == "qwen":
+            audio = _qwen_dialogue(lines, settings)
+        else:
+            audio = fish_tts_dialogue([(s, for_tts(t)) for s, t in lines], settings)
         if len(audio) < 1500:
             raise RuntimeError(f"合成结果过短（{len(audio)} bytes）：{lines[0][1][:50]}")
         tmp = self.cache / f"{key}.{uuid.uuid4().hex[:6]}.tmp.mp3"
@@ -109,6 +113,109 @@ def _stepfun_dialogue(lines: list[tuple[str, str]], settings: dict) -> bytes:
             raise RuntimeError("StepFun 没有产出任何一行")
         list_file = work / "concat.txt"
         list_file.write_text("\n".join(_concat_line(p) for p in pieces) + "\n", encoding="utf-8")
+        merged = work / "merged.mp3"
+        _run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(list_file),
+              "-ar", "44100", "-ac", "1", "-b:a", "128k", str(merged)])
+        return merged.read_bytes()
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+def _raw_settings() -> dict:
+    """直接读 data/settings.json。
+
+    server.config.load_settings() 只保留 DEFAULT_SETTINGS 白名单里的键，
+    所以工作流自己的 qwen_* 配置到不了引擎。刻意不改产品代码，这里自己读一次。
+    """
+    try:
+        from server.config import SETTINGS_FILE
+
+        return json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001  文件缺失或损坏时退回传入的 settings
+        return {}
+
+
+def _qwen_post(endpoint: str, key: str, text: str, voice: str, lang: str) -> str:
+    """合成一行，返回 OSS 音频地址。"""
+    import httpx
+
+    resp = httpx.post(endpoint,
+                      headers={"Authorization": f"Bearer {key}",
+                               "Content-Type": "application/json"},
+                      json={"model": "qwen3-tts-flash",
+                            "input": {"text": text, "voice": voice, "language_type": lang}},
+                      timeout=180)
+    if resp.status_code != 200:
+        raise RuntimeError(f"HTTP {resp.status_code}: {resp.text[:160]}")
+    return resp.json()["output"]["audio"]["url"]
+
+
+def _qwen_fetch(url: str) -> bytes:
+    import urllib.request
+
+    with urllib.request.urlopen(url, timeout=120) as fh:
+        return fh.read()
+
+
+def _qwen_dialogue(lines: list[tuple[str, str]], settings: dict) -> bytes:
+    """qwen3-tts-flash：HTTP 逐行合成，取回 OSS wav 后统一转 44.1k 单声道 mp3。
+
+    刻意不用 qwen-audio-3.1-tts-next：实测首字节 17.5 秒（对照组同样），
+    且超过约 350 字符就被上游掐断（Remote cancelled grpc stream，3/3 复现），
+    做不了批量教学音频。结论与原始数据见 eval/results.json。
+    """
+    import tempfile
+
+
+    raw = _raw_settings()
+    pick = lambda k, d="": str(settings.get(k) or raw.get(k) or d)  # noqa: E731
+
+    base = pick("qwen_base_url").rstrip("/")
+    key = pick("qwen_api_key")
+    if not base or not key:
+        raise RuntimeError("未配置 qwen_base_url / qwen_api_key（data/settings.json）")
+    female = pick("qwen_voice_female", "Cherry")
+    male = pick("qwen_voice_male", "Ethan")
+    gap = float(pick("qwen_gap_ms", "300")) / 1000.0
+    endpoint = base + "/api/v1/services/aigc/multimodal-generation/generation"
+
+    pieces: list[Path] = []
+    work = Path(tempfile.mkdtemp(prefix="oq-qwen-"))
+
+    def retry(what, *args, attempts: int = 3):
+        """一次课要发约 60 个请求，瞬时超时是常态，不能让整个轨道因为一次抖动前功尽弃。"""
+        last: Exception | None = None
+        for n in range(attempts):
+            try:
+                return what(*args)
+            except Exception as exc:  # noqa: BLE001
+                last = exc
+                if n < attempts - 1:
+                    time.sleep(2.0 * (n + 1))
+        raise RuntimeError(f"Qwen 请求 {attempts} 次仍失败：{type(last).__name__}: {last}")
+
+    try:
+        for i, (speaker, text) in enumerate(lines):
+            cleaned = for_tts(text)
+            if not cleaned:
+                continue
+            has_cjk = any("一" <= ch <= "鿿" for ch in cleaned)
+            voice = female if speaker == "a" else male
+            lang = "Auto" if has_cjk else "English"
+            url = retry(_qwen_post, endpoint, key, cleaned, voice, lang)
+            raw = work / f"{i:03d}.src"
+            raw.write_bytes(retry(_qwen_fetch, url))
+            mp3 = work / f"{i:03d}.mp3"
+            _run(["ffmpeg", "-y", "-v", "error", "-i", str(raw),
+                  "-ar", "44100", "-ac", "1", "-b:a", "128k", str(mp3)])
+            pieces.append(mp3)
+            if gap > 0 and i < len(lines) - 1:
+                pieces.append(make_silence(gap))
+        if not pieces:
+            raise RuntimeError("Qwen 没有产出任何一行")
+        list_file = work / "concat.txt"
+        joined = "\n".join(_concat_line(p) for p in pieces)
+        list_file.write_text(joined + "\n", encoding="utf-8")
         merged = work / "merged.mp3"
         _run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(list_file),
               "-ar", "44100", "-ac", "1", "-b:a", "128k", str(merged)])
