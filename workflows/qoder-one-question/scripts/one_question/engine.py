@@ -9,7 +9,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
 import sys
+import tempfile
+import time
 import uuid
 from pathlib import Path
 
@@ -36,14 +39,20 @@ class Synth:
         self.stats = {"api_calls": 0, "cache_hits": 0}
 
     def __call__(self, lines: list[tuple[str, str]], speed: float | None = None) -> Path:
+        provider = str(self.settings.get("tts_provider") or "stepfun")
+        voices = (str(self.settings.get("question_voice_id") or ""),
+                  str(self.settings.get("answer_voice_id") or ""))
         key = hashlib.sha256(json.dumps(
-            [[s, t] for s, t in lines], ensure_ascii=False).encode("utf-8")).hexdigest()[:24]
+            {"lines": [[s, t] for s, t in lines], "speed": speed,
+             "provider": provider, "voices": voices},
+            ensure_ascii=False).encode("utf-8")).hexdigest()[:24]
         out = self.cache / f"{key}.mp3"
         if out.exists() and out.stat().st_size > 2000:
             self.stats["cache_hits"] += 1
             return out
         settings = dict(self.settings) if speed is None else {**self.settings, "speed": speed}
-        audio = fish_tts_dialogue([(s, for_tts(t)) for s, t in lines], settings)
+        audio = (_stepfun_dialogue(lines, settings) if provider == "stepfun"
+                 else fish_tts_dialogue([(s, for_tts(t)) for s, t in lines], settings))
         if len(audio) < 1500:
             raise RuntimeError(f"合成结果过短（{len(audio)} bytes）：{lines[0][1][:50]}")
         tmp = self.cache / f"{key}.{uuid.uuid4().hex[:6]}.tmp.mp3"
@@ -51,6 +60,61 @@ class Synth:
         tmp.replace(out)
         self.stats["api_calls"] += 1
         return out
+
+
+_last_call = 0.0
+
+
+def _throttle(settings: dict) -> None:
+    """StepFun 免费档限 10 RPM，超了就 429。这里主动把节奏压到限额以内，
+    而不是靠上游重试硬撞——重试撞多了整条构建会白等。"""
+    global _last_call
+    rpm = float(settings.get("stepfun_rpm") or 9)
+    min_interval = 60.0 / max(1.0, rpm)
+    wait = _last_call + min_interval - time.monotonic()
+    if wait > 0:
+        time.sleep(wait)
+    _last_call = time.monotonic()
+
+
+def _stepfun_dialogue(lines: list[tuple[str, str]], settings: dict) -> bytes:
+    """StepFun 一次只能一个音色，所以逐行合成再拼起来。
+
+    Bruce 规则：回答（B 行）用男声，提问与教练（A 行）用女声。
+    """
+    from server import stepfun
+
+    qv = str(settings.get("question_voice_id") or "lively-girl")
+    av = str(settings.get("answer_voice_id") or "vibrant-youth")
+    gap = float(settings.get("stepfun_gap_ms") or 280) / 1000.0
+
+    pieces: list[Path] = []
+    work = Path(tempfile.mkdtemp(prefix="oq-sf-"))
+    try:
+        for i, (speaker, text) in enumerate(lines):
+            cleaned = stepfun.clean_text(for_tts(text))
+            if not cleaned:
+                continue
+            voice = qv if speaker == "a" else av
+            _throttle(settings)
+            role = "question" if speaker == "a" else "answer"
+            audio = stepfun.synthesize(cleaned, voice, settings,
+                                       instruction=stepfun.role_instruction(role, cleaned))
+            f = work / f"{i:03d}.mp3"
+            f.write_bytes(audio)
+            pieces.append(f)
+            if gap > 0 and i < len(lines) - 1:
+                pieces.append(make_silence(gap))
+        if not pieces:
+            raise RuntimeError("StepFun 没有产出任何一行")
+        list_file = work / "concat.txt"
+        list_file.write_text("\n".join(_concat_line(p) for p in pieces) + "\n", encoding="utf-8")
+        merged = work / "merged.mp3"
+        _run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(list_file),
+              "-ar", "44100", "-ac", "1", "-b:a", "128k", str(merged)])
+        return merged.read_bytes()
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
 
 
 class Timeline:

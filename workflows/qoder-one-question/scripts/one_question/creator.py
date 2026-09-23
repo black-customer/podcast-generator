@@ -25,17 +25,17 @@ SCENE_CSS = """
 ::-webkit-scrollbar{display:none}
 body{font-family:"Segoe UI Variable Text","Segoe UI","Microsoft YaHei",system-ui,sans-serif;
  background:#07090d;color:#fff;-webkit-font-smoothing:antialiased}
-.c{width:1080px;height:1920px;padding:120px 76px;display:flex;flex-direction:column;position:relative;
+.c{width:1080px;height:1920px;padding:130px 72px;display:flex;flex-direction:column;position:relative;
  overflow:hidden;background:radial-gradient(1200px 700px at 92% -6%,rgba(232,163,61,.20),
  transparent 60%),radial-gradient(1000px 640px at -10% 106%,rgba(77,208,199,.14),transparent 62%),#07090d}
 .kicker{font-size:30px;letter-spacing:.24em;text-transform:uppercase;color:#E8A33D;font-weight:700}
 .big{font-size:96px;line-height:1.1;font-weight:800;letter-spacing:-.02em;margin-top:44px}
-.mid{font-size:60px;line-height:1.28;font-weight:700;margin-top:36px;color:#eef2f6}
-.en{font-size:70px;line-height:1.3;font-weight:800;margin-top:40px;word-spacing:3px}
+.mid{font-size:68px;line-height:1.28;font-weight:700;margin-top:36px;color:#eef2f6}
+.en{font-size:78px;line-height:1.3;font-weight:800;margin-top:40px;word-spacing:3px}
 .wrong{color:#e28c8c;text-decoration:line-through;text-decoration-thickness:6px;
  text-decoration-color:#b8504f}
 .right{color:#4DD0C7}
-.sub{font-size:38px;line-height:1.55;color:#93a0af;margin-top:34px;font-weight:500}
+.sub{font-size:44px;line-height:1.55;color:#93a0af;margin-top:34px;font-weight:500}
 .spacer{margin-top:auto}
 .badge{display:inline-block;font-size:30px;color:#0b0e13;background:#E8A33D;font-weight:800;
  padding:12px 26px;border-radius:999px;letter-spacing:.04em}
@@ -45,7 +45,10 @@ body{font-family:"Segoe UI Variable Text","Segoe UI","Microsoft YaHei",system-ui
 
 
 def scene(markup_body: str) -> str:
-    return f"<!doctype html><meta charset='utf-8'><style>{SCENE_CSS}</style><body><div class='c'>{markup_body}</div>"
+    """上下各垫一个弹性 spacer：竖屏顶部 1/3 会被平台标题栏压住，底部会被进度条和
+    互动按钮挡住，所以内容必须落在中部。"""
+    return ("<!doctype html><meta charset='utf-8'><style>" + SCENE_CSS + "</style><body><div class='c'>"
+            "<div class='spacer'></div>" + markup_body + "<div class='spacer'></div></div>")
 
 
 def pick_aha(lesson: dict) -> tuple[dict, str]:

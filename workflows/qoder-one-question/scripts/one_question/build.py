@@ -120,7 +120,7 @@ def build_audio(lesson: dict, synth: En.Synth, tl: En.Timeline) -> None:
     tl.clip(synth, [("a", f"单题精练。今天只练这一道：{q}"),
                    ("a", lesson["diagnosis_line_zh"]),
                    ("a", "规则：听到第二声提示音之前，你必须出声。静音不算完成。")], label="hook")
-    tl.window(2.0, "hook")
+    tl.rest(2.0)  # 开场只是留口气，不是强制输出，别算进窗口数
 
     for f in lesson["fixes"]:
         tl.clip(synth, [

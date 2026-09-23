@@ -34,26 +34,44 @@
 > **what comes to mind** isn't a person at all — it's an AI. It answers questions without judging
 > me for asking them, which is exactly what I couldn't do in a classroom.
 
-## 一件必须告诉你的事：音频没生成
+## 音频：已改用 StepFun stepaudio-2.5-tts，已生成
 
-`api.fish.audio` 现在解析到一个被污染的 IP（128.242.245.29，是 Facebook 的段），
-必须走你本地 `127.0.0.1:7890` 的代理，而代理此刻**没在监听**（netstat 只剩 FIN_WAIT_2/CLOSE_WAIT）。
-`api.github.com` 和 `platform.minimaxi.com` 直连正常，所以不是断网，是这个域名过不去。
+你给的 key 之前项目里没有，已写入 `data/settings.json` 的 `stepfun_api_key`
+（该文件在 `.gitignore:15`，不会进 git），`tts_provider` 切到 `stepfun`。
+**建议你把这把 key 轮换掉**——它出现在对话记录里了，而对话会被同步。
 
-我把这个情况变成了工作流的设计而不是故障：
+`server/stepfun.py` 里的 `MODEL` 本来就是 `stepaudio-2.5-tts`，所以项目侧不用改，
+我只给工作流引擎加了按 `tts_provider` 分发的能力（Fish 走多说话人单次合成，
+StepFun 一次只能一个音色，所以逐行合成再拼接，A 用 `lively-girl`、B 用 `vibrant-youth`）。
 
-- 音频失败**不再中断构建**。卡片、页面、封面、文案照常产出
-- 自动写 `PENDING.json`，里面记着失败原因和重跑命令
-- 页面显示"音频还没生成"而不是一个坏掉的播放器（已用浏览器实测：3 张图全部加载，占位提示可见）
+**踩到一个真实的坑并修了：** StepFun 免费档限 **10 请求/分钟**，逐行合成第一版直接撞 429。
+现在引擎按 `stepfun_rpm`（默认 9）主动压速，不再靠上游重试硬撞。
 
-**你睡醒后只要做一件事：把代理打开，然后跑**
+成品：`lessons/01-favourite-teacher/audio.mp3`，**6:28 / 388 秒**，7 个强制输出窗口。
 
-```bash
-cd workflows/qoder-one-question/scripts
-../../.venv/Scripts/python -m one_question.build ../lessons/01-favourite-teacher/lesson.json
-```
+## 短片：已生成
 
-约 10 次 TTS 调用，6 分钟音频，7 个强制输出窗口。
+`lessons/01-favourite-teacher/short.mp4`，1080×1920，**41 秒**，h264 + aac，322KB。
+逐镜结构就是规范里那六拍（钩子 → 错版 → 正确版 → 语块 → 抽问 → 评论区收口）。
+首版内容挤在画面上 1/3，手机上看会被平台标题栏压住，已改成上下弹性居中并放大字号。
+
+## Minimax H3：起不来，原因不是我不会操作
+
+三条硬事实：
+
+1. **机器上没有任何 MiniMax 部署**——HF 缓存里只有 `faster-whisper-base.en`，
+   没有 ComfyUI、没有 sglang/vLLM、没有权重目录，常见推理端口一个都没在监听。
+2. **显存不够。** 你是 **RTX 5060 Laptop，8GB**。H3 这类视频模型 INT8 也要 ~14GB 起。
+   这不是下载能解决的问题，硬件到不了。
+3. C 盘只剩 47GB（已用 82%），权重本身要几十 GB。
+
+所以我没有"帮你把它调起来"这条路可走。真要上，只有两个选择，**都要你决定，我不擅自动**：
+
+- **走 MiniMax 云端 API**：需要你在 platform.minimaxi.com 开一把 key，按量付费。
+  适配器 `one_question/minimax.py` 已经按官方异步接口写好了，你给我 base_url + key 就能用。
+- **换台有 16GB+ 显存的机器**跑本地权重。
+
+现在 `--motion` 检测不到服务就自动跳过，静态封面照常出，不阻塞发布。
 
 ## 已经验证过的（不是"应该没问题"）
 
@@ -111,7 +129,11 @@ cd workflows/qoder-one-question/scripts
 
 ## 还没做的
 
-- 单题音频实听（网络阻塞，见上）
-- `short.mp4` 最终版（同上，代码路径已用占位音验证）
-- 第二个实验题（验证跨题型泛化——建议拿 Part 3 的 "Has technology made our lives easier?" 再跑一次）
-- 把 `one-question` 注册成 Qoder 可自动发现的 skill（现在需要你在指令里点名）
+- **你实听**。参数都对（−16.7 LUFS / 峰值 −1.8 dB / 7 个窗口时长精确），但"像不像真人、
+  听着累不累"按你的质量约定只能你过听感门。StepFun 是逐行拼接，行与行的衔接自然度
+  不如 Fish 的整段对话模式，重点听这一点。
+- **第二个实验题**（验证跨题型泛化）。建议拿 Part 3 的 "Has technology made our lives easier?"
+  再跑一次，那道题你有真实观点，能测出 lesson 结构在长答案上够不够用。
+- **旧的 5 轨全套材料**（`kit/learning_kit_bruce/`）还是 Fish 生成的。要不要用 StepFun 重做，
+  取决于你听完 01 轨后的判断——那是 134 次合成，别白烧。
+- 把 `one-question` 注册成 Qoder 可自动发现的 skill（现在需要你在指令里点名）。

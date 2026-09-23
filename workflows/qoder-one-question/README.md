@@ -68,8 +68,11 @@ kit/                                  个人全套材料（私人语料，不进
 拷走整个 `workflows/qoder-one-question/` 目录即可，只依赖：
 
 - Python 3.11 + `playwright`（Chromium）+ `ffmpeg` 在 PATH
-- 一个实现了 Fish Audio `/v1/tts` 接口的 TTS 服务，以及宿主项目的 `server/tts.py`、`server/audio.py`、`server/config.py`
-  （换成别的 TTS 只需替换 `engine.Synth.__call__` 一个函数）
+- 宿主项目的 `server/stepfun.py`、`server/tts.py`、`server/audio.py`、`server/config.py`
+- TTS 后端由 `data/settings.json` 的 `tts_provider` 选择：`stepfun`（默认，`stepaudio-2.5-tts`，境内直连）
+  或 `fish`（多说话人一次成型，但境内需要代理）。换第三家只需替换 `engine.Synth.__call__` 与 `_stepfun_dialogue`
+- StepFun 免费档限 **10 请求/分钟**，`engine._throttle` 已按 `stepfun_rpm`（默认 9）主动压速；
+  StepFun 一次只能一个音色，所以引擎逐行合成再拼接，行间距用 `stepfun_gap_ms`
 
 **不要带上 `kit/`**——那是锚定本人真实录音的私人材料。
 `one-question-creator` 是自媒体附加层，别人只要备考，可以整层删掉，Stage 1 不受影响。

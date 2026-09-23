@@ -1,0 +1,149 @@
+{
+  "file": "audio.mp3",
+  "duration": 388.37,
+  "markers": [
+    {
+      "label": "hook",
+      "start": 0.0,
+      "duration": 22.47
+    },
+    {
+      "label": "fix:as-such",
+      "start": 24.87,
+      "duration": 27.9
+    },
+    {
+      "label": "core:as-such",
+      "start": 61.22,
+      "duration": 3.19
+    },
+    {
+      "label": "fix:be-close-to",
+      "start": 64.81,
+      "duration": 25.98
+    },
+    {
+      "label": "core:be-close-to",
+      "start": 99.23,
+      "duration": 2.23
+    },
+    {
+      "label": "fix:deliver-the-lesson",
+      "start": 101.87,
+      "duration": 30.64
+    },
+    {
+      "label": "core:deliver-the-lesson",
+      "start": 140.95,
+      "duration": 1.78
+    },
+    {
+      "label": "chunk:as such",
+      "start": 142.72,
+      "duration": 29.97
+    },
+    {
+      "label": "chunk:be close to",
+      "start": 180.13,
+      "duration": 31.22
+    },
+    {
+      "label": "chunk:what comes to mind",
+      "start": 218.79,
+      "duration": 41.95
+    },
+    {
+      "label": "chunk-tail",
+      "start": 268.18,
+      "duration": 6.19
+    },
+    {
+      "label": "model-full",
+      "start": 274.87,
+      "duration": 33.22
+    },
+    {
+      "label": "echo:1",
+      "start": 308.09,
+      "duration": 3.19
+    },
+    {
+      "label": "echo:2",
+      "start": 315.44,
+      "duration": 5.52
+    },
+    {
+      "label": "echo:3",
+      "start": 328.13,
+      "duration": 3.79
+    },
+    {
+      "label": "echo:4",
+      "start": 336.85,
+      "duration": 6.84
+    },
+    {
+      "label": "echo:5",
+      "start": 352.59,
+      "duration": 5.83
+    },
+    {
+      "label": "pressure",
+      "start": 366.6,
+      "duration": 12.22
+    },
+    {
+      "label": "outro",
+      "start": 383.26,
+      "duration": 5.11
+    }
+  ],
+  "windows": [
+    {
+      "start": 52.78,
+      "end": 61.22,
+      "label": "fix:as-such",
+      "seconds": 8.0
+    },
+    {
+      "start": 90.79,
+      "end": 99.23,
+      "label": "fix:be-close-to",
+      "seconds": 8.0
+    },
+    {
+      "start": 132.51,
+      "end": 140.95,
+      "label": "fix:deliver-the-lesson",
+      "seconds": 8.0
+    },
+    {
+      "start": 172.69,
+      "end": 180.13,
+      "label": "chunk:as such",
+      "seconds": 7.0
+    },
+    {
+      "start": 211.35,
+      "end": 218.79,
+      "label": "chunk:be close to",
+      "seconds": 7.0
+    },
+    {
+      "start": 260.74,
+      "end": 268.18,
+      "label": "chunk:what comes to mind",
+      "seconds": 7.0
+    },
+    {
+      "start": 378.82,
+      "end": 383.26,
+      "label": "pressure",
+      "seconds": 4.0
+    }
+  ],
+  "scheduled": 388.37,
+  "api_calls": 0,
+  "cache_hits": 19,
+  "lesson_id": "01-favourite-teacher"
+}
