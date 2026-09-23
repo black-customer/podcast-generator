@@ -316,7 +316,7 @@ td{{padding:10px 10px 10px 0;border-bottom:1px solid #171e27;vertical-align:top}
 .b{{color:#e28c8c;text-decoration:line-through}}.g{{color:#4DD0C7;font-weight:600}}
 .loop{{background:#10151d;border:1px solid #1c2531;border-radius:14px;padding:16px 20px;font-size:16px}}
 .loop b{{color:#E8A33D}}
-h3.eng{{font-size:13px;letter-spacing:.1em;color:#4DD0C7;margin:14px 0 6px;font-weight:600;text-transform:uppercase}}<body><div class="w">
+h3.eng{{font-size:13px;letter-spacing:.1em;color:#4DD0C7;margin:14px 0 6px;font-weight:600;text-transform:uppercase}}</style></head><body><div class="w">
 <h1>{E(lesson['question'])}</h1>
 <p class="lead">{E(lesson['diagnosis_line_zh'])}</p>
 <div class="loop"><b>12 分钟一轮：</b>{step1} ② 拿答案卡遮住英文，看中文提示自己说一遍，录音 →
