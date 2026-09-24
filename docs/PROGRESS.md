@@ -313,3 +313,23 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   C4 页脚文案重复）；check.sh 全量绿（143 passed 1 skipped + 冒烟）。
 - 未做（刻意）：视频版（与音频图卡内容重合，宪法已取消字幕卡渲染器）；发音专项（转写掩盖
   发音证据，待 Bruce 录音后做二期）。git push 与是否试听后调整，由 Bruce 决定。
+
+## 2026-09-24 会话 13：全项目 review + 学习套件 organic 版入库 + 首次授权 push
+
+- 全项目 review：`check.sh --with-e2e` 全量门禁绿（ruff 绿；143 passed 1 skipped；
+  Playwright 7 passed；导入/启动冒烟绿）。main..HEAD 七个提交（one-question 工作流两变体、
+  StepFun 切换、Qwen 实测评议、HTML 修复）全部收敛于 `workflows/qoder-one-question/`，
+  产品代码（server/web/data/tests）零改动，无回归风险面。
+- 未记录会话产物归属确认（AGENTS 协议）：bruce_study_suite 及 6 个 scripts/ 脚本为上一
+  会话「organic 漫谈版」交付——从考试训练风（beep+8s 检索留白）转向纯母语生活漫谈播客
+  （Sarah & Ethan 双主持，零说教零测验），磁盘 index.html/STUDY_GUIDE 为 organic 版终态。
+- 入库：6 脚本（生成/工作台两代）+ index.html + STUDY_GUIDE.md + 10 张概念图（图片不可由
+  仓库代码再生且被工作台引用，故入库）；音频可由 `generate_organic_suite.py` 再生，不入库
+  （.gitignore 新增 `bruce_study_suite/audio/` 与根目录 `/*.mp3`，延续 bruce_kit 惯例）。
+- 脚本清理：F401 未用导入 / I001 / F541 / 行尾空白修净；E501（台词长行）与 E402
+  （sys.path 引导，同 tests/pipeline.py 豁免模式）按 scripts/ 惯例保留；py_compile 全过。
+- 工作台验证：index.html 标签闭合完整（5 组闭合标签各 1）、5 期 EPISODES 数据齐全、
+  10 图 + 5 音频引用零缺失，音频实测 67.8–78.5s/条。
+- push：本会话 Bruce 明示「整个项目提交到 GitHub」，属 AGENTS push 禁令的显式授权例外；
+  main fast-forward 至 workflow/qoder-one-question 并推送，分支一并推送。
+  并发 worktree（podcastGenerate-glm / workflow/glm-question-coach）未触碰，留 Bruce 裁决。
