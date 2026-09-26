@@ -1,93 +1,96 @@
 #!/usr/bin/env python
-"""生成应用图标 app.ico（项目根，桌面快捷方式用）。
+"""从选定的品牌母版生成 Web、Windows 和 Android 图标（需 Pillow）。"""
 
-自绘设计：暗色圆角方底 + 荧光绿麦克风胶囊 + 白色支架 + 右侧声波弧——
-与应用 UI 品牌一致（#1ed760 主色 / #121212 暗底，播客主题）。
-需要 Pillow（仅生成时用，运行时无依赖）：pip install pillow
-输出多尺寸（256→16）单文件 ico；另出 data/.tmp/app_icon_preview.png 供目检。
-"""
-import sys
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageChops, ImageDraw
 
 BASE = Path(__file__).resolve().parent.parent
-OUT = BASE / "app.ico"
-PREVIEW = BASE / "data" / ".tmp" / "app_icon_preview.png"
-S = 1024  # 母版尺寸
-
-BG_TOP = (38, 40, 38)      # 圆角底渐变上端
-BG_BOT = (8, 10, 9)        # 下端
-GREEN = (30, 215, 96)      # 应用主色 #1ed760
-GREEN_DIM = (24, 160, 72)  # 声波外弧（稍暗）
-WHITE = (240, 248, 243)
-RADIUS = 220
+SOURCE = BASE / "docs" / "design" / "icon-b-master.png"
+WEB_ICONS = BASE / "web" / "icons"
+ANDROID_RES = BASE / "mobile" / "android" / "app" / "src" / "main" / "res"
+BLUE = (14, 104, 249)
+NAVY = (11, 23, 51)
+ANDROID_DENSITIES = {"mdpi": 1, "hdpi": 1.5, "xhdpi": 2, "xxhdpi": 3, "xxxhdpi": 4}
 
 
-def rounded_gradient() -> Image.Image:
-    """暗色竖向渐变 + 圆角矩形蒙版，透明四角。"""
-    grad = Image.new("RGB", (S, S))
-    px = grad.load()
-    for y in range(S):
-        t = y / (S - 1)
-        c = tuple(round(BG_TOP[i] + (BG_BOT[i] - BG_TOP[i]) * t) for i in range(3))
-        for x in range(S):
-            px[x, y] = c
-    mask = Image.new("L", (S, S), 0)
-    ImageDraw.Draw(mask).rounded_rectangle([0, 0, S - 1, S - 1], radius=RADIUS, fill=255)
-    icon = Image.new("RGBA", (S, S), (0, 0, 0, 0))
-    icon.paste(grad, (0, 0), mask)
-    return icon
+def rounded_icon(icon: Image.Image, size: int) -> Image.Image:
+    """为旧版 Android 启动器生成带抗锯齿透明圆角的圆形图标。"""
+    oversample = 4
+    large = icon.resize((size * oversample, size * oversample), Image.Resampling.LANCZOS)
+    mask = Image.new("L", large.size)
+    ImageDraw.Draw(mask).ellipse((0, 0, large.width - 1, large.height - 1), fill=255)
+    large.putalpha(mask)
+    return large.resize((size, size), Image.Resampling.LANCZOS)
 
 
-def draw_mark(img: Image.Image) -> None:
-    """麦克风主体：胶囊 + 支架，偏左；声波两道弧在右。"""
-    layer = Image.new("RGBA", (S, S), (0, 0, 0, 0))
-    d = ImageDraw.Draw(layer)
-
-    # 麦克风胶囊（完整药丸形）
-    cx = 420
-    cap_w, cap_top, cap_bot = 300, 150, 620
-    d.rounded_rectangle(
-        [cx - cap_w // 2, cap_top, cx + cap_w // 2, cap_bot],
-        radius=cap_w // 2, fill=GREEN,
+def foreground_mark(source: Image.Image) -> Image.Image:
+    """把蓝底母版的白色对话形和深色声波拆成自适应图标前景。"""
+    red, _, blue = source.split()
+    white_alpha = red.point(
+        lambda value: max(0, min(255, round((value - BLUE[0]) * 255 / (255 - BLUE[0]))))
+        if value > BLUE[0] + 18 else 0
     )
-    # 胶囊内三道横向格栅（深绿，增加质感，小尺寸自然消失）
-    for i, yy in enumerate((268, 360, 452)):
-        half = 118 if i == 1 else 104
-        d.rounded_rectangle(
-            [cx - half, yy - 17, cx + half, yy + 17], radius=17, fill=(18, 120, 48, 255)
+    navy_alpha = blue.point(
+        lambda value: max(0, min(255, round((BLUE[2] - value) * 255 / (BLUE[2] - NAVY[2]))))
+        if value < BLUE[2] - 18 else 0
+    )
+    white = Image.new("RGBA", source.size, "white")
+    white.putalpha(white_alpha)
+    navy = Image.new("RGBA", source.size, NAVY)
+    navy.putalpha(navy_alpha)
+    white.alpha_composite(navy)
+    bounds = ImageChops.lighter(white_alpha, navy_alpha).getbbox()
+    if bounds is None:
+        raise ValueError("母版中没有识别到图案")
+    return white.crop(bounds)
+
+
+def adaptive_foreground(mark: Image.Image, size: int) -> Image.Image:
+    """把图案收进 Android 自适应图标的中央安全区。"""
+    foreground = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    fitted = mark.copy()
+    limit = round(size * 0.58)
+    fitted.thumbnail((limit, limit), Image.Resampling.LANCZOS)
+    foreground.alpha_composite(fitted, ((size - fitted.width) // 2, (size - fitted.height) // 2))
+    return foreground
+
+
+def compact_square(source: Image.Image) -> Image.Image:
+    """电脑任务栏和浏览器标签需要比启动器更饱满的小尺寸图案。"""
+    margin = round(source.width * 0.09)
+    return source.crop((margin, margin, source.width - margin, source.height - margin))
+
+
+def main() -> None:
+    source = Image.open(SOURCE).convert("RGB")
+    if source.width != source.height:
+        raise ValueError("图标母版必须为正方形")
+
+    compact = compact_square(source)
+    for size in (32, 192, 512):
+        master = compact if size == 32 else source
+        master.resize((size, size), Image.Resampling.LANCZOS).save(
+            WEB_ICONS / f"icon-{size}.png", optimize=True
         )
 
-    # U 型支架（包住胶囊下半的粗弧线）
-    yoke_box = [cx - 220, 210, cx + 220, 640]
-    d.arc(yoke_box, start=10, end=170, fill=WHITE, width=46)
-
-    # 立杆与底座
-    d.rounded_rectangle([cx - 23, 620, cx + 23, 800], radius=23, fill=WHITE)
-    d.rounded_rectangle([cx - 120, 776, cx + 120, 844], radius=34, fill=WHITE)
-
-    # 声波弧（右侧两道，弧心对准胶囊中心）
-    for r, w, col in ((300, 42, GREEN), (400, 36, GREEN_DIM)):
-        d.arc([cx + 40 - r, 385 - r, cx + 40 + r, 385 + r],
-              start=-52, end=52, fill=col, width=w)
-
-    img.alpha_composite(layer)
-
-
-def main() -> int:
-    master = rounded_gradient()
-    draw_mark(master)
-
-    sizes = [256, 128, 64, 48, 32, 16]
-    master.resize((256, 256), Image.LANCZOS).save(
-        OUT, format="ICO", sizes=[(n, n) for n in sizes]
+    compact.resize((256, 256), Image.Resampling.LANCZOS).save(
+        BASE / "app.ico", format="ICO", sizes=[(s, s) for s in (16, 24, 32, 48, 64, 128, 256)]
     )
-    PREVIEW.parent.mkdir(parents=True, exist_ok=True)
-    master.resize((512, 512), Image.LANCZOS).save(PREVIEW)
-    print(f"图标已生成: {OUT}（{', '.join(map(str, sizes))}）")
-    return 0
+
+    mark = foreground_mark(source)
+    for density, scale in ANDROID_DENSITIES.items():
+        output = ANDROID_RES / f"mipmap-{density}"
+        legacy_size = round(48 * scale)
+        icon = source.resize((legacy_size, legacy_size), Image.Resampling.LANCZOS)
+        icon.save(output / "ic_launcher.png", optimize=True)
+        rounded_icon(source, legacy_size).save(output / "ic_launcher_round.png", optimize=True)
+        adaptive_foreground(mark, round(108 * scale)).save(
+            output / "ic_launcher_foreground.png", optimize=True
+        )
+
+    print("图标已生成：Web PNG、Windows ICO、Android 各密度启动图标")
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

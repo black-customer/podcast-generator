@@ -1,9 +1,10 @@
 /* Service Worker：静态资源缓存优先，API 网络优先（音频/数据保持新鲜）。 */
-const CACHE = "bruce-corpus-v1";
+const CACHE = "ielts-pod-icons-v2";
 const STATIC_ASSETS = [
   "/",
   "/static/app.js",
   "/static/style.css",
+  "/static/icons/icon-32.png",
   "/static/icons/icon-192.png",
   "/static/icons/icon-512.png",
 ];

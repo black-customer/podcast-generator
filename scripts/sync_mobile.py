@@ -51,7 +51,7 @@ def sync() -> None:
     shutil.copy(WEB / "sw.js", WWW / "sw.js")
     shutil.copy(WEB / "manifest.webmanifest", WWW / "manifest.webmanifest")
     if (WEB / "icons").exists():
-        shutil.copytree(WEB / "icons", WWW / "icons")
+        shutil.copytree(WEB / "icons", WWW / "static" / "icons")
     print(f"synced web/ -> mobile/www ({sum(1 for _ in WWW.rglob('*') if _.is_file())} files)")
 
 

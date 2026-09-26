@@ -333,3 +333,18 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
 - push：本会话 Bruce 明示「整个项目提交到 GitHub」，属 AGENTS push 禁令的显式授权例外；
   main fast-forward 至 workflow/qoder-one-question 并推送，分支一并推送。
   并发 worktree（podcastGenerate-glm / workflow/glm-question-coach）未触碰，留 Bruce 裁决。
+
+## 2026-09-26 会话 14：跨端品牌图标统一
+
+- Bruce 在两轮内置生图预览后选定第一轮 B「对话成声」。保留 1254px 原始母版，
+  `scripts/make_icon.py` 从母版生成 Web/PWA 32/192/512 PNG、Windows 多尺寸 ICO、
+  Android 五密度方形/圆形/自适应启动图标；自适应图案收进安全区。
+- PWA manifest 更新为 IELTS Pod 与品牌色，网页补 favicon，service worker 缓存版本更新。
+- 修复 Android 壳把图标同步到 `/icons/` 而页面请求 `/static/icons/` 的路径错位；
+  先写失败回归测试，再修正并验证通过。
+- 视觉走查：512px、32px、Android 圆形与自适应裁切预览均可辨识，图案未被裁掉；
+  本机无已启动模拟器，未做实机桌面截图。
+- 验证：图标脚本 ruff 绿；Android `assembleDebug` 成功；`check.sh --with-e2e`
+  144 passed、1 skipped、Playwright 7 passed、服务冒烟绿；portable ZIP 审计通过。
+- 交付产物：`dist/ielts-pod-b-icon-debug.apk`（调试包）与
+  `dist/ielts-pod-portable.zip`（Windows 可移植包）。
