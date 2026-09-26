@@ -2158,7 +2158,11 @@ async function packImportFromBuffer(buffer) {
 async function packImportFromServer(addrRaw) {
   const addr = (addrRaw || "").trim().replace(/\/+$/, "");
   if (!/^https?:\/\/.+/i.test(addr)) throw new Error("地址需以 http:// 开头，如 http://192.168.1.5:8765");
-  const resp = await fetch(`${addr}/api/pack/export`);
+  const token = (document.getElementById("pack-token")?.value || "").trim();
+  const localHost = ["127.0.0.1", "localhost", "[::1]"].includes(new URL(addr).hostname);
+  if (!token && !localHost) throw new Error("请填写电脑端显示的临时配对码");
+  const headers = token ? { "X-Lan-Token": token } : {};
+  const resp = await fetch(`${addr}/api/pack/export`, { headers });
   if (!resp.ok) throw new Error(`服务器返回 ${resp.status}（电脑端服务需以 --host 0.0.0.0 启动）`);
   await packImportFromBuffer(await resp.arrayBuffer());
 }
@@ -2208,9 +2212,11 @@ async function ImportView(token) {
     <div class="bank-answer-card">
       <div class="bank-answer-q">📶 方式一：局域网直传</div>
       <p class="bank-answer-hint">电脑端运行 <code>python run.py --host 0.0.0.0</code>，
-      在下方输入它显示的地址（手机与电脑须同一 Wi-Fi）。</p>
-      <div class="bank-search" style="margin-top:10px;">
+      在下方输入电脑地址和终端显示的临时配对码（手机与电脑须同一 Wi-Fi）。</p>
+      <div class="bank-search pack-lan-fields" style="margin-top:10px;">
         <input id="pack-addr" placeholder="http://192.168.1.5:8765"
+          onkeydown="if(event.key==='Enter')packImportClick('lan')">
+        <input id="pack-token" placeholder="终端显示的配对码" autocomplete="off"
           onkeydown="if(event.key==='Enter')packImportClick('lan')">
         <button class="bank-submit-btn" id="pack-lan-btn" onclick="packImportClick('lan')">拉取语料包</button>
       </div>

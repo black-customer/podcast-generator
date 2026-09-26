@@ -3,6 +3,8 @@
 默认绑定 127.0.0.1（本机访问）。手机经局域网导入语料包等场景用 --host 0.0.0.0。
 启动前做前置检查：端口占用直接报错（绝不静默连到旧服务），ffmpeg 缺失给出安装提示。
 """
+import os
+import secrets
 import socket
 import sys
 import threading
@@ -51,6 +53,12 @@ def main() -> None:
         print("[警告] 未找到 ffmpeg：服务可以启动，但音频生成会失败。", file=sys.stderr)
         print("  → 安装后重开终端：winget install Gyan.FFmpeg"
               "（或从 ffmpeg.org 下载并加入 PATH）", file=sys.stderr)
+
+    if host not in ("127.0.0.1", "localhost", "::1"):
+        token = secrets.token_urlsafe(12)
+        os.environ["IELTS_POD_LAN_TOKEN"] = token
+        print(f"局域网语料包配对码: {token}")
+        print("手机 APP 导入页填写电脑地址和此配对码；服务重启后配对码会更新。")
 
     if open_browser:
         threading.Timer(1.2, lambda: webbrowser.open(f"http://127.0.0.1:{port}")).start()

@@ -79,7 +79,8 @@ git clone https://github.com/black-customer/podcast-generator && cd podcastGener
 语料库、播放页（音字同步高亮/逐词点亮/点句跳转）全部可用。
 
 1. **局域网导入**（推荐）：电脑端 `python run.py --host 0.0.0.0`，手机与电脑同 Wi-Fi，
-   APP「导入」页输入电脑地址（如 `http://192.168.1.5:8765`）→ 拉取语料包；
+   APP「导入」页输入电脑地址（如 `http://192.168.1.5:8765`）和终端显示的临时配对码
+   → 拉取语料包；服务重启会更新配对码；
 2. **文件导入**：电脑端导出语料包 zip → 任意方式传到手机 → APP「导入」页选择文件。
 
 自己构建 APK（需 Node 18+、JDK 17、Android SDK）：
@@ -122,7 +123,7 @@ Agent 产出三份文本 JSON（natural_english / podcast_text / podcast_script�
 | API 模式提示无文本模型权限 | 在 StepFun 平台开通文本模型，或改用 Agent 模式（不消耗文本 API） |
 | 超长笑声/异常段落 | QA 门禁应已自动重试；仍存在则去掉表演稿中笑声标签后重新生成 |
 | 点击句子跳不准 | 看播放器对齐标志：estimated=估算（重生成该条目升级为实测） |
-| 手机 APP 拉包失败 | 电脑端须以 `--host 0.0.0.0` 启动、地址含 `http://`、同 Wi-Fi、防火墙放行；模拟器用 `http://10.0.2.2:8765` |
+| 手机 APP 拉包失败 | 电脑端须以 `--host 0.0.0.0` 启动、地址含 `http://`、填写当次启动显示的配对码、同 Wi-Fi、防火墙放行；模拟器用 `http://10.0.2.2:8765` |
 | APP 更新后白屏 | 先卸载旧版再安装（WebView 缓存旧资源） |
 | gradle 报"无效的源发行版：21" | 重跑 `python scripts/sync_mobile.py`（cap sync 会重置 Java 版本补丁） |
 

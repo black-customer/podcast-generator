@@ -1,6 +1,8 @@
 """字幕与 RSS 导出 (M12)：VTT / LRC / 局域网 RSS feed。"""
 import html
 import re
+from datetime import datetime
+from email.utils import format_datetime
 
 from . import library
 from .assemble import episode_path, load_manifest
@@ -30,16 +32,12 @@ def _load_doc(topic_id: str, item_id: str, track: str) -> dict | None:
     from . import alignment
 
     ipath = library.item_path(topic_id, item_id)
-    doc = alignment.load_alignment(
-        ipath / f"alignment_{track}.json",
-        expect_audio=ipath / f"audio_{track}.mp3",
+    audio_path = library.resolve_audio_file(ipath, track)
+    if audio_path is None:
+        return None
+    return alignment.load_alignment(
+        ipath / f"alignment_{track}.json", expect_audio=audio_path
     )
-    if not doc and (ipath / "audio.mp3").exists():
-        alt = "podcast" if track != "podcast" else "monologue"
-        doc = alignment.load_alignment(
-            ipath / f"alignment_{alt}.json", expect_audio=ipath / "audio.mp3"
-        )
-    return doc
 
 
 def _write_export(filename: str, content: str) -> dict:
@@ -122,7 +120,12 @@ def build_rss(base_url: str) -> str:
         audio_file = episode_path(t["id"], track=track)
         if not audio_file.exists():
             continue
-        guid = f"bruce-corpus-{t['id']}-{manifest.get('generated_at', '')}"
+        guid = f"bruce-corpus-{t['id']}-{track}"
+        try:
+            published = datetime.fromisoformat(manifest.get("generated_at") or "").astimezone()
+        except ValueError:
+            published = datetime.now().astimezone()
+        pub_date = format_datetime(published)
         title = html.escape(manifest.get("topic_name") or t["id"])
         enclosure = html.escape(
             f"{base_url}/api/topics/{t['id']}/episode/audio?track={track}"
@@ -135,7 +138,7 @@ def build_rss(base_url: str) -> str:
             "      <description>Bruce English Corpus episode</description>\n"
             f'      <enclosure url="{enclosure}" length="{size}" type="audio/mpeg"/>\n'
             f'      <guid isPermaLink="false">{html.escape(guid)}</guid>\n'
-            f"      <pubDate>{html.escape(manifest.get('generated_at', ''))}</pubDate>\n"
+            f"      <pubDate>{html.escape(pub_date)}</pubDate>\n"
             f"      <itunes:duration>{dur_min}</itunes:duration>\n"
             "    </item>"
         )

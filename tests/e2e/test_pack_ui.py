@@ -86,3 +86,33 @@ def test_pack_mode_offline_flow(pack_zip: Path):
         finally:
             browser.close()
         assert not console_errors, f"页面报错：{console_errors}"
+
+
+def test_lan_import_sends_pairing_token():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        try:
+            page.goto(f"{BASE_URL}/#/import", wait_until="networkidle")
+            page.locator("#pack-token").fill("pair-code")
+            request = page.evaluate("""async () => {
+              let sent = null;
+              const originalFetch = window.fetch;
+              window.fetch = async (url, options) => {
+                sent = {url, token: options.headers['X-Lan-Token']};
+                return {ok: false, status: 418};
+              };
+              try {
+                await packImportFromServer('http://192.168.1.5:8765');
+              } catch (_) {
+                // 418 keeps the test from importing data after the request is captured.
+              } finally {
+                window.fetch = originalFetch;
+              }
+              return sent;
+            }""")
+            assert request == {
+                "url": "http://192.168.1.5:8765/api/pack/export", "token": "pair-code"
+            }
+        finally:
+            browser.close()

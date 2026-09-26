@@ -1057,6 +1057,8 @@ a { color: inherit; text-decoration: none; }
   font-size: 13px;
 }
 .bank-search input:focus { outline: none; border-color: var(--accent); }
+.pack-lan-fields { flex-wrap: wrap; }
+.pack-lan-fields input { min-width: 180px; }
 .bank-list { display: flex; flex-direction: column; gap: 10px; }
 .bank-row {
   padding: 14px 16px;
@@ -1856,6 +1858,9 @@ body.hide-zh .rail-block-zh { display: none; }
   .bank-select { max-width: calc(50% - 6px); flex: 1; }
   .bank-search { order: 3; width: 100%; min-width: 0; display: flex; gap: 8px; }
   .bank-search input { min-width: 0; flex: 1; }
+  .pack-lan-fields { flex-direction: column; align-items: stretch; }
+  .pack-lan-fields input,
+  .pack-lan-fields button { width: 100%; }
   .bank-search .btn-pill { min-width: 58px; white-space: nowrap; flex: 0 0 auto; }
   .bank-random { order: 4; width: 100%; display: flex; justify-content: center; text-align: center; }
   .voice-setting-lead { align-items: flex-start; flex-direction: column; }

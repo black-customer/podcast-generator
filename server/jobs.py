@@ -95,14 +95,24 @@ def _prune_finished_locked() -> None:
     excess = len(finished) - MAX_FINISHED_JOBS
     for j in finished[: max(0, excess)]:
         JOBS.pop(j["id"], None)
-        _ACTIVE_TOPICS.pop(j.get("topic_id") or "", None)
+        topic_id = j.get("topic_id") or ""
+        if _ACTIVE_TOPICS.get(topic_id) == j["id"]:
+            _ACTIVE_TOPICS.pop(topic_id, None)
 
 
 def _finish(job: dict, state: str) -> None:
     job["state"] = state
     job["finished_at"] = _now()
-    _ACTIVE_TOPICS.pop(job.get("topic_id") or "", None)
+    topic_id = job.get("topic_id") or ""
+    if _ACTIVE_TOPICS.get(topic_id) == job["id"]:
+        _ACTIVE_TOPICS.pop(topic_id, None)
     _persist_locked()
+
+
+def _running_topic_job_locked(topic_id: str) -> dict | None:
+    active_id = _ACTIVE_TOPICS.get(topic_id)
+    job = JOBS.get(active_id) if active_id else None
+    return job if job and job["state"] == "running" else None
 
 
 def _run_generate(
@@ -157,11 +167,12 @@ def start_generate(
 ) -> dict:
     """启动批量合成。同话题已有运行中任务时返回该任务（already_running=True）。"""
     with JOBS_LOCK:
-        active_id = _ACTIVE_TOPICS.get(topic_id)
-        if active_id and active_id in JOBS and JOBS[active_id]["state"] == "running":
-            active = JOBS[active_id]
+        active = _running_topic_job_locked(topic_id)
+        if active:
+            if active["kind"] != "generate":
+                raise JobConflict("该话题已有运行中的任务")
             return {
-                "job_id": active_id,
+                "job_id": active["id"],
                 "total": active["total"],
                 "already_running": True,
             }
@@ -192,6 +203,15 @@ def start_generate(
     job_id = uuid.uuid4().hex[:12]
     cancel_event = threading.Event()
     with JOBS_LOCK:
+        active = _running_topic_job_locked(topic_id)
+        if active:
+            if active["kind"] != "generate":
+                raise JobConflict("该话题已有运行中的任务")
+            return {
+                "job_id": active["id"],
+                "total": active["total"],
+                "already_running": True,
+            }
         JOBS[job_id] = {
             "id": job_id,
             "kind": "generate",
@@ -277,8 +297,7 @@ def library_update_error(topic_id: str, item_id: str, message: str) -> None:
 def start_api_generation(topic_id: str, item_id: str, question: str, answer: str) -> dict:
     """API 模式生成任务；同话题互斥。"""
     with JOBS_LOCK:
-        active_id = _ACTIVE_TOPICS.get(topic_id)
-        if active_id and active_id in JOBS and JOBS[active_id]["state"] == "running":
+        if _running_topic_job_locked(topic_id):
             raise JobConflict("该话题已有运行中的生成任务")
         job_id = uuid.uuid4().hex[:12]
         JOBS[job_id] = {
@@ -325,15 +344,20 @@ def _run_assemble(job_id: str, topic_id: str, track: str) -> None:
 def start_assemble(topic_id: str, track: str = "default") -> dict:
     """整集合成改为后台任务（不再阻塞 HTTP 请求，避免双击并发 ffmpeg）。"""
     with JOBS_LOCK:
-        active_id = _ACTIVE_TOPICS.get(topic_id)
-        if active_id and active_id in JOBS and JOBS[active_id]["state"] == "running":
-            active = JOBS[active_id]
-            if active.get("kind") == "assemble":
-                return {"job_id": active_id, "already_running": True}
+        active = _running_topic_job_locked(topic_id)
+        if active:
+            if active["kind"] == "assemble":
+                return {"job_id": active["id"], "already_running": True}
+            raise JobConflict("该话题已有运行中的生成任务")
 
     library.get_topic(topic_id)  # 校验存在性，404 由上层转译
     job_id = uuid.uuid4().hex[:12]
     with JOBS_LOCK:
+        active = _running_topic_job_locked(topic_id)
+        if active:
+            if active["kind"] == "assemble":
+                return {"job_id": active["id"], "already_running": True}
+            raise JobConflict("该话题已有运行中的生成任务")
         JOBS[job_id] = {
             "id": job_id,
             "kind": "assemble",

@@ -119,7 +119,7 @@ def split_text(text: str, max_chars: int) -> list[str]:
     segments: list[str] = []
     cur = ""
     for u in units:
-        while len(u) > max_chars * 1.5:
+        while len(u) > max_chars:
             if cur:
                 segments.append(cur)
                 cur = ""
@@ -874,7 +874,13 @@ def generate_item_audio(
             ipath, track_key, eff_src, out_def, dur, seg_spans, align_words, mode=def_mode
         )
 
-    library.update_item_meta(topic_id, item_id, **meta_updates)
+    # 编辑与生成可并行：在同一数据锁内比对源稿并落元数据，避免旧稿音频清除 stale 标记。
+    with library.LIB_LOCK:
+        current_texts = library.read_item_texts(ipath)
+        if any(current_texts[field] != full[field] for field in library.STALE_TEXT_FIELDS):
+            meta_updates["stale"] = True
+        meta_updates["generated_at"] = library.now_iso()
+        library.update_item_meta(topic_id, item_id, **meta_updates)
     return {
         "ok": True,
         "track": track,

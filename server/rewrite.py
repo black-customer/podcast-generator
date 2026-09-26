@@ -53,7 +53,6 @@ class TextPermissionError(RewriteError):
 
 
 REQUIRED_FIELDS = ("natural_english", "podcast_text", "podcast_script")
-_DIALOGUE_RE = re.compile(r"^\s*[ab]\s*[:：]", re.IGNORECASE | re.MULTILINE)
 _TAG_TEXT_RE = re.compile(r"\[([^\[\]]*)\]")
 GENERATION_TAGS = frozenset({"curious", "relaxed", "uncertain", "emphasis", "break"})
 _WORD_RE = re.compile(r"[a-z']{3,}")
@@ -114,9 +113,12 @@ def validate_texts(texts: dict) -> list[str]:
         found = _TAG_TEXT_RE.findall(texts[field])
         if found:
             errors.append(f"可见文本 {field} 不允许任何表演标签，需输出干净英文: {found[:3]}")
+    from .tts import parse_dialogue
+
     for field in ("podcast_text", "podcast_script"):
-        if not _DIALOGUE_RE.search(texts[field]):
-            errors.append(f"{field} 必须是 A:/B: 对话格式（A=提问者，B=回答者）")
+        dialogue = parse_dialogue(texts[field])
+        if dialogue is None or dialogue[0][0] != "a":
+            errors.append(f"{field} 必须是完整 A:/B: 对话格式（A=提问者，B=回答者）")
 
     generated_tags = [tag.strip().lower() for tag in _TAG_TEXT_RE.findall(texts["podcast_script"])]
     unsafe = [tag for tag in generated_tags if tag not in GENERATION_TAGS]

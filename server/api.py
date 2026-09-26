@@ -1,10 +1,12 @@
 """HTTP API 路由。"""
 import re
+import uuid
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, field_validator
+from starlette.background import BackgroundTask
 
 from . import (
     assemble,
@@ -336,10 +338,7 @@ def api_episode_manifest(topic_id: str, track: TrackParam = "default"):
 def api_episode_audio(topic_id: str, track: TrackParam = "default"):
     path = assemble.episode_path(topic_id, track=track)
     if not path.exists():
-        # fallback to default
-        path = assemble.episode_path(topic_id, track="default")
-        if not path.exists():
-            raise _err(404, "本集尚未合成")
+        raise _err(404, "本集尚未合成")
     return FileResponse(path, media_type="audio/mpeg", filename=path.name)
 
 
@@ -729,6 +728,7 @@ def api_generation_requests(body: GenerationRequestIn):
         ),
         None,
     )
+    topic_created = target is None
     if target is None:
         target = library.create_topic(topic_name)
     fields = {"question": question_text, "original_answer": answer, **bank.answer_fields(answer)}
@@ -748,6 +748,10 @@ def api_generation_requests(body: GenerationRequestIn):
     try:
         job = jobs.start_api_generation(target["id"], created["id"], question_text, answer)
     except jobs.JobConflict as e:
+        with library.LIB_LOCK:
+            library.delete_item(target["id"], created["id"])
+            if topic_created and not library.get_topic(target["id"])["items"]:
+                library.delete_topic(target["id"])
         raise _err(409, str(e)) from e
     out["job_id"] = job["job_id"]
     return out
@@ -780,12 +784,18 @@ def api_pack_export(topics: str | None = None):
     topic_ids: list[str] | None = None
     if topics and topics != "all":
         topic_ids = [s.strip() for s in topics.split(",") if s.strip()]
+    out = DATA_DIR / "exports" / f"corpus-{uuid.uuid4().hex}.pack.zip"
     try:
-        result = pack.build_pack(topic_ids=topic_ids)
+        result = pack.build_pack(out_path=out, topic_ids=topic_ids)
     except FileNotFoundError as e:
+        out.unlink(missing_ok=True)
         raise _err(404, str(e)) from e
+    except Exception:
+        out.unlink(missing_ok=True)
+        raise
     return FileResponse(
-        result["path"], media_type="application/zip", filename="corpus.pack.zip"
+        result["path"], media_type="application/zip", filename="corpus.pack.zip",
+        background=BackgroundTask(out.unlink, missing_ok=True),
     )
 
 

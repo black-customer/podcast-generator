@@ -334,7 +334,21 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   main fast-forward 至 workflow/qoder-one-question 并推送，分支一并推送。
   并发 worktree（podcastGenerate-glm / workflow/glm-question-coach）未触碰，留 Bruce 裁决。
 
-## 2026-09-26 会话 14：跨端品牌图标统一
+## 2026-09-26 会话 14：全项目审查问题修复
+
+- 访问控制：跨源请求只允许 Capacitor 本地源；局域网模式仅开放带启动时临时配对码的
+  语料包下载，手机导入页与 README 同步增加配对码输入。
+- 生成一致性：话题任务在目标选择后再次加锁核对；整集合成不再越过运行中的生成任务；
+  API 模式启动冲突清理新建条目与空话题；生成期间改稿保留 stale 标记。
+- 内容与导出：A/B 稿件必须有完整问答；StepFun 分段不超过 950 字符；语料包每次独立生成
+  并在发送后清理；整集音频与字幕严格按请求轨道返回；RSS GUID 稳定且日期符合邮件格式。
+- 回归测试先红后绿（12 个原始场景全红，修复后扩为 13 个全绿）；完整门禁：ruff 通过、
+  156 passed / 1 skipped、Playwright 8 passed、服务冒烟通过。导入页桌面 1280×800 与手机
+  390×844 截图检查：配对码输入完整，无横向溢出。Android 资源已同步，Gradle debug APK 构建成功。
+- 补入 main 并与图标改动合验：157 passed / 1 skipped、Playwright 8 passed、服务冒烟通过；
+  Android 调试包与 Windows 可移植包按整合后的源码重建。
+
+## 2026-09-26 会话 15：跨端品牌图标统一
 
 - Bruce 在两轮内置生图预览后选定第一轮 B「对话成声」。保留 1254px 原始母版，
   `scripts/make_icon.py` 从母版生成 Web/PWA 32/192/512 PNG、Windows 多尺寸 ICO、
