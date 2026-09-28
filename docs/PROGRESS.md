@@ -362,3 +362,17 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   144 passed、1 skipped、Playwright 7 passed、服务冒烟绿；portable ZIP 审计通过。
 - 交付产物：`dist/ielts-pod-b-icon-debug.apk`（调试包）与
   `dist/ielts-pod-portable.zip`（Windows 可移植包）。
+
+## 2026-09-28 会话 16：学习模式研究与设计提案
+
+- Bruce 提出增加主动学习模式，本轮范围为研究与设计。新增
+  [LEARNING_MODE_RESEARCH.md](LEARNING_MODE_RESEARCH.md)：29 篇研究/综述与 IELTS 官方标准，
+  标明阅读范围、证据边界和设计推论；覆盖注意、检索、间隔、反馈、口语、跟读、书写与迁移。
+- 建议主流程：尝试表达 → 定位差别 → 重点模仿 → 遮答案口答 → 新情境使用 → 跨天复习。
+  拼写作为搭配、词形和听辨困难的辅助，是否进入默认流程由等时长口语试验决定。
+- 提案含完整训练示例、第一版范围、旧数据/离线包/音频定位约束，以及延迟新题口答的验证方案。
+  旧宪法与 PRODUCT 的学习模式禁令已指出，并提供修订草案；未修改宪法或开发里程碑状态。
+- 本轮仅新增研究报告及账本记录；未改产品代码或语料，未调用真实 TTS。
+- 验证：使用 Git Bash 运行 `bash scripts/check.sh`，ruff、157 passed / 1 skipped、
+  导入和服务启动冒烟全绿。初次沙箱启动 Git Bash 因 Windows 信号管道权限失败，获执行权限后通过。
+  文档任务未运行 E2E，未宣称学习模式已有 UI 或听感验收。
