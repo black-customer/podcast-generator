@@ -22,7 +22,15 @@ echo [2/4] Syncing dependencies...
 .venv\Scripts\python -m pip install -q -r requirements.txt
 
 echo [3/4] Restarting service...
-powershell -NoProfile -Command "Get-NetTCPConnection -LocalPort 8765 -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { taskkill /F /T /PID $_ 2>$null }"
+rem Only kill processes that are really this app: some ancestor runs from inside this
+rem project (venv python.exe launcher spawns base python as child) AND the listener's
+rem own command line is our server. A foreign program on 8765 is never touched.
+powershell -NoProfile -Command "$proj=(Get-Location).Path; $foreign=0; Get-NetTCPConnection -LocalPort 8765 -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { $self=Get-CimInstance Win32_Process -Filter ('ProcessId=' + $_); $mine=$false; $cur=$_; for($i=0; $i -lt 8 -and $cur; $i++){ $pp=Get-CimInstance Win32_Process -Filter ('ProcessId=' + $cur); if(-not $pp){ break }; if($pp.ExecutablePath -like ($proj + '*')){ $mine=$true; break }; $cur=$pp.ParentProcessId }; if($self -and $mine -and $self.CommandLine -match 'run\.py|-m uvicorn server\.main'){ taskkill /F /T /PID $_ 2>$null } else { $foreign=1; Write-Host ('[update] PID ' + $_ + ' is using port 8765 but is not IELTS Pod - not killing it.') } }; if($foreign){ exit 2 }"
+if errorlevel 1 (
+  echo Port 8765 is used by another program. Close it ^(or move IELTS Pod to another port^) and run update again.
+  pause
+  exit /b 1
+)
 timeout /t 2 /nobreak >nul
 start "IELTS Pod Server" /min .venv\Scripts\python run.py --no-open
 
