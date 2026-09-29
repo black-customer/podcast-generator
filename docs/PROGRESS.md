@@ -506,3 +506,14 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   语料包。README 补充保留原 ZIP 或重装后从电脑重新导入的提醒；不把它称为无损原位更新。
 - 最终 `bash scripts/check.sh --release` 全绿：ruff、181 passed / 1 skipped、Playwright 13 passed、
   服务冒烟与 1.3MB 便携包隐私审计均通过。
+
+## 2026-09-29 会话 24：完成任务后默认推送
+
+- Bruce 明确批准将“禁止 git push”改为条件式允许：完成任务、门禁通过、提交范围核对无误后
+  默认推送，随后核对远端提交号；继续禁止强推、历史重写和擅自删除远端分支。
+- AGENTS、QUALITY_PLAYBOOK 与 ROADMAP 统一现行规则；以上历史会话的推送限制仅记录当时情况。
+  Release 与 APK/ZIP 上传仍单独授权和验收，源码同步不等同下载包更新。
+- 按新约定将会话 22、23 两条已完成修复连同本次文档提交纳入主线推送；已有未跟踪的
+  StepFun 试听缓存保留，不加入提交。
+- 本次 `bash scripts/check.sh` 全绿：ruff、181 passed / 1 skipped、导入与服务冒烟通过；
+  两条修复的端到端与发布门禁证据见会话 22、23。

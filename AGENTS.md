@@ -62,14 +62,21 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 <file>
 
 - 一任务一提交：`feat|fix|refactor|test|docs|chore: <一句话>`
 - 里程碑完成 → 更新 ROADMAP/PROGRESS → `git tag m<NN>`（如 m02）
-- 禁止 `git push`（远端是 Bruce 的 GitHub，由他决定何时推送）
-- 禁止 force push / history rewrite（main 有远端）
+- 默认允许推送已完成且质量门禁通过的任务提交，无需逐次询问 Bruce；用户明确要求暂不推送时遵从。
+- 推送前检查工作树、目标分支和全部待推送提交：只包含已确认完成的工作，不夹带密钥、私有语料
+  或他人的未完成改动。未提交改动须先识别归属并保留，不为推送而擅自暂存。
+- 推送前更新远端状态，使用明确的远端与分支；分支分歧先调查并正常整合，不强推。
+  推送后核对远端提交号与本地目标一致，交付时报告提交号和同步结果。
+- 禁止 force push、history rewrite 和擅自删除远端分支。
+- GitHub Release、APK/ZIP 上传属于单独的发布动作，需 Bruce 明确授权并通过
+  `bash scripts/check.sh --release`；已有授权无需重复询问。源码推送成功不代表下载版本已更新。
 
 ## 会话协议（长程自驱）
 
 1. 读三份核心文档 → 选最高价值就绪里程碑 → 检查工作树
 2. 探索现状（Read 优先）→ ≤5 条小计划 → TDD 实现 → 自查 diff
-3. `bash scripts/check.sh` 绿 → 更新 PROGRESS/ROADMAP → 一任务一提交 → 里程碑 tag
+3. `bash scripts/check.sh` 绿 → 更新 PROGRESS/ROADMAP → 一任务一提交 → 检查并推送 → 核对远端提交号；
+   里程碑 tag / Release 另按发布门禁与授权执行
 4. 升级规则（只有这些情况找 Bruce）：宪法冲突、要花钱、破坏性操作、
    连续 3 次门禁红（停下写复盘到 PROGRESS）
 
