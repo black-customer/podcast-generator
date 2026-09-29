@@ -166,6 +166,7 @@ def review_items() -> list[dict]:
         except (FileNotFoundError, ValueError):
             continue
         sentences = found["material"]["sentences"]
+        topic_name = (full.get("title") or "").split(" / ")[0] or topic_id
         for key, facts in state["facts"].items():
             if not str(key).isdigit():
                 continue  # 手改坏的事实键：跳过而不是让复习库 500
@@ -177,6 +178,7 @@ def review_items() -> list[dict]:
                 continue
             rows.append({"topic_id": topic_id, "item_id": item_id,
                          "sentence_index": index, "zh": sentences[index]["zh"],
-                         "source": full["title"], "facts": facts})
+                         "source": full["title"], "topic_name": topic_name,
+                         "facts": facts})
     rows.sort(key=lambda r: (r["topic_id"], r["item_id"], r["sentence_index"]))
     return rows

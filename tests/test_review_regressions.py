@@ -85,8 +85,14 @@ def test_api_conflict_does_not_leave_created_item(tmp_path, monkeypatch):
             },
         )
     assert response.status_code == 409
-    assert sum(t["stats"]["total"] for t in library.list_topics()) == 0
-    assert library.list_topics() == []
+    # 宪法：原始回答永远保存——冲突时任务回滚，但已提交的回答保留为草稿条目
+    assert "已保存为草稿条目" in response.json()["detail"]
+    topics = library.list_topics()
+    assert sum(t["stats"]["total"] for t in topics) == 1
+    tid = topics[0]["id"]
+    item_dir = next((library.TOPICS_DIR / tid / "items").iterdir())
+    texts = library.read_item_texts(item_dir)
+    assert texts["original_answer"] == "My answer."
 
 
 def test_episode_audio_does_not_fall_back_to_other_track(tmp_path, monkeypatch):

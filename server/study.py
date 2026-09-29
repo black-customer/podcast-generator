@@ -174,8 +174,8 @@ def generate_material(topic_id: str, item_id: str) -> dict:
     try:
         result = rewrite._extract_json(content)
         validate_material(result, full)
-    except MaterialError as exc:
-        # 模型偶发漏字段或结构漂移：带错误清单重问一次（同 rewrite 的修复模式）
+    except (MaterialError, rewrite.RewriteError) as exc:
+        # 模型偶发漏字段、结构漂移或直接输出非 JSON：带错误清单重问一次（同 rewrite 修复模式）
         messages.append({"role": "assistant", "content": content[:4000]})
         messages.append({"role": "user", "content": (
             f"上次输出存在以下问题：{exc}。请只返回修正后的完整 JSON 对象，"

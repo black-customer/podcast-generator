@@ -132,9 +132,7 @@ def import_batch(topic_name: str, markdown: str, lint: bool = True) -> dict:
     if not entries:
         raise RuntimeError("任务包为空：需要至少一个 `## 标题` 段落")
 
-    t_info = library.create_topic(topic_name) if not any(
-        t["name"] == topic_name for t in library.list_topics()
-    ) else next(t for t in library.list_topics() if t["name"] == topic_name)
+    t_info = library.get_or_create_topic(topic_name)
     tid = t_info["id"]
 
     created, updated, rejected = [], [], []

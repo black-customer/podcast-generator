@@ -239,3 +239,25 @@ def test_generate_material_fails_after_two_bad_structures(legacy_item, monkeypat
     monkeypatch.setattr(study, "load_settings", lambda: {"dry_run": False})
     with pytest.raises(study.MaterialError):
         study.generate_material(tid, iid)
+
+
+def test_generate_material_repairs_on_invalid_json(legacy_item, monkeypatch):
+    """首次返回不是合法 JSON 时也走修复轮（RewriteError 属结构失败）。"""
+    calls = {"n": 0}
+
+    def fake_chat(settings, messages, cancel):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return "这不是 JSON：抱歉，我直接给出材料……"
+        good = material()
+        good["complete_chinese"] = "我下班去散步，这让我放松。"
+        good["sentences"][1].pop("original_error")
+        return json.dumps(good, ensure_ascii=False)
+
+    monkeypatch.setattr(study.rewrite, "_chat", fake_chat)
+    monkeypatch.setattr(study, "load_settings", lambda: {"dry_run": False})
+    tid, iid, _ = legacy_item
+    saved = study.generate_material(tid, iid)
+    assert calls["n"] == 2
+    assert study.get_material(tid, iid)["status"] == "ready"
+    assert saved["sentences"][0]["en"] == "I go for a walk."

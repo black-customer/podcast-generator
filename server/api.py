@@ -71,6 +71,7 @@ class SettingsIn(BaseModel):
     tts_provider: Literal["stepfun", "fish"] | None = None
     stepfun_api_key: str | None = None
     stepfun_text_model: str | None = None
+    stepfun_text_base_url: str | None = None
     stepfun_tts_model: str | None = None
     question_voice_id: str | None = None
     answer_voice_id: str | None = None
@@ -186,6 +187,8 @@ def api_rename_topic(topic_id: str, body: TopicIn):
         return {"ok": True}
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
+    except ValueError as e:
+        raise _err(400, str(e)) from e
 
 
 @router.delete("/topics/{topic_id}")
@@ -252,6 +255,8 @@ def api_prepare_study(topic_id: str, item_id: str):
         return {"status": "preparing", "started": started}
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
+    except ValueError as e:
+        raise _err(400, str(e)) from e
     except study.MaterialError as e:
         raise _err(409, str(e)) from e
 
@@ -263,7 +268,9 @@ def api_study_audio(topic_id: str, item_id: str, index: int):
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
     except study.MaterialError as e:
-        raise _err(409, str(e)) from e
+        # 材料未就绪=409（可重试准备）；句子序号越界=400
+        code = 400 if "越界" in str(e) else 409
+        raise _err(code, str(e)) from e
 
 
 @router.get("/topics/{topic_id}/items/{item_id}/study/progress")
@@ -309,6 +316,8 @@ def api_get_study_recording(topic_id: str, item_id: str, recording_id: str):
         return Response(content=data, media_type=media_type)
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
+    except ValueError as e:
+        raise _err(400, str(e)) from e
 
 
 @router.delete("/topics/{topic_id}/items/{item_id}/study/recordings/{recording_id}")
@@ -381,7 +390,9 @@ def api_item_timeline(topic_id: str, item_id: str, track: TrackParam = "podcast"
 def api_generate_item(topic_id: str, item_id: str, body: GenerateIn):
     try:
         return jobs.start_generate(topic_id, force=body.force, item_ids=[item_id], track=body.track)
-    except (FileNotFoundError, RuntimeError) as e:
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    except RuntimeError as e:
         raise _err(400, str(e)) from e
 
 
@@ -389,7 +400,9 @@ def api_generate_item(topic_id: str, item_id: str, body: GenerateIn):
 def api_generate_topic(topic_id: str, body: GenerateIn):
     try:
         return jobs.start_generate(topic_id, force=body.force, track=body.track)
-    except (FileNotFoundError, RuntimeError) as e:
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    except RuntimeError as e:
         raise _err(400, str(e)) from e
 
 
@@ -426,7 +439,10 @@ def api_assemble_episode(topic_id: str, track: TrackParam = "default"):
 
 @router.get("/topics/{topic_id}/episode")
 def api_episode_manifest(topic_id: str, track: TrackParam = "default"):
-    manifest = assemble.load_manifest(topic_id, track=track)
+    try:
+        manifest = assemble.load_manifest(topic_id, track=track)
+    except ValueError as e:
+        raise _err(400, str(e)) from e
     if not manifest:
         raise _err(404, "本集尚未合成")
     return manifest
@@ -434,7 +450,10 @@ def api_episode_manifest(topic_id: str, track: TrackParam = "default"):
 
 @router.get("/topics/{topic_id}/episode/audio")
 def api_episode_audio(topic_id: str, track: TrackParam = "default"):
-    path = assemble.episode_path(topic_id, track=track)
+    try:
+        path = assemble.episode_path(topic_id, track=track)
+    except ValueError as e:
+        raise _err(400, str(e)) from e
     if not path.exists():
         raise _err(404, "本集尚未合成")
     return FileResponse(path, media_type="audio/mpeg", filename=path.name)
@@ -766,12 +785,7 @@ def api_bank_answer(body: BankAnswerIn):
         raise _err(422, "回答不能为空")
     # 话题映射：题库话题英文名 == 库内话题名（忽略大小写）→ 复用；否则新建
     topic_name = bank.answer_topic_name(snapshot, question)
-    target = next(
-        (t for t in library.list_topics() if t["name"].strip().casefold() == topic_name.casefold()),
-        None,
-    )
-    if target is None:
-        target = library.create_topic(topic_name)
+    target = library.get_or_create_topic(topic_name)
     created = library.create_item(target["id"], {"question": question["text"], **fields})
     return {
         "topic_id": target["id"],
@@ -818,17 +832,7 @@ def api_generation_requests(body: GenerationRequestIn):
     else:
         raise _err(422, "需要 question_id 或 question")
 
-    target = next(
-        (
-            t
-            for t in library.list_topics()
-            if t["name"].strip().casefold() == topic_name.casefold()
-        ),
-        None,
-    )
-    topic_created = target is None
-    if target is None:
-        target = library.create_topic(topic_name)
+    target = library.get_or_create_topic(topic_name)
     fields = {"question": question_text, "original_answer": answer, **bank.answer_fields(answer)}
     created = library.create_item(target["id"], fields)
     out = {
@@ -846,11 +850,8 @@ def api_generation_requests(body: GenerationRequestIn):
     try:
         job = jobs.start_api_generation(target["id"], created["id"], question_text, answer)
     except jobs.JobConflict as e:
-        with library.LIB_LOCK:
-            library.delete_item(target["id"], created["id"])
-            if topic_created and not library.get_topic(target["id"])["items"]:
-                library.delete_topic(target["id"])
-        raise _err(409, str(e)) from e
+        # 原始回答是核心资产：冲突时保留新建条目，只回滚任务启动（宪法"original_answer 永远保存"）
+        raise _err(409, f"{e}（你的回答已保存为草稿条目，不会丢失）") from e
     out["job_id"] = job["job_id"]
     return out
 

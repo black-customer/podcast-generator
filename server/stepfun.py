@@ -31,7 +31,7 @@ class StepFunCancelled(RuntimeError):
 def clean_text(text: str) -> str:
     """移除 Fish 标签与会导致 StepFun 拖腔的标点，同时保留原有词句。"""
     cleaned, _ = strip_all_tags(text or "")
-    cleaned = cleaned.replace("—", ",").replace("—", ",")
+    cleaned = cleaned.replace("—", ",").replace("–", ",")
     cleaned = cleaned.replace("...", ", ").replace("…", ", ")
     cleaned = re.sub(r",\s*,+", ",", cleaned)
     return re.sub(r"\s+", " ", cleaned).strip().strip(",").strip()

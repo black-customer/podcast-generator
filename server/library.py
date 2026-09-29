@@ -259,6 +259,8 @@ def delete_topic(topic_id: str) -> None:
     with LIB_LOCK:
         tpath = topic_dir(topic_id)
         if tpath.exists():
+            for d in tpath.joinpath("items").glob("*"):
+                _SUMMARY_CACHE.pop(str(d), None)
             shutil.rmtree(tpath)
         # 同步清理该话题已合成的剧集音频与清单，避免孤儿文件
         if EPISODES_DIR.exists():
@@ -267,6 +269,16 @@ def delete_topic(topic_id: str) -> None:
                     p.name.startswith(f"{topic_id}_") or p.name.startswith(f"{topic_id}.")
                 ):
                     p.unlink(missing_ok=True)
+
+
+def get_or_create_topic(name: str) -> dict:
+    """按名查找（忽略大小写）或新建话题；查找与创建在同一锁内，防并发双击重复建话题。"""
+    name = (name or "").strip() or "未命名话题"
+    with LIB_LOCK:
+        for t in list_topics():
+            if t["name"].strip().casefold() == name.casefold():
+                return t
+        return create_topic(name)
 
 
 def get_topic(topic_id: str) -> dict:
@@ -516,6 +528,7 @@ def update_item_meta(topic_id: str, item_id: str, **updates) -> None:
 def delete_item(topic_id: str, item_id: str) -> None:
     with LIB_LOCK:
         d = item_path(topic_id, item_id)
+        _SUMMARY_CACHE.pop(str(d), None)
         if d.exists():
             shutil.rmtree(d)
 
