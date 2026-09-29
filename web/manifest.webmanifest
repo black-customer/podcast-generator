@@ -4,8 +4,8 @@
   "description": "把自己的表达变成自然英语音频",
   "start_url": "/#/practice",
   "display": "standalone",
-  "background_color": "#0E68F9",
-  "theme_color": "#F7F9FC",
+  "background_color": "#F3EBDD",
+  "theme_color": "#596348",
   "icons": [
     {
       "src": "/static/icons/icon-192.png",

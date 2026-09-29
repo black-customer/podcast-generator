@@ -1,9 +1,13 @@
 /* Service Worker：静态资源缓存优先，API 网络优先（音频/数据保持新鲜）。 */
-const CACHE = "ielts-pod-icons-v5";
+const CACHE = "ielts-pod-assets-v6";
 const STATIC_ASSETS = [
   "/",
   "/static/app.js",
+  "/static/study.js",
   "/static/style.css",
+  "/static/packmode.js",
+  "/static/packreader.js",
+  "/manifest.webmanifest",
   "/static/icons/icon-32.png",
   "/static/icons/icon-192.png",
   "/static/icons/icon-512.png",
@@ -27,13 +31,8 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
   if (event.request.method !== "GET") return;
-  // API：网络优先，失败回缓存（离线仍能看文本，音频需局域网）
+  // API：仅网络（数据实时性优先；不提供从未真正写入的"失败回缓存"）
   if (url.pathname.startsWith("/api/")) {
-    event.respondWith(
-      fetch(event.request)
-        .then((res) => res)
-        .catch(() => caches.match(event.request))
-    );
     return;
   }
   // 静态资源：缓存优先，后台更新

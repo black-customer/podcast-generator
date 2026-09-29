@@ -34,7 +34,8 @@ const StudyUI = (() => {
     clearHint();
     if (state.saveTimer && !state.review && state.progress?.stage === "dictation") {
       clearTimeout(state.saveTimer);
-      api("PATCH", endpoint("/progress"), { draft: state.progress.draft }).catch(() => {});
+      api("PATCH", endpoint("/progress"), { draft: state.progress.draft })
+        .catch(() => toast("草稿保存失败：重新进入本题可从上次保存继续。"));
     }
     state.saveTimer = null;
     stopMedia();
@@ -44,7 +45,8 @@ const StudyUI = (() => {
   }
   function steps(stage) {
     const names = ["先回答", "逐句默写", "看中文说", "脱稿说"];
-    const at = Math.min(3, Math.max(0, ["before", "dictation", "chinese", "recall", "summary"].indexOf(stage)));
+    const at = ["before", "dictation", "chinese", "recall", "summary"].indexOf(stage);
+    if (at > 3) { /* summary：四步全部完成，无 current */ }
     return `<div class="study-steps" aria-label="学习阶段">${names.map((name, i) =>
       `<span class="study-step ${i === at ? "current" : ""} ${i < at ? "complete" : ""}">
         <b>${i + 1}</b><span>${name}</span></span>`).join("")}</div>`;
@@ -143,7 +145,13 @@ const StudyUI = (() => {
             (inputs[i + 1] || input).focus();
           } else if (e.key === "Backspace" && !input.value && i > 0) {
             e.preventDefault(); inputs[i - 1].focus();
-          } else if (e.key === "Enter") { e.preventDefault(); checkAnswer(); }
+          } else if (e.key === "Enter") {
+            e.preventDefault();
+            checkAnswer().catch(err => {
+              const fb = document.getElementById("study-feedback");
+              if (fb) fb.textContent = `操作失败：${err.message}`;
+            });
+          }
         };
         input.onpaste = e => {
           const pasted = e.clipboardData.getData("text");
@@ -325,10 +333,16 @@ const StudyUI = (() => {
         ${chinese ? `<div class="study-full-chinese">${esc(state.material.complete_chinese)}</div>` : ""}
         ${recorderPanel(stage)}
         ${state.progress.recordings.some(r => r.stage === stage) ?
-          `<button type="button" class="study-next" data-act="advance">${stage === "before" ? "继续逐句默写" : chinese ? "继续脱稿说" : "查看本次总结"}</button>` : ""}
+          `<button type="button" class="study-next" data-act="advance">${stage === "before" ? "继续逐句默写" : chinese ? "继续脱稿说" : "查看本次总结"}</button>`
+          : `<button type="button" class="study-skip" data-act="skip-record">麦克风不可用？不录音，直接${stage === "before" ? "开始逐句默写" : chinese ? "进入脱稿回答" : "查看本次总结"}</button>`}
       </section>`, stage);
     bindRecording();
     $app.querySelector("[data-act='advance']")?.addEventListener("click", async () => {
+      await save({ stage: stage === "before" ? "dictation" : chinese ? "recall" : "summary",
+        sentence_index: stage === "before" ? 0 : state.progress.sentence_index });
+      render();
+    });
+    $app.querySelector("[data-act='skip-record']")?.addEventListener("click", async () => {
       await save({ stage: stage === "before" ? "dictation" : chinese ? "recall" : "summary",
         sentence_index: stage === "before" ? 0 : state.progress.sentence_index });
       render();
@@ -521,13 +535,14 @@ const StudyUI = (() => {
     try {
       const rows = await api("GET", "/api/study/review");
       if (viewStale(token)) return;
-      const topics = [...new Set(rows.map(row => row.topic_id))];
+      const topics = [...new Map(rows.map(r => [r.topic_id,
+        { id: r.topic_id, name: r.topic_name || r.topic_id }])).values()];
       $app.innerHTML = `<div class="study-page"><h1>句子复习</h1>
         <p class="study-muted">写错过、用过提示或收藏的句子，先看中文重新默写。</p>
         ${rows.length ? `<button type="button" class="study-next" id="study-review-start">开始本轮复习 · ${rows.length} 句</button>
           <label class="study-review-filter">来源题目
           <select id="study-review-source"><option value="">全部来源</option>
-          ${topics.map(tid => `<option value="${esc(tid)}">${esc(tid)}</option>`).join("")}</select></label>
+          ${topics.map(t => `<option value="${esc(t.id)}">${esc(t.name)}</option>`).join("")}</select></label>
           <div class="study-review-list">${rows.map(row => `<a data-topic="${esc(row.topic_id)}" href="#/review/${encodeURIComponent(row.topic_id)}/${encodeURIComponent(row.item_id)}/${row.sentence_index}">
           <strong>${esc(row.zh)}</strong><span>${esc(row.source)}</span></a>`).join("")}</div>`
           : `<div class="study-task"><h2>暂无待复习句子</h2><a href="#/practice">去选一道题</a></div>`}</div>`;

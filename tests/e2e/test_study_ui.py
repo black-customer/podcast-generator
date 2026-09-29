@@ -267,6 +267,10 @@ def test_permission_denied_and_unreliable_audio_fallback(sample):
             page.locator("[data-rec='start']").click()
             page.wait_for_function("document.querySelector('#study-rec-error')?.textContent.includes('无法使用麦克风')")
             assert "无法使用麦克风" in page.locator("#study-rec-error").inner_text()
+            # INTERACTIONS §5：麦克风不可用时必须能离开本步骤继续学习
+            page.locator("[data-act='skip-record']").click()
+            page.locator(".study-word").first.wait_for()
+            assert page.locator(".study-question-block h1").inner_text()
         finally:
             browser.close()
 

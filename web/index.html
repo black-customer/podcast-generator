@@ -126,7 +126,7 @@
     <audio id="core-audio" preload="auto"></audio>
   </footer>
 
-  <div id="toast-root"></div>
+  <div id="toast-root" aria-live="polite"></div>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));

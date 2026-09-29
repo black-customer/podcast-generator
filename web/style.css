@@ -2249,3 +2249,5 @@ body:not(.player-route) .global-player { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .study-hint { transition: none; }
 }
+
+.study-skip { margin-top: 14px; padding: 8px 18px; border: none; background: transparent; color: var(--blue); font: inherit; font-size: 14px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }

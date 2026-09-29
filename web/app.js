@@ -16,6 +16,7 @@ const PlayerState = {
   timeline: [],
   words: [],           // 逐词时间戳（SSE 数据可用时非空）
   timelineMode: "", // measured | estimated | sse | ""
+  timelineRequest: 0, // 时间轴请求序号：旧请求后到直接丢弃
   activeLineIndex: -1,
   activeWordIndex: -1,
   playbackRate: 1.0,
@@ -437,9 +438,32 @@ function initGlobalPlayer() {
   if ($replayBtn) $replayBtn.onclick = () => window.replayCurrentLine();
   $audio.addEventListener("loadedmetadata", renderLoopUI);
 
-  // ---- 键盘快捷键（输入框内不拦截）----
+  // ---- 事件委托：含参数的按钮一律 data-*，杜绝内联 JS 字符串的引号逃逸 ----
+  document.addEventListener("click", (e) => {
+    const preview = e.target.closest("[data-preview-vid]");
+    if (preview) {
+      previewVoice(preview.dataset.previewProvider, preview.dataset.previewVid, preview);
+      return;
+    }
+    const preset = e.target.closest("[data-preset-vid]");
+    if (preset) {
+      applyVoicePreset(preset.dataset.presetProvider, preset.dataset.presetVid,
+        preset.dataset.presetGender, preset.dataset.presetName,
+        parseFloat(preset.dataset.presetSpeed || "1"),
+        preset.dataset.presetTemp === "" ? null : parseFloat(preset.dataset.presetTemp));
+      return;
+    }
+    const submit = e.target.closest("[data-bank-submit]");
+    if (submit) { bankSubmitAnswer(submit.dataset.bankSubmit); return; }
+    const agent = e.target.closest("[data-agent-topic]");
+    if (agent) { switchToAgentMode(agent.dataset.agentTopic, agent.dataset.agentItem); return; }
+  });
+
+  // ---- 键盘快捷键（聚焦交互元素时放行原生行为）----
   document.addEventListener("keydown", (e) => {
-    if (e.target && ["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) return;
+    const t = e.target;
+    if (t && (["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"].includes(t.tagName)
+      || t.isContentEditable || (t.closest && t.closest("button, a, [role='button']")))) return;
     if (e.code === "Space") {
       e.preventDefault();
       if ($audio.src) $audio.paused ? $audio.play().catch(() => {}) : $audio.pause();
@@ -529,6 +553,8 @@ async function playItem(topicId, item, autoPlay = true) {
 
 // 获取并渲染实时时间轴数据（lines=句级，words=逐词可选，mode=数据可信度）
 async function loadTimeline(topicId, itemId, track) {
+  // 快速切曲时旧请求后到不得覆盖新页面：请求序号守卫（A21 同类竞态）
+  const request = ++PlayerState.timelineRequest;
   PlayerState.timeline = [];
   PlayerState.words = [];
   PlayerState.activeLineIndex = -1;
@@ -537,6 +563,7 @@ async function loadTimeline(topicId, itemId, track) {
   const emptyHtml = `<p style="color:var(--text-sub);padding:20px;">该条目暂无可播放音频，请先完成生成。</p>`;
   try {
     const data = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/timeline/${track}`);
+    if (request !== PlayerState.timelineRequest) return;
     if (data && Array.isArray(data.lines) && data.lines.length > 0) {
       PlayerState.timeline = data.lines;
       PlayerState.words = Array.isArray(data.words) ? data.words : [];
@@ -545,6 +572,7 @@ async function loadTimeline(topicId, itemId, track) {
       return;
     }
   } catch (e) {
+    if (request !== PlayerState.timelineRequest) return;
     console.warn("未读取到实时时间轴：", e);
   }
   // 空态占位，避免停留在“加载中”
@@ -990,7 +1018,7 @@ async function EpisodePlayerView(topicId, track) {
       const timer = setInterval(async () => {
         try {
           const j = await api("GET", `/api/jobs/${r.job_id}`);
-          if (j.state !== "running") { clearInterval(timer); EpisodePlayerView(topicId, track); }
+          if (j.state !== "running") { clearInterval(timer); route(); }
         } catch (_) { clearInterval(timer); }
       }, 1500);
     } catch (e) { toast("重建失败：" + e.message); rebuild.disabled = false; }
@@ -1044,13 +1072,13 @@ async function VoicesShowcaseView(token) {
           ${v.temperature != null ? `<span>温度: ${v.temperature}</span>` : ""}
         </div>
         <div>
-          <button class="voice-btn" onclick="previewVoice('${esc(provider)}', '${esc(voiceId)}', this)" title="播放统一试听稿">试听</button>
+          <button class="voice-btn" data-preview-vid="${esc(voiceId)}" data-preview-provider="${esc(provider)}" title="播放统一试听稿">试听</button>
           ${v.gender === 'male' ? `
-            <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(provider)}', '${esc(voiceId)}', 'male', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
+            <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" data-preset-vid="${esc(voiceId)}" data-preset-provider="${esc(provider)}" data-preset-gender="male" data-preset-name="${esc(v.name)}" data-preset-speed="${v.speed ?? 1.0}" data-preset-temp="${v.temperature ?? ""}">
               ${isCurA ? "当前回答男声" : "设为回答男声"}
             </button>
           ` : `
-            <button class="voice-btn ${isCurB ? 'btn-selected' : ''}" onclick="applyVoicePreset('${esc(provider)}', '${esc(voiceId)}', 'female', '${esc(v.name)}', ${v.speed ?? 1.0}, ${v.temperature ?? "null"})">
+            <button class="voice-btn ${isCurB ? 'btn-selected' : ''}" data-preset-vid="${esc(voiceId)}" data-preset-provider="${esc(provider)}" data-preset-gender="female" data-preset-name="${esc(v.name)}" data-preset-speed="${v.speed ?? 1.0}" data-preset-temp="${v.temperature ?? ""}">
               ${isCurB ? "当前提问女声" : "设为提问女声"}
             </button>
           `}
@@ -1126,6 +1154,7 @@ window.previewVoice = function(provider, referenceId, btn) {
 };
 
 window.applyVoicePreset = async function(provider, referenceId, gender, voiceName, speed, temperature) {
+  const token = routeToken;
   try {
     const payload = { tts_provider: provider };
     if (provider === "stepfun") {
@@ -1141,7 +1170,7 @@ window.applyVoicePreset = async function(provider, referenceId, gender, voiceNam
     if (temperature != null) payload.temperature = temperature;
     await api("PUT", "/api/settings", payload);
     toast(`已将【${voiceName}】设为${gender === "male" ? "回答男声" : "提问女声"}`);
-    VoicesShowcaseView();
+    if (!viewStale(token)) VoicesShowcaseView();
   } catch (e) {
     toast(`设置失败：${e.message}`);
   }
@@ -1394,7 +1423,7 @@ async function ManageView(token) {
       const cards = list.map(v => {
         const vid = v.voice_id || v.reference_id;
         return `<div class="voice-pick ${vid === cur ? "selected" : ""}" data-vid="${esc(vid)}" data-role="${role}">
-          <button type="button" class="voice-pick-play" onclick="previewVoice('${esc(provider)}','${esc(vid)}', this)" title="试听">▶</button>
+          <button type="button" class="voice-pick-play" data-preview-vid="${esc(vid)}" data-preview-provider="${esc(provider)}" title="试听">▶</button>
           <div class="voice-pick-name">${esc(v.name || vid)}</div>
           <div class="voice-pick-meta">${esc(v.accent || "English")} · ${esc(v.age_tone || "")}</div>
           <div class="voice-pick-desc">${esc(v.description || v.tag || "")}</div>
@@ -1902,6 +1931,7 @@ function bankGo(overrides) {
 // 随机来一题（保持当前 part/topic 过滤，随机结果钉在作答卡展示）
 let bankRandomPick = null;
 async function bankRandomGo() {
+  const token = routeToken;
   const p = bankParams();
   const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&random=1` +
     (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
@@ -1909,6 +1939,7 @@ async function bankRandomGo() {
   try {
     const res = await api("GET", query);
     if (!res.items || !res.items.length) { toast("该筛选下没有题目"); return; }
+    if (viewStale(token)) return; // 用户已导航离开：不得覆写新视图
     bankRandomPick = res.items[0];
     BankView(null); // 程序性重渲染（null 不受路由令牌约束）
   } catch (e) {
@@ -1985,7 +2016,7 @@ function showApiJobWait(res) {
     </div>
     <p class="bank-answer-hint" id="api-job-hint">⏳ 正在处理……</p>
     <div class="bank-answer-actions" id="api-job-fallback" style="display:none;">
-      <button class="bank-submit-btn" onclick="switchToAgentMode('${encodeURIComponent(res.topic_id)}', '${encodeURIComponent(res.item_id)}')">改用 Agent 模式</button>
+      <button class="bank-submit-btn" data-agent-topic="${esc(res.topic_id)}" data-agent-item="${esc(res.item_id)}">改用 Agent 模式</button>
     </div>`;
   const mark = (phase) => {
     const order = ["rewrite", "save", "tts"];
@@ -2120,7 +2151,7 @@ async function BankView(token) {
         <label><input type="radio" name="bank-gen-mode" value="api"> API 模式（StepFun 一键改写 + 音频）</label>
       </div>
       <div class="bank-answer-actions">
-        <button id="bank-answer-submit" class="bank-submit-btn" onclick="bankSubmitAnswer('${esc(selItem.id)}')">提交作答</button>
+        <button id="bank-answer-submit" class="bank-submit-btn" data-bank-submit="${esc(selItem.id)}">提交作答</button>
         <button class="btn-pill" onclick="bankGo({sel: ''})">收起</button>
       </div>
       <p class="bank-answer-hint">提交后条目进入话题「${esc(selItem.topic_name_en || selItem.topic_name)}」。
@@ -2180,6 +2211,7 @@ async function BankView(token) {
 
 // 9. 语料包导入管理（B02）：LAN 直传 / 文件导入 / 存档清除
 async function packImportFromBuffer(buffer) {
+  if (PackState.active) packUnload();  // 重复导入：先释放旧包全部 blob URL
   await packLoadBuffer(buffer);
   await packPersist(buffer);
   toast(`语料包导入成功：${PackState.manifest.counts.topics} 话题 / ${PackState.manifest.counts.items} 条目`);
@@ -2298,9 +2330,18 @@ function viewStale(token) {
   return token != null && token !== routeToken;
 }
 
+const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup"];
+
 function route() {
   const token = ++routeToken;
   const hash = location.hash || "#/practice";
+  if (typeof PackState !== "undefined" && PackState.active
+    && PACK_UNSUPPORTED_VIEWS.some(v => hash === v || hash.startsWith(v + "/"))) {
+    $app.innerHTML = `<div class="study-page"><h1>离线包模式不支持此页面</h1>
+      <p class="study-muted">当前使用离线语料包，设置与音色展台需要在电脑端服务模式使用。</p>
+      <a class="study-button primary" href="#/topics">返回我的语料</a></div>`;
+    return;
+  }
   if (typeof StudyUI !== "undefined" && !hash.startsWith("#/learn/") && !hash.startsWith("#/review")) StudyUI.leave();
   document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
   document.querySelectorAll(".nav-item").forEach(el => {
@@ -2481,7 +2522,7 @@ async function SetupView(token) {
     grid.innerHTML = voices.filter(v => (v.gender || "") === gender).map(v => {
       const vid = v.voice_id || v.reference_id;
       return `<div class="voice-pick ${vid === cur ? "selected" : ""}" data-vid="${esc(vid)}" data-role="${role}">
-        <button type="button" class="voice-pick-play" onclick="previewVoice('${esc(state.provider)}','${esc(vid)}', this)" title="试听">▶</button>
+        <button type="button" class="voice-pick-play" data-preview-vid="${esc(vid)}" data-preview-provider="${esc(state.provider)}" title="试听">▶</button>
         <div class="voice-pick-name">${esc(v.name || vid)}</div>
         <div class="voice-pick-meta">${esc(v.accent || "English")} · ${esc(v.age_tone || "")}</div>
         <div class="voice-pick-desc">${esc(v.description || v.tag || "")}</div>
