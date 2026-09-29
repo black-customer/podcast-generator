@@ -24,12 +24,14 @@ def item(tmp_path, monkeypatch):
 
 def test_progress_roundtrip_and_atomic_write(item):
     tid, iid, tmp = item
+    assert study_progress.get_progress(tid, iid)["before_started"] is False
     saved = study_progress.save_progress(tid, iid, {
-        "stage": "dictation", "sentence_index": 2,
+        "stage": "dictation", "sentence_index": 2, "before_started": True,
         "draft": ["I", "would", "go"],
         "facts": {"1": {"hint_used": True, "wrong_attempts": 2, "favorite": True}},
     })
     assert saved["stage"] == "dictation"
+    assert study_progress.get_progress(tid, iid)["before_started"] is True
     assert study_progress.get_progress(tid, iid)["draft"] == ["I", "would", "go"]
     assert json.loads((tmp / "study_private" / tid / iid / "state.json").read_text(
         encoding="utf-8"
@@ -42,6 +44,7 @@ def test_recording_versions_are_kept(item):
     first = study_progress.save_recording(tid, iid, "before", b"first", 2.5, "audio/webm")
     second = study_progress.save_recording(tid, iid, "before", b"second", 3.5, "audio/webm")
     assert first["id"] != second["id"]
+    assert first["question"] == "What do you do?"
     assert study_progress.read_recording(tid, iid, first["id"])[0] == b"first"
     assert len(study_progress.get_progress(tid, iid)["recordings"]) == 2
     assert all(r["stage"] == "before" for r in study_progress.get_progress(tid, iid)["recordings"])
@@ -71,4 +74,8 @@ def test_invalid_stage_does_not_write(item):
     tid, iid, tmp = item
     with pytest.raises(ValueError):
         study_progress.save_progress(tid, iid, {"stage": "unknown"})
+    with pytest.raises(ValueError):
+        study_progress.save_progress(tid, iid, {
+            "facts": {"0": {"wrong_attempts": "not-a-number"}},
+        })
     assert not (tmp / "study_private" / tid / iid / "state.json").exists()

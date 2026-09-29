@@ -5,9 +5,9 @@
 `docs/QUALITY_PLAYBOOK.md`。Qoder 可使用 `/podcast-quality` 自动加载这份质量约定。
 
 2026-09-29 的下一版设计交接入口：`docs/design/study-room-v2/README.md`。
-**现行代码尚未实现逐句学习。** UI 开发以该目录的文字交互规范决定行为，
+**L02/L03 已实现桌面逐句学习。** 后续 UI 维护以该目录的文字交互规范决定行为，
 以概念图决定布局；`docs/design/learning-mode-v1/` 和 `docs/design/v1/` 是历史图。
-音频生成当前仍执行 `skills/ielts-audio/SKILL.md` 的三份英文文本契约。
+音频生成仍执行 `skills/ielts-audio/SKILL.md` 的三份英文文本契约；逐句材料走独立命令。
 
 ## 常用命令
 

@@ -2329,6 +2329,14 @@ function route() {
 
   if (hash === "#/review-done") { StudyUI.reviewDone(token); return; }
 
+  if (hash.startsWith("#/review-practice/")) {
+    const parts = hash.slice("#/review-practice/".length).split("/");
+    if (parts.length >= 3) {
+      StudyUI.reviewPractice(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), Number(parts[2]), token);
+      return;
+    }
+  }
+
   if (hash.startsWith("#/review/")) {
     const parts = hash.slice(9).split("/");
     if (parts.length >= 3) {
@@ -2536,32 +2544,38 @@ async function DoneView(topicId, itemId, token) {
   }
   if (viewStale(token)) return;
   const hasAudio = !!item.has_audio;
+  const audioTrack = item.has_audio_podcast ? "podcast" : item.has_audio_monologue ? "monologue" : "default";
+  const audioPath = `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/audio/${audioTrack}`;
+  const audioUrl = mediaUrl(audioPath) || audioPath;
   // 显示层剥离表演标签：旧条目的可见文本可能残留 [tag]，阅读版必须干净（数据不动）
   const cleanRead = t => (t || "").replace(/\[[^\]]*\]/g, "").replace(/[ \t]{2,}/g, " ").trim();
   $app.innerHTML = `
     <a class="back-link" href="#/topic/${encodeURIComponent(topicId)}">← 返回话题</a>
-    <div class="done-wrap">
+    <div class="done-wrap study-done">
       <div class="done-badge ${hasAudio ? "ok" : "wait"}">${hasAudio ? "✓ 音频已生成" : "⏳ 音频还在生成中"}</div>
+      <h1 class="done-heading">${hasAudio ? "你的回答，已经有了可听的英文版本。" : "回答正在生成音频"}</h1>
+      <p class="study-muted">${hasAudio ? "音频现在就能播放或下载；逐句学习材料会单独准备。" : "音频完成后可直接收听。"}</p>
+      <section class="done-question"><span>本次问题</span>
+        <h2>${esc(publicTitle(item.question || item.title || "条目"))}</h2></section>
+      ${hasAudio ? `<section class="done-audio-card"><h2>你的音频</h2>
+        <div class="done-audio-row"><audio id="done-audio" controls preload="metadata" src="${esc(audioUrl)}"></audio>
+          <a class="study-button" href="${esc(audioUrl)}" download="podcast.mp3">下载音频</a></div></section>` : ""}
       ${item.has_audio_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
-        `<p class="study-material-status">${studyStatusName(item.study_status)}</p>` : ""}
-      <h2 class="done-title">${esc(publicTitle(item.title || item.question || "条目"))}</h2>
-      ${item.question && item.title !== item.question ? `<div class="bank-answer-q" style="margin:8px 0 16px;">${esc(item.question)}</div>` : ""}
-      ${item.natural_english ? `
-        <div class="done-section-label">跟读文本 · 干净英文，可背诵</div>
-        <p class="done-natural">${esc(cleanRead(item.natural_english))}</p>` : ""}
+        `<section class="done-study-card"><h2>${studyStatusName(item.study_status)}</h2>
+          <p>${item.study_status === "ready" ? "逐句中文与讲解已就绪，可以开始完整回答的学习。" :
+            "逐句材料可在学习页准备或补齐；音频仍可直接收听。"}</p>
+          <div class="study-actions"><a class="study-button primary" href="#/learn/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">开始学习</a>
+            <a class="study-button" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">打开精听播放器</a></div></section>` :
+        hasAudio ? `<div class="study-actions"><a class="study-button" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">打开精听播放器</a></div>` : ""}
+      ${item.natural_english ? `<details id="done-english" class="done-dialogue"><summary>查看完整英文</summary>
+        <p class="done-natural">${esc(cleanRead(item.natural_english))}</p></details>` : ""}
       ${item.podcast_text ? `
         <details class="done-dialogue"><summary>查看完整问答对话</summary>
           <pre class="done-dialogue-pre">${esc(cleanRead(item.podcast_text))}</pre></details>` : ""}
-      <div class="bank-answer-actions">
-        ${hasAudio ? `
-          <a class="bank-submit-btn" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}" style="text-decoration:none;">▶ 打开精听播放器</a>
-          ${item.has_audio_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
-            `<a class="btn-pill" href="#/learn/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">开始学习</a>` : ""}
-          <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/audio/podcast" download="podcast.mp3" style="text-decoration:none;">⬇ 下载 MP3</a>`
-        : `<button class="btn-pill" onclick="location.reload()">刷新状态</button>`}
-        <a class="btn-pill" href="#/bank" style="text-decoration:none;">再练一题</a>
-      </div>
+      <div class="bank-answer-actions">${!hasAudio ? `<button class="btn-pill" id="done-refresh">刷新状态</button>` : ""}
+        <a class="btn-pill" href="#/bank">再练一题</a></div>
     </div>`;
+  document.getElementById("done-refresh")?.addEventListener("click", () => route());
 }
 
 window.addEventListener("hashchange", route);

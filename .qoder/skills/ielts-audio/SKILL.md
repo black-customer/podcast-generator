@@ -7,8 +7,10 @@ description: 完成用户的雅思回答改写并生成播客音频（canonical 
 
 本 Skill 不含独立规范。执行时：
 
-下一版学习模式仍在设计交接阶段；逐句中文与讲解不能绕过当前 canonical 校验直接写入。
+桌面逐句学习已在 L02/L03 实现；逐句中文与讲解仍不得绕过 canonical 校验直接写入。
 
 1. 读取仓库根目录 `skills/ielts-audio/SKILL.md`（canonical，唯一来源）。
 2. 严格按其数据契约产出三份文本 JSON。
 3. 执行 `pipeline.py complete --topic-id ... --item-id ... --result-json ...` 完成落盘与合成。
+4. 音频完成后按 canonical Skill 的逐句材料契约，另执行
+   `pipeline.py study --topic-id ... --item-id ... --result-json ...`；材料失败不影响音频。

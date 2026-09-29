@@ -114,10 +114,12 @@ def test_agent_mode_copy_cli_complete_and_done_page():
             )
             audio_file.write_bytes(b"ID3" + b"\0" * 2048)
             page.wait_for_url(re.compile(r"#/done/"), timeout=8000)
+            page.wait_for_selector("#done-audio", timeout=5000)
+            page.locator("#done-english summary").click()
             page.wait_for_selector(".done-natural", timeout=5000)
             assert "favorite teacher" in page.locator(".done-natural").inner_text()
             assert page.locator("text=打开精听播放器").count() == 1
-            assert page.locator("text=下载 MP3").count() >= 1
+            assert page.locator("text=下载音频").count() >= 1
             # 表演稿对普通用户不可见
             body_text = page.locator("body").inner_text()
             assert "[curious]" not in body_text and "[break]" not in body_text

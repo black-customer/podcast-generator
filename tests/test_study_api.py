@@ -1,5 +1,6 @@
 """L02/L03 状态接口、单次材料调用与私有录音 API。"""
 import json
+import subprocess
 import sys
 import time
 import zipfile
@@ -87,3 +88,36 @@ def test_recording_api_versions_not_in_pack(setup):
         assert not any("study_private" in name or "recording" in name for name in names)
     assert client.delete(base + "/recordings/" + records[0]["id"]).status_code == 200
     assert len(client.get(base + "/progress").json()["recordings"]) == 1
+
+
+def test_material_failure_keeps_audio_and_recording_history(setup, monkeypatch):
+    client, tid, iid, _ = setup
+    base = f"/api/topics/{tid}/items/{iid}/study"
+    first = client.post(base + "/recordings?stage=before&duration_sec=2.5",
+                        content=b"first", headers={"Content-Type": "audio/webm"}).json()
+
+    def fail_chat(settings, messages, cancel):
+        raise rewrite.RewriteError("synthetic text failure")
+
+    monkeypatch.setattr(rewrite, "_chat", fail_chat)
+    assert client.post(base + "/prepare").status_code == 200
+    for _ in range(100):
+        result = client.get(base).json()
+        if result["status"] != "preparing":
+            break
+        time.sleep(.02)
+    assert result["status"] == "failed"
+    assert client.get(f"/api/topics/{tid}/items/{iid}/audio/podcast").status_code == 200
+    assert client.get(base + "/recordings/" + first["id"]).content == b"first"
+
+
+@pytest.mark.parametrize("command", ["complete", "study"])
+def test_pipeline_invalid_json_returns_nonzero(command, tmp_path):
+    result = tmp_path / "invalid.json"
+    result.write_text("{}", encoding="utf-8")
+    run = subprocess.run(
+        [sys.executable, str(BASE_DIR / "pipeline.py"), command,
+         "--topic-id", "missing", "--item-id", "missing", "--result-json", str(result)],
+        capture_output=True, text=True, timeout=10,
+    )
+    assert run.returncode == 2

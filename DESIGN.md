@@ -1,7 +1,7 @@
 # DESIGN — IELTS Pod 下一版桌面目标：「暖纸自习室」
 
-> 2026-09-29 Bruce 选定的新视觉方向。设计交接见 `docs/design/study-room-v2/`；
-> 本轮只有概念图和文字规范，现行生产前端尚未改成这套样式。
+> 2026-09-29 Bruce 选定并在 L02/L03 落地的桌面视觉方向。设计交接见
+> `docs/design/study-room-v2/`；图是概念参考，运行中的页面以生产代码和交互规范为准。
 > `docs/design/v1/` 与 `docs/design/learning-mode-v1/` 均为历史方案。
 
 ## 体验主线

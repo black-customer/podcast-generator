@@ -24,7 +24,7 @@ def _folder(topic_id: str, item_id: str) -> Path:
 
 
 def _default() -> dict:
-    return {"version": 1, "stage": "before", "sentence_index": 0,
+    return {"version": 1, "stage": "before", "before_started": False, "sentence_index": 0,
             "draft": [], "facts": {}, "recordings": []}
 
 
@@ -52,6 +52,8 @@ def save_progress(topic_id: str, item_id: str, update: dict) -> dict:
     stage = update.get("stage")
     if stage is not None and stage not in STAGES:
         raise ValueError("非法学习阶段")
+    if "before_started" in update and not isinstance(update["before_started"], bool):
+        raise ValueError("学习入口状态错误")
     index = update.get("sentence_index")
     if index is not None and (not isinstance(index, int) or not 0 <= index < 10000):
         raise ValueError("句子序号错误")
@@ -65,14 +67,22 @@ def save_progress(topic_id: str, item_id: str, update: dict) -> dict:
         raise ValueError("复习记录格式错误")
     if facts is not None:
         for key, value in facts.items():
-            if not str(key).isdigit() or not isinstance(value, dict):
+            if not str(key).isdigit() or int(key) >= 10000 or not isinstance(value, dict):
                 raise ValueError("复习记录格式错误")
             if any(k not in {"hint_used", "wrong_attempts", "favorite", "passed",
                              "review_attempts"} for k in value):
                 raise ValueError("复习记录字段错误")
+            for field, entry in value.items():
+                if field in {"hint_used", "favorite", "passed"} and not isinstance(entry, bool):
+                    raise ValueError("复习记录布尔值错误")
+                if field in {"wrong_attempts", "review_attempts"} and (
+                    not isinstance(entry, int) or isinstance(entry, bool)
+                    or not 0 <= entry <= 100000
+                ):
+                    raise ValueError("复习记录次数错误")
     with _LOCK:
         state = get_progress(topic_id, item_id)
-        for key in ("stage", "sentence_index", "draft"):
+        for key in ("stage", "before_started", "sentence_index", "draft"):
             if key in update:
                 state[key] = update[key]
         if facts is not None:
@@ -105,7 +115,9 @@ def save_recording(
         try:
             temp.write_bytes(data)
             os.replace(temp, path)
-            entry = {"id": rec_id, "stage": stage, "created_at": library.now_iso(),
+            question = library.read_item_texts(library.item_path(topic_id, item_id))["question"]
+            entry = {"id": rec_id, "question": question, "stage": stage,
+                     "created_at": library.now_iso(),
                      "duration_sec": round(float(duration_sec), 2), "media_type": media_type,
                      "filename": name}
             state["recordings"].append(entry)

@@ -75,6 +75,13 @@ def test_chinese_input_has_no_personal_english_error(item):
     assert study.save_material(tid, iid, clean)["sentences"][1].get("original_error") is None
 
 
+def test_english_input_can_cite_exact_original_error(item):
+    tid, iid, _ = item
+    library.update_item_texts(tid, iid, {"original_answer": "I go for a walk. It help me relaxed."})
+    saved = study.save_material(tid, iid, material())
+    assert saved["sentences"][1]["original_error"]["quote"] == "It help me relaxed."
+
+
 def test_material_changes_when_source_changes_but_audio_survives(item):
     tid, iid, path = item
     study.save_material(tid, iid, material())
@@ -89,6 +96,14 @@ def test_old_item_needs_original_answer(item):
     assert study.get_material(tid, iid)["status"] == "needs_input"
 
 
+def test_malformed_material_reports_failure_instead_of_crashing(item):
+    tid, iid, path = item
+    (path / "study_material.json").write_text("[]", encoding="utf-8")
+    assert study.get_material(tid, iid)["status"] == "failed"
+    (path / "study_material.json").write_text('{"version": 999}', encoding="utf-8")
+    assert study.get_material(tid, iid)["status"] == "failed"
+
+
 def test_audio_position_uses_only_verified_alignment(item, monkeypatch):
     tid, iid, _ = item
     study.save_material(tid, iid, material())
@@ -100,3 +115,11 @@ def test_audio_position_uses_only_verified_alignment(item, monkeypatch):
         "mode": "sse", "lines": [{"speaker": "B", "text": "I go for a walk.",
                                   "start": 2, "end": 4}]})
     assert study.sentence_audio(tid, iid, 0)["scope"] == "sentence"
+
+
+def test_voice_rebuild_keeps_material_when_text_unchanged(item):
+    tid, iid, path = item
+    study.save_material(tid, iid, material())
+    (path / "audio_podcast.mp3").write_bytes(b"new-audio-version")
+    assert study.get_material(tid, iid)["status"] == "ready"
+    assert study.sentence_audio(tid, iid, 0)["scope"] == "full_answer"

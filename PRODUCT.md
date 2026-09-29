@@ -54,9 +54,10 @@ acceptance, visual direction, and milestone acceptance.
 - Questioner and answerer are independent roles with user-selected gender and voice.
 - Existing alignment, word highlighting, sentence seeking, bilingual display, server/pack data
   sources, exports, and Android packaging must remain functional.
-- The planned study content needs a meaning-preserving Chinese sentence for each English sentence,
+- Study content includes a meaning-preserving Chinese sentence for each English sentence,
   a saved explanation, audio linkage, and error analysis only when the learner's original input
-  provides evidence. Current generation still supports only its existing three-text contract.
+  provides evidence. Audio generation keeps its three-text contract; study material is submitted
+  separately after audio completion.
 - `data/` is product data and must remain human-readable, Agent-editable, atomic, and compatible.
 - Real TTS consumes quota and runs only when explicitly requested or initiated by the user.
 

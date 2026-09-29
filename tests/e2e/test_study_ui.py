@@ -95,7 +95,15 @@ def test_five_sentences_recordings_and_review(sample):
         errors = []
         page.on("pageerror", lambda err: errors.append(str(err)))
         try:
+            page.goto(f"{BASE_URL}/#/done/{tid}/{iid}")
+            page.locator("#done-audio").wait_for(state="visible", timeout=1500)
+            assert page.locator("#done-audio").get_attribute("src").endswith("/audio/podcast")
+            assert page.locator("#done-english").get_attribute("open") is None
+            page.screenshot(path=str(out / "A09.png"), full_page=True)
             page.goto(f"{BASE_URL}/#/learn/{tid}/{iid}")
+            page.get_by_role("heading", name="开始这道题的学习").wait_for()
+            page.screenshot(path=str(out / "B01.png"), full_page=True)
+            page.get_by_role("button", name="开始本题学习").click()
             page.locator(".study-recorder").wait_for()
             _record_and_save(page)
             page.locator(".study-word").first.wait_for()
@@ -139,6 +147,14 @@ def test_five_sentences_recordings_and_review(sample):
             page.locator(".study-review-list a").first.wait_for()
             assert page.locator(".study-review-list a").count() >= 2
             assert "It helps me unwind" not in page.locator(".study-review-list").inner_text()
+            page.locator(".study-review-list a").first.click()
+            page.get_by_role("heading", name="句子详情").wait_for()
+            assert "It helps me unwind." in page.locator(".study-detail").inner_text()
+            assert "It help me relaxed." in page.locator(".study-detail").inner_text()
+            assert page.locator(".study-word").count() == 0
+            page.screenshot(path=str(out / "B12.png"), full_page=True)
+            page.goto(f"{BASE_URL}/#/review")
+            page.locator("#study-review-start").wait_for()
             page.locator("#study-review-start").click()
             for index in (1, 2):
                 _fill_sentence(page, ANSWER[index][1])
@@ -195,6 +211,38 @@ def test_material_missing_shows_recovery(sample_no_material):
             browser.close()
 
 
+def test_wordboxes_paste_keyboard_and_reduced_motion_hint(sample):
+    tid, iid = sample
+    requests.patch(f"{BASE_URL}/api/topics/{tid}/items/{iid}/study/progress",
+                   json={"stage": "dictation", "before_started": True}, timeout=10)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(viewport={"width": 1536, "height": 1024},
+                                      reduced_motion="reduce")
+        page = context.new_page()
+        try:
+            page.goto(f"{BASE_URL}/#/learn/{tid}/{iid}")
+            boxes = page.locator(".study-word")
+            boxes.first.wait_for()
+            assert boxes.count() == 8
+            boxes.first.fill(ANSWER[0][1])
+            assert boxes.nth(7).input_value() == "work"
+            boxes.first.focus()
+            boxes.first.press("Tab")
+            assert page.evaluate("document.activeElement.dataset.word") == "1"
+            boxes.nth(1).fill("")
+            boxes.nth(1).press("Backspace")
+            assert page.evaluate("document.activeElement.dataset.word") == "0"
+            page.evaluate("localStorage.setItem('study-hint-seconds', '3')")
+            boxes.first.fill("I")
+            page.locator("[data-act='hint']").click()
+            page.locator("#study-hint").wait_for(state="visible")
+            page.locator("#study-hint").wait_for(state="hidden", timeout=4500)
+            assert boxes.first.input_value() == "I"
+        finally:
+            browser.close()
+
+
 def test_permission_denied_and_unreliable_audio_fallback(sample):
     tid, iid = sample
     requests.patch(f"{BASE_URL}/api/topics/{tid}/items/{iid}/study/progress",
@@ -213,6 +261,7 @@ def test_permission_denied_and_unreliable_audio_fallback(sample):
             requests.patch(f"{BASE_URL}/api/topics/{tid}/items/{iid}/study/progress",
                            json={"stage": "before"}, timeout=10)
             page.reload()
+            page.get_by_role("button", name="开始本题学习").click()
             page.locator("[data-rec='start']").click()
             page.wait_for_function("document.querySelector('#study-rec-error')?.textContent.includes('无法使用麦克风')")
             assert "无法使用麦克风" in page.locator("#study-rec-error").inner_text()

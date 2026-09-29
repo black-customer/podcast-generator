@@ -261,7 +261,7 @@ const StudyUI = (() => {
             sessionStorage.setItem("study-review-round", JSON.stringify(session));
             const nextRow = queue[current + 1];
             location.hash = nextRow
-              ? `#/review/${encodeURIComponent(nextRow.topic_id)}/${encodeURIComponent(nextRow.item_id)}/${nextRow.sentence_index}`
+              ? `#/review-practice/${encodeURIComponent(nextRow.topic_id)}/${encodeURIComponent(nextRow.item_id)}/${nextRow.sentence_index}`
               : "#/review-done";
           } else location.hash = "#/review";
           return;
@@ -304,7 +304,7 @@ const StudyUI = (() => {
   function recorderPanel(stage) {
     return `<div class="study-recorder" data-rec-stage="${stage}">
       <div class="study-rec-status" id="study-rec-status" role="status">准备就绪 · 录音只保存在本机</div>
-      <div class="study-actions"><button type="button" data-rec="start">开始录音</button>
+      <div class="study-actions"><button type="button" data-rec="start">${state.progress.recordings.some(r => r.stage === stage) ? "重录一版" : "开始录音"}</button>
         <button type="button" data-rec="stop" disabled>停止</button>
         <button type="button" data-rec="save" disabled class="primary">保存这版录音</button></div>
       <audio id="study-rec-preview" controls hidden></audio>
@@ -333,6 +333,27 @@ const StudyUI = (() => {
         sentence_index: stage === "before" ? 0 : state.progress.sentence_index });
       render();
     });
+  }
+  function renderIntro() {
+    const count = state.material.sentences.length;
+    shell(`<section class="study-intro">
+      <h1>开始这道题的学习</h1>
+      <p class="study-muted">先说出自己的回答，再把整篇回答逐句练成自然英文。</p>
+      <div class="study-intro-count">${count} 句话 · 全句默写 · 3 次完整回答</div>
+      <div class="study-question-block"><span>Question</span>
+        <h2>${esc(state.item.question || state.item.title)}</h2></div>
+      <div class="study-intro-grid">
+        ${["先回答", "逐句默写与讲解", "看中文说", "脱稿说"].map((name, i) =>
+          `<div><b>${i + 1}</b><h3>${name}</h3><p>${[
+            "先用自己的想法完整回答这道题。", "每一句都写出播报中的示范英文，再看讲解。",
+            "看完整中文意思，连贯说出整篇回答。", "只看原题，再独立回答一遍。",
+          ][i]}</p></div>`).join("")}</div>
+      <button type="button" class="study-next" id="study-begin">开始本题学习</button>
+    </section>`, "before");
+    document.getElementById("study-begin").onclick = async () => {
+      try { await save({ before_started: true }); renderRecording("before"); }
+      catch (err) { toast(`无法开始学习：${err.message}`); }
+    };
   }
   function bindRecording() {
     const panel = $app.querySelector(".study-recorder");
@@ -427,7 +448,8 @@ const StudyUI = (() => {
   }
   function render() {
     if (state.review) { renderDictation(); return; }
-    if (state.progress.stage === "dictation") renderDictation();
+    if (state.progress.stage === "before" && !state.progress.before_started) renderIntro();
+    else if (state.progress.stage === "dictation") renderDictation();
     else if (state.progress.stage === "summary") renderSummary();
     else renderRecording(state.progress.stage);
   }
@@ -513,7 +535,7 @@ const StudyUI = (() => {
         const chosen = rows.filter(row => !source.value || row.topic_id === source.value);
         sessionStorage.setItem("study-review-round", JSON.stringify({ queue: chosen, results: [] }));
         const first = chosen[0];
-        location.hash = `#/review/${encodeURIComponent(first.topic_id)}/${encodeURIComponent(first.item_id)}/${first.sentence_index}`;
+        location.hash = `#/review-practice/${encodeURIComponent(first.topic_id)}/${encodeURIComponent(first.item_id)}/${first.sentence_index}`;
       };
       if (source) source.onchange = () => $app.querySelectorAll(".study-review-list a").forEach(link => {
         link.hidden = !!source.value && link.dataset.topic !== source.value;
@@ -522,7 +544,7 @@ const StudyUI = (() => {
       $app.innerHTML = `<div class="study-page"><h1>复习库加载失败</h1><p>${esc(err.message)}</p></div>`;
     }
   }
-  async function reviewDetail(topicId, itemId, index, token) {
+  async function reviewDetail(topicId, itemId, index, token, practice = false) {
     leave(); state.topicId = topicId; state.itemId = itemId; state.review = true;
     state.reviewIndex = index; state.reviewDraft = []; state.reviewPassed = false;
     const round = JSON.parse(sessionStorage.getItem("study-review-round") || "{}");
@@ -538,11 +560,41 @@ const StudyUI = (() => {
       if (viewStale(token)) return;
       state.item = item; state.progress = progress; state.material = doc.material;
       if (doc.status !== "ready" || !state.material?.sentences[index]) throw new Error("材料已变化，请先补齐");
-      renderDictation();
+      if (practice) renderDictation();
+      else renderReviewDetail();
     } catch (err) {
       if (!viewStale(token)) $app.innerHTML = `<div class="study-page"><h1>无法复习这句</h1>
         <p>${esc(err.message)}</p><a href="#/review">返回复习库</a></div>`;
     }
+  }
+  function renderReviewDetail() {
+    const sentence = currentSentence();
+    const record = facts(activeIndex());
+    shell(`<section class="study-task study-detail"><h1>句子详情</h1>
+      <div class="study-question-block"><span>来源题目</span>
+        <h2>${esc(state.item.question || state.item.title)}</h2></div>
+      <div class="study-detail-sentence"><span>当前句子</span>
+        <h2>${esc(sentence.zh)}</h2><p class="study-answer">${esc(sentence.en)}</p>
+        <button type="button" data-detail="play">播放本句</button>
+        <p id="study-feedback" class="study-feedback" role="status"></p></div>
+      <div class="study-explain-grid"><div><h3>讲解</h3><p>${esc(sentence.explanation)}</p>
+        <p>${esc(sentence.usage)}</p></div><div><h3>练习记录</h3>
+        <p>${record.wrong_attempts ? `与示范不同 ${record.wrong_attempts} 次` : "无不同提交记录"}</p>
+        <p>${record.hint_used ? "用过提示" : "未用提示"}</p>
+        <p>${record.review_attempts ? `已复习 ${record.review_attempts} 次` : "尚未复习"}</p></div>
+        ${sentence.original_error ? `<div><h3>有据的原始表达</h3>
+          <blockquote>${esc(sentence.original_error.quote)}</blockquote>
+          <p>${esc(sentence.original_error.issue)}</p>
+          <p>${esc(sentence.original_error.correction)}</p></div>` : ""}</div>
+      <div class="study-actions"><a class="study-button primary" href="#/review-practice/${encodeURIComponent(state.topicId)}/${encodeURIComponent(state.itemId)}/${activeIndex()}">再练这句</a>
+        <button type="button" data-detail="favorite">${record.favorite ? "取消收藏" : "收藏这句"}</button>
+        <a class="study-button" href="#/review">返回句子复习</a></div>
+    </section>`, "dictation");
+    $app.querySelector("[data-detail='play']").onclick = () => playSentence().catch(err => toast(err.message));
+    $app.querySelector("[data-detail='favorite']").onclick = async () => {
+      await save({ facts: { [activeIndex()]: { favorite: !facts(activeIndex()).favorite } } });
+      renderReviewDetail();
+    };
   }
   function reviewDone() {
     leave();
@@ -558,5 +610,6 @@ const StudyUI = (() => {
         <a class="study-button" href="#/topics">返回我的语料</a></div></div>`;
     $app.scrollTop = 0;
   }
-  return { view, review, reviewDetail, reviewDone, leave };
+  return { view, review, reviewDetail, reviewPractice: (t, i, n, token) =>
+    reviewDetail(t, i, n, token, true), reviewDone, leave };
 })();

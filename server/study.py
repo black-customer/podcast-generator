@@ -203,6 +203,10 @@ def get_material(topic_id: str, item_id: str) -> dict:
     if file.exists():
         try:
             stored = json.loads(file.read_text(encoding="utf-8"))
+            if not isinstance(stored, dict):
+                raise MaterialError("逐句材料文件必须是 JSON 对象")
+            if stored.get("version") != VERSION:
+                raise MaterialError("逐句材料版本不受支持，请重新准备")
             if stored.get("source_fingerprint") != source_fingerprint(texts):
                 return {"status": "changed", "reason": "回答正文或原始回答已变化，请复核材料"}
             validated = validate_material(stored, texts)

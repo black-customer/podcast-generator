@@ -116,7 +116,10 @@ def test_settings_validation_rejects_bad_values(env):
     assert c.put("/api/settings", json={"speed": 1.05, "temperature": 0.7}).status_code == 200
 
 
-def test_stepfun_settings_and_voice_filters(env):
+def test_stepfun_settings_and_voice_filters(env, monkeypatch):
+    from server import api
+
+    monkeypatch.setattr(api, "DATA_DIR", env["topics"].parent)
     c = env["client"]
     saved = c.put(
         "/api/settings",
