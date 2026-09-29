@@ -272,6 +272,7 @@ AC：按设计图走通一题全部句子；提示不清空输入，检索前不
 ### W01 StepFun 逐词对齐 — PENDING
 
 价值：默认引擎（StepFun）当前只有句级时间轴，播放器逐词点亮仅在 fish.audio 引擎下生效。
+历史 Fish 分段轨也可能标记为 measured 但携带有效逐词词表；播放器以实际词表能力显示同步粒度。
 WP：stepfun.py 接入 stepaudio SSE 流式响应解析词级 timestamp；alignment 消费并落盘 words；
 对话/独白两路径回归。
 AC：新 StepFun 条目必有词级 words；抽 N 句 ffmpeg 切听偏差 <150ms（与 M02 同标准）；

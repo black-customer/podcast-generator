@@ -491,3 +491,18 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
 - `bash scripts/check.sh --release` 全绿：ruff、181 passed / 1 skipped、Playwright 13 passed、
   服务启动与 portable ZIP 隐私审计通过。未改音频、桌面 UI 或 Android 资产。
 - v0.6.0 发布已由并行会话完成；本次修复只本地提交，不移动 tag、不推送。
+
+## 2026-09-29 会话 23：三项交付独立验收
+
+- 验收同步承诺、发布与更新、路线图及门禁。发现 6 份历史 Fish 对齐文档虽然
+  `mode=measured`，仍携带有效逐词词表；原播放器按 mode 标「逐句同步」，与实际逐词点亮不符。
+  新增真实语料 Playwright 回归先红后绿，标签改按实际词表判断；README 同步收紧条件文案，
+  静态缓存升版。桌面 1280×800 与手机 390×844 截图显示「逐词同步」，无横向溢出。
+- GitHub v0.6.0 的 ZIP/APK 已实际下载，两个 SHA-256 均与 Release 元数据一致；ZIP 为
+  0.6.0、含运行与学习资源、无私有数据，APK 含 study.js、app.js、style.css 和启动图标。
+- update_app.bat 的无关进程保护与本项目服务结束测试、B06 归档和 W01 待办均与交付一致；
+  既有未跟踪 StepFun 试听缓存保留未动。v0.6.0 tag 不移动，本轮不重新发布。
+- Android 仍以 debug APK 发布，现有更新路径要求卸载旧版；这会清除 APP 内已导入的离线
+  语料包。README 补充保留原 ZIP 或重装后从电脑重新导入的提醒；不把它称为无损原位更新。
+- 最终 `bash scripts/check.sh --release` 全绿：ruff、181 passed / 1 skipped、Playwright 13 passed、
+  服务冒烟与 1.3MB 便携包隐私审计均通过。

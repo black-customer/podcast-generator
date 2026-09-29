@@ -31,7 +31,7 @@
      Codex / ZCode / WorkBuddy 等任意编码 Agent，它改写完成并合成音频后，网页自动跳到完成页；
    - **API 模式（一键）**：用已配置的 StepFun Key 一次完成改写→校验→音频合成，三阶段进度可见；
 4. **听**：完成页直接播放/下载 MP3；精听播放器支持点句跳转、句级同步高亮、单句重播、
-   A-B 循环、倍速（默认 StepFun 引擎为逐句同步；切换 fish.audio 引擎时逐词点亮）；
+   A-B 循环、倍速（默认 StepFun 引擎为逐句同步；音频带有效逐词时间轴时逐词点亮）；
 5. **学或带走**：电脑端可录下学习前回答、逐句默写、看中文和脱稿再答；也可导出语料包
    给 Android APP 离线收听，或导出 M4B/SRT。
 
@@ -103,7 +103,7 @@ git clone https://github.com/black-customer/podcast-generator && cd podcastGener
 ## 手机 APP（Android，离线收听）
 
 独立 APK（Capacitor 壳，与网页同一套代码），导入语料包后**无需网络**：
-语料库、播放页（音字同步高亮/点句跳转全部可用；逐词点亮仅对含逐词时间轴的语料，即 fish.audio 引擎生成的音频）。
+语料库、播放页（音字同步高亮/点句跳转全部可用；逐词点亮仅对含有效逐词时间轴的语料可用）。
 
 1. **局域网导入**（推荐）：电脑端 `python run.py --host 0.0.0.0`，手机与电脑同 Wi-Fi，
    APP「导入」页输入电脑地址（如 `http://192.168.1.5:8765`）和终端显示的临时配对码
@@ -119,7 +119,8 @@ cd mobile && npx cap sync android                  # 同步 www → android 资�
 .venv/Scripts/python ../scripts/sync_mobile.py     # cap sync 会重置 Java 版本，必须重打补丁
 cd android && ./gradlew assembleDebug
 # 产物：mobile/android/app/build/outputs/apk/debug/app-debug.apk
-# 注意：覆盖安装前先卸载旧版（WebView 缓存会导致白屏）
+# 更新 Android beta：先保留语料包 ZIP，再卸载旧版并安装新版；卸载会清除 APP 内
+# 已导入的离线数据。重装后从 ZIP 或电脑重新导入，当前暂不支持无损原位升级。
 ```
 
 ## 给 Agent 的执行接口（ielts-audio）

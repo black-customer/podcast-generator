@@ -116,21 +116,22 @@ def test_full_player_workflow():
 
 
 def test_timeline_mode_chip_matches_alignment_capability():
-    """同步模式标注必须与时间轴真实能力一致：sse=逐词、measured=逐句、estimated=基础。
+    """同步模式标注取决于可用词表，不能只看 alignment 的来源模式。
 
-    防止把 Fish sse（真逐词）标成「基础同步」，也防止把 StepFun measured（句级）
-    夸大成逐词——默认 StepFun 路径 words 恒为空（server/tts.py StepFun 分支）。
+    旧 Fish 分段音频可能 mode=measured 但有实测词表；默认 StepFun measured 没有词表。
     """
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
         page.goto(f"{BASE_URL}/#/topics")
         page.wait_for_selector(".album-card", timeout=5000)
-        labels = page.evaluate(
-            "() => ['sse', 'measured', 'estimated'].map(m => timelineModeLabel(m))"
-        )
+        labels = page.evaluate("""() => [
+          ['sse', 288], ['measured', 139], ['measured', 0], ['sse', 0], ['estimated', 0]
+        ].map(([mode, words]) => timelineModeLabel(mode, words))""")
         assert labels == [
             {"label": "逐词同步", "estimated": False},
+            {"label": "逐词同步", "estimated": False},
+            {"label": "逐句同步", "estimated": False},
             {"label": "逐句同步", "estimated": False},
             {"label": "基础同步", "estimated": True},
         ]
@@ -140,6 +141,12 @@ def test_timeline_mode_chip_matches_alignment_capability():
         chip = page.locator("#tl-mode-chip")
         chip.wait_for_function("el => el.textContent !== '对齐模式…'")
         assert chip.inner_text() == "逐词同步"
+        # 历史实测分段语料带逐词时间戳，也应标成逐词同步。
+        page.goto(f"{BASE_URL}/#/play/01-my-studies/001-do-you-work-or-are-you-a-student")
+        page.wait_for_function(
+            "() => PlayerState.timelineMode === 'measured' && PlayerState.words.length > 0"
+        )
+        assert page.locator("#tl-mode-chip").inner_text() == "逐词同步"
         browser.close()
 
 

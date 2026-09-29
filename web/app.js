@@ -38,10 +38,10 @@ function studyStatusName(status) {
     failed: "逐句材料失败", changed: "逐句材料内容已变化" })[status] || "逐句材料待补齐";
 }
 
-function timelineModeLabel(mode) {
-  // 词数据只有 Fish sse 路径产出；StepFun 默认路径是句级 measured。
-  if (mode === "sse") return { label: "逐词同步", estimated: false };
-  if (mode === "measured") return { label: "逐句同步", estimated: false };
+function timelineModeLabel(mode, wordCount = 0) {
+  // 历史 Fish 分段轨可标 measured 但仍带实测词表；StepFun 默认轨只有句级跨度。
+  if (wordCount > 1) return { label: "逐词同步", estimated: false };
+  if (mode === "measured" || mode === "sse") return { label: "逐句同步", estimated: false };
   return { label: "基础同步", estimated: true };
 }
 
@@ -587,7 +587,7 @@ function renderLiveTimelineUI() {
   // 对齐模式保留真实状态，但用学习者能理解的产品语言呈现。
   const chip = document.getElementById("tl-mode-chip");
   if (chip) {
-    const info = timelineModeLabel(PlayerState.timelineMode);
+    const info = timelineModeLabel(PlayerState.timelineMode, PlayerState.words.length);
     chip.textContent = info.label;
     chip.classList.toggle("chip-estimated", info.estimated);
   }
