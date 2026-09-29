@@ -20,6 +20,8 @@ from . import (
     production,
     rewrite,
     stepfun,
+    study,
+    study_progress,
     timeline,
     tts,
 )
@@ -47,6 +49,7 @@ class TopicIn(BaseModel):
 class ItemIn(BaseModel):
     question: str = ""
     chinese: str = ""
+    original_answer: str = ""
     natural_english: str = ""
     fish_script: str = ""
     monologue_text: str = ""
@@ -225,6 +228,101 @@ def api_get_item(topic_id: str, item_id: str):
         raise _err(404, str(e)) from e
     except ValueError as e:
         raise _err(400, str(e)) from e
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/study")
+def api_get_study(topic_id: str, item_id: str):
+    try:
+        return study.get_material(topic_id, item_id)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    except ValueError as e:
+        raise _err(400, str(e)) from e
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/study/prepare")
+def api_prepare_study(topic_id: str, item_id: str):
+    try:
+        current = study.get_material(topic_id, item_id)
+        if current["status"] == "ready":
+            return current
+        if current["status"] == "needs_input" and "原始回答" in current["reason"]:
+            raise _err(409, current["reason"])
+        started = study.prepare_async(topic_id, item_id)
+        return {"status": "preparing", "started": started}
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    except study.MaterialError as e:
+        raise _err(409, str(e)) from e
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/study/audio/{index}")
+def api_study_audio(topic_id: str, item_id: str, index: int):
+    try:
+        return study.sentence_audio(topic_id, item_id, index)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    except study.MaterialError as e:
+        raise _err(409, str(e)) from e
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/study/progress")
+def api_study_progress(topic_id: str, item_id: str):
+    try:
+        return study_progress.get_progress(topic_id, item_id)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+
+
+@router.patch("/topics/{topic_id}/items/{item_id}/study/progress")
+def api_save_study_progress(topic_id: str, item_id: str, body: dict):
+    try:
+        return study_progress.save_progress(topic_id, item_id, body)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    except ValueError as e:
+        raise _err(400, str(e)) from e
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/study/recordings")
+async def api_save_study_recording(
+    topic_id: str, item_id: str, request: Request, stage: str, duration_sec: float
+):
+    if int(request.headers.get("content-length") or 0) > 30 * 1024 * 1024:
+        raise _err(413, "录音超过 30 MB")
+    try:
+        data = await request.body()
+        return study_progress.save_recording(
+            topic_id, item_id, stage, data, duration_sec,
+            request.headers.get("content-type") or ""
+        )
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+    except ValueError as e:
+        raise _err(400, str(e)) from e
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/study/recordings/{recording_id}")
+def api_get_study_recording(topic_id: str, item_id: str, recording_id: str):
+    try:
+        data, media_type = study_progress.read_recording(topic_id, item_id, recording_id)
+        return Response(content=data, media_type=media_type)
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+
+
+@router.delete("/topics/{topic_id}/items/{item_id}/study/recordings/{recording_id}")
+def api_delete_study_recording(topic_id: str, item_id: str, recording_id: str):
+    try:
+        study_progress.delete_recording(topic_id, item_id, recording_id)
+        return {"ok": True}
+    except FileNotFoundError as e:
+        raise _err(404, str(e)) from e
+
+
+@router.get("/study/review")
+def api_study_review():
+    return study_progress.review_items()
 
 
 @router.patch("/topics/{topic_id}/items/{item_id}")

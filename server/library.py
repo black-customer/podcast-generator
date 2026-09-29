@@ -178,6 +178,9 @@ def item_summary(d: Path) -> dict:
         "updated_at": meta.get("updated_at") or "",
     }
     entry["has_audio"] = entry["has_monologue"] or entry["has_podcast"]
+    if entry["has_podcast"]:
+        from . import study
+        entry["study_status"] = study.get_material(d.parent.parent.name, d.name)["status"]
     _SUMMARY_CACHE[str(d)] = (sig, entry, now)
     return entry
 
@@ -529,7 +532,7 @@ def get_item_full(topic_id: str, item_id: str) -> dict:
         has_mono = mono.exists() and mono.stat().st_size > 0
         has_pod = pod.exists() and pod.stat().st_size > 0
         has_legacy = (d / "audio.mp3").exists() and (d / "audio.mp3").stat().st_size > 0
-        return {
+        result = {
             "topic_id": topic_id,
             "id": d.name,
             "title": item_title(texts, d.name),
@@ -549,6 +552,10 @@ def get_item_full(topic_id: str, item_id: str) -> dict:
             "qa_podcast": meta.get("qa_podcast"),
             "qa_default": meta.get("qa_default"),
         }
+        if result["has_audio_podcast"]:
+            from . import study
+            result["study_status"] = study.get_material(topic_id, item_id)["status"]
+        return result
 
 
 def generated_items(topic_id: str, track: str = "default") -> list[dict]:

@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
-from server import library, rewrite, tts
+from server import library, rewrite, study, tts
 
 DEFAULT_BASE_URL = "http://127.0.0.1:8765"
 
@@ -143,7 +143,24 @@ def main():
     comp.add_argument("--base-url", default=DEFAULT_BASE_URL, help="播放页基础 URL")
     comp.add_argument("--no-audio", action="store_true", help="只写文本，不合成")
 
+    mat = sub.add_parser("study", help="提交独立逐句学习材料（音频完成后）")
+    mat.add_argument("--topic-id", required=True)
+    mat.add_argument("--item-id", required=True)
+    mat.add_argument("--result-json", required=True, help="逐句材料 JSON 文件路径，- 表示 stdin")
+
     args = parser.parse_args()
+    if args.command == "study":
+        raw = sys.stdin.read() if args.result_json == "-" else Path(args.result_json).read_text(
+            encoding="utf-8"
+        )
+        try:
+            result = json.loads(raw)
+            saved = study.save_material(args.topic_id, args.item_id, result)
+        except (json.JSONDecodeError, ValueError, FileNotFoundError) as exc:
+            print(f"FAILED: {exc}", file=sys.stderr)
+            return 2
+        print(f"STUDY READY: {len(saved['sentences'])} sentences")
+        return 0
     if args.command == "complete":
         raw = (
             sys.stdin.read()

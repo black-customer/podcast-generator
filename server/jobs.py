@@ -4,7 +4,7 @@ import logging
 import threading
 import uuid
 
-from . import assemble, library, rewrite, tts
+from . import assemble, library, rewrite, study, tts
 from .config import DATA_DIR, atomic_write_text, load_settings
 
 logger = logging.getLogger(__name__)
@@ -263,6 +263,10 @@ def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, a
         library.update_item_texts(topic_id, item_id, texts)
         _set_phase("tts")
         tts.generate_item_audio(topic_id, item_id, track="podcast", cancel=cancel_event)
+        try:
+            study.prepare_async(topic_id, item_id)
+        except Exception:
+            logger.warning("音频已完成，逐句材料准备未启动", exc_info=True)
     except tts.TTSCancelled:
         with JOBS_LOCK:
             _finish(job, "cancelled")

@@ -7,9 +7,9 @@ description: Canonical workflow for completing an IELTS answer → native-Englis
 
 本文件是 Agent 模式的唯一规范来源（R03）。Qoder 侧只是薄包装，不要另立标准。
 
-> 当前可执行契约仍是下方三份英文文本及 `pipeline.py complete`。2026-09-29
-> 确定的逐句中文与讲解属于待开发的学习材料接口；设计交接见
-> `docs/design/study-room-v2/README.md`。在接口与校验实现前，不向本命令添加新字段。
+> 音频入口仍是下方三份英文文本及 `pipeline.py complete`。逐句材料走独立的
+> `pipeline.py study` 命令，不向音频 JSON 添加字段；设计交接见
+> `docs/design/study-room-v2/README.md`。
 
 ## 数据契约（三份文本 + 一份原始回答）
 
@@ -46,6 +46,30 @@ description: Canonical workflow for completing an IELTS answer → native-Englis
 - 成功输出 `play_url`（网页完成页）与 `mp3_path`；**校验失败时按错误清单修正 JSON 重试**，
   不得手改 data/ 目录绕过校验。
 - 目标条目的 `topic_id` / `item_id` 以任务指令（agent-task）给出的为准。
+
+## 音频完成后的逐句材料
+
+读取该条目的 `podcast_text.txt` B 回答和 `original_answer.txt`。写入另一份 UTF-8 JSON：
+
+```json
+{
+  "complete_chinese": "完整回答的中文原意",
+  "sentences": [
+    {"zh": "本句中文", "en": "与 B 回答播报顺序完全一致的英文句子",
+     "explanation": "句子组织说明", "usage": "词法或搭配说明"}
+  ]
+}
+```
+
+每句 `en` 必须与 B 回答的英文原句一致；句数和顺序一致。有证据的原始英文错误才可给句子
+增加 `original_error: {"quote": "原始回答里的准确英文片段", "issue": "具体问题",
+"correction": "可行改法"}`。中文原话、发音猜测和不同但正确的表达都不能写为个人错误。
+
+```bash
+.venv/Scripts/python pipeline.py study --topic-id <topic_id> --item-id <item_id> --result-json <材料json路径>
+```
+
+材料校验失败不会删除或覆盖已完成音频；按错误清单修正 JSON 后重试。
 
 ## 禁止事项
 

@@ -35,6 +35,7 @@ EXCLUDE_PARTS = {
 FORBIDDEN_PARTS = {
     "settings.json", "voice_samples", ".tmp", "episodes", "topics",
     "question_bank.json", "question_bank_extra.json", "jobs.json", "exports",
+    "study_private",
 }
 
 

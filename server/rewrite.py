@@ -253,6 +253,18 @@ B 可用一次 [relaxed]，并最多再用两个 [uncertain]/[emphasis]/[break]"
   --topic-id {topic_id} --item-id {item_id} --result-json <你的json文件路径>
 命令成功会输出播放页 URL 与 MP3 路径；校验失败请按错误提示修正 JSON 后重试。
 
+音频完成后另准备逐句学习材料：从已经写入的 podcast_text 的 B 回答按播报顺序逐句提取，
+以原始回答为依据写完整中文原意和每句中文、explanation、usage；en 必须逐字复制 B 回答句子。
+只有原始英文原话能证明语法或拼写错误时，才给该句增加 original_error，包含
+quote（原始回答中的准确英文片段）、issue、correction；中文与开放表达不写个人错误。
+把材料写为独立 JSON：
+{{"complete_chinese":"完整中文原意","sentences":[{{"zh":"本句中文","en":"播报英文原句",
+"explanation":"组织方式","usage":"搭配用法"}}]}}
+然后执行：
+.venv/Scripts/python pipeline.py study \\
+  --topic-id {topic_id} --item-id {item_id} --result-json <逐句材料json路径>
+若材料失败，保留已经完成的音频，并按错误提示修改材料重试。
+
 ## 硬性约束
 - 三份文本的词句与我的回答保持一致，不得编造新经历
 - podcast_text / natural_english 内不允许任何 [tag]
