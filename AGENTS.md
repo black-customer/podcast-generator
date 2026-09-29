@@ -4,6 +4,11 @@
 `docs/ROADMAP.md`、`docs/PROGRESS.md`；冲突时宪法优先。音频、UI 或 data/ 改动再读
 `docs/QUALITY_PLAYBOOK.md`。Qoder 可使用 `/podcast-quality` 自动加载这份质量约定。
 
+2026-09-29 的下一版设计交接入口：`docs/design/study-room-v2/README.md`。
+**现行代码尚未实现逐句学习。** UI 开发以该目录的文字交互规范决定行为，
+以概念图决定布局；`docs/design/learning-mode-v1/` 和 `docs/design/v1/` 是历史图。
+音频生成当前仍执行 `skills/ielts-audio/SKILL.md` 的三份英文文本契约。
+
 ## 常用命令
 
 ```bash
@@ -38,6 +43,8 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 <file>
 - 后端：Python 3.11，类型标注，模块级 docstring 中文；ruff line-length 100
 - 前端：原生 ES modules，无构建、无 CDN、无框架；HTML 转义必须过 `esc()`
 - 数据层改动必须先写回归测试（data/ 是产品本体，破坏 = 事故）
+- 实现逐句材料时保留原始回答、音频优先可听；中文与英文必须逐句对应。
+  只有原始输入可证明的问题才可标为用户错误，开放表达与示范不同不直接判错。
 - 注释只写"代码本身说不出的约束"，不写"我改了什么"
 
 ## 完成定义

@@ -23,8 +23,11 @@ clear enough to imitate. Success means the user can choose an IELTS question, an
 Chinese or English, receive a faithful lightly edited native-English rendition, and repeatedly
 listen to it like an ordinary podcast clip.
 
-The product is not a professional podcast studio or a software-directed learning system. It does
-not need scoring, spaced repetition, pronunciation grading, or maximum broadcast production.
+The audio remains immediately playable. A learner may then enter a guided study session: record
+an initial answer, reconstruct every English sentence from its Chinese meaning, read saved
+explanations, answer again with the complete Chinese meaning, then answer with only the question.
+The app keeps recordings and difficult sentences for later review. It must not claim a verified
+IELTS or pronunciation score when it has not measured one.
 
 ## Positioning
 
@@ -51,14 +54,17 @@ acceptance, visual direction, and milestone acceptance.
 - Questioner and answerer are independent roles with user-selected gender and voice.
 - Existing alignment, word highlighting, sentence seeking, bilingual display, server/pack data
   sources, exports, and Android packaging must remain functional.
+- The planned study content needs a meaning-preserving Chinese sentence for each English sentence,
+  a saved explanation, audio linkage, and error analysis only when the learner's original input
+  provides evidence. Current generation still supports only its existing three-text contract.
 - `data/` is product data and must remain human-readable, Agent-editable, atomic, and compatible.
 - Real TTS consumes quota and runs only when explicitly requested or initiated by the user.
 
 ## Brand Commitments
 
-The product should feel like a personal language recording studio: calm, precise, useful, and
-personal. It must not imitate Spotify, look like an admin dashboard, or foreground AI machinery.
-The approved v1 visual direction is documented in `DESIGN.md` and `docs/design/v1/`.
+The next desktop visual direction is a warm, quiet reading room: warm paper, brown ink and muted
+olive actions. The design contract and complete reference screens are in `DESIGN.md` and
+`docs/design/study-room-v2/`. The earlier blue-white screens remain historical references.
 
 ## Evidence on Hand
 
@@ -70,12 +76,13 @@ The approved v1 visual direction is documented in `DESIGN.md` and `docs/design/v
 
 ## Product Principles
 
-1. The user's meaning becomes audio before derivative teaching content or new features.
+1. The user's meaning becomes a playable audio answer without waiting for study materials.
 2. Naturalness must remain faithful and imitable; raw messiness and polished model-answer prose are
    both failures.
 3. Content and transcript are the interface; decoration must yield to reading, listening, and
    selection.
-4. Prefer the smallest implementation that makes the user more willing to listen repeatedly.
+4. Keep each learning step clear enough that the learner can finish the entire answer and later
+   compare independent attempts.
 5. Preserve local ownership, user-controlled API spend, and backwards-compatible product data.
 
 ## Accessibility & Inclusion

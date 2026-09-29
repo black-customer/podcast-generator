@@ -7,6 +7,10 @@ description: Canonical workflow for completing an IELTS answer → native-Englis
 
 本文件是 Agent 模式的唯一规范来源（R03）。Qoder 侧只是薄包装，不要另立标准。
 
+> 当前可执行契约仍是下方三份英文文本及 `pipeline.py complete`。2026-09-29
+> 确定的逐句中文与讲解属于待开发的学习材料接口；设计交接见
+> `docs/design/study-room-v2/README.md`。在接口与校验实现前，不向本命令添加新字段。
+
 ## 数据契约（三份文本 + 一份原始回答）
 
 | 文件 | 用途 | 硬性要求 |

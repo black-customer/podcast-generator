@@ -1,45 +1,57 @@
-# DESIGN — IELTS Pod v1
+# DESIGN — IELTS Pod 下一版桌面目标：「暖纸自习室」
 
-## Direction
+> 2026-09-29 Bruce 选定的新视觉方向。设计交接见 `docs/design/study-room-v2/`；
+> 本轮只有概念图和文字规范，现行生产前端尚未改成这套样式。
+> `docs/design/v1/` 与 `docs/design/learning-mode-v1/` 均为历史方案。
 
-The approved world is a **personal language recording studio**: crisp, quiet, and task-led. The
-interface should make a learner feel that one real answer is moving through a simple studio rail —
-**Choose → Answer → Listen** — without exposing prompts, provider jargon, or internal tracks.
+## 体验主线
 
-The ten approved reference comps live in `docs/design/v1/`. They define hierarchy and density, not
-literal final copy. Screen 03 is revised to share one answer editor between **Agent mode** (default,
-copy a complete task and wait) and **API mode** (one click, automatic rewrite and audio). Android
-screen 10 ships only file import and manual LAN address in v1; QR and auto-discovery are deferred.
+选题 → 输入真实意思 → 音频可听 → 自由收听或主动学习。
 
-## Visual system
+主动学习：先录一次 → 对完整回答逐句做整句默写并看讲解 → 看中文完整口答 →
+只看原题口答 → 回听录音、复习困难句。
 
-- Canvas `#F7F9FC`, surface `#FFFFFF`, ink `#0B1736`, muted text `#63708A`.
-- Primary cobalt `#1267F3`; success mint `#19B77A`; coral only for destructive/error attention.
-- System sans fonts only. English questions carry the strongest weight; Chinese is supporting text.
-- Thin slate rules, compact 10–14px radii, restrained shadows, no gradients or glassmorphism.
-- The signature is a precise cobalt waveform paired with the three-stage generation rail.
-- No album covers, vinyl, decorative hero art, dashboard statistics, or low-opacity unread text.
+学习界面一次只突出当前任务。用户的原始意思、英文示范和讲解均可追溯；
+「与示范不同」不自动等于错误。讲解据原话有证据的地方指出具体问题。
 
-## Navigation and surfaces
+## 视觉系统
 
-- Desktop: 开始练习 / 我的语料 / 正在播放 / 设置.
-- Android: 题库 / 语料 / 正在播放 / 导入; settings is reached from the top-right control.
-- Full mobile playback hides bottom navigation and never stacks a mini player beneath itself.
-- Public surfaces use the concepts 雅思口语 and 日常表达. Monologue, podcast, track, episode, and
-  performance-script language stays out of the ordinary UI.
+| 用途 | 颜色 |
+| --- | --- |
+| 页面背景 | `#F3EBDD` 暖米色 |
+| 阅读纸面 | `#FBF7EF` 浅纸色 |
+| 正文 | `#332E27` 深棕墨色 |
+| 辅助文字 | `#6E665A` 暖灰 |
+| 主操作／焦点 | `#596348` 低饱和橄榄绿 |
+| 谨慎提示 | `#866B40` 赭石色 |
 
-## Content hierarchy
+- 以纸张、细分隔线、清楚的行距和真实文本营造安静的阅读氛围。
+- 英文题目可用系统衬线字体；中文、正文、按钮和输入框使用可读的系统字体。
+- 桌面主内容按约 65–75 个英文字符的舒适行宽设计；长句换行、长中文滚动要有明确布局。
+- 正文与输入文字对比度至少 4.5:1，大标题至少 3:1；焦点轮廓必须清楚。
+- 错误除颜色外配文字说明；提示淡出受 `prefers-reduced-motion` 约束。
+- 不使用蓝白主配色、刺眼的纯白大片、装饰书房照片或覆盖文字的纸纹。
 
-- `original_answer`: the learner's untouched input, available as a secondary reference.
-- `natural_english`: the clean answer for reading, memorising, and sentence highlighting.
-- `podcast_text`: the clean question-and-answer transcript shown by the player.
-- `podcast_script`: internal TTS direction; never rendered in ordinary product UI.
+## 桌面导航与主要区域
 
-## Interaction floor
+导航：开始练习／我的语料／句子复习／正在播放／设置。
 
-- One primary action per state; controls keep the same wording through loading, success, and error.
-- All text remains selectable. Keyboard focus is visible, touch targets are at least 44px, motion
-  respects `prefers-reduced-motion`, and text/background pairs meet WCAG AA.
-- Empty and failure states always explain the next action. API failure never silently switches mode.
-- Server and pack data sources share the same reading/player components; generation is unavailable
-  in offline pack mode rather than simulated.
+- 「我的语料」是题目与录音记录的归属。音频完成后即能播放或下载。
+- 学习材料状态独立显示：准备中、齐全、缺失待补、失败可重试。
+- 学习页有四个阶段：先回答、逐句默写、看中文说、脱稿说。
+- 默写页固定显示当前句中文与逐词空格；「播放本句」「短暂看答案」「检查答案」
+  清楚可见。英文示范只在用户主动提示或提交后出现。
+- 提示默认显示 5 秒，可设为 3／5／8 秒；提示隐藏时保留用户已输入内容。
+- 录音页面区分准备、录制、停止、回听和重录；所有已完成的录音均标注条件和时间。
+- 句子复习库收录写错、看过提示和手动收藏的句子；复习时同样先看中文再默写。
+- 专有的 TTS 表演稿和高级内容管理维持次要入口。
+
+## 图与文字的职责
+
+新版 33 个主界面、8 个状态组图和视觉规范图见
+`docs/design/study-room-v2/`。其中的示例录音、学习进度和状态均为概念数据。
+
+交互、文案、状态先以新版文字规范为准；概念图帮助确认视觉层级与空间关系。
+生成图中的字词偏差不成为实现依据。旧版图片保留作历史参考。
+
+此轮只覆盖桌面端。Android 仍使用同一前端代码库，移动学习布局另行设计。
