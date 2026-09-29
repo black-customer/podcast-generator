@@ -16,13 +16,14 @@ jobs:
       - uses: FedericoCarboni/setup-ffmpeg@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install dependencies
+      - name: Create venv and install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt -r requirements-dev.txt
+          python -m venv .venv
+          .venv\Scripts\python -m pip install --upgrade pip
+          .venv\Scripts\python -m pip install -r requirements-dev.txt
       - name: Ruff lint
-        run: python -m ruff check server pipeline.py run.py tests
+        run: .venv\Scripts\python -m ruff check server pipeline.py run.py tests
       - name: Import smoke
-        run: python -c "from server.main import app; print('app import OK, routes:', len(app.routes))"
+        run: .venv\Scripts\python -c "from server.main import app; print('app import OK, routes:', len(app.routes))"
       - name: Unit and API tests
-        run: python -m pytest tests/ -q
+        run: .venv\Scripts\python -m pytest tests/ -q
