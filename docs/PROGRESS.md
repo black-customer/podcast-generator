@@ -574,3 +574,35 @@ API 额度放开；附带一轮自查修复。
 4. 24 条旧演示条目（01-my-studies、示例语料、02-sleep）无播报稿，按设计不可准备。
 5. e2e 修复：Bruce 试用学习模式后复习库含真实记录，测试改为按条目 id 定位 + 来源筛选。
 6. 门禁全绿（ruff、185 passed / 1 skipped、e2e 14 passed）；四笔提交推送。
+
+## 2026-09-30 会话 28：全项目评审（superpowers code-reviewer）修复落地
+
+Bruce 指示：除 Fish key 轮换（Bruce 自行决定）外的评审发现全部修复。历史 zip 清除
+（force push）仍需单独授权，未执行；`git rm --cached` 后密钥仍在 git 历史中。
+
+- 评审方法：GitHub 最权威技能库 obra/superpowers（29.2 万星）的 code-reviewer 模板，
+  四切片并行（后端/前端/测试链/数据契约），两位评审员独立实证同一 Critical。
+- Critical×2：episode 端点 `..%5C` 路径穿越（TestClient 实测可带出明文 key）→
+  assemble 路径构造过 `_safe_id` 校验 + 400/404 归位（回归测试）；备份 zip 含真实
+  fish key 已推公开远端 → untrack + gitignore backups/ + backup.py 永久排除
+  settings.json/study_private（测试锁定）。
+- Important×10：原子写 tmp 唯一名 + Windows 读者冲突有界重试（放大竞态窗口的红绿
+  测试）；assemble 取消令牌前后检查、终态如实 cancelled；loadTimeline 请求序号守卫；
+  Space/方向键放行聚焦的交互元素；内联 onclick 全面改 data-* 事件委托（引号逃逸
+  面）；麦克风拒绝后「不录音，继续」入口（e2e 红→绿）；check.sh 冒烟端口预检+进程
+  存活断言（曾可被旧服务假绿）；test_bank/test_pack/五个 TestClient 夹具的数据
+  隔离与 JOBS_FILE 隔离；e2e 清理集合差兜底；最小 GitHub Actions CI（windows-latest：
+  ruff+导入冒烟+单测）；材料修复轮覆盖非 JSON 输出（RewriteError 同样重试）。
+- Minor 二十余项：JobConflict 保留原始回答（宪法优先，回归测试反转旧断言）；
+  get_or_create_topic 收锁；删除时摘要缓存失效；错误码归位；SettingsIn 补
+  stepfun_text_base_url；en-dash 修正；package 审计扩展音频/签名后缀与 backups；
+  sw.js 诚实化+预缓存补齐+版本 v6；manifest 暖纸色；pack 二次导入先卸载；复习
+  下拉显示话题名；summary 步骤条完成标记；toast aria-live；Enter 提交异常反馈；
+  leave 草稿保存失败提示；pack 模式不可用视图友好拦截；随机抽题/音色预设的
+  viewStale 防护；episode 重建轮询清理；ffmpeg skipif；update_app 测试平台守卫与
+  编码修复；pytest addopts 防误跑 e2e；requirements 拆分（终端用户不再装测试依赖）。
+- 明确不做（记录）：voice_samples/exports 出库（历史有意的入库决策，Bruce 裁决）、
+  meta schema 版本号、timeline 旧缓存指纹（estimated 标注兜底）、list_topics 性能
+  预优（当前规模够用）。
+- 门禁：check.sh --with-e2e 全绿（193 passed / 1 skipped、e2e 14 passed、ruff 绿）；
+  七笔提交推送（62553cb..c2ef6de）。CI 首跑将在推送后于 GitHub 上执行。
