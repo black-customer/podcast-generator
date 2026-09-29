@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "9aead6e822bf8ce20a6c4ca86f1d9307a1d356c4b4174c22c5f4c57c8f2ae1af",
+  "complete_chinese": "当然。开心时听快乐的音乐加倍开心；平静时听能被带动起来。比如早起出门时戴上耳机放快乐的音乐，帮自己开启快乐的一天。",
+  "sentences": [
+    {
+      "zh": "当然。",
+      "en": "Yes, of course.",
+      "explanation": "本句是对一般疑问句的直接肯定回答。\"of course\" 表示\"当然\"，语气比单纯的 \"Yes\" 更加热情和确定。",
+      "usage": "在雅思口语 Part 1 中，可以用 \"Yes, of course.\" 或 \"Yes, definitely.\" 作为简短回答的开头，自然且礼貌。"
+    },
+    {
+      "zh": "当我心情已经愉快时，听快乐的音乐会让我感觉更开心。",
+      "en": "When I'm already in a happy mood, listening to happy music makes me feel even happier.",
+      "explanation": "本句主干是 \"listening to happy music makes me feel even happier\"。\"listening to happy music\" 是动名词短语作主语，表示\"听快乐音乐\"这件事，谓语动词用第三人称单数 \"makes\"。\"make sb. do sth.\" 是使役结构，意为\"使某人……\"。\"even\" 用来修饰比较级 \"happier\"，表示\"甚至更……\"。",
+      "usage": "\"in a happy mood\" 是描述情绪的固定搭配，类似表达还有 \"in a good mood\"（心情好）、\"in a bad mood\"（心情差）。动名词短语作主语时，谓语动词需用单数形式。"
+    },
+    {
+      "zh": "而当我只是心情平静时，快乐的音乐也能带动我，让我感到兴奋。",
+      "en": "And when I'm just calm, happy music can lift me up and get me excited too.",
+      "explanation": "本句主干是 \"happy music can lift me up and get me excited\"。\"lift sb. up\" 是短语动词，原意指\"把某人举起\"，引申为\"使某人振奋、使某人情绪高涨\"。\"get me excited\" 中 \"get + 宾语 + 形容词\" 表示\"使……变得……\"，强调状态的变化。",
+      "usage": "\"lift sb. up\" 在口语中很常用，适合描述音乐、电影等带来的情绪提升。\"get + sb. + adj.\" 与 \"make + sb. + adj.\" 意思相近，但 \"get\" 更侧重变化过程。"
+    },
+    {
+      "zh": "例如，当我早起需要出门开始一天时，我戴上耳机播放快乐的音乐——我认为那有助于我开始快乐的一天。",
+      "en": "For example, when I get up early and need to go out to start my day, I put on my earphones and play happy music — I think that helps me begin a happy day.",
+      "explanation": "本句主干是 \"I put on my earphones and play happy music\"。\"when\" 引导时间状语从句，描述\"早起出门开始一天\"的场景。\"put on\" 表示\"戴上\"的动作；\"play happy music\" 表示\"播放快乐的音乐\"。破折号后的 \"I think that helps me begin a happy day\" 补充说明原因，\"help sb. (to) do sth.\" 意为\"帮助某人做某事\"。",
+      "usage": "\"put on earphones/headphones\" 是描述听音乐场景的地道搭配。\"start/begin one's day\" 是常用表达，意为\"开始某人一天的生活\"。"
+    }
+  ]
+}

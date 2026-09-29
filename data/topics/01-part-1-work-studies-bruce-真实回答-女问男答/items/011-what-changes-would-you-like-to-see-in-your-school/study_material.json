@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "ca2b10e747205d91e44986e9ebf349353b48121d7390ff35906efad670b0e877",
+  "complete_chinese": "关于这个问题我有很多想说的，但主要是外卖的情况。我在学校经常点外卖，但学校没有提供合适的地方放外卖。所有东西都堆在门口，有些人会去那里拿走甚至不属于他们的外卖——基本上就是偷别人的食物。所以我真的希望学校能建一个外卖柜，或者至少一个更好的存放地方，这样我们的外卖就不会这么容易被偷了。",
+  "sentences": [
+    {
+      "zh": "关于这个问题我有很多想说的，但主要是外卖的情况。",
+      "en": "I have a lot to say about this, but mainly — the takeout situation.",
+      "explanation": "“have a lot to say about this” 是口语中常见的开场，表示“对此有很多想说的”；“mainly” 作为副词，用来提示接下来要说的重点，相当于“主要是……”。",
+      "usage": "当被问到宽泛的问题时，可以先用这句话收缩话题，再展开细节。例如在回答 “What don't you like about your hometown?” 时可以说 “I have a lot to say about this, but mainly — the traffic.”"
+    },
+    {
+      "zh": "我在学校经常点外卖，但学校没有提供合适的地方放外卖。",
+      "en": "I usually order takeout at school, but my school doesn't offer a proper place to put it.",
+      "explanation": "“order takeout” 是“点外卖”的地道搭配；“offer a proper place to put it” 中，动词 offer 表示“提供”，proper 强调“合适的、正规的”，句尾的 it 指代前面的 takeout，避免重复。",
+      "usage": "描述学校或公司设施时，可用 “doesn't offer a proper place to...” 指出现状不足。例如：“My dormitory doesn't offer a proper place to cook.”"
+    },
+    {
+      "zh": "所有东西都堆在门口，有些人会去那里拿走甚至不属于他们的外卖——基本上就是偷别人的食物。",
+      "en": "Everything just gets left at the gate, and some people go there and pick up takeout that isn't even theirs — they basically steal other people's food.",
+      "explanation": "“gets left” 是 get 型被动语态，相当于 is left，口语中更自然；“pick up” 这里意为“顺手拿走、取走”；“isn't even theirs” 里 theirs 是名词性物主代词，相当于 their takeout；“basically” 表示“基本上、说白了”，用于强调事实。",
+      "usage": "get 型被动语态 (get + 过去分词) 在口语中非常高频，常带有“遭遇某种变化”的意味。例如：“Our packages often get lost in the warehouse.”"
+    },
+    {
+      "zh": "所以我真的希望学校能建一个外卖柜，或者至少一个更好的存放地方，这样我们的外卖就不会这么容易被偷了。",
+      "en": "So I really wish my school would build a takeout cupboard, or at least a better place to store it, so our takeout doesn't get stolen so easily.",
+      "explanation": "“wish + 主语 + would + 动词原形” 表示对将来情况的强烈愿望，暗含“希望对方/机构会去做”；“or at least” 表示“或者至少”，用于提出折中方案；“so” 在这里引导目的状语从句，相当于 so that；“doesn't get stolen” 是 get 型被动语态的否定形式。",
+      "usage": "在雅思口语中提建议时，“I wish... would...” 比 “I want...” 更委婉、更有探讨空间。例如：“I wish the government would build more bike lanes, or at least widen the sidewalks.”"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "419d3edc3b24baefa2fd87b04593446792ecc119fee3501fbecf472f55064b94",
+  "complete_chinese": "有。我以前常刷 B 站，但现在更常看 YouTube，因为想打破信息壁垒；另外，我需要学英语，而且 YouTube 上几乎全是英文视频。所以我把常用网站从 B 站换成了 YouTube，来提高英语并获取更多信息。",
+  "sentences": [
+    {
+      "zh": "有，确实有了一些变化。",
+      "en": "Yes, there have been some changes.",
+      "explanation": "there be 句型的现在完成时 there have been 表示“已经有了一些变化”，强调从过去到现在出现了新情况。some changes 意为“一些变化”，用于肯定句。",
+      "usage": "回答 Are there any changes... 时，用 Yes, there have been... 比 Yes, there are 更能体现“已经发生”的含义。"
+    },
+    {
+      "zh": "我以前常看 B 站——中国的 YouTube——但现在更常看 YouTube，因为想打破信息壁垒。",
+      "en": "I used to watch Bilibili — the Chinese YouTube — but these days I watch YouTube more often, because I wanted to break through the information barrier.",
+      "explanation": "used to do 表示“过去常常做某事（现在已不这样）”；these days 表示“目前，现在”，与 used to 形成今昔对比。the Chinese YouTube 是 Bilibili 的同位语，起补充说明作用。break through the information barrier 是固定搭配，意为“打破信息壁垒”。",
+      "usage": "对比过去和现在的习惯时，可用 I used to..., but these days/now I...；break through 后常接 barrier, limit, record 等名词。"
+    },
+    {
+      "zh": "另外，我需要学英语，而且 YouTube 上几乎全是英文视频。",
+      "en": "And also, I need to learn English, and almost everything on YouTube is in English.",
+      "explanation": "And also 用于口语中补充另一个原因，意为“而且，另外”。almost everything 意为“几乎所有事物”，作主语时谓语动词用单数 is。be in English 表示“是用英语的/英文的”。",
+      "usage": "进一步列举原因时，可用 And also... 或 Besides...；almost everything/nothing 作主语时，谓语动词用单数。"
+    },
+    {
+      "zh": "所以我把常用网站从 B 站换成了 YouTube，来提高英语并获取更多信息。",
+      "en": "So I switched from Bilibili to YouTube to improve my English and get more information.",
+      "explanation": "switch from... to... 表示“从……切换到……”，是描述转变的高频搭配。此处 to improve... and get... 是不定式短语作目的状语，说明切换网站的目的。",
+      "usage": "表达“从 A 换成 B”时，可用 switch/change/move from A to B；用不定式 to do 来引出做某事的目的。"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "6ff6e4ddb1a892705604fed7bdd0fd884c5eb0ea4563209bb21e43b002debc0b",
+  "complete_chinese": "我喜欢我的科目，因为它们是我自己深思熟虑的选择，而不是学校强加给我的。而且 AI 辅助编程很有意义——这意味着任何人，不仅仅是计算机专业的学生，都能用自然语言，用英语，创建一个真正的应用程序或网站。那令人印象深刻。英语也是我的最爱之一——我可以用它来探索世界，与来自不同国家的人交流，接触他们的文化。那对我来说非常有趣。",
+  "sentences": [
+    {
+      "zh": "我喜欢我的科目，因为它们是我自己深思熟虑的选择，而不是学校强加给我的。",
+      "en": "I enjoy my subjects because they were my deliberate choice, not something the school imposed on me.",
+      "explanation": "enjoy 比 like 语气更强，表示“享受、喜爱”；deliberate choice 指“经过深思熟虑的选择”，比 my own choice 更正式，适合雅思口语；impose on sb. 是固定搭配，意为“强加于某人”，这里用过去时 imposed 表示学校之前的规定。",
+      "usage": "在回答选择专业、课程或学校相关话题时，可以用 It was my deliberate choice, not something imposed on me. 来突出个人主动性。"
+    },
+    {
+      "zh": "而且 AI 辅助编程很有意义——这意味着任何人，不仅仅是计算机专业的学生，都能用自然语言，用英语，创建一个真正的应用程序或网站。",
+      "en": "And AI-assisted coding is empowering — it means anyone, not just computer science students, can create a real app or a real website using natural language, using English.",
+      "explanation": "AI-assisted coding 使用连字符构成复合形容词，修饰后面的名词 coding；empowering 是现在分词作形容词，表示“使人有能力、给人力量的”；it means (that) anyone... can... 中 that 引导宾语从句，口语中可省略；not just... can... 表达“不仅仅是……也能……”；using natural language 是现在分词短语作方式状语。",
+      "usage": "谈论科技降低门槛时，可以说 This technology is empowering — it means anyone can create real products using natural language."
+    },
+    {
+      "zh": "那令人印象深刻。",
+      "en": "That's impressive.",
+      "explanation": "That's impressive. 是简短的主系表结构，用于对前面听到的内容表示赞叹，在口语对话中非常自然。",
+      "usage": "当对方描述了一个了不起的能力或成就时，可以用 That's impressive. 来衔接，表示认同和兴趣。"
+    },
+    {
+      "zh": "英语也是我的最爱之一——我可以用它来探索世界，与来自不同国家的人交流，接触他们的文化。",
+      "en": "English is also one of my favorite things — I can use it to explore the world and communicate with people from different countries, to access their culture.",
+      "explanation": "one of my favorite things 表示“我最喜欢的事物之一”，注意 one of 后接复数名词；use sth. to do sth. 表示“用某物做某事”；communicate with sb. 是固定搭配；句末 to access their culture 是不定式作目的状语，补充说明交流的目的。",
+      "usage": "描述英语学习的价值时，可以用 I can use English to explore the world, communicate with people from different countries, and access their culture."
+    },
+    {
+      "zh": "那对我来说非常有趣。",
+      "en": "That's very interesting to me.",
+      "explanation": "That's very interesting to me. 使用 That's + adj. + to sb. 结构，表示“某事物对某人来说是……的”，介词必须用 to；也可以说 I find that very interesting.",
+      "usage": "在口语中表达个人兴趣时，除了 I'm interested in...，还可以用 That's very interesting to me. 来回应。"
+    }
+  ]
+}

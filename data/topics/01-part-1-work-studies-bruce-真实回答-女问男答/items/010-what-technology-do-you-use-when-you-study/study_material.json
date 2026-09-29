@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "c9ce43bb86a7d3657c265524660373995a57363028b569740a0c8f80ec9a19fe",
+  "complete_chinese": "绝对是 AI——比如 ChatGPT，国内还有豆包。AI 真的非常有用，而且被广泛使用。我认为这一代每个人都必须使用 AI——不是“应该”，而是“必须”。我用它来解决学习中遇到的问题、用英语交流，以及提升我的英语。",
+  "sentences": [
+    {
+      "zh": "绝对是 AI——比如 ChatGPT，国内还有豆包。",
+      "en": "Absolutely AI — like ChatGPT, and Doubao here in China.",
+      "explanation": "“Absolutely”单独用于句首，相当于“绝对是”，表示非常肯定；“like”在这里用于举例，相当于“比如”；“here in China”是地点状语，补充说明豆包是中国的应用。",
+      "usage": "在口语问答中，可以用“Absolutely + 名词”直接给出强烈肯定的回答。举例时，口语里常用“like...”来代替“such as...”，更自然。"
+    },
+    {
+      "zh": "AI 真的非常有用，而且被广泛使用。",
+      "en": "AI is really, really useful and widely used.",
+      "explanation": "“really, really”通过重复副词来加强语气，表示“真的非常”；“widely used”是“副词+过去分词”结构，作表语表示“被广泛使用”的状态。",
+      "usage": "想加强形容词程度时，可以重复使用“really”或“very”。“widely used / accepted / known”是高频搭配，表示某事物流通、应用范围广。"
+    },
+    {
+      "zh": "我认为这一代每个人都必须使用 AI——不是“应该”，而是“必须”。",
+      "en": "I think everyone in this generation must use AI — not \"should,\" must.",
+      "explanation": "“I think”后接宾语从句；“everyone in this generation”中，“in this generation”作后置定语，修饰“everyone”；“must”表示必须，语气强烈；破折号后的“not 'should,' must”是对情态动词的强调和澄清。",
+      "usage": "当想纠正或强调某个词时，可以用“not X, Y”结构，例如“not maybe, definitely”。“must”表示客观必须或强烈主张，比“should”语气更强硬。"
+    },
+    {
+      "zh": "我用它来解决学习中遇到的问题、用英语交流，以及提升我的英语。",
+      "en": "I use it to solve problems I meet in my studies, to communicate in English, and to improve my English as well.",
+      "explanation": "句子主干是“I use it to do...”，后面跟三个并列的不定式短语，形成平行结构；“problems I meet in my studies”中包含一个省略了关系代词“that/which”的定语从句，修饰“problems”；“as well”表示“也”，常用于句末。",
+      "usage": "“use sth. to do sth.”是描述工具或技术用途的核心句型。列举多个目的时，保持“to do A, to do B, and to do C”的平行结构会更清晰。定语从句中，关系代词作宾语时可以省略。"
+    }
+  ]
+}

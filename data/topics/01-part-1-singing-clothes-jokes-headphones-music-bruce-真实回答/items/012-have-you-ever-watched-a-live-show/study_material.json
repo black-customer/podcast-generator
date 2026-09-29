@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "b1fcb6507d1995d7d8950f97460c703158aa1b8f0d4131a5eecb85f649aad1b3",
+  "complete_chinese": "看过，大一第一次看现场。在体育馆——超巨大的场地——坐在里面觉得太不真实了，最喜欢的歌手就在舞台上，有种距离但能看到。氛围、人群、表演，太棒了。",
+  "sentences": [
+    {
+      "zh": "看过，我大一时看过一场——那是我第一次看现场演出。",
+      "en": "Yes, I watched one when I was a freshman — my first time at a live show.",
+      "explanation": "“when I was a freshman”用过去时描述过去的身份；“my first time at a live show”是名词短语，补充说明那次经历。",
+      "usage": "谈第一次做某事的经历时，可用 “I did it when I was + 身份/年级 — my first time at...” 自然带出背景。"
+    },
+    {
+      "zh": "那是在一个巨大的地方——大概像体育馆，不是博物馆，只是一个非常、非常巨大的场地。",
+      "en": "It was in a huge place — like a stadium, I guess, not a museum, just a really, really enormous venue.",
+      "explanation": "“like a stadium, I guess”表示不确定的推测；“not a museum”用来澄清；“really, really enormous”用重复副词强调“巨大”。",
+      "usage": "描述地点但不确定如何称呼时，可用 “like + 名词, I guess”；想说得正式些，可用 venue 代替 place。"
+    },
+    {
+      "zh": "当我坐在那里时，我想，哇，这种感觉太不真实了。",
+      "en": "When I sat there, I thought, wow, this feels so unreal.",
+      "explanation": "“When I sat there”是时间状语从句；主句用过去时 thought；“this feels so unreal”是当时心里的直接感受。",
+      "usage": "表达“觉得不真实”可用 this feels so unreal 或 it didn’t feel real。"
+    },
+    {
+      "zh": "我简直不敢相信我就坐在那里，看着我最喜欢的歌手就在我面前——不过还是有一定距离，但我确实能看到他们。",
+      "en": "I couldn't believe I was sitting there watching my favorite singer right in front of me — well, there was still a distance, but I could actually see them.",
+      "explanation": "“I couldn't believe (that) I was sitting...”后接过去进行时，强调当时正在发生的场景；“right in front of me”表示就在眼前；“there was still a distance”表示仍有距离。",
+      "usage": "想表达“不敢相信自己正在经历某事”可用 I couldn't believe I was...；“in front of me”和“there is a distance”是常用空间表达。"
+    },
+    {
+      "zh": "氛围、你周围的人、表演——太棒了。",
+      "en": "The vibe, the people around you, the performance — just amazing.",
+      "explanation": "句子用三个名词短语并列：the vibe, the people around you, the performance，最后用 just amazing 总结，相当于 “...were just amazing”。",
+      "usage": "口语中可用 “A, B, C — just amazing.” 简洁总结多方面感受；vibe 指氛围，performance 指演出。"
+    },
+    {
+      "zh": "太不真实了。",
+      "en": "Totally unreal.",
+      "explanation": "“Totally unreal.”是省略句，补充强调上一句的感受，相当于 “It was totally unreal.”",
+      "usage": "口语中可用简短省略句加强语气，如 “Totally amazing.”“Absolutely incredible.”"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "47b00f92eb3a75054afbe214032484950758ab3e76868daf73ff78b6b0a4fcfb",
+  "complete_chinese": "各种都穿：T 恤、衬衫、外套。没有固定类型，就穿让我看起来不错的。",
+  "sentences": [
+    {
+      "zh": "我喜欢穿不同种类的衣服——T恤、衬衫、外套，你知道吗？",
+      "en": "I like wearing different kinds of clothes — T-shirts, shirts, coats, you know?",
+      "explanation": "“like wearing”使用 like + V-ing 形式，表示习惯性、经常性的喜好；“different kinds of...”说明种类多样；破折号后直接列举具体衣物，相当于 such as 的用法；句尾 “you know?” 是口语中常见的填充语，能让语气更自然、像在聊天。",
+      "usage": "在雅思口语 Part 1 回答喜好类问题时，可以先用 “I like doing...” 总述，再用破折号或 “such as” 举例，最后加 “you know” 显得更地道、不拘谨。"
+    },
+    {
+      "zh": "看情况而定。",
+      "en": "It depends.",
+      "explanation": "这是一个省略式回答，完整形式常为 “It depends on...”，表示“视情况而定”，暗示没有绝对固定的答案，比直接说 “I don't know” 更成熟、更口语化。",
+      "usage": "当问题没有唯一答案，或你想表达“不一定、看场合”时，用 “It depends.” 非常简洁自然，后面可接 “on the occasion” 或 “on my mood” 等补充。"
+    },
+    {
+      "zh": "黑色、白色——老实说，我没有特别固定的风格。",
+      "en": "Black, white — honestly, I don't have one particular style.",
+      "explanation": "“Black, white” 是省略句，完整说法可能是 “(I wear) black, white”，口语中常省略重复信息；“honestly” 作插入语，意为“老实说”，用于强调真实想法；“one particular style” 中 particular 表示“某一特定的”，比 “fixed” 更口语化，否定结构 “don't have” 直接对应“没有固定类型”。",
+      "usage": "想表达“没有固定风格”时，可以说 “I don't have one particular style.”，这样比 “I have no style” 更准确，后者容易被误解为“没品味”。"
+    },
+    {
+      "zh": "我只喜欢穿让我看起来不错的衣服。",
+      "en": "I just like wearing clothes that make me look good.",
+      "explanation": "“just” 在这里表示“只是、仅仅”，强调唯一标准；“clothes that make me look good” 是限制性定语从句，关系代词 that 指代 clothes 并在从句中作主语，不可省略；“make sb. do sth.” 是使役结构，后面接不带 to 的动词原形；“look good” 中 look 为系动词，后接形容词，表示“看起来不错”。",
+      "usage": "“make me look good” 是描述穿衣效果的高频地道表达，适用范围广，比单纯说 “beautiful” 或 “cool” 更自然，适合在口语中作为个人穿衣标准。"
+    },
+    {
+      "zh": "这是我唯一的原则。",
+      "en": "That's my only rule.",
+      "explanation": "“That's...” 用于指代并总结前文提到的内容；“my only rule” 中 only 强调唯一性，rule 在这里指个人做事的准则；整句结构简短，收尾有力。",
+      "usage": "在口语回答结尾，用 “That's my only rule.” 可以简洁有力地总结自己的标准，让回答结构完整、给考官留下清晰印象。"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "source_fingerprint": "dc00e331e5d24d85f5ae90293a19fc1304a8dbbd1c82c3e650a2e66a0ec3d7a4",
+  "complete_chinese": "绝对改变了。因为有了手机和应用，我们可以和相隔非常远的人联系，甚至见到他们的脸。技术也帮助我们更容易地学习技能，比如我现在可以通过视频学英语。但在过去，如果你想学一门新语言，你真的得到当地去，和当地人交流，而且没有任何翻译。现在我们有 AI 和应用来学语言，非常有用。事实上，我现在正在通过电脑和你交谈，我们也正在谈论技术。现在甚至连雅思考试都可以在线参加。",
+  "sentences": [
+    {
+      "zh": "是的，绝对改变了。技术已经改变了我们的生活。",
+      "en": "Yeah, absolutely, technology has changed our lives.",
+      "explanation": "“has changed”是现在完成时，表示过去发生但强调对现在的影响或结果；“absolutely”用来加强肯定语气。",
+      "usage": "常用来直接回答问题：Yeah, absolutely, ... has changed ..."
+    },
+    {
+      "zh": "因为有了手机和应用，我们可以和相隔非常远的人联系，甚至见到他们的脸。",
+      "en": "Since we have phones and apps, we can connect with people over really long distances — and even see their faces.",
+      "explanation": "“Since we have...”在这里表示“因为/既然我们有……”，引出原因；“connect with sb”是“与某人联系”的常用搭配；“over long distances”表示“跨越长距离”。",
+      "usage": "“connect with people over long distances”是在技术和通信话题中很自然的说法。"
+    },
+    {
+      "zh": "技术也帮助我们更容易地学习技能。",
+      "en": "Technology also helps us learn skills more easily.",
+      "explanation": "“help us learn”符合“help sb (to) do sth”结构，to 可省略；“more easily”是副词比较级，修饰动词 learn。",
+      "usage": "可以说“helps us learn skills / pick up skills / gain new skills”。"
+    },
+    {
+      "zh": "比如，我现在可以通过视频学英语。",
+      "en": "Like, I can learn English from videos now.",
+      "explanation": "句首的“Like”是口语中的话语标记，用来举例或缓和语气，意思是“比如”；“learn ... from videos”表示“通过视频学习……”。",
+      "usage": "口语中可用“Like, ...”举例，但正式写作中建议改用“For example, ...”。"
+    },
+    {
+      "zh": "但在过去，如果你想学一门新语言，你真的得到当地去，和当地人交流，而且没有任何翻译。",
+      "en": "But in the old days, if you wanted to learn a new language, you had to actually go there and communicate with the local people, without any translations.",
+      "explanation": "“in the old days”表示“在过去”；“if you wanted...”和“you had to...”保持过去时间一致；“had to + 动词原形”表示过去“必须/不得不”。",
+      "usage": "“communicate with local people”是“与当地人交流”的自然搭配；“without any translations”表示“没有任何翻译辅助”。"
+    },
+    {
+      "zh": "现在我们有 AI 和应用来学语言——非常有用。",
+      "en": "Nowadays we have AI and apps to learn languages — it's so useful.",
+      "explanation": "“Nowadays”表示“如今”；“have AI and apps to learn languages”中，不定式“to learn languages”说明用途；“it's so useful”中的 it 指代这种学习方式或这些工具。",
+      "usage": "可以说“use AI and apps to learn languages”，更明确表示“使用 AI 和应用来学语言”。"
+    },
+    {
+      "zh": "事实上，我现在正在通过电脑和你交谈，我们也正在谈论技术。",
+      "en": "In fact, I'm talking with you over a computer right now, and we're talking about technology.",
+      "explanation": "“In fact”表示“事实上”；“right now”强调此时此刻；“talking with you”表示“和你交谈”；“talking about technology”表示“谈论技术”。",
+      "usage": "“通过电脑”更常见的正式说法是“on a computer”或“via a computer”；“over a computer”在口语里也能听懂。"
+    },
+    {
+      "zh": "现在甚至连雅思考试都可以在线参加。",
+      "en": "Even the IELTS test can be taken online these days.",
+      "explanation": "“can be taken”是含情态动词的被动语态，结构为“can be + 过去分词”；“online”作副词，表示“在线地”。",
+      "usage": "考试、课程等都可以说“be taken online / be done online / be held online”。"
+    }
+  ]
+}

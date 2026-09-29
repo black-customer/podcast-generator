@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "611e8b48771130454969da4586e0b67b6bf65f560b6a763d4644587dd9a89581",
+  "complete_chinese": "没有，其实没有过。我只是……我需要有块表，你知道吗？所以当我的表坏了或者太旧了，我就自己买块新的。手表从来都不是作为礼物收到的。",
+  "sentences": [
+    {
+      "zh": "没有，其实没有过。",
+      "en": "No, I haven't, actually.",
+      "explanation": "用“No, I haven't”直接回答“Have you ever...”提问，简洁明了；句末的“actually”作为句子副词，起到补充和强调的作用，让语气更自然。",
+      "usage": "回答现在完成时的一般疑问句时，可用“No, I haven't.”或“Yes, I have.”；句末加“actually”表示“其实/实际上”，常用于口语中缓和或强调语气。"
+    },
+    {
+      "zh": "我只是……",
+      "en": "I just...",
+      "explanation": "这是一个口语中的省略句/停顿，表示说话人正在思考或组织语言，后面往往接着解释原因或具体情况。",
+      "usage": "在口语表达中，如果一时想不到合适的词，可以用“I just...”来争取思考时间，相当于中文里的“我只是……”。"
+    },
+    {
+      "zh": "我需要有块表，你知道吗？",
+      "en": "I need to have a watch, you know?",
+      "explanation": "“need to have”表示客观需要拥有；“you know”是口语中的话语标记，不是真正提问，而是用来确认听者在跟随自己的思路，或让语气更随意。",
+      "usage": "“you know”常放在句末，用问号或逗号均可，相当于“你也知道”“你说对吧”，在雅思口语中适当使用能让表达更自然。"
+    },
+    {
+      "zh": "所以当我的表坏了或者太旧了，我就自己买块新的。",
+      "en": "So when mine breaks or gets too old, I just buy a new one myself.",
+      "explanation": "“when”引导时间状语从句，描述习惯性情况；“mine”是名词性物主代词，相当于“my watch”；“one”用来替代前面已出现的“watch”，避免重复；“myself”作同位语，强调“亲自、自己”。",
+      "usage": "“break”表示“坏掉”；“get too old”表示“变得太旧”；“buy sth. oneself”是常用搭配，表示自己购买，反身代词起强调作用。"
+    },
+    {
+      "zh": "手表从来都不是作为礼物收到的。",
+      "en": "It's never really been a gift kind of thing.",
+      "explanation": "“It's never really been...”是现在完成时，表示从过去到现在的经验；“a gift kind of thing”是口语化的表达，相当于“something that is a gift”，语气很随意。",
+      "usage": "“a ... kind of thing”是口语中常见的模糊归类说法，用来描述某类事物，比如“It's not really my kind of thing.”（这不是我喜欢的类型。）"
+    }
+  ]
+}

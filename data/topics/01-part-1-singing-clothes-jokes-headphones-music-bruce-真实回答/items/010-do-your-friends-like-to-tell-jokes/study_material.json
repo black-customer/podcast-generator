@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "7fca3f477e3a8b8ae64eac1aedeb4d86c47c9098d275a3403e5272af569064d6",
+  "complete_chinese": "有些会，有些不会。我觉得讲笑话是一种天赋，是一种感觉。我更喜欢爱讲笑话的朋友，但讲一个好笑话其实很难，你知道吗？讲一个像样的笑话是件难事，我会说。",
+  "sentences": [
+    {
+      "zh": "有些会，有些不会。",
+      "en": "Some of them do, some of them don't.",
+      "explanation": "用 “some... some...” 并列结构说明群体中不同人的情况；“do/don’t” 代替前文提到的 like to tell jokes，避免重复。",
+      "usage": "口语中可用 “Some do, some don’t.” 简洁回答一部分人肯定、一部分人否定的情况。"
+    },
+    {
+      "zh": "我觉得讲笑话是一种天赋，是一种感觉。",
+      "en": "It's a kind of talent, I think — it's a feeling.",
+      "explanation": "“a kind of” 表示“一种”，后接名词；插入语 “I think” 表达个人看法；破折号后进一步补充说明。",
+      "usage": "描述抽象品质时可用 “It’s a kind of...” 或 “It’s...”，并用 “I think / I would say” 软化语气。"
+    },
+    {
+      "zh": "我更喜欢爱讲笑话的朋友，但讲一个好笑话其实很难，你知道吗？",
+      "en": "I prefer friends who tell jokes, but telling a good joke is actually hard, you know?",
+      "explanation": "“prefer + 宾语 + who 引导的定语从句” 表示“更喜欢……的人”；“but” 表示转折；“telling a good joke” 是动名词短语作主语；“you know” 是口语中寻求认同的插入语。",
+      "usage": "表达偏好可用 “I prefer...”；动名词短语作主语时谓语动词用单数，如 “Telling jokes is fun.”"
+    },
+    {
+      "zh": "讲一个像样的笑话是件难事，我会说。",
+      "en": "Telling a decent joke is a difficult thing, I would say.",
+      "explanation": "“Telling a decent joke” 为动名词短语作主语；“a difficult thing” 作表语；“I would say” 表示“我会说/在我看来”，使判断更委婉。",
+      "usage": "可用 “... is a difficult thing.” 或更自然的 “... is difficult.”；“decent” 表示“像样的、不错的”。"
+    }
+  ]
+}

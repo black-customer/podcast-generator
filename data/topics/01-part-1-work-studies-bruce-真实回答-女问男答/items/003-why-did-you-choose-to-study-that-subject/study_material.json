@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "a6c4eece9c13872f8e02e516d6190f5e0ed4e384cc86a3f7c50ed99ac951199e",
+  "complete_chinese": "其实有两个原因。第一，在中国，大家都认为计算机科学能带来一份高薪工作——这是部分原因。第二，我喜欢电脑。有趣的事实是：我大一的时候其实是化学专业的学生，然后转到了计算机科学。我选择它是因为我每天都使用电脑，而且我想成为更好的电脑使用者。所以这就是原因——还有高薪工作那件事。",
+  "sentences": [
+    {
+      "zh": "其实有两个原因。",
+      "en": "Two reasons, really.",
+      "explanation": "“really”在这里作句子副词，表示“其实、事实上”，相当于 actually 或 in fact，用来缓和语气，使表达更自然、口语化。",
+      "usage": "在雅思口语中，用 “Two reasons, really.” 直接回答问题，比 “There are two reasons.” 更简洁自然，适合 Part 1 和 Part 3。"
+    },
+    {
+      "zh": "第一，在中国，大家都认为计算机科学能带来一份高薪工作——这是部分原因。",
+      "en": "One, in China everybody thinks computer science leads to a high-paid job — that's part of it.",
+      "explanation": "“lead to”表示“导致、通向”，这里指学计算机科学能通向高薪工作；“high-paid”是复合形容词，意为“高薪的”，注意用连字符；“that's part of it”是口语常用表达，表示“这是一部分原因”，避免把话说得太绝对。",
+      "usage": "列举原因时可以用 “One... And two...” 代替 “Firstly... Secondly...”，更口语化。“that's part of it” 适合用来补充说明某个因素，显示思维严谨。"
+    },
+    {
+      "zh": "第二，我喜欢电脑。",
+      "en": "And two, I like computers.",
+      "explanation": "用 “And two...” 承接上文，是口语中列举第二点的自然方式，比 “The second reason is...” 更简洁。",
+      "usage": "在连续列举时，保持 “One... And two...” 的平行结构，能让回答听起来流利且有逻辑。"
+    },
+    {
+      "zh": "有趣的事实是：我大一的时候其实是化学专业的学生，然后转到了计算机科学。",
+      "en": "Fun fact: I was actually a chemistry student when I was a freshman, and then I switched to computer science.",
+      "explanation": "“Fun fact:” 是口语中引入有趣信息的常用表达；“when I was a freshman” 是时间状语从句，说明过去某段时间的身份；“switch to” 表示“转到、切换到”，用于专业、学校、系统等的转换。",
+      "usage": "在讲述个人经历时，用 “Fun fact” 可以吸引考官注意，让回答更生动。“switch to” 比 “change to” 更常用于专业转换。"
+    },
+    {
+      "zh": "我选择它是因为我每天都使用电脑，而且我想成为更好的电脑使用者。",
+      "en": "I chose it because I use computers every day, and I wanted to become a better user of them.",
+      "explanation": "主句用一般过去时 “chose”，从句叙述常态用一般现在时 “use”，时态搭配正确；“wanted to become” 用过去时表示过去的愿望；“a better user of them” 中 “them” 指代 “computers”，“user of” 表示“……的使用者”。",
+      "usage": "解释动机时，可以用 “I chose it because...” 直接给出原因。注意代词指代要清晰，避免重复 “computers”。"
+    },
+    {
+      "zh": "所以这就是原因——还有高薪工作那件事。",
+      "en": "So that's why — plus the high-paid job thing.",
+      "explanation": "“So that's why” 用于总结上文，表示“所以这就是原因”；破折号表示补充说明；“plus” 作介词，表示“加上、还有”；“the high-paid job thing” 用 “thing” 指代前面提到的因素，是非常口语化的总结方式。",
+      "usage": "结尾用 “So that's why — plus...” 可以自然收尾，同时补充遗漏的点，显得思维灵活。"
+    }
+  ]
+}

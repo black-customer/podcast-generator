@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "a9b8d1d41aff5162c5aceb61751a0e03fab393011d21a7e9e77edc313b28c68c",
+  "complete_chinese": "我记得，其实。而且我才二十一岁，刚从大学毕业，所以我还年轻，记得我所有的老师。但如果你指的是一位真正让我印象深刻的特定老师——我会说没有。他们都只是普通的老师。我没有最喜欢的老师，所以也没有一个特别让我印象深刻的。我记性确实很好，所以我都记得他们。",
+  "sentences": [
+    {
+      "zh": "我记得，其实。",
+      "en": "I do, actually.",
+      "explanation": "“I do”是对以“Do you...”开头的一般疑问句的简略肯定回答，用助动词 do 代替前文已出现的动词短语，避免重复；“actually”是口语常用副词，表示“其实、实际上”，用于补充真实情况，让语气更自然。",
+      "usage": "在雅思口语中被问到“Do you...?”时，可用“Yes, I do.”或“I do, actually.”简短回应，比完整重复更简洁；“actually”可放在句首或句中，如“Actually, I do.”"
+    },
+    {
+      "zh": "而且我才二十一岁，刚从大学毕业，所以我还年轻，记得我所有的老师。",
+      "en": "And I'm only twenty-one, I've just graduated from university, so I'm young enough to remember all of my teachers.",
+      "explanation": "“I've just graduated”使用现在完成时，表示“刚刚毕业”，强调动作与现在的关联；“so”引导结果状语从句，说明前文情况导致的结果；“young enough to remember”是“形容词 + enough + to do”结构，表示“足够年轻，因而能够记得”。",
+      "usage": "“have/has just + 过去分词”表示“刚刚做完某事”；“so”在口语中连接原因和结果；“adj. + enough + to do sth.”表示“足够……以至于能……”，如“old enough to decide”。"
+    },
+    {
+      "zh": "但如果你指的是一位真正让我印象深刻的特定老师——我会说没有。",
+      "en": "But if you mean one particular teacher who really impressed me — I'd say no.",
+      "explanation": "“if you mean...”用于确认对方问题的具体含义，避免答非所问；“one particular teacher”中 particular 作形容词，表示“特定的、某一个”，强调个体而非整体；“who really impressed me”是定语从句，修饰 teacher；“I'd say”是 I would say 的缩写，表示“我会说、我想”，语气比直接说 no 更委婉。",
+      "usage": "“if you mean...”是口语中澄清问题的常用句型；“one particular + 单数名词”表示“某一位特定的……”；“impress sb.”表示“给某人留下印象”，常与 really/deeply 等副词搭配。"
+    },
+    {
+      "zh": "他们都只是普通的老师。",
+      "en": "They were all just regular teachers.",
+      "explanation": "“regular”在此处作形容词，意为“普通的、平常的”，相当于 ordinary，形容没有特别突出的特点；“just”表示“只是、仅仅”，加强“普通”的语气，与上文“印象深刻的”形成对比。",
+      "usage": "“regular teachers”与“memorable/impressive teachers”相对；“just”在口语中常用于弱化后续形容词的程度，如“just okay”“just normal”。"
+    },
+    {
+      "zh": "我没有最喜欢的老师，所以也没有一个特别让我印象深刻的。",
+      "en": "I don't have a favorite, so I don't have an impressive one.",
+      "explanation": "“favorite”在此处作名词，相当于 favorite teacher，口语中常省略后面的名词；“one”是不定代词，指代前面已提到的可数名词单数 teacher，避免重复；“impressive”表示“令人印象深刻的”，用 an 修饰以元音音素开头的单词。",
+      "usage": "“favorite”可单独作名词，如“He is my favorite.”；用“one”指代上文出现的单数可数名词，如“I don't have a pen. I need to buy one.”"
+    },
+    {
+      "zh": "我记性确实很好，所以我都记得他们。",
+      "en": "Although I do have a pretty good memory, so I remember all of them.",
+      "explanation": "“do have”中 do 是助动词，用来强调动词 have，表示“确实有”；“pretty”在此处作副词，相当于 quite，表示“相当、很”；“a good memory”是固定搭配，表示“记性好”；“Although”引导让步状语从句，表示“虽然”；“so”引导结果状语从句，表示“所以”。",
+      "usage": "“do/does/did + 动词原形”用于强调事实，如“I do like it.”；“pretty + 形容词”是口语中常见的弱化强调，如“pretty good”“pretty sure”；“a good/bad memory”表示“记性好/差”。"
+    }
+  ]
+}

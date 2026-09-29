@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "source_fingerprint": "ddd9875dc87b7af2276c68604171dcbb17d7441d378bde0c5876e14b662ce0a6",
+  "complete_chinese": "是的，当然，我认为这非常必要——尤其是在中国。我们在这里说普通话，而在当今世界，英语是主导语言。有这么多人讲英语，如果你想和他们交流，你也需要说英语。一旦你把英语学好，你就能开阔视野——就像打开一扇通往世界的新大门。你能接触到很多东西：不同的人、不同的风景、不同的文化。而且学习一门新语言还能让人更聪明——它能激活你的大脑，提升你的批判性思维，因为你需要大量的输入，全面的输入。例如，我通过看电视剧、文章、英文小说来学英语——并且通过这种方式我认识了许多英国作家。这些输入提升了我的批判性思维，也开阔了我的视野。所以它是一项非常有价值的技能，也是一段令人印象深刻的经历。",
+  "sentences": [
+    {
+      "zh": "是的，当然，我认为这非常必要——尤其是在中国。",
+      "en": "Yeah, of course, I think it's very necessary — especially in China.",
+      "explanation": "“Yeah, of course”是口语中自然的强调赞同；“I think it's very necessary”使用“it is + 形容词”结构，it作形式主语，指代“孩子在学校学外语”这件事；“especially in China”作地点状语，限定语境，让观点更具体。",
+      "usage": "在雅思口语中回答必要性问题时，可用“Yeah, of course, I think it's very necessary — especially in...”先给态度再点明背景，逻辑清晰且自信。"
+    },
+    {
+      "zh": "我们在这里说普通话，而在当今世界，英语是主导语言。",
+      "en": "We speak Mandarin here, and in this world, English is the master language.",
+      "explanation": "“We speak Mandarin here”用一般现在时说明客观事实；“in this world”作状语，强调全球范围；“English is the master language”中master作形容词，意为“主导的、占支配地位的”，修饰language。",
+      "usage": "想指出某语言的国际地位时，可用“...is the master/dominant language”；用this world比the world更口语化，适合对话语境。"
+    },
+    {
+      "zh": "有这么多人讲英语，如果你想和他们交流，你也需要说英语。",
+      "en": "There are so many people speaking English, and if you want to communicate with them, you need to speak English too.",
+      "explanation": "“There are so many people speaking English”是there be句型，speaking English为现在分词短语作后置定语；“if you want to communicate with them”是条件状语从句；“communicate with sb.”为固定搭配，意为“与某人交流”。",
+      "usage": "用“There are so many people speaking...”说明受众广，再用“if you want to..., you need to...”推出结论，是因果论证的常用口语句式。"
+    },
+    {
+      "zh": "一旦你把英语学好，你就能开阔视野——就像打开一扇通往世界的新大门。",
+      "en": "Once you learn English well, you broaden your horizon — it's like opening a new gate to the world.",
+      "explanation": "“Once”引导时间状语从句，意为“一旦”，强调条件达成后的即时结果；“broaden your horizon”为比喻性搭配，表示“开阔视野”；“it's like opening...”中like引导比喻，后接动名词短语。",
+      "usage": "描述学会某技能后的转变时，可用“Once you learn... well, you broaden your horizon”；破折号后的比喻能让抽象好处更形象。"
+    },
+    {
+      "zh": "你能接触到很多东西：不同的人、不同的风景、不同的文化。",
+      "en": "You gain access to so many things: different people, different scenery, different cultures.",
+      "explanation": "“gain access to...”是正式动词短语，意为“获得接触……的机会”，比get to...更书面；冒号后接三个“different + 名词”的并列结构，形成排比，增强语势。",
+      "usage": "列举外语带来的资源时，用“You gain access to...”开头，再加冒号列举，结构清晰且富有节奏感。"
+    },
+    {
+      "zh": "而且学习一门新语言还能让人更聪明——它能激活你的大脑，提升你的批判性思维，因为你需要大量的输入，全面的输入。",
+      "en": "And learning a new language can also make people smarter — it activates your brain and improves your critical thinking, because you need a lot of input, comprehensive input.",
+      "explanation": "“learning a new language”是动名词短语作主语，谓语用can make；“activates your brain”与“improves your critical thinking”为并列谓语；“because”引导原因状语从句；“comprehensive input”中comprehensive意为“全面的”，修饰input。",
+      "usage": "解释“为什么外语让人更聪明”时，可用破折号补充机制，再用because引出输入理论，体现逻辑层次。"
+    },
+    {
+      "zh": "例如，我通过看电视剧、文章、英文小说来学英语——并且通过这种方式我认识了许多英国作家。",
+      "en": "For example, I learn English from watching TV shows, articles, English novels — and I've gotten to know so many English writers through that.",
+      "explanation": "“learn... from doing sth.”表示“通过做某事来学习……”；“I've gotten to know”是现在完成时，表示截至目前的认识经历；“through that”指代前述学习方式。",
+      "usage": "举例个人学习方法时，用“For example, I learn English from...”直接回应；再用“I've gotten to know...”带出额外收获，让例子更完整。"
+    },
+    {
+      "zh": "这些输入提升了我的批判性思维，也开阔了我的视野。",
+      "en": "This input improved my critical thinking and broadened my horizon.",
+      "explanation": "“This input”指代上文的comprehensive input；improved与broadened为并列谓语，时态一致；“critical thinking”是学术场景高频搭配，意为“批判性思维”。",
+      "usage": "总结个人收获时，用“This input improved... and broadened...”将输入与能力提升挂钩，形成因果闭环。"
+    },
+    {
+      "zh": "所以它是一项非常有价值的技能，也是一段令人印象深刻的经历。",
+      "en": "So it's a very valuable skill and an impressive experience.",
+      "explanation": "“So”用于总结；“it's a very valuable skill and an impressive experience”使用并列表语，分别从“实用价值”和“个人体验”两个角度收尾。",
+      "usage": "结尾可用“So it's a very valuable skill and an impressive experience.”简洁有力地收束全篇，适合口语答题。"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "dfbc8b9de0814c0cc758d7b1dcbfa7d068109509cde8022e02352d881013cfba",
+  "complete_chinese": "我认为这主要体现在人们与歌手的沟通方式上。过去，如果你听音乐，你只能听——也许你会对某位歌手感到惊喜，也许你喜欢他们，但你无法与他们交流。但现在，有了音乐 App，你有时可以直接与那些歌手互动。这就像读书并且能够与作者交谈一样。而且现在通过 App 听音乐也确实比用磁带或 MP3 播放器方便得多。",
+  "sentences": [
+    {
+      "zh": "我认为这主要体现在人们与歌手的沟通方式上。",
+      "en": "I think it's mostly about the way people communicate with the singer.",
+      "explanation": "“it's mostly about...” 用于引出核心变化，意为“主要体现在/主要是关于……”；“the way people communicate with the singer” 是“the way + 定语从句”结构，说明人们与歌手沟通的方式。",
+      "usage": "适用于 Part 3 中回答“某事物如何改变某方面”的问题，先总述变化的核心点。"
+    },
+    {
+      "zh": "过去，如果你听音乐，你只能听——也许你会对某位歌手感到惊喜，也许你喜欢他们，但你无法与他们交流。",
+      "en": "In the past, if you listened to music, you could only listen — maybe you were surprised by a singer, maybe you liked them, but you couldn't communicate with them.",
+      "explanation": "“In the past” 与后文 “now” 形成时间对比；“could only listen” 用情态动词 could 表示过去受限的能力；“but” 引出转折，强调过去无法双向交流。",
+      "usage": "用于描述过去听音乐的单一性和局限性，通过对比凸显变化。"
+    },
+    {
+      "zh": "但现在，有了音乐 App，你有时可以直接与那些歌手互动。",
+      "en": "But now, with music apps, you can sometimes interact with those singers directly.",
+      "explanation": "“with music apps” 为介词短语作状语，表示伴随的技术手段；“interact with sb directly” 意为“与某人直接互动”，比 communicate 更强调双向性。",
+      "usage": "描述技术带来的新可能性，适用于对比今昔场景。"
+    },
+    {
+      "zh": "这就像读书并且能够与作者交谈一样。",
+      "en": "It's like reading a book and being able to talk with the writer.",
+      "explanation": "“It's like...” 用于打比方，把抽象的技术变化类比为熟悉场景；“reading a book” 和 “being able to talk...” 为并列的动名词短语，保持结构平衡。",
+      "usage": "用类比解释新现象，让表达更生动、易懂。"
+    },
+    {
+      "zh": "而且现在通过 App 听音乐也确实比用磁带或 MP3 播放器方便得多。",
+      "en": "And it's also just way more convenient to listen through apps now, instead of cassettes or MP3 players.",
+      "explanation": "“way more convenient” 中 way 作副词，相当于 much，用于加强比较级语气，口语自然；“instead of” 表示“而不是”，后接名词短语作对比对象。",
+      "usage": "补充另一个维度的变化（便利性），并通过 instead of 对比新旧载体。"
+    }
+  ]
+}

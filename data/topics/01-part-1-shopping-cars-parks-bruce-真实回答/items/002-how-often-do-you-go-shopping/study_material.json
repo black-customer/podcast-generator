@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "ea9bda885eee58684f3019f8d9212092f6c7d76377423b4719b8db5faa8c669f",
+  "complete_chinese": "频率非常低。如果指的是去实体店，那几乎不去；如果需要衣服或裤子等新东西，就直接网购；如果没有需求，就完全不去购物。",
+  "sentences": [
+    {
+      "zh": "非常少——如果你指的是去实体店的话。",
+      "en": "Very, very rarely — if you mean going to an actual physical store.",
+      "explanation": "用 “Very, very rarely” 通过重复 very 来加强语气，表示频率极低。“if you mean...” 用来澄清对方问题的具体所指，即 “going to an actual physical store”（去实际的实体店）。“actual physical store” 中 actual 和 physical 连用，强调是真实的、有实体的商店，与网购相对。",
+      "usage": "当需要先澄清问题范围再回答时，可以用 “Very rarely — if you mean...” 这样的结构，先给出总体频率，再补充说明条件。"
+    },
+    {
+      "zh": "那几乎从未发生。",
+      "en": "That almost never happens.",
+      "explanation": "“almost never” 是频率副词短语，表示“几乎从不”，比 “rarely” 语气更强。句中的 “That” 指代上文提到的“去实体店”这件事，使句子更简洁。",
+      "usage": "用来进一步强调某件事的发生频率极低，可以替代 “I almost never do that.”"
+    },
+    {
+      "zh": "有时候我需要新衣服或新裤子，就是，一些新东西——那时我就直接网购。",
+      "en": "Sometimes I need new clothes or new pants, you know, new things — then I'll just shop online.",
+      "explanation": "“Sometimes” 表示偶尔。“you know” 是口语中的填充词，用于缓和语气或表示思考。“new things” 是对前面 “new clothes or new pants” 的概括，避免重复。“then” 表示承接，引出结果。“shop online” 是固定搭配，表示“网购”。",
+      "usage": "在口语中，当列举完具体物品后，可以用 “you know, new things” 来概括；用 “then I'll just...” 说明在某种条件下会采取的简单行动。"
+    },
+    {
+      "zh": "而且如果我没有需求，如果没有必要，那我就完全不去购物。",
+      "en": "And if I don't have a need, if there's no requirement, then I won't go shopping at all.",
+      "explanation": "“if I don't have a need” 表示“如果没有需求”。“there's no requirement” 是 there be 句型，表示“没有要求/需要”。“not...at all” 是固定搭配，表示“完全不”，用来加强否定语气。",
+      "usage": "用 “if... if... then...” 的排比结构来强调条件，使表达更有层次；用 “not...at all” 彻底否定某种行为。"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "47c82851bed2c144cd78f3e727a3f4ed04f7a6de31bf90ee37fdc1e97bf669ab",
+  "complete_chinese": "基本上，我喜欢在早上学习——但有趣的地方在于：我早上起不来。我经常醒得太晚，比如早上9点，甚至11点，所以我通常会睡过整个上午，然后在下午学习。但理论上，我更喜欢早上，因为早上比下午安静得多。一个安静的空间和早起学习给了我一种感觉：我是更好的人，我有更强的执行能力，你知道的。",
+  "sentences": [
+    {
+      "zh": "基本上，我喜欢在早上学习——但有趣的地方在于：我早上起不来。",
+      "en": "Basically, I like studying in the mornings — but here's the funny part: I don't get up in the mornings.",
+      "explanation": "Basically 在口语中表示“基本上；大体上”，常用来温和地引入总体情况；here's the funny part 是口语化插入语，用来引出矛盾或有趣的地方。",
+      "usage": "回答雅思口语时，可用 Basically, ... 开头，让表达更自然；don't get up 表示“起不来床”。"
+    },
+    {
+      "zh": "我经常醒得太晚，比如早上9点。",
+      "en": "I often wake up too late, like 9 a.m.",
+      "explanation": "wake up too late 表示“醒得太晚”；这里的 like 不是“喜欢”，而是口语中用来举例，相当于“比如”。",
+      "usage": "举例时可用 like + 时间/事物，比 for example 更口语；9 a.m. 表示“早上9点”。"
+    },
+    {
+      "zh": "甚至11点，所以我通常会睡过整个上午，然后在下午学习。",
+      "en": "or even 11 a.m., so I usually sleep through the morning and study in the afternoon.",
+      "explanation": "or even 表示“甚至”，用来加强前面的举例；sleep through the morning 表示“睡过整个上午”；so 连接因果关系。",
+      "usage": "or even 11 a.m. 是对前面 like 9 a.m. 的补充，口语中常停顿；sleep through + 时间段 表示“一直睡过某段时间”。"
+    },
+    {
+      "zh": "但理论上，我更喜欢早上，因为早上比下午安静得多。",
+      "en": "But in theory, I prefer mornings, because they're much quieter than afternoons.",
+      "explanation": "in theory 表示“理论上”；prefer mornings 中 prefer 后直接接名词，省略了 in the；much quieter than 用 much 修饰比较级，表示“……得多”。",
+      "usage": "prefer A (to B) 可用来表达偏好；比较级前可用 much / even / a lot 修饰，加强程度。"
+    },
+    {
+      "zh": "一个安静的空间和早起学习给了我一种感觉：我是更好的人，我有更强的执行能力，你知道的。",
+      "en": "A quiet space and waking up early to study gives me this sense that I'm a better person, that I have better execution ability, you know.",
+      "explanation": "give me this sense that... 表示“给我一种……的感觉”，that 引导同位语从句；句末 you know 是口语填充词。",
+      "usage": "give sb. this sense that... 可用来表达主观感受；execution ability 可以理解，但更自然可说 ability to execute 或 execution skills。"
+    }
+  ]
+}

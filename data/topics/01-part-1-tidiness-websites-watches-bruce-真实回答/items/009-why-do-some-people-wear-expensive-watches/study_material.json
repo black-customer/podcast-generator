@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "2ff9fba1b751e2ea9384c2a5f20b355b647a3c86cd77d31a948476e5e11c3fd3",
+  "complete_chinese": "有意思的问题。我要是有钱可能不会买，但那可能是身份象征，你知道吗？就像有些女生会买奢侈品包那样。我觉得名表对某些男人来说也是一样的东西——一种展示地位的方式。而且我还听说，有些有钱人买名表和珠宝，是因为万一发生什么不好的事，他们可以直接抓起就跑——这些便于携带，按体积算比黄金还值钱。所以这可能也是一个原因。",
+  "sentences": [
+    {
+      "zh": "有意思的问题。",
+      "en": "Yeah, that's an interesting question.",
+      "explanation": "用「Yeah」自然承接问题，「that's an interesting question」直接回应考官并表示你在认真思考，是 Part 3 的地道开场。",
+      "usage": "适合用在任何抽象问题的开头，比沉默或生硬地说「I think」更自然，能体现口语交流感。"
+    },
+    {
+      "zh": "我要是有钱可能不会买，但那可能是身份象征，你知道吗？",
+      "en": "I don't think I would buy an expensive watch even if I were rich, but maybe it's an identity symbol, you know?",
+      "explanation": "这句话包含两个高分语法点：一是「I don't think I would...」属于否定转移，比「I think I would not...」更符合英语习惯；二是「even if I were rich」使用虚拟语气，因为「我现在不是有钱人」是与现在事实相反的假设，所以 be 动词用 were。句尾的「you know?」是口语缓冲词，能让语气更自然。",
+      "usage": "虚拟语气「even if + 主语 + were/did」可用于描述与现在情况相反的假设，在 Part 3 表达个人观点时很实用。"
+    },
+    {
+      "zh": "就像有些女生会买奢侈品包那样。",
+      "en": "Like how some girls buy luxury bags.",
+      "explanation": "「Like how...」是非常口语化的举例方式，相当于「Just as...」，用来把前文提到的抽象概念具体化。这里用「some girls」而不是「girls」，避免以偏概全，表达更严谨。",
+      "usage": "在口语中想快速举例时，可以用「Like how + 句子」来衔接，比「For example,」更随意自然。"
+    },
+    {
+      "zh": "我觉得名表对某些男人来说也是一样的东西——一种展示地位的方式。",
+      "en": "I think expensive watches are the same thing for some men — a way to show their status.",
+      "explanation": "破折号后的「a way to show their status」是同位语，用来补充说明前面的「the same thing」，比另起一句说「It is a way to show their status」更简洁有力。「show one's status」是固定搭配，也可以用「display one's status」。",
+      "usage": "同位语结构「..., a way to...」可以用来解释前文提到的抽象概念，让句子信息密度更高，适合 Part 3 的抽象讨论。"
+    },
+    {
+      "zh": "而且我还听说，有些有钱人买名表和珠宝，是因为万一发生什么不好的事，他们可以直接抓起就跑——这些便于携带，按体积算比黄金还值钱。",
+      "en": "And I've also heard that some rich people buy expensive watches and jewelry because if something bad happens, they can just grab them and run — they're portable, and worth more than gold by volume.",
+      "explanation": "这是一个复杂句，包含「I've heard that」宾语从句，里面又有「because」原因状语从句，原因从句中还嵌套了「if」条件状语从句，这种多层次从句是口语拿高分的亮点。「by volume」表示「按体积计算」，是准确的限定表达；「grab them and run」很生动。",
+      "usage": "「I've heard that...」可以用来引用间接信息，在 Part 3 讨论社会现象时表明你的了解来自间接渠道而非亲身经历，让表达更严谨。"
+    },
+    {
+      "zh": "所以这可能也是一个原因。",
+      "en": "So maybe that's a reason too.",
+      "explanation": "用「So」总结前文，提出另一个可能的原因。「maybe」表示不确定，「too」表示递进补充，这是 Part 3 结尾很自然的收尾方式。",
+      "usage": "在列举了多个原因后，可以用「So maybe that's a reason too」来自然收尾，避免突然结束话题。"
+    }
+  ]
+}

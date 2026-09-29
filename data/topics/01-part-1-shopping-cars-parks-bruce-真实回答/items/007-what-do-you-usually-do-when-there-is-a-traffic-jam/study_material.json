@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "7df318cf27b0bbcdfb4737349b1ed9b8099e816946d5d38c79650189e1ccd1f4",
+  "complete_chinese": "玩手机啊，还能干嘛？我就是乘客，刷手机等堵车过去。",
+  "sentences": [
+    {
+      "zh": "我就是玩手机。",
+      "en": "I just play on my phone.",
+      "explanation": "just 在这里作副词，表示“只是、就”，带有一种“除此之外也没别的事可做”的语气；play on my phone 是英语中的高频搭配，表示“玩手机、用手机消遣”，介词用 on。",
+      "usage": "描述日常习惯时，用 I just + 动词原形 可以让语气显得轻松、随意，暗示这是一种默认的、不用多想的行为。"
+    },
+    {
+      "zh": "还能干嘛？",
+      "en": "What else can I do?",
+      "explanation": "What else 是固定搭配，表示“还有什么别的”；can 表示“能够、可以”。整句是反问句，不需要回答。",
+      "usage": "当你觉得情况已经无法改变、没有更多选择时，用 What else can I do? 来表达一种无奈感，意思是“我还能怎么办呢？”。"
+    },
+    {
+      "zh": "我就是乘客，对吧？",
+      "en": "I'm just a passenger, right?",
+      "explanation": "just 强调“只不过是个……”，突出自己身份普通、没有特殊能力；right? 是口语里最常用的附加疑问词之一，比 isn't it? 或 aren't I? 更自然、更随意。",
+      "usage": "用 I'm just a... 来解释自己为什么帮不上忙或不能做主；right? 放在句尾，可以快速征求对方同意，让对话更接地气。"
+    },
+    {
+      "zh": "所以——掏出手机，希望堵车快点过去。",
+      "en": "So — phone out, and hope the traffic jam clears up quickly.",
+      "explanation": "phone out 是口语中的省略说法，相当于 (I'll) take my phone out，像中文“掏出手机”一样简洁；clears up 是“动词+副词”型短语，表示（交通、天气、事情）好转、结束，主语是 traffic jam。",
+      "usage": "phone out 适合在轻松的口语中使用，带有一种“那就这样吧”的随意感；hope (that) + 从句 中 that 可以省略，用来表达对未来的期望。"
+    }
+  ]
+}

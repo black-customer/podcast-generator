@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "1abe9e3b316a8f3dbe1ec63cce4232258aa5530924669a3bf6e979297c05f12d",
+  "complete_chinese": "喜欢，每天都唱。每天起床脑子里就有一首歌，不知道为什么。唱歌能表达当下的情绪。",
+  "sentences": [
+    {
+      "zh": "喜欢。",
+      "en": "Yeah, of course, I like singing.",
+      "explanation": "“Yeah, of course”是口语里自然的承接语，of course表示“当然”，用来加强肯定语气。like后接动名词singing，表示长期的爱好，而不是某一次具体的动作。",
+      "usage": "适用于回答Do you like...?这类喜好问题。先用Yeah, of course爽快回应，再给出具体信息，显得自信且口语化。"
+    },
+    {
+      "zh": "每天都唱。每天起床脑子里就有一首歌，",
+      "en": "I sing every single day — there's always a song in my head when I wake up.",
+      "explanation": "“every single day”在every day基础上加single，强调“一天不落”，语气更重。“there's always a song in my head”使用there be句型，表示“有一首歌存在于我脑海中”；“in my head”是固定搭配，意为“在脑子里”。“when I wake up”是when引导的时间状语从句，描述醒来的那一刻。",
+      "usage": "想强调自己每天坚持做某事时，可以用every single day；描述脑中浮现的画面、声音或旋律，可用there's ... in my head。"
+    },
+    {
+      "zh": "不知道为什么。",
+      "en": "I don't know why, but it's there.",
+      "explanation": "“why”后面省略了上文提到的内容（即为什么每天醒来脑子里都有一首歌），口语中常这样承接。“but it's there”中的it指代前面提到的a song，there指in my head，避免重复，衔接自然。",
+      "usage": "当你解释不清某个习惯或现象时，可以用I don't know why, but...来转折，带出客观存在的情况。"
+    },
+    {
+      "zh": "唱歌能表达当下的情绪。",
+      "en": "And I like singing because it lets me express my emotions at that moment — whatever I'm feeling, I can just sing it out.",
+      "explanation": "“because”引导原因状语从句，解释喜欢的理由。“lets me express”属于let sb. do sth.结构，后面接动词原形express。“express my emotions”是常用动宾搭配。“at that moment”相当于at that time，指“在那一刻”。“whatever I'm feeling”中whatever引导让步状语，相当于no matter what，口语里常这样用。“sing it out”是“动词+副词”短语，表示“把……唱出来”。",
+      "usage": "阐述喜欢某活动的原因时，可以用because it lets me...引出该活动带来的好处，再用whatever...补充说明具体情境，让表达更生动。"
+    }
+  ]
+}

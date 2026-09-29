@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "source_fingerprint": "f7949b7155dd7bad8a381aa5649c07d3740e6f025a897d8668aae555f91a8e54",
+  "complete_chinese": "嗯，当然要看情况。\"老人\"只是一个笼统的概念——只关乎年龄。即使是同龄人，学习能力和学习技能也不同。有些人完全能用好科技产品。但如果一个人从未养成学习新事物的习惯——比如我的爷爷奶奶，他们会说：\"哦，我老了，不想学新东西，也学不了新东西\"——然后他们就是找借口，也就用不好科技产品。所以我认为这取决于个人的性格。像我这样的人——等我老了，我还会紧跟最新的技术潮流，因为我喜欢学习新事物。科技的未来会很精彩，我肯定会投入其中并用得好——甚至可能比我自己的孩子用得还好。",
+  "sentences": [
+    {
+      "zh": "嗯，当然要看情况。",
+      "en": "Well, of course it depends.",
+      "explanation": "\"of course\" 用于加强肯定语气；\"it depends\" 是口语高频表达，意为\"这得看情况\"，适合作为开放性问题的开头。",
+      "usage": "在雅思口语 Part 3 遇到需要分情况讨论的抽象问题时，可用 \"Well, it depends.\" 自然过渡，避免回答过于绝对。"
+    },
+    {
+      "zh": "\"老人\"只是一个笼统的概念——只关乎年龄。",
+      "en": "\"Old people\" is a general concept — age only.",
+      "explanation": "\"general concept\" 表示\"笼统的概念\"；破折号后的 \"age only\" 是省略补语，完整形式可理解为 \"it is about age only\"，口语中常用这种简洁补充来限定前文。",
+      "usage": "想表达\"某个标签只是大致分类\"时，可用 \"... is just a general concept\"，帮助自己细化论证。"
+    },
+    {
+      "zh": "即使是同龄人，学习能力和学习技能也不同。",
+      "en": "Even people of the same age have different learning abilities and different learning skills.",
+      "explanation": "\"people of the same age\" 是\"同龄人\"的地道说法；\"learning abilities\" 和 \"learning skills\" 分别指\"学习能力\"和\"学习技能\"，并列使用体现用词变化。",
+      "usage": "描述群体内部差异时，可用 \"Even people of the same ... have different ...\" 句型，even 加强让步语气，让论证更严谨。"
+    },
+    {
+      "zh": "有些人完全能用好科技产品。",
+      "en": "Some of them can absolutely use technology well.",
+      "explanation": "\"absolutely\" 置于情态动词 \"can\" 之后，表示\"完全能够\"，比单独使用 \"can\" 语气更肯定。",
+      "usage": "想强烈肯定某种能力时，可用 \"can absolutely do sth.\"，在口语中比 \"can really\" 更自然。"
+    },
+    {
+      "zh": "但如果一个人从未养成学习新事物的习惯——比如我的爷爷奶奶，他们会说：\"哦，我老了，不想学新东西，也学不了新东西\"——然后他们就是找借口，也就用不好科技产品。",
+      "en": "But if a person never built the habit of learning new things — for example, my grandparents, they'd say, \"Oh, I'm old, I don't want to learn new things, I can't learn new things\" — then they just make excuses and can't use technology well.",
+      "explanation": "\"build the habit of...\" 是\"养成……的习惯\"的固定搭配；\"make excuses\" 意为\"找借口\"；句中用破折号插入祖父母的具体话语，是口语中自然的举例方式。",
+      "usage": "举生活实例时，可用 \"for example, ...\" 插入句中；\"build/form a habit of doing sth.\" 是雅思口语常用搭配，适合谈论教育、性格等话题。"
+    },
+    {
+      "zh": "所以我认为这取决于个人的性格。",
+      "en": "So I think it depends on the person's personality.",
+      "explanation": "\"depend on\" 表示\"取决于\"；\"personality\" 指\"性格、个性\"，比 \"character\" 更强调个人特质。",
+      "usage": "做总结时，可用 \"I think it depends on...\" 来回应复杂问题，体现辩证思维，避免一刀切。"
+    },
+    {
+      "zh": "像我这样的人——等我老了，我还会紧跟最新的技术潮流，因为我喜欢学习新事物。",
+      "en": "Someone like me — when I'm old, I'll still be following the latest technology trends, because I like learning new things.",
+      "explanation": "\"follow the latest technology trends\" 是\"紧跟最新技术潮流\"的地道表达；\"I'll still be following\" 使用将来进行时，表示将来某时刻正在持续的动作。",
+      "usage": "描述未来状态时，可用 \"I'll still be doing...\" 表达\"到那时我依然会在做某事\"，比 \"I will still do\" 更强调持续性。"
+    },
+    {
+      "zh": "科技的未来会很精彩，我肯定会投入其中并用得好——甚至可能比我自己的孩子用得还好。",
+      "en": "The future of technology will be brilliant, and I'll definitely be into it and use it well — maybe even better than my own children.",
+      "explanation": "\"be into sth.\" 是口语表达，意为\"对……很感兴趣、投入其中\"；\"maybe even better than...\" 用比较级加 even，表示\"甚至可能比……更好\"。",
+      "usage": "\"be into sth.\" 比 \"be interested in\" 更自然口语化，适合描述爱好或热衷的事物；结尾用比较级能展示语言灵活性。"
+    }
+  ]
+}

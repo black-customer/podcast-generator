@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "607e47f756bb292297dc813ac2f0909ae8e4a95558a18c30d79d2ba7676a1ccc",
+  "complete_chinese": "是的，我总是用耳机，因为我喜欢听音乐、听播客和看视频。而且在公共场合，戴耳机很重要，这样你的声音就不会打扰别人。所以我通常戴它们。",
+  "sentences": [
+    {
+      "zh": "是的，我总是用耳机，因为我喜欢听音乐、听播客和看视频。",
+      "en": "Yes, I always use headphones, because I like listening to music, listening to podcasts, and watching videos.",
+      "explanation": "because 引导原因状语从句，说明使用耳机的原因；like doing sth. 表示习惯性喜欢，后接动名词；listen 是不及物动词，接宾语时必须加介词 to，即 listening to music/podcasts；and watching videos 与前面的 listening 并列，保持平行结构。",
+      "usage": "在雅思口语中，可用 I'm really into... 或 I enjoy... 替换 I like... 以展示词汇多样性；podcasts 的高频搭配是 listen to podcasts。"
+    },
+    {
+      "zh": "而且在公共场合，戴耳机很重要，这样你的声音就不会打扰别人。",
+      "en": "And in public situations, it's important to wear headphones so your sound doesn't bother others.",
+      "explanation": "in public situations 意为“在公共场合”；it's important to do sth. 中 it 作形式主语，真正的主语是后面的动词不定式；so (that)... 引导目的状语从句，表示“以便；为了”，that 可省略；wear headphones 是固定穿戴搭配；bother others 表示“打扰别人”。",
+      "usage": "如果想更自然，可以说 so as not to disturb others 或 so that I don't disturb anyone；sound 在这里指播放的声音，也可替换为 noise 或 audio。"
+    },
+    {
+      "zh": "所以我通常戴它们。",
+      "en": "So I usually wear them.",
+      "explanation": "usually 是频度副词，位于实义动词 wear 之前；them 指代上文提到的 headphones，用人称代词宾格避免重复。",
+      "usage": "可用 most of the time 或 more often than not 替换 usually；也可说 I make a habit of wearing them 来强调习惯。"
+    }
+  ]
+}

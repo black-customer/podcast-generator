@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "1e34bc2f9f5b5e9118480662ff4158fffa99de92362cd22081fcf28f4533ddab",
+  "complete_chinese": "想，但不是学校里那种老师——比如小学、高中老师之类的。我想成为一个把知识传授给别人的人。英语、人工智能，任何我擅长的东西——我会教别人如何用我的方式做事。所以从这个意义上说，我确实想成为一名老师。",
+  "sentences": [
+    {
+      "zh": "想，但不是学校里那种老师——比如小学、高中老师之类的。",
+      "en": "Actually yes, but not like a school teacher — primary school, high school, that kind of thing.",
+      "explanation": "“not like” 用于引出对比，表示“不像……那样”；破折号后的 “primary school, high school” 是对 “school teacher” 的举例说明；“that kind of thing” 是口语中常用的总结语，用来概括同类事物，避免逐一罗列。",
+      "usage": "先用 “Actually yes” 直接回应问题，再用 “but” 转折澄清自己不想成为的老师类型，最后用 “that kind of thing” 收尾，自然简洁，适合口语考试中先肯定再补充细节的答题思路。"
+    },
+    {
+      "zh": "我想成为一个把知识传授给别人的人。",
+      "en": "I want to be someone who passes knowledge on to other people.",
+      "explanation": "“pass on” 是固定短语动词，意为“传递、传授”；名词可放中间或后面（pass knowledge on / pass on knowledge）。“someone who...” 是定语从句，用来定义“某种人”。",
+      "usage": "用 “pass knowledge on to sb.” 比 “teach knowledge” 更地道，强调知识的传递与延续；整句通过 “someone who...” 说明自己想成为的身份，适合回答职业规划类问题。"
+    },
+    {
+      "zh": "英语、人工智能，任何我擅长的东西——我会教别人如何用我的方式做事。",
+      "en": "English, AI, anything I'm good at — I'd teach people how to do things the way I do them.",
+      "explanation": "句首用名词短语 “English, AI, anything I'm good at” 作话题导入，相当于 “When it comes to...”；“I'd” 是 “I would” 的缩写，表示意愿；“the way I do them” 是方式状语从句，修饰 “do things”，意为“按照我做的方式”。",
+      "usage": "先具体列举领域（English, AI），再用 “anything I'm good at” 概括，体现思路清晰；“teach people how to do things...” 比单纯说 “teach people English” 更侧重方法和实践，突出个人特色。"
+    },
+    {
+      "zh": "所以从这个意义上说，我确实想成为一名老师。",
+      "en": "So yeah, in that sense, I do want to be a teacher.",
+      "explanation": "“in that sense” 意为“从那个意义上说”，用于限定前文提到的特定角度；“do” 在此处是助动词，用来强调谓语动词 “want”，加强肯定语气。",
+      "usage": "结尾用 “So yeah” 表示总结，用 “in that sense” 回扣前文对“老师”的重新定义，再用 “do want” 强调真实意愿，让回答有收束感，也能向考官展示语法控制力。"
+    }
+  ]
+}

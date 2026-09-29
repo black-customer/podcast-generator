@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "7f2f9a91a8303c541a926f848cf75bfccc71474232e2c73078624954e6cc9a1f",
+  "complete_chinese": "当然发过。我觉得在现代生活中，我们大多数人都在某个时候发过东西。我发过文字说自己在干嘛，分享过我的想法和观点，也可能发过游戏成就的照片。大多只是些小帖子，用来分享我的感受。",
+  "sentences": [
+    {
+      "zh": "当然发过。",
+      "en": "Of course.",
+      "explanation": "“Of course.” 是省略回答，完整形式相当于 “Of course I have.”，在口语中非常自然，比 “Yes, I have.” 更自信流畅。",
+      "usage": "用于回答 “Have you ever...?” 这类现在完成时的一般疑问句，表示“当然有过”，简洁有力。"
+    },
+    {
+      "zh": "我觉得在现代生活中，我们大多数人都在某个时候发过东西。",
+      "en": "I think in modern life, most of us have posted something at some point.",
+      "explanation": "“I think” 作为插入语，缓和语气；“in modern life” 是介词短语作状语；“most of us” 指“我们中的大多数人”，拉近与听者的距离；“have posted” 是现在完成时，表示过去发生但对现在有影响的经历；“at some point” 是固定短语，意为“在某个时刻”。",
+      "usage": "在 Part 1 或 Part 3 中，当问题涉及个人经历但想先铺垫一个社会背景时，可以用 “I think in modern life, most of us...” 开头，既自然又展示语法多样性。"
+    },
+    {
+      "zh": "我发过文字说自己在干嘛，分享过我的想法和观点，也可能发过游戏成就的照片。",
+      "en": "I've posted text about what I'm doing, shared my thoughts and ideas, and maybe some photos of my achievements in games.",
+      "explanation": "本句使用现在完成时 “I've posted” 并后接三个并列宾语：“text about what I'm doing”、“shared my thoughts and ideas”（省略 posted）、“maybe some photos...”。“what I'm doing” 是名词性从句；“shared my thoughts and ideas” 是高频动宾搭配；“photos of...” 表示所属；“achievements in games” 是固定表达，指“游戏成就/战绩”。",
+      "usage": "列举多个事项时，可用 “A, B, and C” 结构，并适当省略重复动词，使句子更紧凑。注意 “post text/photos” 和 “share thoughts” 都是社交媒体场景下的常用搭配。"
+    },
+    {
+      "zh": "大多只是些小帖子，用来分享我的感受。",
+      "en": "Mostly it's just little posts to share how I'm feeling.",
+      "explanation": "“Mostly” 是频率副词，意为“多半、通常”，使描述更真实；“it's just...” 是口语中弱化语气的表达；“little posts” 中 “little” 带有“日常、随手”的意味，不是指物理尺寸小；“to share how I'm feeling” 是不定式作后置定语，相当于 “which are to share...”；“how I'm feeling” 是宾语从句。",
+      "usage": "想表达“大多数情况下只是……”时，可用 “Mostly it's just...” 开头，语气谦逊自然。不定式作定语时通常后置，如 “something to eat”。"
+    }
+  ]
+}

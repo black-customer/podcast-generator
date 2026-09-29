@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "67a7a6e13a6ed7161366ca9fe2e0c7729b56cbd075c868d787bbecfc45d52364",
+  "complete_chinese": "我觉得是在小学。我们老师在 QQ 上建了一个班级群——QQ 是一个中国的应用，有点像微信——所有学生都必须加群接收通知，因为老师有时会在那里发布公告。所以我基本上从小学开始就使用社交媒体了。",
+  "sentences": [
+    {
+      "zh": "我觉得是在小学。",
+      "en": "I think it was primary school.",
+      "explanation": "I think it was... 用于口语中回忆或确认过去的时间，语气自然，相当于“我想是在……”。primary school 指“小学”，在英式英语中常用来回答 when 引导的过去时间问题。",
+      "usage": "当被问到过去某个模糊的时间点（如 When did you start...?）时，可以用 I think it was... 先给出一个大致答案，再展开细节。"
+    },
+    {
+      "zh": "我们老师在 QQ 上建了一个班级群——QQ 是一个中国的应用，有点像微信——所有学生都必须加群接收通知，因为老师有时会在那里发布公告。",
+      "en": "Our teacher set up a class group on QQ — it's a Chinese app, kind of like WeChat — and all the students had to join it to get notices, because the teacher would sometimes send announcements there.",
+      "explanation": "set up a group 是“建立群组”的常用搭配；join it 指“加入群聊”；get notices 表示“接收通知”；send announcements 是“发布公告”的固定说法。would sometimes 用于表示过去经常发生的动作。破折号中间的内容是对 QQ 的补充说明。",
+      "usage": "在口语中想解释一个中国特有的 App 或概念时，可以用 it's..., kind of like... 来作简单类比，帮助听者快速理解。"
+    },
+    {
+      "zh": "所以我基本上从小学开始就使用社交媒体了。",
+      "en": "So I've basically been on social media since I was a pupil.",
+      "explanation": "have been on social media 表示“在使用社交媒体”这一从过去持续到现在的状态；since I was a pupil 是 since 引导的时间状语从句，主句常用现在完成时。basically 在口语中表示“基本上、大致上”，用于弱化绝对语气。",
+      "usage": "回答 When did you start...? 这类问题时，可以用 I've been... since... 的句型来强调从某个时间点一直持续到现在的经历。"
+    }
+  ]
+}

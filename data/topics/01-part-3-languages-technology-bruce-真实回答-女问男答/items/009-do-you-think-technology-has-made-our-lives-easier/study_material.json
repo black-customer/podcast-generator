@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "source_fingerprint": "7047f89041cb73afea4d4dc3138c5a82df887a59d5e3b63086a85d79ce76790a",
+  "complete_chinese": "在某种程度上，科技让生活变得更容易了，但在某些方面却更难——因为选择太多了。比如学英语：材料太多，不知道该选哪一个；方法也太多（跟读、交流、各种 App），决策负担因此变重了。总体而言，科技让生活更方便了，但脑子需要思考的事情也更多了。",
+  "sentences": [
+    {
+      "zh": "在某种程度上，我认为科技让我们的生活变得更轻松了。",
+      "en": "To some extent, I think it has made our lives easier.",
+      "explanation": "“To some extent”是固定搭配，表示“在某种程度上”，用于部分肯定，使语气更委婉、有分寸；主句使用现在完成时“has made”，强调对现在造成的影响。",
+      "usage": "常用于雅思口语开头，先承认再转折，例如：\"To some extent, I agree with this view.\""
+    },
+    {
+      "zh": "但实际上，在某些方面，科技让我们的生活变得更困难了——因为现在我们的选择更多了。",
+      "en": "But actually, in some ways, technology has made our lives harder — because we have more options now.",
+      "explanation": "“in some ways”表示“在某些方面”，与前面的 to some extent 形成对比；“because”引导原因状语从句，解释“更难”的原因；“more options”是 options 的比较级，表示“更多选择”。",
+      "usage": "可以用 \"in some respects\" 替换 \"in some ways\"；\"have more options\" 是高频表达，意为“有更多选择”。"
+    },
+    {
+      "zh": "我们需要付出真正的努力去思考该采取哪个行动。",
+      "en": "We need to put real effort into thinking about which action to take.",
+      "explanation": "“put real effort into”是固定搭配，意为“投入真正的努力”，into 后接动名词；“which action to take”是“疑问词 + 不定式”结构，作 think about 的宾语。",
+      "usage": "还可以说 \"put effort into doing sth.\"；\"which + n. + to do\" 结构在口语中很自然，如 \"I don't know what to say.\""
+    },
+    {
+      "zh": "例如，如果我想学英语，有海量的材料——我应该用哪一个来进行输入呢？",
+      "en": "For example, if I want to learn English, there are tons of materials — which one should I use for input?",
+      "explanation": "“tons of”是口语化表达，意为“大量的”，比 \"a lot of\" 更生动；“which one should I use for input?”是特殊疑问句，表达选择困难，“use sth. for...”表示“用某物来做……”。",
+      "usage": "\"tons of\" 可替换为 \"loads of\" 或 \"plenty of\"；\"input\" 在语言学习中常指“可理解的输入”，是雅思高频词。"
+    },
+    {
+      "zh": "而且有如此多的学习方法：跟读、与人交流、各种各样的应用程序。",
+      "en": "And there are so many methods: shadowing, communicating with people, all kinds of apps.",
+      "explanation": "冒号后接三个并列名词短语，对 methods 进行具体举例；“shadowing”是语言学习术语“跟读法”；“communicating with people”是动名词短语；“all kinds of”意为“各种各样的”。",
+      "usage": "举例时可用 \"such as\" 或冒号；\"shadowing\" 在雅思口语中提及英语学习方法时很实用。"
+    },
+    {
+      "zh": "太多的选择只会让做出决定并采取行动变得更难。",
+      "en": "Too many options just make it harder to make a decision and take action.",
+      "explanation": "“make it + adj. + to do sth.”是形式宾语结构，it 是形式宾语，真正的宾语是后面的不定式短语；“make a decision”是固定搭配，意为“做决定”；“take action”也是常用搭配，意为“采取行动”。",
+      "usage": "类似结构还有 \"find it difficult to...\"；\"take action\" 在讨论计划、改变时很常用。"
+    },
+    {
+      "zh": "所以总的来说，科技让生活变得更加便利——但它也让我们的脑子有更多的事情要去想。",
+      "en": "So generally, technology makes life much more convenient — but it also gives our brains more things to think about.",
+      "explanation": "“generally”作评注性状语，表示“总的来说”，用于总结；“makes life much more convenient”使用“make + 宾语 + 形容词比较级”结构；“gives our brains more things to think about”使用 give sb. sth. to do 结构。",
+      "usage": "总结时可用 \"generally speaking\" 或 \"on the whole\"；\"more convenient\" 是 convenient 的比较级，可用 much 修饰加强程度。"
+    }
+  ]
+}

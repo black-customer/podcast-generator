@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "c4f87102d564b28c5de17221b44a3216fec1877d0aceeed77164546c3eb34632",
+  "complete_chinese": "我最喜欢的是 YouTube。我认为它是世界上最大的视频网站，而且大多数人经常使用它，因为那里有海量的知识和信息。每个人都能找到感兴趣的视频——我也一样。我看 vlog、游戏视频，有时候就看直播。",
+  "sentences": [
+    {
+      "zh": "我最喜欢的是 YouTube。",
+      "en": "My favorite would be YouTube.",
+      "explanation": "would be 在这里表示委婉、客气的陈述，比直接说 My favorite is 更口语化，语气也更自然。在雅思口语中，用 would 来表达偏好能展现语言的灵活性。",
+      "usage": "当被问到 favorite 类问题时，可以用 would 来 soften the statement，避免过于绝对，例如 My favorite city would be Paris."
+    },
+    {
+      "zh": "我认为它是世界上最大的视频网站，而且大多数人经常使用它，因为那里有海量的知识和信息。",
+      "en": "I think it's the biggest video website in the world, and most people use it frequently because there's just such a huge amount of knowledge and information there.",
+      "explanation": "such a + 形容词 + 单数名词 + of 是固定强调结构，表示“如此……的……”。这里 amount 修饰不可数名词 knowledge and information；若修饰可数名词，则要用 number。",
+      "usage": "such a huge amount of 是强调数量的高分搭配，比 a lot of 或 lots of 更正式、更有力，适合在口语 Part 1 和 Part 3 中描述规模或程度。"
+    },
+    {
+      "zh": "每个人都能找到感兴趣的视频——我也一样。",
+      "en": "Everyone can find videos they're interested in — and so can I.",
+      "explanation": "so can I 是倒装结构，表示前面提到的肯定情况也适用于另一主语，结构为 so + 情态动词/助动词 + 主语。前句用 can，后句保持时态和情态动词一致。",
+      "usage": "这种简短倒装用于避免重复前文的动词，常见回应如 so do I、so am I、so will I。注意若前句为否定，则用 neither/nor + 助动词 + 主语。"
+    },
+    {
+      "zh": "我看 vlog、游戏视频，有时候就看直播。",
+      "en": "I watch vlogs, gaming videos, sometimes just streams.",
+      "explanation": "这是口语中自然的省略结构，完整理解是 I watch vlogs, gaming videos, and sometimes I watch just streams。列举时省略了重复的主语和动词，使表达更简洁。",
+      "usage": "在口语快速列举多个项目时，可以省略后面相同的动词，用逗号连接名词短语，最后接时间状语或副词，这在雅思口语中是被接受的自然表达。"
+    }
+  ]
+}

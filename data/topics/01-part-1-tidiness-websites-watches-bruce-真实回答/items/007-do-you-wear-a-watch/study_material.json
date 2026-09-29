@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "58ad49896e059c4c8bc7009b2200447c6c657529088322887a1f8701c27455ac",
+  "complete_chinese": "戴。事实上，我可以给你看看我的表。我从小学就开始戴表，因为在学校不能用手机，但我还是需要知道时间，所以妈妈给我买了一块。那时候它只是一块简单的表——机械的或者装电池的，只是用来看时间。但现在我戴的是智能表，它有很多不同的功能——不只是看时间，还能测心率。当我在健身房锻炼时，我能看到自己实际消耗了多少卡路里，尽管它并不是那么准确。",
+  "sentences": [
+    {
+      "zh": "戴。事实上，我可以给你看看我的表。",
+      "en": "Yes, I do — as a matter of fact, I can show you mine.",
+      "explanation": "as a matter of fact 用于强调或补充说明，相当于“事实上”；mine 是名词性物主代词，相当于 my watch，避免重复。",
+      "usage": "在雅思口语中，回答一般疑问句后，可以用 as a matter of fact 引出额外信息，让表达更自然、更有交流感。"
+    },
+    {
+      "zh": "我从小学就开始戴表，因为在学校不能用手机，但我还是需要知道时间，所以妈妈给我买了一块。",
+      "en": "I've worn watches since primary school, because at school I couldn't use my phone, but I still needed to know the time, so my mom bought me one.",
+      "explanation": "I've worn 是现在完成时，表示从过去持续到现在的经验；since primary school 是现在完成时的标志；couldn't 描述过去的能力/规定；but 表转折，so 表结果。",
+      "usage": "描述从过去持续到现在的习惯或状态时，可用 have/has + 过去分词 搭配 since + 时间点；用 but / so 串联原因和结果，逻辑更清晰。"
+    },
+    {
+      "zh": "那时候它只是一块简单的表——机械的或者装电池的，只是用来看时间。",
+      "en": "Back then it was just a simple watch — mechanical or battery-powered, just for telling the time.",
+      "explanation": "Back then 指“在那时”，常与 now 对比；mechanical or battery-powered 作后置修饰，说明表的类型；just for telling the time 中 for 是介词，后接动名词。",
+      "usage": "对比过去和现在时，back then / at that time 是很地道的表达；说明物品单一功能可用 just for + doing。"
+    },
+    {
+      "zh": "但现在我戴的是智能表，它有很多不同的功能——不只是看时间，还能测心率。",
+      "en": "But now I wear a smartwatch, and it has different functions — not just time, but also heart rate.",
+      "explanation": "But now 与上句 Back then 形成时间对比；not just... but also... 表示“不仅……而且……”；heart rate 指“心率”这一功能。",
+      "usage": "列举升级或新增功能时，用 not just... but also... 能清楚体现递进，比单纯用 and 更有层次。"
+    },
+    {
+      "zh": "当我在健身房锻炼时，我能看到自己实际消耗了多少卡路里，尽管它并不是那么准确。",
+      "en": "When I work out at the gym, I can see how many calories I'm actually burning, even if it's not that accurate.",
+      "explanation": "When 引导时间状语从句；how many calories 引导宾语从句；I'm burning 是现在进行时；even if 引导让步状语从句，表示“即使”。",
+      "usage": "描述设备功能时，用 even if... 主动提及小局限，能体现客观和批判性思维，在口语中很加分。"
+    }
+  ]
+}

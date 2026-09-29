@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "source_fingerprint": "ea8ef9fe56b0c35b3aad746e19a97256282216f2aa66fd21db9af4666aa41b62",
+  "complete_chinese": "是的，我认为这取决于孩子的自律能力发展得如何。大概有一个大致的年龄范围——比如，如果你在16或18岁以下，使用手机应该有限制。但实际上，年龄并不代表一切。不同的孩子有不同的父母，而且父母们的教育方式也不同。如果父母擅长教育，他们的孩子可能会更自律，然后他们就可以更早拥有手机。我们都知道手机是一把双刃剑——如果孩子能驾驭这把剑，并用它来造福自己的生活，那就没问题。但我认为大多数孩子还没有那个能力，所以我建议至少小学阶段的孩子不应该拥有自己的手机。实际上，我在2016年才有了自己的第一部手机，当时我正要小学毕业升初中。",
+  "sentences": [
+    {
+      "zh": "是的，我认为这取决于孩子的自律能力发展得如何。",
+      "en": "Yeah, I think it depends on how well the child's self-discipline has developed.",
+      "explanation": "depend on 后面接 how 引导的宾语从句，表示“取决于……”；现在完成时 has developed 强调自律能力发展到当前阶段的结果。",
+      "usage": "It depends on how well... 是观点类话题中表示“这取决于……”的常用开头，后接名词性从句。"
+    },
+    {
+      "zh": "大概有一个大致的年龄范围——比如，如果你在16或18岁以下，使用手机应该有限制。",
+      "en": "There's probably a general age range — like, if you're under 16 or 18, there should be limits on smartphone use.",
+      "explanation": "there be 句型表示“存在有”；limits on something 是固定搭配，表示“对某物的限制”；under 16 or 18 表示“16或18岁以下”。",
+      "usage": "there should be limits on... 用于提出规范性建议，语气比 must 缓和，适合表达个人看法。"
+    },
+    {
+      "zh": "但实际上，年龄并不代表一切。",
+      "en": "But actually, age doesn't stand for everything.",
+      "explanation": "stand for 在这里意为“代表”；doesn't stand for everything 表示“并不代表一切”，用否定转移自然表达转折。",
+      "usage": "age doesn't stand for everything 可用于转折，引出个体差异和例外情况。"
+    },
+    {
+      "zh": "不同的孩子有不同的父母，而且父母们的教育方式也不同。",
+      "en": "Different children have different parents, and parents' education methods are different.",
+      "explanation": "and 连接两个并列分句；parents' 是复数名词所有格，修饰 education methods；are 与复数 methods 保持主谓一致。",
+      "usage": "parents' education methods 也可替换为 parenting styles，意为“父母的教育方式”。"
+    },
+    {
+      "zh": "如果父母擅长教育，他们的孩子可能会更自律，然后他们就可以更早拥有手机。",
+      "en": "If the parents are good at educating, their children might be more self-disciplined, and then they could have a smartphone earlier.",
+      "explanation": "if 引导条件状语从句，主句用 might/could 表可能性；be good at doing sth. 表示“擅长做某事”；比较级 more self-disciplined 表示“更自律”。",
+      "usage": "be good at educating 比 good at education 更自然，at 是介词，后接动名词。"
+    },
+    {
+      "zh": "我们都知道手机是一把双刃剑——如果孩子能驾驭这把剑，并用它来造福自己的生活，那就没问题。",
+      "en": "We all know a smartphone is a double-edged sword — if a child can control this sword and use it to benefit their life, then fine.",
+      "explanation": "double-edged sword 是比喻性习语，意为“双刃剑”；use sth. to do sth. 表示“用某物做某事”；benefit 在此作及物动词，直接加宾语。",
+      "usage": "control this sword 呼应双刃剑的比喻，表示“驾驭它”；benefit their life 中的 their 对应单数 a child，属单数 they 的规范用法。"
+    },
+    {
+      "zh": "但我认为大多数孩子还没有那个能力，所以我建议至少小学阶段的孩子不应该拥有自己的手机。",
+      "en": "But I think most children don't have that ability yet, so I'd recommend that children at least in primary school should not have their own smartphones.",
+      "explanation": "recommend that... should... 中 should 可省略，保留更显建议语气；at least 意为“至少”，此处修饰 in primary school；have one's own smartphones 表示“拥有自己的手机”。",
+      "usage": "I'd recommend that... 是提出个人建议的正式句型，适合 IELTS Part 3。"
+    },
+    {
+      "zh": "实际上，我在2016年才有了自己的第一部手机，当时我正要小学毕业升初中。",
+      "en": "Actually, I got my first smartphone in 2016, when I was about to graduate from primary school and go to junior high.",
+      "explanation": "get one's first smartphone 表示“得到第一部手机”；be about to do sth. 表示“正要做某事”；when 引导非限制性定语从句，修饰 2016 年。",
+      "usage": "graduate from primary school and go to junior high 准确描述了“小学毕业升初中”的过程。"
+    }
+  ]
+}

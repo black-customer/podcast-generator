@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "ef9b42cf81598ab8f4f32dbdd9db822112dadf1009e19fcfe63ade2d02052a32",
+  "complete_chinese": "说实话，我不太懂车，所以对车型也不太了解。可能是电动车吧，那是现在的趋势。但我说不上来具体的——我就说是好看好开的那种。就这些了。",
+  "sentences": [
+    {
+      "zh": "说实话，我不太懂车，所以对车型也不太了解。",
+      "en": "Honestly, I'm not really into cars, so I don't know much about the types.",
+      "explanation": "“be into”表示“对……感兴趣”，否定形式“not really into”对应“不太感兴趣/不太懂”；“know much about”表示“对……了解很多”，常与否定连用，意思是“不太了解”。",
+      "usage": "在口语中谈到自己不熟悉的领域时，可以用“I'm not really into...”或“I don't know much about...”，既自然又留有余地。"
+    },
+    {
+      "zh": "可能是电动车吧，那是现在的趋势。",
+      "en": "Maybe electric cars, that's the trend now.",
+      "explanation": "“Maybe electric cars”是省略句，完整形式是“Maybe (I like) electric cars”，口语中很常见；“that's the trend”表示“那是现在的趋势/潮流”，用来补充选择理由。",
+      "usage": "回答喜好类问题时，可以先给出一个大致答案，再用“that's the trend / it's popular”等说明原因。"
+    },
+    {
+      "zh": "但我说不上来具体的——我就说是好看好开的那种。",
+      "en": "But I couldn't name specifics — I'd just say a beautiful car and a convenient car.",
+      "explanation": "“name specifics”表示“说出具体细节/名称”；“I'd just say”是“I would just say”的缩写，意思是“我就说是……”，用于给出简单概括。这里“好开”译作“convenient car”可以理解，但更地道的口语常说“easy to drive”。",
+      "usage": "当被追问细节但自己不确定时，可以用“I couldn't name specifics — I'd just say...”来自然概括。"
+    },
+    {
+      "zh": "就这些了。",
+      "en": "That's about all I've got.",
+      "explanation": "这是固定口语表达，意思是“我就知道这些/就这些了”，常用于结束话题，表示自己没有更多内容可讲。",
+      "usage": "在口语考试中如果觉得说得差不多了，可以用“That's about all I've got”自然收尾。"
+    }
+  ]
+}

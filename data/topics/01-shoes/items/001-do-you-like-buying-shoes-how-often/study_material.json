@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "dea1a867a98c7c8c096c55f00cac6c6a63faf835bd85ea842f08a4f9c2c83a91",
+  "complete_chinese": "其实我不太喜欢买鞋子，没有这个习惯，因为我家里其实不是很有钱。我一般都是鞋子穿到感觉不太好穿了，比如说穿个一两年之后，它的皮呀有点烂了之类的。也不是说烂的很明显吧，有点烂了之后，我就会换鞋子。大概可能就是两三年吧，两三年买一双。",
+  "sentences": [
+    {
+      "zh": "其实不太喜欢。",
+      "en": "Not really.",
+      "explanation": "“Not really.” 是口语中常见的委婉否定，比生硬的 “No.” 更自然，表示 “不太喜欢 / 并非如此”。在回答一般疑问句时，它能有效降低否定语气，使表达更礼貌、更口语化。",
+      "usage": "在雅思口语 Part 1 中，如果对某事物兴趣一般，可以说 “Not really.” 或 “Not particularly.”，然后接具体原因，例如：“Not really. I don't really have the habit of buying shoes.”"
+    },
+    {
+      "zh": "我没有买鞋的习惯，因为我家里其实不是很有钱。",
+      "en": "I don't really have the habit of buying shoes, because my family isn't actually that rich.",
+      "explanation": "“have the habit of doing sth.” 表示 “有做某事的习惯”；“don't really” 表示 “并不是很 / 不太”，起缓冲作用。“because...” 引导原因状语从句。“isn't actually that rich” 里，“actually” 加强事实语气，“that rich” 表示 “那么有钱”，副词 “that” 修饰形容词，口语中常用。",
+      "usage": "谈论个人习惯或家庭背景时，可用 “I don't really have the habit of...” 自然引出理由。注意 “that + 形容词” 表示程度，如 “It isn't that expensive.”（没那么贵）。"
+    },
+    {
+      "zh": "我一般都是鞋子穿到感觉不太好穿了，比如说穿个一两年之后，它的皮呀有点烂了之类的。",
+      "en": "I usually just wear a pair until they don't feel good to wear anymore, like after a year or two, when the leather gets a bit worn out.",
+      "explanation": "“wear a pair” 是省略说法，承前省略了 “of shoes”，在上下文清晰时非常自然。“until...” 引导时间状语从句，表示 “直到……为止”。“don't feel good to wear anymore” 对应 “感觉不太好穿了”。“get worn out” 表示 “穿旧、磨损”，“a bit” 表示 “有点儿”。",
+      "usage": "描述物品使用时长，可用 “wear/use sth. until...” 句型。“get + 过去分词” 可表状态变化，如 “get tired”（累了）、“get damaged”（损坏）。"
+    },
+    {
+      "zh": "也不是说烂的很明显吧，有点烂了之后，我就会换鞋子。",
+      "en": "I mean, it's not like they're falling apart or anything, but once they start to look a little worn, I'll switch to a new pair.",
+      "explanation": "“I mean” 用于补充说明或缓和语气。“it's not like...” 表示 “并不是说……”，用于澄清程度，避免绝对化。“falling apart” 形象地表示 “破烂不堪、快要散架”。“once...” 引导时间状语从句，意为 “一旦……就……”。“look a little worn” 表示 “看起来有点旧/磨损”。“switch to a new pair” 表示 “换成新的一双”。",
+      "usage": "想表达 “并不是很严重” 时，可用 “It's not like...” 或 “It's not that...”。描述更换物品时，“switch to...” 是很地道的搭配，如 “switch to a new brand”（换个新品牌）。"
+    },
+    {
+      "zh": "大概可能就是两三年吧，两三年买一双。",
+      "en": "So I'd say I buy a new pair of shoes maybe every two or three years.",
+      "explanation": "“I'd say” 是 “I would say” 的缩写，用于委婉给出估计或看法，使语气更自然、不绝对。“every two or three years” 表示 “每两三年”，直接回答 “How often” 的频率问题。",
+      "usage": "回答频率时，除了 “every two or three years”，还可以说 “once every couple of years” 或 “every few years”。用 “I'd say...” 适合给出大致、不确定的估计，例如：“I'd say I travel abroad maybe once a year.”"
+    }
+  ]
+}

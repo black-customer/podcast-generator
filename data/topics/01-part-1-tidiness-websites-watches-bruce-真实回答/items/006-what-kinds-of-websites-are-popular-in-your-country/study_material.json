@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "4cd030b2ca184de4ecd5fa9c9ee8ae3561c64ed210ab77a22023d84acb3f8c5c",
+  "complete_chinese": "哦，在中国，社交媒体和网购网站特别火。比如淘宝——它有点像中国的亚马逊。还有B站，像我提到的，还有中国版TikTok，还有一个叫小红书的App——那个“红笔记”应用。它们在我们国家都非常受欢迎。",
+  "sentences": [
+    {
+      "zh": "哦，在中国，社交媒体和网购网站特别火。",
+      "en": "Oh, in China, social media and online shopping websites are extremely popular.",
+      "explanation": "extremely popular 对应原文“特别火”，extremely 是程度副词，比 very 语气更强；online shopping websites 是“网购网站”的正式表达，比 online shops 更完整。",
+      "usage": "用 Oh, in China... 开头自然回应题目中的 in your country；social media and online shopping websites 并列作主语，直接点明两类网站；extremely popular 在口语中也可说 really popular 或 insanely popular。"
+    },
+    {
+      "zh": "比如淘宝——它有点像中国的亚马逊。",
+      "en": "Like Taobao — it's kind of the Amazon of China.",
+      "explanation": "Like 在这里作介词，表示“比如，像”，用于快速举例；kind of 是口语表达，意为“有点儿，可以说是”，弱化绝对语气，让类比更自然、不绝对。",
+      "usage": "Like + 名词 是口语中举例的常用方式，比 For example 更简洁随意；the Amazon of China 用考官熟悉的事物作类比，是介绍本土品牌的好方法，也可说 China's version of Amazon。"
+    },
+    {
+      "zh": "还有B站，像我提到的，还有中国版TikTok，还有一个叫小红书的App——那个“红笔记”应用。",
+      "en": "There's also Bilibili, like I mentioned, and the Chinese TikTok, and this app called Xiaohongshu — the \"red note\" app.",
+      "explanation": "There's also... 是 there be 句型，用于引出另一个存在的事物；like I mentioned 是插入语，表示“正如我之前提到的”；called Xiaohongshu 是过去分词作后置定语，修饰 app，相当于 which is called Xiaohongshu。",
+      "usage": "列举多个项目时，可用 There's also..., ... and ... 连接，避免句式单调；the Chinese TikTok 借用知名品牌帮助考官理解；called + 名称 是介绍 App 或事物名称的常用结构，也可说 an app named Xiaohongshu。"
+    },
+    {
+      "zh": "它们在我们国家都非常受欢迎。",
+      "en": "They're all hugely popular in our country.",
+      "explanation": "hugely popular 意为“非常受欢迎”，hugely 是副词，强调程度深，比 very 更生动；in our country 回扣题目中的 in your country，保持话题一致。",
+      "usage": "用 They're all... 总结前述多个例子，避免重复；hugely popular 是高频搭配，适合描述广泛流行的事物；也可替换为 widely used 或 super popular。"
+    }
+  ]
+}

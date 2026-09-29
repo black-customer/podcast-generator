@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "source_fingerprint": "77d5a6551c30bce7035366fe66eebe796066e4bdc9393c903a37841fa79d8620",
+  "complete_chinese": "我喜欢的歌手是J. Cole。我不知道这样算不算，因为他严格来说不是歌手——他是个说唱歌手，我不知道说唱歌手算不算歌手。但J. Cole是我喜欢的艺人。他的性格——我觉得他诚实、善良、有思想。他的歌承载了许多来自他自身经历的深刻思考，他思考很多事情，提炼自己的想法，并传递给别人以启发他人——给听众力量好好生活。他的音乐属于嘻哈。我为什么喜欢他？首先，他的歌很棒——有节奏，你可以跟着摇摆。而且你能从歌词中学到很多：它们给你力量，帮助你应对压力，过上更好的生活，并拥有能量成为想成为的人。",
+  "sentences": [
+    {
+      "zh": "我喜欢的歌手是J。",
+      "en": "The singer I like is J.",
+      "explanation": "本句使用 “The + 名词 + (that) I like” 结构作主语，关系代词 that 在口语中常省略；is 后接人名，口语中可自然停顿。",
+      "usage": "The singer I like is Adele. / The book I enjoyed most was..."
+    },
+    {
+      "zh": "Cole。",
+      "en": "Cole.",
+      "explanation": "口语中先说名字再补全姓氏，形成自然的语音切分；书面语中通常会连读为 J. Cole。",
+      "usage": "My favorite artist is Ed. Sheeran."
+    },
+    {
+      "zh": "我不知道这样算不算，因为他严格来说不是歌手——他是个说唱歌手。",
+      "en": "I don't know if that's feasible, because he's not exactly a singer — he's a rapper.",
+      "explanation": "“not exactly” 意为“严格来说不完全是”，用于温和修正前文；“feasible” 多指计划、方案“可行”，此处想表达“算不算、是否符合条件”，建议改用 “count” 或 “qualify”。",
+      "usage": "I don't know if that counts, because he's not exactly a singer. / Does a drummer qualify as a musician?"
+    },
+    {
+      "zh": "我不知道说唱歌手算不算歌手。",
+      "en": "I don't know if rappers count as singers.",
+      "explanation": "“count as” 是固定短语，意为“被视为、算作”，后接身份、类别或标准。",
+      "usage": "Does part-time work count as experience? / This counts as a valid reason."
+    },
+    {
+      "zh": "但J。",
+      "en": "But J.",
+      "explanation": "用 “But” 转折，再次停顿强调人名，回到对 J. Cole 的正面介绍，体现口语中的即兴修正。",
+      "usage": "But Michael. Jordan is the athlete I admire."
+    },
+    {
+      "zh": "Cole是我喜欢的艺人。",
+      "en": "Cole is the artist I like.",
+      "explanation": "“artist” 比 “singer” 涵盖范围更广，包括说唱歌手；“the artist I like” 中关系代词 that/whom 被省略。",
+      "usage": "He's not just a singer; he's an artist I respect deeply."
+    },
+    {
+      "zh": "他的性格——我觉得他诚实、善良、有思想。",
+      "en": "His personality — I think he's honest, kind, and thoughtful.",
+      "explanation": "破折号后补充说明性格；“honest, kind, and thoughtful” 为三个形容词并列，最后一项前用 and 连接，符合并列结构规范。",
+      "usage": "She's confident, independent, and strong-willed."
+    },
+    {
+      "zh": "他的歌承载了许多来自他自身经历的深刻思考，他思考很多事情，提炼自己的想法，并传递给别人以启发他人——给听众力量好好生活。",
+      "en": "His songs carry so many deep thoughts from his own experience, and he thinks about a lot of things, extracts his thoughts, and passes them on to educate other people — to give the audience power to live on, to live a good life.",
+      "explanation": "“carry thoughts” 为形象搭配，表示“承载思想”；“extract” 表示“提炼、提取”；“pass on” 表示“传递”；“give sb. power to do sth.” 表示“给某人做某事的力量”。",
+      "usage": "His songs carry deep messages from personal experience. / Teachers pass on knowledge to educate students."
+    },
+    {
+      "zh": "他的音乐属于嘻哈。",
+      "en": "His music belongs to hip-hop.",
+      "explanation": "“belong to” 表示“属于”，后接流派、团体或范畴，该短语无被动语态。",
+      "usage": "This track belongs to the pop genre. / He belongs to a new wave of hip-hop artists."
+    },
+    {
+      "zh": "我为什么喜欢他？",
+      "en": "And why do I like him?",
+      "explanation": "以设问句过渡到具体理由，是雅思口语中组织内容、衔接上下文的自然方式。",
+      "usage": "So why do I like this city? / And why do I admire him?"
+    },
+    {
+      "zh": "首先，他的歌很棒——有节奏，你可以跟着摇摆。",
+      "en": "Well, first, his songs are amazing — they have rhythm, you can just move your body to them.",
+      "explanation": "“have rhythm” 表示“有节奏感”；“move your body to...” 是口语化表达，意为“随着……摆动身体”，比 “dance” 更随意。",
+      "usage": "The song has a strong rhythm; you can move your body to it."
+    },
+    {
+      "zh": "而且你能从歌词中学到很多：它们给你力量，帮助你应对压力，过上更好的生活，并拥有能量成为想成为的人。",
+      "en": "And you can learn a lot from his lyrics: they give you power, help you handle stress, live a better life, and have the energy to become whoever you want to be.",
+      "explanation": "冒号后接四个并列成分：give, help, (help you) live, and have，其中 help 后承接的并列动词共享同一主语；“handle stress” 为常用搭配；“whoever” 引导宾语从句，表示“任何想成为的人”。",
+      "usage": "Music gives me power to handle stress and become whoever I want to be."
+    }
+  ]
+}

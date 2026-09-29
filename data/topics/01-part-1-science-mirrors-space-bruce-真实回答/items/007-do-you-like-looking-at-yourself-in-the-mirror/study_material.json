@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "e96763d61f431d7b70a41769c81a46ad78e6347ca17ddaeef383d772bfcd9e1d",
+  "complete_chinese": "谈不上喜欢——我不算帅。但每天大概照两次，出门前确认自己形象没问题。不是喜欢，是需要。",
+  "sentences": [
+    {
+      "zh": "谈不上喜欢，因为说实话，我不算帅。",
+      "en": "I wouldn't say I love doing it, because I'm not that handsome, honestly.",
+      "explanation": "“I wouldn't say I love...” 是口语中常见的委婉表达，比直接说 “I don't like it” 语气更缓和、更自然。“not that handsome” 中的 “that” 是副词，意为“那么、如此”，用来弱化形容词程度，语气更谦虚。“honestly” 置于句尾，相当于 “to be honest”，作评注性状语，让语气更口语化、真诚。",
+      "usage": "在雅思口语 Part 1/3 中，当不想把话说得太绝对时，可用 “I wouldn't say I love/like...” 来委婉表达个人好恶；用 “not that + adj.” 可以自然地弱化程度，避免过于自负或绝对。"
+    },
+    {
+      "zh": "但我经常照——大概一天两次。",
+      "en": "But I do it often — maybe twice a day.",
+      "explanation": "“do it” 用来替代上文已经提到的 “look at myself in the mirror”，避免重复，是口语中常见的代词回指。破折号后的 “maybe twice a day” 对 “often” 进行具体化补充，使频率描述更精确、更有信息量。",
+      "usage": "描述日常习惯频率时，可先用 “often/sometimes” 给出大致印象，再用 “maybe + 次数” 补充细节，让答案更具体、更易得高分。"
+    },
+    {
+      "zh": "因为出门的时候，我需要确认自己看起来没问题，你懂的。",
+      "en": "Because when I go out, I need to check that I look fine, you know?",
+      "explanation": "“when I go out” 是时间状语从句，点明动作发生的具体场景。“check that...” 中 “that” 引导宾语从句，口语中可省略。“look fine” 是系动词 “look” 加形容词的结构，表示“看起来……”。“you know” 是口语高频话语标记，不充当句子成分，用于拉近与听者的距离或寻求认同。",
+      "usage": "描述日常习惯时，用 “when...” 从句带出具体情境，能让叙述更生动；句尾加 “you know” 能让表达更自然、更像母语者，但不宜过度使用。"
+    },
+    {
+      "zh": "并不是我喜欢照镜子——更像是一种需要。",
+      "en": "It's not that I enjoy looking at myself — it's more like a necessity.",
+      "explanation": "“It's not that...” 是固定句型，用于澄清“并不是因为……”，先否定一种可能的理解，再给出真实原因，逻辑更清晰。“enjoy doing sth” 中 “enjoy” 后必须接动名词。“more like” 表示“更像是……”，用于对比和修正前文，使表达更有层次。",
+      "usage": "当需要区分表面动机和真实动机时（如喜欢 vs. 需要），可用 “It's not that... it's more like...” 这个对比结构，让口语逻辑更严谨、更有深度。"
+    },
+    {
+      "zh": "我只是需要确保自己看起来得体。",
+      "en": "I just need to make sure I look presentable.",
+      "explanation": "“make sure (that)...” 表示“确保……”，后接宾语从句，“that” 可省略。“presentable” 是形容词，意为“体面的、得体的、像样的”，常用来形容人的衣着、外貌符合场合要求。“look presentable” 是非常地道的形象管理搭配。",
+      "usage": "表达“确保某事”时，“make sure” 比 “ensure” 更口语自然；“look presentable” 适合用来描述出门前检查着装、发型是否得体，是形象管理类话题的地道表达。"
+    }
+  ]
+}

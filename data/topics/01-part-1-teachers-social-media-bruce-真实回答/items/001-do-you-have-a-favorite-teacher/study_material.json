@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "5039f1d4ecfa7b78241dab4683632048ca1438127e87ab407dd773a27f446a4a",
+  "complete_chinese": "老实说，没有，我并没有特别喜欢的老师。我性格有点内向，所以从来没有和我的老师建立过那种深厚的关系。他们教书，我坐在椅子上，听讲并吸收知识——只是普通的课堂互动而已。真的就这样。",
+  "sentences": [
+    {
+      "zh": "老实说，没有，我并没有特别喜欢的老师。",
+      "en": "Honestly, no, I don't really have a favorite teacher.",
+      "explanation": "句首的 Honestly 是口语中常见的坦白语，用来直接回应问题并引出真实想法；don't really have 是一种弱化否定，really 放在否定词后能让语气更自然、不生硬，比单纯说 don't have 更符合口语习惯。",
+      "usage": "在 Part 1 或 Part 3 问答中，可用 Honestly, no... 直接给出否定回答；don't really + 动词 是高频弱化结构，适合表达“并不是特别……”。"
+    },
+    {
+      "zh": "我性格有点内向，所以从来没有和我的老师建立过那种深厚的关系。",
+      "en": "I'm kind of an introvert, so I never built those deep relationships with mine.",
+      "explanation": "kind of 意为“有点儿”，修饰 an introvert，语气比 a little 更口语化；built relationships 是固定搭配，表示“建立关系”；deep relationships 表示“深厚的关系”；句末的 mine 是名词性物主代词，此处指代 my teachers，避免重复。",
+      "usage": "build a relationship with sb 是雅思口语常用搭配；kind of + a/an + 名词 可用于描述性格或状态，例如：I'm kind of a homebody."
+    },
+    {
+      "zh": "他们教书，我坐在椅子上，听讲并吸收知识——只是普通的课堂互动而已。",
+      "en": "They taught, I sat in my chair, listened and took in the knowledge — just normal classroom interactions.",
+      "explanation": "这里用 taught, sat, listened and took in 一系列并列动词形成排比，描述过去的课堂常态；took in the knowledge 比 learned 更形象，表示“吸收知识”；破折号后的 just normal classroom interactions 是补充总结，说明这种师生关系的性质。",
+      "usage": "叙述日常场景时，可用并列动词结构增强画面感；take in 常与 knowledge/information 搭配，表示“理解并吸收”。"
+    },
+    {
+      "zh": "真的就这样。",
+      "en": "That's it, really.",
+      "explanation": "That's it 是口语常用结束语，表示“就这样，仅此而已”；句末的 really 用于加强语气，带有“确实如此，没有别的了”的意味，让收尾更自然。",
+      "usage": "当想结束一段简短叙述、表示没有更多内容时，可用 That's it 或 That's it, really. 收尾，避免突然停顿。"
+    }
+  ]
+}

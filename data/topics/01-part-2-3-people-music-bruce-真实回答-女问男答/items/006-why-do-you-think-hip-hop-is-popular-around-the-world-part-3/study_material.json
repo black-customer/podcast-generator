@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "source_fingerprint": "346e0c275bd7dd2c47b56cf427a2f67f06037444d042db441ee4243f17d78564",
+  "complete_chinese": "哦，这是个非常深的问题。这个问题问得好。我认为音乐是一种文化，全球化肯定会影响文化。不同国家有不同的文化，全球化会传播各种文化并对其产生影响。音乐就是这种现象发生的方式之一。就像在美国，有嘻哈音乐——它的发展是因为当时有人想用更强烈的方式表达自己的情感。而在中国，随着经济的发展，人们面临着同样的需求。所以嘻哈音乐传到中国并在这里发展起来，因为我们现在也有表达自我的同样需求——就像美国以前那样。",
+  "sentences": [
+    {
+      "zh": "哦，这是个非常深的问题。",
+      "en": "Oh, that's a very deep question.",
+      "explanation": "用 “deep question” 回应抽象难题，既自然又能争取思考时间；“Oh, that's...” 是口语中常见的缓冲表达。",
+      "usage": "在 Part 3 遇到宏大问题时，可以说 “That's a deep/tough question” 或 “That's a big topic”，避免直接沉默。"
+    },
+    {
+      "zh": "这个问题问得好。",
+      "en": "That's a good one.",
+      "explanation": "“a good one” 是省略表达，完整为 “a good question”，用于简短赞赏问题本身。",
+      "usage": "赞同考官问题时可用 “That's a good point/question”，比简单说 “Yes” 更显语言张力。"
+    },
+    {
+      "zh": "我认为音乐是一种文化，全球化肯定会影响文化。",
+      "en": "I think music is a kind of culture, and globalization will definitely influence culture.",
+      "explanation": "“a kind of” 表示“一种……”，用于归类；“will definitely influence” 用 will + definitely 强调必然性，比单独用 will 语气更肯定。",
+      "usage": "下定义时可用 “X is a kind of Y”；表达确定预测时，“will definitely/certainly + 动词” 很适合 Part 3 表态。"
+    },
+    {
+      "zh": "不同国家有不同的文化，全球化会传播各种文化并对其产生影响。",
+      "en": "Different countries have different cultures, and globalization spreads cultures around and influences them.",
+      "explanation": "“spreads...around” 中 around 是副词，表示“四处、到处”；“influences them” 的 them 指代前文 cultures，避免重复。",
+      "usage": "谈论全球化时，“spread culture/ideas around” 是高频搭配；用代词指代前文名词能让句子更紧凑。"
+    },
+    {
+      "zh": "音乐就是这种现象发生的方式之一。",
+      "en": "Music is one of the ways that happens.",
+      "explanation": "“one of the ways that happens” 中 that 引导定语从句修饰 ways，that 在从句中作主语，不能省略。",
+      "usage": "表示“其中之一”用 “one of the + 复数名词 + 单数动词”，如 “Music is one of the ways that people connect.”"
+    },
+    {
+      "zh": "就像在美国，有嘻哈音乐——它的发展是因为当时有人想用更强烈的方式表达自己的情感。",
+      "en": "Like in America, there's hip-hop — it developed because there were people who wanted to express their feelings in a stronger way.",
+      "explanation": "“Like” 此处作介词，意为“像……一样”，用于举例；“there's hip-hop” 是 there be 句型；“people who wanted...” 是定语从句。",
+      "usage": "举例时可用 “Like in + 地点”；“express one's feelings in a...way” 是描述艺术功能的实用句型。"
+    },
+    {
+      "zh": "而在中国，随着经济的发展，人们面临着同样的需求。",
+      "en": "And in China, with the economy developing, people face the same needs.",
+      "explanation": "“with the economy developing” 是 with 复合结构（with + 名词 + 现在分词），表示伴随发生的背景变化。",
+      "usage": "描述社会趋势时，“with the economy developing” 或 “with the development of...” 都能自然引出背景，比用 because 从句更多样。"
+    },
+    {
+      "zh": "所以嘻哈音乐传到中国并在这里发展起来，因为我们现在也有表达自我的同样需求——就像美国以前那样。",
+      "en": "So hip-hop music came to China and developed here, because we now have the same need to express ourselves — just like America did before.",
+      "explanation": "“came to China” 表示“传入中国”；“just like America did before” 中 did 代替前文的 developed，避免重复。",
+      "usage": "表示“传到/来到某地”用 “come to”；“just like + 主语 + did” 是口语中替代 “just as” 的常见比较结构。"
+    }
+  ]
+}

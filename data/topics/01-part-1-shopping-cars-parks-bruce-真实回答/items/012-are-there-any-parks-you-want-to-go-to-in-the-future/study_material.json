@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "d89ff3c32601dce0bb1f65c657e2622606d68bcdfdc6963898c2e7ebbc1e1e5d",
+  "complete_chinese": "嗯，不太想。说实话，我不太了解附近的公园，也说不上来有没有特别漂亮的。所以没有，我没有打算去参观某个特定的公园。",
+  "sentences": [
+    {
+      "zh": "嗯，不太想。",
+      "en": "Hmm, not really.",
+      "explanation": "“Hmm”是表示思考或犹豫的语气词；“not really”是一种委婉的否定，比直接说“No”更柔和、更口语化。",
+      "usage": "在口语中回答一般疑问句时，若想表达“不太……”或“并不是……”，可用“not really”。例如：“Are you interested in history?”“Not really, I prefer science.”"
+    },
+    {
+      "zh": "说实话，我不太了解附近的公园，也说不上来有没有特别漂亮的。",
+      "en": "I don't know many parks, to be honest — I couldn't tell you if there are any especially beautiful ones around.",
+      "explanation": "“to be honest”是插入语，表示“说实话”，让语气更诚恳自然；“couldn't tell you”是委婉说法，表示“我说不准/无法告诉你”；“ones”指代前文的parks，避免重复；“around”是副词，意为“在附近”。",
+      "usage": "“to be honest”可放在句首、句中或句末，起缓和语气的作用。“ones”常用来指代已出现的复数名词。“around”作副词时相当于“nearby”，如“Is there a bank around?”"
+    },
+    {
+      "zh": "所以没有，我没有打算去参观某个特定的公园。",
+      "en": "So no, I don't have any plans to visit a specific park.",
+      "explanation": "“So no”用于总结并引出否定结论；“have plans to do sth”表示“有计划做某事”；“specific”意为“特定的、具体的”，强调某一个明确的对象。",
+      "usage": "“have plans to do something”的否定式常用“don't have any plans to...”或“have no plans to...”。“specific”比“certain”更侧重“明确指定某一个”，如“a specific date”（具体的日期）。"
+    }
+  ]
+}

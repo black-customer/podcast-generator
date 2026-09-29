@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "5772c03935cf63407bef742dd76556149ac1a44e2d792453ecf237225ab7ba23",
+  "complete_chinese": "嗯，这要回到我之前说的——我并没有最喜欢的老师。而且说实话，我不觉得他们中有人给过我巨大的帮助。因为如果真的有人帮了我那么多，我就会叫他我最喜欢的老师了，对吧？所以按定义来说，没有人真正脱颖而出。",
+  "sentences": [
+    {
+      "zh": "嗯，这要回到我之前说的——我并没有最喜欢的老师。",
+      "en": "Well, this goes back to what I said — I don't have a favorite teacher.",
+      "explanation": "“goes back to”表示“回到（某个话题/时间点）”，这里用来把当前问题与前文观点关联；破折号后直接给出结论，是先铺垫再亮明态度的自然口语衔接。“favorite teacher”为美式拼写，英式拼作“favourite teacher”，两者均可。",
+      "usage": "当需要把当前问题与之前回答关联时，可用“This goes back to what I said earlier about...”。例如：“This goes back to what I said about my major — I chose it for practical reasons.”"
+    },
+    {
+      "zh": "而且说实话，我不觉得他们中有人给过我巨大的帮助。",
+      "en": "And honestly, I don't feel like any of them helped me enormously.",
+      "explanation": "“feel like”作连词引导从句，相当于“think/believe”，但语气更随意、更强调主观感受；“helped me enormously”中enormously是程度副词，修饰动词helped，表示“极大地帮助了我”，比“very much”语气更强。",
+      "usage": "表达“我不觉得某人/某事……”时，可用“I don't feel like...”。例如：“I don't feel like the internet has made people less social.”注意“any of them”用于三者及以上的否定句，表示“他们中任何一个”。"
+    },
+    {
+      "zh": "因为如果真的有人帮了我那么多，我就会叫他我最喜欢的老师了，对吧？",
+      "en": "Because if someone had actually helped me that much, I would call them my favorite teacher, right?",
+      "explanation": "本句是混合虚拟语气：if条件句用过去完成时“had helped”，表示与过去事实相反的假设；主句用“would call”，表示与现在事实相反的结果。句尾的“right?”是口语中的附加疑问，用来寻求听者认同、软化语气。",
+      "usage": "想表达“如果过去……，现在就会……”时，可用此结构。例如：“If I had taken that job, I would be living in Beijing now, right?”另外，“call them my favorite teacher”中的them为单数they，用于性别不明时，避免he/she的重复，是当代英语常见用法。"
+    },
+    {
+      "zh": "所以按定义来说，没有人真正脱颖而出。",
+      "en": "So by definition, no one really stands out.",
+      "explanation": "“by definition”是固定短语，意为“根据定义；按定义来说”，用来引出逻辑推论；“stand out”是动词短语，意为“脱颖而出；显眼”，这里指在众多老师中没有人特别突出到足以成为“最喜欢”的程度。",
+      "usage": "用于下结论或逻辑推演。例如：“A diary is by definition a private record.”描述某人杰出时，可说“She really stands out among her peers.”"
+    }
+  ]
+}

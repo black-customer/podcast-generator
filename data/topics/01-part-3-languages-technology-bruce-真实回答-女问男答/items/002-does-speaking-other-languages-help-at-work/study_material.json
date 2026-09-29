@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "234c3d4af865d56ae91bc839c99fb05b41ca05237d956b772f6cf0f8ce6ee260",
+  "complete_chinese": "绝对有帮助。语言是交流工具——我认为语言是交流工具。如果你会说另一门语言，你就能和更多的人交流。也许你还有其他能力可以解决他们的需求，或者至少你可以教那些想学这门语言的人。所以当然对工作有帮助——嗯，在某些工作中，这取决于你做什么。但总的来说，我认为会说另一门语言能让你在工作中有更多优势。",
+  "sentences": [
+    {
+      "zh": "是的，绝对有帮助。",
+      "en": "Yeah, absolutely.",
+      "explanation": "“Yeah, absolutely.”是口语中非常自然的直接回答。yeah比yes更随意，absolutely表示“完全地、绝对地”，用来加强肯定语气。",
+      "usage": "在雅思口语Part 1或Part 3中被问到“Do you think...?”时，可以先用“Yeah, absolutely.”或“Definitely.”直接给出立场，再用because展开原因，让回答结构清晰。"
+    },
+    {
+      "zh": "因为语言是交流工具——我认为语言是交流工具。",
+      "en": "Because language is a communication tool — I think languages are communication tools.",
+      "explanation": "说话人用破折号进行自我修正（self-correction），把单数language改成复数languages，使表达更全面。communication tool是高频搭配，意为“交流工具”。",
+      "usage": "口语中如果说到一半想调整措辞，可以用破折号或“I mean”来自然修正。例如：“It’s a good way — I mean, a great way to relax.” 这样不会影响流利度，反而显得真实。"
+    },
+    {
+      "zh": "如果你会说另一门语言，你就能和更多的人交流。",
+      "en": "If you can speak another language, you can communicate with more people.",
+      "explanation": "if引导条件状语从句，主句用“can + 动词原形”表示能力。“another language”指“另一门语言”，“communicate with sb.”是固定搭配，表示“与某人交流”。",
+      "usage": "描述语言能力带来的机会时，可用“If you can..., you can...”句型。例如：“If you can use Excel well, you can handle data more efficiently.” 在口语中很实用。"
+    },
+    {
+      "zh": "也许你还有其他能力可以解决他们的需求，或者至少你可以教那些想学这门语言的人。",
+      "en": "Maybe you have some other ability that can solve their needs, or at least you could teach others who want to learn this language.",
+      "explanation": "maybe表示推测；some other ability中other修饰单数可数名词；at least表示“至少”；others是代词，后面接who引导的定语从句。需要注意的是，“solve their needs”能懂，但更地道的搭配是“meet/satisfy their needs”。",
+      "usage": "想补充额外优势时，可用“Maybe you have...”或“Perhaps there are...”来委婉引出。提到“满足需求”时，建议用meet/satisfy needs；提到“解决问题”时，才用solve problems。"
+    },
+    {
+      "zh": "所以当然对工作有帮助——嗯，在某些工作中，这取决于你做什么。",
+      "en": "So of course it helps at work — well, at some work, it depends on what you do.",
+      "explanation": "“So of course...”表示顺理成章的结论；well是口语填充词，用于缓和语气或转换角度；“it depends on...”表示“这取决于……”，后接名词性从句what you do。",
+      "usage": "先给出普遍结论，再用“well”和“it depends on...”补充例外，能体现思维严谨。例如：“It’s useful — well, it depends on the situation.” 注意：表达“在某些工作/领域”更常说in some jobs/fields。"
+    },
+    {
+      "zh": "但总的来说，我认为会说另一门语言能让你在工作中有更多优势。",
+      "en": "But generally, I think speaking another language gives you more advantages at work.",
+      "explanation": "generally作为评注性状语，表示“总的来说”；“speaking another language”是动名词短语作主语，谓语动词用单数gives；advantage在这里作可数名词，表示具体优势。",
+      "usage": "总结观点时，可用“But generally...”或“Overall...”收尾。动名词短语作主语时，谓语要用单数，例如：“Learning English opens many doors.”"
+    }
+  ]
+}

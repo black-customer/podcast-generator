@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "source_fingerprint": "79387feaa383974662222304ab2ba386197804567c7b7c8bf9d42e3f255ba3c9",
+  "complete_chinese": "我想见的名人是埃隆·马斯克。我想大家都认识他——他是世界上最富有的人。我是通过新闻认识他的，你知道的，我会关注谁是世界上最富有的人。而且我看了很多关于他的视频和采访。我会希望怎样遇见他呢？我想在街上，或者在一家餐厅里——假设他正在某个地方便装吃饭，所以没人认出他来。但我会（认出他来）。我会走上前说：“哦，你是埃隆，对吧？”然后他会很惊讶。然后我们会聊天，我会自我介绍。因为我认为他是一个非常聪明的人——作为世界首富，这是毫无疑问的。我很想了解他的思维方式，并从他身上学到一些东西。",
+  "sentences": [
+    {
+      "zh": "我想见的名人是埃隆·马斯克。",
+      "en": "The famous person I'd like to meet is Elon Musk.",
+      "explanation": "“I'd like to...”是“would like to”的口语缩写，表示“想要”，语气比“want to”委婉，是描述个人愿望的地道开头。",
+      "usage": "回答“Describe a person...”时，可用“The person I'd like to meet is...”直接点题，比“I want to meet...”更自然。"
+    },
+    {
+      "zh": "我想大家都认识他——他是世界上最富有的人。",
+      "en": "Everybody knows him, I think — he's the richest person in the world.",
+      "explanation": "“Everybody knows him”用一般现在时描述公认事实；“I think”作为插入语放句中，表示个人判断，让语气更口语化。",
+      "usage": "插入语“I think”“I guess”“you know”能增加口语流利度，但注意不要每句都用。"
+    },
+    {
+      "zh": "我是通过新闻认识他的，你知道的，我会关注谁是世界上最富有的人。",
+      "en": "I knew him through the news, you know, I follow who the richest people in the world are.",
+      "explanation": "“know sb. through...”表示“通过某种媒介认识/了解某人”；“follow”此处意为“关注”，强调持续了解动态。",
+      "usage": "可替换为“I got to know him through...”或“I first heard about him in...”；“follow the news/celebrities”是常用搭配。"
+    },
+    {
+      "zh": "而且我看了很多关于他的视频和采访。",
+      "en": "And I've watched so many videos and interviews about him.",
+      "explanation": "“I've watched”是现在完成时，表示从过去到现在的经历；“so many”强调数量多，修饰可数名词复数“videos and interviews”。",
+      "usage": "描述对某名人的了解时，可用“I've read/watched so many...”来体现熟悉度，比“I watched many”更强调积累。"
+    },
+    {
+      "zh": "我会希望怎样遇见他呢？",
+      "en": "How would I like to meet him?",
+      "explanation": "“How would I like to...”用“would like”引出虚拟设想，后接动词原形，用于构思未来场景。",
+      "usage": "在 Part 2 中可用“How/Where would I like to...?”自问自答，自然过渡到场景描述。"
+    },
+    {
+      "zh": "我想在街上，或者在一家餐厅里——假设他正在某个地方便装吃饭，所以没人认出他来。",
+      "en": "I think on a street, or maybe in a restaurant — say he's eating somewhere in disguise, so nobody recognizes him.",
+      "explanation": "此处的“say”是口语插入语，意为“比方说/假设”，用于举例；“in disguise”是固定搭配，意为“伪装地”。",
+      "usage": "“say + 从句”可用于虚构情境，如“Say you won the lottery...”；“in disguise”常与“dress”“travel”等搭配。"
+    },
+    {
+      "zh": "但我会（认出他来）。",
+      "en": "But I would.",
+      "explanation": "“But I would.”是省略句，承前省略了“recognize him”，避免重复，是口语中常见的简洁表达。",
+      "usage": "当前文出现“would”时，可用“So would I.”“But I wouldn't.”等省略结构快速回应。"
+    },
+    {
+      "zh": "我会走上前说：“哦，你是埃隆，对吧？”然后他会很惊讶。",
+      "en": "I'd walk up and say, \"Oh, you're Elon, right?\" And he'd be shocked.",
+      "explanation": "“I'd walk up and say...”用“would”描述想象中的连续动作；“walk up”是短语动词，意为“走上前”；“right?”是反意问句，用于确认。",
+      "usage": "“walk up to sb.”比“go to sb.”画面感更强；“..., right?”在口语中极其高频，相当于“是不是？”"
+    },
+    {
+      "zh": "然后我们会聊天，我会自我介绍。",
+      "en": "Then we'd talk, and I'd introduce myself.",
+      "explanation": "“Then we'd talk...”延续虚拟语气，“we'd”是“we would”的缩写；“introduce myself”是固定搭配，意为“自我介绍”。",
+      "usage": "叙述设想中的情节时，用“Then... and then...”串联动作，会让叙述更流畅有画面感。"
+    },
+    {
+      "zh": "因为我认为他是一个非常聪明的人——作为世界首富，这是毫无疑问的。",
+      "en": "Because I think he's a really smart person — being the richest man in the world, there's no doubt about that.",
+      "explanation": "“being the richest man...”是现在分词短语作状语，补充说明原因或身份，相当于“because he is...”；“there's no doubt about that”表示“毫无疑问”。",
+      "usage": "“being + 名词”可放在句首或句中补充背景；“no doubt about that”可用于强调肯定判断。"
+    },
+    {
+      "zh": "我很想了解他的思维方式，并从他身上学到一些东西。",
+      "en": "I'd love to see how he thinks, and learn something from him.",
+      "explanation": "“I'd love to see...”中“would love to”比“would like to”愿望更强烈；“how he thinks”是宾语从句，用陈述语序；“learn something from...”是固定搭配。",
+      "usage": "“learn something from sb.”适用于几乎所有人物话题；“see how sb. thinks”比“know”更生动，暗示想观察其思维过程。"
+    }
+  ]
+}

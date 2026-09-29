@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "89122c61a7e221ed784ad21e46a5c3778399c60e088f3f1e5c365d7c6b6ddf6b",
+  "complete_chinese": "我的专业是计算机科学，所以我学习很多与计算机相关的科目——比如 AI 辅助编程，现在人们称之为 vibe coding。这是一个新术语。还有软件开发。同时，我在备考雅思，所以我也在学英语——口语、阅读、听力和写作。",
+  "sentences": [
+    {
+      "zh": "我的专业是计算机科学，所以我学习很多与计算机相关的科目——比如 AI 辅助编程，现在人们称之为 vibe coding。",
+      "en": "My major is computer science, so I study a lot of subjects related to computers — like AI-assisted coding, which people call vibe coding now.",
+      "explanation": "这句话用 “My major is...” 直接说明专业，再用 “so” 引出结果，形成因果关系。“related to computers” 是过去分词短语作后置定语，修饰 subjects，表示“与计算机相关的”。“which people call vibe coding now” 是非限制性定语从句，补充说明 AI-assisted coding 的流行说法。注意 “AI-assisted” 是复合形容词，用连字符连接，作定语修饰 coding。",
+      "usage": "在雅思口语 Part 1 回答 “What do you study?” 时，可以先说专业，再自然延伸到具体课程。用 “so” 连接专业和课程内容，逻辑清晰，也符合英语先总后分的表达习惯。"
+    },
+    {
+      "zh": "这是一个新术语。",
+      "en": "It's a new term.",
+      "explanation": "“It's a new term.” 用来解释某个词汇或说法是新出现的。term 指“术语、说法”，比 word 更准确，特别适合指专业领域或网络流行语。主语 it 指代上一句提到的 vibe coding，避免重复。",
+      "usage": "当你提到一个可能对方不熟悉的新词、流行语或术语时，可以用这句话快速补充说明，体现你的词汇敏感度和跨文化意识。"
+    },
+    {
+      "zh": "还有软件开发。",
+      "en": "And software development as well.",
+      "explanation": "这是口语中常见的省略句，完整形式可以说是 “And I study software development as well.” 在列举时，用 “as well” 表示“也、同样”，通常放在句末。software development 是“软件开发”，是 computer science 领域的常见搭配。",
+      "usage": "在列举多个专业课程或方向时，除了用 “and... too” 或 “also”，还可以用 “as well” 放在句末，让口语表达更自然、有停顿感，适合即兴发挥时补充信息。"
+    },
+    {
+      "zh": "同时，我在备考雅思，所以我也在学英语——口语、阅读、听力和写作。",
+      "en": "Also, I'm preparing for the IELTS, so I'm studying English — speaking, reading, listening, and writing.",
+      "explanation": "“preparing for the IELTS” 表示“备考雅思”，注意介词用 for。“so” 再次连接因果，说明备考和学习英语之间的关系。破折号后的 “speaking, reading, listening, and writing” 是并列名词短语，具体说明 English 的四个方面，这种“总—分”结构能让回答更充实、更有层次。",
+      "usage": "当被问到学习内容时，可以主动提到语言考试备考，并用破折号展开具体技能，向考官展示你有意识地全面提升英语能力，而不是只背单词或刷题。"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "f3110f20f9014db06651f6ef0a503133ae635e02bbfd3d7e4fc55a7574eee5a1",
+  "complete_chinese": "当然没有保持干净。我从小就懒，房间总是乱糟糟的，我妈会来骂我。但她很宠我，骂完之后就自己动手收拾。",
+  "sentences": [
+    {
+      "zh": "当然没有保持干净。",
+      "en": "Definitely not clean.",
+      "explanation": "在口语问答中，可以用省略句直接回应。完整形式相当于 “Definitely, I didn’t use to keep it clean.” 省略主语和谓语后，句子更简洁自然。",
+      "usage": "“definitely not + 形容词/动词”表示“当然不……”，用于加强否定。例如：Definitely not ready.（当然还没准备好。）"
+    },
+    {
+      "zh": "我从小就懒，所以房间总是一团乱，我妈会进来骂我。",
+      "en": "I've been a lazy person since I was a kid, so my room was always a mess, and my mom would come in and scold me.",
+      "explanation": "“since I was a kid” 与现在完成时 “I've been” 搭配，表示从童年延续至今的状态；“would come in and scold me” 用 would 表示过去经常反复发生的动作，相当于 used to。",
+      "usage": "“be always a mess” 是高频口语搭配，表示“总是乱糟糟的”；“would + 动词原形” 用于回忆过去习惯；come in and scold sb. 表示“进来责骂某人”。"
+    },
+    {
+      "zh": "但她有点宠我——她只会骂我一顿，然后自己动手收拾。",
+      "en": "But she kind of spoiled me — she would just scold me and then clean the room herself.",
+      "explanation": "“kind of” 在口语中作副词，意为“有点儿”，用来弱化语气；“spoil” 此处指“宠溺、惯坏”；“would just scold me and then clean...” 再次使用 would 描述过去反复出现的情景。",
+      "usage": "“kind of + 动词/形容词”表示“有点儿……”；“spoil sb.”意为“宠坏某人”；“clean the room oneself”表示“自己收拾房间”。"
+    }
+  ]
+}

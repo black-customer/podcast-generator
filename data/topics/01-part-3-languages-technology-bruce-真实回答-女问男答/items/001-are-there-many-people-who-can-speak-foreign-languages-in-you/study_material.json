@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "source_fingerprint": "03bf7e26a83be9957a2cc37a44d7941e89e6f21cc3f2ff624cea6cbe30fac2f3",
+  "complete_chinese": "当然，中国有很多会说外语的人。但就我而言，在我的社交圈里，我其实不认识能流利说两种语言的人。不过从网上看，我认识很多会说多门语言的人——当然有英语、普通话和粤语，还有西班牙语、日语、韩语等等。而且中国是一个幅员辽阔、人口众多的国家。如果你只是指'说'，那是的——甚至我也能说几句日语，比如'Konnichiwa'。因为我们有这种义务教育体系，每个学生在学校都学英语，所以每个人都能说一些英语——也许不够流利，但他们能说。所以我认为是肯定的。",
+  "sentences": [
+    {
+      "zh": "当然，中国有很多会说外语的人。",
+      "en": "Of course, there are a lot of people who can speak foreign languages in China.",
+      "explanation": "使用 there be 句型表示'存在有'，a lot of people 后接 who 引导的定语从句，说明'是什么样的很多人'；can speak 表示能力。",
+      "usage": "用于直接回应问题，先给出总体肯定回答，为下文展开做铺垫。"
+    },
+    {
+      "zh": "但就我而言，在我的社交圈里，我其实不认识能流利说两种语言的人。",
+      "en": "But from my perspective, in my social circle, I don't actually know a person who can speak two languages fluently.",
+      "explanation": "from my perspective 是介词短语作状语，意为'在我看来'；in my social circle 进一步限定范围；actually 放在 don't 之后，用来缓和否定语气；who can speak two languages fluently 是定语从句，修饰 a person，副词 fluently 修饰动词 speak。",
+      "usage": "通过 but 转折，把范围从全国缩小到个人社交圈，形成对比，使回答更有层次。"
+    },
+    {
+      "zh": "不过从网上看，我认识很多会说多门语言的人——当然有英语、普通话和粤语，还有西班牙语、日语、韩语等等。",
+      "en": "From the internet, though, I know a lot of people who speak many languages — English, of course, Mandarin and Cantonese, Spanish, Japanese, Korean, and so on.",
+      "explanation": "from the internet 表示信息来源；though 作为副词放在句末，表示'不过、然而'，与上一句形成对比；who speak many languages 是定语从句；and so on 用于列举未尽的事项。",
+      "usage": "用于引出另一个信息来源（网络），并举例说明'多门语言'具体指什么，增强说服力。"
+    },
+    {
+      "zh": "而且中国是一个幅员辽阔、人口众多的国家。",
+      "en": "And China is a huge country with a huge population.",
+      "explanation": "with a huge population 是介词短语作后置定语，修饰 country，相当于 which has a huge population；huge 重复使用起到强调作用。",
+      "usage": "补充背景信息，解释为什么中国会外语的人总量可能很多，使逻辑更完整。"
+    },
+    {
+      "zh": "如果你只是指'说'，那是的——甚至我也能说几句日语，比如'Konnichiwa'。",
+      "en": "If you just mean \"speak,\" then yes — even I can say a few Japanese words, like Konnichiwa.",
+      "explanation": "if 引导条件状语从句，just mean 表示'仅仅是指'；a few 修饰可数名词复数 words，表示'几个、几句'；like 用于举例。",
+      "usage": "通过重新界定'说外语'的标准（能说几句也算），并举自己的例子，降低门槛，支持肯定回答。"
+    },
+    {
+      "zh": "因为我们有这种义务教育体系，每个学生在学校都学英语，所以每个人都能说一些英语——也许不够流利，但他们能说。",
+      "en": "Because we have this compulsory education system where every student learns English at school, so everybody can speak some English — maybe not fluently, but they can speak.",
+      "explanation": "compulsory education system 是固定搭配，意为'义务教育体系'；where every student learns English 是定语从句，where 相当于 in which，修饰 system；some English 表示'一些英语'；maybe not fluently, but they can speak 是省略结构的转折句。",
+      "usage": "从制度层面解释原因，说明为什么普通大众都能说一点英语，支撑前文的观点。"
+    },
+    {
+      "zh": "所以我认为是肯定的。",
+      "en": "So I think yes.",
+      "explanation": "so 表示 therefore，用来总结前文；I think yes 是简洁的结论句，yes 作 think 的宾语。",
+      "usage": "用于收尾，直接回应开头的问题，使回答结构完整。"
+    }
+  ]
+}

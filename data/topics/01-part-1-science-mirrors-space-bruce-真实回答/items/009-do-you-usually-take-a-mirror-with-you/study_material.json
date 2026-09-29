@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "daaff44e8b5b4d634ce2cef0d63170ec266071a319acabd67d9fab8c2456ed8e",
+  "complete_chinese": "从不，觉得怪——在人前掏出镜子照自己会尴尬。而且现在人人有手机，自拍就行了。",
+  "sentences": [
+    {
+      "zh": "不，不，不，从不。",
+      "en": "No, no, no, never.",
+      "explanation": "口语里连续说三个“No”是为了加强否定语气，相当于中文里反复强调“从不、从不、从不”，比单说“Never”更有力，也更能传达说话人觉得不可思议的语气。",
+      "usage": "在雅思口语考试中，如果想强烈表达否定，可以用“No, no, no, never.”这样的递进式回答，先制造一点口语化的停顿感，再给出明确答案。"
+    },
+    {
+      "zh": "我觉得这有点奇怪，你知道吗？",
+      "en": "I think it's kind of weird, you know?",
+      "explanation": "“kind of”是口语里的模糊限制语，表示“有点、某种程度上”，让语气不那么绝对；“you know”是常见的口语填充词，用来缓和语气、寻求听者认同，相当于中文里的“你知道吗”。",
+      "usage": "表达个人看法时，用“I think it's kind of + 形容词”比直接说“It's weird”更自然、更委婉。句尾加“you know?”能让回答显得像在聊天，而不是在背诵。"
+    },
+    {
+      "zh": "在很多人面前掏出镜子照自己——我会觉得尴尬。",
+      "en": "Taking out a mirror and looking at yourself in front of a lot of people — I would feel awkward.",
+      "explanation": "句首用两个并列的动名词短语“Taking out... and looking...”共同作主语，概括出一个具体场景；破折号后面引出个人感受，形成“场景—反应”的鲜明对照。“in front of a lot of people”是“在众人面前”的常用表达。",
+      "usage": "当想先描述一个行为再说明自己的感受时，可以用“V-ing... — I would feel...”这个结构。它比说“If I take out..., I would feel...”更简洁，而且停顿感更强，非常适合口语表达。"
+    },
+    {
+      "zh": "我太害羞了，做不到那样。",
+      "en": "Too shy for that.",
+      "explanation": "这是一个省略句，完整形式是“I'm too shy for that.”，在口语中经常省略主语和be动词。“too + 形容词 + for sth.”表示“对某事而言太……以至于不能（做）”。",
+      "usage": "想简洁地说明自己因为性格或情绪原因而不做某事时，可以用“Too shy for that.”这样的省略句，显得干脆利落。类似结构还有“Too tired for that.”（太累了不想做）等。"
+    },
+    {
+      "zh": "而且不管怎样这也不方便，因为现在人人都有手机。",
+      "en": "And it's inconvenient anyway, because nowadays everyone has a phone.",
+      "explanation": "“anyway”在这里表示“不管怎样、再说”，用于补充另一个理由；“nowadays”是时间副词，表示“如今、现在”，常用来引出社会现象或普遍事实。“everyone has a phone”是一个常识性理由，用来支撑前面的观点。",
+      "usage": "需要补充理由时，用“And it's inconvenient anyway...”可以自然衔接前文；“because nowadays...”用来交代时代背景，会让你的理由听起来更符合现实，更有说服力。"
+    },
+    {
+      "zh": "如果你想检查一下自己，只要打开手机相机自拍就行了，之类的。",
+      "en": "If you want to check yourself, you can just turn on your phone camera and take a selfie, stuff like that.",
+      "explanation": "“check yourself”在这里指“检查自己的仪表、形象”；“turn on your phone camera”是“打开手机相机”的固定搭配；“stuff like that”是口语里的模糊表达，表示“之类的、诸如此类”，用来避免把话说得太满。",
+      "usage": "给出替代方案时，“If you want to..., you can just...”这个条件句非常好用；结尾加“stuff like that”能让语气更随意、更生活化，是雅思口语里很地道的收尾方式。"
+    }
+  ]
+}

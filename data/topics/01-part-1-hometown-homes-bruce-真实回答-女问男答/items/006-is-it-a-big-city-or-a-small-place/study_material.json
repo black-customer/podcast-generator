@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "199afd88f73a7f10c7ca30356f1e162556dfdc36da590fa5e113059874bd98ca",
+  "complete_chinese": "小地方，还在发展中。那里的人说方言。而且我的老家其实在山里——是城市里很偏远的山村。",
+  "sentences": [
+    {
+      "zh": "小地方，还在发展中。",
+      "en": "It's a small place, and it's still underdeveloped.",
+      "explanation": "这句话直接回答了城市规模的问题。'small place' 对应'小地方'；'underdeveloped' 意为'欠发达的、发展不足的'，常用来形容经济或基础设施尚未完善的地区，语气比 'developing' 更强调落后。",
+      "usage": "被问及城市大小时可用 'It's a + 形容词 + place/city/town.' 回答。表示'仍在发展中'可用 'still underdeveloped' 或 'still developing'。"
+    },
+    {
+      "zh": "那里的人说方言。",
+      "en": "The people there speak in the local accent — they speak dialect.",
+      "explanation": "'The people there' 意为'那里的人'。'speak in the local accent' 表示'带着当地方言口音说话'，介词 in 后接口音；'speak dialect' 中 dialect 作不可数名词，泛指'方言'这种语言形式。",
+      "usage": "描述某地语言可用 'People there speak + 语言/方言'。'accent' 侧重口音，'dialect' 指方言（包含发音、词汇和语法差异）。'speak in...' 后常接语言、口音或音量。"
+    },
+    {
+      "zh": "而且我的老家其实在山里——是城市里很偏远的山村。",
+      "en": "And actually, my real home is in the hills — I lived in a mountain area, a very small and remote part of the city.",
+      "explanation": "'actually' 表示'其实、实际上'，用于补充真实情况。'my real home' 指'我的老家'。'in the hills' 意为'在山里'。破折号后的 'a very small and remote part of the city' 是同位语，进一步补充说明 'mountain area'。",
+      "usage": "表示'其实'可用 'actually' 或 'in fact'，常置于句首。'remote' 意为'偏远的'，常修饰 'area / village / island'。'part of...' 表示'……的一部分'。"
+    }
+  ]
+}

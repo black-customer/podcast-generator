@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "1e735b5ac01d2418cdebdb57155aa483903b9d40b92ff96d71d237bce1e6116e",
+  "complete_chinese": "当然。正如我之前所说，孩子在学校学习外语是很有必要的，所以是的，孩子学习一门外语是非常重要的。原因和我之前提到的一样。",
+  "sentences": [
+    {
+      "zh": "是的，当然。",
+      "en": "Yeah, of course.",
+      "explanation": "“yeah”是口语中“yes”的非正式说法，在雅思口语考试中非常自然；“of course”表示“当然”，用来加强肯定语气，适合直接回应一般疑问句。",
+      "usage": "在 Part 1 或 Part 3 中被问到“是否重要/是否有必要”时，可以先用“Yeah, of course.”快速给出立场，再接具体理由，形成“总—分”结构。"
+    },
+    {
+      "zh": "正如我之前所说，孩子在学校学习外语是很有必要的，所以是的，孩子学习一门外语是非常重要的。",
+      "en": "As I said before, it's necessary for children to learn foreign languages at school — so yes, it's very important for children to learn a foreign language.",
+      "explanation": "“As I said before”是口语中引用前文的高频表达，比“as I mentioned before”更简洁；“it's necessary for sb. to do sth.”是形式主语句型，表示“对某人来说做某事是必要的”；“so yes”用于回扣问题，给出明确结论。注意句中“foreign languages”用复数，而问题里是“a foreign language”，口语中两者都自然：复数强调“学外语”这类事情，单数强调“学习一门外语”的行为。",
+      "usage": "句型“it's + adj. + for sb. + to do sth.”在雅思口语中极为高频，可替换 important/necessary，如“it's essential/beneficial/vital for children to...”，能有效提升语法多样性。"
+    },
+    {
+      "zh": "原因和我之前提到的一样。",
+      "en": "Same reasons as I mentioned.",
+      "explanation": "这是一个省略句，完整形式是“The reasons are the same as I mentioned.”在口语中省略主语和系动词很自然，能让表达更简洁；“as I mentioned”是方式状语从句，口语里常省略句末的“before”。",
+      "usage": "当多个问题指向同一话题时，可以用“Same reasons as I mentioned.”避免重复；若想更稳，可稍微扩展为“It's the same reason as I mentioned earlier...”，既简洁又展示从句运用。"
+    }
+  ]
+}

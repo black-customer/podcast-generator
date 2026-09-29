@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "9faa1b067ae51d39ccc011fe9c1f42a92522b325eea435c232712c2ea59d612f",
+  "complete_chinese": "都用得非常频繁。手机绝对每天用；电脑最近几个月也是每天——因为要用电脑学英语。",
+  "sentences": [
+    {
+      "zh": "是的，当然，我两者都用得非常频繁——几乎每天。",
+      "en": "Yeah, of course, I use them both very frequently — almost every day.",
+      "explanation": "“Yeah, of course”用于口语中自然回应一般疑问句，表示“是的，当然”。“use them both”中 both 放在代词 them 之后，强调“两者都”；“very frequently”是频度副词短语，表示动作发生频率高。破折号后“almost every day”进一步补充说明频率。",
+      "usage": "例：Do you often travel? — Yeah, of course, I travel very frequently — almost every month. （你经常旅行吗？——是的，当然，我旅行很频繁——几乎每个月。）"
+    },
+    {
+      "zh": "手机，绝对每天用。",
+      "en": "My smartphone, absolutely, every day.",
+      "explanation": "这是口语中的省略回答，完整形式可理解为 I use my smartphone absolutely every day.“absolutely”放在被强调的成分前，表示“绝对地、完全地”，加强语气。“every day”作时间状语，注意分开写；形容词 everyday 意为“日常的”。",
+      "usage": "例：Do you read news online? — My phone, absolutely, every morning. （你经常在网上看新闻吗？——手机，绝对每天早上看。）"
+    },
+    {
+      "zh": "电脑最近几个月也是每天用——因为我要用电脑学英语。",
+      "en": "And the computer, in recent months, every day as well — because I use it to learn English.",
+      "explanation": "“in recent months”是时间状语，表示“最近几个月”，常与现在时或现在完成时连用；这里与 every day 连用表示现阶段习惯。“as well”意为“也”，常用于句末。“because I use it to learn English”中，it 指代 the computer，避免重复；“use sth. to do sth.”表示“用某物做某事”，动词不定式作目的状语。",
+      "usage": "例：I take the subway in winter, every day as well — because I use it to avoid the traffic. （我冬天也每天坐地铁——因为我用它来避开交通拥堵。）"
+    }
+  ]
+}

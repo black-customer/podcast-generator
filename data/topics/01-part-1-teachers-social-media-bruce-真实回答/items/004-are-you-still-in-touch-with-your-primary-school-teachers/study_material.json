@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "36a5df6bee357a70e4098daea7bc554b9175a553bc2aab3c612c8f19d959ae9c",
+  "complete_chinese": "完全没有。都十二年了，从来没联系过，当时关系也不深。",
+  "sentences": [
+    {
+      "zh": "完全没有。",
+      "en": "Absolutely not.",
+      "explanation": "“Absolutely not.” 用于完全否定对方的提问，语气比单纯的 “No.” 更强烈。“Absolutely” 在这里表示“完全地、绝对地”，修饰否定词 “not”，强调毫无例外。",
+      "usage": "当想彻底否定某个可能性或事实时使用，例如回答是否还和小学老师联系时，用 “Absolutely not.” 表示“绝对没有”。"
+    },
+    {
+      "zh": "都十二年了。",
+      "en": "It's been a really long time — like twelve years.",
+      "explanation": "“It's been + 时间段” 是现在完成时，表示从过去持续到现在的一段时间。破折号后的 “like twelve years” 是非正式口语用法，相当于 “about twelve years”，用来给出大致时间。",
+      "usage": "描述距离某事发生已经过了很久时使用。“It's been a long time” 是固定表达，后面可接具体年份，如 “It's been ages — like five years.”"
+    },
+    {
+      "zh": "从来没联系过，当时关系也不深。",
+      "en": "I haven't been in touch with them at all, and back then I didn't have a deep relationship with them either.",
+      "explanation": "“haven't been in touch with” 是现在完成时的否定形式，表示从过去到现在一直没有联系；“at all” 用于加强否定语气。“back then” 指“在当时、那时候”，用于过去时语境；“either” 用于否定句末，表示“也（不）”。",
+      "usage": "“be in touch with sb.” 是固定搭配，意为“与某人保持联系”；“not... at all” 表示“完全不”；“back then” 常与一般过去时连用，回忆过去的情况。"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "18783425fc92b55f89742a768a90a5c7e20de1f85dc6f56d661fe928bd16ae34",
+  "complete_chinese": "大家都知道，读书或学习课程能够塑造人的身份认同与文化。我认为听音乐也是同样的道理。音乐不仅仅关乎节奏——还有歌词，歌手们通过歌词表达自己、表达自己的想法。所以，如果你听更多音乐、更多类型的音乐，你就会接触到更多人们的生活方式、更多人们的思考方式。而这会塑造你的身份认同与文化。",
+  "sentences": [
+    {
+      "zh": "大家都知道，读书或学习课程能够塑造人的身份认同与文化。",
+      "en": "Well, everybody knows that reading books or studying courses can shape people's identities and cultures.",
+      "explanation": "本句主干是 “everybody knows that...”，that 引导宾语从句。从句中 “reading books or studying courses” 是动名词短语作主语，表示“读书”和“学习课程”这类行为；“shape” 在这里作及物动词，意为“塑造”，“identities and cultures” 是并列宾语。口语里用 “Well” 开头可以自然地引出观点。",
+      "usage": "在雅思口语 Part 3 中，可以用 “everybody knows that...” 先引出一个普遍认同的道理，再引出自己的具体看法。“shape one's identity/culture” 是讨论文化、个人成长类话题时的常用搭配，例如：Education can shape a person's identity."
+    },
+    {
+      "zh": "我认为听音乐也是同样的道理。",
+      "en": "I think listening to music works the same way.",
+      "explanation": "“I think (that)...” 后面接宾语从句，that 在口语中常省略；“listening to music” 是动名词短语作主语，表示“听音乐”这件事；“works the same way” 是固定表达，意为“起同样的作用/也是同样的道理”，用来把两个事物进行类比。",
+      "usage": "当需要把两个看似不同的事物联系起来时，可以用 “A works the same way as B” 或 “... works the same way.” 例如：Learning a language works the same way—practice makes perfect."
+    },
+    {
+      "zh": "音乐不仅仅关乎节奏——还有歌词，歌手们通过歌词表达自己、表达自己的想法。",
+      "en": "Music is not only about the rhythms — there are lyrics too, and singers are expressing themselves, expressing their thoughts through the lyrics.",
+      "explanation": "“not only about...” 表示“不仅仅关乎……”；“there are lyrics too” 是 there be 句型，补充说明音乐还包含歌词；“expressing themselves” 和 “expressing their thoughts” 是现在分词短语作伴随状语，说明歌手们表达自己的方式和内容；“through the lyrics” 表示“通过歌词”这一途径。",
+      "usage": "描述事物的多个层面时，可以用 “not only about... there are... too” 来展开。现在分词短语（expressing...）作伴随状语是口语中拉长句子、丰富细节的好方法，例如：She was talking to me, smiling happily."
+    },
+    {
+      "zh": "所以，如果你听更多音乐、更多类型的音乐，你就会接触到更多人们的生活方式、更多人们的思考方式。",
+      "en": "So if you listen to more music, more types of music, you get exposed to more styles that people live by, more ways that people think.",
+      "explanation": "“if you listen...” 是条件状语从句，主句用一般现在时表将来；“more music, more types of music” 是口语中常见的名词短语并列，起强调作用；“get exposed to” 是被动语态的动词短语，意为“接触到”；“styles that people live by” 和 “ways that people think” 是定语从句，分别修饰 styles 和 ways，说明是“人们所依据的生活方式”和“人们思考的方式”。",
+      "usage": "“get exposed to + 名词” 是描述“接触某事物”的高分表达，比单纯的 know 或 learn 更具体。定语从句 “that people live by / that people think” 能把抽象名词（style, way）说得更具体，适合在 Part 3 中展开论证。"
+    },
+    {
+      "zh": "而这会塑造你的身份认同与文化。",
+      "en": "And that shapes your identity and culture.",
+      "explanation": "指示代词 “that” 指代前面整句话描述的情况（接触更多音乐和生活方式这件事），作主语；“shapes” 是一般现在时第三人称单数，与单数代词 “that” 保持一致；“identity and culture” 与第一句中的 “identities and cultures” 对应，但这里用单数，强调“你个人”的身份与文化。",
+      "usage": "在口语论证的结尾，可以用 “And that...” 来总结前文并点题，形成完整的逻辑闭环。例如：And that is why reading is so important."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "931f8ff4c21d1b1d1ebe833537159429675d4b23629a016d16e96b8b899bcc4b",
+  "complete_chinese": "不花时间，因为我讨厌挑衣服这件事——就算花很长时间挑选，也不能保证选到最好的；选完之后还是会后悔，觉得也许有更好的。所以我不在这上面花太多时间。我会看看选项，凭当下的感觉挑一个最好的，就这样。",
+  "sentences": [
+    {
+      "zh": "不花时间，因为我讨厌做这件事。",
+      "en": "No, I don't, because I hate doing it.",
+      "explanation": "\"hate doing sth.\" 是固定搭配，表示“讨厌做某事”，后接动名词。答句用 \"No, I don't\" 简短回应 \"Do you...?\" 开头的一般疑问句，because 引导原因状语从句说明理由。",
+      "usage": "She hates doing housework.（她讨厌做家务。）/ I don't spend much time on it, because I hate doing it.（我不在这上面花时间，因为我讨厌做这件事。）"
+    },
+    {
+      "zh": "就算我花很长时间挑衣服，也不能保证选到最好的——选完之后，我还是会后悔，心想也许有更好的。",
+      "en": "Even if I spent ages choosing clothes, I couldn't guarantee I'd pick the best one — after the choice is made, I'd still regret it, thinking maybe there was something better.",
+      "explanation": "\"Even if\" 意为“即使；就算”，引导让步状语从句，此处用过去式 \"spent\" 构成虚拟语气，表示与现在情况不符的假设。\"spend ages doing sth.\" 是口语说法，指“花很长时间做某事”。\"guarantee\" 后接宾语从句 \"I'd pick...\"，省略了 that。\"after the choice is made\" 使用被动语态，表示“在做出选择之后”。\"thinking...\" 是现在分词短语作伴随状语，说明后悔时的心理活动。",
+      "usage": "Even if I had a lot of money, I wouldn't buy that car.（即使我有很多钱，我也不会买那辆车。）/ I spent ages decorating the room.（我花了很长时间布置房间。）"
+    },
+    {
+      "zh": "所以我不在这上面花太多时间。",
+      "en": "So I just don't spend much time on it.",
+      "explanation": "\"spend time on sth.\" 表示“在某事上花费时间”，on 后面接名词或动名词。副词 \"just\" 在这里起强调作用，带有“就是；干脆”的语气，使表达更自然口语化。",
+      "usage": "Don't spend too much time on social media.（不要在社交媒体上花太多时间。）/ So I just order takeout.（所以我就直接点外卖。）"
+    },
+    {
+      "zh": "我看看选项，凭感觉当场挑一个最好的，就这样。",
+      "en": "I look over the options, pick the best one at the moment based on my feeling, and that's it.",
+      "explanation": "\"look over\" 是“动词+副词”型短语，意为“快速查看；浏览”，代词放中间，名词可放中间或后面。\"based on my feeling\" 是过去分词短语作方式状语，意为“基于我的感觉；凭我的感觉”。\"at the moment\" 此处指“当下；在当时”，强调挑选那一刻的状态。\"and that's it\" 是口语收尾语，表示“就这样；完了”，暗示不再纠结、不再多想。",
+      "usage": "Look over the contract before you sign it.（签字前把合同浏览一遍。）/ We chose the house based on its location.（我们基于位置选了那栋房子。）/ I'll have a coffee and that's it.（我喝杯咖啡，就这样。）"
+    }
+  ]
+}

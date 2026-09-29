@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "87a5bbca3ad6370c424ad408ed0371a4834fb2377bd5b803417bece76ce37280",
+  "complete_chinese": "我更偏爱舒服的衣服，因为它们能让我感到放松——就像我现在穿的这件衬衫，真的很舒服。而且舒服不代表不体面：只要搭配得当，穿休闲装也能很好看。但在一些特定场合，比如求职面试、某个机会，或者见重要的人，穿正装也很重要。",
+  "sentences": [
+    {
+      "zh": "我更偏爱舒服的衣服，因为它们能让我感到放松——就像我现在穿的这件衬衫，真的很舒服。",
+      "en": "I prefer comfortable clothes, because they help me feel relaxed — like this shirt I'm wearing right now, it's really comfortable.",
+      "explanation": "这句话用 “prefer + 宾语 + because...” 说明偏好及原因。“help me feel relaxed” 里 help 后接不带 to 的动词原形，表示“使我保持放松”；破折号后的 “like...” 用于举例，相当于 “for example”，其中 “I'm wearing right now” 是省略了关系代词的定语从句，修饰 shirt。",
+      "usage": "I prefer loose pants, because they help me move freely — like these trousers I bought yesterday, they're so soft."
+    },
+    {
+      "zh": "至于外表方面：舒服不代表不体面，你知道吗？",
+      "en": "And about appearance: comfortable doesn't mean not smart, you know?",
+      "explanation": "“doesn't mean + 形容词” 是口语中的省略说法，完整结构可理解为 “doesn't mean (that it is) not smart”，表示“并不意味着不体面”。句末的 “you know?” 是口语附加语，用来缓和语气或确认对方跟上自己的思路。",
+      "usage": "Wearing sneakers doesn't mean not formal, you know? It depends on how you put the outfit together."
+    },
+    {
+      "zh": "只要搭配得当，你可以穿舒服的衣服，而且仍然好看。",
+      "en": "With the right matching, you can wear comfortable clothes and still look good.",
+      "explanation": "“With + 名词短语” 在这里表示条件，相当于 “if you have...”，说明“只要有正确的搭配”。“still” 表示“仍然”，带一点转折意味：虽然穿得舒服，但外观依然不错。",
+      "usage": "With the right jacket, you can wear a T-shirt and still look sharp."
+    },
+    {
+      "zh": "但在一些特定场合——比如求职面试、某个机会，或者见重要的人——穿正装也很重要。",
+      "en": "But for specific occasions — like a job interview, or an opportunity, or meeting someone important — wearing smart clothes matters too.",
+      "explanation": "“for + 名词” 表示“对于某种场合/情况”。“like” 用来列举例子，比 “such as” 更口语化。主语 “wearing smart clothes” 是动名词短语，谓语 “matters” 作不及物动词，意为“重要、有影响”。",
+      "usage": "For important meetings — like a client visit or a presentation — dressing formally matters."
+    }
+  ]
+}

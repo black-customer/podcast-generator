@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "source_fingerprint": "161b39060b92033cbc17db942fdeac9f17bf95df27477a860683479d6aee8b97",
+  "complete_chinese": "是的，当然。初中之后，我就没有在线下买过鞋子了。我总是在网上买鞋，因为在那里我有很多选择，我可以直接选我想要的。我也可以直接看一些博主的推荐，然后直接去购物网站买他们推荐的鞋子。",
+  "sentences": [
+    {
+      "zh": "是的，当然。",
+      "en": "Yes, of course.",
+      "explanation": "用于直接肯定回答 “Have you ever...?” 这类现在完成时经历问句，语气自然、口语化。",
+      "usage": "of course 表示“当然”，在口语中单独或与 yes 连用，表达肯定态度。"
+    },
+    {
+      "zh": "初中之后，我就没有在线下买过鞋子了。",
+      "en": "I haven't bought any shoes offline since junior high school.",
+      "explanation": "使用现在完成时 “haven’t bought” 表示从过去持续到现在的否定经验；“since + 时间点” 表示“自从……以来”，主句常用完成时。",
+      "usage": "offline 在此作副词，意为“线下”；“buy sth. offline” 与 “buy sth. online” 相对。",
+      "original_error": {
+        "quote": "I haven't buy any shoes offline.",
+        "issue": "现在完成时的否定句中，助动词 haven’t 之后应接过去分词 bought，而不是动词原形 buy。",
+        "correction": "I haven't bought any shoes offline."
+      }
+    },
+    {
+      "zh": "我总是在网上买鞋，因为在那里我有很多选择，我可以直接选我想要的。",
+      "en": "I always buy shoes online, because I have plenty of choices there, and I can just pick whatever I want.",
+      "explanation": "一般现在时 “always buy” 表示习惯；because 引导原因状语从句；“plenty of” 既可接可数名词复数也可接不可数名词，表示“大量的”；“whatever I want” 是宾语从句，作 pick 的宾语。",
+      "usage": "“pick whatever I want” 是口语中表达“随我心意挑选”的地道说法，相当于 choose anything I like。"
+    },
+    {
+      "zh": "我也可以直接看一些博主的推荐，然后直接去购物网站买他们推荐的鞋子。",
+      "en": "I can also watch some recommendations from bloggers, and then go straight to the shopping website and buy the same shoes they recommend.",
+      "explanation": "also 表示“也”；“recommendations from bloggers” 表示“来自博主的推荐”；“go straight to” 表示“径直去、直接前往”；句末 “they recommend” 是省略了关系代词 that/which 的定语从句，修饰 shoes。",
+      "usage": "“watch recommendations” 为常见搭配；“the same shoes they recommend” 即“他们推荐的（同款）鞋”。",
+      "original_error": {
+        "quote": "some recommendation",
+        "issue": "some 后接可数名词时，该名词通常需用复数形式；此处指多位博主的推荐，应用 recommendations。",
+        "correction": "some recommendations"
+      }
+    }
+  ]
+}

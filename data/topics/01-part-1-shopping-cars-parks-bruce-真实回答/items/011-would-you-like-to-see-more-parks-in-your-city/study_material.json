@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "c9de954256c9413d8afea6a547505c9a349437b9b8217a98072a80d91cd2e231",
+  "complete_chinese": "当然。有些公园离我太远，希望家附近就有漂亮的公园和花园。",
+  "sentences": [
+    {
+      "zh": "当然。",
+      "en": "Yes, of course.",
+      "explanation": "“of course” 表示“当然”，用于直接、肯定地回应 Would you like... 这类征求意见的问句，语气比单纯的 “Yes” 更热情、更确定。",
+      "usage": "在口语考试中，如果想加强语气，还可以说 “Yes, definitely.” 或 “Absolutely.”；但 “Yes, of course.” 已经是非常自然、地道的回答。"
+    },
+    {
+      "zh": "有些公园离我太远。",
+      "en": "Some parks are really remote from me — there's a big distance.",
+      "explanation": "“remote from” 表示“离……遥远”，相当于 “far from”；破折号后的 “there's a big distance” 是对前一句的补充说明，强调空间距离大，但日常口语中这样说略显重复。",
+      "usage": "描述公园、商店等离家远，更常用的说法是 “Some parks are quite far from where I live.” 或 “It takes me a long time to get to some parks.”；如果想表达“不在步行范围内”，可以说 “They're not within walking distance.”"
+    },
+    {
+      "zh": "希望家附近就有漂亮的公园和花园。",
+      "en": "So I hope there will be more beautiful gardens and parks close to where I live.",
+      "explanation": "“there will be” 是 there be 句型的一般将来时，表示“将会有”；“close to where I live” 意为“离我住的地方近”，比 “near my home” 更口语化，且 “close to” 后可以直接接宾语从句。",
+      "usage": "“hope (that) + 从句” 表示希望发生某事；描述地点近，还可以说 “within walking distance”, “just around the corner from my place” 或 “in my neighborhood.”"
+    }
+  ]
+}

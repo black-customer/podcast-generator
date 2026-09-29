@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "source_fingerprint": "367b14cb241dbf9093656f6859997ccaf569a38fb761c36a1e2c8504b93b3c62",
+  "complete_chinese": "我以前用有线耳机，但是现在大多数手机基本都没有有线耳机的插孔了，所以我改用无线耳机——它们通过蓝牙连接，而且我觉得实际上更方便。",
+  "sentences": [
+    {
+      "zh": "我以前用有线耳机。",
+      "en": "I used to use wired headphones.",
+      "explanation": "“used to + 动词原形”表示过去经常做但现在已经不做的习惯；“wired headphones”是“有线耳机”的常用说法，与“wireless headphones”（无线耳机）相对。",
+      "usage": "I used to take the bus to work, but now I ride a bike."
+    },
+    {
+      "zh": "但是现在大多数手机基本都没有有线耳机的插孔了，所以我改用无线耳机——它们通过蓝牙连接，而且我觉得实际上更方便。",
+      "en": "But these days, most phones just don't have an entrance for wired headphones anymore, so I switched to wireless earphones — they connect through Bluetooth, and it's actually more convenient, I guess.",
+      "explanation": "“these days”意为“如今、现在”，常与一般现在时连用；“not... anymore”表示“不再……”；“switch to + 名词”表示“转而使用……”；表达“耳机孔”更自然的搭配是 headphone jack 或 headphone port，entrance 通常指“入口、大门”；“connect through Bluetooth”表示“通过蓝牙连接”，也可说 connect via Bluetooth；句末“I guess”表示“我觉得、我想”，用于缓和语气。",
+      "usage": "These days, many people don't carry cash anymore, so shops have switched to mobile payment — it connects through the internet, and it's more convenient, I guess."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "98c8a695998efc389c12c44fde38b1803372b96d74837568a9c2e874dc894cd9",
+  "complete_chinese": "喜欢。科幻电影很有意思，能让人看到很多没见过的东西、开阔视野，并让人对未来的可能性抱有一点期待——不是过分乐观，而是一种让人畅想未来会有多不可思议的念头。",
+  "sentences": [
+    {
+      "zh": "是的，我喜欢科幻电影。",
+      "en": "Yes, I like science fiction movies.",
+      "explanation": "先用简短直接的 Yes 回应问题，再完整重申喜好，是口语 Part 1 的自然开头。",
+      "usage": "science fiction movies 科幻电影；口语里也可说 sci-fi movies。"
+    },
+    {
+      "zh": "它们很有意思——最重要的是能让你看到很多从未见过的东西。",
+      "en": "They're very interesting — the most important thing is they show you things you've never seen before.",
+      "explanation": "破折号引出补充说明；the most important thing is… 用名词短语点出核心理由，show you things you've never seen before 直接说明开阔眼界。",
+      "usage": "you've never seen before 现在完成时修饰 things，注意've 的缩读。"
+    },
+    {
+      "zh": "它们能开阔视野，也让人对未来的某些可能性抱有期待。",
+      "en": "They broaden your horizon and motivate you to hope something about the future.",
+      "explanation": "broaden your horizon 开阔眼界；motivate sb. to do sth. 表示促使某人做某事，两个动词短语用 and 并列表达双重作用。",
+      "usage": "broaden your horizons（常用复数）开阔眼界；motivate you to hope… 促使你期待……。"
+    },
+    {
+      "zh": "不是过分乐观，只是……",
+      "en": "Not too hopeful, but just...",
+      "explanation": "省略主语的片段句在口语中表达自我修正，先退一步再补充真实想法，语气自然。",
+      "usage": "Not too…, but just… 口语常用的让步-修正结构。"
+    },
+    {
+      "zh": "一种让你畅想未来会有多不可思议的念头。",
+      "en": "a kind of thought that makes you imagine how amazing the future could be.",
+      "explanation": "a kind of thought 承接上句的 just…，that 定语从句说明这种念头的内容；imagine how amazing… could be 用感叹性从句收尾。",
+      "usage": "a kind of 一种……；how amazing the future could be 感叹从句作 imagine 的宾语。"
+    }
+  ]
+}

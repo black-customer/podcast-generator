@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "cf940b84f46ea086c63dd296d1ee56000b69fc5f10e5c8c00ffc694764167329",
+  "complete_chinese": "当然。就像我说的，我喜欢穿T恤。它们特别方便——抓起一件就能出门。而且做运动的时候穿也真的很凉快舒服。另外，它们跟很多裤子都搭，所以真的是很值得拥有的一件单品。",
+  "sentences": [
+    {
+      "zh": "当然。",
+      "en": "Yeah, of course.",
+      "explanation": "用 “Yeah, of course.” 直接回答 “Do you like...?”，表示肯定和乐意；“yeah” 是口语化的 “yes”，“of course” 加强“当然”的语气。",
+      "usage": "肯定对方提问时可用：Yeah, of course. / Of course I do."
+    },
+    {
+      "zh": "就像我说的，我喜欢穿T恤。",
+      "en": "Like I said, I love wearing T-shirts.",
+      "explanation": "“Like I said” 是插入语，用来呼应前文，意思是“就像我说过的”；“love wearing” 中 love 后接动名词 wearing，表示习惯性喜爱。",
+      "usage": "表达爱好可用 “love doing sth.”，如 “I love reading.”；“like I said” 可放在句首或句中。"
+    },
+    {
+      "zh": "它们特别方便——抓起一件就能出门。",
+      "en": "They're so easy — you just grab one and go.",
+      "explanation": "破折号后是对 “easy” 的解释；“one” 指代前面提到的 T-shirt，避免重复；“grab one and go” 是口语化连动结构，表示“抓起一件就走”。",
+      "usage": "形容省事常用 “grab ... and go”，如 “It’s a grab-and-go breakfast.”"
+    },
+    {
+      "zh": "而且做运动的时候穿也真的很凉快舒服。",
+      "en": "And when you do sports, they're really comfortable.",
+      "explanation": "“when” 引导时间状语从句，用一般现在时表示习惯性场景；“do sports” 是固定搭配，意为“做运动”；“comfortable” 用来形容衣物穿着感受。",
+      "usage": "说明衣物适用场景可用 “When you..., they're...”，如 “When it rains, this jacket is really useful.”"
+    },
+    {
+      "zh": "另外，它们跟很多裤子都搭，所以真的是很值得拥有的一件单品。",
+      "en": "Plus they match with lots of pants and trousers, so they're just a great thing to have.",
+      "explanation": "“Plus” 放句首作副词，补充另一个优点，相当于“另外”；“match with...” 表示“与……相配”；“lots of” 可修饰可数名词复数或不可数名词；“a great thing to have” 中动词不定式 “to have” 作后置定语修饰 thing。",
+      "usage": "列举优点可用 “Plus, ...” 或 “Besides, ...”；表示百搭可说 “match with lots of...” 或 “go with...”"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "2ab3e12440aae9e88fb8f6303410309a6769d958a0a137f1bc92813b914c8bba",
+  "complete_chinese": "老实说，我没有五年计划，只有两三年的计划。我的计划是先把英语口语从雅思6分提高到8分或8.5分。然后我会做一名雅思老师，教别人英语——这样我可以在靠这个赚钱的同时不断提高自己的英语水平。与此同时，人工智能发展得非常快，我认为每个人都应该学习它。所以接下来几年我也会学习人工智能，争取成为人工智能专家。",
+  "sentences": [
+    {
+      "zh": "老实说，我没有五年计划，只有两三年的计划。",
+      "en": "Honestly, I don't have a five-year plan — only a two or three-year one.",
+      "explanation": "“five-year plan”是复合形容词，用连字符连接，year保持单数；后面用 one 代替前面已经出现过的 plan，避免重复，这是英语中常见的省略方式。",
+      "usage": "想表达“我没有A，只有B”时，可以用“I don't have A — only B.”，其中B可以用代词 one/that 替换同类名词。"
+    },
+    {
+      "zh": "所以我的计划是先把英语口语从雅思6分提高到8分或8.5分。",
+      "en": "So my plan is to improve my English speaking, from IELTS band 6 to band 8 or 8.5.",
+      "explanation": "“improve my English speaking”中 speaking 是名词，表示“口语能力”；“from...to...”用来表示分数或水平的区间变化；“IELTS band 6”是雅思考试分数的固定说法。",
+      "usage": "描述分数提升时，可以说 improve...from...to...；提到雅思具体分数时，用 band + 数字。"
+    },
+    {
+      "zh": "然后我会做一名雅思老师，教别人英语——这样我可以在靠这个赚钱的同时不断提高自己的英语水平。",
+      "en": "Then I'd work as an IELTS teacher, teaching English to others — that way I keep improving my own English while earning money from it.",
+      "explanation": "“work as + 职业”表示“从事……工作”；“teaching English to others”是现在分词短语作伴随状语，补充说明工作内容；“that way”指代前文提到的做法，起承上启下作用；“keep doing sth.”表示“持续做某事”；“while earning money from it”中 while 后接现在分词，表示“在……的同时”。",
+      "usage": "想说明某种方式带来的双重好处时，可以用 that way I...while...，表示“这样我能一边……一边……”。"
+    },
+    {
+      "zh": "与此同时，人工智能发展得非常快，我认为每个人都应该学习它。",
+      "en": "And in the meantime, AI is developing so fast that I think everyone should learn it.",
+      "explanation": "“in the meantime”是固定短语，意为“与此同时”；“so fast that...”表面上是“如此快以至于……”，但口语里 that 后常接个人的看法或建议；“everyone should learn it”中 everyone 作主语时，谓语动词用单数概念，should 后接动词原形。",
+      "usage": "想表达“某事发展如此……，所以我觉得……”时，可以用 so...that I think... 的口语结构。"
+    },
+    {
+      "zh": "所以接下来几年我也会学习人工智能，争取成为人工智能专家。",
+      "en": "So I'll also study AI and try to become an AI expert in the next few years.",
+      "explanation": "“in the next few years”表示“在接下来几年里”，常与将来时连用；“try to become”表示“争取成为/努力成为”，强调意图和努力。",
+      "usage": "谈到未来几年的目标时，可以用 in the next few years + 将来时；表达职业目标时，用 try to become a/an...。"
+    }
+  ]
+}

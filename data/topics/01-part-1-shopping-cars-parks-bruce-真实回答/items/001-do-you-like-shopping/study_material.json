@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "693e928710c9e96947908d444d1acc26c265a92768a5a9db11e6e843757e87db",
+  "complete_chinese": "算不上购物爱好者，可能是因为没那么有钱。除了吃的，对物质没什么执念。如果要买有意思的东西，那一定会是好吃的东西。所以不算，可以说我不是真的喜欢购物。",
+  "sentences": [
+    {
+      "zh": "算不上购物爱好者，可能是因为没那么有钱。",
+      "en": "I wouldn't call myself a shopping person, mostly because I'm not that rich, honestly.",
+      "explanation": "“I wouldn't call myself...”是英语里非常自然的自我评价句式，表示“我不会称自己为……”，语气委婉，正好对应中文的“算不上……”。“shopping person”指“爱购物的人”；“mostly because”表示“主要是因为/可能是因为”；“not that rich”是口语里“没那么有钱”的地道说法，用“that”来加强否定语气。",
+      "usage": "可以用“I wouldn't call myself a...”来谦虚地否认某个标签，例如：I wouldn't call myself a morning person.（我算不上是个爱早起的人。）"
+    },
+    {
+      "zh": "除了吃的，对物质没什么执念。",
+      "en": "And I don't really crave actual things — except food.",
+      "explanation": "“crave”比“want”更能表达“渴望、执念”的强烈程度，对应中文的“有执念”。“actual things”在这里指“实物、物质东西”，与后面的“food”形成对比。“except food”直接对应“除了吃的”。",
+      "usage": "“crave sth.”表示对某物有强烈渴望，例如：I crave quiet time on weekends.（我周末特别渴望安静的时光。）"
+    },
+    {
+      "zh": "如果要买有意思的东西，那一定会是好吃的东西。",
+      "en": "If I'm going to buy something interesting, it's going to be something delicious.",
+      "explanation": "这句话用“be going to”结构表达将来的打算或必然结果。“something interesting”和“something delicious”形成对比，解释了说话人对物质的唯一例外就是食物。",
+      "usage": "“If I'm going to..., it's going to be...”表示一种条件性的未来安排，例如：If I'm going to buy a bag, it's going to be a practical one.（如果我要买包，一定会买实用的。）"
+    },
+    {
+      "zh": "所以不算，可以说我不是真的喜欢购物。",
+      "en": "So no, you can say I'm not really into shopping.",
+      "explanation": "“be into sth.”是口语中“对……感兴趣、热衷于……”的意思，“not really into shopping”对应“不是真的喜欢购物/算不上购物爱好者”。“you can say”在这里表示“你可以说”，是一种自然的口语总结方式。",
+      "usage": "“be into sth.”表示对某事有浓厚兴趣，例如：I'm really into indie music.（我特别喜欢独立音乐。）"
+    }
+  ]
+}

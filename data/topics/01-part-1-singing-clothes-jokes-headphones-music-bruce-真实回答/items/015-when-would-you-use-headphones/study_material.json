@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "source_fingerprint": "02b595596fcfbb267e509f93f2c6b0be37cf7422ac50ff82ed71d3b1ebf201ba",
+  "complete_chinese": "我想听音乐或者看视频的时候会使用耳机。基本上只要我在公共场所使用手机，我就会戴上耳机。",
+  "sentences": [
+    {
+      "zh": "我想听音乐或者看视频的时候会使用耳机。",
+      "en": "I use them when I want to listen to music or watch videos.",
+      "explanation": "“I use them”中的“them”指代问题里的“headphones”，避免重复；“when I want to...”是时间状语从句，表示“当我想……的时候”，用一般现在时描述习惯性行为；“listen to music”和“watch videos”是固定搭配，注意“listen”后必须加“to”，而“watch”直接接宾语。",
+      "usage": "适用于回答“When would you use headphones?”这类询问使用场景的问题。先用“I use them when...”总述，再列举具体活动，逻辑清晰，适合口语考试。"
+    },
+    {
+      "zh": "基本上只要我在公共场所使用手机，我就会戴上耳机。",
+      "en": "Basically whenever I'm using my phone in a public situation, I'll put on headphones.",
+      "explanation": "“Basically”是口语常用副词，意为“基本上、大体上”，放在句首修饰全句，语气更自然；“whenever”引导时间状语从句，相当于“every time that”，表示“无论何时”，强调高频习惯；“in a public situation”表示“在公共场所”；“put on headphones”是固定搭配，强调“戴上”耳机这一动作，与表示状态的“wear headphones”略有不同。",
+      "usage": "当想表达“某种情况下总会做某事”时，可用“whenever...”引导从句，主句用“I'll...”或一般现在时表习惯。此句通过“put on headphones”准确传达了原答案中“戴耳机”的动作含义。"
+    }
+  ]
+}

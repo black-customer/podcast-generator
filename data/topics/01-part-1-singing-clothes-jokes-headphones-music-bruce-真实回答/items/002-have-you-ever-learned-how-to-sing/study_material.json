@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "67734974cf55bd518366d37f79172d3ac588d3cb262171a9a30c8be9b557aa7b",
+  "complete_chinese": "没正经学过。学校只教音乐知识——认识曲风、学新歌、了解背景——没教怎么唱得更好。",
+  "sentences": [
+    {
+      "zh": "没正经学过。",
+      "en": "No, I haven't, not properly.",
+      "explanation": "口语中回答现在完成时的否定问题时，可先用 “No, I haven’t” 简短回应，再用 “not properly” 补充说明学习程度，对应中文的“没正经、没系统”。副词 “properly” 在此表示“以恰当的方式、正经地”。",
+      "usage": "想表达“学过但不太系统”或“没正经学”时，可以说 “I learned it, but not properly.” 或 “I’ve never studied it properly.”"
+    },
+    {
+      "zh": "学校没真的教我怎么唱歌——他们只教音乐知识，比如怎么认识曲风、怎么学新歌、它的歌词、背景故事，等等。",
+      "en": "School didn't really teach me how to sing — they just taught me knowledge about music, like how to recognize song types, how to learn a new song, its lyrics, the background story, stuff like that.",
+      "explanation": "此处用一般过去时 “didn’t teach” 描述学校过去的教学情况；“teach sb. sth.” 表示“教某人某事”。口语中常用 “like” 来举例，相当于“比如、像”。“recognize song types” 对应“认识曲风”，“background story” 对应“背景故事”。句末 “stuff like that” 是口语表达，意为“诸如此类的东西”。",
+      "usage": "描述过去的教育或成长经历时，可用 “... didn’t teach me X, they just taught me Y.” 的对比结构；举例时口语中可自然使用 “like...”，句末用 “stuff like that” 收尾。"
+    },
+    {
+      "zh": "但他们从没教过我怎么把一首歌唱得更好，你知道的。",
+      "en": "But they never taught me how to sing a song better, you know.",
+      "explanation": "“never taught me how to...” 表示“从未教过我如何……”，强调过去的经历；“sing a song better” 中 “better” 是副词 well 的比较级，修饰动词 “sing”，表示“唱得更好”。句尾 “you know” 是口语中的话语标记词，用于拉近与听者的距离，或确认对方正在跟上自己的思路。",
+      "usage": "想表达“某人或某处从未教过你某项具体技能”时，可用 “They never taught me how to + 动词原形...”；在口语中适当加入 “you know” 能让表达更自然、更地道。"
+    }
+  ]
+}

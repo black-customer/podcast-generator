@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "41c3ca28a8f75126532ce8bc52c439c590cfb4e402dfb98564b7707e241d9286",
+  "complete_chinese": "是的，我看很多科学节目。它们真的很有意思——它们能解释生活中这么多现象，帮你从科学的角度思考它们。而且它们能激发思考，我真的很喜欢。",
+  "sentences": [
+    {
+      "zh": "是的，我看很多科学节目。",
+      "en": "Yes, I watch a lot of science programs.",
+      "explanation": "a lot of 在口语中常用来修饰可数名词复数或不可数名词，比 many 更自然；watch programs 是固定搭配，science programs 指科学类节目。",
+      "usage": "回答 Do you...? 时，先用 Yes/No 回应，再简要展开。如果想更简洁，也可以说 Yes, quite a lot. 或 Yes, I'm really into science programs."
+    },
+    {
+      "zh": "它们真的很有意思——它们能解释生活中这么多现象，帮你从科学的角度思考它们。",
+      "en": "They're really interesting — they can explain so many things in real life, help you think about them from a science angle.",
+      "explanation": "破折号后面进一步解释说明；so many things 中 so 表示'这么、如此'，加强语气；help you think... 是 help sb. do sth. 结构；from a science angle 表示'从科学角度'，相当于 from a scientific perspective。",
+      "usage": "explain... in real life 很地道。如果想表达'用科学解释'，也可以说 use science to explain... 或 explain... scientifically。"
+    },
+    {
+      "zh": "而且它们能激发思考，我真的很喜欢。",
+      "en": "And they motivate you to think, which I really like.",
+      "explanation": "motivate sb. to do sth. 表示'激励某人做某事'；which 引导非限制性定语从句，指代前面整句话的内容，前面必须有逗号。",
+      "usage": "如果想表达'激发思考'，也可以用 stimulate your thinking 或 spark your interest in thinking。I really like 可以换成 I particularly enjoy..."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "e867db96c1b5905cba4955c420b9f9acbf6d9584deec0a670ac9411915714369",
+  "complete_chinese": "现在，我觉得要看情况。我认识很多人根本不戴手表，因为他们有手机——可以直接在上面看时间。但我认为手表对某些特定人群很重要。比如，如果你做极限运动——爬山、去偏远地区——手表可以显示你的GPS位置、心率，甚至在出现问题时发送紧急信息。在那些情况下，它真的很重要。但对普通人来说，就没那么必要了。",
+  "sentences": [
+    {
+      "zh": "现在，我觉得要看情况。",
+      "en": "Nowadays, I think it depends.",
+      "explanation": "it depends 是口语中非常实用的表达，意思是‘看情况；视情况而定’，用来回答没有绝对答案的问题。加上 Nowadays 可以体现‘如今’的时间对比，让回答更自然。",
+      "usage": "在雅思口语中，如果问题没有标准答案，可以用 It depends on... 来展开，比如 It depends on my schedule.（要看我的日程安排。）"
+    },
+    {
+      "zh": "我认识很多人根本不戴手表，因为他们有手机——可以直接在上面看时间。",
+      "en": "I know a lot of people who don't wear a watch at all, because they have phones — they can just check the time there.",
+      "explanation": "who don't wear a watch at all 是定语从句，修饰 people；not...at all 表示‘完全不’，加强语气。check the time 是‘看时间’的固定搭配，there 指代前面的 phones，避免重复。",
+      "usage": "not...at all 还可以说 I don't like it at all.（我一点也不喜欢它。）check the time 也可以换成 check their phones."
+    },
+    {
+      "zh": "但我认为手表对某些特定人群很重要。",
+      "en": "But I think a watch is important for certain kinds of people.",
+      "explanation": "certain kinds of people 意为‘某些特定人群’，比 some people 更正式、更准确，适合雅思口语中分类讨论。important for... 表示‘对……很重要’。",
+      "usage": "可以替换为 specific groups，例如 It's important for specific groups of people."
+    },
+    {
+      "zh": "比如，如果你做极限运动——爬山、去偏远地区——手表可以显示你的GPS位置、心率，甚至在出现问题时发送紧急信息。",
+      "en": "Like if you do extreme sports — climbing mountains, going to remote places — a watch can show your GPS location, your heart rate, and even send emergency information if something goes wrong.",
+      "explanation": "Like 在这里用于举例，相当于 for example，口语中很常见。do extreme sports 是‘做极限运动’的固定说法。remote places 指‘偏远地区’。something goes wrong 是常用表达，意为‘出现问题/发生意外’。破折号中间的内容是对 extreme sports 的补充说明。",
+      "usage": "举例时还可以说 For instance, ... 或 Take ... for example. 如果想说‘万一出事’，可以用 in case something goes wrong."
+    },
+    {
+      "zh": "在那些情况下，它真的很重要。",
+      "en": "For those situations, it's really important.",
+      "explanation": "For those situations 表示‘在那些情况下’，用于总结前文提到的场景。really important 用 really 加强语气，比 very important 更口语化。",
+      "usage": "可以替换为 In those cases, it's extremely important. 如果想表达‘必不可少’，可以说 it's essential."
+    },
+    {
+      "zh": "但对普通人来说，就没那么必要了。",
+      "en": "But for normal people, it's not that necessary.",
+      "explanation": "not that necessary 中，that 作副词，表示‘那么、那样’，用来弱化 necessary，意思是‘没那么必要’，语气自然。for normal people 与前面的 certain kinds of people 形成对比。",
+      "usage": "not that + 形容词 是口语高频结构，如 It's not that expensive.（没那么贵。）It's not that difficult.（没那么难。）"
+    }
+  ]
+}

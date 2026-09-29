@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "fe2f0cc4a2588ca759475bb8a01daa8f2de30cfc6abad896c3697e7807b93cef",
+  "complete_chinese": "直觉答案是我父母——当然，我爸爸和妈妈帮我最多。但最近，帮我最多的是 AI，绝对是 AI。每当我有问题，我就问 AI，它帮我解决问题——它给我答案或者步骤，我照着做就能完成。所以在这方面，AI 绝对帮我最多。",
+  "sentences": [
+    {
+      "zh": "直觉答案是我父母——当然，我爸爸和妈妈帮我最多。",
+      "en": "My first thought is my parents — my father and mother help me the most, of course.",
+      "explanation": "“My first thought is...” 用于表达听到问题后的第一反应或直觉答案，比 “I think” 更自然。破折号后面的内容是对前面 “my parents” 的具体展开；“help me the most” 是 “help” 加最高级的常用结构，表示“帮我最多”。",
+      "usage": "在雅思口语中回答 “Who...” 类问题时，可以先用 “My first thought is...” 引出首要人选，再用破折号补充细节，显得口语化且有层次。例如：“My first thought is my grandmother — she has taken care of me since I was a child, of course.”"
+    },
+    {
+      "zh": "但最近，帮我最多的是 AI，绝对是 AI。",
+      "en": "But recently, the thing that helps me the most is AI, definitely AI.",
+      "explanation": "“the thing that helps me the most” 中 “that” 引导定语从句修饰 “the thing”，这种 “the + 名词 + that...” 结构能突出强调对象。句末用 “definitely AI” 重复并加副词，是口语中加强语气的常见方式。",
+      "usage": "当需要对比或转折（如 “But recently...”）并突出新答案时，可用此结构。例如：“But now, the thing that motivates me the most is my own goal, definitely my own goal.”"
+    },
+    {
+      "zh": "每当我有问题，我就问 AI，它帮我解决问题——它给我答案或者步骤，我照着做就能完成。",
+      "en": "Whenever I have a question, I just ask AI and it helps me solve the problem — it gives me the answer, or the instructions, and I follow them and get it done.",
+      "explanation": "“Whenever” 引导时间状语从句，相当于 “every time”，强调习惯性动作，比 “when” 更有“每当”的意味。“help sb. do sth.” 中动词不定式符号 to 可省略。“follow them” 指代前面的 “the instructions”；“get it done” 是口语中表示“完成、搞定”的地道表达。",
+      "usage": "描述自己如何使用工具或资源时，可以用 “Whenever..., I just...” 开头，使叙述更流畅。列举内容时，用 “it gives me A, or B” 结构清晰明了。例如：“Whenever I come across new words, I just look them up in an app and it helps me remember them — it gives me the definition, or example sentences, and I copy them and get it done.”"
+    },
+    {
+      "zh": "所以在这方面，AI 绝对帮我最多。",
+      "en": "So in this area, AI definitely helps me the most.",
+      "explanation": "“in this area” 表示“在这个方面/领域”，用于在回答结尾限定范围并回扣问题。“definitely” 作为副词放在实义动词 “helps” 前，加强肯定语气。",
+      "usage": "在口语回答的最后一句，可以用 “So in this area/regard, ...” 来总结前文并直接回应题目。例如：“So in this area, my classmates definitely influence me the most.”"
+    }
+  ]
+}

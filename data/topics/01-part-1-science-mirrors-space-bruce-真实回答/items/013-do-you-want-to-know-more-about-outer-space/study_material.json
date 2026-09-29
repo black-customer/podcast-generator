@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "a9184e51242cd992115479524cee03f7b22693f122c3b7b201f5928e189f78dd",
+  "complete_chinese": "非常想。我很好奇，已经花了很多时间搜索外星人是否存在、有什么证据。",
+  "sentences": [
+    {
+      "zh": "非常想。",
+      "en": "Yes, absolutely.",
+      "explanation": "用 “absolutely” 加强肯定语气，比单独说 “Yes” 更强烈，能准确传达 “非常想” 的决心。",
+      "usage": "在口语中想强烈赞同时，可以用 “Yes, absolutely.” 或 “Definitely.”。"
+    },
+    {
+      "zh": "我很好奇。",
+      "en": "I'm very curious about all these things.",
+      "explanation": "“be curious about” 是固定搭配，表示 “对……感到好奇”；“all these things” 回指上文提到的外太空、外星人等话题。",
+      "usage": "句型：be curious about + 名词/代词/动名词。例如：I'm curious about the universe."
+    },
+    {
+      "zh": "已经花了很多时间搜外星人是否存在。",
+      "en": "I've already spent a lot of time searching about aliens — do they really exist?",
+      "explanation": "现在完成时 “have spent” 表示从过去持续到现在的花费；“spend time doing sth” 是固定结构。破折号后直接抛出具体问题，让表达更口语化、有层次。",
+      "usage": "spend time (in) doing something 表示 “花时间做某事”；若表示 “查阅关于……的资料”，更地道的说法是 “search for information about...”。"
+    },
+    {
+      "zh": "有什么证据。",
+      "en": "Is there any evidence?",
+      "explanation": "“evidence” 是不可数名词，疑问句中用 “Is there any...” 来提问，表示 “有没有……”。",
+      "usage": "询问是否存在某物或证据时，用 “Is there any + 不可数名词/单数可数名词?”"
+    },
+    {
+      "zh": "我其实认真查过这个，看了好几个小时的相关视频。",
+      "en": "I've actually done real digging on this, watching videos about it for hours.",
+      "explanation": "“do digging on sth” 是口语化表达，意为 “深入挖掘、仔细研究”；“watching videos...” 是现在分词短语作伴随状语，说明 “digging” 的具体方式。",
+      "usage": "可以用 “do some digging” 或 “do research on sth” 表达类似意思；“watch videos about...” 表示 “看关于……的视频”。"
+    },
+    {
+      "zh": "我很好奇。",
+      "en": "I'm very curious.",
+      "explanation": "简短句再次强调核心感受。在口语结尾重复关键态度，可以加强语气，给考官留下印象。",
+      "usage": "当上下文已提及对象时，可省略 “about...”，直接用 “I'm very curious.”"
+    }
+  ]
+}

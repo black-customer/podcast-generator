@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "19037ec6681bf50856347799c484797728ba4567c1b752cb151c8ed4394c2676",
+  "complete_chinese": "哦，基本上就是唱给我自己。也许以后，当我有了女朋友，或者在一些特定场合——比如在别人生日的时候，我会为他们唱生日歌。或者在父亲节或母亲节，我会为我的父母唱歌。但大多数时候，我只是为自己唱歌，来表达我的情感。",
+  "sentences": [
+    {
+      "zh": "哦，基本上就是唱给我自己。",
+      "en": "Oh, basically just me, myself.",
+      "explanation": "basically 表示“基本上”，用于概括最主要的情况。me, myself 是同位语，起强调作用，意思是“就是我本人”。口语中常把句子省略成这样的简短结构，完整说法相当于 I basically just sing for me, myself。",
+      "usage": "在雅思口语对话中，用 basically 开头可以直接给出核心答案，显得自然、不拖沓。"
+    },
+    {
+      "zh": "也许以后，当我有了女朋友，或者在一些特定场合——比如在别人生日的时候，我会为他们唱生日歌。",
+      "en": "Maybe later, when I have a girlfriend, or in specific situations — like on someone's birthday, I would sing a birthday song for them.",
+      "explanation": "when I have a girlfriend 是时间状语从句；in specific situations 表示“在特定场合”；like 在这里用于举例，相当于 such as；on someone's birthday 中，表示“在具体某一天”要用介词 on；would 表示将来可能发生的情况，语气比 will 更委婉、更不确定。",
+      "usage": "would + 动词原形 常用来描述想象中或计划中的未来场景。举例时，口语里用 like 很自然，书面语中也可换成 such as。"
+    },
+    {
+      "zh": "或者在父亲节或母亲节，我会为我的父母唱歌。",
+      "en": "Or on Father's Day or Mother's Day, I would sing for my parents.",
+      "explanation": "Father's Day（父亲节）和 Mother's Day（母亲节）是专有名词，每个单词的首字母都要大写，并且要用名词所有格形式；on 用于具体的节日当天；sing for sb. 表示“为某人唱歌”。",
+      "usage": "提到具体节日当天时，介词用 on，如 on New Year's Day；若指整个节日期间，则可用 during。"
+    },
+    {
+      "zh": "但大多数时候，我只是为自己唱歌，来表达我的情感。",
+      "en": "But most of the time, I just sing for myself, to express my feelings.",
+      "explanation": "most of the time 是固定搭配，意为“大多数时候”；sing for myself 表示“为自己唱歌”；to express my feelings 是动词不定式短语，作目的状语，说明唱歌的目的是“表达情感”。",
+      "usage": "express one's feelings 是高频实用搭配，意为“表达某人的情感”。在口语中，用 to do 来补充说明做某事的目的非常自然。"
+    }
+  ]
+}

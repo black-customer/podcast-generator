@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "bfc9662105074c72a286556e7a04a0941809a91d310b5f1853ae19f699c0b547",
+  "complete_chinese": "已经换过了——从化学换到计算机，这就是我最喜欢的专业。有时觉得英语专业也不错，但我喜欢现在的状态，不想再换。",
+  "sentences": [
+    {
+      "zh": "我已经换过一次了，你知道吗——我第一个专业是化学，然后转到了计算机科学，那是我现在最喜欢的专业。",
+      "en": "I've already changed it once, you know — my first major was chemistry, and then I switched to computer science, which is my favorite major now.",
+      "explanation": "现在完成时 \"I've already changed\" 表示已经完成的动作，already 强调“已经”；\"switch to + 专业\" 是转专业的常用搭配，比 change to 更自然；\"which\" 引导非限制性定语从句，补充说明 computer science；\"favorite\" 本身已含“最喜欢”之意，不再加 most。",
+      "usage": "适用于描述已经完成的转变，如转专业、换工作、搬家等。例如：\"I switched from chemistry to computer science last year.\""
+    },
+    {
+      "zh": "虽然有时我觉得英语也是个不错的选择。",
+      "en": "Although sometimes I think English wouldn't be a bad choice either.",
+      "explanation": "\"wouldn't be a bad choice\" 是委婉表达，用双重否定表示“也是个不错的选择”，比直接说 \"is also good\" 更自然、客气；\"either\" 用于句末，表示“也”，这里引出另一个备选项。",
+      "usage": "适用于表达对备选方案的开放态度。例如：\"Although sometimes I think working abroad wouldn't be a bad choice either.\""
+    },
+    {
+      "zh": "但是我喜欢现在的状态，所以我不想再换专业了。",
+      "en": "But I like where I am right now, so I don't want to change my major again.",
+      "explanation": "\"where I am right now\" 是 where 引导的宾语从句，作 like 的宾语，表示“我现在所处的状态/位置”，是很地道的表达；\"right now\" 强调“此时此刻”；\"so\" 引导结果状语从句；\"again\" 表示“再次”，呼应前文已经换过一次。",
+      "usage": "适用于表达对现状满意、不愿再改变。例如：\"I like where I am right now, so I don't want to move again.\""
+    }
+  ]
+}

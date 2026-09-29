@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "source_fingerprint": "55994bdbba420ca51aa91b0bbeac04d955614870e3002c57dedd69c8dd63504d",
+  "complete_chinese": "我认为音乐在这方面与书籍并无太大不同——不同代际面临不同的问题。老一代人可能曾担心赚钱，担心搬去更大的城市谋生。新一代面临更多关于情绪、私事、人际关系的问题。因为生活变好了，国家发展了，所以我们现在面临不同的问题。音乐是歌手创作的，用来分享他们的经历并表达他们的情绪。所以不同代际有不同的音乐——有一些共同点，但也有差异。我认为，这是因为代际，因为时代。",
+  "sentences": [
+    {
+      "zh": "我认为音乐在这方面与书籍并无太大不同——不同代际面临不同的问题。",
+      "en": "I think music isn't that different from books in this sense — different generations face different problems.",
+      "explanation": "“isn't that different from”中“that”作副词，相当于“so”，表示“那么”，用于弱化差异，使语气更委婉。“in this sense”意为“在这个意义上”，用来限定类比的范围。破折号后直接引出对前文的具体解释。",
+      "usage": "想表达“A与B在某方面相似”时，可用“A isn't that different from B in this sense — ...”。这比直接说“A is similar to B”更自然，适合口语中引出类比。"
+    },
+    {
+      "zh": "老一代人可能曾担心赚钱，担心搬去更大的城市谋生。",
+      "en": "The older generation might have worried about earning money, about moving to a bigger city to make a living.",
+      "explanation": "“might have worried”为“情态动词+过去分词”，表示对过去行为的推测，意为“可能曾经担心”。“worry about”后接动名词或名词。“make a living”是固定短语，意为“谋生”。",
+      "usage": "描述过去世代的想法时，用“might have + 过去分词”可以避免把话说绝，体现推测语气。例如：“People in the past might have valued stability more.”"
+    },
+    {
+      "zh": "新一代面临更多关于情绪、私事、人际关系的问题。",
+      "en": "The new generation faces more problems about emotions, private affairs, personal relationships.",
+      "explanation": "“face problems”是高频搭配，意为“面临问题”。“problems about...”在此引出问题涉及的方面。“private affairs”指“私事”，“personal relationships”指“人际关系”。",
+      "usage": "列举新一代的困扰时，可用“faces problems about/with...”。若想更正式，可替换为“is more concerned with...”或“faces more challenges related to...”。"
+    },
+    {
+      "zh": "因为生活变好了，国家发展了，所以我们现在面临不同的问题。",
+      "en": "Because life has gotten better, the country has developed, so we face different problems now.",
+      "explanation": "句子用“Because..., ..., so...”连接因果，口语中很常见。“has gotten better”是现在完成时，表示“已经变得更好了”，强调对现在的影响。",
+      "usage": "口语中可用“Because..., so...”自然衔接逻辑；但在雅思写作中建议避免因果连词重复，可改为“Because life has gotten better and the country has developed, we face different problems now.”"
+    },
+    {
+      "zh": "音乐是歌手创作的，用来分享他们的经历并表达他们的情绪。",
+      "en": "And music is created by singers to share their experiences and express their emotions.",
+      "explanation": "“is created by”是一般现在时被动语态，说明音乐的创作者。“to share... and express...”是不定式作目的状语，说明创作目的。",
+      "usage": "说明某事物的功能或目的时，可用“... is created/made by... to do...”。例如：“Documentaries are created by filmmakers to inform the public and spark discussion.”"
+    },
+    {
+      "zh": "所以不同代际有不同的音乐——有一些共同点，但也有差异。",
+      "en": "So different generations have different music — there are some common things, but there are differences too.",
+      "explanation": "“So”用于引出结论。破折号后“there are some common things, but there are differences too”先肯定共性，再转折指出差异，使表达更全面、辩证。",
+      "usage": "在对比不同群体时，可用“there are some common things, but there are differences too”来平衡观点，避免绝对化，这在雅思口语 Part 3 中很加分。"
+    },
+    {
+      "zh": "我认为，这是因为代际，因为时代。",
+      "en": "It's because of the generation, because of the era, I think.",
+      "explanation": "“because of”是介词短语，后接名词（generation, era），不接句子。重复使用“because of”起到强调并列原因的作用。句末“I think”使语气更委婉、口语化。",
+      "usage": "强调多个原因时，可重复“because of + 名词”。注意与“because + 句子”区分。例如：“It's because of technology, because of globalization, I think.”"
+    }
+  ]
+}

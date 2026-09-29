@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "source_fingerprint": "2e725fb417f268e41370b2a9c053f5ed666e56ebfe189079243e65e62255a7c6",
+  "complete_chinese": "绝对会，100%。ChatGPT、Gemini 这些 AI 以惊人速度发展，肯定会改变现在的教育体系。但怎么变我不知道。老师仍会存在，AI 会是师生都离不开的工具。AI 会无处不在——像空气一样，渗透到教育系统的每个角落。",
+  "sentences": [
+    {
+      "zh": "绝对会，100%。",
+      "en": "Yeah, absolutely, 100%.",
+      "explanation": "“absolutely”是副词，意为“绝对地、完全地”，用来加强肯定语气；“100%”在口语中常用来强调“百分之百确定、肯定”。“Yeah”是“Yes”的口语形式，更随意自然。",
+      "usage": "在雅思口语中，如果想强烈表达观点，可以用“Yeah, absolutely”或“Definitely, 100%”开头，比干巴巴的“Yes”更有感染力。"
+    },
+    {
+      "zh": "ChatGPT、Gemini 这些 AI 以惊人速度发展，肯定会改变现在的教育体系。",
+      "en": "You know, AI — ChatGPT, Gemini — is developing at a dramatic speed, so it will absolutely change the education system we have right now.",
+      "explanation": "句中用破折号插入“ChatGPT, Gemini”作为 AI 的同位语，起到举例说明的作用；“develop at a ... speed”是固定搭配，表示“以……的速度发展”；“absolutely”修饰动词“change”，强调“肯定会改变”；“we have right now”是省略了关系代词的定语从句，修饰“the education system”，相当于“the current education system”。",
+      "usage": "描述技术或社会变化时，可以用“develop at an astonishing/dramatic speed”；用“absolutely”加强谓语；用“the system we have right now”来自然表达“我们现在的体系”，比“current system”更口语化。"
+    },
+    {
+      "zh": "但具体会怎么变呢？",
+      "en": "But how exactly?",
+      "explanation": "“how exactly”是“how”的强调形式，用来追问“具体如何、究竟怎么”，在口语中可以单独成句，表示承上启下的追问。",
+      "usage": "当自己想进一步追问具体方式或细节时，可以用“But how exactly?”或“But in what way?”，这能体现批判性思维，在雅思口语中很实用。"
+    },
+    {
+      "zh": "我不知道。",
+      "en": "I don't know.",
+      "explanation": "这是一个简单句，在口语中直接说“I don't know”非常自然，表示坦诚自己不确定。",
+      "usage": "雅思口语中遇到不确定的问题，可以先用“I don't know”或“I'm not sure”承认，再尝试给出猜测，例如“I don't know, but I guess...”，这样比硬撑更真实。"
+    },
+    {
+      "zh": "我认为老师仍会存在，AI 会是师生都离不开的工具。",
+      "en": "I think there will still be teachers, and AI could be a very useful tool for both teachers and students.",
+      "explanation": "“there will still be...”是 there be 句型的一般将来时，表示“仍将存在……”；“could be”表示可能性，语气比“will be”委婉、不确定；“both teachers and students”用“both...and...”连接两个并列名词，表示“老师和学生两者都”。",
+      "usage": "预测未来时，可以用“there will still be...”；表达不确定的推测时，用“could/might be”比“will be”更严谨；用“both...and...”能清晰列出并列对象。"
+    },
+    {
+      "zh": "AI 会无处不在——像空气一样。",
+      "en": "And AI will be everywhere — like the air.",
+      "explanation": "“everywhere”是副词，意为“到处、无处不在”，在句中作表语；破折号后面的“like the air”是比喻，把 AI 比作空气，形象地说明它将普遍存在、不可或缺。",
+      "usage": "描述某事物非常普遍时，可以用“be everywhere”；在口语中适当使用比喻（如“like the air”）能让表达更生动，有助于雅思口语提分。"
+    },
+    {
+      "zh": "它会渗透到教育系统的每个角落。",
+      "en": "It'll spread into every small piece of the education system.",
+      "explanation": "“It'll”是“It will”的口语缩略形式；“spread into”是动词短语，意为“渗透进、传播到”；“every small piece”强调“每一个细小部分”，与前面的“everywhere”呼应，具体说明渗透的范围之广。",
+      "usage": "表达“渗透、蔓延”之意时，可用“spread into”；想强调范围广、无孔不入时，可以用“every small piece/corner”，这比单纯说“everywhere”更具体、更有画面感。"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "source_fingerprint": "8901456030daf2fc9b52b58f502441f772abe40b12a4699b433515539c9b7bef",
+  "complete_chinese": "这是个刁钻的问题。我建议每个人学，但认为不是必需——世界上有很多有用的技能，比如编程、运动。就像高数：有人说买菜用不上微积分，对，但学高数能锻炼逻辑。学外语能开阔视野，但确实不是人人都需要。总体我还是建议学，非常有益。",
+  "sentences": [
+    {
+      "zh": "这是个刁钻的问题。",
+      "en": "That's a tricky one.",
+      "explanation": "用 “That's a tricky one” 回应需要权衡的问题，比 “a difficult question” 更口语化；“tricky” 表示“棘手、不好回答”。",
+      "usage": "适用于雅思口语 Part 3 中遇到需要辩证回答的问题，例如 “Should everyone go to university?”"
+    },
+    {
+      "zh": "我（完全）建议每个人学外语，但认为这不是必需的。",
+      "en": "Absolutely, I suggest everyone learn a foreign language — but I don't think it's necessary.",
+      "explanation": "“suggest (that) everyone learn” 使用虚拟语气，从句动词用原形 learn；“Absolutely” 在这里表示“我确实持这个观点”，加强语气。",
+      "usage": "用于先表明立场，再迅速补充限定条件，体现辩证思维。"
+    },
+    {
+      "zh": "因为世界上有很多有用的技能，比如编程、运动。",
+      "en": "Because there are a lot of useful skills in this world, like coding, exercising, sports.",
+      "explanation": "“there are a lot of useful skills” 是 there be 句型；“like” 用于举例，比 “such as” 更口语。",
+      "usage": "用于列举可替代外语的其他技能，避免把外语说成唯一重要能力。"
+    },
+    {
+      "zh": "要知道，这不是人人都必须做的事。",
+      "en": "You know, it's not something everyone must do.",
+      "explanation": "“You know” 是口语填充词，给听众思考时间；“something everyone must do” 中 everyone must do 是省略了 that 的定语从句。",
+      "usage": "用于缓和绝对化表达，让语气更自然。"
+    },
+    {
+      "zh": "如果你确实学一门外语，那肯定非常有益。",
+      "en": "If you do learn a foreign language, it's definitely beneficial.",
+      "explanation": "“do learn” 中 do 起强调作用，表示“确实、真的”；“beneficial” 是形容词，常与 to 搭配。",
+      "usage": "用于强调条件，突出“学了就有好处”，但保留个人选择空间。"
+    },
+    {
+      "zh": "我建议学，但认为人们不应该被强迫学。",
+      "en": "I suggest it — but I don't think people should be forced to.",
+      "explanation": "“be forced to” 中 to 是不定式符号，后面省略了重复的动词 learn，避免冗余。",
+      "usage": "用于区分“建议”和“强制”，体现对个人自由的尊重。"
+    },
+    {
+      "zh": "听着，我们大多数人只是普通人。",
+      "en": "Look, most of us are just ordinary people.",
+      "explanation": "“Look” 用于引起注意，转换话题；“most of us” 表示“我们中的大多数”。",
+      "usage": "用于引出与日常生活相关的例子，拉近与考官距离。"
+    },
+    {
+      "zh": "我们都学过高等数学、微积分。",
+      "en": "We all learned advanced mathematics, calculus.",
+      "explanation": "“advanced mathematics” 和 “calculus” 是同位语关系，后者对前者作具体说明。",
+      "usage": "用于把外语学习与普遍经历过的数学学习作类比。"
+    },
+    {
+      "zh": "有人说：“我买菜时从不用微积分”——你说得对。",
+      "en": "Some people say, \"I never use calculus when I'm buying vegetables\" — and you're right.",
+      "explanation": "直接引语中谓语动词用现在时 “buy” 描述日常习惯；破折号后 “you're right” 表示认同对方观点。",
+      "usage": "用于先摆出反方观点并认可，再转折到自己真正的论点。"
+    },
+    {
+      "zh": "但我们都知道学数学能锻炼逻辑，学外语能开阔视野，还能帮助你与世界各地的人建立联系。",
+      "en": "But we all know that learning math improves your logic, and learning a new language broadens your horizon and helps you make connections with people around the world.",
+      "explanation": "“learning math” 和 “learning a new language” 都是动名词短语作主语；“broadens your horizon” 和 “helps you make connections” 是并列谓语。",
+      "usage": "用于阐述学习的深层价值，horizon 和 make connections 是雅思教育类话题高频搭配。"
+    },
+    {
+      "zh": "不过，有些人就是不需要它。",
+      "en": "Still, some people just don't need it.",
+      "explanation": "“Still” 表示“尽管如此、不过”，用于温和转折；“don't need it” 中 it 指代前面提到的 foreign language。",
+      "usage": "用于承认反方情况的合理性，避免论证过于绝对。"
+    },
+    {
+      "zh": "所以总体而言，我建议每个人都试一试——它非常有益。",
+      "en": "So overall, I suggest everyone give it a try — it's very beneficial.",
+      "explanation": "“overall” 用于总结；“give it a try” 是固定搭配，意为“尝试一下”；“suggest everyone give” 同样使用虚拟语气。",
+      "usage": "用于收尾并重申立场，try 和 beneficial 简单实用，适合口语。"
+    }
+  ]
+}

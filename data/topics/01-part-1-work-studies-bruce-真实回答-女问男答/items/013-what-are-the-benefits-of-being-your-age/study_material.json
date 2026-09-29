@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "9836b368b56e6a0faefe475c3d9ca6413d19fc807ee5e933054f8ce09b6f4640",
+  "complete_chinese": "我现在二十一岁，所以我觉得这个年纪相当年轻。处于这个年龄，我们能够合法地做很多事情，而且仍然有足够的时间。与年长的人相比，我们有更多时间去实现自己的目标；与年轻的人相比，我们更有经验，视野也更开阔。所以我认为这是个很好的年纪——我们可以利用时间去尝试新事物，探索人生中不同的机会。",
+  "sentences": [
+    {
+      "zh": "我现在二十一岁，所以我觉得这个年纪相当年轻。",
+      "en": "I'm twenty-one right now, so I think that's quite young.",
+      "explanation": "right now 表示“现在、目前”，强调当下的状态；so 引导结果状语从句，说明前后因果；that 指代“二十一岁这个年纪”，quite 在这里表示“相当”，用来加强语气。",
+      "usage": "回答关于年龄的问题时，可以用 I'm [number] right now 自然开头，再用 so I think... 引出自己对这个年龄的主观感受。"
+    },
+    {
+      "zh": "处于这个年龄，我们能够合法地做很多事情，而且仍然有足够的时间。",
+      "en": "Being this age, we're able to do so many things legally, and we still have enough time.",
+      "explanation": "Being this age 是现在分词短语作状语，逻辑主语是后面的 we，表示“处于这个年龄”；be able to 强调具备某种能力；legally 是副词，表示“在法律上、合法地”；so many things 中 so 表示“如此、这么”，加强语气。",
+      "usage": "想表达某个年龄段的优势时，可以用 Being this age, we're able to... 开头，说明该阶段可以合法从事的活动。"
+    },
+    {
+      "zh": "与年长的人相比，我们有更多时间去实现自己的目标；与年轻的人相比，我们更有经验，视野也更开阔。",
+      "en": "Compared with older people, we have more time to achieve what we want; compared with younger people, we have more experience and a broader horizon.",
+      "explanation": "Compared with... 是过去分词短语作状语，表示“与……相比”；achieve what we want 是宾语从句，what 作 want 的宾语；a broader horizon 表示“更开阔的视野”，horizon 用复数时常表示“眼界、见识”。",
+      "usage": "进行对比论证时，可用 Compared with A, we have...; compared with B, we have... 的排比结构，层次清晰地说明相对优势。"
+    },
+    {
+      "zh": "所以我认为这是个很好的年纪——我们可以利用时间去尝试新事物，探索人生中不同的机会。",
+      "en": "So I think it's a good age — we can use our time to try things and explore different opportunities in life.",
+      "explanation": "it's a good age 中 it 是形式主语，指代“处于这个年纪”这件事；use our time to do sth. 表示“利用时间做某事”；explore different opportunities 是动宾搭配，表示“探索不同机会”；in life 作后置定语修饰 opportunities。",
+      "usage": "总结观点时，可以用 So I think... 引出结论，再用 we can use our time to... 具体说明如何利用这个年龄的优势。"
+    }
+  ]
+}

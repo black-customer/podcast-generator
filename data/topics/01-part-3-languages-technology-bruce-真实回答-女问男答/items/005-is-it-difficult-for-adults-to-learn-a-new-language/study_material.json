@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "source_fingerprint": "16d35a56e10325fb0564ed764e2ccbfc885aad2c0432d22d8565d8ec637e352e",
+  "complete_chinese": "生理上可能比孩子难，但我不觉得特别难。成年人大脑更好——不是说 IQ 高，而是阅历多，能制定更好的学习计划；能接触到更好的工具；也许还有能力和外国人交流的机会，这些都加速语言学习。",
+  "sentences": [
+    {
+      "zh": "生理上，成年人学习一门新语言可能比孩子更难。",
+      "en": "Physically, maybe it's harder for adults than children to learn a new language.",
+      "explanation": "这句话使用了 \"it's + adj. + for sb. + to do sth.\" 句型，表示“对某人来说做某事是……的”。\"harder... than...\" 构成两者比较。句首的 \"Physically\" 对应“生理上”，在口语中也可以替换为 \"Biologically\" 或 \"Physiologically\"，但 \"physically\" 在此处不影响理解。",
+      "usage": "在雅思口语中回答比较级问题时，可以先承认一方优势，再引出另一方优势，形成平衡论证。例如先用 \"Physically, maybe...\" 让步，再用 \"But actually...\" 转折。"
+    },
+    {
+      "zh": "但实际上，我不觉得有那么难——因为成年人大脑更好……",
+      "en": "But actually, I don't think it's that hard — because adults have better...",
+      "explanation": "\"But actually\" 是口语中自然的转折递进，比单独用 \"But\" 更柔和。\"I don't think it's that hard\" 使用了否定前移，英语习惯说 \"I don't think...\" 而非 \"I think... not...\"。破折号表示思考停顿或语气延续。",
+      "usage": "当需要先承认后反驳时，\"But actually, I don't think...\" 是非常地道的口语表达，能清晰呈现个人立场。"
+    },
+    {
+      "zh": "在某种程度上。",
+      "en": "brains, in a way.",
+      "explanation": "这是口语中的即兴补充，用省略号衔接前文。\"in a way\" 是固定搭配，意为“在某种程度上”，用于软化绝对判断，使观点更严谨、口语化。",
+      "usage": "在口语中如果表达不够确定或想留有余地，可以用 \"in a way\" 来限定，避免把话说得太绝对。"
+    },
+    {
+      "zh": "并不是说他们智商更高——只是意味着他们见识更广、阅历更丰富。",
+      "en": "Not that their IQ is higher — it just means they've seen more of the world, they have more experience.",
+      "explanation": "\"Not that...\" 是省略结构，完整为 \"I'm not saying that...\"，用于澄清范围、防止误解。\"it just means...\" 用来揭示真正含义。\"see more of the world\" 是形象表达，对应“见识广”。",
+      "usage": "当担心听众误解自己的比较时，可以用 \"Not that... — it just means...\" 来精确说明差异所在，这能让口语逻辑更严密。"
+    },
+    {
+      "zh": "而这些经验帮助他们制定更好的学习计划。",
+      "en": "And that experience helps them make a better learning plan.",
+      "explanation": "\"help sb. (to) do sth.\" 中的 to 可省略。\"make a plan\" 是高频动宾搭配，也可以说 \"make a study plan\"。此处用 \"that experience\" 回指前文，形成衔接。",
+      "usage": "阐述经验优势时，可以用 \"experience helps them make a better...\" 来构建“经验→方法→效果”的因果链，让内容更具体。"
+    },
+    {
+      "zh": "此外，成年人能够接触到更有用的工具，而且他们可能已经在其他领域培养了能力，帮助他们学得更快。",
+      "en": "Also, adults have access to more useful tools, and maybe they've already built up abilities in other areas that help them learn faster.",
+      "explanation": "\"have access to\" 表示“有机会接触/使用”，是雅思口语高分短语。\"build up abilities\" 指“逐步积累能力”。\"in other areas\" 表示“在其他领域”。句末 \"that help them learn faster\" 是定语从句，修饰 abilities。",
+      "usage": "想表达资源或能力优势时，用 \"have access to...\" 替代普通的 \"can use\"，用 \"build up...\" 替代 \"learn\"，能体现词汇多样性。"
+    },
+    {
+      "zh": "另外，他们可能认识更多外国人——他们有能力主动接触并与他们交流。",
+      "en": "Plus, they might know more foreign people — they have the ability to reach out and communicate with them.",
+      "explanation": "\"Plus\" 作连接副词，相当于 \"In addition\"，比 \"Also\" 更口语化。\"reach out to sb.\" 是固定短语，意为“主动与某人建立联系”。\"communicate with them\" 中 them 指代 foreign people。",
+      "usage": "描述社交或语言环境优势时，\"reach out and communicate with...\" 比单纯说 \"talk to\" 更能体现主动性，适合用于回答关于语言环境的问题。"
+    },
+    {
+      "zh": "而这绝对能提升你的语言学习。",
+      "en": "And that absolutely improves your language learning.",
+      "explanation": "\"absolutely\" 是程度副词，修饰动词 \"improves\"，表示“完全地、绝对地”，用于加强总结语气。\"improve your language learning\" 是动宾搭配，用 \"your\" 拉近与听众的距离。",
+      "usage": "在口语结尾总结时，可以用 \"And that absolutely improves...\" 来强力收束，强调前文多个因素共同带来的显著效果。"
+    }
+  ]
+}

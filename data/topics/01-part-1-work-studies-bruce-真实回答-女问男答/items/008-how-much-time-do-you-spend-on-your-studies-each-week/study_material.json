@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "e887ab857a0d16cd4d390dd256e98e35fd02b1b1da592b318b8256b4b490973c",
+  "complete_chinese": "看情况，我不是规律的人，学习时间取决于情绪。有时一天四小时，那就是一周 28 小时；有时多有时少，平均一周 30 小时左右。",
+  "sentences": [
+    {
+      "zh": "看情况，我不是规律的人，学习时间取决于情绪。",
+      "en": "It really depends, because I'm not a very regular person — my study time depends on my mood.",
+      "explanation": "“It really depends”是口语中表示“看情况”的自然表达；“regular person”指生活作息规律的人；“depend on”表示“取决于”，句中分别接在 because 从句和 my mood 前，说明原因和对象。",
+      "usage": "适用于回答关于习惯、计划或时间安排的问题，说明自己没有固定模式。"
+    },
+    {
+      "zh": "有时一天四小时，那就是一周 28 小时。",
+      "en": "Sometimes I spend about four hours a day, which is 28 hours a week.",
+      "explanation": "“spend + 时间”表示花费时间，后面可接 on sth.，口语中常省略；“about”表示“大约”；“which is...”是非限制性定语从句，对前面的数量进行补充说明。",
+      "usage": "用于把每日时间换算成每周总量，或对前文数字进行解释。"
+    },
+    {
+      "zh": "有时多有时少。",
+      "en": "But sometimes I study more, and sometimes less.",
+      "explanation": "“sometimes... and sometimes...”形成对比结构，表示“有时……有时……”；“more”和“less”在这里是副词，分别修饰动词 study，表示学得多、学得少。",
+      "usage": "描述数量或程度不固定、有波动的情况。"
+    },
+    {
+      "zh": "平均一周 30 小时左右。",
+      "en": "So on average, maybe around 30 hours a week.",
+      "explanation": "“on average”是固定短语，意为“平均而言”；“maybe”和“around”连用，都表示不确定的估计，合起来相当于“大概、左右”。",
+      "usage": "用于在列举不同情况后，给出一个大致的平均数。"
+    }
+  ]
+}

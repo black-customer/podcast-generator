@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "f7b10ed56451cac3f9f1bcfc893b7f26a7138377aee69496fd4082d2a3a196e8",
+  "complete_chinese": "学过。我看过很多关于太空和恒星的视频，而且在学校我也学到大爆炸理论、引力这类知识，还有一些常见的基础内容。但我知道的大部分内容，是我从 YouTube 和 B 站学到的。",
+  "sentences": [
+    {
+      "zh": "是的，我学过。",
+      "en": "Yeah, I have.",
+      "explanation": "“Yeah”是口语里表示“是的”的自然说法；“I have”承前省略了“learned about outer space and stars”，避免重复。",
+      "usage": "回答“Have you ever...?”时，可用“Yes, I have.”或“Yeah, I have.”，简短又自然。"
+    },
+    {
+      "zh": "我看过很多关于太空和恒星的视频，而且在学校我也学到大爆炸理论、引力这类知识，还有一些常见的基础内容。",
+      "en": "I've watched a lot of videos about them, and through school I also learned things like the Big Bang theory, gravity, and just the normal stuff.",
+      "explanation": "“I've watched”是现在完成时，表示从过去到现在的经历；“about them”中的 them 指 outer space and stars；“through school”表示“通过学校学习”这一途径；“things like...”用于举例；“the Big Bang theory”是专有名词，通常加 the；“just the normal stuff”很口语，意思是“就是那些常见的基础内容”。",
+      "usage": "可套用：“I've watched a lot of videos about...”；“I learned... through school.”；“things like...”用来列举例子。"
+    },
+    {
+      "zh": "但我知道的大部分内容，是我从 YouTube 和 B 站学到的。",
+      "en": "But most of what I know, I learned from YouTube and Bilibili.",
+      "explanation": "“what I know”是名词性从句，作 most of 的宾语，表示“我所知道的内容”；句首把“most of what I know”提前是为了强调，后面再用“I learned from...”说明来源，这种语序在口语中很自然。",
+      "usage": "更紧凑的说法是：“But I learned most of what I know from YouTube and Bilibili.”原句也正确；“learn from + 平台/来源”表示“从……学到”。"
+    }
+  ]
+}

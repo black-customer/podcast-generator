@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "419a2b95e59b6ce48b5fba8a269930c923fc0271801ef71054e06714ad1eb7e4",
+  "complete_chinese": "在宿舍或家里可以外放；上课时绝对不戴——老师在你面前讲课你还戴耳机，太不尊重了。手机照玩，但不戴耳机。",
+  "sentences": [
+    {
+      "zh": "在宿舍或家里可以让手机外放的时候。",
+      "en": "When it's fine to let my phone play out loud — like in my dormitory or at home.",
+      "explanation": "“it's fine to do sth.”表示“做某事是可以接受的/合适的”；“let my phone play out loud”意为“让我的手机外放”；破折号后的“like”用于举例，相当于“例如”。",
+      "usage": "用于描述适合公开播放声音的私人空间，如宿舍或家里。"
+    },
+    {
+      "zh": "或者在不适合戴耳机的时候——比如在教室里，老师就在你面前讲课时。",
+      "en": "Or when it's inappropriate to use headphones — like in a classroom when the teacher is giving a lecture right in front of you.",
+      "explanation": "“inappropriate”意为“不合适的”；“giving a lecture”是“讲课”的固定搭配；“right in front of you”强调“就在你面前”，加强语境中的冲突感。",
+      "usage": "用于描述因社交礼仪或场合要求而不能使用耳机的公共学习环境。"
+    },
+    {
+      "zh": "我觉得，那时候戴耳机就是不尊重。",
+      "en": "Wearing headphones then is just disrespectful, I think.",
+      "explanation": "“Wearing headphones”是动名词短语作主语，表示“戴耳机”这一行为；“then”指代前文提到的那种情况；“disrespectful”意为“不尊重的”。",
+      "usage": "用于表达在特定情境下佩戴耳机会被视为失礼的观点。"
+    },
+    {
+      "zh": "所以在那种情况下，我不会戴。",
+      "en": "So in that case, I won't use them.",
+      "explanation": "“in that case”是固定搭配，意为“在那种情况下”，用于承接上文得出结论；“them”指代前文提到的“headphones”，避免重复。",
+      "usage": "用于总结在特定条件下自己不会采取的行为。"
+    },
+    {
+      "zh": "我还是会玩手机，但不会戴耳机，就这样静音玩。",
+      "en": "I'll still play on my phone, but silently, without headphones.",
+      "explanation": "“still”表示“仍然”，说明行为延续；“silently”是副词，意为“无声地/静音地”；“without headphones”表示“不戴耳机”，与前面的“silently”共同说明不打扰他人的方式。",
+      "usage": "用于说明虽然继续使用手机，但会以不影响他人的方式进行。"
+    }
+  ]
+}

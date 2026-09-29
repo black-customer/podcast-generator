@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "3f1e62857486e8582403def969f822dce74fc6aaa47683bf8027c0c6ed806c16",
+  "complete_chinese": "其实，我没有特别的偏好，但如果你非要我选一个的话，我会选快乐的音乐。虽然我觉得两种音乐都有其存在的理由。当我难过的时候，我想听快乐的音乐——难过已经让人感觉很糟糕了，如果我想宣泄情绪，我需要氛围与之匹配。当我快乐的时候，快乐的音乐非常令人享受。但如果我快乐的时候听悲伤的音乐，那感觉就是——哇，太不合适了。所以我认为这取决于我当时的情绪。",
+  "sentences": [
+    {
+      "zh": "其实，我没有特别的偏好，但如果你非要我选一个的话，我会选快乐的音乐。",
+      "en": "Actually, I don't have a preference, but if you make me say it, I'd go with happy music.",
+      "explanation": "I don't have a preference 直接表示“没有偏好”；if you make me say it 是口语中“如果你非要我说/逼我选”的地道表达；I'd go with... 相当于 I would choose...，语气更自然随意。",
+      "usage": "在雅思口语中遇到偏好类问题，如果确实没有强烈偏好，可以用 I don't have a strong preference, but if I had to choose, I'd go with... 来回应，既真实又满足提问要求。"
+    },
+    {
+      "zh": "虽然我觉得两种音乐都有其存在的理由。",
+      "en": "Although I think both kinds have a real reason to exist.",
+      "explanation": "both kinds 回指前文提到的 sad music 和 happy music，避免重复；have a real reason to exist 表示“有存在的道理/理由”，real 起强调作用，说明这是经过思考的观点。",
+      "usage": "想表达对两种对立事物都持理解态度时，可以说 I think both have their own reasons to exist 或 Both are valid in their own ways."
+    },
+    {
+      "zh": "当我难过的时候，我想听快乐的音乐——难过已经让人感觉很糟糕了，如果我想宣泄情绪，我需要氛围与之匹配。",
+      "en": "When I'm sad, I want to listen to happy music — being sad already feels disgusting, and I need the vibe to match if I want to be emotional.",
+      "explanation": "When I'm sad 引导时间状语从句；破折号后的 being sad 是动名词短语作主语，解释原因；feels disgusting 用连系动词加形容词表示“让人感觉很糟糕”；the vibe to match 中 vibe 指氛围、感觉，to match 作后置定语，表示“相匹配的氛围”。",
+      "usage": "描述情绪和音乐搭配时，可以用 match the vibe 或 match my mood；表达“宣泄情绪”可以说 get my emotions out 或 be emotional。"
+    },
+    {
+      "zh": "当我快乐的时候，快乐的音乐非常令人享受。",
+      "en": "And when I'm happy, happy music is very enjoyable.",
+      "explanation": "when I'm happy 为时间状语从句；happy music 中形容词作定语；enjoyable 意为“令人愉快的”，用来描述事物本身带来的享受，主语是物而不是人。",
+      "usage": "表达某种事物在特定状态下很令人享受，可以用 ... is very enjoyable 或 ... adds to the enjoyment。"
+    },
+    {
+      "zh": "但如果我快乐的时候听悲伤的音乐，那感觉就是——哇，太不合适了。",
+      "en": "But if I'm happy and I listen to sad music, it just feels — wow, so out of place.",
+      "explanation": "本句是由 if 引导的条件状语从句，and 连接两个并列谓语；out of place 是固定短语，意为“不得其所、不协调”，准确对应中文的“太出戏了”；wow 作为插入语，模拟口语中的停顿和感叹。",
+      "usage": "形容某事物与当前情境不协调时，可以说 feel out of place 或 seem out of place；口语中也可以说 It doesn't fit the mood."
+    },
+    {
+      "zh": "所以我认为这取决于我当时的情绪。",
+      "en": "So I think it depends on my emotion at the moment.",
+      "explanation": "depend on 表示“取决于”，后接名词或名词短语；at the moment 是固定搭配，意为“在当时、那一刻”，强调选择的即时性。",
+      "usage": "总结自己的选择视情况而定，可以说 It depends on... 或 It depends on how I'm feeling at the time."
+    }
+  ]
+}

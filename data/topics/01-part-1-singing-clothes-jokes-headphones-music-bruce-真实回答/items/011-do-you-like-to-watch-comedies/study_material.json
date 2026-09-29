@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "030a45548d2154baa8c58aa1ca3f8565391e92c45be12e9bb605342bb207ffcd",
+  "complete_chinese": "喜欢，就爱能让我笑出来的内容。比如《老友记》——严格说不算典型喜剧但很有意思；还有周星驰的电影，特别有意思。",
+  "sentences": [
+    {
+      "zh": "喜欢。",
+      "en": "Yes, I like watching comedies.",
+      "explanation": "“like doing sth.”表示习惯性喜欢做某事，相较于“like to do”更强调爱好；“watch comedies”是“看喜剧”的固定搭配。",
+      "usage": "回答一般疑问句“Do you like...”时，可以先简短肯定回答“Yes, I do / Yes, I like...”，再展开细节。"
+    },
+    {
+      "zh": "就爱能让我笑出来的内容。",
+      "en": "I'm really into anything that can make me laugh out loud.",
+      "explanation": "“be into sth.”是口语高频表达，意为“对……十分着迷”，比“like”更生动；“anything that...”中that引导定语从句，修饰不定代词anything；“make me laugh out loud”运用了“make sb. do sth.”结构，意为“使我放声大笑”，out loud作状语。",
+      "usage": "想表达“特别喜欢……”时，可用“I'm really into...”替换“I really like...”，显得更地道。"
+    },
+    {
+      "zh": "比如《老友记》——严格来说它不算一部典型喜剧，但里面有很多有趣的瞬间。",
+      "en": "Like Friends — it's actually not a typical comedy, but there are so many funny moments in it.",
+      "explanation": "“Like...”置于句首用于举例，相当于“For example”；“actually”作为副词修饰整个句子，表示“事实上”；“not a typical comedy”是系表结构；“there are so many funny moments”使用there be句型，so many修饰可数名词复数。",
+      "usage": "举例时可用“Like...”或“Take... for example”；转折对比时用“... but ...”连接两个分句。"
+    },
+    {
+      "zh": "还有周星驰的电影——他是导演兼演员，他的电影特别有意思。",
+      "en": "And in Chinese, I watch Stephen Chow's movies — he's a director and actor, and his films are hilarious.",
+      "explanation": "“Stephen Chow's movies”使用名词所有格's表示“周星驰的电影”；“director and actor”并列说明其双重身份；“hilarious”是形容词，意为“极其有趣的、令人捧腹的”，语气比“funny”更强。",
+      "usage": "介绍喜欢的影视人物时，可先用名词所有格引出作品，再补充其身份，最后用形容词评价作品风格。"
+    },
+    {
+      "zh": "我就是喜欢笑，你知道吗？",
+      "en": "I just like to laugh, you know?",
+      "explanation": "“like to do sth.”表示喜欢做某事，此处接动词原形laugh；“you know”是口语中的习惯表达，置于句尾起到舒缓语气、寻求听者认同的作用。",
+      "usage": "在口语回答结尾添加“you know”能让表达更自然亲切，但注意不要频繁使用。"
+    }
+  ]
+}

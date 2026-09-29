@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "74485ffab2c3dce3840a06b39d3ae1a4b150f4bb0bcc9394a8190b63ea9a2ae9",
+  "complete_chinese": "哦，它在中国非常火。人人都知道计算机科学，而且很多人想学它。有些人——像我——转专业进来了，还有很多其他人也做了同样的选择。因为大家都觉得计算机科学意味着高薪工作，而且其实人人都爱钱。所以，是的，它非常火。",
+  "sentences": [
+    {
+      "zh": "哦，它在中国非常火。",
+      "en": "Oh, it's very popular in China.",
+      "explanation": "“Oh”是语气词，用来引起注意或加强语气；“very popular”表示“非常火、很受欢迎”；“in China”是地点状语，放在句尾说明范围。",
+      "usage": "用于直接回答某事物在某地是否受欢迎。"
+    },
+    {
+      "zh": "人人都知道计算机科学，而且很多人想学它。",
+      "en": "Everybody knows about computer science, and a lot of people want to study it.",
+      "explanation": "“Everybody knows about...”表示“人人都了解……”；“a lot of people”后接可数名词复数，表示“很多人”；“want to study it”中“it”指代前面的“computer science”。",
+      "usage": "描述一个专业的大众认知度和学习意愿。"
+    },
+    {
+      "zh": "有些人——像我——转专业进来了，还有很多其他人也做了同样的选择。",
+      "en": "Some people — like me — switched majors into it, and there are many others who made the same choice.",
+      "explanation": "“switched majors into it”表示“转专业进入该领域”；“like me”是插入语，补充说明；“there are many others who...”使用“there be”句型加定语从句，表示“还有许多其他……的人”。",
+      "usage": "举例说明转专业现象，并强调这种情况很普遍。"
+    },
+    {
+      "zh": "因为大家都觉得计算机科学意味着高薪工作，而且其实人人都爱钱。",
+      "en": "Because everybody believes computer science means a high-paying job, and everybody loves money, actually.",
+      "explanation": "“believes (that) computer science means...”中“that”被省略，后面接宾语从句；“means a high-paying job”表示“意味着高薪工作”；“actually”是插入语，表示“事实上、其实”。",
+      "usage": "解释原因时，先陈述普遍看法，再补充个人观察。"
+    },
+    {
+      "zh": "所以，是的，它非常火。",
+      "en": "So yes, it's very popular.",
+      "explanation": "“So”表示因果关系，用于总结；“yes”直接回应一般疑问句；“very popular”再次点题，简洁收尾。",
+      "usage": "在给出理由后，总结并确认自己的回答。"
+    }
+  ]
+}

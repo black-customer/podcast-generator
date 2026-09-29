@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "d3bdd1f3cab613d7775e8059d80032da9f0316981b168d82d2575f2fc1390563",
+  "complete_chinese": "其实有很多。比如 YouTube——在国内我们会刷 B 站，它基本上就是中国版 YouTube——还有学校网站。但我主要看 YouTube。它真的很有趣：你可以从上面学东西、了解新闻，或者只是为了好玩看娱乐视频。",
+  "sentences": [
+    {
+      "zh": "其实有很多。",
+      "en": "Quite a lot, actually.",
+      "explanation": "“Quite a lot” 用来回答“what kinds”类问题时，先概括数量或种类很多，语气比 “a lot” 更强调“确实、真的”。副词 “actually” 放在句末，起补充和强调的作用，相当于“其实、事实上”。",
+      "usage": "当被问到频率高、种类多的习惯时，可以用 “Quite a lot, actually.” 先给出总体印象，再展开举例。"
+    },
+    {
+      "zh": "比如 YouTube——在国内我们会刷 B 站，它基本上就是中国版 YouTube——还有学校网站。",
+      "en": "Like YouTube — in China we visit Bilibili, which is basically the Chinese version — and also my school's website.",
+      "explanation": "这里用破折号插入补充说明 “in China we visit Bilibili, which is basically the Chinese version”，用来解释 Bilibili 的性质；“which” 引导非限制性定语从句，修饰 Bilibili。动词 “visit” 与 website 搭配，表示“访问/浏览网站”；“basically” 表示“基本上、大体上”。",
+      "usage": "在列举网站时，可以用 “Like...” 开头举例，用破折号插入背景说明，再用 “and also...” 补充同类例子。"
+    },
+    {
+      "zh": "但我主要看 YouTube。",
+      "en": "But I watch YouTube mostly.",
+      "explanation": "“mostly” 是副词，表示“主要地、多半”，用来突出在所有列举的网站中，YouTube 是使用频率最高的。注意 “watch” 与视频类网站/频道搭配，而 “visit” 更侧重打开网站这个动作。",
+      "usage": "当列举了多个项目后，想强调其中某一个才是重点时，可以用 “But I + 动词 + 宾语 + mostly.” 的句型。"
+    },
+    {
+      "zh": "它真的很有趣：你可以从上面学东西、了解新闻，或者只是为了好玩看娱乐视频。",
+      "en": "It's really interesting: you can learn things from it, catch up on news, or just watch entertainment videos for fun.",
+      "explanation": "“It's really interesting” 中的 “really” 用来加强形容词 “interesting” 的语气。冒号后面用三个并列的动词短语解释有趣的原因：“learn things from it”（从中学到东西）、“catch up on news”（了解/跟进新闻）、“watch entertainment videos for fun”（为了娱乐而看视频）。“catch up on” 是固定搭配，表示“补上、了解（最新情况）”；“for fun” 表示目的，意为“为了好玩”。",
+      "usage": "描述某个网站或应用为什么吸引人时，可以用 “It's really + 形容词: you can...,..., or just...” 的句式，从学习、资讯、娱乐等角度展开。"
+    }
+  ]
+}

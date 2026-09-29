@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "0cc49fd435aab546ca3d77020ab6f4398ef933473061a88336edc6d6df0b614f",
+  "complete_chinese": "我会说不喜欢。从小我就沉迷于电子游戏——我喜欢刺激的娱乐，比如主题公园、迪士尼乐园之类的。所以普通的公园对我来说很无聊。我不想看风景；我只想玩游戏。",
+  "sentences": [
+    {
+      "zh": "我会说不喜欢。",
+      "en": "I would say no.",
+      "explanation": "would say 是委婉表达，比直接说 No 更礼貌、更自然，适合雅思口语中表明个人态度。",
+      "usage": "被问到是否喜欢某事时，用 I would say no/yes 开头，既直接回应问题，又避免语气生硬。"
+    },
+    {
+      "zh": "从小我就沉迷于电子游戏——我喜欢刺激的娱乐，比如主题公园、迪士尼乐园之类的。",
+      "en": "Since I was a child, I was really into video games — I liked exciting entertainment, like theme parks, Disneylands, stuff like that.",
+      "explanation": "be really into 表示“对……非常着迷、沉迷”，程度比 like 更深；since 在这里引出过去的时间背景；stuff like that 是口语中列举同类事物的常用收尾。",
+      "usage": "描述爱好时，用 be into + 名词/动名词 能自然体现“沉迷”；列举例子时，用 like..., stuff like that 可以让表达更地道、更完整。"
+    },
+    {
+      "zh": "所以普通的公园对我来说很无聊。",
+      "en": "So normal parks were boring to me.",
+      "explanation": "boring to somebody 表示“对某人来说很无聊”；normal 与前面的 theme parks 形成对比，强调是普通公园而非主题公园。",
+      "usage": "表达“某物对某人来说……”时，可用 interesting/boring/exciting to somebody 的结构，使描述对象更明确。"
+    },
+    {
+      "zh": "我不想看风景；我只想玩游戏。",
+      "en": "I didn't want to look at scenery; I just wanted to play games.",
+      "explanation": "分号连接两个语义紧密相关的独立分句，形成对比；didn't want to... just wanted to... 构成“不想……只想……”的对比结构，just 起强调作用。",
+      "usage": "在口语中适当使用分号连接两个相关句子，可以展示句型多样性，同时通过对比突出真实想法。"
+    }
+  ]
+}

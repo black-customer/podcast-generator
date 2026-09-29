@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "7c12ae3f8d968eb61ea1d46d21aaa89b0f54b7b45ccc39b708997722151f296b",
+  "complete_chinese": "我说不上“仍然”喜欢，因为以前其实不太喜欢去公园——但现在我喜欢去公园了。我最近特别喜欢这种平静的感觉，你知道吗？当我在公园里时，我可以欣赏美丽的风景，看人们在做什么，观察他们的生活，看看动物。就是感觉很平静。所以是的，我现在喜欢公园。",
+  "sentences": [
+    {
+      "zh": "我说不上“仍然”喜欢，因为以前其实不太喜欢去公园——但现在我喜欢去公园了。",
+      "en": "I couldn't say \"still,\" because I didn't really like them back then — but I like going to parks now.",
+      "explanation": "用 “couldn't say ‘still’” 委婉表达“算不上仍然”，比直接否定更自然。从句 “because I didn't really like them back then” 用一般过去时说明过去的情况，“back then” 指“在那时候”，与句末的 “now” 形成时间对比。",
+      "usage": "“couldn't say” 后接名词、形容词或从句，表示“不能说是……”。例如：“I couldn't say I loved it, but it was interesting.”（我不敢说很喜欢，但挺有意思的。）"
+    },
+    {
+      "zh": "我最近特别喜欢这种平静的感觉，你知道吗？",
+      "en": "I've gotten really into this peaceful feeling, you know?",
+      "explanation": "“I've gotten really into...” 是口语中非常地道的现在完成时表达，表示“最近变得很喜欢……”，强调从过去到现在的心态变化。“get into” 作“对……产生浓厚兴趣”讲，“really” 加强语气。句末的 “you know?” 是口语中常见的附加语，用来确认听者是否理解或表示闲聊语气。",
+      "usage": "“get into something” 表示开始热衷某事。例如：“She's gotten really into yoga lately.”（她最近很喜欢练瑜伽。）"
+    },
+    {
+      "zh": "当我在公园里时，我可以欣赏美丽的风景，看人们在做什么，观察他们的生活，看看动物。",
+      "en": "When I'm in a park, I can enjoy the beautiful scenery, watch what people are doing, watch their lives, see the animals.",
+      "explanation": "“When I'm in a park” 是时间状语从句，主句用 “can + 动词原形” 表示“能够/可以”。后面 “enjoy the beautiful scenery, watch..., watch..., see...” 是四个并列的动词短语，构成平行结构，让列举更清晰。“what people are doing” 是宾语从句，作 “watch” 的宾语。",
+      "usage": "并列列举动作时，保持词性一致即可。例如：“On weekends, I can read books, listen to music, and relax at home.”（周末我可以读书、听音乐、在家休息。）"
+    },
+    {
+      "zh": "就是感觉很平静。",
+      "en": "It's just very peaceful.",
+      "explanation": "这句话用 “It's just...” 来简洁总结感受，“just” 在这里起强调作用，相当于“就是、完全是”。“peaceful” 是形容词，描述环境带给人的内心平静，比 “quiet” 更强调主观的安宁感。",
+      "usage": "“It's just + 形容词” 是口语中表达纯粹感受的句型。例如：“It's just perfect.”（简直太完美了。）"
+    },
+    {
+      "zh": "所以是的，我现在喜欢公园。",
+      "en": "So yes, I like parks now.",
+      "explanation": "“So” 在这里作连接副词，用于总结前文并引出最终结论。“yes” 虽然形式上是肯定回答，但结合前文 “couldn't say ‘still’”，实际含义是“是的，我现在喜欢，但这不是‘仍然’喜欢”。这种先解释原因再给出结论的方式，能让口语回答更有逻辑。",
+      "usage": "在解释完原因后，可以用 “So yes...” 自然收尾。例如：“So yes, I would recommend this book.”（所以是的，我会推荐这本书。）"
+    }
+  ]
+}
