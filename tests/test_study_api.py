@@ -2,6 +2,7 @@
 import json
 import subprocess
 import sys
+import threading
 import time
 import zipfile
 from pathlib import Path
@@ -121,3 +122,26 @@ def test_pipeline_invalid_json_returns_nonzero(command, tmp_path):
         capture_output=True, text=True, timeout=10,
     )
     assert run.returncode == 2
+
+
+def test_failed_background_material_task_does_not_recreate_deleted_item(setup, monkeypatch):
+    client, tid, iid, _ = setup
+    started = threading.Event()
+    release = threading.Event()
+
+    def fail_after_delete(topic_id, item_id):
+        started.set()
+        release.wait(timeout=5)
+        raise study.MaterialError("synthetic failure")
+
+    monkeypatch.setattr(study, "generate_material", fail_after_delete)
+    assert client.post(f"/api/topics/{tid}/items/{iid}/study/prepare").status_code == 200
+    assert started.wait(timeout=5)
+    assert client.delete(f"/api/topics/{tid}").status_code == 200
+    release.set()
+    for _ in range(100):
+        with study._ACTIVE_LOCK:
+            if (tid, iid) not in study._ACTIVE:
+                break
+        time.sleep(.02)
+    assert not library.item_path(tid, iid).exists()

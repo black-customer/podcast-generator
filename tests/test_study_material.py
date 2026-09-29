@@ -90,6 +90,26 @@ def test_material_changes_when_source_changes_but_audio_survives(item):
     assert path.joinpath("audio_podcast.mp3").exists()
 
 
+def test_retry_status_overrides_stale_material_until_source_changes_again(item):
+    tid, iid, _ = item
+    study.save_material(tid, iid, material())
+    library.update_item_texts(tid, iid, {"natural_english": "Revised answer."})
+    assert study.get_material(tid, iid)["status"] == "changed"
+    key = (tid, iid)
+    with study._ACTIVE_LOCK:
+        study._ACTIVE.add(key)
+    try:
+        study.set_status(tid, iid, "preparing")
+        assert study.get_material(tid, iid)["status"] == "preparing"
+    finally:
+        with study._ACTIVE_LOCK:
+            study._ACTIVE.discard(key)
+    study.set_status(tid, iid, "failed", "synthetic failure")
+    assert study.get_material(tid, iid)["status"] == "failed"
+    library.update_item_texts(tid, iid, {"natural_english": "Revised again."})
+    assert study.get_material(tid, iid)["status"] == "changed"
+
+
 def test_old_item_needs_original_answer(item):
     tid, iid, _ = item
     library.update_item_texts(tid, iid, {"original_answer": ""})

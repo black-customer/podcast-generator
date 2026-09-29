@@ -121,15 +121,27 @@ def save_material(topic_id: str, item_id: str, material: dict) -> dict:
         meta = library.load_meta(path)
         meta["study_status"] = "ready"
         meta["study_error"] = ""
+        meta["study_attempt_fingerprint"] = ""
         library.save_meta(path, meta)
         library.invalidate_item_cache(path)
         return result
 
 
-def set_status(topic_id: str, item_id: str, status: str, error: str = "") -> None:
+def set_status(
+    topic_id: str, item_id: str, status: str, error: str = "", fingerprint: str | None = None
+) -> None:
     if status not in ("preparing", "failed"):
         raise ValueError("非法材料状态")
-    library.update_item_meta(topic_id, item_id, study_status=status, study_error=error[:300])
+    with library.LIB_LOCK:
+        path = library.item_path(topic_id, item_id)
+        if not path.exists():
+            raise FileNotFoundError("条目不存在")
+        if fingerprint is None:
+            fingerprint = source_fingerprint(library.read_item_texts(path))
+        library.update_item_meta(
+            topic_id, item_id, study_status=status, study_error=error[:300],
+            study_attempt_fingerprint=fingerprint,
+        )
 
 
 def generate_material(topic_id: str, item_id: str) -> dict:
@@ -167,7 +179,10 @@ def prepare_async(topic_id: str, item_id: str) -> bool:
             return False
         _ACTIVE.add(key)
     try:
-        set_status(topic_id, item_id, "preparing")
+        attempt_fingerprint = source_fingerprint(library.read_item_texts(
+            library.item_path(topic_id, item_id)
+        ))
+        set_status(topic_id, item_id, "preparing", fingerprint=attempt_fingerprint)
     except Exception:
         with _ACTIVE_LOCK:
             _ACTIVE.discard(key)
@@ -177,7 +192,10 @@ def prepare_async(topic_id: str, item_id: str) -> bool:
         try:
             generate_material(topic_id, item_id)
         except Exception as exc:
-            set_status(topic_id, item_id, "failed", str(exc))
+            try:
+                set_status(topic_id, item_id, "failed", str(exc), attempt_fingerprint)
+            except FileNotFoundError:
+                pass
         finally:
             with _ACTIVE_LOCK:
                 _ACTIVE.discard(key)
@@ -199,6 +217,14 @@ def get_material(topic_id: str, item_id: str) -> dict:
     if library.resolve_audio_file(path, "podcast") is None:
         result["reason"] = "播客音频尚未完成"
         return result
+    attempt_matches = meta.get("study_attempt_fingerprint") == source_fingerprint(texts)
+    if attempt_matches and meta.get("study_status") == "preparing":
+        with _ACTIVE_LOCK:
+            if (topic_id, item_id) not in _ACTIVE:
+                return {"status": "failed", "reason": "准备任务中断，请重试"}
+        return {"status": "preparing", "reason": "逐句材料正在准备"}
+    if attempt_matches and meta.get("study_status") == "failed":
+        return {"status": "failed", "reason": meta.get("study_error") or "材料准备失败"}
     file = path / MATERIAL_FILE
     if file.exists():
         try:
@@ -213,13 +239,6 @@ def get_material(topic_id: str, item_id: str) -> dict:
             return {"status": "ready", "material": validated}
         except (OSError, ValueError, TypeError) as exc:
             return {"status": "failed", "reason": f"材料需修复：{str(exc)[:160]}"}
-    if meta.get("study_status") == "preparing":
-        with _ACTIVE_LOCK:
-            if (topic_id, item_id) not in _ACTIVE:
-                return {"status": "failed", "reason": "准备任务中断，请重试"}
-        return {"status": "preparing", "reason": "逐句材料正在准备"}
-    if meta.get("study_status") == "failed":
-        return {"status": "failed", "reason": meta.get("study_error") or "材料准备失败"}
     return result
 
 
