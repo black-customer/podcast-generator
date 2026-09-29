@@ -9,11 +9,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
+import subprocess
+
 from fastapi.testclient import TestClient
 
 from server import audio as audio_mod
-from server import library, tts
+from server import jobs, library, tts
 
+
+def _ffmpeg_ok() -> bool:
+    try:
+        proc = subprocess.run(["ffmpeg", "-version"], capture_output=True, timeout=15)
+        return proc.returncode == 0
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return False
+
+
+FFMPEG_AVAILABLE = _ffmpeg_ok()
+pytestmark = pytest.mark.skipif(not FFMPEG_AVAILABLE, reason="需要 ffmpeg")
 
 @pytest.fixture()
 def qa_env(tmp_path, monkeypatch):
@@ -30,6 +43,7 @@ def qa_env(tmp_path, monkeypatch):
     from server import config
     from server.main import app
     monkeypatch.setattr(config, "SETTINGS_FILE", tmp_path / "settings.json")
+    monkeypatch.setattr(jobs, 'JOBS_FILE', tmp_path / 'jobs.json')
     with TestClient(app) as c:
         c.put(
             "/api/settings",

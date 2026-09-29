@@ -21,8 +21,11 @@ client = TestClient(app)
 
 
 @pytest.fixture()
-def packed_topic(tmp_path: Path):
-    """真实库中建一个含双轨假音频与时间轴的话题，测试后删除。"""
+def packed_topic(tmp_path: Path, monkeypatch):
+    """临时库中建一个含双轨假音频与时间轴的话题（不触碰真实 data/）。"""
+    topics = tmp_path / "topics"
+    topics.mkdir(parents=True)
+    monkeypatch.setattr(library, "TOPICS_DIR", topics)
     t = library.create_topic("pack-test-dummy")
     tid = t["id"]
     try:
@@ -104,5 +107,4 @@ def test_api_pack_export(packed_topic: str):
         r404 = client.get("/api/pack/export?topics=no-such")
         assert r404.status_code == 404
     finally:
-        # 端点写真实导出目录，测试后清掉避免污染工作树
-        (DATA_DIR / "exports" / "corpus.pack.zip").unlink(missing_ok=True)
+        pass  # 端点经 BackgroundTask 自删导出文件（corpus-<uuid>.pack.zip），无需手动清理

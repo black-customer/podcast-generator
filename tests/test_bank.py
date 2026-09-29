@@ -326,6 +326,21 @@ def test_answer_topic_name_fallback(snapshot_file: Path):
 
 # ---------- API（快照路径 monkeypatch 到临时文件）----------
 
+@pytest.fixture()
+def data_env(tmp_path, monkeypatch):
+    """写数据的 API 测试隔离到临时目录（data/ 是产品本体，单测不得写真实库）。"""
+    topics = tmp_path / "topics"
+    topics.mkdir(parents=True)
+    monkeypatch.setattr(library, "TOPICS_DIR", topics)
+    from server import assemble, audio, config, jobs
+    monkeypatch.setattr(jobs, "JOBS_FILE", tmp_path / "jobs.json")
+    monkeypatch.setattr(config, "SETTINGS_FILE", tmp_path / "settings.json")
+    monkeypatch.setattr(assemble, "EPISODES_DIR", tmp_path / "episodes")
+    monkeypatch.setattr(audio, "TMP_DIR", tmp_path / ".tmp")
+    with TestClient(app) as c:
+        yield c
+
+
 def test_api_bank_questions(monkeypatch, snapshot_file: Path):
     monkeypatch.setattr(bank, "BANK_PATH", snapshot_file)
     r = client.get("/api/bank/questions?part=1")
@@ -345,7 +360,8 @@ def test_api_bank_questions_not_available(monkeypatch, tmp_path: Path):
     assert data["available"] is False and data["items"] == []
 
 
-def test_api_bank_answer_creates_item(monkeypatch, snapshot_file: Path):
+def test_api_bank_answer_creates_item(data_env, monkeypatch, snapshot_file: Path):
+    client = data_env
     monkeypatch.setattr(bank, "BANK_PATH", snapshot_file)
     topic_name = "Teachers"
     existed = any(t["name"].casefold() == topic_name.casefold() for t in library.list_topics())

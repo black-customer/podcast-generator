@@ -29,9 +29,18 @@ cleanup() {
   if [ -n "$SERVER_PID" ]; then kill "$SERVER_PID" 2>/dev/null || true; fi
 }
 trap cleanup EXIT
+# 冒烟端口被占时旧服务会替新代码"假绿"：预检端口，健康检查后还要确认是我们起的进程
+if curl -sf "http://127.0.0.1:$PORT/api/health" > /dev/null 2>&1; then
+  echo "冒烟端口 $PORT 已被占用（可能是旧服务在跑），拒绝假绿——请先停掉占用进程" >&2
+  exit 1
+fi
 "$PY" -m uvicorn server.main:app --host 127.0.0.1 --port $PORT --log-level error &
 SERVER_PID=$!
 sleep 3
+if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+  echo "服务启动冒烟失败（进程已退出）" >&2
+  exit 1
+fi
 if curl -sf "http://127.0.0.1:$PORT/api/health" > /dev/null; then
   echo "health OK"
 else

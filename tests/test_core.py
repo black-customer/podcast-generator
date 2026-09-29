@@ -15,7 +15,7 @@ if str(BASE_DIR) not in sys.path:
 
 from fastapi.testclient import TestClient
 
-from server import assemble, audio, library, tts
+from server import assemble, audio, jobs, library, tts
 
 
 def _ffmpeg_ok() -> bool:
@@ -51,6 +51,7 @@ def client(lib_env, tmp_path, monkeypatch):
     from server.main import app
 
     monkeypatch.setattr(config, "SETTINGS_FILE", tmp_path / "settings.json")
+    monkeypatch.setattr(jobs, 'JOBS_FILE', tmp_path / 'jobs.json')
     with TestClient(app) as c:
         yield c
 

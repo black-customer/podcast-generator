@@ -3,6 +3,7 @@
 测试直接从 bat 文件解析真实的 PowerShell 命令执行（仅把端口字面量换成测试端口），
 保证脚本与测试不漂移。
 """
+import platform
 import re
 import subprocess
 import sys
@@ -10,6 +11,9 @@ import time
 from pathlib import Path
 
 import pytest
+
+pytestmark = pytest.mark.skipif(platform.system() != "Windows",
+                                reason="update_app.bat 与 PowerShell 清理逻辑仅 Windows")
 
 BAT = Path(__file__).resolve().parent.parent / "update_app.bat"
 TEST_PORT = 8787
@@ -50,7 +54,7 @@ def test_foreign_process_on_port_is_not_killed(args):
     try:
         run = subprocess.run(
             ["powershell", "-NoProfile", "-Command", _port_cleanup_command()],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True, timeout=30,
         )
         assert proc.poll() is None, "无关进程被误杀"
         assert run.returncode == 2, f"应以外码 2 提示占用者非本应用，实际 {run.returncode}"
@@ -65,9 +69,11 @@ def test_own_server_on_port_is_killed():
     try:
         run = subprocess.run(
             ["powershell", "-NoProfile", "-Command", _port_cleanup_command()],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True, timeout=30,
         )
-        assert run.returncode == 0, run.stdout + run.stderr
+        out = (run.stdout or b"").decode("utf-8", "replace")
+        err = (run.stderr or b"").decode("utf-8", "replace")
+        assert run.returncode == 0, out + err
         deadline = time.time() + 10
         while proc.poll() is None and time.time() < deadline:
             time.sleep(0.2)

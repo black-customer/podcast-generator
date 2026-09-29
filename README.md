@@ -77,7 +77,8 @@ Bruce 于 2026-09-29 确定新方向。完成音频后，用户可主动进入�
 ```bash
 git clone https://github.com/black-customer/podcast-generator && cd podcastGenerate
 # ffmpeg 缺失时：winget install Gyan.FFmpeg （装后重开终端）
-# 1) 创建虚拟环境并安装依赖：python -m venv .venv；.venv/Scripts/python -m pip install -r requirements.txt
+# 1) 创建虚拟环境并装依赖：python -m venv .venv；.venv/Scripts/python -m pip install -r requirements-dev.txt
+#    （requirements-dev 含运行依赖 + pytest/ruff/playwright；纯使用不开发装 requirements.txt 即可）
 # 2) 环境诊断（可选，只读）：.venv/Scripts/python scripts/doctor.py
 # 3) 后台启动服务（脚本会阻塞，务必后台运行）：start "IELTS Pod Server" /min start.bat
 #    或 .venv/Scripts/python run.py --no-open &
