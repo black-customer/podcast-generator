@@ -167,6 +167,8 @@ def review_items() -> list[dict]:
             continue
         sentences = found["material"]["sentences"]
         for key, facts in state["facts"].items():
+            if not str(key).isdigit():
+                continue  # 手改坏的事实键：跳过而不是让复习库 500
             index = int(key)
             if index >= len(sentences) or not (
                 facts.get("wrong_attempts", 0) > 0 or facts.get("hint_used")

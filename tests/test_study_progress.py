@@ -79,3 +79,23 @@ def test_invalid_stage_does_not_write(item):
             "facts": {"0": {"wrong_attempts": "not-a-number"}},
         })
     assert not (tmp / "study_private" / tid / iid / "state.json").exists()
+
+
+def test_review_pool_skips_hand_edited_non_numeric_keys(item, monkeypatch):
+    """手改坏的非数字事实键不应让 /api/study/review 500，其余句子照常返回。"""
+    tid, iid, tmp = item
+    library.update_item_texts(tid, iid, {
+        "original_answer": "I walk. I rest.",
+        "podcast_text": "A: What do you do?\nB: I walk. I rest.",
+    })
+    (library.item_path(tid, iid) / "audio_podcast.mp3").write_bytes(b"audio")
+    study.save_material(tid, iid, {"complete_chinese": "我散步，然后休息。",
+        "sentences": [{"zh": f"句{n}", "en": en, "explanation": "说明", "usage": "用法"}
+                      for n, en in enumerate(("I walk.", "I rest."))]})
+    study_progress.save_progress(tid, iid, {"facts": {"0": {"wrong_attempts": 1}}})
+    state_file = tmp / "study_private" / tid / iid / "state.json"
+    state = json.loads(state_file.read_text(encoding="utf-8"))
+    state["facts"]["bad-key"] = {"wrong_attempts": 1}
+    state_file.write_text(json.dumps(state, ensure_ascii=False), encoding="utf-8")
+    rows = study_progress.review_items()
+    assert [r["sentence_index"] for r in rows] == [0]
