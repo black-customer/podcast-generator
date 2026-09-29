@@ -51,6 +51,7 @@ def test_agent_mode_copy_cli_complete_and_done_page():
     if not _bank_ready():
         pytest.skip("题库快照未导入（python -m server.bank --sync）")
     stamp = int(time.time())
+    before_topics = {t["id"] for t in requests.get(f"{BASE_URL}/api/topics", timeout=10).json()}
     created_topics: list[str] = []
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -124,7 +125,13 @@ def test_agent_mode_copy_cli_complete_and_done_page():
             body_text = page.locator("body").inner_text()
             assert "[curious]" not in body_text and "[break]" not in body_text
         finally:
-            for tid in created_topics:
+            # 兜底：prompt 解析失败时 created_topics 为空，删掉本测试开始后新建的话题
+            try:
+                after = {t["id"] for t in requests.get(f"{BASE_URL}/api/topics", timeout=10).json()}
+                created_topics.extend(after - before_topics - set(created_topics))
+            except Exception:
+                pass
+            for tid in set(created_topics):
                 try:
                     requests.delete(f"{BASE_URL}/api/topics/{tid}", timeout=10)
                 except Exception:

@@ -38,8 +38,14 @@ EXCLUDE_PREFIXES = ("docs/design/",)
 FORBIDDEN_PARTS = {
     "settings.json", "voice_samples", ".tmp", "episodes", "topics",
     "question_bank.json", "question_bank_extra.json", "jobs.json", "exports",
-    "study_private",
+    "study_private", "backups",
+    "keystore.properties", "debug.keystore", "release.keystore",
 }
+# 任何媒体/签名产物后缀都不得入便携包
+FORBIDDEN_SUFFIXES = (
+    ".mp3", ".m4b", ".wav", ".apk", ".m4a", ".flac", ".ogg", ".opus", ".aac",
+    ".wma", ".keystore", ".jks",
+)
 
 
 def main() -> int:
@@ -75,8 +81,8 @@ def main() -> int:
             hit = parts & FORBIDDEN_PARTS
             if hit:
                 violations.append(f"{info.filename}（命中 {hit}）")
-            if info.filename.endswith((".mp3", ".m4b", ".wav", ".apk")):
-                violations.append(f"{info.filename}（音频/APK 不应入包）")
+            if info.filename.endswith(FORBIDDEN_SUFFIXES):
+                violations.append(f"{info.filename}（音频/签名产物不应入包）")
 
     if violations:
         print("审计失败：分享包包含禁止内容！", file=sys.stderr)

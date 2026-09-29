@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
-from server import library, pack, rewrite, study, study_progress
+from server import jobs, library, pack, rewrite, study, study_progress
 
 
 @pytest.fixture()
@@ -37,6 +37,7 @@ def setup(tmp_path, monkeypatch):
     path = library.item_path(t["id"], i["id"])
     (path / "audio_podcast.mp3").write_bytes(b"dummy-audio")
     from server.main import app
+    monkeypatch.setattr(jobs, 'JOBS_FILE', tmp_path / 'jobs.json')
     with TestClient(app) as client:
         yield client, t["id"], i["id"], tmp_path
 
