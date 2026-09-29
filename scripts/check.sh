@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# 质量门禁：绿 = 可提交。用法：bash scripts/check.sh [--with-e2e]
+# 质量门禁：绿 = 可提交。用法：bash scripts/check.sh [--with-e2e|--release]
+#   --with-e2e 附加 Playwright e2e；--release 发布门禁 = e2e + portable zip 打包审计
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -7,11 +8,11 @@ PY=.venv/Scripts/python
 if [ ! -f "$PY" ]; then PY=python; fi
 
 echo "=== [1/4] ruff lint ==="
-if "$PY" -m ruff --version > /dev/null 2>&1; then
-  "$PY" -m ruff check server pipeline.py run.py tests
-else
-  echo "警告：ruff 未安装，lint 被跳过（pip install ruff）" >&2
+if ! "$PY" -m ruff --version > /dev/null 2>&1; then
+  echo "错误：ruff 未安装——lint 是硬门禁，不允许跳过（pip install ruff）" >&2
+  exit 1
 fi
+"$PY" -m ruff check server pipeline.py run.py tests
 
 echo "=== [2/4] 单元与 API 测试 ==="
 "$PY" -m pytest tests/ -q --ignore=tests/e2e
@@ -38,7 +39,7 @@ else
   exit 1
 fi
 
-if [ "${1:-}" = "--with-e2e" ]; then
+if [ "${1:-}" = "--with-e2e" ] || [ "${1:-}" = "--release" ]; then
   E2E_PORT="${E2E_PORT:-8877}"
   echo "=== [extra] Playwright e2e（独立端口 $E2E_PORT）==="
   if curl -sf "http://127.0.0.1:$E2E_PORT/api/health" > /dev/null 2>&1; then
@@ -62,6 +63,11 @@ if [ "${1:-}" = "--with-e2e" ]; then
   BASE_URL="http://127.0.0.1:$E2E_PORT" "$PY" -m pytest tests/e2e -q
   kill $E2E_PID 2>/dev/null || true
   E2E_PID=""
+fi
+
+if [ "${1:-}" = "--release" ]; then
+  echo "=== [release] portable zip 打包与审计 ==="
+  "$PY" scripts/package.py
 fi
 
 echo "=== CHECK GREEN ==="

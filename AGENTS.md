@@ -15,6 +15,9 @@
 # 全量质量门禁（提交前必须绿）
 bash scripts/check.sh
 
+# 发布门禁（打 tag / 发 Release 前）：e2e + portable zip 打包审计
+bash scripts/check.sh --release
+
 # 只跑测试
 .venv/Scripts/python -m pytest tests/ -q --ignore=tests/e2e
 
