@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "59cc87db4a3d07e60801ebe1ebccc724d9d9521e415cf03c7d32592a23aa5370",
+  "complete_chinese": "哦，这让我想起了过去。最有趣的是——我记得我曾用过一面凹面镜，就是那种可以聚光的东西。我用它把阳光集中到一张纸上，试着把纸烧起来。那是我上小学时做的事。还有，每当看到有趣的科学视频，我就会把全部内容讲给同学、同桌听，他们都很惊讶。",
+  "sentences": [
+    {
+      "zh": "哦，这让我想起了过去。",
+      "en": "Oh, this one takes me back.",
+      "explanation": "“takes me back”是口语表达，意思是“把我带回到过去的某个时刻”，也就是“让我想起了往事”。",
+      "usage": "可用于回忆童年、学生时代或过去的经历。"
+    },
+    {
+      "zh": "最有趣的是——我记得我曾用过一面凹面镜，就是那种可以聚光的东西。",
+      "en": "The most interesting thing — I remember I once used a concave mirror, you know, the kind that can focus things.",
+      "explanation": "“The most interesting thing”用来引出最有趣的经历；“I remember I once used...”用过去时描述过去做过的事；“concave mirror”意为“凹面镜”；“you know”是口语中的话语标记，表示“你知道的”；“the kind that can focus things”作同位语，解释这种东西能“聚光”。",
+      "usage": "描述物品功能时可用“the kind that can...”。"
+    },
+    {
+      "zh": "我用它把阳光集中到一张纸上，试着把纸烧起来。",
+      "en": "I used it to concentrate sunlight onto a piece of paper and tried to burn it.",
+      "explanation": "“use sth to do sth”表示“用某物做某事”；“concentrate sunlight onto...”表示“把阳光集中到……上”，介词用 onto；“tried to burn it”表示“试图把它烧着”，it 指代前面的 paper。",
+      "usage": "描述科学实验或操作时常用“concentrate ... onto ...”。"
+    },
+    {
+      "zh": "那是我上小学时做的事。",
+      "en": "I did that when I was a pupil.",
+      "explanation": "“when I was a pupil”是时间状语从句，主句和从句都用过去时；“pupil”在这里指“小学生”，较常见于英式英语。",
+      "usage": "回忆过去经历可用“I did ... when I was ...”。"
+    },
+    {
+      "zh": "还有，每当看到有趣的科学视频，我就会把全部内容讲给同学、同桌听，他们都很惊讶。",
+      "en": "And also, whenever I saw an interesting science video, I would retell the whole thing to my classmates, my desk mates, and they were all amazed by it.",
+      "explanation": "“whenever”引导时间状语从句，表示“每当……”；主句用“would + 动词原形”表示过去经常性、习惯性的动作；“retell the whole thing to sb”表示“把整件事转述给某人”；“desk mate”意为“同桌”；“be amazed by it”表示“对此感到惊讶”。",
+      "usage": "描述过去反复发生的事情可用“whenever + 过去式，would + 动词原形”。"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "source_fingerprint": "b6d60aef307ddc5d63bd57dd3bc1f669c92f2f0c25c0ca1d816d9788368a1ecc",
+  "complete_chinese": "我住在山东省青岛市。它是个海滨城市。",
+  "sentences": [
+    {
+      "zh": "我住在山东省青岛市。",
+      "en": "I live in Qingdao, in Shandong province.",
+      "explanation": "回答“What city do you live in?”时，用“I live in + 城市名”直接说明居住地点；再用“in + 省名”补充更大的地理位置。Qingdao 是城市，Shandong province 是省级行政区，由小到大排列，逻辑清晰。",
+      "usage": "I live in Suzhou, in Jiangsu province."
+    },
+    {
+      "zh": "它是个海滨城市。",
+      "en": "It's a seaside city, I could say.",
+      "explanation": "“It's a + 名词”用来描述事物特征；“seaside city”是固定搭配，意为“海滨城市”。句末的“I could say”是口语中的缓冲语，表示“我可以这么说/可以说吧”，用于让语气更自然、留有余地，并非语法错误。",
+      "usage": "It's a modern city, I could say."
+    }
+  ]
+}

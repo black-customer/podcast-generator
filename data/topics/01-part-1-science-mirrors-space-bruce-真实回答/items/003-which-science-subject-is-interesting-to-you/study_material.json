@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "6316b9d9d6029693089e46f3bd57e311a00fa4b26f6241d6873ebdd608da66a7",
+  "complete_chinese": "嗯，也许是物理吧。因为物理在现实生活中无处不在——你可以在任何事情中看到它。比如，蜘蛛侠为什么能爬墙而不掉下来？类似这样的事情。你可以在日常生活中找到很多体现物理的场景，而且我觉得那真的很有趣。",
+  "sentences": [
+    {
+      "zh": "嗯，也许是物理吧。",
+      "en": "Hmm, maybe physics.",
+      "explanation": "Hmm 是语气词，表示思考或犹豫；maybe 表示不确定的推测，语气比 perhaps 更口语化。",
+      "usage": "在雅思口语中，用 'Hmm, maybe...' 开头可以显得自然，避免机械式回答。"
+    },
+    {
+      "zh": "因为物理在现实生活中无处不在——你可以在任何事情中看到它。",
+      "en": "Because physics is everywhere in real life — you can see it in anything.",
+      "explanation": "everywhere 意为“无处不在”；in real life 是固定搭配，意为“在现实生活中”；see it in anything 表示“在任何事情中都能看到它”。",
+      "usage": "用 'everywhere in real life' 强调某事物非常普遍，适合解释原因。"
+    },
+    {
+      "zh": "比如，蜘蛛侠为什么能爬墙而不掉下来？",
+      "en": "Like, why can Spider-Man climb walls without falling?",
+      "explanation": "like 在这里作插入语，表示“比如”，用于举例；without falling 是“介词 + 动名词”结构，表示“没有掉下来”。",
+      "usage": "口语中常用 'Like,...' 来引出具体例子；'without + doing' 表示伴随状态。"
+    },
+    {
+      "zh": "类似这样的事情。",
+      "en": "Stuff like that.",
+      "explanation": "stuff like that 是口语表达，意为“类似的事情/东西”，用来概括前面提到的例子。",
+      "usage": "当你不想一一列举时，可以用 'Stuff like that' 收尾，显得自然流畅。"
+    },
+    {
+      "zh": "你可以在日常生活中找到很多体现物理的场景，而且我觉得那真的很有趣。",
+      "en": "You can find so many scenes in daily life that show physics, and I think that's really interesting.",
+      "explanation": "scenes in daily life 意为“日常生活中的场景”；that show physics 是定语从句，修饰 scenes；I think that's... 用来发表个人看法。",
+      "usage": "用 'You can find...' 给出具体观察，再用 'I think...' 表达感受，是雅思口语中“解释 + 感受”的常用结构。"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "62dd2e21208f84aeaf12fabe2670707399a7fd6019336be02963bfad7dd6c12f",
+  "complete_chinese": "我的家乡是江西上饶。它是一座发展中城市——老实说，我可以告诉你它不算很发达。与大多数地方相比，它欠发达，真的只是一个小城而已。",
+  "sentences": [
+    {
+      "zh": "我的家乡是江西上饶。",
+      "en": "My hometown is Shangrao, in Jiangxi province.",
+      "explanation": "回答家乡所在地时，可用“My hometown is + 城市名, in + 省份名”的直接句型。地名作为专有名词，每个单词的首字母都需大写。",
+      "usage": "在雅思口语Part 1中，回答关于家乡的问题时，可以先给出具体位置，再展开描述。例如：My hometown is Nanchang, in Jiangxi province."
+    },
+    {
+      "zh": "它是一座发展中城市——老实说，我可以告诉你它不算很发达。",
+      "en": "It's a developing city — I can tell you it's not very developed, honestly.",
+      "explanation": "developing city 意为“发展中城市”，developed 意为“发达的”，注意区分这两个形容词。句中用 I can tell you... 和 honestly 来软化语气，是口语中表达个人真实看法的自然方式。",
+      "usage": "描述城市发展水平时，可以说：It's a developing city, so it's not as developed as the big cities. 如果想更口语化，可加入 honestly 或 to be honest。"
+    },
+    {
+      "zh": "与大多数地方相比，它欠发达，真的只是一个小城而已。",
+      "en": "It's less developed than most places, just a small town, really.",
+      "explanation": "less developed than... 是“比……更不发达/欠发达”的比较结构。just a small town 中的 just 表示“仅仅、只是”，句末的 really 用于强调，整体传达出一种谦逊、坦诚的描述态度。",
+      "usage": "想客观比较家乡与其他地区时，可用 less... than... 结构，例如：It's less crowded than the capital, just a quiet town, really."
+    }
+  ]
+}

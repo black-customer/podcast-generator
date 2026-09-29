@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "d76c22f6e2b19b7806fa4431a403aa103ea590d7a81cd39e10f533799ca11606",
+  "complete_chinese": "很多。家长觉得能让孩子变聪明、提高智商，学校也会组织学生参观，大家都觉得有益处。",
+  "sentences": [
+    {
+      "zh": "是的，我认为很多中国人会参观科技馆。",
+      "en": "Yeah, I think a lot of Chinese people visit science museums.",
+      "explanation": "直接用 “I think” 引出观点，“a lot of” 修饰可数名词复数 “Chinese people”，表示“许多”，用来回答频率类问题，先给出总体判断。",
+      "usage": "在雅思口语中，回答 “Do...often...” 时，可以先用 “Yeah, I think...” 自然回应，再用 “a lot of + 可数名词复数” 描述人群规模，简洁明了。"
+    },
+    {
+      "zh": "因为家长们觉得这能帮助孩子变得更聪明——你知道的，帮助提升他们的智商。",
+      "en": "Because parents believe it helps children become smarter — you know, helps grow their IQ.",
+      "explanation": "“Because” 引导原因状语从句；“believe (that) it helps...” 中 “it” 指代参观科技馆这件事；“help sb. (to) do sth.” 表示“帮助某人做某事”；“become + 形容词比较级” 表示“变得更……”；“grow their IQ” 意为“提升智商”。",
+      "usage": "解释原因时，用 “Because parents believe...” 直接说明家长观点；“you know” 是口语填充词，能增加自然度和互动感；“helps grow...” 中 “help” 后接不带 to 的动词原形，非常口语化。"
+    },
+    {
+      "zh": "而且学校也会组织学生去那里，出于同样的原因：人们认为参观科技馆能让你更有逻辑、更聪明。",
+      "en": "And schools organize trips there too, for the same reason: people think visiting science museums makes you more logical and smarter.",
+      "explanation": "“organize trips” 是固定搭配，意为“组织参观/旅行”；“there” 指代前文提到的 “science museums”，避免重复；“for the same reason” 表示“出于同样原因”；“visiting science museums” 是动名词短语作主语，视为单数，所以谓语用 “makes”；“make sb. + adj.” 表示“使某人处于某种状态”。",
+      "usage": "用 “And... too” 补充另一个主体（学校）的类似行为；“for the same reason” 避免重复解释原因；动名词短语作主语是雅思口语中表达抽象概念的常用方式。"
+    },
+    {
+      "zh": "所以他们抱有这种信念，这就是他们经常去的原因。",
+      "en": "So they have this belief, and that's why they go often.",
+      "explanation": "“So” 用于总结上文；“have this belief” 表示“持有这种观念/信念”，比 “think” 更强调一种普遍看法；“that's why...” 是表语从句，意为“那就是为什么……”；“go often” 中 “often” 是频度副词，放在句末表示“经常去”。",
+      "usage": "用 “So” 和 “that's why” 对前文提到的多个原因进行归纳收尾，逻辑清晰；“have this belief” 适合描述群体性的普遍观念，显得更客观。"
+    }
+  ]
+}

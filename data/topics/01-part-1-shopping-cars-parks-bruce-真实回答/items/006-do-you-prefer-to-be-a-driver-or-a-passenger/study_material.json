@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "3248237f99e10150599336e1b61d08c16672973b791366e671340733292cd4d8",
+  "complete_chinese": "当然是乘客。我甚至还没上过驾驶课——我从来没真正开过车。所以我想象开车很无聊：你一直都坐在同一个座位上，手握着方向盘，总是盯着路。但如果我是乘客，我可以玩手机、和人聊天，甚至玩些游戏。所以是的，当然是乘客。",
+  "sentences": [
+    {
+      "zh": "当然是乘客。",
+      "en": "Passenger, of course.",
+      "explanation": "of course 表示“当然”，用于加强语气。口语中常可省略主语和谓语，单独用于回答选择类问题，显得简洁自然。",
+      "usage": "在雅思口语 Part 1 面对 Do you prefer A or B? 这类二选一问题时，可以直接用“A, of course.”快速表明立场，既清晰又自信。"
+    },
+    {
+      "zh": "我甚至还没上过驾驶课——我从来没真正开过车。",
+      "en": "I haven't even had my driving lessons yet — I've never actually driven a car.",
+      "explanation": "haven't even had... yet 是“现在完成时 + even + yet”，强调“甚至还没……”，带有解释或略带惊讶的语气。driven 是 drive 的过去分词，与 have 构成现在完成时，表示到目前为止的经验。actually 放在实义动词前，强调“实际上、真的”。",
+      "usage": "当需要解释自己缺乏某方面经验时，可用 I haven't even... yet 来突出自己连基础步骤都未开始，为后文的推测或感受做合理铺垫。"
+    },
+    {
+      "zh": "所以我想象开车很无聊：你一直都坐在同一个座位上，手握着方向盘，总是盯着路。",
+      "en": "So I just imagine driving is pretty boring: you sit in the same seat the whole time, hands on the wheel, always focusing on the road.",
+      "explanation": "imagine (that) driving is... 中 imagine 后接宾语从句，that 可省略。pretty 作副词相当于 very，但语气更口语化。冒号后具体解释 boring 的原因。hands on the wheel 是“名词 + 介词短语”的独立主格结构，作伴随状语，描述状态。focus on 是固定搭配，意为“专注于”。",
+      "usage": "描述想象中的情境时，可用 I just imagine... 引出主观看法；再用冒号或 because 补充细节，能有效扩展答案长度，展示逻辑与词汇控制力。"
+    },
+    {
+      "zh": "但如果我是乘客，我可以玩手机、和人聊天，甚至玩些游戏。",
+      "en": "But if I'm a passenger, I can play on my phone, chat with people, maybe even play some games.",
+      "explanation": "if 引导条件状语从句，主句用 can 表示“能够、可以”。play on my phone 是固定搭配，意为“玩手机”。chat with people 意为“和人聊天”。maybe even 表示“甚至可能”，even 用来加强意外或递进语气。句末 play some games 与前面两个动词短语并列，共用情态动词 can。",
+      "usage": "进行对比时，可用 But if I'm... 转折引出另一方的优势；并列多个动词短语（play..., chat..., play...）能丰富内容，体现词汇与句式的多样性。"
+    },
+    {
+      "zh": "所以是的，当然是乘客。",
+      "en": "So yeah, passenger, definitely.",
+      "explanation": "yeah 是 yes 的口语化说法，显得更随意自然。definitely 是副词，意为“肯定地、当然”，放在句末加强语气，与开头的 of course 形成首尾呼应。",
+      "usage": "在口语结尾处，用 So yeah, [答案], definitely. 可以简洁有力地重申观点，给考官留下结构完整、立场清晰的印象。"
+    }
+  ]
+}

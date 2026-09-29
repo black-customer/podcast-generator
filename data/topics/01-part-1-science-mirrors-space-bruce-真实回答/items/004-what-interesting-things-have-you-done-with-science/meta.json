@@ -8,5 +8,8 @@
   "stale": false,
   "dry_run": false,
   "duration_sec_podcast": 25.0,
-  "qa_podcast": "pass"
+  "qa_podcast": "pass",
+  "study_status": "ready",
+  "study_error": "",
+  "study_attempt_fingerprint": ""
 }

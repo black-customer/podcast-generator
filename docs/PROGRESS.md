@@ -540,3 +540,19 @@ API 额度放开；附带一轮自查修复。
 5. 交付：check.sh --with-e2e 全绿（184 passed / 1 skipped、e2e 14 passed）；v0.6.1
    （RELEASE_NOTES 新段 + VERSION + APK 重建）；tag v0.6.1 已推送。GitHub Release 与
    ZIP/APK 上传按现行规则待 Bruce 单独授权（产物已在 dist/ 备齐）。
+
+## 2026-09-29 会话 26：v0.6.1 Release 发布与旧语料批量材料（配额中断）
+
+1. Bruce 授权执行两件事：发布 v0.6.1 Release、批量准备剩余旧语料材料。
+2. GitHub Release v0.6.1 已发布（ZIP 1.3MB + APK 5.4MB，releases/latest 已指向）。
+3. 批量准备（step-5-preview，127 条候选）在第 34 条撞上 StepFun 账号级配额墙
+   （402 quota_exceeded，step-5-preview 与 step-3.7-flash 双双 402，判定为账户配额
+   用尽而非模型专属限制）：
+   - READY 17 条（70 句、0 虚构个人错误，中文原话条目全部无个人错误，符合证据边界）；
+     连同验收 3 条共 20 条旧语料可学；
+   - SKIP 33 条：01-my-studies／示例语料／02-sleep 等旧演示条目无播报稿（预期边界），
+     另 11 条模型输出未过校验（缺完整中文原意 8、虚构个人错误被拦 3）——未落盘坏数据；
+   - FAIL 77 条：3 次网络超时 + 74 次 402 配额。
+4. 批量脚本可续跑（已就绪条目自动跳过）；恢复条件 = Bruce 在 StepFun 平台充值或
+   查看账单后重跑 `data/.tmp/batch_material.py`（脚本不入库）。
+5. 17 条新 study_material.json + meta 入库提交并推送；8765 服务运行 v0.6.1（分离进程）。

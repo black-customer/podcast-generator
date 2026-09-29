@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "b6a8a53c9ff756f4109eacadf9769e0530ee6ab4d6fd33004229340e92b0e5f0",
+  "complete_chinese": "买过。刮胡子要用，涂面霜也要对着镜子确认没留下白印，不然看起来很怪。",
+  "sentences": [
+    {
+      "zh": "当然买过。",
+      "en": "Yes, of course.",
+      "explanation": "用 \"Yes, of course.\" 回答 \"Have you ever...?\" 这类现在完成时经历问句，表示肯定经历，语气比单纯的 \"Yes.\" 更自然、更自信。",
+      "usage": "在雅思口语 Part 1 中，面对 \"Have you ever bought...?\" 这类问题，可以先给出简短肯定回答，再展开细节。\"Of course\" 在这里表示“那还用说”，适用于日常、非正式话题。"
+    },
+    {
+      "zh": "我买了一块用来刮胡子的镜子——我需要看看有没有刮干净。",
+      "en": "I bought one for shaving — I need to see whether I've shaved cleanly.",
+      "explanation": "\"buy sth for (doing) sth\" 表示“买某物用于做某事”；\"whether\" 引导宾语从句，意为“是否”；\"I've shaved cleanly\" 用现在完成时强调刮完后的结果状态。",
+      "usage": "\"shave cleanly\" 是地道搭配，表示“刮得干净”。\"see whether...\" 比 \"see if...\" 更正式，适合考试。破折号后面解释买镜子的具体用途。"
+    },
+    {
+      "zh": "还有，涂面霜的时候，我需要确认涂好了，脸上没留下白印。",
+      "en": "And also when I put on facial cream, I need to check that I've applied it properly and there's no white stuff left on my face.",
+      "explanation": "\"when\" 引导时间状语从句；\"put on\" 此处表示“涂抹（护肤品）”；\"check that...\" 后接宾语从句；\"applied it properly\" 意为“涂抹得当/均匀”；\"there's no white stuff left\" 使用 \"there be\" 句型，过去分词 \"left\" 作后置定语，表示“残留的”。",
+      "usage": "\"put on facial cream\" 和 \"apply facial cream\" 均可表示“涂面霜”。\"properly\" 是副词，修饰动词 \"applied\"。\"white stuff\" 是口语表达，指“白色的印子/残留物”。\"leave sth + 地点\" 表示“在某处留下某物”。"
+    },
+    {
+      "zh": "不然看起来很怪。",
+      "en": "That would look strange.",
+      "explanation": "\"would\" 表示假设或推测，意为“会”；\"look\" 在此处是系动词，后接形容词 \"strange\"，表示“看起来奇怪”。",
+      "usage": "用 \"would + 动词原形\" 描述前文假设情况可能带来的结果，相当于 \"otherwise it would look strange\"（否则会很奇怪）。这种句型适合在口语中补充说明负面结果。"
+    }
+  ]
+}

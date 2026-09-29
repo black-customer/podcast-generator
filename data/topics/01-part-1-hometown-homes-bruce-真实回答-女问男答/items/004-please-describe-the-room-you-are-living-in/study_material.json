@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "6bdce6d63a18903b71bb0189e7fb1d133fcbe0351b5efb74df624d67ebd39254",
+  "complete_chinese": "现在住宿舍，六人间。只有一张桌子，双层结构：下层是桌子，上层是床。桌上有些书、电脑、杯子之类的，很普通的房间。",
+  "sentences": [
+    {
+      "zh": "现在住宿舍，六人间。",
+      "en": "Right now I'm living in a dormitory — a six-person room.",
+      "explanation": "right now 意为“现在、目前”，强调当下的居住状态。live in a dormitory 表示“住在宿舍”。a six-person room 是由“数词-名词”构成的复合形容词，用连字符连接，相当于中文的“六人间”。",
+      "usage": "描述当前状态时，可用 Right now I'm living in... 开头；“数字 + 连字符 + 名词单数”可作定语，如 a four-person room（四人间）。"
+    },
+    {
+      "zh": "只有一张桌子，双层结构：下层是桌子，上层是床。",
+      "en": "I just have one desk, and it's a two-floor setup: the first floor is the desk, and the second floor is my bed.",
+      "explanation": "just have 表示“只有、仅有”。a two-floor setup 指“双层结构/布置”。冒号后是对前面内容的具体解释说明。the first/second floor 原指建筑物楼层，此处借用为“下层/上层”，使描述更直观。",
+      "usage": "介绍家具配置时，可用 it's a ... setup 说明结构；描述高低床时，也可用 upper bunk / lower bunk（上/下铺）。"
+    },
+    {
+      "zh": "桌上有些书、电脑、杯子之类的。",
+      "en": "On the desk there are some books, my computer, some cups, and other little things.",
+      "explanation": "本句是 there be 句型的倒装结构，表示“某处有某物”。因主语为多个并列名词，be 动词用 are。other little things 意为“其他小东西”，little 含有“零碎、琐细”的意味。",
+      "usage": "列举物品时，可用 there are some..., ..., and other... 结构；表示个人物品时，computer 前常加 my/your 等物主代词。"
+    },
+    {
+      "zh": "很普通的房间。",
+      "en": "It's just a very normal room.",
+      "explanation": "just 在此处作副词，意为“只是、仅仅”，使语气更自然。very normal 表示“很普通、很正常”。",
+      "usage": "评价事物时，可用 It's just a very + adj. + noun. 表达平淡、不加修饰的印象；normal 也可替换为 ordinary 或 typical。"
+    }
+  ]
+}

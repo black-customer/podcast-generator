@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "4402626c2b03e6d05c1d7c8bf33e614affd2169f1afd70524b96c98c019f5619",
+  "complete_chinese": "小学。老师讲世界上的事，比如有个死湖，人不会沉下去，因为盐分——从那时开始对科学感兴趣。",
+  "sentences": [
+    {
+      "zh": "我想是从小学——从学校教育开始的。",
+      "en": "I think from primary school — from education.",
+      "explanation": "“from + 时间点” 表示“从某个时候开始”；“from education” 补充说明来源是学校教育。口语中回答 When did you...? 时，常省略主语和谓语，直接用 “From...” 开头，句首加 “I think” 使语气更自然、委婉。",
+      "usage": "直接回答起点：From primary school. / From around the age of seven. / I think from primary school."
+    },
+    {
+      "zh": "那时候，老师教我们关于世界的事。",
+      "en": "Back then, teachers taught us things about the world.",
+      "explanation": "“Back then” 意为“那时候/当时”，常与一般过去时连用；“teach sb. sth.” 是双宾语结构，表示“教某人某事”；“things about the world” 表示“关于世界的事物/知识”。",
+      "usage": "回忆过去背景：Back then, we didn't have the Internet. / Back then, teachers taught us mostly from textbooks."
+    },
+    {
+      "zh": "比如，有一个死湖，人们可以浮在水面上——他们根本不会沉下去，因为盐分。",
+      "en": "Like, there's this dead lake where people just float on the water — they don't sink at all, because of the salt.",
+      "explanation": "“Like” 在口语中用于举例，相当于“比如”；“there's this...” 是介绍某事物的口语句型，比 “there is a...” 更随意；“where” 引导定语从句，修饰 lake；“float on the water” 表示“浮在水面上”；“not... at all” 表示“完全不……”；“because of + 名词” 表示原因，意为“因为……”。",
+      "usage": "举例并解释原因：Like, there's this lake where... / People float because of the salt."
+    },
+    {
+      "zh": "就是从那时开始，我对科学产生了兴趣。",
+      "en": "That's when I started learning about science.",
+      "explanation": "“That's when...” 用来强调某个时间点，意为“就在那时……”；“start doing sth.” 表示开始做某事；“learn about...” 表示了解、学习某方面知识。这里用 “started learning about science” 对应原文“从那时开始对科学感兴趣”。",
+      "usage": "强调起点：That's when I realized my passion for science. / That's when my interest began."
+    }
+  ]
+}

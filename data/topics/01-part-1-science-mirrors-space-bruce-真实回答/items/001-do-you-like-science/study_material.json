@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "ef2915c7aebc04968edc38e00c360c166a2dff395801b02431868398cc6c410f",
+  "complete_chinese": "是的，我很喜欢科学。虽然我科学成绩不太好，但我觉得它非常迷人——是好奇心的驱使，你知道吗？我喜欢了解那些神奇的现象，比如两颗恒星之间存在引力，其中一颗只是绕着另一颗运行，或者黑洞是如何形成的，又或者化学反应是如何发生的。我对这些都非常感兴趣。",
+  "sentences": [
+    {
+      "zh": "是的，我很喜欢科学。",
+      "en": "Yeah, I'm really into science.",
+      "explanation": "“be really into...”是口语高频短语，表示“对……非常感兴趣、很喜欢”，比“I like...”更自然地道。用“Yeah”开头直接回应一般疑问句“Do you...?”，语气肯定。",
+      "usage": "在雅思口语 Part 1 中，回答“Do you like...?”时，可用“Yeah, I'm really into...”直接表明态度，简洁有力。"
+    },
+    {
+      "zh": "虽然我科学成绩不太好，但我觉得它非常迷人——是好奇心的驱使，你知道吗？",
+      "en": "Although my grades in science weren't great, I find it fascinating — it's the curiosity thing, you know?",
+      "explanation": "although 引导让步状语从句，表示“虽然……但是……”，注意英语中 although 与 but 不能同时使用。“grades weren't great”是委婉说法，比“I was bad at it”更自然。“the curiosity thing”是口语化表达，相当于“it's because of curiosity”，显得随意亲切。",
+      "usage": "当想表达“虽然某方面不强，但依然热爱”时，可用“Although..., I find it...”形成转折，丰富回答层次。"
+    },
+    {
+      "zh": "我喜欢了解那些神奇的现象，比如两颗恒星之间存在引力，其中一颗只是绕着另一颗运行，或者黑洞是如何形成的，又或者化学反应是如何发生的。",
+      "en": "I love seeing amazing stuff, like how two stars have gravity and one just orbits the other, or how a black hole comes into being, or how chemical reactions happen.",
+      "explanation": "“stuff”在口语中泛指“事物、现象”，比“things”更随意自然。句中用“like”举例，后接三个并列的 how 引导的宾语从句，分别描述天文和化学现象。“come into being”是正式短语，意为“形成、产生”，可提升词汇多样性；“orbit”在此作动词，表示“沿轨道运行”。",
+      "usage": "在口语中具体举例说明自己喜欢的内容时，可用“I love seeing..., like how...”句型，既具体又展示词汇量。"
+    },
+    {
+      "zh": "我对这些都非常感兴趣。",
+      "en": "I'm really into all of it.",
+      "explanation": "“be into”与第一句呼应，表示“对……着迷、感兴趣”。“all of it”指代前文提到的所有科学现象，起到总结收尾的作用。",
+      "usage": "列举完具体例子后，用“I'm really into all of it”进行总结，干脆利落地结束回答。"
+    }
+  ]
+}

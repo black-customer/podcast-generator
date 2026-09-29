@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source_fingerprint": "02856ec112f7a4bf0f105835036b5cf993c97d4525c7e185324a62f0cb04d45c",
+  "complete_chinese": "重要。跟买手机一样会考虑颜色，买车更会——这是第一印象的事，别人坐你的车会对你的性格有猜测。",
+  "sentences": [
+    {
+      "zh": "重要。",
+      "en": "Yes, I think they are.",
+      "explanation": "用 they are 回指上文的 colors，避免重复；直接、简洁地回应一般疑问句。",
+      "usage": "雅思口语 Part 1 中，先用一句话直接表明立场，再展开理由，是清晰稳妥的答题结构。"
+    },
+    {
+      "zh": "就像买手机一样——我买手机会考虑颜色。",
+      "en": "It's like buying a phone — when I buy a phone, I consider the color.",
+      "explanation": "It's like... 用于引出类比，把“颜色是否重要”具体到“买手机”的场景；破折号后的 when... 是时间状语从句，补充说明。",
+      "usage": "遇到抽象问题时，用 It's like + 名词/动名词 打比方，能让表达更生动；consider 直接接名词，表示“把……考虑在内”。"
+    },
+    {
+      "zh": "如果我买车，我肯定也会考虑颜色。",
+      "en": "And if I buy a car, I'll definitely consider the color too.",
+      "explanation": "if 引导条件状语从句，主句用将来时 I'll consider；definitely 加强语气，对应中文“更会/肯定会”；too 表示“也”。",
+      "usage": "“if 从句 + will / 'll” 是表达个人假设或习惯的高分句型；definitely, absolutely 等副词可让态度更明确。"
+    },
+    {
+      "zh": "实际上车更重要，因为你可以给手机套上壳，但车……",
+      "en": "It's actually more important for a car, because you can put a case on your phone, but a car...",
+      "explanation": "actually 表示“事实上”，用于强调或补充；because 引导原因状语从句；put a case on your phone 是“给手机套壳”的固定搭配。",
+      "usage": "用 actually 可以自然地引出对比或深层原因；put a case on... 是描述手机配件的常用表达。"
+    },
+    {
+      "zh": "颜色关乎第一印象。",
+      "en": "the color is about first impressions.",
+      "explanation": "be about 表示“在于、关于”；first impressions 是固定搭配，指“第一印象”。",
+      "usage": "be about + 名词 能简洁点明核心；first impression 在谈论外表、穿着、颜色时非常实用。"
+    },
+    {
+      "zh": "如果有人坐你的车，他们会仅凭外观就对你的性格有猜测。",
+      "en": "If someone rides in your car, they'll have thoughts about your personality just from how it looks.",
+      "explanation": "if 引导条件状语从句，主句用将来时 they'll have...；have thoughts about... 表示“对……有想法/猜测”；just from how it looks 是方式状语，强调“仅凭外观”。",
+      "usage": "have thoughts about... 比直接说 judge 更委婉，适合描述他人的看法；just from... 突出判断依据，口语中很自然。"
+    }
+  ]
+}

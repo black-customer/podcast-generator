@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "9b7f6f8ca0b265b29e03119b684cf72b5b6346f1de6728ffd7560b680864c68f",
+  "complete_chinese": "其实，不喜欢。我爸是装修工人——就是那种建造和装修房子的人——他的车里总是堆满了工具，到处都是又脏又有味的工具。所以每次坐他的车，我都得忍受那股味道整整一路，这让我头晕。所以，不，我小时候不喜欢坐车出行。",
+  "sentences": [
+    {
+      "zh": "其实，不，我不喜欢。",
+      "en": "Actually, no, I didn't.",
+      "explanation": "“Actually”是口语中常用的语气副词，表示“其实、实际上”，用于自然引出真实想法；“no”在此直接否定问句中的喜好；“I didn't”省略了上文提到的“enjoy traveling by car”。",
+      "usage": "在回答一般疑问句时，可以用“Actually, no, I didn't.”来开头，比生硬的“No”更自然，也符合口语交流习惯。"
+    },
+    {
+      "zh": "我爸是装修工人——就是那种建造和装修房子的人——他的车里总是堆满了工具。",
+      "en": "My father is a worker — the kind of guy who builds and renovates houses — and his car was always full of tools.",
+      "explanation": "句中破折号之间的“the kind of guy who builds and renovates houses”是插入语，对“a worker”进行具体解释；“who”引导限制性定语从句，修饰“the kind of guy”；“be full of”意为“充满、堆满”。",
+      "usage": "“the kind of person who...”是描述他人职业或特征的常用句型；“be full of + 名词”可用来形容空间被某物占满的状态。"
+    },
+    {
+      "zh": "到处都是又脏又有味的工具。",
+      "en": "Dirty, smelly tools everywhere.",
+      "explanation": "这是一个省略句，完整形式可理解为“There were dirty, smelly tools everywhere.”，在口语中常省略 There be 结构，直接用名词短语加地点副词来强调眼前所见。",
+      "usage": "想强调“到处都是什么”时，可以用“形容词 + 名词 + everywhere”的省略结构，简洁且有画面感。"
+    },
+    {
+      "zh": "所以每次坐他的车，我都得忍受那股味道整整一路，这让我头晕。",
+      "en": "So whenever I rode in his car, I had to put up with that smell for the whole ride, and it made me dizzy.",
+      "explanation": "“whenever”引导时间状语从句，表示“每当、无论什么时候”；“ride in his car”表示“坐他的车”；“put up with”是动词短语，意为“忍受”；“for the whole ride”表示“整整一路上”；“make sb. + 形容词”表示“使某人处于某种状态”。",
+      "usage": "“put up with”后接忍受的对象（如气味、噪音、人等），是替换“stand/bear”的高分口语短语；“made me dizzy”用过去式，与主句时态保持一致。"
+    },
+    {
+      "zh": "所以，不，我小时候不喜欢坐车出行。",
+      "en": "So no, I didn't enjoy traveling by car as a kid.",
+      "explanation": "“enjoy doing sth.”是固定搭配，意为“喜欢做某事”，后接动名词；“travel by car”表示“乘汽车出行”；“as a kid”意为“小时候”，在句中作时间状语。",
+      "usage": "结尾用“So no...”回扣问题，形成首尾呼应的完整回答；“enjoy traveling by car”直接对应题目中的“enjoy traveling by car”，体现词汇复用。"
+    }
+  ]
+}

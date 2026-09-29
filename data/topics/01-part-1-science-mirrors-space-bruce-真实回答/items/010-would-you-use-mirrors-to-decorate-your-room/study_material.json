@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source_fingerprint": "3ae9b7e32cc7cc59be8f73e7ec7988b70213685c61cb759bbcb418b8f923dd04",
+  "complete_chinese": "绝不。这对我们来说有点奇怪，因为在中国有风水——你知道，传统信仰。我们有故事和传说，如果你把镜子放在房间里开着，不好的东西可能会从里面出来。对很多人来说这是个可怕的想法。所以我们不这么做。",
+  "sentences": [
+    {
+      "zh": "绝不。",
+      "en": "No, absolutely not.",
+      "explanation": "“absolutely not”是比“no”更强烈的否定，表示“绝不、绝对不”，用来坚决拒绝或表达强烈反对。",
+      "usage": "在口语中，如果想加强否定语气，可以用“absolutely not / definitely not / certainly not”。"
+    },
+    {
+      "zh": "这对我们来说有点奇怪，因为在中国有风水——你知道，传统信仰。",
+      "en": "That's kind of a weird thing for us, because in China there's feng shui — you know, traditional beliefs.",
+      "explanation": "“kind of”表示“有点儿”，用于缓和语气；“because”引导原因状语从句；“feng shui”是音译外来词，后面用破折号和“you know”进行口语化的补充说明。",
+      "usage": "可以用“kind of / sort of + 名词/形容词”表示“某种程度上的……”，使表达更自然、口语化，如“kind of tired”。"
+    },
+    {
+      "zh": "我们有故事和传说，如果你把镜子放在房间里开着，不好的东西可能会从里面出来。",
+      "en": "We have stories and tales that if you leave a mirror open in your room, bad things might come out of it.",
+      "explanation": "“stories and tales”是近义并列，加强语气；“that”引导同位语从句，解释这些故事的内容；“if”引导条件状语从句；“leave + 宾语 + 形容词”表示“使……保持某种状态”；“might”表示可能性不大的推测；“come out of”意为“从……出来”。",
+      "usage": "“leave sth + adj.”结构表示让某物保持某种状态，如“leave the door open”（让门开着）、“leave the window closed”。"
+    },
+    {
+      "zh": "对很多人来说这是个可怕的想法。",
+      "en": "It's a terrifying thought for a lot of people.",
+      "explanation": "“It”是形式主语，真正的主语是后面的“thought”；“terrifying”是现在分词作形容词，修饰事物，表示“令人恐惧的”；“for a lot of people”表示“对很多人而言”。",
+      "usage": "注意区分：terrifying（令人害怕的，修饰物）和 terrified（感到害怕的，修饰人），如“a terrifying story”和“I am terrified”。"
+    },
+    {
+      "zh": "所以我们不这么做。",
+      "en": "So we just don't do that.",
+      "explanation": "“so”表示因果承接；“just”在这里表示“就是、只是”，带有轻微的语气；“do that”指代前文提到的在房间里放镜子的行为，避免重复。",
+      "usage": "在口语中，可以用“do that / do this”来指代前面提到过的动作，使句子更简洁。"
+    }
+  ]
+}

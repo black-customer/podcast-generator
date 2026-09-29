@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "cb59df1dab1cbb9890493103ba9a8b1f47e2aaefd002f9cbb60d7fe566669a74",
+  "complete_chinese": "说实话，我不是那种城市型人格——谈不上喜欢，但也不恨。我就是不喜欢，你知道的。我在南方长大，所以没能适应这里：冬天太冷、太干燥。而且这边物价更高，东西比我以前住的地方更贵。",
+  "sentences": [
+    {
+      "zh": "说实话，我不太算是喜欢城市的人，也不喜欢这座城市——但这并不意味着我恨它。",
+      "en": "Honestly, I'm not really a city person, and I don't like this city — but that doesn't mean I hate it.",
+      "explanation": "“not really a city person”用“a ... person”结构描述性格类型，“not really”表示“不太算是”，语气比直接说“not a”更委婉；“that doesn't mean (that) I hate it”中that引导宾语从句，that可省略，表示“这并不意味着……”；“Honestly”置于句首，坦诚引出真实感受。",
+      "usage": "当被问到是否喜欢某地但感受复杂时，可先给出总体否定，再用“but that doesn't mean...”软化语气，避免显得过于极端。例如：I'm not really a museum person, and I don't visit them often — but that doesn't mean I find them boring."
+    },
+    {
+      "zh": "我只是不喜欢它，你知道的。",
+      "en": "I just don't like it, you know.",
+      "explanation": "“just”在这里用于强调，表示“就是、只是”，带有一种直接甚至略带无奈的情绪；“you know”是口语中的话语标记语，不承担具体句意，但能让表达更自然、有交流感，也能给考生争取思考时间。",
+      "usage": "用于在没有充分理由时强调简单的个人偏好，自然收尾。例如：I just don't like waking up early, you know."
+    },
+    {
+      "zh": "我在中国南方长大，所以一直没能适应这里：冬天太冷，而且太干燥。",
+      "en": "I grew up in the southern part of China, so I never got used to it here: it's too cold in winter and too dry.",
+      "explanation": "“grew up in + 地点”表示“在……长大”，是描述背景经历的高频句型；“never got used to it”中“get used to + 名词/动名词”表示“适应……”，never强调“一直没能适应”；冒号用于解释前文原因，比because从句更简洁有力。",
+      "usage": "描述因地域差异带来的不适应，可用“grew up in... so I never got used to...”的因果结构。例如：I grew up in the north, so I never got used to the humidity here: it's too wet in summer."
+    },
+    {
+      "zh": "另外，这里的物价更高——东西比我以前住的地方更贵。",
+      "en": "Also, the prices are higher — things here cost more than where I used to live.",
+      "explanation": "“Also”置于句首，用于补充另一条理由，让答案结构更清晰；“cost more than...”是动词cost的比较级用法，more than后接比较对象；“where I used to live”是where引导的名词性从句，作than的宾语，相当于the place where I used to live。",
+      "usage": "对比两地物价、房租或工资时，可用“... are higher — things cost more than...”的破折号解释结构。例如：Also, the rent is higher — a flat here costs more than where I used to live."
+    }
+  ]
+}

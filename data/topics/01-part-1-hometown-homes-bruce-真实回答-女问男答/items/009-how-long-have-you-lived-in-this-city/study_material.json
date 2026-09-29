@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "source_fingerprint": "eea86f0cec2e5b166c4b4a7c1127c267567f8355826be3ff9a6ac8fdb380ad88",
+  "complete_chinese": "大概四年，因为我的大学在这里。",
+  "sentences": [
+    {
+      "zh": "大概四年，因为我的大学在这里。",
+      "en": "I've lived in this city for about four years, because my college is here.",
+      "explanation": "这句话使用现在完成时 \"I've lived\" 表示从过去持续到现在的居住状态；\"for about four years\" 用 \"for + 时间段\" 说明动作持续的时长；\"because\" 引导原因状语从句，解释居住原因；\"my college is here\" 用一般现在时描述当前事实。",
+      "usage": "在雅思口语中回答 \"How long...\" 时，可直接用 \"I've lived... for...\" 给出具体时长，并用 \"because...\" 补充背景信息，让回答更自然完整。"
+    }
+  ]
+}

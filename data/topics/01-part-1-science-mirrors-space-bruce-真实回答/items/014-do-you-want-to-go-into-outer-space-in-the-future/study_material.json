@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source_fingerprint": "30c028bb5de805457034a996c8c775954399c96fbf4d32fdb45f378aec87e79d",
+  "complete_chinese": "想去，如果有选择的话。但取决于价格和安全——太空旅行是大事，如果方便、安全、不太贵，我就会去。",
+  "sentences": [
+    {
+      "zh": "想去，如果有选择的话。",
+      "en": "Yes, if I had the choice.",
+      "explanation": "这里使用虚拟语气（subjunctive mood）的过去式 had 来表达一种假设：如果有选择的机会。if I had the choice 相当于 if I had the opportunity/option，比 if I have the choice 更委婉，暗示目前不一定有这个机会。",
+      "usage": "在口语中回答假设性问题时，常用 if I had... 来表示与现在情况不符的假设，语气比陈述事实更谦虚、更不确定。"
+    },
+    {
+      "zh": "但取决于价格和安全——太空旅行是大事。",
+      "en": "But you know, it depends on the price and the safety, because going to outer space is a big deal.",
+      "explanation": "depend on 表示“取决于”，后接名词短语；the price and the safety 是并列宾语，指价格因素和安全因素。going to outer space 是动名词短语作主语，谓语用 is。a big deal 是口语习语，意为“大事、重要的事”。",
+      "usage": "depend on sth. 用于说明某事受其他条件制约；a big deal 常出现在口语中，如 It's not a big deal.（没什么大不了的。）"
+    },
+    {
+      "zh": "如果方便、安全、不太贵，我就会去。",
+      "en": "If it were convenient, safe, and not that expensive, then I would definitely go.",
+      "explanation": "这是第二类条件句（second conditional）：if 从句用过去式 were 表示与现在事实相反的假设，主句用 would + 动词原形。not that expensive 意为“没那么贵”，that 在这里作副词，相当于 so。",
+      "usage": "第二类条件句用于谈论想象中或不太可能的情况。注意：在 if I were / if it were 中，正式语体常用 were 而非 was；not that + 形容词 表示“没那么……”。"
+    }
+  ]
+}
