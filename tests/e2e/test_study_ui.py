@@ -147,7 +147,8 @@ def test_five_sentences_recordings_and_review(sample):
             page.locator(".study-review-list a").first.wait_for()
             assert page.locator(".study-review-list a").count() >= 2
             assert "It helps me unwind" not in page.locator(".study-review-list").inner_text()
-            page.locator(".study-review-list a").first.click()
+            # 真实语料可能已有练习记录且排序在前：按本条目 id 精确定位
+            page.locator(f".study-review-list a[href*='{iid}']").first.click()
             page.get_by_role("heading", name="句子详情").wait_for()
             assert "It helps me unwind." in page.locator(".study-detail").inner_text()
             assert "It help me relaxed." in page.locator(".study-detail").inner_text()
@@ -155,6 +156,7 @@ def test_five_sentences_recordings_and_review(sample):
             page.screenshot(path=str(out / "B12.png"), full_page=True)
             page.goto(f"{BASE_URL}/#/review")
             page.locator("#study-review-start").wait_for()
+            page.select_option("#study-review-source", tid)
             page.locator("#study-review-start").click()
             for index in (1, 2):
                 _fill_sentence(page, ANSWER[index][1])
