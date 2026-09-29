@@ -31,6 +31,9 @@ EXCLUDE_PARTS = {
     "__pycache__", ".pytest_cache", ".ruff_cache", "node_modules", "www", "build", ".gradle",
 }
 
+# 前缀排除：docs/design/ 是给开发会话的概念图与提示词交接物（约 40MB），不进便携包
+EXCLUDE_PREFIXES = ("docs/design/",)
+
 # 审计：zip 内任何路径命中这些规则即为打包事故
 FORBIDDEN_PARTS = {
     "settings.json", "voice_samples", ".tmp", "episodes", "topics",
@@ -55,6 +58,8 @@ def main() -> int:
                     continue
                 rel = f.relative_to(BASE)
                 if any(part in EXCLUDE_PARTS for part in rel.parts):
+                    continue
+                if rel.as_posix().startswith(EXCLUDE_PREFIXES):
                     continue
                 zf.write(f, rel)
                 count += 1
