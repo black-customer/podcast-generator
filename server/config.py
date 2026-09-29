@@ -42,7 +42,7 @@ def atomic_write_text(path: Path, content: str) -> None:
 DEFAULT_SETTINGS = {
     "tts_provider": "stepfun",
     "stepfun_api_key": "",
-    "stepfun_text_model": "step-3.7-flash",
+    "stepfun_text_model": "step-5-preview",
     "stepfun_tts_model": "stepaudio-2.5-tts",
     "question_voice_id": "lively-girl",
     "answer_voice_id": "vibrant-youth",

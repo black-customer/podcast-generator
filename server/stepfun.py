@@ -187,7 +187,7 @@ def test_text_connection(settings: dict) -> dict:
     key = real_stepfun_api_key(settings)
     if not key:
         return {"ok": False, "mode": "dry_run", "message": "未配置 StepFun Key"}
-    model = str(settings.get("stepfun_text_model") or "step-3.7-flash")
+    model = str(settings.get("stepfun_text_model") or "step-5-preview")
     try:
         response = httpx.post(
             TEXT_API_URL,

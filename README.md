@@ -94,7 +94,7 @@ git clone https://github.com/black-customer/podcast-generator && cd podcastGener
 ## 语音引擎与 Key
 
 - **StepFun（默认）**：[platform.stepfun.com](https://platform.stepfun.com/) 注册后创建 API Key，
-  TTS 模型固定 `stepaudio-2.5-tts`；API 模式改写额外需要文本模型权限（默认 `step-3.7-flash`）；
+  TTS 模型固定 `stepaudio-2.5-tts`；API 模式改写额外需要文本模型权限（默认 `step-5-preview`，最强推理档）；
 - **fish.audio（备选）**：[fish.audio](https://fish.audio) 创建 Key（国内直连不稳定，可能需代理），
   免费档模型 `s2.1-pro-free`；音色 A/B Reference ID 在「音色展台」试听后一键设定；
 - 提问者与回答者的性别、音色都由你配置（设置页「提问的人 / 回答的人」两张角色卡，先选性别再

@@ -18,7 +18,7 @@ from .audioqa import strip_all_tags, strip_disallowed_tags
 from .config import real_stepfun_api_key
 
 TEXT_API_URL = "https://api.stepfun.com/v1/chat/completions"
-DEFAULT_TEXT_MODEL = "step-3.7-flash"
+DEFAULT_TEXT_MODEL = "step-5-preview"
 MAX_REPAIRS = 1
 # 表演稿与可见文本的词义一致性下限（内容词 jaccard）。同义改写通常 >0.5。
 SEMANTIC_OVERLAP_MIN = 0.35
