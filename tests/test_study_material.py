@@ -196,3 +196,46 @@ def test_voice_rebuild_keeps_material_when_text_unchanged(item):
     (path / "audio_podcast.mp3").write_bytes(b"new-audio-version")
     assert study.get_material(tid, iid)["status"] == "ready"
     assert study.sentence_audio(tid, iid, 0)["scope"] == "full_answer"
+
+
+def test_generate_material_repairs_once_on_bad_structure(legacy_item, monkeypatch):
+    """模型偶发漏字段：带错误信息重问一次再落盘，而不是直接失败。"""
+    import json as jsonlib
+
+    tid, iid, _ = legacy_item
+    good = material()
+    good.pop("complete_chinese")
+    good["complete_chinese"] = "我下班去散步，这让我放松。"
+    good["sentences"][1].pop("original_error")
+    good["complete_chinese"] = good["complete_chinese"]
+    calls = {"n": 0}
+
+    def fake_chat(settings, messages, cancel):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            bad = {"sentences": good["sentences"]}  # 缺 complete_chinese
+            return jsonlib.dumps(bad, ensure_ascii=False)
+        assert "complete_chinese" in messages[-1]["content"], "重问应带上错误说明"
+        return jsonlib.dumps(good, ensure_ascii=False)
+
+    monkeypatch.setattr(study.rewrite, "_chat", fake_chat)
+    monkeypatch.setattr(study, "load_settings", lambda: {"dry_run": False})
+    saved = study.generate_material(tid, iid)
+    assert calls["n"] == 2
+    assert saved["complete_chinese"]
+    assert study.get_material(tid, iid)["status"] == "ready"
+
+
+def test_generate_material_fails_after_two_bad_structures(legacy_item, monkeypatch):
+    import json as jsonlib
+
+    import pytest
+
+    tid, iid, _ = legacy_item
+    monkeypatch.setattr(
+        study.rewrite, "_chat",
+        lambda s, m, c: jsonlib.dumps({"sentences": []}, ensure_ascii=False),
+    )
+    monkeypatch.setattr(study, "load_settings", lambda: {"dry_run": False})
+    with pytest.raises(study.MaterialError):
+        study.generate_material(tid, iid)

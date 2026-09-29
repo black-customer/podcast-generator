@@ -171,7 +171,17 @@ def generate_material(topic_id: str, item_id: str) -> dict:
     if settings.get("dry_run"):
         raise MaterialError("dry-run 不调用文本模型；可用 Agent 材料命令准备")
     content = rewrite._chat(settings, messages, None)
-    result = rewrite._extract_json(content)
+    try:
+        result = rewrite._extract_json(content)
+        validate_material(result, full)
+    except MaterialError as exc:
+        # 模型偶发漏字段或结构漂移：带错误清单重问一次（同 rewrite 的修复模式）
+        messages.append({"role": "assistant", "content": content[:4000]})
+        messages.append({"role": "user", "content": (
+            f"上次输出存在以下问题：{exc}。请只返回修正后的完整 JSON 对象，"
+            "仍须包含 complete_chinese 与逐句 sentences，不要添加其他文字。")})
+        content = rewrite._chat(settings, messages, None)
+        result = rewrite._extract_json(content)
     if fingerprint != source_fingerprint(library.get_item_full(topic_id, item_id)):
         raise MaterialError("准备期间回答已变化，请重新准备材料")
     return save_material(topic_id, item_id, result)
