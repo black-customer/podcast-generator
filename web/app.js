@@ -38,6 +38,13 @@ function studyStatusName(status) {
     failed: "逐句材料失败", changed: "逐句材料内容已变化" })[status] || "逐句材料待补齐";
 }
 
+function timelineModeLabel(mode) {
+  // 词数据只有 Fish sse 路径产出；StepFun 默认路径是句级 measured。
+  if (mode === "sse") return { label: "逐词同步", estimated: false };
+  if (mode === "measured") return { label: "逐句同步", estimated: false };
+  return { label: "基础同步", estimated: true };
+}
+
 async function api(method, url, body = null) {
   // 离线包模式（B02）：拦截请求走本地数据层，视图代码零改动复用
   if (typeof PackState !== "undefined" && PackState.active) {
@@ -580,9 +587,9 @@ function renderLiveTimelineUI() {
   // 对齐模式保留真实状态，但用学习者能理解的产品语言呈现。
   const chip = document.getElementById("tl-mode-chip");
   if (chip) {
-    const measured = PlayerState.timelineMode === "measured";
-    chip.textContent = measured ? "逐句同步" : "基础同步";
-    chip.classList.toggle("chip-estimated", !measured);
+    const info = timelineModeLabel(PlayerState.timelineMode);
+    chip.textContent = info.label;
+    chip.classList.toggle("chip-estimated", info.estimated);
   }
 
   // 音频信息里的发音：时间轴自带说话人名字

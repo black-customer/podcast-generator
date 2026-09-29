@@ -115,6 +115,34 @@ def test_full_player_workflow():
         browser.close()
 
 
+def test_timeline_mode_chip_matches_alignment_capability():
+    """同步模式标注必须与时间轴真实能力一致：sse=逐词、measured=逐句、estimated=基础。
+
+    防止把 Fish sse（真逐词）标成「基础同步」，也防止把 StepFun measured（句级）
+    夸大成逐词——默认 StepFun 路径 words 恒为空（server/tts.py StepFun 分支）。
+    """
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(f"{BASE_URL}/#/topics")
+        page.wait_for_selector(".album-card", timeout=5000)
+        labels = page.evaluate(
+            "() => ['sse', 'measured', 'estimated'].map(m => timelineModeLabel(m))"
+        )
+        assert labels == [
+            {"label": "逐词同步", "estimated": False},
+            {"label": "逐句同步", "estimated": False},
+            {"label": "基础同步", "estimated": True},
+        ]
+        # 真实 Fish 语料（mode=sse，288 词）界面应如实标「逐词同步」
+        page.goto(f"{BASE_URL}/#/play/{TOPIC}/{ITEM}")
+        page.wait_for_selector("#pod-stream .transcript-row", timeout=5000)
+        chip = page.locator("#tl-mode-chip")
+        chip.wait_for_function("el => el.textContent !== '对齐模式…'")
+        assert chip.inner_text() == "逐词同步"
+        browser.close()
+
+
 @pytest.mark.parametrize(
     "viewport",
     [{"width": 390, "height": 844}, {"width": 412, "height": 915}],
