@@ -556,3 +556,21 @@ API 额度放开；附带一轮自查修复。
 4. 批量脚本可续跑（已就绪条目自动跳过）；恢复条件 = Bruce 在 StepFun 平台充值或
    查看账单后重跑 `data/.tmp/batch_material.py`（脚本不入库）。
 5. 17 条新 study_material.json + meta 入库提交并推送；8765 服务运行 v0.6.1（分离进程）。
+
+## 2026-09-29 会话 27：Coding Plan 额度接入与全量语料材料补齐
+
+1. Bruce 发现会话 26 批量消耗的是平台按量余额而非 Coding Plan，提供 step-plan 接入文档。
+   核实：Plan 有专用 OpenAI 兼容接入点 `https://api.stepfun.com/step_plan/v1`（同平台 Key，
+   推荐 step-5-preview），实测 JSON-mode 调用 200。产品新增 `stepfun_text_base_url` 设置
+   （默认空=标准计费，不影响路人；连接测试同步尊重），Bruce 本机 settings.json 已指向
+   Plan 接入点——文本调用从此走订阅额度。备选方案（GLM-5.3-Flash 子代理生成）未启用。
+2. 模型输出偶发漏 complete_chinese（批量 110 条中 25 次随机失败，复测同条即成功）。
+   generate_material 增加与 rewrite 相同的「带错误清单修复重试一次」（先红后绿两条测试）；
+   网页单条「准备材料」按钮同样受益。
+3. 批量四轮 + 逐条收尾：真实语料 106/106 全部就绪（105 条 step-5-preview 生成 +
+   1 条 Agent 手工撰写——纯中文原话但模型反复想把示范文本 horizon 标成用户错误，
+   校验器每次拦截，最终按证据边界手工落盘）。01-shoes 出现 2 条有据个人错误
+   （I haven't buy / some recommendation，引用均在原话）。
+4. 24 条旧演示条目（01-my-studies、示例语料、02-sleep）无播报稿，按设计不可准备。
+5. e2e 修复：Bruce 试用学习模式后复习库含真实记录，测试改为按条目 id 定位 + 来源筛选。
+6. 门禁全绿（ruff、185 passed / 1 skipped、e2e 14 passed）；四笔提交推送。
