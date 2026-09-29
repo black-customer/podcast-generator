@@ -11,7 +11,7 @@ if str(BASE_DIR) not in sys.path:
 
 from fastapi.testclient import TestClient
 
-from server import library
+from server import jobs, library
 
 
 @pytest.fixture()
@@ -27,6 +27,7 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setattr(audio, "TMP_DIR", tmp_path / ".tmp")
     monkeypatch.setattr(config, "SETTINGS_FILE", tmp_path / "settings.json")
     from server.main import app
+    monkeypatch.setattr(jobs, 'JOBS_FILE', tmp_path / 'jobs.json')
     with TestClient(app) as c:
         yield {"client": c, "topics": topics}
 
@@ -145,3 +146,60 @@ def test_stepfun_settings_and_voice_filters(env, monkeypatch):
     assert connection.status_code == 200
     assert connection.json()["stepfun"]["mode"] == "dry_run"
     assert c.put("/api/settings", json={"stepfun_tts_model": "stepaudio-3-tts"}).status_code == 422
+
+
+def test_atomic_write_survives_lock_free_concurrency(tmp_path, monkeypatch):
+    """绕开业务锁并发直写同一路径：写入互不破坏（放大的 replace 竞态窗口）。
+
+    固定 tmp 名会让两个写线程共享同一临时文件——用延迟 os.replace 放大窗口后
+    必然出现 FileNotFoundError 或丢失写入；uuid 后缀的独立 tmp 使其不可能。
+    """
+    import json
+    import threading
+    import time as _time
+
+    from server import config
+
+    real_replace = config.os.replace
+
+    def slow_replace(src, dst):
+        _time.sleep(0.02)
+        real_replace(src, dst)
+
+    monkeypatch.setattr(config.os, "replace", slow_replace)
+    target = tmp_path / "shared.json"
+    rounds = 25
+    workers = 4
+    broken: list[str] = []
+    lock = threading.Lock()
+
+    def writer(worker_id: int) -> None:
+        for i in range(rounds):
+            payload = json.dumps({"w": worker_id, "i": i, "pad": "x" * 200})
+            try:
+                config.atomic_write_text(target, payload)
+            except OSError as exc:
+                with lock:
+                    broken.append(f"w{worker_id}r{i}:write:{type(exc).__name__}")
+            try:
+                json.loads(target.read_text(encoding="utf-8"))
+            except PermissionError:
+                # 读者与 replace 的短暂共享冲突：重读一次即可，不算破坏
+                try:
+                    _time.sleep(0.03)
+                    json.loads(target.read_text(encoding="utf-8"))
+                except (json.JSONDecodeError, OSError) as exc:
+                    with lock:
+                        broken.append(f"w{worker_id}r{i}:read:{type(exc).__name__}")
+            except (json.JSONDecodeError, OSError) as exc:
+                with lock:
+                    broken.append(f"w{worker_id}r{i}:read:{type(exc).__name__}")
+
+    threads = [threading.Thread(target=writer, args=(n,)) for n in range(workers)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join(timeout=120)
+    monkeypatch.setattr(config.os, "replace", real_replace)
+    assert not broken, broken[:5]
+    assert json.loads(target.read_text(encoding="utf-8"))["pad"] == "x" * 200

@@ -5,6 +5,7 @@ import shutil
 import threading
 import time
 from pathlib import Path
+from uuid import uuid4
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 WEB_DIR = BASE_DIR / "web"
@@ -33,11 +34,23 @@ def atomic_write_text(path: Path, content: str) -> None:
     """原子写：先写临时文件再 os.replace，进程崩溃不留半截文件。
 
     适用于所有元数据/缓存 JSON 与语料 txt（data/ 是产品本体）。
+    tmp 名带 uuid：业务锁之外的并发写（timeline/试听缓存）互不踩踏；
+    replace 带有界重试：Windows 上目标文件被并发读者短暂占用时不失败。
     """
     path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_name(path.name + ".tmp~")
-    tmp.write_text(content, encoding="utf-8")
-    os.replace(tmp, path)
+    tmp = path.with_name(f"{path.name}.{uuid4().hex}.tmp~")
+    try:
+        tmp.write_text(content, encoding="utf-8")
+        for attempt in range(5):
+            try:
+                os.replace(tmp, path)
+                return
+            except PermissionError:
+                if attempt == 4:
+                    raise
+                time.sleep(0.02 * (attempt + 1))
+    finally:
+        tmp.unlink(missing_ok=True)
 
 DEFAULT_SETTINGS = {
     "tts_provider": "stepfun",
