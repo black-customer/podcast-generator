@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "d5fcd55f2c8fe4ee73d49fd31921cc09486f13e00d77baa0a1d45f56b80e5ce1",
+  "complete_chinese": "以前好——地铁站就在家附近，坐地铁很方便。但最近搬家了，变差了：现在很偏，要先坐公交再转地铁才能进市区。",
+  "sentences": [
+    {
+      "zh": "以前很好，因为我家附近就有一个地铁站——我可以直接坐地铁去任何地方。",
+      "en": "It used to be good, because there was a subway station right near my home — I could just take the subway anywhere.",
+      "explanation": "先用 “used to be good” 说明过去的交通状况很好；接着用 “there was” 存在句引出地铁站的位置，并用 “right near my home” 强调就在家附近；破折号后进一步解释方便之处，“could just take the subway anywhere” 表示“直接坐地铁就能到各处”，其中 “could” 是 “can” 的过去式，“just” 起到加强语气的作用。",
+      "usage": "谈论过去长期存在的状态用 “used to + 动词原形”；表示“某地有某物”可用 “there be” 句型；强调距离近可用 “right near”；“take the subway” 是固定搭配，意为“坐地铁”。"
+    },
+    {
+      "zh": "但我最近搬到了另一个地方，交通变得差多了。",
+      "en": "But I recently moved to another place, and the transport has become much worse.",
+      "explanation": "“But” 表示转折，引出与过去相反的情况；“recently moved to another place” 用一般过去时说明刚刚发生的搬家动作；“the transport has become much worse” 用现在完成时，强调从过去到现在交通变差了对现在造成的影响；“much” 用来修饰比较级 “worse”，表示“……得多”。",
+      "usage": "表示“搬到某地”用 “move to + 地点”；“transport” 作不可数名词可指公共交通状况；“has become + 形容词比较级” 表示已经变得……；“much + 比较级” 是常用结构，如 “much better / much worse”。"
+    },
+    {
+      "zh": "现在我在一个偏远的地区：我得先坐公交，然后换乘到地铁站，只有这样才能坐地铁进市区。",
+      "en": "Now I'm in a remote area: I have to take a bus first, then transfer to the subway station, and only then take the subway into the city.",
+      "explanation": "冒号后面具体解释“偏”在哪里。这句话用 “first... then... and only then...” 层层递进，清楚描述换乘步骤；“have to” 表示客观需要，即“必须先坐公交”；“transfer to the subway station” 表示换乘到地铁站；“into the city” 说明最终目的地是进入市区。",
+      "usage": "表示“偏远地区”可用 “remote area”；“have to” 强调客观必须；“first / then / only then” 常用于描述流程或步骤；“transfer to...” 表示换乘到……；“take the subway into the city” 中 “into” 表示由外向内进入。"
+    },
+    {
+      "zh": "真的很不好。",
+      "en": "It's really not good.",
+      "explanation": "这是一个简短的总结句，用 “It's really not good.” 直接对交通状况做出负面评价。“really” 作为副词修饰 “not good”，加强了语气，相当于“确实不好”。",
+      "usage": "口语中常用 “It's (really) + 形容词” 来评价事物；副词 “really” 可放在 be 动词之后、形容词之前，用来加强语气，如 “It's really far / expensive / inconvenient.”"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source_fingerprint": "5ce7cdc648f9087fe5a1ba0c719d651c22ef01bce1e92cfd0d409672ed5cd862",
+  "complete_chinese": "说实话，我不太清楚 house 和 apartment 的区别，因为我来自一个发展中的城市——我们那里没有这种区分。我一直都把它叫做 house。所以我想 house 也许比 apartment 更大，或者也许更便宜？基于那一点，我会说我更喜欢住在 house 里。",
+  "sentences": [
+    {
+      "zh": "说实话，我不太清楚 house 和 apartment 的区别，因为我来自一个发展中的城市——我们那里没有这种区分。",
+      "en": "Honestly, I don't really know the difference between a house and an apartment, because I come from a developing city — we don't have that distinction there.",
+      "explanation": "the difference between A and B 是固定搭配，表示“A与B之间的区别”，注意用 between...and...；come from a developing city 表示“来自发展中的城市”，developing 是形容词作定语；破折号后 we don't have that distinction there 补充说明背景，distinction 作名词，意为“区别、区分”，常与 make/have a distinction 搭配。",
+      "usage": "在口语中如果不确定某个概念，可以用 Honestly, I don't really know... 坦诚回应，再用 because 引导原因状语从句解释背景，使表达更连贯自然。"
+    },
+    {
+      "zh": "我一直都把它叫做 house。",
+      "en": "I always just called it a house.",
+      "explanation": "called it a house 中，it 是宾语，a house 是宾语补足语，属于 call + 宾语 + 名词 结构，表示“把……称作……”；always just 连用表示“一直都只是”，just 在这里强调方式的简单直接。",
+      "usage": "描述过去的习惯或一贯做法时，可以用一般过去时 called，前面加 always 表示“向来如此”，just 则带有“就这么简单地”语气。"
+    },
+    {
+      "zh": "所以我想 house 也许比 apartment 更大，或者也许更便宜？",
+      "en": "So I guess a house is maybe bigger than an apartment, or maybe cheaper?",
+      "explanation": "I guess 表示“我想/我猜”，用于委婉表达不确定；maybe 是副词，意为“也许”，放在 be 动词 is 之后；bigger than... 是形容词比较级加 than 的比较结构；or maybe cheaper 是省略句，完整形式是 or maybe it is cheaper，避免重复使口语更简洁。",
+      "usage": "在推测不确定的信息时，可以用 I guess... or maybe...? 来给出两种可能性，句末升调表示不确定和征求意见。"
+    },
+    {
+      "zh": "基于那一点，我会说我更喜欢住在 house 里。",
+      "en": "Based on that, I'd say I prefer living in a house.",
+      "explanation": "Based on that 是过去分词短语作状语，相当于 Because of that，意为“基于那一点/据此”；I'd say 是 I would say 的缩写，表示“我会说/依我看”，语气委婉；prefer living in... 中 prefer 后接动名词 living，表示“更喜欢居住……”，live in a house 是固定搭配。",
+      "usage": "在给出最终选择时，可以用 Based on that, I'd say... 来总结前面的理由，显得有逻辑；prefer doing sth. 是表达偏好的常用结构。"
+    }
+  ]
+}

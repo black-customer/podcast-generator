@@ -267,3 +267,44 @@ def test_permission_denied_and_unreliable_audio_fallback(sample):
             assert "无法使用麦克风" in page.locator("#study-rec-error").inner_text()
         finally:
             browser.close()
+
+
+def test_legacy_item_shows_prepare_without_pasting_original():
+    """旧语料（原话在 chinese.txt）学习页应直接给出一键准备，不要求先补原话。"""
+    topic = requests.post(
+        f"{BASE_URL}/api/topics", json={"name": f"学习验收-{uuid.uuid4().hex[:8]}"}, timeout=10
+    ).json()
+    tid = topic["id"]
+    question = "What do you usually do after work?"
+    body = {
+        "question": question,
+        "chinese": "我下班常去散步，这让我放松。",
+        "natural_english": "I usually go for a walk after work. It helps me unwind.",
+        "podcast_text": (f"A: {question}\nB: I usually go for a walk after work. "
+                         "It helps me unwind."),
+        "original_answer": "",
+    }
+    try:
+        created = requests.post(f"{BASE_URL}/api/topics/{tid}/items", json=body, timeout=10).json()
+        iid = created["id"]
+        audio = library.item_path(tid, iid) / "audio_podcast.mp3"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "anullsrc",
+                        "-t", "6", "-codec:a", "libmp3lame", "-y", str(audio)],
+                       check=True, capture_output=True)
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1536, "height": 1024})
+            try:
+                page.goto(f"{BASE_URL}/#/learn/{tid}/{iid}")
+                page.locator(".study-missing").wait_for()
+                assert "待补齐" in page.locator(".study-missing h1").inner_text()
+                assert "缺少原始回答" not in page.locator(".study-missing").inner_text()
+                assert page.locator("#study-original").count() == 0, "旧条目不应要求补原话"
+                assert page.locator("[data-missing='prepare']").count() == 1
+            finally:
+                browser.close()
+    finally:
+        requests.delete(f"{BASE_URL}/api/topics/{tid}", timeout=10)
+        private = study_progress.PRIVATE_DIR / tid
+        if private.resolve().is_relative_to(study_progress.PRIVATE_DIR.resolve()):
+            shutil.rmtree(private, ignore_errors=True)

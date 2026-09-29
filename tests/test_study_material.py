@@ -1,4 +1,5 @@
 """L02 逐句材料：原话证据、播报顺序、失效与旧数据兼容。"""
+import json
 import sys
 from pathlib import Path
 
@@ -114,6 +115,58 @@ def test_old_item_needs_original_answer(item):
     tid, iid, _ = item
     library.update_item_texts(tid, iid, {"original_answer": ""})
     assert study.get_material(tid, iid)["status"] == "needs_input"
+
+
+@pytest.fixture()
+def legacy_item(tmp_path, monkeypatch):
+    """旧版流水线条目：原始回答在 chinese.txt，没有 original_answer.txt。"""
+    monkeypatch.setattr(library, "TOPICS_DIR", tmp_path / "topics")
+    (tmp_path / "topics").mkdir()
+    topic = library.create_topic("Legacy waves")
+    created = library.create_item(topic["id"], {
+        "question": "What do you do after work?",
+        "chinese": "我下班去散步。这让我放松。",
+        "natural_english": "I go for a walk. It helps me unwind.",
+        "podcast_text": "A: What do you do after work?\nB: I go for a walk. It helps me unwind.",
+    })
+    path = library.item_path(topic["id"], created["id"])
+    (path / "audio_podcast.mp3").write_bytes(b"audio")
+    assert library.read_item_texts(path)["original_answer"] == ""
+    return topic["id"], created["id"], path
+
+
+def test_legacy_chinese_answer_unlocks_material_chain(legacy_item):
+    """旧语料的 chinese 原话按回退语义生效：不再卡在「缺少原始回答」。"""
+    tid, iid, path = legacy_item
+    found = study.get_material(tid, iid)
+    assert found["status"] == "needs_input"
+    assert "缺少原始回答" not in found["reason"]
+    full = library.get_item_full(tid, iid)
+    assert full["original_answer"] == ""
+    assert full["original_answer_effective"] == "我下班去散步。这让我放松。"
+
+    clean = material()
+    clean["sentences"][1].pop("original_error")  # 中文原话没有英文证据
+    saved = study.save_material(tid, iid, clean)
+    assert saved["sentences"][0]["en"] == "I go for a walk."
+    assert study.get_material(tid, iid)["status"] == "ready"
+
+
+def test_legacy_generate_material_sends_chinese_original(legacy_item, monkeypatch):
+    """API 准备的模型输入使用回退后的原话，而不是空字符串。"""
+    tid, iid, _ = legacy_item
+    captured = {}
+
+    def fake_chat(settings, messages, cancel):
+        captured["original"] = json.loads(messages[1]["content"])["original_answer"]
+        clean = material()
+        clean["sentences"][1].pop("original_error")
+        return json.dumps(clean, ensure_ascii=False)
+
+    monkeypatch.setattr(study.rewrite, "_chat", fake_chat)
+    monkeypatch.setattr(study, "load_settings", lambda: {"dry_run": False})
+    study.generate_material(tid, iid)
+    assert captured["original"] == "我下班去散步。这让我放松。"
 
 
 def test_malformed_material_reports_failure_instead_of_crashing(item):

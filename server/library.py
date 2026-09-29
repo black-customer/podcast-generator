@@ -520,6 +520,12 @@ def delete_item(topic_id: str, item_id: str) -> None:
             shutil.rmtree(d)
 
 
+def _original_answer_effective(texts: dict) -> str:
+    from .rewrite import original_answer_of
+
+    return original_answer_of(texts)
+
+
 def get_item_full(topic_id: str, item_id: str) -> dict:
     with LIB_LOCK:
         d = item_path(topic_id, item_id)
@@ -551,6 +557,9 @@ def get_item_full(topic_id: str, item_id: str) -> dict:
             "qa_monologue": meta.get("qa_monologue"),
             "qa_podcast": meta.get("qa_podcast"),
             "qa_default": meta.get("qa_default"),
+            # 旧语料把原始回答存在 chinese/natural_english：给学习入口的回退视图，
+            # 不改变 original_answer 字段的读写语义
+            "original_answer_effective": _original_answer_effective(texts),
         }
         if result["has_audio_podcast"]:
             from . import study

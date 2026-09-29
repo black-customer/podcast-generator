@@ -480,13 +480,15 @@ const StudyUI = (() => {
   function renderMissing(doc) {
     const names = { preparing: "正在准备逐句材料", needs_input: "逐句材料待补齐",
       failed: "逐句材料准备失败", changed: "回答内容已变化" };
+    // 旧语料的原话在 chinese/natural_english 里，后端已给回退视图
+    const original = state.item.original_answer_effective || state.item.original_answer;
     shell(`<section class="study-task study-missing"><h1>${names[doc.status] || "逐句材料未就绪"}</h1>
-      <p>${esc(doc.reason || "请准备本题逐句材料。")}</p>
-      ${doc.status === "needs_input" && !state.item.original_answer ? `<label for="study-original">补齐你的原始回答</label>
+      <p>${esc(doc.reason || "请准备本题逐句学习材料。")}</p>
+      ${doc.status === "needs_input" && !original ? `<label for="study-original">补齐你的原始回答</label>
         <textarea id="study-original" rows="5" placeholder="粘贴当时的中文、英文或混合原话"></textarea>
         <button type="button" data-missing="original">保存原话</button>` : ""}
       <div class="study-actions"><a class="study-button" href="#/play/${encodeURIComponent(state.topicId)}/${encodeURIComponent(state.itemId)}">继续听音频</a>
-        ${state.item.has_audio_podcast && state.item.original_answer ? `<button type="button" class="primary" data-missing="prepare">准备／重试材料</button>
+        ${state.item.has_audio_podcast && original ? `<button type="button" class="primary" data-missing="prepare">准备／重试材料</button>
           <button type="button" data-missing="agent">复制 Agent 任务</button>` : ""}</div>
       <p class="study-muted">API 准备会使用你自己的 StepFun 文本额度；Agent 可按独立材料命令提交。</p>
     </section>`);

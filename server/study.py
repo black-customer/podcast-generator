@@ -50,6 +50,11 @@ def _spoken_words(text: str) -> list[str]:
     return re.findall(r"[a-z]+(?:['’][a-z]+)?", re.sub(r"\[[^\]]*\]", "", text).lower())
 
 
+def _effective_original(texts: dict) -> str:
+    """原始回答：original_answer → chinese → natural_english（旧语料回退）。"""
+    return rewrite.original_answer_of(texts).strip()
+
+
 def expected_sentences(texts: dict) -> list[str]:
     visible = _answer_sentences(texts.get("podcast_text") or "")
     if not visible:
@@ -65,7 +70,7 @@ def expected_sentences(texts: dict) -> list[str]:
 def validate_material(material: dict, texts: dict) -> dict:
     if not isinstance(material, dict):
         raise MaterialError("逐句材料必须是 JSON 对象")
-    original = (texts.get("original_answer") or "").strip()
+    original = _effective_original(texts)
     if not original:
         raise MaterialError("缺少原始回答，请先补齐再准备学习材料")
     expected = expected_sentences(texts)
@@ -147,7 +152,8 @@ def set_status(
 def generate_material(topic_id: str, item_id: str) -> dict:
     """独立的一次文本模型调用；调用失败只改变材料状态。"""
     full = library.get_item_full(topic_id, item_id)
-    if not full.get("original_answer"):
+    original = _effective_original(full)
+    if not original:
         raise MaterialError("缺少原始回答，请先补齐")
     if not full.get("has_audio_podcast"):
         raise MaterialError("播客音频尚未完成")
@@ -157,7 +163,7 @@ def generate_material(topic_id: str, item_id: str) -> dict:
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": json.dumps({
             "question": full.get("question"),
-            "original_answer": full["original_answer"],
+            "original_answer": original,
             "exact_spoken_sentences": sentences,
         }, ensure_ascii=False)},
     ]
@@ -211,7 +217,7 @@ def get_material(topic_id: str, item_id: str) -> dict:
     texts = library.read_item_texts(path)
     meta = library.load_meta(path)
     result: dict = {"status": "needs_input", "reason": "请补齐逐句学习材料"}
-    if not texts.get("original_answer"):
+    if not _effective_original(texts):
         result["reason"] = "缺少原始回答；请补齐后准备材料，旧音频仍可播放"
         return result
     if library.resolve_audio_file(path, "podcast") is None:
