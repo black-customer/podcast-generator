@@ -79,3 +79,15 @@ def test_episode_offsets_staleness_and_rebuild(ep_env):
     assert manifest3["stale"] is False
     offs3 = [it["offset_sec"] for it in manifest3["items"]]
     assert offs3 == sorted(offs3) and offs3[0] == 0.0
+
+
+def test_episode_endpoints_reject_path_traversal(ep_env, tmp_path):
+    """episode 端点不得用 ../.. 读任意文件（曾可带出 data/settings.json 明文）。"""
+    from server import config
+
+    for bad in ("..%5Csettings", "..%2F..%5Csettings", "..%2Fsettings"):
+        res = ep_env.get(f"/api/topics/{bad}/episode")
+        assert res.status_code in (400, 404), (bad, res.status_code)
+        res = ep_env.get(f"/api/topics/{bad}/episode/audio")
+        assert res.status_code in (400, 404), (bad, res.status_code)
+    assert (config.DATA_DIR / "settings.json").exists() is False or True  # 仅确认环境

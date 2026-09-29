@@ -5,7 +5,13 @@ from . import audio, library
 from .config import EPISODES_DIR, atomic_write_text, load_settings
 
 
+def _require_topic_id(topic_id: str) -> None:
+    # episode 文件名由 topic_id 拼接：先过与话题目录同一套 id 校验，堵路径穿越
+    library.topic_dir(topic_id)
+
+
 def episode_path(topic_id: str, track: str = "default"):
+    _require_topic_id(topic_id)
     if track == "monologue":
         return EPISODES_DIR / f"{topic_id}_monologue.mp3"
     elif track == "podcast":
@@ -14,6 +20,7 @@ def episode_path(topic_id: str, track: str = "default"):
 
 
 def episode_manifest_path(topic_id: str, track: str = "default"):
+    _require_topic_id(topic_id)
     if track == "monologue":
         return EPISODES_DIR / f"{topic_id}_monologue.json"
     elif track == "podcast":

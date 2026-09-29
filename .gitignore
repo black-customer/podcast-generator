@@ -71,3 +71,9 @@ glm-workflow/output/
 # Bruce 学习套件（organic 漫谈版）：脚本/文本/概念图入库；音频可由脚本再生，不入库
 bruce_study_suite/audio/
 /*.mp3
+
+# 备份产物：内含个人语料，永不入库（历史遗留 zip 已 git rm --cached，轮换密钥另行处理）
+backups/
+
+# 原子写临时文件崩溃残留
+*.tmp~
