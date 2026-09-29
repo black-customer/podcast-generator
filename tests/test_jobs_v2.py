@@ -147,3 +147,56 @@ def test_job_history_endpoint(job_env):
     c = job_env
     listing = c.get("/api/jobs").json()
     assert isinstance(listing, list)
+
+
+def test_assemble_cancel_marks_cancelled_not_done(job_env, monkeypatch):
+    """合成期间取消：终态必须是 cancelled，而不是静默跑完标 done。"""
+    c = job_env
+    tid = c.post("/api/topics", json={"name": "AsmCancel"}).json()["id"]
+    _mk_item(c, tid)
+    r = c.post(f"/api/topics/{tid}/generate", json={"track": "podcast"})
+    _wait(c, r.json()["job_id"])
+
+    from server import assemble
+
+    started = threading.Event()
+
+    def fake_assemble(topic_id, track="default"):
+        started.set()
+        # 模拟用户在 ffmpeg 拼接期间点了取消
+        job_id = jobs._ACTIVE_TOPICS.get(topic_id)
+        with jobs.JOBS_LOCK:
+            jobs.JOBS[job_id]["cancel_event"].set()
+            jobs.JOBS[job_id]["cancel"] = True
+        return {"item_count": 1, "faked": True}
+
+    monkeypatch.setattr(assemble, "assemble_episode", fake_assemble)
+    r2 = c.post(f"/api/topics/{tid}/episode?track=podcast")
+    j = _wait(c, r2.json()["job_id"])
+    assert j["state"] == "cancelled", f"取消后终态应为 cancelled，实际 {j['state']}"
+    assert not j.get("result"), "已取消的任务不应携带成果"
+
+
+def test_assemble_cancelled_before_start_skips_work(job_env, monkeypatch):
+    c = job_env
+    tid = c.post("/api/topics", json={"name": "AsmCancel2"}).json()["id"]
+    _mk_item(c, tid)
+    r = c.post(f"/api/topics/{tid}/generate", json={"track": "podcast"})
+    _wait(c, r.json()["job_id"])
+
+    from server import assemble
+    called = {"n": 0}
+
+    def fake_assemble(topic_id, track="default"):
+        called["n"] += 1
+        job_id = jobs._ACTIVE_TOPICS.get(topic_id)
+        event = jobs.JOBS[job_id]["cancel_event"]
+        assert event.wait(timeout=10), "测试内未按时取消"
+        return {"item_count": 1}
+
+    monkeypatch.setattr(assemble, "assemble_episode", fake_assemble)
+    r2 = c.post(f"/api/topics/{tid}/episode?track=podcast")
+    jid = r2.json()["job_id"]
+    assert c.post(f"/api/jobs/{jid}/cancel").json().get("cancelled") is True
+    j = _wait(c, jid)
+    assert j["state"] == "cancelled"

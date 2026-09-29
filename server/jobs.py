@@ -334,13 +334,25 @@ def _run_assemble(job_id: str, topic_id: str, track: str) -> None:
         job = JOBS.get(job_id)
     if job is None:
         return
+    cancel_event = job.get("cancel_event")
     try:
+        if cancel_event is not None and cancel_event.is_set():
+            with JOBS_LOCK:
+                _finish(job, "cancelled")
+            return
         manifest = assemble.assemble_episode(topic_id, track=track)
         with JOBS_LOCK:
+            if cancel_event is not None and cancel_event.is_set():
+                # ffmpeg 拼接无法中途打断：取消在当前步骤后生效，终态如实标注
+                _finish(job, "cancelled")
+                return
             job["result"] = manifest
             _finish(job, "done")
     except Exception as exc:
         with JOBS_LOCK:
+            if cancel_event is not None and cancel_event.is_set():
+                _finish(job, "cancelled")
+                return
             job["errors"].append({"item_id": "", "message": str(exc)[:300]})
             _finish(job, "error")
 
