@@ -455,3 +455,28 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   `It help me relaxed.`；中文原话位置未虚构英文错误。未做真实 TTS 或用户真人听感门。
 - 更新 README、DESIGN、PRODUCT、AGENTS 和设计交接首页，移除“生产尚未实现”的过期说明。
   手机端学习布局仍待设计，Android 现有导入、浏览和收听流程保留；未推送远端。
+
+## 2026-09-29 会话 21：三项评审遗留修复与 v0.6.0 发布（tag v0.6.0）
+
+外部评审三项核实：逐词承诺（一半）、可下载发布（未做）、路线图/门禁（未做）；全部补齐。
+
+1. 同步标注诚实化：播放器对齐模式 chip 改三态——sse=逐词同步、measured=逐句同步、
+   estimated=基础同步（原逻辑把 Fish sse 误标「基础同步」，先红后绿 e2e 用 02-sleep
+   真实 sse 语料断言）。README 两处「逐词点亮」承诺按引擎条件化；RELEASE_NOTES v0.5.0
+   加勘误；ROADMAP 新增 W01（StepFun SSE 词级时间戳接入，PENDING，本轮不实现）。
+2. update_app.bat 防误杀：端口清理改为「祖先链上存在本项目进程 + 监听者命令行匹配
+   run.py/uvicorn」双重校验（venv 启动器派生基础 Python 子进程是真正的监听者）；
+   无关占用者不杀、外码 2 提示。tests/test_update_app.py 直接解析 bat 内 PowerShell
+   命令执行，双场景（无关进程存活 / 本项目服务被结束）先红后绿。
+3. 发布链 v0.6.0：package.py 排除 docs/design/（L01 的 42 张概念图曾把便携包撑到
+   43MB，回到 1.3MB，测试锁定 8MB 上限）；VERSION 0.6.0；README 增「直接下载最新版」
+   段指向 Releases；RELEASE_NOTES v0.6.0；sw.js 缓存 v4；APK 重建含全部新前端资产
+   （dist/ielts-pod-v0.6.0-debug.apk）。
+4. 门禁统一：check.sh ruff 缺失改硬失败；新增 --release（e2e + package 审计），
+   AGENTS 常用命令补一行；ROADMAP B06 归档 DONE（R04 角色卡已实现，防重复开发）。
+5. 验证：`bash scripts/check.sh --release` 全绿（ruff 硬门禁当场拦截本会话一处 B904、
+   179 passed / 1 skipped、e2e 13 passed、打包审计通过）。
+6. 并行会话：会话 20 的提交 1ee7751 与其未提交 WIP（server/study.py 状态指纹机制 +
+   两个 study 测试）已识别归属，全部保留绕开、未裹挟进本会话提交。
+7. 发布（经 Bruce 批准的三项评审计划授权，属 push 禁令显式例外）：推送 main 与全部
+   tag 到 origin；gh release v0.6.0 上传 portable ZIP + debug APK + 发布说明。
