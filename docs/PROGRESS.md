@@ -517,3 +517,26 @@ diff 机制（我的表达 vs 母语者表达）→ 纯英文双主持教学播�
   StepFun 试听缓存保留，不加入提交。
 - 本次 `bash scripts/check.sh` 全绿：ruff、181 passed / 1 skipped、导入与服务冒烟通过；
   两条修复的端到端与发布门禁证据见会话 22、23。
+
+## 2026-09-29 会话 25：旧语料学习解锁、复习库报错修复与 step-5-preview 升级（tag v0.6.1）
+
+Bruce 报告两问题（旧音频无法学习、复习库「加载失败」），并授权文本模型改用最强 step5、
+API 额度放开；附带一轮自查修复。
+
+1. 根因（探查代理核实）：旧语料 127/129 条原始回答在 chinese.txt，study.py 三处严格判断
+   original_answer、未复用 rewrite.original_answer_of 回退，前端准备按钮因空值不渲染；
+   「复习库加载失败」= 8765 服务为 v0.5.0 旧进程，/api/study/* 404（空库状态本身正常）。
+2. 修复（先红后绿）：study.py 三处改 _effective_original 回退；get_item_full 增加
+   original_answer_effective 回退视图（不改 PATCH/编辑语义）；renderMissing 用 effective 值。
+   单测 2 个 + legacy e2e（准备按钮出现、不要求补原话）。review_items 非数字事实键跳过，
+   手改坏 state.json 不再让 /api/study/review 500。
+3. 文本模型：/v1/models 探测确认最强为 step-5-preview（36 模型中唯一 step5 文本模型），
+   JSON-mode 最小调用验证通过；config/rewrite/stepfun 回退、settings.example、README 同步；
+   Bruce 的 settings.json 未固定模型字段，重启后自动生效。TTS 维持 stepaudio-2.5-tts。
+   已知环境风险（承会话 21）：Windows 注册表代理偶发掐断 api.stepfun.com TLS，本轮复测正常。
+4. 真实验收：8765 重启为当前代码（/api/study/review 200）；step-5-preview 为 3 条真实旧语料
+   （hometown 三题）真实准备逐句材料：全部 ready、5/4/4 句忠实中文原意、0 虚构个人错误；
+   study_material.json 与 meta 按数据策略入库。
+5. 交付：check.sh --with-e2e 全绿（184 passed / 1 skipped、e2e 14 passed）；v0.6.1
+   （RELEASE_NOTES 新段 + VERSION + APK 重建）；tag v0.6.1 已推送。GitHub Release 与
+   ZIP/APK 上传按现行规则待 Bruce 单独授权（产物已在 dist/ 备齐）。
