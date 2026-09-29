@@ -33,6 +33,11 @@ function esc(s) {
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
+function studyStatusName(status) {
+  return ({ ready: "逐句材料已就绪", preparing: "逐句材料准备中", needs_input: "逐句材料待补齐",
+    failed: "逐句材料失败", changed: "逐句材料内容已变化" })[status] || "逐句材料待补齐";
+}
+
 async function api(method, url, body = null) {
   // 离线包模式（B02）：拦截请求走本地数据层，视图代码零改动复用
   if (typeof PackState !== "undefined" && PackState.active) {
@@ -726,9 +731,13 @@ async function TopicDetailView(topicId, token) {
         ${it.stale ? '<span class="track-pill" style="color:var(--warn)">待更新</span>' : ""}
         ${it.error ? '<span class="track-pill" style="color:var(--err)">错误</span>' : ""}
         ${it.has_audio ? '<span class="track-pill ok">可精听</span>' : '<span class="track-pill">待生成</span>'}
+        ${it.has_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
+          `<span class="track-pill">${studyStatusName(it.study_status)}</span>` : ""}
       </div>
       <div>${it.duration_sec_podcast ? fmtDur(it.duration_sec_podcast) : (it.duration_sec ? fmtDur(it.duration_sec) : "—")}</div>
-      <div><a class="btn-pill" style="padding:4px 12px;font-size:12px;" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">播放</a></div>
+      <div class="track-actions"><a class="btn-pill" style="padding:4px 12px;font-size:12px;" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">播放</a>
+        ${it.has_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
+          `<a class="study-entry-link" href="#/learn/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">${it.study_status === "ready" ? "继续学习" : "开始学习"}</a>` : ""}</div>
     </div>
   `).join("");
 
@@ -764,6 +773,7 @@ async function TopicDetailView(topicId, token) {
       ${rowsHtml || `<p style="color:var(--text-sub);padding:20px;">该专辑暂无曲目</p>`}
     </div>
   `;
+  $app.querySelectorAll(".study-entry-link").forEach(link => link.addEventListener("click", e => e.stopPropagation()));
 
 }
 
@@ -813,6 +823,10 @@ async function TrackPlayerView(topicId, itemId, token) {
           <span>${esc(topic.name)}</span>
           <span id="tl-mode-chip">对齐模式…</span>
           ${item.stale ? `<span class="chip-stale">待更新</span>` : ""}
+          ${item.has_audio_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
+            `<span>${studyStatusName(item.study_status)}</span>` : ""}
+          ${item.has_audio_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
+            `<a class="study-entry-link" href="#/learn/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">开始／继续学习</a>` : ""}
         </div>
         <div class="lyrics-panel" id="lyrics-panel">
           <div id="pod-stream" class="transcript" style="display:${PlayerState.track === 'podcast' ? 'block' : 'none'}">
@@ -1281,6 +1295,15 @@ async function ManageView(token) {
       </form>
     </div>
 
+    <div class="mg-card study-preference desktop-study-nav">
+      <h3>逐句学习</h3>
+      <label for="study-hint-duration">短暂看答案的时长</label>
+      <select class="mg-input" id="study-hint-duration">
+        ${[3, 5, 8].map(n => `<option value="${n}" ${Number(localStorage.getItem("study-hint-seconds") || 5) === n ? "selected" : ""}>${n} 秒</option>`).join("")}
+      </select>
+      <p class="mg-hint">提示隐藏后不会清除已经输入的词。</p>
+    </div>
+
     <details class="content-admin mg-advanced" ${ManageState.adminOpen ? "open" : ""}>
       <summary>高级内容管理</summary>
       <p class="mg-hint">仅在手动维护旧语料时使用；日常生成请从「开始练习」进入。</p>
@@ -1305,6 +1328,9 @@ async function ManageView(token) {
     </div>
     </details>
   `;
+
+  document.getElementById("study-hint-duration").onchange = e =>
+    localStorage.setItem("study-hint-seconds", e.target.value);
 
   const adminDetails = document.querySelector(".content-admin");
   if (adminDetails) {
@@ -2268,6 +2294,7 @@ function viewStale(token) {
 function route() {
   const token = ++routeToken;
   const hash = location.hash || "#/practice";
+  if (typeof StudyUI !== "undefined" && !hash.startsWith("#/learn/") && !hash.startsWith("#/review")) StudyUI.leave();
   document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
   document.querySelectorAll(".nav-item").forEach(el => {
     const href = el.getAttribute("href");
@@ -2291,6 +2318,25 @@ function route() {
     ImportView(token);
     return;
   }
+
+  if (hash.startsWith("#/learn/")) {
+    const parts = hash.slice(8).split("/");
+    if (parts.length >= 2) {
+      StudyUI.view(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
+      return;
+    }
+  }
+
+  if (hash === "#/review-done") { StudyUI.reviewDone(token); return; }
+
+  if (hash.startsWith("#/review/")) {
+    const parts = hash.slice(9).split("/");
+    if (parts.length >= 3) {
+      StudyUI.reviewDetail(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), Number(parts[2]), token);
+      return;
+    }
+  }
+  if (hash === "#/review") { StudyUI.review(token); return; }
 
   if (hash.startsWith("#/done/")) {
     const parts = hash.slice(7).split("/");
@@ -2496,6 +2542,8 @@ async function DoneView(topicId, itemId, token) {
     <a class="back-link" href="#/topic/${encodeURIComponent(topicId)}">← 返回话题</a>
     <div class="done-wrap">
       <div class="done-badge ${hasAudio ? "ok" : "wait"}">${hasAudio ? "✓ 音频已生成" : "⏳ 音频还在生成中"}</div>
+      ${item.has_audio_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
+        `<p class="study-material-status">${studyStatusName(item.study_status)}</p>` : ""}
       <h2 class="done-title">${esc(publicTitle(item.title || item.question || "条目"))}</h2>
       ${item.question && item.title !== item.question ? `<div class="bank-answer-q" style="margin:8px 0 16px;">${esc(item.question)}</div>` : ""}
       ${item.natural_english ? `
@@ -2507,6 +2555,8 @@ async function DoneView(topicId, itemId, token) {
       <div class="bank-answer-actions">
         ${hasAudio ? `
           <a class="bank-submit-btn" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}" style="text-decoration:none;">▶ 打开精听播放器</a>
+          ${item.has_audio_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
+            `<a class="btn-pill" href="#/learn/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">开始学习</a>` : ""}
           <a class="btn-pill" href="/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/audio/podcast" download="podcast.mp3" style="text-decoration:none;">⬇ 下载 MP3</a>`
         : `<button class="btn-pill" onclick="location.reload()">刷新状态</button>`}
         <a class="btn-pill" href="#/bank" style="text-decoration:none;">再练一题</a>
