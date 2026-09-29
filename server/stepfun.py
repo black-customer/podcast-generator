@@ -188,9 +188,11 @@ def test_text_connection(settings: dict) -> dict:
     if not key:
         return {"ok": False, "mode": "dry_run", "message": "未配置 StepFun Key"}
     model = str(settings.get("stepfun_text_model") or "step-5-preview")
+    base = str(settings.get("stepfun_text_base_url") or "").rstrip("/")
+    url = f"{base}/chat/completions" if base else TEXT_API_URL
     try:
         response = httpx.post(
-            TEXT_API_URL,
+            url,
             headers={"Authorization": f"Bearer {key}"},
             json={
                 "model": model,

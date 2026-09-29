@@ -43,6 +43,8 @@ DEFAULT_SETTINGS = {
     "tts_provider": "stepfun",
     "stepfun_api_key": "",
     "stepfun_text_model": "step-5-preview",
+    # Coding Plan 订阅者可改为 "https://api.stepfun.com/step_plan/v1" 用订阅额度；留空走标准计费
+    "stepfun_text_base_url": "",
     "stepfun_tts_model": "stepaudio-2.5-tts",
     "question_voice_id": "lively-girl",
     "answer_voice_id": "vibrant-youth",

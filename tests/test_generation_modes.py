@@ -409,3 +409,29 @@ def test_both_modes_produce_identical_structures(client, monkeypatch):
 
     assert snap(api_res["topic_id"], api_res["item_id"]) == \
         snap(agent_res["topic_id"], agent_res["item_id"])
+
+
+def test_chat_routes_to_configured_plan_endpoint(monkeypatch):
+    """配置 stepfun_text_base_url 时文本调用走该接入点（Coding Plan 额度），默认不变。"""
+    from server import rewrite
+
+    captured = {}
+
+    class FakeResponse:
+        status_code = 200
+
+        def json(self):
+            return {"choices": [{"message": {"content": "{}"}}]}
+
+    def fake_post(url, **kwargs):
+        captured["url"] = url
+        return FakeResponse()
+
+    monkeypatch.setattr(rewrite.httpx, "post", fake_post)
+    settings = {"stepfun_api_key": "sk-test", "stepfun_text_model": "step-5-preview"}
+    rewrite._chat(settings, [{"role": "user", "content": "hi"}], None)
+    assert captured["url"] == rewrite.TEXT_API_URL
+
+    settings["stepfun_text_base_url"] = "https://api.stepfun.com/step_plan/v1"
+    rewrite._chat(settings, [{"role": "user", "content": "hi"}], None)
+    assert captured["url"] == "https://api.stepfun.com/step_plan/v1/chat/completions"

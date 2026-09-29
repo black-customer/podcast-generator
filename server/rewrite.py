@@ -168,9 +168,12 @@ def _chat(settings: dict, messages: list[dict], cancel: threading.Event | None) 
     if cancel is not None and cancel.is_set():
         raise RewriteError("已取消")
     model = str(settings.get("stepfun_text_model") or DEFAULT_TEXT_MODEL)
+    # Coding Plan 订阅者可把 stepfun_text_base_url 指向 step_plan 接入点，用订阅额度
+    base = str(settings.get("stepfun_text_base_url") or "").rstrip("/")
+    url = f"{base}/chat/completions" if base else TEXT_API_URL
     try:
         response = httpx.post(
-            TEXT_API_URL,
+            url,
             headers={"Authorization": f"Bearer {key}"},
             json={
                 "model": model,
