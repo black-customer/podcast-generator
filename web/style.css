@@ -2251,3 +2251,43 @@ body:not(.player-route) .global-player { display: none !important; }
 }
 
 .study-skip { margin-top: 14px; padding: 8px 18px; border: none; background: transparent; color: var(--blue); font: inherit; font-size: 14px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+
+/* L04：今日练习与口答复习延续桌面暖纸阅读面。 */
+.today-page { max-width: 1130px; margin: 0 auto; padding: 12px 0 80px; color: var(--ink); }
+.today-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 25px; padding: 8px 0 25px; }
+.today-head h1 { font-size: clamp(32px, 3vw, 43px); line-height: 1.25; }
+.today-head p { margin-top: 6px; color: var(--ink-soft); }
+.today-section { margin: 18px 0; padding: 26px 30px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper-raised); }
+.today-section h2 { margin: 0 0 15px; font-size: 23px; color: var(--ink); }
+.today-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 15px; }
+.today-section-head span { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.today-continue { display: grid; gap: 7px; color: var(--ink); padding: 22px; border: 1px solid var(--rule); border-radius: 6px; }
+.today-continue span { color: var(--ink-soft); font-size: 13px; }
+.today-continue strong { font: 500 clamp(22px, 2vw, 29px)/1.35 Georgia, serif; }
+.today-continue b { color: var(--blue); font-size: 14px; }
+.today-due-list { margin-top: 17px; border-top: 1px solid var(--rule); }
+.today-due-list > div { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.today-due-list strong { font-size: 17px; font-weight: 600; }
+.today-due-list span { color: var(--ink-soft); font-size: 13px; }
+.today-empty { margin: 12px 0; padding: 16px 0; color: var(--ink-soft); }
+.today-note { margin-top: 18px; color: #765b37; line-height: 1.6; }
+.oral-page { max-width: 1060px; }
+.oral-page .study-counter { margin-top: 30px; }
+.oral-page .study-question-block { margin-top: 10px; }
+.oral-page .study-task { max-width: 92ch; }
+.oral-page .study-recorder { max-width: 800px; }
+.oral-page #oral-preview { display: block; max-width: 100%; margin: 14px 0; }
+.oral-page #oral-preview[hidden], .oral-page #oral-download[hidden] { display: none; }
+.oral-page .study-actions audio { max-width: min(360px, 100%); }
+.oral-history .today-section { margin: 20px 0; }
+.oral-history .study-recording-row > div { flex: 1; }
+.oral-history input[type="date"] { padding: 8px 12px; border: 1px solid var(--rule); border-radius: 5px; background: var(--paper-raised); color: var(--ink); font: inherit; }
+.oral-history .study-review-filter { flex-wrap: wrap; }
+.oral-history .study-review-filter label { max-width: 100%; }
+.oral-history .study-review-filter select { max-width: min(560px, 100%); }
+@media (max-width: 860px) {
+  .today-page { padding: 18px; }
+  .today-head { align-items: flex-start; flex-direction: column; }
+  .today-section { padding: 18px; }
+  .today-due-list > div { display: grid; gap: 4px; }
+}

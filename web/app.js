@@ -2330,11 +2330,15 @@ function viewStale(token) {
   return token != null && token !== routeToken;
 }
 
-const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup"];
+const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup", "#/today",
+  "#/oral-review", "#/study-history"];
 
 function route() {
   const token = ++routeToken;
-  const hash = location.hash || "#/practice";
+  const packActive = typeof PackState !== "undefined" && PackState.active;
+  const hash = location.hash || (packActive || matchMedia("(max-width: 860px)").matches
+    ? "#/practice" : "#/today");
+  if (typeof OralReviewUI !== "undefined" && !OralReviewUI.leave(hash)) return;
   if (typeof PackState !== "undefined" && PackState.active
     && PACK_UNSUPPORTED_VIEWS.some(v => hash === v || hash.startsWith(v + "/"))) {
     $app.innerHTML = `<div class="study-page"><h1>离线包模式不支持此页面</h1>
@@ -2346,7 +2350,8 @@ function route() {
   document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
   document.querySelectorAll(".nav-item").forEach(el => {
     const href = el.getAttribute("href");
-    if (href === hash || (hash.startsWith("#/bank") && href === "#/practice")
+    if (href === hash || ((hash.startsWith("#/oral-review/") || hash === "#/study-history")
+        && href === "#/today") || (hash.startsWith("#/bank") && href === "#/practice")
         || (hash.startsWith("#/practice") && href === "#/practice")) {
       el.classList.add("active");
     } else {
@@ -2364,6 +2369,13 @@ function route() {
 
   if (hash.startsWith("#/import")) {
     ImportView(token);
+    return;
+  }
+
+  if (hash === "#/today") { OralReviewUI.today(token); return; }
+  if (hash === "#/study-history") { OralReviewUI.history(token); return; }
+  if (hash.startsWith("#/oral-review/")) {
+    OralReviewUI.sessionView(decodeURIComponent(hash.slice("#/oral-review/".length)), token);
     return;
   }
 

@@ -44,7 +44,7 @@ FORBIDDEN_PARTS = {
 # 任何媒体/签名产物后缀都不得入便携包
 FORBIDDEN_SUFFIXES = (
     ".mp3", ".m4b", ".wav", ".apk", ".m4a", ".flac", ".ogg", ".opus", ".aac",
-    ".wma", ".keystore", ".jks",
+    ".wma", ".webm", ".keystore", ".jks",
 )
 
 

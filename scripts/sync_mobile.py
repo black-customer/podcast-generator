@@ -14,7 +14,8 @@ BASE = Path(__file__).resolve().parent.parent
 WEB = BASE / "web"
 WWW = BASE / "mobile" / "www"
 
-STATIC_FILES = ["app.js", "study.js", "packreader.js", "packmode.js", "style.css"]
+STATIC_FILES = ["app.js", "study.js", "oral_review.js", "packreader.js", "packmode.js",
+                "style.css"]
 
 
 def patch_java17() -> None:

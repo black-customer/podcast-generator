@@ -11,7 +11,7 @@ from .config import DATA_DIR, atomic_write_text
 
 PRIVATE_DIR = DATA_DIR / "study_private"
 STAGES = frozenset({"before", "dictation", "chinese", "recall", "summary"})
-RECORDING_STAGES = frozenset({"before", "chinese", "recall"})
+RECORDING_STAGES = frozenset({"before", "chinese", "recall", "oral_review"})
 MEDIA_TYPES = {"audio/webm": ".webm", "audio/ogg": ".ogg", "audio/mp4": ".m4a"}
 _LOCK = threading.RLock()
 
@@ -87,13 +87,26 @@ def save_progress(topic_id: str, item_id: str, update: dict) -> dict:
                 state[key] = update[key]
         if facts is not None:
             for key, value in facts.items():
-                state["facts"][str(key)] = {**state["facts"].get(str(key), {}), **value}
+                previous = state["facts"].get(str(key), {})
+                merged = {**previous, **value}
+                if value.get("passed") is True:
+                    from . import study
+
+                    found = study.get_material(topic_id, item_id)
+                    if found["status"] == "ready":
+                        fingerprint = found["material"]["source_fingerprint"]
+                        if previous.get("passed_source_fingerprint") != fingerprint:
+                            merged["passed_at"] = library.now_iso()
+                            merged["passed_source_fingerprint"] = fingerprint
+                state["facts"][str(key)] = merged
+        state["last_activity_at"] = library.now_iso()
         _write(topic_id, item_id, state)
         return state
 
 
 def save_recording(
-    topic_id: str, item_id: str, stage: str, data: bytes, duration_sec: float, media_type: str
+    topic_id: str, item_id: str, stage: str, data: bytes, duration_sec: float, media_type: str,
+    sentence_index: int | None = None, session_id: str | None = None,
 ) -> dict:
     if stage not in RECORDING_STAGES:
         raise ValueError("非法录音阶段")
@@ -104,6 +117,10 @@ def save_recording(
     media_type = media_type.split(";", 1)[0].strip().lower()
     if media_type not in MEDIA_TYPES:
         raise ValueError("录音格式不支持")
+    if stage == "oral_review" and (
+        not isinstance(sentence_index, int) or sentence_index < 0 or not session_id
+    ):
+        raise ValueError("口答录音缺少句子或轮次")
     with _LOCK:
         state = get_progress(topic_id, item_id)
         folder = _folder(topic_id, item_id)
@@ -120,7 +137,10 @@ def save_recording(
                      "created_at": library.now_iso(),
                      "duration_sec": round(float(duration_sec), 2), "media_type": media_type,
                      "filename": name}
+            if stage == "oral_review":
+                entry.update({"sentence_index": sentence_index, "session_id": session_id})
             state["recordings"].append(entry)
+            state["last_activity_at"] = library.now_iso()
             _write(topic_id, item_id, state)
         except Exception:
             temp.unlink(missing_ok=True)

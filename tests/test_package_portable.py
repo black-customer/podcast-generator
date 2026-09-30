@@ -30,3 +30,17 @@ def test_portable_zip_stays_downloadable(built_zip):
     assert built_zip.stat().st_size < 8 * 1024 * 1024, (
         f"便携包 {built_zip.stat().st_size // 1024} KB 超过 8MB 下载友好上限"
     )
+
+
+def test_accidental_webm_recording_is_rejected(tmp_path, monkeypatch):
+    web = tmp_path / "web"
+    web.mkdir()
+    (web / "accidental-recording.webm").write_bytes(b"private voice")
+    out = tmp_path / "portable.zip"
+    monkeypatch.setattr(package, "BASE", tmp_path)
+    monkeypatch.setattr(package, "OUT", out)
+    monkeypatch.setattr(package, "INCLUDE_DIRS", ["web"])
+    monkeypatch.setattr(package, "INCLUDE_FILES", [])
+    monkeypatch.setattr(package, "INCLUDE_DATA", [])
+    assert package.main() == 1
+    assert not out.exists()

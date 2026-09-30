@@ -16,6 +16,7 @@ from . import (
     exports_media,
     jobs,
     library,
+    oral_review,
     pack,
     production,
     rewrite,
@@ -332,6 +333,119 @@ def api_delete_study_recording(topic_id: str, item_id: str, recording_id: str):
 @router.get("/study/review")
 def api_study_review():
     return study_progress.review_items()
+
+
+class OralSessionIn(BaseModel):
+    topic_id: str | None = None
+    item_id: str | None = None
+    sentence_index: int | None = None
+
+
+class OralActionIn(BaseModel):
+    action: str
+    action_id: str
+
+
+class OralAttemptIn(BaseModel):
+    submission_id: str
+    rating: str
+
+
+class OralCardIn(BaseModel):
+    paused: bool
+
+
+@router.get("/study/today")
+def api_study_today():
+    return oral_review.today_overview()
+
+
+@router.post("/study/review-sessions")
+def api_start_oral_session(body: OralSessionIn):
+    try:
+        return oral_review.start_session(body.topic_id, body.item_id, body.sentence_index)
+    except ValueError as exc:
+        raise _err(409, str(exc)) from exc
+
+
+@router.get("/study/review-sessions/{session_id}")
+def api_get_oral_session(session_id: str):
+    try:
+        return oral_review.get_session(session_id)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+
+
+@router.post("/study/review-sessions/{session_id}/actions")
+def api_oral_action(session_id: str, body: OralActionIn):
+    try:
+        return oral_review.session_action(session_id, body.action, body.action_id)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(409, str(exc)) from exc
+
+
+@router.post("/study/review-sessions/{session_id}/attempts")
+def api_oral_attempt(session_id: str, body: OralAttemptIn):
+    try:
+        return oral_review.submit_attempt(session_id, body.submission_id, body.rating)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(409, str(exc)) from exc
+
+
+@router.post("/study/review-sessions/{session_id}/recording")
+async def api_oral_recording(session_id: str, request: Request, duration_sec: float):
+    if int(request.headers.get("content-length") or 0) > 30 * 1024 * 1024:
+        raise _err(413, "录音超过 30 MB")
+    try:
+        return oral_review.save_session_recording(
+            session_id, await request.body(), duration_sec,
+            request.headers.get("content-type") or "",
+        )
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(409, str(exc)) from exc
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/study/oral-review")
+def api_enroll_oral_card(topic_id: str, item_id: str, sentence_index: int = 0):
+    try:
+        return oral_review.enroll_card(topic_id, item_id, sentence_index)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(409, str(exc)) from exc
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/study/oral-review")
+def api_oral_card_status(topic_id: str, item_id: str, sentence_index: int = 0):
+    try:
+        return oral_review.get_card_for_sentence(topic_id, item_id, sentence_index)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
+
+
+@router.patch("/study/review-cards/{card_id}")
+def api_pause_oral_card(card_id: str, body: OralCardIn):
+    try:
+        return oral_review.set_card_paused(card_id, body.paused)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+
+
+@router.get("/study/history")
+def api_oral_history(day: str | None = None, topic_id: str | None = None,
+                     item_id: str | None = None):
+    try:
+        return oral_review.get_history(day=day, topic_id=topic_id, item_id=item_id)
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
 
 
 @router.patch("/topics/{topic_id}/items/{item_id}")

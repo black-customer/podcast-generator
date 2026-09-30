@@ -606,12 +606,49 @@ const StudyUI = (() => {
       <div class="study-actions"><a class="study-button primary" href="#/review-practice/${encodeURIComponent(state.topicId)}/${encodeURIComponent(state.itemId)}/${activeIndex()}">再练这句</a>
         <button type="button" data-detail="favorite">${record.favorite ? "取消收藏" : "收藏这句"}</button>
         <a class="study-button" href="#/review">返回句子复习</a></div>
+      <div id="oral-card-control" class="study-actions" role="status">正在读取口答日程…</div>
     </section>`, "dictation");
     $app.querySelector("[data-detail='play']").onclick = () => playSentence().catch(err => toast(err.message));
     $app.querySelector("[data-detail='favorite']").onclick = async () => {
       await save({ facts: { [activeIndex()]: { favorite: !facts(activeIndex()).favorite } } });
       renderReviewDetail();
     };
+    refreshOralCardControl();
+  }
+  async function refreshOralCardControl() {
+    const topicId = state.topicId, itemId = state.itemId, index = activeIndex();
+    const box = document.getElementById("oral-card-control");
+    if (!box) return;
+    try {
+      const path = `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/study/oral-review`;
+      const current = await api("GET", `${path}?sentence_index=${index}`);
+      if (!document.getElementById("oral-card-control") || topicId !== state.topicId
+          || itemId !== state.itemId || index !== activeIndex()) return;
+      if (current.status === "not_enrolled") {
+        box.innerHTML = `<button type="button" data-oral-card="add">加入口答日程</button>
+          <span class="study-muted">明天开始安排跨天口答。</span>`;
+      } else if (current.status === "enrolled") {
+        box.innerHTML = `<button type="button" data-oral-card="practice" ${current.card.paused ? "disabled" : ""}>现在口答这句</button>
+          <button type="button" data-oral-card="pause">${current.card.paused ? "恢复日程" : "暂停日程"}</button>
+          <span class="study-muted">${current.card.paused ? "已暂停" : `下次 ${esc(current.card.due_date)}`}</span>`;
+      } else { box.textContent = "材料需要复核，暂不能加入日程。"; }
+      box.querySelectorAll("[data-oral-card]").forEach(button => button.onclick = async () => {
+        button.disabled = true;
+        try {
+          if (button.dataset.oralCard === "add") await api("POST", `${path}?sentence_index=${index}`);
+          if (button.dataset.oralCard === "pause") await api("PATCH", `/api/study/review-cards/${encodeURIComponent(current.card.id)}`,
+            { paused: !current.card.paused });
+          if (button.dataset.oralCard === "practice") {
+            const session = await api("POST", "/api/study/review-sessions", {
+              topic_id: topicId, item_id: itemId, sentence_index: index,
+            });
+            location.hash = `#/oral-review/${encodeURIComponent(session.id)}`;
+            return;
+          }
+          refreshOralCardControl();
+        } catch (err) { toast(`口答日程操作失败：${err.message}`); button.disabled = false; }
+      });
+    } catch (err) { box.textContent = `口答日程暂不可用：${err.message}`; }
   }
   function reviewDone() {
     leave();
