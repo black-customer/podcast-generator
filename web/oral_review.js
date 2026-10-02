@@ -65,7 +65,7 @@ const OralReviewUI = (() => {
   async function today(token) {
     state.currentHash = "#/today";
     if (!safeDesktop()) return;
-    $app.innerHTML = `<p class="view-loading">正在整理今天的练习…</p>`;
+    ExperienceUI.loading("今日练习");
     try {
       const data = await api("GET", "/api/study/today");
       if (viewStale(token)) return;
@@ -74,15 +74,15 @@ const OralReviewUI = (() => {
         <header class="today-head"><div><h1>今天练什么</h1>
           <p>先接着上次的题，再口答到期的困难句。</p></div>
           <a href="#/study-history" class="study-button">学习记录</a></header>
-        <section class="today-section"><h2>继续学习</h2>
+        <section class="today-section ${pending.length ? "" : "is-empty"}"><h2>继续学习</h2>
           ${pending.length ? `<a class="today-continue" href="#/learn/${encodeURIComponent(pending[0].topic_id)}/${encodeURIComponent(pending[0].item_id)}">
             <span>${pending[0].last_activity_at ? `上次练习 ${esc(pending[0].last_activity_at.replace("T", " "))}` : "历史未完成学习"}</span>
-            <strong>${esc(pending[0].question)}</strong><b>继续本题 →</b></a>`
+            <strong>${esc(pending[0].question)}</strong><b class="today-main-action">继续本题 →</b></a>`
             : `<p class="today-empty">暂无未完成的学习。选一道新题，把你的想法练成英文。</p>`}</section>
         <section class="today-section"><div class="today-section-head"><h2>到期的困难句</h2>
           <span>${data.due_count} 句待口答</span></div>
           ${data.active_session_id ? `<a class="study-button primary" href="#/oral-review/${encodeURIComponent(data.active_session_id)}">继续本轮口答</a>` :
-            data.due_count ? `<button type="button" class="study-next" id="today-start">开始本轮 · 最多 10 句</button>` :
+            data.due_count ? `<button type="button" class="study-button ${pending.length ? "" : "primary"}" id="today-start">开始本轮 · ${Math.min(data.due_count, 10)} 句</button>` :
             `<p class="today-empty">${data.has_learning_records
               ? "今天没有到期的困难句。学过的句子会在之后的日期再次出现。"
               : "尚无学习记录。先选一道题，完成学习后再安排困难句口答。"}</p>`}
@@ -98,11 +98,12 @@ const OralReviewUI = (() => {
                 : `<span>条目已删除，历史仍保留</span>`}</div>`).join("")}</div>` : ""}
         </section>
         <section class="today-section"><h2>开始新题</h2><p class="study-muted">从一道雅思题出发，说出你自己的想法。</p>
-          <a class="study-button" href="#/practice">打开题库</a></section>
+          <a class="study-button ${!pending.length && !data.due_count && !data.active_session_id ? "primary" : ""}" href="#/practice">打开题库</a></section>
       </div>`;
       document.getElementById("today-start")?.addEventListener("click", async event => {
         const button = event.currentTarget;
         button.disabled = true;
+        button.textContent = "正在准备本轮…";
         try {
           const session = await api("POST", "/api/study/review-sessions", {});
           if (viewStale(token)) return;
@@ -110,6 +111,7 @@ const OralReviewUI = (() => {
         } catch (err) {
           if (viewStale(token)) return;
           toast(`无法开始本轮练习：${err.message}`); button.disabled = false;
+          button.textContent = `开始本轮 · ${Math.min(data.due_count, 10)} 句`;
         }
       });
     } catch (err) {
@@ -122,7 +124,7 @@ const OralReviewUI = (() => {
   async function sessionView(sessionId, token) {
     state.currentHash = `#/oral-review/${encodeURIComponent(sessionId)}`;
     if (!safeDesktop()) return;
-    $app.innerHTML = `<p class="view-loading">正在恢复这轮口答…</p>`;
+    ExperienceUI.loading("困难句口答");
     try {
       const session = await api("GET", `/api/study/review-sessions/${encodeURIComponent(sessionId)}`);
       if (viewStale(token)) return;
@@ -161,12 +163,13 @@ const OralReviewUI = (() => {
           ? "这句日程已暂停，可先跳过本句，或到句子详情恢复日程。"
           : "材料已变化或条目已删除。这句暂时无法口答，请跳过后补齐材料。"}</p>` :
           session.phase === "prompt" ? promptMarkup(session) : compareMarkup(session)}
-        <div class="study-actions"><button type="button" data-oral="skip">本轮跳过</button>
-          <a class="study-button" href="#/today">保存并退出</a></div>
+        <div class="study-actions auxiliary-actions"><button type="button" data-oral="skip">本轮跳过</button>
+          <a class="study-button" href="#/today">返回今日练习</a></div>
         <p id="oral-error" class="study-feedback" role="alert"></p>
       </section></div>`;
     $app.querySelectorAll("[data-oral]").forEach(button => button.onclick = onAction);
     bindAudioCompetition();
+    ExperienceUI.recordingControls(document.getElementById("oral-recorder"), "ready");
   }
 
   function promptMarkup(session) {
@@ -177,7 +180,7 @@ const OralReviewUI = (() => {
           <button type="button" data-oral="record-save" disabled class="primary">保存录音并查看示范</button></div>
         <audio id="oral-preview" controls hidden></audio>
         <a id="oral-download" download="oral-review.webm" hidden>下载当前录音</a></div>
-      <div class="study-actions"><button type="button" data-oral="no-record" class="primary">我已口答，不录音</button>
+      <div class="study-actions auxiliary-actions"><button type="button" data-oral="no-record">我已口答，不录音</button>
         <button type="button" data-oral="hint">短暂看示范</button>
         <button type="button" data-oral="reveal">先查看示范</button></div>
       <div id="oral-hint" class="study-hint" hidden></div>
@@ -198,7 +201,7 @@ const OralReviewUI = (() => {
           `<span class="study-muted">未录音／本人自评</span>`}</div>
       ${session.recording_id ? `<button type="button" class="study-button" data-oral="no-record">改为无录音自评（保留录音文件）</button>` : ""}
       <p class="study-muted">意思完整、英文自然即可选“独立说出”；合理的其他表达也成立。</p>
-      <div class="study-actions"><button type="button" class="primary" data-oral="independent" ${canIndependent ? "" : "disabled"}>独立说出</button>
+      <div class="study-actions oral-ratings"><button type="button" data-oral="independent" ${canIndependent ? "" : "disabled"}>独立说出</button>
         <button type="button" data-oral="needs_hint" ${session.responded ? "" : "disabled"}>需要提示</button>
         <button type="button" data-oral="unable">暂时说不出</button></div>
       ${!canIndependent ? `<p class="study-muted">本次看过提示或尚未口答，不能标为独立说出。</p>` : ""}
@@ -260,10 +263,10 @@ const OralReviewUI = (() => {
           && !confirm("当前录音尚未保存，继续会丢失它。是否继续？")) {
         button.disabled = false; return;
       }
-      if (["no-record", "skip", "reveal"].includes(action)) discardBlob();
       const response = await actionRequest({ "no-record": "answered_without_recording",
         reveal: "show_answer", skip: "skip", hint: "hint" }[action]);
       if (!isCurrent()) return;
+      if (["no-record", "skip", "reveal"].includes(action)) discardBlob();
       if (action === "hint") {
         state.session = response;
         const box = document.getElementById("oral-hint");
@@ -320,10 +323,11 @@ const OralReviewUI = (() => {
         const preview = document.getElementById("oral-preview");
         if (preview) { preview.src = state.blobUrl; preview.hidden = false; }
         const download = document.getElementById("oral-download");
-        if (download) { download.href = state.blobUrl; download.hidden = false; }
+        if (download) { download.href = state.blobUrl; download.download = `oral-review.${ExperienceUI.recordingExtension(state.blob.type)}`; download.hidden = false; }
         document.querySelector("[data-oral='record-save']").disabled = false;
         document.querySelector("[data-oral='record-start']").disabled = false;
         document.querySelector("[data-oral='record-stop']").disabled = true;
+        ExperienceUI.recordingControls(document.getElementById("oral-recorder"), "stopped");
         status.textContent = "录音已停止。可回听、保存，或下载后离开。";
         state.stream?.getTracks().forEach(track => track.stop());
         state.stream = null;
@@ -332,6 +336,7 @@ const OralReviewUI = (() => {
       state.recorder.start();
       document.querySelector("[data-oral='record-stop']").disabled = false;
       status.textContent = "正在录音…";
+      ExperienceUI.recordingControls(document.getElementById("oral-recorder"), "recording");
       return true;
     } catch (err) {
       state.stream?.getTracks().forEach(track => track.stop());
@@ -387,7 +392,12 @@ const OralReviewUI = (() => {
     const revision = ++state.historyRevision;
     state.currentHash = "#/study-history";
     if (!safeDesktop()) return;
-    $app.innerHTML = `<p class="view-loading">正在读取学习记录…</p>`;
+    const previousResults = $app.querySelector(".history-results");
+    if (previousResults) {
+      previousResults.inert = true;
+      previousResults.setAttribute("aria-busy", "true");
+      previousResults.insertAdjacentHTML("afterbegin", '<p class="filter-loading" role="status">正在读取记录…</p>');
+    } else ExperienceUI.loading("学习记录");
     try {
       const query = new URLSearchParams();
       if (dayFilter) query.set("day", dayFilter);
@@ -397,31 +407,39 @@ const OralReviewUI = (() => {
       }
       const data = await api("GET", `/api/study/history${query.size ? `?${query}` : ""}`);
       if (viewStale(token) || revision !== state.historyRevision) return;
-      $app.innerHTML = `<div class="study-page oral-history"><div class="study-breadcrumb"><a href="#/today">今日练习</a><span>/</span>学习记录</div>
+      const historyHtml = `<div class="study-page oral-history"><div class="study-breadcrumb"><a href="#/today">今日练习</a><span>/</span>学习记录</div>
         <h1>口答学习记录</h1><p class="study-muted">这里记录实际口答、自评与录音，不生成分数。</p>
         <div class="study-review-filter"><label>日期 <input type="date" id="oral-history-date" value="${esc(dayFilter)}"></label>
           <label>题目 <select id="oral-history-source"><option value="">全部题目</option>
             ${(data.sources || []).map(row => `<option value="${esc(`${row.topic_id}/${row.item_id}`)}" ${sourceFilter === `${row.topic_id}/${row.item_id}` ? "selected" : ""}>${esc(row.question)}</option>`).join("")}
           </select></label></div>
-        <p class="study-muted">已通过默写 ${data.dictation_passed_total} 句；${data.dictation_undated_count} 句为无日期的历史记录。</p>
+        <div class="history-results"><p class="study-muted">已通过默写 ${data.dictation_passed_total} 句；${data.dictation_undated_count} 句为无日期的历史记录。</p>
         ${data.undated_legacy_count ? `<p class="today-note">${data.undated_legacy_count} 条旧困难句没有历史练习日期，已作为首次复习候选。</p>` : ""}
         ${data.days.length ? data.days.map(day => `<section class="today-section"><h2>${esc(day.date)}</h2>
-          <p>默写通过 ${day.dictation_passed_count} 句 · ${day.attempt_count} 次口答 · ${day.distinct_sentence_count} 句 · 独立 ${day.ratings.independent}／提示 ${day.ratings.needs_hint}／暂未说出 ${day.ratings.unable}</p>
+          <dl class="history-facts"><div><dt>默写通过</dt><dd>${day.dictation_passed_count} 句</dd></div>
+            <div><dt>实际口答</dt><dd>${day.attempt_count} 次 · ${day.distinct_sentence_count} 句</dd></div>
+            <div><dt>本人自评</dt><dd>独立 ${day.ratings.independent}／提示 ${day.ratings.needs_hint}／暂未说出 ${day.ratings.unable}</dd></div></dl>
           ${day.attempts.map(row => `<div class="study-recording-row"><div><strong>${esc(row.zh)}</strong>
-            <small>${esc(row.question)} · ${ratingNames[row.rating]} · ${row.recorded
+            <small class="history-source">${esc(row.question)}</small><small>${ratingNames[row.rating]} · ${row.recorded
               ? row.recording_available === false ? "当时已录音，文件现不可用" : "已保存录音"
-              : "未录音／本人自评"} · 当次安排下次 ${esc(row.next_due_date)}</small></div>
+              : "未录音／本人自评"}</small><small>当次安排下次 ${esc(row.next_due_date)}</small></div>
             ${row.recorded && row.recording_available !== false ? `<audio controls preload="none" src="${recordingUrl(row, row.recording_id)}"></audio>` : ""}</div>`).join("")}
         </section>`).join("") : `<p class="today-empty">尚无口答记录。完成一次困难句口答后，这里会显示真实经过。</p>`}
-      </div>`;
+      </div></div>`;
+      if (previousResults?.isConnected) {
+        const next = document.createElement("div"); next.innerHTML = historyHtml;
+        previousResults.replaceWith(next.querySelector(".history-results"));
+      } else $app.innerHTML = historyHtml;
       const filter = () => history(token, document.getElementById("oral-history-date").value,
         document.getElementById("oral-history-source").value);
       document.getElementById("oral-history-date").onchange = filter;
       document.getElementById("oral-history-source").onchange = filter;
       bindAudioCompetition();
     } catch (err) {
-      if (!viewStale(token) && revision === state.historyRevision) $app.innerHTML = `<div class="study-page"><h1>学习记录加载失败</h1><p>${esc(err.message)}</p>
-        <a href="#/today">返回今日练习</a></div>`;
+      if (!viewStale(token) && revision === state.historyRevision) {
+        ExperienceUI.readError("学习记录读取失败", err, () => history(token, dayFilter, sourceFilter),
+          previousResults?.isConnected ? previousResults : $app);
+      }
     }
   }
 

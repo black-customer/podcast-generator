@@ -140,7 +140,8 @@ def test_today_round_no_recording_and_history():
             assert data["attempts"] == 1
             page.goto(f"{BASE_URL}/#/study-history")
             page.get_by_role("heading", name="口答学习记录").wait_for()
-            assert "默写通过 1 句" in page.locator(".oral-history").inner_text()
+            assert page.locator(".history-facts div").first.inner_text().splitlines() == [
+                "默写通过", "1 句"]
             page.screenshot(path=str(out / "history.png"), full_page=True)
         finally:
             browser.close()

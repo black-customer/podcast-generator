@@ -20,6 +20,11 @@ if errorlevel 1 (
 
 echo [2/4] Syncing dependencies...
 .venv\Scripts\python -m pip install -q -r requirements.txt
+if errorlevel 1 (
+  echo Dependency installation failed. Existing service was not stopped. Check network and retry.
+  pause
+  exit /b 1
+)
 
 echo [3/4] Restarting service...
 rem Only kill processes that are really this app: some ancestor runs from inside this

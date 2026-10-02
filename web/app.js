@@ -127,6 +127,9 @@ function updateMediaSession() {
 }
 
 function initGlobalPlayer() {
+  document.getElementById("nav-now-playing").addEventListener("click", () => {
+    if (!PlayerState.currentItem) toast("尚未选择音频。请从我的语料选择一条回答收听。");
+  });
   const $playBtn = document.getElementById("gp-play");
   const $prevBtn = document.getElementById("gp-prev");
   const $nextBtn = document.getElementById("gp-next");
@@ -326,6 +329,7 @@ function initGlobalPlayer() {
     $zhToggleBtn.onclick = () => {
       const on = $zhToggleBtn.getAttribute("aria-pressed") !== "true";
       $zhToggleBtn.setAttribute("aria-pressed", String(on));
+      document.querySelector(".reference-tab.active")?.setAttribute("aria-pressed", String(on));
       document.body.classList.toggle("hide-zh", !on);
     };
   }
@@ -665,13 +669,13 @@ window.seekToTime = function(seconds) {
 
 // 1. 我的语料：雅思口语 / 日常表达 两个用户概念（R04）
 async function TopicsGalleryView(token) {
-  $app.innerHTML = `<p class="view-loading">正在整理语料索引…</p>`;
+  ExperienceUI.loading("我的语料");
   let topics = [];
   try {
     topics = await api("GET", "/api/topics");
   } catch (e) {
     if (viewStale(token)) return;
-    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
+    ExperienceUI.readError("加载失败", e);
     return;
   }
   if (viewStale(token)) return;
@@ -741,14 +745,14 @@ function topicRandomPlay() {
 }
 
 async function TopicDetailView(topicId, token) {
-  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载专辑详情中…</p>`;
+  ExperienceUI.loading("话题与回答");
   let topic, manifestPod = null;
   try {
     topic = await api("GET", `/api/topics/${encodeURIComponent(topicId)}`);
     try { manifestPod = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/episode?track=podcast`); } catch (_) {}
   } catch (e) {
     if (viewStale(token)) return;
-    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
+    ExperienceUI.readError("加载失败", e);
     return;
   }
   if (viewStale(token)) return;
@@ -814,14 +818,14 @@ async function TopicDetailView(topicId, token) {
 
 // 3. 沉浸式单曲播放与卡拉OK实时剧本页
 async function TrackPlayerView(topicId, itemId, token) {
-  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载曲目与双语剧本中…</p>`;
+  ExperienceUI.loading("精听播放器");
   let item, topic;
   try {
     topic = await api("GET", `/api/topics/${encodeURIComponent(topicId)}`);
     item = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`);
   } catch (e) {
     if (viewStale(token)) return;
-    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
+    ExperienceUI.readError("加载失败", e);
     return;
   }
   if (viewStale(token)) return;
@@ -937,22 +941,28 @@ async function TrackPlayerView(topicId, itemId, token) {
   };
 
   // 自动开始播放当前曲目并载入时间轴
+  const referenceToggle = $app.querySelector(".reference-tab.active");
+  referenceToggle.setAttribute("aria-pressed", document.getElementById("gp-zh-toggle").getAttribute("aria-pressed"));
+  referenceToggle.title = "显示或隐藏中文参考";
+  referenceToggle.onclick = () => document.getElementById("gp-zh-toggle").click();
   playItem(topicId, item, true);
 }
 
 // 3.5 整集章节播放器（M10）：单文件连播 + 章节跳转 + 过期重建
-async function EpisodePlayerView(topicId, track) {
-  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载整集中…</p>`;
+async function EpisodePlayerView(topicId, track, token) {
+  ExperienceUI.loading("整集与章节");
   const tr = encodeURIComponent(track);
   let manifest, topic;
   try {
-    topic = await api("GET", `/api/topics/${encodeURIComponent(topicId)}`);
-    manifest = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/episode?track=${tr}`);
+    [topic, manifest] = await Promise.all([
+      api("GET", `/api/topics/${encodeURIComponent(topicId)}`),
+      api("GET", `/api/topics/${encodeURIComponent(topicId)}/episode?track=${tr}`)]);
   } catch (e) {
-    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">整集尚未合成：${esc(e.message)}</p>`;
+    if (viewStale(token)) return;
+    ExperienceUI.readError("整集尚未合成", e);
     return;
   }
-  if (viewStale(+ (location.hash.match(/__t=(\d+)/) || [0, routeToken])[1])) { /* noop */ }
+  if (viewStale(token)) return;
 
   const staleBanner = manifest.stale
     ? `<div class="episode-stale">⚠️ 条目在合成后有更新，本集内容可能已过期。
@@ -1027,14 +1037,13 @@ async function EpisodePlayerView(topicId, track) {
 
 // 4. 音色展台
 async function VoicesShowcaseView(token) {
-  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载声学音色展台中…</p>`;
+  ExperienceUI.loading("音色展台");
   let voices = [], settings = {};
   try {
-    voices = await api("GET", "/api/voices");
-    settings = await api("GET", "/api/settings");
+    [voices, settings] = await Promise.all([api("GET", "/api/voices"), api("GET", "/api/settings")]);
   } catch (e) {
     if (viewStale(token)) return;
-    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
+    ExperienceUI.readError("加载失败", e);
     return;
   }
   if (viewStale(token)) return;
@@ -1223,15 +1232,14 @@ async function ManageView(token) {
     clearInterval(ManageState.pollTimer);
     ManageState.pollTimer = null;
   }
-  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载工作台中…</p>`;
+  ExperienceUI.loading("设置");
   let settings, topics, health;
   try {
-    settings = await api("GET", "/api/settings");
-    topics = await api("GET", "/api/topics");
-    health = await api("GET", "/api/health").catch(() => null);
+    [settings, topics, health] = await Promise.all([api("GET", "/api/settings"),
+      api("GET", "/api/topics"), api("GET", "/api/health").catch(() => null)]);
   } catch (e) {
     if (viewStale(token)) return;
-    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
+    ExperienceUI.readError("加载失败", e);
     return;
   }
   if (viewStale(token)) return;
@@ -1256,7 +1264,7 @@ async function ManageView(token) {
     <div class="mg-card settings-voice-card">
       <div class="voice-setting-lead">
         <div>
-          <h3>声音与生成设置</h3>
+          <h3>服务与连接</h3>
           <p>选择语音引擎和角色声音，让练习更贴近真实考场。</p>
         </div>
         <a class="mg-btn primary" href="#/voices">音色展台</a>
@@ -1287,7 +1295,7 @@ async function ManageView(token) {
           </label>
         </div>
 
-        <div class="role-cards" id="role-cards"></div>
+        <h3 class="settings-group-title">角色声音</h3><div class="role-cards" id="role-cards"></div>
         <div class="voice-summary mg-hint" id="voice-summary"></div>
 
         <div class="mg-actions">
@@ -1342,7 +1350,7 @@ async function ManageView(token) {
 
     <details class="content-admin mg-advanced" ${ManageState.adminOpen ? "open" : ""}>
       <summary>高级内容管理</summary>
-      <p class="mg-hint">仅在手动维护旧语料时使用；日常生成请从「开始练习」进入。</p>
+      <p class="mg-hint">仅在手动维护旧语料时使用；日常生成请从「题库」进入。</p>
     <div class="manage-grid">
       <div class="mg-col">
         <!-- 话题卡片 -->
@@ -1365,6 +1373,10 @@ async function ManageView(token) {
     </details>
   `;
 
+  const preferences = $app.querySelector(".study-preference");
+  const settingsForm = document.getElementById("mg-settings-form");
+  settingsForm.insertBefore(preferences, settingsForm.querySelector(".mg-advanced"));
+  settingsForm.appendChild(settingsForm.querySelector(".mg-actions"));
   document.getElementById("study-hint-duration").onchange = e =>
     localStorage.setItem("study-hint-seconds", e.target.value);
 
@@ -1387,9 +1399,11 @@ async function ManageView(token) {
   };
   const pick = { qGender: "female", aGender: "male" };
   let voicesCache = null;
+  const readVoices = ExperienceUI.memoReads();
+  let roleRevision = 0;
   const mgVoices = async (provider) => {
     if (!voicesCache || voicesCache.provider !== provider) {
-      voicesCache = { provider, list: await api("GET", `/api/voices?provider=${encodeURIComponent(provider)}`) };
+      voicesCache = { provider, list: await readVoices(`/api/voices?provider=${encodeURIComponent(provider)}`) };
     }
     return voicesCache.list;
   };
@@ -1405,6 +1419,7 @@ async function ManageView(token) {
     if (el) el.textContent = `最终音频：${nameOf(pair.q)} 提问，${nameOf(pair.a)} 回答。`;
   };
   const mgRenderRoles = async () => {
+    const revision = ++roleRevision;
     const box = document.getElementById("role-cards");
     if (!box) return;
     const provider = engineOf();
@@ -1413,8 +1428,18 @@ async function ManageView(token) {
     try {
       voices = await mgVoices(provider);
     } catch (_) {
-      box.innerHTML = `<p class="mg-hint">音色库加载失败，保存后刷新重试</p>`;
+      if (viewStale(token) || revision !== roleRevision || !box.isConnected) return;
+      box.innerHTML = `<p class="mg-hint">音色库读取失败，已保存的选择仍保留。</p><button type="button" class="mg-btn">重试读取</button>`;
+      box.querySelector("button").onclick = () => mgRenderRoles();
       return;
+    }
+    if (viewStale(token) || revision !== roleRevision || !box.isConnected) return;
+    if (!box.dataset.initialized) {
+      for (const role of ["q", "a"]) {
+        const selected = voices.find(v => (v.voice_id || v.reference_id) === chosenVoices[provider][role]);
+        if (selected?.gender) pick[role + "Gender"] = selected.gender;
+      }
+      box.dataset.initialized = "true";
     }
     const renderRole = (role, title, sub) => {
       const gender = pick[role + "Gender"];
@@ -1424,7 +1449,7 @@ async function ManageView(token) {
         const vid = v.voice_id || v.reference_id;
         return `<div class="voice-pick ${vid === cur ? "selected" : ""}" data-vid="${esc(vid)}" data-role="${role}">
           <button type="button" class="voice-pick-play" data-preview-vid="${esc(vid)}" data-preview-provider="${esc(provider)}" title="试听">▶</button>
-          <div class="voice-pick-name">${esc(v.name || vid)}</div>
+          <button type="button" class="voice-pick-name" aria-label="选择 ${esc(v.name || vid)}">${esc(v.name || vid)}</button>
           <div class="voice-pick-meta">${esc(v.accent || "English")} · ${esc(v.age_tone || "")}</div>
           <div class="voice-pick-desc">${esc(v.description || v.tag || "")}</div>
         </div>`;
@@ -1499,9 +1524,10 @@ async function ManageView(token) {
     if (tempRaw !== "") payload.temperature = parseFloat(tempRaw);
     try {
       await api("PUT", "/api/settings", payload);
+      document.getElementById("mg-test-result").textContent = "声音设置已保存。";
       toast("声音设置已保存");
     } catch (err) {
-      toast("保存失败：" + err.message);
+      document.getElementById("mg-test-result").textContent = `保存失败：${err.message}。本页输入仍保留，可以重试。`;
     }
   };
   const mgTestEngine = (provider, btnId, resultId) => {
@@ -2074,7 +2100,15 @@ async function bankSubmitAnswer(questionId) {
 }
 
 async function BankView(token) {
-  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载雅思题库中…</p>`;
+  const previousResults = $app.querySelector(".bank-results");
+  const previousAnswerId = previousResults?.querySelector("[data-bank-submit]")?.dataset.bankSubmit;
+  const previousDraft = previousResults?.querySelector("#bank-answer-input")?.value;
+  const previousMode = previousResults?.querySelector("[name='bank-gen-mode']:checked")?.value;
+  document.getElementById("bank-read-error")?.remove();
+  if (previousResults) {
+    previousResults.inert = true; previousResults.setAttribute("aria-busy", "true");
+    previousResults.insertAdjacentHTML("afterbegin", '<p class="filter-loading" role="status">正在读取筛选结果…</p>');
+  } else ExperienceUI.loading("题库");
   const p = bankParams();
   let data;
   try {
@@ -2085,7 +2119,11 @@ async function BankView(token) {
     data = await api("GET", query);
   } catch (e) {
     if (viewStale(token)) return;
-    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">题库加载失败：${esc(e.message)}</p>`;
+    if (previousResults?.isConnected) {
+      const output = document.createElement("section"); output.id = "bank-read-error";
+      previousResults.before(output);
+      ExperienceUI.readError("筛选读取失败", e, () => BankView(token), output);
+    } else ExperienceUI.readError("题库加载失败", e);
     return;
   }
   if (viewStale(token)) return;
@@ -2159,7 +2197,7 @@ async function BankView(token) {
     </div>` : "";
 
   const rowsHtml = data.items.map((it) => `
-    <div class="bank-row ${it.id === p.sel ? "selected" : ""}" onclick="bankGo({sel: '${esc(it.id)}'})">
+    <button type="button" class="bank-row ${it.id === p.sel ? "selected" : ""}" onclick="bankGo({sel: '${esc(it.id)}'})">
       <div class="bank-row-text">${esc(it.text)}</div>
       <div class="bank-row-meta">
         <span class="bank-topic-tag">${esc(it.topic_name)}</span>
@@ -2169,14 +2207,14 @@ async function BankView(token) {
         ${it.part !== 1 ? `<span class="bank-part-tag">Part ${it.part}</span>` : ""}
       </div>
       <span class="bank-row-action">回答这道题 →</span>
-    </div>`).join("");
+    </button>`).join("");
 
   const hasPrev = data.page > 1;
   const hasNext = data.page < data.pageCount;
 
-  $app.innerHTML = `
+  const bankHtml = `
     <div class="hero-banner">
-      <div class="hero-title">今天想聊什么？</div>
+      <h1 class="hero-title">题库</h1>
       <div class="hero-desc">选一道雅思口语题，用你最自然的方式作答——母语者版本由 Agent 或 API 改写后生成可反复听的音频。</div>
     </div>
 
@@ -2192,7 +2230,7 @@ async function BankView(token) {
       <button class="bank-tab bank-random" onclick="bankRandomGo()" title="从当前筛选中随机抽一题">随机来一题</button>
     </div>
 
-    ${setupBanner}
+    <div class="bank-results">${setupBanner}
 
     ${answerCard}
 
@@ -2206,7 +2244,24 @@ async function BankView(token) {
       <span>第 ${data.page} / ${data.pageCount} 页 · 共 ${data.total} 题</span>
       <button class="btn-pill" ${hasNext ? "" : "disabled"} onclick="bankGo({page: ${data.page + 1}})">下一页</button>
     </div>` : ""}
+    </div>
   `;
+  if (previousResults?.isConnected) {
+    const next = document.createElement("div"); next.innerHTML = bankHtml;
+    previousResults.replaceWith(next.querySelector(".bank-results"));
+    const toolbar = $app.querySelector(".bank-toolbar");
+    const updated = next.querySelector(".bank-toolbar");
+    toolbar.querySelectorAll(".bank-select").forEach((select, i) =>
+      select.innerHTML = updated.querySelectorAll(".bank-select")[i].innerHTML);
+    toolbar.querySelectorAll(".bank-tabs button").forEach((button, i) =>
+      button.className = updated.querySelectorAll(".bank-tabs button")[i].className);
+  } else $app.innerHTML = bankHtml;
+  if (previousAnswerId && previousAnswerId === selItem?.id) {
+    const input = document.getElementById("bank-answer-input");
+    if (input) input.value = previousDraft || "";
+    const radio = $app.querySelector(`[name='bank-gen-mode'][value='${previousMode}']`);
+    if (radio) radio.checked = true;
+  }
 }
 
 // 9. 语料包导入管理（B02）：LAN 直传 / 文件导入 / 存档清除
@@ -2339,6 +2394,7 @@ function route() {
   const hash = location.hash || (packActive || matchMedia("(max-width: 860px)").matches
     ? "#/practice" : "#/today");
   if (typeof OralReviewUI !== "undefined" && !OralReviewUI.leave(hash)) return;
+  if (typeof StudyUI !== "undefined" && !StudyUI.leave(hash)) return;
   if (typeof PackState !== "undefined" && PackState.active
     && PACK_UNSUPPORTED_VIEWS.some(v => hash === v || hash.startsWith(v + "/"))) {
     $app.innerHTML = `<div class="study-page"><h1>离线包模式不支持此页面</h1>
@@ -2346,17 +2402,23 @@ function route() {
       <a class="study-button primary" href="#/topics">返回我的语料</a></div>`;
     return;
   }
-  if (typeof StudyUI !== "undefined" && !hash.startsWith("#/learn/") && !hash.startsWith("#/review")) StudyUI.leave();
   document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
+  const base = hash.split("?")[0];
+  const owner = base.startsWith("#/play/") || base.startsWith("#/episode/") ? "playing"
+    : base === "#/today" || base.startsWith("#/oral-review/") || base === "#/study-history" ? "today"
+    : base.startsWith("#/bank") || base.startsWith("#/practice") ? "bank"
+    : base.startsWith("#/review") ? "review"
+    : base.startsWith("#/manage") || base.startsWith("#/setup") || base.startsWith("#/voices") ? "settings"
+    : "topics";
   document.querySelectorAll(".nav-item").forEach(el => {
-    const href = el.getAttribute("href");
-    if (href === hash || ((hash.startsWith("#/oral-review/") || hash === "#/study-history")
-        && href === "#/today") || (hash.startsWith("#/bank") && href === "#/practice")
-        || (hash.startsWith("#/practice") && href === "#/practice")) {
-      el.classList.add("active");
-    } else {
-      el.classList.remove("active");
-    }
+    const category = el.id === "nav-now-playing" ? "playing"
+      : el.classList.contains("nav-settings") ? "settings"
+      : el.getAttribute("href") === "#/today" ? "today"
+      : el.getAttribute("href") === "#/practice" ? "bank"
+      : el.getAttribute("href") === "#/review" ? "review" : "topics";
+    el.classList.toggle("active", category === owner);
+    if (category === owner) el.setAttribute("aria-current", "page");
+    else el.removeAttribute("aria-current");
   });
 
   // 导航离开工作台时清理轮询定时器（修审计 A22）
@@ -2438,7 +2500,7 @@ function route() {
   if (hash.startsWith("#/episode/")) {
     const parts = hash.slice(10).split("/");
     if (parts.length >= 2) {
-      EpisodePlayerView(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]));
+      EpisodePlayerView(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
       return;
     }
   }
@@ -2462,13 +2524,13 @@ function route() {
 
 // R04 首次配置向导（概念 01）：连接语音服务 → 选择提问者 → 选择回答者
 async function SetupView(token) {
-  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载设置向导…</p>`;
+  ExperienceUI.loading("首次配置");
   let settings;
   try {
     settings = await api("GET", "/api/settings");
   } catch (e) {
     if (viewStale(token)) return;
-    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
+    ExperienceUI.readError("加载失败", e);
     return;
   }
   if (viewStale(token)) return;
@@ -2494,7 +2556,7 @@ async function SetupView(token) {
     <header class="page-heading">
       <div>
         <h1>开始前，先完成 3 项设置</h1>
-        <p>只需几分钟，即可拥有你的个性化英语口语练习体验。所有数据只保存在本机。</p>
+        <p>只需几分钟，即可拥有你的个性化英语口语练习体验。语料与练习记录保存在本机；真实生成会将必要文本发送至你配置的服务。</p>
       </div>
     </header>
     <div class="setup-steps">
@@ -2510,7 +2572,7 @@ async function SetupView(token) {
           placeholder="${settings.stepfun_api_key_set ? "StepFun Key 已保存，可直接下一步" : "粘贴 StepFun API Key（platform.stepfun.com 申请）"}">
         <button type="button" class="mg-btn" id="setup-test">测试连接</button>
       </div>
-      <span class="mg-hint" id="setup-test-result">${settings.stepfun_api_key_set ? "已配置 StepFun Key" : "没有 Key 也可先体验 dry-run 模式"}</span>
+      <span class="mg-hint" id="setup-test-result">${settings.stepfun_api_key_set ? "已配置 StepFun Key" : "未配置密钥时仅生成占位音频；真实语音需要配置服务"}</span>
     </div>
     ${roleBlock("q", "2. 选择提问者", "这是与你对话的 AI 考官声音，用于提出雅思口语问题")}
     ${roleBlock("a", "3. 选择回答者", "这是你自己的回答声音，用于朗读你的作答内容")}
@@ -2520,22 +2582,27 @@ async function SetupView(token) {
     </div>
   `;
 
+  const readSetup = ExperienceUI.memoReads();
+  let setupRevision = 0;
   const renderGrid = async (role) => {
     const grid = document.getElementById(`setup-grid-${role}`);
     let voices;
     try {
-      voices = await api("GET", `/api/voices?provider=${encodeURIComponent(state.provider)}`);
+      voices = await readSetup(`/api/voices?provider=${encodeURIComponent(state.provider)}`);
     } catch (_) {
-      grid.innerHTML = `<p class="mg-hint">音色库加载失败</p>`;
+      if (viewStale(token)) return;
+      grid.innerHTML = `<p class="mg-hint">音色库读取失败，选择仍保留。</p><button type="button" class="mg-btn">重试读取</button>`;
+      grid.querySelector("button").onclick = () => renderGrid(role);
       return;
     }
+    if (viewStale(token) || !grid.isConnected) return;
     const gender = state[role + "Gender"];
     const cur = role === "q" ? state.q : state.a;
     grid.innerHTML = voices.filter(v => (v.gender || "") === gender).map(v => {
       const vid = v.voice_id || v.reference_id;
       return `<div class="voice-pick ${vid === cur ? "selected" : ""}" data-vid="${esc(vid)}" data-role="${role}">
         <button type="button" class="voice-pick-play" data-preview-vid="${esc(vid)}" data-preview-provider="${esc(state.provider)}" title="试听">▶</button>
-        <div class="voice-pick-name">${esc(v.name || vid)}</div>
+        <button type="button" class="voice-pick-name" aria-label="选择 ${esc(v.name || vid)}">${esc(v.name || vid)}</button>
         <div class="voice-pick-meta">${esc(v.accent || "English")} · ${esc(v.age_tone || "")}</div>
         <div class="voice-pick-desc">${esc(v.description || v.tag || "")}</div>
       </div>`;
@@ -2556,8 +2623,21 @@ async function SetupView(token) {
       renderGrid(role);
     };
   });
-  renderGrid("q");
-  renderGrid("a");
+  const initializeVoices = async () => {
+    const revision = ++setupRevision;
+    try {
+      const voices = await readSetup(`/api/voices?provider=${encodeURIComponent(state.provider)}`);
+      if (viewStale(token) || revision !== setupRevision) return;
+      for (const role of ["q", "a"]) {
+        const selected = voices.find(v => (v.voice_id || v.reference_id) === state[role]);
+        if (selected?.gender) state[role + "Gender"] = selected.gender;
+        document.querySelectorAll(`.seg-gender[data-role='${role}'] button`).forEach(button =>
+          button.classList.toggle("active", button.dataset.g === state[role + "Gender"]));
+      }
+      await Promise.all([renderGrid("q"), renderGrid("a")]);
+    } catch (_) { await Promise.all([renderGrid("q"), renderGrid("a")]); }
+  };
+  initializeVoices();
   document.getElementById("setup-test").onclick = async () => {
     const $r = document.getElementById("setup-test-result");
     $r.textContent = "测试中…";
@@ -2593,13 +2673,13 @@ async function SetupView(token) {
 
 
 async function DoneView(topicId, itemId, token) {
-  $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载完成页…</p>`;
+  ExperienceUI.loading("生成结果");
   let item;
   try {
     item = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`);
   } catch (e) {
     if (viewStale(token)) return;
-    $app.innerHTML = `<p style="color:var(--text-sub);padding:40px;">加载失败：${esc(e.message)}</p>`;
+    ExperienceUI.readError("加载失败", e);
     return;
   }
   if (viewStale(token)) return;

@@ -1,4 +1,4 @@
-/* Spotify / Apple Podcasts 风格现代媒体库样式表 */
+/* 共享外壳与兼容组件。暖纸桌面令牌、组件和页面布局见文末 Q04 区域。 */
 :root {
   --bg-base: #121212;
   --bg-surface: #181818;
@@ -2285,6 +2285,122 @@ body:not(.player-route) .global-player { display: none !important; }
 .oral-history .study-review-filter { flex-wrap: wrap; }
 .oral-history .study-review-filter label { max-width: 100%; }
 .oral-history .study-review-filter select { max-width: min(560px, 100%); }
+
+/* Q04 / 外壳与令牌：移动端保留原有尺寸和布局。 */
+:root {
+  --content-width: 1120px;
+  --reading-width: 72ch;
+  --space-group: 16px;
+  --space-section: 32px;
+  --control-height: 44px;
+}
+::selection { background: #dde2cf; color: #332e27; }
+input, textarea { caret-color: #596348; }
+[hidden] { display: none !important; }
+[inert] { opacity: .65; }
+.loading-lines { height: 120px; margin-top: 24px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--paper-soft); }
+.view-state { max-width: var(--content-width); margin: 0 auto; padding: 32px; }
+.view-state h1 { margin-bottom: 16px; }
+.view-state p { line-height: 1.8; margin-bottom: 16px; overflow-wrap: anywhere; }
+.filter-loading { padding: 12px 0; color: var(--ink-soft); }
+.auxiliary-actions { padding-top: 16px; border-top: 1px solid var(--rule); }
+.voice-pick-name { border: 0; background: transparent; color: inherit; font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
+.nav-menu .nav-settings { margin-top: auto; border-top: 1px solid var(--rule); border-radius: 0; }
+.sidebar-footer { padding-top: 12px; }
+.history-facts { display: flex; flex-wrap: wrap; gap: 16px 32px; margin-bottom: 24px; }
+.history-facts dt { color: var(--ink-soft); font-size: 14px; margin-bottom: 6px; }
+.history-facts dd { margin: 0; }
+.history-source { max-width: var(--reading-width); }
+.settings-group-title { margin-top: 32px; }
+.oral-ratings button { min-width: 130px; }
+.oral-ratings button:hover:not(:disabled) { background: var(--blue-soft); }
+.bank-row { width: 100%; font: inherit; color: inherit; text-align: left; }
+
+/* Q04 / 桌面公共组件。 */
+@media (min-width: 861px) {
+  body.reading-notes-theme { font-size: 16px; line-height: 1.6; }
+  .main-content { padding: 32px; scroll-padding: 24px; }
+  .main-content > * { max-width: var(--content-width); margin-left: auto; margin-right: auto; }
+  .study-page, .study-done, .today-page, .oral-page { max-width: var(--content-width); }
+  .study-page, .study-done { min-height: 0; padding: 32px; }
+  .today-page { padding: 0 0 24px; }
+  .study-task, .study-full-chinese, .done-natural, .reading-sheet { max-width: var(--reading-width); }
+  .page-heading h1, .section-title, .header-title, .hero-title, .today-head h1, .study-task h1,
+  .study-done .done-heading, .oral-history h1 { font-size: 32px; line-height: 1.3; letter-spacing: -.025em; }
+  .study-question-block h1, .study-done .done-question h2 { font-size: 28px; line-height: 1.4; overflow-wrap: anywhere; }
+  .study-task .study-chinese { font-size: 28px; line-height: 1.55; margin: 16px 0 24px; }
+  .study-answer, .study-detail-sentence .study-answer { font-size: 32px; line-height: 1.5; overflow-wrap: anywhere; }
+  .study-muted, .study-counter, .section-description, .mg-hint, .bank-answer-hint { font-size: 14px; }
+  .study-task { padding: 24px 0; }
+  .study-actions { margin: 24px 0 16px; gap: 12px; }
+  .btn-pill, .mg-btn, .study-button, .study-next, .study-actions button,
+  .bank-submit-btn { min-height: var(--control-height); border-radius: 6px; font-size: 16px; }
+  .mg-input, .bank-select, .bank-search input, .study-review-filter select { min-height: 44px; font-size: 16px; }
+  .study-word { font-size: 22px; }
+  .study-feedback { line-height: 1.7; overflow-wrap: anywhere; }
+  .study-recorder { margin: 24px 0; padding: 24px; }
+  .study-recorder .study-actions { margin: 16px 0; }
+  .study-explain-grid > div { border: 0; border-top: 1px solid var(--rule); border-radius: 0; padding: 16px 0; }
+  .study-full-chinese { font-size: 22px; line-height: 1.8; }
+  .study-steps { margin: 24px 0; }
+  .study-footer { margin-top: 24px; }
+  .study-recording-row { align-items: flex-start; }
+  .study-recording-row small { font-size: 14px; overflow-wrap: anywhere; }
+  .study-recording-row > div { min-width: 0; flex: 1; }
+  .study-recording-row audio { flex-shrink: 0; max-width: 100%; }
+  :focus-visible { outline: 2px solid #596348; outline-offset: 4px; }
+  .main-content :is(h1,h2,h3,.hero-title,.section-title)[tabindex="-1"]:focus { outline: none; }
+  h1[tabindex], h2[tabindex], h3[tabindex] { scroll-margin-block: 24px; }
+
+  /* Q04 / 页面分组。 */
+  .today-head { padding: 0 0 24px; }
+  .today-section { margin: 0; padding: 24px 0; border: 0; border-top: 1px solid var(--rule); border-radius: 0; background: transparent; }
+  .today-section h2 { font-size: 22px; margin-bottom: 12px; }
+  .today-section.is-empty { display: flex; align-items: baseline; gap: 24px; padding: 16px 0; }
+  .today-section.is-empty h2 { flex-shrink: 0; }
+  .today-empty { margin: 0; padding: 4px 0; font-size: 14px; }
+  .today-continue { padding: 20px 24px; background: var(--paper-raised); }
+  .today-main-action { justify-self: start; padding: 9px 18px; border-radius: 6px; background: var(--blue); color: #fff !important; }
+  .today-due-list > div { align-items: flex-start; }
+  .today-due-list strong { flex: 1; min-width: 0; }
+  .today-due-list span { max-width: 40%; overflow-wrap: anywhere; }
+  .oral-history .today-section { border-top: 1px solid var(--rule); margin: 24px 0; }
+  .oral-page .study-question-block { padding-bottom: 16px; }
+  .oral-page .study-counter { margin-top: 0; }
+  .oral-page .study-recorder { max-width: none; }
+  .bank-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+  .bank-tabs { width: 100%; }
+  .bank-results { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
+  .bank-results:has(.bank-answer-card) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .bank-results > .setup-banner, .bank-results > .bank-pager, .bank-results > .filter-loading { grid-column: 1 / -1; }
+  .bank-results > .bank-answer-card { grid-column: 2; grid-row: 2; margin: 0; position: sticky; top: 0; }
+  .bank-results > .bank-list { display: flex; flex-direction: column; grid-column: 1; grid-row: 2; }
+  .bank-results:not(:has(.bank-answer-card)) > .bank-list { grid-column: 1 / -1; }
+  .bank-answer-q { font-size: 22px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .bank-row-text, .track-title { overflow-wrap: anywhere; }
+  .bank-row { padding: 20px 16px; }
+  .bank-answer-card textarea { min-height: 160px; font-size: 16px; line-height: 1.7; }
+  .engine-cards, .role-cards { gap: 24px; }
+  .settings-voice-card { padding: 24px; }
+  .study-preference { margin: 24px 0; padding: 24px 0; border: 0; border-top: 1px solid var(--rule); border-radius: 0; background: transparent; flex-wrap: wrap; }
+  .study-preference h3 { width: 100%; }
+  .settings-head-actions { flex-wrap: wrap; }
+  .mg-advanced { margin-top: 24px; }
+  .mg-actions { margin-top: 24px; }
+  .voice-pick { min-width: 0; }
+}
+/* Q04 / 较窄桌面与减少动态效果。 */
+@media (min-width: 861px) and (max-width: 1100px) {
+  .main-content, .study-page, .study-done { padding: 24px; }
+  .sidebar { width: 200px; }
+  .bank-results:has(.bank-answer-card) { grid-template-columns: minmax(0, 1fr); }
+  .bank-results > .bank-answer-card { grid-column: 1; grid-row: 2; position: static; }
+  .bank-results:has(.bank-answer-card) > .bank-list { grid-row: 3; }
+  .engine-cards, .role-cards { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; animation-duration: 0s !important; }
+}
 @media (max-width: 860px) {
   .today-page { padding: 18px; }
   .today-head { align-items: flex-start; flex-direction: column; }

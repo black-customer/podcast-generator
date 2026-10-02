@@ -40,9 +40,36 @@ def _card_id(topic_id: str, item_id: str, index: int, fingerprint: str) -> str:
     return hashlib.sha256(source.encode("utf-8")).hexdigest()[:24]
 
 
-def _valid(card: dict) -> bool:
+def _material(topic_id: str, item_id: str, cache: dict | None = None) -> dict:
+    key = (topic_id, item_id)
+    if cache is not None and key in cache:
+        value = cache[key]
+        if isinstance(value, Exception):
+            raise value
+        return value
     try:
-        found = study.get_material(card["topic_id"], card["item_id"])
+        found = study.get_material(topic_id, item_id)
+    except (FileNotFoundError, ValueError, KeyError) as error:
+        if cache is not None:
+            cache[key] = error
+        raise
+    if cache is not None:
+        cache[key] = found
+    return found
+
+
+def _source_info(topic_id: str, item_id: str) -> dict:
+    with library.LIB_LOCK:
+        path = library.item_path(topic_id, item_id)
+        if not path.exists():
+            raise FileNotFoundError("条目不存在")
+        texts = library.read_item_texts(path)
+        return {"question": texts["question"], "title": library.item_title(texts, path.name)}
+
+
+def _valid(card: dict, cache: dict | None = None) -> bool:
+    try:
+        found = _material(card["topic_id"], card["item_id"], cache)
         rows = found.get("material", {}).get("sentences", [])
         index = card["sentence_index"]
         return (found["status"] == "ready"
@@ -56,7 +83,7 @@ def _make_card(topic_id: str, item_id: str, index: int, found: dict,
                learned_at: str | None, source: str) -> dict:
     material = found["material"]
     row = material["sentences"][index]
-    full = library.get_item_full(topic_id, item_id)
+    full = _source_info(topic_id, item_id)
     fingerprint = material["source_fingerprint"]
     learned_date = learned_at[:10] if learned_at else _today().isoformat()
     due = (date.fromisoformat(learned_date) + timedelta(days=1)
@@ -81,7 +108,7 @@ def _supersede_older(state: dict, current: dict) -> None:
             card["paused"] = True
 
 
-def _reconcile(state: dict) -> None:
+def _reconcile(state: dict, cache: dict | None = None) -> None:
     root = study_progress.PRIVATE_DIR
     if not root.exists():
         return
@@ -89,7 +116,7 @@ def _reconcile(state: dict) -> None:
         tid, iid = path.parent.parent.name, path.parent.name
         try:
             progress = study_progress.get_progress(tid, iid)
-            found = study.get_material(tid, iid)
+            found = _material(tid, iid, cache)
             if found["status"] != "ready":
                 continue
             fingerprint = found["material"]["source_fingerprint"]
@@ -123,11 +150,11 @@ def _reconcile(state: dict) -> None:
             continue
 
 
-def _due_cards(state: dict) -> list[dict]:
+def _due_cards(state: dict, cache: dict | None = None) -> list[dict]:
     today = _today().isoformat()
     cards = [c for c in state["cards"].values()
              if not c["paused"] and not c.get("superseded")
-             and c["due_date"] <= today and _valid(c)]
+             and c["due_date"] <= today and _valid(c, cache)]
     return sorted(cards, key=lambda c: (c["due_date"], c["created_at"],
                                         c["topic_id"], c["item_id"], c["sentence_index"]))
 
@@ -145,7 +172,7 @@ def _pending_learning() -> list[dict]:
                 progress["stage"] == "before" and not progress.get("before_started")
             ):
                 continue
-            full = library.get_item_full(tid, iid)
+            full = _source_info(tid, iid)
             rows.append({"topic_id": tid, "item_id": iid, "question": full["question"],
                          "stage": progress["stage"], "sentence_index": progress["sentence_index"],
                          "last_activity_at": progress.get("last_activity_at")})
@@ -160,11 +187,11 @@ def _preview(card: dict) -> dict:
                                       "zh", "question", "source", "due_date", "paused")}
 
 
-def _recovery(card: dict) -> dict:
+def _recovery(card: dict, cache: dict | None = None) -> dict:
     exists = library.item_path(card["topic_id"], card["item_id"]).exists()
     material_ready = False
     if exists:
-        found = study.get_material(card["topic_id"], card["item_id"])
+        found = _material(card["topic_id"], card["item_id"], cache)
         material_ready = found["status"] == "ready" and card["sentence_index"] < len(
             found.get("material", {}).get("sentences", [])
         )
@@ -174,10 +201,11 @@ def _recovery(card: dict) -> dict:
 def today_overview() -> dict:
     with _LOCK:
         state = _load()
-        _reconcile(state)
-        due = _due_cards(state)
+        cache: dict = {}
+        _reconcile(state, cache)
+        due = _due_cards(state, cache)
         invalid = [c for c in state["cards"].values()
-                   if not c.get("superseded") and not _valid(c)]
+                   if not c.get("superseded") and not _valid(c, cache)]
         active = next((s for s in state["sessions"].values() if s["state"] == "active"), None)
         return {
             "today": _today().isoformat(), "due_count": len(due),
@@ -185,7 +213,7 @@ def today_overview() -> dict:
             "continue_learning": _pending_learning(),
             "active_session_id": active["id"] if active else None,
             "needs_material_count": len(invalid),
-            "needs_material": [_recovery(c) for c in invalid[:5]],
+            "needs_material": [_recovery(c, cache) for c in invalid[:5]],
             "has_learning_records": study_progress.PRIVATE_DIR.exists() and any(
                 study_progress.PRIVATE_DIR.glob("*/*/state.json")
             ),

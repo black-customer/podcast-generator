@@ -6,7 +6,7 @@ const StudyUI = (() => {
     review: false, reviewIndex: 0, reviewDraft: [], reviewPassed: false, hintTimer: null,
     reviewSession: false, reviewWrongCount: 0, reviewHintUsed: false,
     recorder: null, stream: null, chunks: [], blob: null, blobUrl: "", recordStart: 0,
-    duration: 0, playback: null, saveTimer: null };
+    duration: 0, playback: null, saveTimer: null, currentHash: "" };
   const stageNames = { before: "先回答", dictation: "逐句默写", chinese: "看中文说",
     recall: "脱稿说", summary: "完成" };
 
@@ -30,7 +30,18 @@ const StudyUI = (() => {
     if (state.playback) state.playback.pause();
     state.playback = null;
   }
-  function leave() {
+  window.addEventListener("beforeunload", event => {
+    if (state.blob || state.recorder?.state === "recording") {
+      event.preventDefault(); event.returnValue = "";
+    }
+  });
+  function leave(nextHash) {
+    if (nextHash === state.currentHash) return !(state.blob || state.recorder?.state === "recording");
+    if (nextHash && (state.blob || state.recorder?.state === "recording")
+      && !confirm("当前录音还没有保存，离开会丢失这段录音。是否离开？")) {
+      location.hash = state.currentHash;
+      return false;
+    }
     clearHint();
     if (state.saveTimer && !state.review && state.progress?.stage === "dictation") {
       clearTimeout(state.saveTimer);
@@ -42,6 +53,8 @@ const StudyUI = (() => {
     if (state.blobUrl) URL.revokeObjectURL(state.blobUrl);
     state.blobUrl = "";
     state.blob = null;
+    state.currentHash = "";
+    return true;
   }
   function steps(stage) {
     const names = ["先回答", "逐句默写", "看中文说", "脱稿说"];
@@ -57,7 +70,7 @@ const StudyUI = (() => {
         <a href="#/topic/${encodeURIComponent(state.topicId)}">${esc(state.topicId)}</a><span>/</span>学习</div>
       ${state.review ? "" : steps(stage)}
       ${content}
-      <div class="study-footer"><a href="#/topics">保存并退出</a></div>
+      <div class="study-footer"><a href="#/topics">返回我的语料</a></div>
     </div>`;
     $app.scrollTop = 0;
     $app.querySelector(".study-footer a").addEventListener("click", async e => {
@@ -119,7 +132,7 @@ const StudyUI = (() => {
         <div class="study-counter">${state.review ? "句子复习" : `第 ${index + 1} / ${total} 句`}</div>
         <h2 class="study-chinese">${esc(sentence.zh)}</h2>
         ${passed ? `<div class="study-explanation">
-          <div class="study-counter">本句已写出示范英文</div>
+          <h3 class="study-counter">本句已写出示范英文</h3>
           <p class="study-answer">${esc(sentence.en)}</p>
           <div class="study-explain-grid"><div><h3>这句话怎么组织</h3><p>${esc(sentence.explanation)}</p></div>
             <div><h3>表达选择</h3><p>${esc(sentence.usage)}</p></div>
@@ -140,6 +153,7 @@ const StudyUI = (() => {
       const inputs = [...$app.querySelectorAll(".study-word")];
       inputs.forEach((input, i) => {
         input.onkeydown = e => {
+          if (e.key === "Tab" && e.shiftKey) return;
           if (e.key === " " || e.key === "Tab") {
             if (e.key === " " || i + 1 < inputs.length) e.preventDefault();
             (inputs[i + 1] || input).focus();
@@ -147,7 +161,7 @@ const StudyUI = (() => {
             e.preventDefault(); inputs[i - 1].focus();
           } else if (e.key === "Enter") {
             e.preventDefault();
-            checkAnswer().catch(err => {
+            ExperienceUI.busy($app.querySelector("[data-act='check']"), "正在检查…", checkAnswer).catch(err => {
               const fb = document.getElementById("study-feedback");
               if (fb) fb.textContent = `操作失败：${err.message}`;
             });
@@ -229,12 +243,18 @@ const StudyUI = (() => {
     feedback.textContent = typo >= 0
       ? `第 ${typo + 1} 个词可能有拼写问题；其余不同表达请对照示范检查。`
       : "与示范不同，请对照检查。其他自然说法不直接判作英语错误；写出本句示范后进入讲解。";
+    if (typo >= 0) ExperienceUI.focus(inputs[typo]);
     await save({ facts: { [activeIndex()]: {
       wrong_attempts: (facts(activeIndex()).wrong_attempts || 0) + 1 } } });
   }
   async function onDictationClick(e) {
-    const action = e.target.closest("[data-act]")?.dataset.act;
+    const button = e.target.closest("[data-act]");
+    const action = button?.dataset.act;
     if (!action) return;
+    if (button.disabled) return;
+    const oldLabel = button.textContent;
+    button.disabled = true;
+    if (["check", "next"].includes(action)) button.textContent = action === "check" ? "正在检查…" : "正在保存…";
     try {
       if (action === "check") await checkAnswer();
       if (action === "play") await playSentence();
@@ -284,6 +304,8 @@ const StudyUI = (() => {
       const feedback = document.getElementById("study-feedback");
       if (feedback) feedback.textContent = `操作失败：${err.message}`;
       else toast(`操作失败：${err.message}`);
+    } finally {
+      if (button.isConnected) { button.disabled = false; button.textContent = oldLabel; }
     }
   }
   async function playSentence() {
@@ -337,16 +359,27 @@ const StudyUI = (() => {
           : `<button type="button" class="study-skip" data-act="skip-record">麦克风不可用？不录音，直接${stage === "before" ? "开始逐句默写" : chinese ? "进入脱稿回答" : "查看本次总结"}</button>`}
       </section>`, stage);
     bindRecording();
-    $app.querySelector("[data-act='advance']")?.addEventListener("click", async () => {
-      await save({ stage: stage === "before" ? "dictation" : chinese ? "recall" : "summary",
-        sentence_index: stage === "before" ? 0 : state.progress.sentence_index });
-      render();
-    });
-    $app.querySelector("[data-act='skip-record']")?.addEventListener("click", async () => {
-      await save({ stage: stage === "before" ? "dictation" : chinese ? "recall" : "summary",
-        sentence_index: stage === "before" ? 0 : state.progress.sentence_index });
-      render();
-    });
+    ExperienceUI.recordingControls($app.querySelector(".study-recorder"), "ready",
+      state.progress.recordings.some(r => r.stage === stage));
+    const advance = async event => {
+      if ((state.blob || state.recorder?.state === "recording")
+        && !confirm("当前录音还没有保存。继续会丢失这段录音，是否继续？")) return;
+      try {
+        await ExperienceUI.busy(event.currentTarget, "正在保存进度…", async () => {
+          await save({ stage: stage === "before" ? "dictation" : chinese ? "recall" : "summary",
+            sentence_index: stage === "before" ? 0 : state.progress.sentence_index });
+          stopMedia();
+          if (state.blobUrl) URL.revokeObjectURL(state.blobUrl);
+          state.blobUrl = ""; state.blob = null;
+          render();
+        });
+      } catch (err) {
+        document.getElementById("study-rec-error").textContent =
+          `进度保存失败：${err.message}。本页录音仍保留，可重试。`;
+      }
+    };
+    $app.querySelector("[data-act='advance']")?.addEventListener("click", advance);
+    $app.querySelector("[data-act='skip-record']")?.addEventListener("click", advance);
   }
   function renderIntro() {
     const count = state.material.sentences.length;
@@ -372,11 +405,18 @@ const StudyUI = (() => {
   function bindRecording() {
     const panel = $app.querySelector(".study-recorder");
     panel.querySelector("[data-rec='start']").onclick = async () => {
+      const button = panel.querySelector("[data-rec='start']");
+      if (button.disabled) return;
+      button.disabled = true;
+      const viewHash = state.currentHash;
       const status = document.getElementById("study-rec-status");
       try {
         if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) throw new Error("当前浏览器没有录音能力");
         stopMedia();
         state.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        if (state.currentHash !== viewHash || !panel.isConnected) {
+          state.stream.getTracks().forEach(track => track.stop()); state.stream = null; return;
+        }
         const mime = ["audio/webm", "audio/ogg", "audio/mp4"].find(MediaRecorder.isTypeSupported);
         state.recorder = mime ? new MediaRecorder(state.stream, { mimeType: mime }) : new MediaRecorder(state.stream);
         state.chunks = [];
@@ -390,10 +430,12 @@ const StudyUI = (() => {
           preview.src = state.blobUrl; preview.hidden = false;
           const download = document.getElementById("study-rec-download");
           download.href = state.blobUrl; download.hidden = false;
+          download.download = `my-answer.${ExperienceUI.recordingExtension(state.blob.type)}`;
           panel.querySelector("[data-rec='save']").disabled = false;
           panel.querySelector("[data-rec='start']").disabled = false;
           panel.querySelector("[data-rec='stop']").disabled = true;
           status.textContent = `已停止 · ${fmtDur(state.duration)} · 可回听、重录或保存`;
+          ExperienceUI.recordingControls(panel, "stopped");
           state.stream?.getTracks().forEach(t => t.stop()); state.stream = null;
         };
         state.recordStart = performance.now(); state.recorder.start();
@@ -401,7 +443,10 @@ const StudyUI = (() => {
         panel.querySelector("[data-rec='stop']").disabled = false;
         panel.querySelector("[data-rec='save']").disabled = true;
         status.textContent = "正在录制…";
+        ExperienceUI.recordingControls(panel, "recording");
       } catch (err) {
+        button.disabled = false;
+        if (!panel.isConnected) return;
         document.getElementById("study-rec-error").textContent =
           `无法使用麦克风：${err.message}。请检查浏览器权限或设备；已有进度可以保存并退出。`;
       }
@@ -469,8 +514,9 @@ const StudyUI = (() => {
   }
   async function view(topicId, itemId, token) {
     leave();
+    state.currentHash = location.hash;
     state.topicId = topicId; state.itemId = itemId; state.review = false;
-    $app.innerHTML = `<p class="view-loading">正在读取学习材料…</p>`;
+    ExperienceUI.loading("本题学习");
     if (typeof PackState !== "undefined" && PackState.active) {
       $app.innerHTML = `<div class="study-page"><h1>手机端学习布局尚未开放</h1>
         <p>离线语料仍可浏览、播放和精听。</p><a href="#/topics">返回我的语料</a></div>`;
@@ -527,7 +573,7 @@ const StudyUI = (() => {
   async function review(token) {
     leave(); state.review = false;
     sessionStorage.removeItem("study-review-round");
-    $app.innerHTML = `<p class="view-loading">正在整理句子复习库…</p>`;
+    ExperienceUI.loading("句子库");
     if (typeof PackState !== "undefined" && PackState.active) {
       $app.innerHTML = `<div class="study-page"><h1>手机端句子复习尚未开放</h1><a href="#/topics">返回我的语料</a></div>`;
       return;
@@ -537,8 +583,8 @@ const StudyUI = (() => {
       if (viewStale(token)) return;
       const topics = [...new Map(rows.map(r => [r.topic_id,
         { id: r.topic_id, name: r.topic_name || r.topic_id }])).values()];
-      $app.innerHTML = `<div class="study-page"><h1>句子复习</h1>
-        <p class="study-muted">写错过、用过提示或收藏的句子，先看中文重新默写。</p>
+      $app.innerHTML = `<div class="study-page"><h1>句子库</h1>
+        <p class="study-muted">收录写错、用过提示或收藏的句子。打开句子详情，可做整句默写或口答复习。</p>
         ${rows.length ? `<button type="button" class="study-next" id="study-review-start">开始本轮复习 · ${rows.length} 句</button>
           <label class="study-review-filter">来源题目
           <select id="study-review-source"><option value="">全部来源</option>
@@ -558,7 +604,7 @@ const StudyUI = (() => {
         link.hidden = !!source.value && link.dataset.topic !== source.value;
       });
     } catch (err) {
-      $app.innerHTML = `<div class="study-page"><h1>复习库加载失败</h1><p>${esc(err.message)}</p></div>`;
+      if (!viewStale(token)) ExperienceUI.readError("句子库读取失败", err);
     }
   }
   async function reviewDetail(topicId, itemId, index, token, practice = false) {
@@ -568,7 +614,7 @@ const StudyUI = (() => {
     state.reviewSession = (round.queue || []).some(row => row.topic_id === topicId
       && row.item_id === itemId && row.sentence_index === index);
     state.reviewWrongCount = 0; state.reviewHintUsed = false;
-    $app.innerHTML = `<p class="view-loading">正在读取复习句子…</p>`;
+    ExperienceUI.loading("句子详情");
     try {
       const [item, doc, progress] = await Promise.all([
         api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`),

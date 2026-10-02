@@ -1,0 +1,48 @@
+[
+  {
+    "items": 100,
+    "measurements": {
+      "topics": {
+        "first_ms": 446.94,
+        "p50_ms": 22.44,
+        "p95_ms": 22.99,
+        "runs": 20
+      },
+      "today": {
+        "first_ms": 432.21,
+        "p50_ms": 407.74,
+        "p95_ms": 418.48,
+        "runs": 20
+      },
+      "history": {
+        "first_ms": 405.68,
+        "p50_ms": 394.62,
+        "p95_ms": 405.89,
+        "runs": 20
+      }
+    }
+  },
+  {
+    "items": 500,
+    "measurements": {
+      "topics": {
+        "first_ms": 2129.67,
+        "p50_ms": 111.89,
+        "p95_ms": 113.91,
+        "runs": 20
+      },
+      "today": {
+        "first_ms": 2151.05,
+        "p50_ms": 2178.73,
+        "p95_ms": 2202.12,
+        "runs": 20
+      },
+      "history": {
+        "first_ms": 2136.37,
+        "p50_ms": 2189.28,
+        "p95_ms": 2388.79,
+        "runs": 20
+      }
+    }
+  }
+]

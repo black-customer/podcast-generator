@@ -314,7 +314,8 @@ function packBankQuery(qs) {
 }
 
 async function packApi(method, url) {
-  const [path, qsStr] = url.split("?");
+  const [rawPath, qsStr] = url.split("?");
+  const path = rawPath.split("/").map(decodeURIComponent).join("/");
   const qs = new URLSearchParams(qsStr || "");
   if (method === "GET" && path === "/api/health") return { ok: true, mode: "pack" };
   if (method === "GET" && path === "/api/topics") {
@@ -340,6 +341,7 @@ async function packApi(method, url) {
 // 音频地址解析：server 模式原样返回；pack 模式解析到 blob URL（不支持返回 null）
 function mediaUrl(path) {
   if (!PackState.active) return path;
+  path = path.split("/").map(decodeURIComponent).join("/");
   const m = path.match(/^\/api\/topics\/(.+)\/items\/(.+)\/audio\/(\w+)$/);
   if (m) {
     const it = PackState.topics.get(m[1]) && PackState.topics.get(m[1]).items.get(m[2]);

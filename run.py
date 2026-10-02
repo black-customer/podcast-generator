@@ -3,11 +3,14 @@
 默认绑定 127.0.0.1（本机访问）。手机经局域网导入语料包等场景用 --host 0.0.0.0。
 启动前做前置检查：端口占用直接报错（绝不静默连到旧服务），ffmpeg 缺失给出安装提示。
 """
+import json
 import os
 import secrets
 import socket
 import sys
 import threading
+import time
+import urllib.request
 import webbrowser
 
 import uvicorn
@@ -32,13 +35,38 @@ def _check_ffmpeg() -> bool:
         return False
 
 
+def _wait_for_ready(host: str, port: int, stopped: threading.Event) -> bool:
+    """仅在本次服务运行期间等待健康响应，退出后不打开失效页面。"""
+    address = "127.0.0.1" if host == "0.0.0.0" else host
+    deadline = time.monotonic() + 30
+    while not stopped.is_set() and time.monotonic() < deadline:
+        try:
+            with urllib.request.urlopen(f"http://{address}:{port}/api/health", timeout=1) as res:
+                body = json.loads(res.read())
+                if res.status == 200 and "version" in body and "ffmpeg" in body:
+                    return not stopped.is_set()
+        except (OSError, ValueError):
+            pass
+        stopped.wait(0.2)
+    return False
+
+
 def main() -> None:
     port = PORT
-    if "--port" in sys.argv:
-        port = int(sys.argv[sys.argv.index("--port") + 1])
     host = "127.0.0.1"
-    if "--host" in sys.argv:
-        host = sys.argv[sys.argv.index("--host") + 1]
+    try:
+        if "--port" in sys.argv:
+            port = int(sys.argv[sys.argv.index("--port") + 1])
+        if not 1 <= port <= 65535:
+            raise ValueError("port range")
+        if "--host" in sys.argv:
+            host = sys.argv[sys.argv.index("--host") + 1]
+            if host.startswith("--"):
+                raise ValueError("host missing")
+    except (ValueError, IndexError):
+        print("[参数错误] --port 需要 1–65535 的整数；--host 后需要地址。", file=sys.stderr)
+        print("  示例：python run.py --port 8766 --no-open", file=sys.stderr)
+        sys.exit(2)
     open_browser = "--no-open" not in sys.argv
     reload = "--reload" in sys.argv
 
@@ -60,9 +88,19 @@ def main() -> None:
         print(f"局域网语料包配对码: {token}")
         print("手机 APP 导入页填写电脑地址和此配对码；服务重启后配对码会更新。")
 
+    stopped = threading.Event()
+    def open_when_ready() -> None:
+        if _wait_for_ready(host, port, stopped):
+            webbrowser.open(f"http://127.0.0.1:{port}")
+        elif not stopped.is_set():
+            print("[启动等待超时] 请查看服务错误，或运行 scripts/doctor.py 排查。", file=sys.stderr)
+
     if open_browser:
-        threading.Timer(1.2, lambda: webbrowser.open(f"http://127.0.0.1:{port}")).start()
-    uvicorn.run("server.main:app", host=host, port=port, log_level="info", reload=reload)
+        threading.Thread(target=open_when_ready, daemon=True).start()
+    try:
+        uvicorn.run("server.main:app", host=host, port=port, log_level="info", reload=reload)
+    finally:
+        stopped.set()
 
 
 if __name__ == "__main__":
