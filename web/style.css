@@ -2407,3 +2407,34 @@ input, textarea { caret-color: #596348; }
   .today-section { padding: 18px; }
   .today-due-list > div { display: grid; gap: 4px; }
 }
+/* Q05：回答阅读、搜索与草稿反馈，继承暖纸组件。 */
+.answer-text { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 72ch; font: inherit; line-height: 1.8; }
+.bank-status-label { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.bank-status-label .bank-select { min-width: 110px; }
+.draft-library { grid-column: 1 / -1; padding: 12px 0; border-bottom: 1px solid var(--rule); margin-bottom: 16px; }
+.draft-library summary { cursor: pointer; }
+.draft-library-row, .corpus-search-result { padding: 24px 0; border-bottom: 1px solid var(--rule); }
+.corpus-search-result h2 { font-size: 20px; overflow-wrap: anywhere; }
+.corpus-search { margin: 0 0 24px; }
+.corpus-search label { display: block; margin-bottom: 8px; font-size: 14px; }
+.corpus-search input { flex: 1; min-width: 180px; min-height: 44px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper-raised); color: var(--ink); font: inherit; }
+.search-snippet { max-width: 72ch; white-space: pre-wrap; overflow-wrap: anywhere; }
+#saved-answer { margin: 20px 0; }
+#saved-answer h3 { margin-top: 20px; }
+#answer-version { max-width: 100%; margin: 8px 0; }
+#draft-conflict { overflow-wrap: anywhere; }
+#gp-restart { white-space: nowrap; }
+.mobile-restart { margin: 12px 0; }
+@media (min-width: 861px) {
+  .mobile-restart { display: none; }
+  .bank-search { flex: 1 0 320px; min-width: min(100%, 320px); }
+  .bank-search > button { flex-shrink: 0; white-space: nowrap; }
+  .bank-results > .draft-library { grid-row: 1; }
+  .bank-results:has(.setup-banner) > .setup-banner { grid-row: 1; }
+  .bank-results:has(.setup-banner) > .draft-library { grid-row: 2; }
+  .bank-results:has(.setup-banner) > .bank-answer-card,
+  .bank-results:has(.setup-banner) > .bank-list { grid-row: 3; }
+}
+@media (min-width: 861px) and (max-width: 1100px) {
+  .bank-results:has(.setup-banner) > .bank-list { grid-row: 4; }
+}

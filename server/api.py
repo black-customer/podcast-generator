@@ -794,7 +794,7 @@ def api_stats():
 
 
 @router.get("/search")
-def api_search(q: str = ""):
+def api_search(q: str = "", page: int | None = None, page_size: int = 20):
     """全库搜索：标题/问题/中文/英文子串匹配。"""
     if not q.strip():
         return {"results": []}
@@ -803,14 +803,27 @@ def api_search(q: str = ""):
     for t in library.list_topics():
         for it in (library.get_topic(t["id"]).get("items") or []):
             full = library.get_item_full(t["id"], it["id"])
-            fields = ("title", "question", "chinese", "natural_english", "monologue_text")
+            fields = ("title", "question", "original_answer", "chinese", "natural_english",
+                      "monologue_text", "podcast_text", "podcast_script")
             blob = " ".join((full.get(f, "") or "") for f in fields).lower()
             if q_lower in blob:
+                matched = next((str(full.get(f) or "") for f in fields
+                                if q_lower in str(full.get(f) or "").lower()), "")
+                offset = max(0, matched.lower().find(q_lower) - 45)
                 results.append({
                     "topic_id": t["id"], "topic_name": t["name"],
                     "item_id": it["id"], "title": it["title"], "status": it["status"],
+                    "snippet": matched[offset:offset + 180],
+                    "has_audio": full["has_audio"], "study_status": full.get("study_status"),
                 })
-    return {"results": results}
+    if page is None:
+        return {"results": results}
+    size = min(100, max(1, page_size))
+    total = len(results)
+    pages = (total + size - 1) // size
+    page = min(max(1, page), max(1, pages))
+    return {"results": results[(page - 1) * size:page * size], "total": total,
+            "page": page, "pageCount": pages}
 
 
 @router.get("/topics/{topic_id}/drafts")
@@ -829,6 +842,17 @@ class BankAnswerIn(BaseModel):
     answer: str
 
 
+@router.get("/bank/questions/{question_id}/answers")
+def api_bank_answers(question_id: str):
+    try:
+        question = bank.find_question(bank.load_bank(), question_id)
+    except FileNotFoundError:
+        question = None
+    if question is None:
+        raise _err(404, "题目不存在；已有回答仍在我的语料中。")
+    return {"answers": bank.answer_versions().get(bank.norm_title(question["text"]), [])}
+
+
 @router.get("/bank/questions")
 def api_bank_questions(
     part: int | None = None,
@@ -837,7 +861,9 @@ def api_bank_questions(
     page: int = 1,
     page_size: int = bank.PAGE_SIZE,
     random_pick: bool = False,
+    random: bool = False,
     set_filter: str | None = None,
+    answer_status: Literal["all", "answered", "unanswered"] = "all",
 ):
     try:
         snapshot = bank.load_bank()
@@ -853,13 +879,14 @@ def api_bank_questions(
         }
     result = bank.query_questions(
         snapshot,
+        answer_status=answer_status,
         part=part,
         topic_id=topic,
         q=q,
         page=page,
         page_size=page_size,
         answered_map=bank.answered_items(),
-        random_pick=random_pick,
+        random_pick=random_pick or random,
         set_filter=set_filter,
     )
     result["available"] = True

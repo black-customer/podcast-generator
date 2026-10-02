@@ -56,17 +56,17 @@ def test_bank_view_flow():
             # 2.5 考季筛选：5-8月下拉 → 行标签只剩 5–8月；必考项有"必考"徽标
             page.click(".bank-tabs button:nth-child(1)")
             page.wait_for_timeout(300)
-            page.select_option(".bank-toolbar select >> nth=1", "qs_2026_05_08")
+            page.select_option("#bank-set", "qs_2026_05_08")
             page.wait_for_timeout(400)
             assert "set=qs_2026_05_08" in page.url
             rows = page.locator(".bank-row")
             assert rows.count() > 0, "Part1 5-8月必有结果"
             tags = page.locator(".bank-row").first.locator(".bank-topic-tag").all_inner_texts()
             assert any("5–8月" in t for t in tags), f"行标签缺考季: {tags}"
-            page.select_option(".bank-toolbar select >> nth=1", "core")
+            page.select_option("#bank-set", "core")
             page.wait_for_timeout(400)
             # Part1 必考只有 1 题（如为 0 也不算失败——数据决定），只验证不报错
-            page.select_option(".bank-toolbar select >> nth=1", "")
+            page.select_option("#bank-set", "")
             page.wait_for_timeout(300)
 
             # 3. 搜索：回到 Part 1 搜英文题干子串（Part2 搜 hometown 为空属正常）
@@ -87,7 +87,7 @@ def test_bank_view_flow():
             page.locator(".bank-row", has_text="已有音频").first.click()
             page.wait_for_timeout(700)
             page.wait_for_selector(".bank-answer-card", timeout=5000)
-            assert page.locator("text=去听已有的音频").count() == 1
+            assert page.locator("#saved-answer a", has_text="播放音频").count() == 1
 
             # 4.5 选中未作答题 → 输入框可见可作答
             # （不精确断言跳转按钮数：同题干可能跨册重复，另一册版本或已作答）

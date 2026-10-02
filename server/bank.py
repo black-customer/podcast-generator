@@ -12,6 +12,7 @@ import math
 import re
 import sqlite3
 import sys
+from datetime import datetime
 from pathlib import Path
 
 from .config import atomic_write_text
@@ -247,30 +248,54 @@ def norm_title(text: str) -> str:
     return " ".join(t.split())
 
 
-def answered_items() -> dict[str, dict]:
-    """库内条目按题干规整键索引：norm -> {topic_id, item_id, status, has_audio}。
+def _creation_time(value) -> str:
+    try:
+        if not isinstance(value, str) or "T" not in value:
+            return ""
+        return datetime.fromisoformat(value).astimezone().isoformat() if value else ""
+    except (ValueError, TypeError, OverflowError):
+        return ""
 
-    同题多条目时优先已有音频的（点进去能听）。题库页徽标与跳转依据。
-    """
+
+def answer_versions() -> dict[str, list[dict]]:
+    """按完整题干索引实际回答；创建时间决定顺序，空条目不算回答。"""
     from . import library
 
-    result: dict[str, dict] = {}
+    result: dict[str, list[dict]] = {}
     for t in library.list_topics():
         for it in library.get_topic(t["id"]).get("items", []):
             title = it.get("title") or ""
             if not title:
                 continue
+            path = library.item_path(t["id"], it["id"])
+            texts = library.read_item_texts(path)
+            if not any((texts.get(f) or "").strip() for f in (
+                "original_answer", "chinese", "natural_english", "monologue_text",
+                "podcast_text", "podcast_script",
+            )):
+                continue
+            meta = library.load_meta(path)
             entry = {
                 "topic_id": t["id"],
                 "item_id": it["id"],
                 "status": it.get("status") or "",
                 "has_audio": bool(it.get("has_monologue") or it.get("has_podcast")),
+                "created_at": _creation_time(meta.get("created_at")),
             }
-            key = norm_title(title)
-            prev = result.get(key)
-            if prev is None or (entry["has_audio"] and not prev["has_audio"]):
-                result[key] = entry
+            key = norm_title(texts.get("question") or title)
+            result.setdefault(key, []).append(entry)
+    for versions in result.values():
+        versions.sort(key=lambda v: (
+            (datetime.fromisoformat(v["created_at"]).timestamp()
+             if v["created_at"] else float("-inf")),
+            v["topic_id"], v["item_id"],
+        ), reverse=True)
     return result
+
+
+def answered_items() -> dict[str, dict]:
+    """同题默认最新创建的回答；重制音频不改变提交顺序。"""
+    return {key: versions[0] for key, versions in answer_versions().items()}
 
 
 def set_index(snapshot: dict) -> dict[str, list[dict]]:
@@ -314,6 +339,7 @@ def query_questions(
     answered_map: dict[str, dict] | None = None,
     random_pick: bool = False,
     set_filter: str | None = None,
+    answer_status: str = "all",
 ) -> dict:
     """题库查询：part/topic 精确过滤，q 中英不区分大小写子串，页参数钳制。
 
@@ -346,6 +372,10 @@ def query_questions(
             continue
         name_zh, name_en = _topic_label(snapshot, row)
         answered_item = (answered_map or {}).get(norm_title(row["text"]))
+        if answer_status == "answered" and answered_item is None:
+            continue
+        if answer_status == "unanswered" and answered_item is not None:
+            continue
         rows.append(
             {
                 **row,
@@ -362,8 +392,10 @@ def query_questions(
     if random_pick and rows:
         import random as _random
 
-        rows = [_random.choice(rows)]
-        return {"items": rows, "total": total, "page": 1, "pageCount": 1, "page_size": 1}
+        chosen = _random.choice(rows)
+        selected_page = rows.index(chosen) // min(max(1, page_size), 100) + 1
+        return {"items": [chosen], "total": total, "page": 1, "pageCount": 1,
+                "page_size": 1, "selected_page": selected_page}
     size = min(max(1, page_size), 100)
     page_count = max(1, math.ceil(total / size)) if total else 0
     page = min(max(1, page), page_count) if total else 1

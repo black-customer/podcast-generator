@@ -14,7 +14,7 @@ BASE = Path(__file__).resolve().parent.parent
 WEB = BASE / "web"
 WWW = BASE / "mobile" / "www"
 
-STATIC_FILES = ["app.js", "experience.js", "study.js", "oral_review.js", "packreader.js", "packmode.js",
+STATIC_FILES = ["app.js", "experience.js", "continuity.js", "study.js", "oral_review.js", "packreader.js", "packmode.js",
                 "style.css"]
 
 

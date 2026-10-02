@@ -289,6 +289,7 @@ function initGlobalPlayer() {
   };
 
   $audio.onended = () => {
+    ListeningExperience.complete($audio);
     if (PlayerState.playlist.length && PlayerState.currentIndex < PlayerState.playlist.length - 1) {
       playItem(PlayerState.currentTopic.id, PlayerState.playlist[PlayerState.currentIndex + 1]);
     }
@@ -504,7 +505,12 @@ function setTrack(newTrack) {
   }
 }
 
-async function playItem(topicId, item, autoPlay = true) {
+async function playItem(topicId, item, autoPlay = true, token = null) {
+  const request = PlayerState.playRequest = (PlayerState.playRequest || 0) + 1;
+  ListeningExperience.detach($audio);
+  const source = {kind: "item", topic_id: topicId, item_id: item.id, track: PlayerState.track};
+  const resume = await ListeningExperience.prepare(source);
+  if (request !== PlayerState.playRequest || viewStale(token)) return;
   PlayerState.currentItem = item;
   const known = PlayerState.currentTopic;
   PlayerState.currentTopic = (known && known.id === topicId) ? known : { id: topicId };
@@ -515,8 +521,10 @@ async function playItem(topicId, item, autoPlay = true) {
   const nowPlayingNav = document.getElementById("nav-now-playing");
   if (nowPlayingNav) {
     nowPlayingNav.href = `#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(item.id)}`;
-    document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
-    nowPlayingNav.classList.add("active");
+    if (location.hash.startsWith("#/play/")) {
+      document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+      nowPlayingNav.classList.add("active");
+    }
   }
 
   const track = PlayerState.track;
@@ -526,6 +534,7 @@ async function playItem(topicId, item, autoPlay = true) {
     audioUrl += `?v=${PlayerState.mediaRevision}`;
   }
 
+  ListeningExperience.attach($audio, source, resume);
   $audio.src = audioUrl;
   $audio.playbackRate = PlayerState.playbackRate;
   if (autoPlay) {
@@ -669,10 +678,21 @@ window.seekToTime = function(seconds) {
 
 // 1. 我的语料：雅思口语 / 日常表达 两个用户概念（R04）
 async function TopicsGalleryView(token) {
+  const params = new URLSearchParams(location.hash.split("?")[1] || "");
+  if (params.get("q")) {
+    const previous = document.getElementById("corpus-search");
+    if (!previous) $app.innerHTML = `<header class="page-heading"><h1>我的语料</h1></header>
+      ${CorpusExperience.controls(params)}<div id="corpus-results"></div>`;
+    if (previous && document.activeElement !== document.getElementById("corpus-q")) document.getElementById("corpus-q").value = params.get("q");
+    $app.querySelector(".corpus-tabs")?.setAttribute("hidden", "");
+    CorpusExperience.bind();
+    await CorpusExperience.search(params, token);
+    return;
+  }
   ExperienceUI.loading("我的语料");
-  let topics = [];
+  let topics = [], latest;
   try {
-    topics = await api("GET", "/api/topics");
+    [topics, latest] = await Promise.all([api("GET", "/api/topics"), ListeningExperience.latest()]);
   } catch (e) {
     if (viewStale(token)) return;
     ExperienceUI.readError("加载失败", e);
@@ -681,16 +701,24 @@ async function TopicsGalleryView(token) {
   if (viewStale(token)) return;
 
   const hash = location.hash;
-  const params = new URLSearchParams(hash.split("?")[1] || "");
   const cat = params.get("cat") || "ielts";
   const ielts = topics.filter(t => (t.category || "ielts") === "ielts");
   const daily = topics.filter(t => (t.category || "ielts") === "daily");
   const filtered = cat === "daily" ? daily : ielts;
 
-  const last = (() => {
+  const legacyLast = (() => {
     try { return JSON.parse(localStorage.getItem("ielts-pod-last") || "null"); }
     catch (_) { return null; }
   })();
+  if (viewStale(token)) return;
+  let last = latest?.topic_id ? latest : legacyLast;
+  if (last === legacyLast && legacyLast?.item_id) {
+    try {
+      const old = await api("GET", `/api/topics/${encodeURIComponent(last.topic_id)}/items/${encodeURIComponent(last.item_id)}`);
+      if (!old.has_audio) last = null;
+    } catch (_) { last = null; }
+  }
+  if (viewStale(token)) return;
 
   const tab = (value, label, count) => `
     <button class="corpus-tab ${cat === value ? "active" : ""}"
@@ -717,10 +745,12 @@ async function TopicsGalleryView(token) {
       <a class="text-action" href="#/practice">去开始练习 →</a>
     </header>
 
+    ${CorpusExperience.controls(params)}
     ${last && last.topic_id ? `
-    <button class="continue-card" onclick="location.hash='#/play/${encodeURIComponent(last.topic_id)}/${encodeURIComponent(last.item_id)}'">
+    <button class="continue-card" onclick="location.hash='${last.kind === "episode" ? `#/episode/${encodeURIComponent(last.topic_id)}?track=${last.track}` : `#/play/${encodeURIComponent(last.topic_id)}/${encodeURIComponent(last.item_id)}?track=${last.track || "podcast"}`}';">
       <span class="continue-label">继续上次收听</span>
       <span class="continue-title">${esc(publicTitle(last.title))}</span>
+      ${last.position != null ? `<span>${last.track === "monologue" ? "独白" : "播客"} · ${last.completed ? "已听完 · 从头播放" : last.state === "audio_changed" ? "音频已更新 · 从头播放" : fmtDur(last.position)}</span>` : ""}
       <span class="continue-action">▶</span>
     </button>` : ""}
 
@@ -729,10 +759,11 @@ async function TopicsGalleryView(token) {
       ${tab("daily", "日常表达", daily.length)}
     </div>
 
-    <div class="album-grid">
+    <div class="album-grid" id="corpus-results">
       ${cardsHtml || `<p class="empty-state">这个分类还没有语料。先去「开始练习」作答一题。</p>`}
     </div>
   `;
+  CorpusExperience.bind();
 }
 
 // 2. 专辑详情与曲目列表
@@ -834,13 +865,10 @@ async function TrackPlayerView(topicId, itemId, token) {
   PlayerState.currentTopic = topic;
   PlayerState.playlist = topic.items.filter(it => it.status === "generated");
 
-  // 「继续上次收听」记录点（我的语料页顶部卡片，R04）
-  try {
-    localStorage.setItem(
-      "ielts-pod-last",
-      JSON.stringify({ topic_id: topicId, item_id: itemId, title: item.title || "" })
-    );
-  } catch (_) {}
+  const requestedTrack = new URLSearchParams(location.hash.split("?")[1] || "").get("track");
+  if (["podcast", "monologue"].includes(requestedTrack)) PlayerState.track = requestedTrack;
+  else if (!item.has_audio_podcast && item.has_audio_monologue) PlayerState.track = "monologue";
+  else if (!item.has_audio_monologue && item.has_audio_podcast) PlayerState.track = "podcast";
 
   const sibling = (topic.items || []).find(it => it.id === itemId) || {};
   const partMatch = /part[-_ ](\d)/i.exec(topic.id) || /part\s*(\d)/i.exec(topic.name);
@@ -920,6 +948,10 @@ async function TrackPlayerView(topicId, itemId, token) {
   // 监听用户手动翻阅滚动，短时间内暂停自动居中抢焦
   // （程序性 scrollIntoView 落在 programmaticScrollUntil 窗口内，不算用户翻阅——修 A24）
   const panel = document.getElementById("lyrics-panel");
+  const mobileRestart = Object.assign(document.createElement("button"), {
+    id: "track-restart", className: "btn-pill mobile-restart", textContent: "从头播放",
+  });
+  $app.querySelector("h1")?.after(mobileRestart);
   if (panel) {
     let scrollTimer;
     panel.onscroll = () => {
@@ -945,7 +977,7 @@ async function TrackPlayerView(topicId, itemId, token) {
   referenceToggle.setAttribute("aria-pressed", document.getElementById("gp-zh-toggle").getAttribute("aria-pressed"));
   referenceToggle.title = "显示或隐藏中文参考";
   referenceToggle.onclick = () => document.getElementById("gp-zh-toggle").click();
-  playItem(topicId, item, true);
+  playItem(topicId, item, true, token);
 }
 
 // 3.5 整集章节播放器（M10）：单文件连播 + 章节跳转 + 过期重建
@@ -1000,6 +1032,12 @@ async function EpisodePlayerView(topicId, track, token) {
   `;
 
   const audio = document.getElementById("ep-audio");
+  audio.before(Object.assign(document.createElement("button"), {id: "ep-restart", className: "btn-pill", textContent: "从头播放"}));
+  const source = {kind: "episode", topic_id: topicId, item_id: "", track};
+  const resume = await ListeningExperience.prepare(source);
+  if (viewStale(token)) return;
+  ListeningExperience.attach(audio, source, resume);
+  if (audio.readyState >= 1) audio.dispatchEvent(new Event("loadedmetadata"));
   const chapters = Array.from(document.querySelectorAll(".ep-chapter"));
   function highlight() {
     const cur = audio.currentTime;
@@ -1932,6 +1970,8 @@ function bankParams() {
     topic: p.get("topic") || "",
     set: p.get("set") || "",
     q: p.get("q") || "",
+    answer_status: p.get("answer_status") || "all",
+    write: p.get("write") || "",
     page: parseInt(p.get("page") || "1", 10) || 1,
     sel: p.get("sel") || "",
   };
@@ -1940,15 +1980,18 @@ function bankParams() {
 function bankGo(overrides) {
   const cur = bankParams();
   const next = { ...cur, ...overrides };
-  const filterChanged = ["part", "topic", "set", "q"].some(
+  const filterChanged = ["part", "topic", "set", "q", "answer_status"].some(
     (k) => overrides[k] !== undefined && overrides[k] !== cur[k]
   );
-  if (filterChanged) next.page = 1;
+  if (filterChanged) { next.page = 1; next.sel = ""; next.write = ""; bankRandomPick = null; }
+  if (overrides.sel !== undefined) { bankRandomPick = null; next.write = overrides.write || ""; }
   const qs = new URLSearchParams();
   qs.set("part", next.part);
   if (next.topic) qs.set("topic", next.topic);
   if (next.set) qs.set("set", next.set);
   if (next.q) qs.set("q", next.q);
+  if (next.answer_status !== "all") qs.set("answer_status", next.answer_status);
+  if (next.write) qs.set("write", next.write);
   if (next.page > 1) qs.set("page", String(next.page));
   if (next.sel) qs.set("sel", next.sel);
   location.hash = `#/bank?${qs.toString()}`;
@@ -1961,13 +2004,13 @@ async function bankRandomGo() {
   const p = bankParams();
   const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&random=1` +
     (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
-    (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "");
+    (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "") +
+    (p.q ? `&q=${encodeURIComponent(p.q)}` : "") + `&answer_status=${p.answer_status}`;
   try {
     const res = await api("GET", query);
     if (!res.items || !res.items.length) { toast("该筛选下没有题目"); return; }
     if (viewStale(token)) return; // 用户已导航离开：不得覆写新视图
-    bankRandomPick = res.items[0];
-    BankView(null); // 程序性重渲染（null 不受路由令牌约束）
+    bankGo({sel: res.items[0].id, page: res.selected_page || 1});
   } catch (e) {
     toast(`随机取题失败：${e.message}`);
   }
@@ -2081,8 +2124,11 @@ async function switchToAgentMode(topicId, itemId) {
 }
 
 async function bankSubmitAnswer(questionId) {
+  const token = routeToken;
+  const draft = AnswerExperience.current;
   const input = document.getElementById("bank-answer-input");
   const btn = document.getElementById("bank-answer-submit");
+  if (!btn || btn.disabled) return;
   const mode = ((document.querySelector('input[name="bank-gen-mode"]:checked') || {}).value) || "agent";
   const answer = (input && input.value || "").trim();
   if (!answer) { toast("先写下你的回答（中文或英文都可以）"); return; }
@@ -2090,6 +2136,10 @@ async function bankSubmitAnswer(questionId) {
   btn.textContent = mode === "api" ? "启动生成中…" : "创建条目中…";
   try {
     const res = await api("POST", "/api/generation-requests", { question_id: questionId, answer, mode });
+    await AnswerExperience.submitted(draft, answer, mode);
+    if (viewStale(token)) { toast("回答已提交，可在我的语料中查看。"); return; }
+    if (draft && (draft.answer.trim() !== answer || draft.mode !== mode)) toast("新输入的文字与选择仍保存在未提交草稿中。");
+    AnswerExperience.leave();
     if (mode === "api") showApiJobWait(res);
     else showAgentWait(res);
   } catch (e) {
@@ -2113,6 +2163,7 @@ async function BankView(token) {
   let data;
   try {
     const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&page=${p.page}` +
+      `&answer_status=${encodeURIComponent(p.answer_status)}` +
       (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
       (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "") +
       (p.q ? `&q=${encodeURIComponent(p.q)}` : "");
@@ -2155,6 +2206,7 @@ async function BankView(token) {
 
   const selItem = (p.sel && data.items.find((it) => it.id === p.sel)) || bankRandomPick;
   const packMode = typeof PackState !== "undefined" && PackState.active;
+  const writing = selItem && (!selItem.answered || p.write === "1");
   // 首次使用引导：一个 key 都没配时引导去设置向导（R04 概念 01）
   let setupBanner = "";
   if (!packMode) {
@@ -2180,10 +2232,13 @@ async function BankView(token) {
       <div class="bank-answer-q">${esc(selItem.text)}</div>
       ${selItem.text_zh ? `<div class="bank-answer-zh">${esc(selItem.text_zh)}</div>` : ""}
       ${selItem.core ? `<div class="bank-row-meta" style="margin-top:8px;"><span class="bank-badge">必考题</span>${(selItem.set_labels || []).map((l) => `<span class="bank-topic-tag">${esc(l)}</span>`).join("")}</div>` : ""}
-      ${selJump}
-      ${packMode ? `<p class="bank-answer-hint">📱 APP 浏览模式：随机练题口头作答即可，提交作答请在电脑端进行。</p>` : `
+      ${selItem.answered ? `<label for="answer-version">已保存回答</label><select id="answer-version" class="bank-select" aria-label="切换回答版本"></select><section id="saved-answer" aria-live="polite">正在读取已有回答…</section>` : selJump}
+      ${selItem.answered && !packMode && !writing ? `<button class="btn-pill" onclick="bankGo({write: '1'})">再回答一次／继续草稿</button>` : ""}
+      ${packMode ? `<p class="bank-answer-hint">APP 浏览模式：已回答状态仅依据当前导入包，提交作答请在电脑端进行。</p>` : writing ? `
       <textarea id="bank-answer-input" rows="6"
         placeholder="用中文或英文自由作答——说出你想表达的意思，母语者版本由 Agent 或 API 改写后生成音频"></textarea>
+      <p id="draft-status" class="study-muted" role="status">正在读取草稿 · 未提交</p><div id="draft-conflict"></div>
+      <div class="study-actions"><button class="btn-pill" id="draft-retry">查看服务草稿／重试</button><button class="btn-pill" id="draft-discard">丢弃草稿</button></div>
       <div class="bank-answer-actions bank-mode-pick">
         <label><input type="radio" name="bank-gen-mode" value="agent" checked> Agent 模式（默认：复制指令给 Codex / ZCode 等 Agent）</label>
         <label><input type="radio" name="bank-gen-mode" value="api"> API 模式（StepFun 一键改写 + 音频）</label>
@@ -2193,7 +2248,7 @@ async function BankView(token) {
         <button class="btn-pill" onclick="bankGo({sel: ''})">收起</button>
       </div>
       <p class="bank-answer-hint">提交后条目进入话题「${esc(selItem.topic_name_en || selItem.topic_name)}」。
-      Agent 模式复制指令给你的 AI Agent，完成后本页自动跳转；API 模式用已配置的 StepFun Key 一次完成改写与音频。</p>`}
+      Agent 模式复制指令给你的 AI Agent，完成后本页自动跳转；API 模式用已配置的 StepFun Key 一次完成改写与音频。</p>` : ""}
     </div>` : "";
 
   const rowsHtml = data.items.map((it) => `
@@ -2206,7 +2261,7 @@ async function BankView(token) {
         ${(it.set_labels || []).map((l) => `<span class="bank-topic-tag">${esc(l)}</span>`).join("")}
         ${it.part !== 1 ? `<span class="bank-part-tag">Part ${it.part}</span>` : ""}
       </div>
-      <span class="bank-row-action">回答这道题 →</span>
+      <span class="bank-row-action">${it.answered ? "查看已有回答" : "回答这道题"} →</span>
     </button>`).join("");
 
   const hasPrev = data.page > 1;
@@ -2220,8 +2275,9 @@ async function BankView(token) {
 
     <div class="bank-toolbar">
       <div class="bank-tabs">${partTabs}</div>
-      <select class="bank-select" onchange="bankGo({topic: this.value})">${topicOptions}</select>
-      <select class="bank-select" onchange="bankGo({set: this.value})">${setOptions}</select>
+      <label class="bank-status-label">作答状态<select id="bank-status" class="bank-select" onchange="bankGo({answer_status: this.value})">${[["all", "全部"], ["unanswered", "未回答"], ["answered", "已回答"]].map(([v, l]) => `<option value="${v}" ${p.answer_status === v ? "selected" : ""}>${l}</option>`).join("")}</select></label>
+      <select id="bank-topic" class="bank-select" aria-label="话题" onchange="bankGo({topic: this.value})">${topicOptions}</select>
+      <select id="bank-set" class="bank-select" aria-label="考季或必考话题" onchange="bankGo({set: this.value})">${setOptions}</select>
       <div class="bank-search">
         <input id="bank-q" value="${esc(p.q)}" placeholder="搜索题干（中英文）"
           onkeydown="if(event.key==='Enter')bankGo({q: document.getElementById('bank-q').value.trim()})">
@@ -2230,12 +2286,12 @@ async function BankView(token) {
       <button class="bank-tab bank-random" onclick="bankRandomGo()" title="从当前筛选中随机抽一题">随机来一题</button>
     </div>
 
-    <div class="bank-results">${setupBanner}
+    <div class="bank-results">${setupBanner}${!packMode ? '<details id="draft-library" class="draft-library"><summary>找回未提交草稿</summary></details>' : '<p class="study-muted">已回答状态仅依据当前导入包。</p>'}
 
     ${answerCard}
 
     <div class="bank-list">
-      ${rowsHtml || `<p style="color:var(--text-sub);padding:24px 0;">没有匹配的题目</p>`}
+      ${rowsHtml || `<p class="empty-state">当前组合筛选没有匹配的题目。</p><button class="btn-pill" onclick="bankGo({topic:'',set:'',q:'',answer_status:'all'})">清除筛选</button>`}
     </div>
 
     ${data.pageCount > 0 ? `
@@ -2262,6 +2318,8 @@ async function BankView(token) {
     const radio = $app.querySelector(`[name='bank-gen-mode'][value='${previousMode}']`);
     if (radio) radio.checked = true;
   }
+  if (selItem) { AnswerExperience.savedAnswer(selItem, token); AnswerExperience.bindDraft(selItem); }
+  AnswerExperience.recoveryList(token);
 }
 
 // 9. 语料包导入管理（B02）：LAN 直传 / 文件导入 / 存档清除
@@ -2389,6 +2447,11 @@ const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup", "#/today",
   "#/oral-review", "#/study-history"];
 
 function route() {
+  AnswerExperience.leave();
+  const episodeAudio = document.getElementById("ep-audio");
+  if (episodeAudio) ListeningExperience.detach(episodeAudio);
+  const doneAudio = document.getElementById("done-audio");
+  if (doneAudio) ListeningExperience.detach(doneAudio);
   const token = ++routeToken;
   const packActive = typeof PackState !== "undefined" && PackState.active;
   const hash = location.hash || (packActive || matchMedia("(max-width: 860px)").matches
@@ -2699,7 +2762,10 @@ async function DoneView(topicId, itemId, token) {
         <h2>${esc(publicTitle(item.question || item.title || "条目"))}</h2></section>
       ${hasAudio ? `<section class="done-audio-card"><h2>你的音频</h2>
         <div class="done-audio-row"><audio id="done-audio" controls preload="metadata" src="${esc(audioUrl)}"></audio>
-          <a class="study-button" href="${esc(audioUrl)}" download="podcast.mp3">下载音频</a></div></section>` : ""}
+          <a class="study-button" href="${esc(audioUrl)}" download="podcast.mp3">下载音频</a><button class="btn-pill" id="done-restart">从头播放</button></div></section>` : ""}
+      <details class="done-dialogue"><summary>查看原始回答与中文</summary>
+        ${item.original_answer ? `<h3>原始回答</h3><pre class="answer-text">${esc(item.original_answer)}</pre>` : '<p class="study-muted">此旧条目未保存原始回答。</p>'}
+        ${item.chinese ? `<h3>已有中文</h3><pre class="answer-text">${esc(item.chinese)}</pre>` : ""}</details>
       ${item.has_audio_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
         `<section class="done-study-card"><h2>${studyStatusName(item.study_status)}</h2>
           <p>${item.study_status === "ready" ? "逐句中文与讲解已就绪，可以开始完整回答的学习。" :
@@ -2716,6 +2782,14 @@ async function DoneView(topicId, itemId, token) {
         <a class="btn-pill" href="#/bank">再练一题</a></div>
     </div>`;
   document.getElementById("done-refresh")?.addEventListener("click", () => route());
+  if (hasAudio) {
+    const source = {kind: "item", topic_id: topicId, item_id: itemId, track: audioTrack};
+    const audio = document.getElementById("done-audio");
+    const resume = await ListeningExperience.prepare(source);
+    if (viewStale(token)) return;
+    ListeningExperience.attach(audio, source, resume);
+    if (audio.readyState >= 1) audio.dispatchEvent(new Event("loadedmetadata"));
+  }
 }
 
 window.addEventListener("hashchange", route);

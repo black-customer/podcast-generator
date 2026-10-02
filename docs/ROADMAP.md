@@ -297,3 +297,11 @@ AC：先红后绿回归；1536／1280／1024 桌面与 390／430 手机合成截
 `check.sh --release` 全绿（221 passed / 1 skipped，32 e2e）；临时中文目录便携启动和
 Android debug 构建、资源哈希一致。交接见 `docs/design/experience-q04/README.md`。
 源码提交并推送；公开下载版本号和 GitHub Release 不随本次源码交付更新。
+
+### Q05 选题、找回答与继续使用 — DONE（2026-10-02，tag q05）
+
+题库按实际作答筛选、最新回答与多版本浏览；语料全文搜索；服务端私有草稿与冲突恢复；
+按实际音频指纹恢复收听，支持在线共享与设备内离线位置。保持学习规则与公开语料结构。
+AC：数据回归先红后绿；桌面三尺寸、手机两尺寸合成走查；发布门禁、便携启动与 Android
+debug 构建通过；238 passed / 1 skipped，42 e2e，中文临时目录便携启动通过。
+交接见 docs/design/experience-q05/README.md。源码与本地验收包交付，公开下载版另行发布。

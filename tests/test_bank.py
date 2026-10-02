@@ -271,7 +271,7 @@ def test_merge_extra_topics_questions_and_set(snapshot_file: Path, tmp_path: Pat
     assert len(xset["question_ids"]) == 2
 
 
-def test_answered_items_prefers_audio(monkeypatch):
+def test_answered_items_prefers_newest_answer(monkeypatch):
     class FakeTopic:
         def __init__(self, items):
             self._items = items
@@ -292,9 +292,13 @@ def test_answered_items_prefers_audio(monkeypatch):
              "has_monologue": True, "has_podcast": False},
         ]),
     )
+    monkeypatch.setattr(library, "read_item_texts", lambda p: {"chinese": "已保存回答"})
+    monkeypatch.setattr(library, "load_meta", lambda p: {
+        "created_at": "2026-01-02T12:00:00" if p.name.startswith("002")
+        else "2026-01-01T12:00:00"})
     got = bank.answered_items()
-    assert got[bank.norm_title("Same question?")]["item_id"] == "001-audio"
-    assert got[bank.norm_title("Same question?")]["has_audio"] is True
+    assert got[bank.norm_title("Same question?")]["item_id"] == "002-plain"
+    assert got[bank.norm_title("Same question?")]["has_audio"] is False
 
 
 def test_bank_topics_counts(snapshot_file: Path):

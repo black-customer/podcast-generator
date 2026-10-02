@@ -655,3 +655,39 @@ Bruce 指示：除 Fish key 轮换（Bruce 自行决定）外的评审发现全�
   未联网下载依赖，不能当作全新 Windows 安装认证。全过程无真实文本／TTS 调用。
 - 更新 DESIGN／README 与交接说明；按现行约定提交、打 q04 与推送，并核对远端提交号。
   VERSION 保持现有公开值；GitHub Release 与 APK/ZIP 上传未执行。
+
+## 2026-10-02 会话 31：Q05 选题、找回答与继续使用
+
+- 按 Bruce 批准的五项计划交付：题库实际作答筛选、最新回答及版本切换、我的语料全文
+  搜索、电脑服务私有草稿、实际播放位置恢复。暖纸方向、原生 JS、hash 路由及学习规则不变。
+- 已回答与音频分开：空条目和未提交草稿不计入；完整 Part 2 题干匹配；随机遵守所有
+  筛选，定位到可刷新恢复的页码。回答按有效创建时间排序，不使用更新／重制时间，
+  未知时间标历史回答；旧英文不冒充原始输入。已有条目生成复用 Agent 任务入口。
+- 搜索覆盖实际原始回答、中英文及对话正文，保留旧无分页接口；新界面 300ms 防抖、
+  Enter 搜索、每页 20 条、URL 恢复，迟到响应不能覆盖新页面。离线包提供同语义读取。
+- 新增 answer_drafts.v1.json 与 listening_progress.v1.json；锁与原子写、版本冲突、
+  清除墓碑、题干快照及音频 SHA256。文件损坏／未知版本保留原件并返回可恢复错误。
+  草稿 800ms 保存、浏览器应急副本、跨浏览器恢复；提交失败及等待期间的新输入保留。
+- 单条双轨、桌面整集、完成页共用收听记录；实际播放后每 5 秒及暂停／切曲保存。
+  显式从头／点句／章节优先；连播切曲前确认 ended 标记，手动停在末尾不猜完成。
+  音频变化不套旧位置；离线设备按实际字节 SHA256 恢复，局域网无 SubtleCrypto 时兼容。
+- 数据先红后绿：过滤／顺序／时间与随机页码、旧条目、草稿冲突、原子失败、损坏结构、
+  搜索兼容、音轨／整集／删除；浏览器覆盖双浏览器、迟到请求、重复点击、等待期间
+  输入、断网文字与模式、在线即时恢复及离线重导入路径。合成 HTTP 音频支持 206，
+  恢复断言 3 秒内成立，避免靠自然播放到达位置造成假绿。
+- 首轮旧 E2E 因新增筛选导致序号选择器失效，改为语义 ID。既有 Windows 并发原子写
+  回归出现读取共享锁瞬态，改为有界权限重试，JSON 损坏及写失败仍直接失败。
+  Service Worker 会绕过 Page.route；浏览器回归禁用它并隔离全部新私有写接口。
+  首轮产生的测试位置／清除墓碑经时间和来源核对后归档到忽略的 .tmp，既有学习文件未动。
+- 最终命令 `bash scripts/check.sh --release` 全绿：ruff、238 passed / 1 skipped、
+  42 Playwright passed、导入／启动冒烟、便携 ZIP 隐私审计。专项命令包括
+  `pytest tests/test_q05_experience.py tests/test_bank.py -q` 及 `pytest tests/e2e/test_q05_ui.py -q`。
+- 桌面 1536×1024／1280×800／1024×768 与手机 390／430px 合成走查，31 张前后截图
+  已归档到 docs/design/experience-q05/screenshots；截图测试只写忽略目录。
+- `scripts/sync_mobile.py` → Capacitor sync → Java17 补丁 →
+  `gradlew -p mobile/android assembleDebug --offline` 成功；
+  dist/ielts-pod-q05-debug.apk 的 8 份 JS/CSS、index、SW 与源码 SHA256 一致。
+- 便携 ZIP 在临时中文目录用现有测试 Python 启动，health、最终静态资源、空语料和
+  空私有记录、脱敏空密钥均通过；没有下载依赖，不当作全新 Windows 安装认证。
+- 无真实文本／TTS 调用；保留原有未跟踪试听样本。按现行约定提交、打 q05、推送并
+  核对远端；VERSION、GitHub Release 和 APK/ZIP 上传不随源码交付更新。

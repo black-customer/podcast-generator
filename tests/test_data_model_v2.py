@@ -173,6 +173,16 @@ def test_atomic_write_survives_lock_free_concurrency(tmp_path, monkeypatch):
     broken: list[str] = []
     lock = threading.Lock()
 
+    def read_complete_json():
+        # Windows 上连续 replace 可跨过一次读重试；只重试共享权限冲突，损坏立即失败。
+        for attempt in range(5):
+            try:
+                return json.loads(target.read_text(encoding="utf-8"))
+            except PermissionError:
+                if attempt == 4:
+                    raise
+                _time.sleep(0.02 * (attempt + 1))
+
     def writer(worker_id: int) -> None:
         for i in range(rounds):
             payload = json.dumps({"w": worker_id, "i": i, "pad": "x" * 200})
@@ -182,15 +192,7 @@ def test_atomic_write_survives_lock_free_concurrency(tmp_path, monkeypatch):
                 with lock:
                     broken.append(f"w{worker_id}r{i}:write:{type(exc).__name__}")
             try:
-                json.loads(target.read_text(encoding="utf-8"))
-            except PermissionError:
-                # 读者与 replace 的短暂共享冲突：重读一次即可，不算破坏
-                try:
-                    _time.sleep(0.03)
-                    json.loads(target.read_text(encoding="utf-8"))
-                except (json.JSONDecodeError, OSError) as exc:
-                    with lock:
-                        broken.append(f"w{worker_id}r{i}:read:{type(exc).__name__}")
+                read_complete_json()
             except (json.JSONDecodeError, OSError) as exc:
                 with lock:
                     broken.append(f"w{worker_id}r{i}:read:{type(exc).__name__}")
@@ -200,6 +202,7 @@ def test_atomic_write_survives_lock_free_concurrency(tmp_path, monkeypatch):
         t.start()
     for t in threads:
         t.join(timeout=120)
+    assert all(not t.is_alive() for t in threads)
     monkeypatch.setattr(config.os, "replace", real_replace)
     assert not broken, broken[:5]
-    assert json.loads(target.read_text(encoding="utf-8"))["pad"] == "x" * 200
+    assert read_complete_json()["pad"] == "x" * 200

@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 
-from . import jobs
+from . import experience, jobs
 from .api import router
 from .config import WEB_DIR, cleanup_stale_tmp, ensure_dirs
 
@@ -55,6 +55,7 @@ async def protect_local_api(request: Request, call_next):
 
 
 app.include_router(router)
+app.include_router(experience.router)
 app.mount("/static", StaticFiles(directory=str(WEB_DIR)), name="static")
 
 
