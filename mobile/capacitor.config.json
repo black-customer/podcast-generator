@@ -2,6 +2,7 @@
   "appId": "com.bruce.ieltspod",
   "appName": "IELTS Pod",
   "webDir": "www",
+  "loggingBehavior": "none",
   "android": {
     "allowMixedContent": true
   },

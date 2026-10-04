@@ -148,7 +148,54 @@ def main():
     mat.add_argument("--item-id", required=True)
     mat.add_argument("--result-json", required=True, help="逐句材料 JSON 文件路径，- 表示 stdin")
 
+    chat_request = sub.add_parser(
+        "conversation-request", help="读取手机个人交换文件并输出 Agent 指令"
+    )
+    chat_request.add_argument("--exchange-json", required=True)
+    chat_request.add_argument("--conversation-id", required=True)
+    chat_complete = sub.add_parser(
+        "conversation-complete", help="校验聊天学习结果并输出手机交换文件"
+    )
+    chat_complete.add_argument("--exchange-json", required=True)
+    chat_complete.add_argument("--conversation-id", required=True)
+    chat_complete.add_argument("--result-json", required=True)
+    chat_complete.add_argument("--output-json", required=True)
+    phone_request = sub.add_parser("mobile-request", help="输出手机雅思任务的 Agent 指令")
+    phone_request.add_argument("--exchange-json", required=True)
+    phone_request.add_argument("--topic-id", required=True)
+    phone_request.add_argument("--item-id", required=True)
+    phone_complete = sub.add_parser("mobile-complete", help="校验手机雅思文本结果并输出交换文件")
+    phone_complete.add_argument("--exchange-json", required=True)
+    phone_complete.add_argument("--topic-id", required=True)
+    phone_complete.add_argument("--item-id", required=True)
+    phone_complete.add_argument("--result-json", required=True)
+    phone_complete.add_argument("--output-json", required=True)
+
     args = parser.parse_args()
+    if args.command in ("conversation-request", "conversation-complete", "mobile-request",
+                        "mobile-complete"):
+        from server import conversation_exchange
+        from server.config import atomic_write_text
+
+        try:
+            document = json.loads(Path(args.exchange_json).read_text(encoding="utf-8"))
+            if args.command == "conversation-request":
+                print(conversation_exchange.request(document, args.conversation_id))
+            elif args.command == "mobile-request":
+                print(conversation_exchange.request_ielts(document, args.topic_id, args.item_id))
+            else:
+                result = json.loads(Path(args.result_json).read_text(encoding="utf-8"))
+                updated = (conversation_exchange.complete_ielts(
+                    document, args.topic_id, args.item_id, result
+                ) if args.command == "mobile-complete" else
+                    conversation_exchange.complete(document, args.conversation_id, result))
+                atomic_write_text(Path(args.output_json),
+                                  json.dumps(updated, ensure_ascii=False, indent=2))
+                print("CONVERSATION TEXT READY: import the output file on your phone")
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            print(f"FAILED: {exc}", file=sys.stderr)
+            return 2
+        return 0
     if args.command == "study":
         raw = sys.stdin.read() if args.result_json == "-" else Path(args.result_json).read_text(
             encoding="utf-8"

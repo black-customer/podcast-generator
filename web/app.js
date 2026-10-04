@@ -2,7 +2,8 @@
 "use strict";
 
 const $app = document.getElementById("app");
-const $audio = document.getElementById("core-audio");
+const $audio = typeof MobileRuntime !== "undefined" && MobileRuntime.native
+  ? new NativePlayer() : document.getElementById("core-audio");
 const $globalPlayer = document.getElementById("global-player");
 
 // 全局播放状态
@@ -47,6 +48,9 @@ function timelineModeLabel(mode, wordCount = 0) {
 }
 
 async function api(method, url, body = null) {
+  if (typeof MobileRuntime !== "undefined" && MobileRuntime.native) {
+    return MobileRuntime.request(method, url, body);
+  }
   // 离线包模式（B02）：拦截请求走本地数据层，视图代码零改动复用
   if (typeof PackState !== "undefined" && PackState.active) {
     return packApi(method, url);
@@ -535,6 +539,7 @@ async function playItem(topicId, item, autoPlay = true, token = null) {
   }
 
   ListeningExperience.attach($audio, source, resume);
+  if (MobileRuntime.native) { $audio.title = publicTitle(item.title) || "英语学习"; $audio.fingerprint = resume?.audio_fingerprint || ""; }
   $audio.src = audioUrl;
   $audio.playbackRate = PlayerState.playbackRate;
   if (autoPlay) {
@@ -551,7 +556,7 @@ async function playItem(topicId, item, autoPlay = true, token = null) {
 
   const remakeBtn = document.getElementById("remake-item");
   if (remakeBtn) {
-    const offline = typeof PackState !== "undefined" && PackState.active;
+    const offline = MobileRuntime.native || (typeof PackState !== "undefined" && PackState.active);
     remakeBtn.style.display = offline ? "none" : "";
   }
 
@@ -2074,6 +2079,7 @@ window.copyAgentPrompt = async function (btn) {
 
 function showApiJobWait(res) {
   genWaitStop();
+  const waitToken = routeToken;
   const card = document.querySelector(".bank-answer-card");
   if (!card) return;
   card.innerHTML = `
@@ -2085,7 +2091,7 @@ function showApiJobWait(res) {
     </div>
     <p class="bank-answer-hint" id="api-job-hint">⏳ 正在处理……</p>
     <div class="bank-answer-actions" id="api-job-fallback" style="display:none;">
-      <button class="bank-submit-btn" data-agent-topic="${esc(res.topic_id)}" data-agent-item="${esc(res.item_id)}">改用 Agent 模式</button>
+      ${MobileRuntime.native ? '<a class="study-button" href="#/my">查看任务、继续或交给电脑</a>' : `<button class="bank-submit-btn" data-agent-topic="${esc(res.topic_id)}" data-agent-item="${esc(res.item_id)}">改用 Agent 模式</button>`}
     </div>`;
   const mark = (phase) => {
     const order = ["rewrite", "save", "tts"];
@@ -2097,8 +2103,13 @@ function showApiJobWait(res) {
   mark("rewrite");
   GenWaitState.pollTimer = setInterval(async () => {
     try {
+      if (viewStale(waitToken)) { genWaitStop(); return; }
       const job = await api("GET", `/api/jobs/${encodeURIComponent(res.job_id)}`);
-      if (job.phase) mark(job.phase);
+      if (viewStale(waitToken)) { genWaitStop(); return; }
+      if (MobileRuntime.native && job.phase === "audio_ready") {
+        genWaitStop();location.hash = `#/play/${encodeURIComponent(res.topic_id)}/${encodeURIComponent(res.item_id)}`;return;
+      }
+      if (job.phase) mark(MobileRuntime.native && job.phase === 'audio' ? 'tts' : job.phase);
       if (job.state === "done") {
         genWaitStop();
         location.hash = `#/done/${encodeURIComponent(res.topic_id)}/${encodeURIComponent(res.item_id)}`;
@@ -2106,7 +2117,7 @@ function showApiJobWait(res) {
         genWaitStop();
         const msg = (job.errors || []).map((e) => e.message).join("；") || "任务失败";
         const hint = document.getElementById("api-job-hint");
-        if (hint) hint.textContent = `✗ ${msg}`;
+        if (hint) hint.textContent = `✗ ${msg}${job.inflight ? ' 上次请求结果未知，继续可能再次计费；请到我的查看任务。' : ''}`;
         const fb = document.getElementById("api-job-fallback");
         if (fb) fb.style.display = "";
       }
@@ -2214,7 +2225,7 @@ async function BankView(token) {
       const st = await api("GET", "/api/settings");
       if (!st.stepfun_api_key_set && !st.fish_api_key_set) {
         setupBanner = `
-        <a class="setup-banner" href="#/setup">
+        <a class="setup-banner" href="${MobileRuntime.native ? '#/my' : '#/setup'}">
           <span>👋 欢迎使用 IELTS Pod！开始前，先完成 3 项设置（连接语音服务 · 选择提问者 · 选择回答者）</span>
           <strong>去设置 →</strong>
         </a>`;
@@ -2240,8 +2251,8 @@ async function BankView(token) {
       <p id="draft-status" class="study-muted" role="status">正在读取草稿 · 未提交</p><div id="draft-conflict"></div>
       <div class="study-actions"><button class="btn-pill" id="draft-retry">查看服务草稿／重试</button><button class="btn-pill" id="draft-discard">丢弃草稿</button></div>
       <div class="bank-answer-actions bank-mode-pick">
-        <label><input type="radio" name="bank-gen-mode" value="agent" checked> Agent 模式（默认：复制指令给 Codex / ZCode 等 Agent）</label>
-        <label><input type="radio" name="bank-gen-mode" value="api"> API 模式（StepFun 一键改写 + 音频）</label>
+        ${MobileRuntime.native ? '' : '<label><input type="radio" name="bank-gen-mode" value="agent" checked> Agent 模式（默认：复制指令给 Codex / ZCode 等 Agent）</label>'}
+        <label><input type="radio" name="bank-gen-mode" value="api" ${MobileRuntime.native ? 'checked' : ''}> API 模式（StepFun 一键改写 + 音频）</label>
       </div>
       <div class="bank-answer-actions">
         <button id="bank-answer-submit" class="bank-submit-btn" data-bank-submit="${esc(selItem.id)}">提交作答</button>
@@ -2326,6 +2337,14 @@ async function BankView(token) {
 async function packImportFromBuffer(buffer) {
   if (PackState.active) packUnload();  // 重复导入：先释放旧包全部 blob URL
   await packLoadBuffer(buffer);
+  if (typeof MobileRuntime !== "undefined" && MobileRuntime.native) {
+    const counts = PackState.manifest.counts;
+    await MobileRuntime.migratePack(true);
+    await packPersist(buffer);
+    toast(`导入成功：${counts.topics} 话题 / ${counts.items} 条目`);
+    location.hash = "#/materials";
+    return;
+  }
   await packPersist(buffer);
   toast(`语料包导入成功：${PackState.manifest.counts.topics} 话题 / ${PackState.manifest.counts.items} 条目`);
   const prev = location.hash;
@@ -2458,6 +2477,9 @@ function route() {
     ? "#/practice" : "#/today");
   if (typeof OralReviewUI !== "undefined" && !OralReviewUI.leave(hash)) return;
   if (typeof StudyUI !== "undefined" && !StudyUI.leave(hash)) return;
+  if (!hash.startsWith("#/bank") && !hash.startsWith("#/practice")) genWaitStop();
+  document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
+  if (typeof MobileUI !== "undefined" && MobileUI.route(hash, token)) return;
   if (typeof PackState !== "undefined" && PackState.active
     && PACK_UNSUPPORTED_VIEWS.some(v => hash === v || hash.startsWith(v + "/"))) {
     $app.innerHTML = `<div class="study-page"><h1>离线包模式不支持此页面</h1>
@@ -2473,7 +2495,7 @@ function route() {
     : base.startsWith("#/review") ? "review"
     : base.startsWith("#/manage") || base.startsWith("#/setup") || base.startsWith("#/voices") ? "settings"
     : "topics";
-  document.querySelectorAll(".nav-item").forEach(el => {
+  if (!MobileRuntime.native) document.querySelectorAll(".nav-item").forEach(el => {
     const category = el.id === "nav-now-playing" ? "playing"
       : el.classList.contains("nav-settings") ? "settings"
       : el.getAttribute("href") === "#/today" ? "today"
@@ -2798,6 +2820,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   // APP 离线包恢复：IndexedDB 有存档则激活 pack 模式（失败静默按在线模式启动）
   if (typeof packRestore === "function") {
     await packRestore();
+  }
+  if (typeof MobileRuntime !== "undefined" && MobileRuntime.native) {
+    try { await MobileRuntime.init(); }
+    catch (e) { $app.innerHTML = `<div class="study-page"><h1>本机材料暂时无法打开</h1><p>${esc(e.message)}。原始记录保留，请重新打开应用。</p></div>`; return; }
+    if (!location.hash || location.hash === "#/" || location.hash === "#/topics") location.hash = "#/today";
+    route(); return;
   }
   // 壳内（Capacitor APP）且无离线包：没有服务端可连，首屏直接落在语料包导入页
   const inAppShell = typeof window.Capacitor !== "undefined";

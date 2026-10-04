@@ -9,8 +9,9 @@ web
 ## Users
 
 Primary user: Bruce, a Chinese English learner preparing IELTS speaking answers and building a
-personal corpus. He uses the PC to choose questions, write his real thoughts, manage generation,
-and review content; he uses the Android wrapper while walking or commuting to listen repeatedly.
+personal corpus. Android is also a primary learning surface: he imports voice-chat transcripts,
+uses his own StepFun API to prepare materials, listens and practises oral recall on the go.
+PC remains available for management and Agent processing; daily mobile learning needs no PC server.
 
 Open-source users run the same local workflow with their own StepFun or Fish key and corpus.
 Bruce remains the first user, but a fresh user must be able to understand and complete the core

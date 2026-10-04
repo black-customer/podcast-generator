@@ -314,7 +314,8 @@ const StudyUI = (() => {
     if (notice) notice.textContent = span.reason;
     if (state.playback) state.playback.pause();
     $audio.pause();
-    const audio = new Audio(`/api/topics/${encodeURIComponent(state.topicId)}/items/${encodeURIComponent(state.itemId)}/audio/podcast`);
+    const path = `/api/topics/${encodeURIComponent(state.topicId)}/items/${encodeURIComponent(state.itemId)}/audio/podcast`;
+    const audio = new Audio(mediaUrl(path) || path);
     state.playback = audio;
     audio.onloadedmetadata = () => { audio.currentTime = span.start || 0; audio.play().catch(() => {}); };
     if (span.end != null) audio.ontimeupdate = () => {
@@ -328,7 +329,7 @@ const StudyUI = (() => {
     return `<div class="study-recordings">${recordings.map((r, i) => `<div class="study-recording-row">
       <div><strong>${esc(stageNames[r.stage])} · 第 ${i + 1} 版</strong>
         <small>${esc(r.created_at.replace("T", " "))} · ${r.duration_sec < 10 ? `${r.duration_sec.toFixed(1)} 秒` : fmtDur(r.duration_sec)}</small></div>
-      <audio controls preload="none" src="${endpoint(`/recordings/${encodeURIComponent(r.id)}`)}"></audio>
+      <audio controls preload="none" src="${typeof MobileRuntime !== 'undefined' && MobileRuntime.native ? esc(MobileRuntime.fileUrl(r.path)) : endpoint(`/recordings/${encodeURIComponent(r.id)}`)}"></audio>
       <button type="button" data-delete="${esc(r.id)}" aria-label="删除这段录音">删除</button></div>`).join("")}</div>`;
   }
   function recorderPanel(stage) {
@@ -424,6 +425,7 @@ const StudyUI = (() => {
         state.recorder.onstop = () => {
           state.duration = (performance.now() - state.recordStart) / 1000;
           state.blob = new Blob(state.chunks, { type: state.recorder.mimeType || mime || "audio/webm" });
+          if (state.chunks[0]?.nativePath) state.blob.nativePath = state.chunks[0].nativePath;
           if (state.blobUrl) URL.revokeObjectURL(state.blobUrl);
           state.blobUrl = URL.createObjectURL(state.blob);
           const preview = document.getElementById("study-rec-preview");
@@ -517,7 +519,7 @@ const StudyUI = (() => {
     state.currentHash = location.hash;
     state.topicId = topicId; state.itemId = itemId; state.review = false;
     ExperienceUI.loading("本题学习");
-    if (typeof PackState !== "undefined" && PackState.active) {
+    if (typeof PackState !== "undefined" && PackState.active && !MobileRuntime.native) {
       $app.innerHTML = `<div class="study-page"><h1>手机端学习布局尚未开放</h1>
         <p>离线语料仍可浏览、播放和精听。</p><a href="#/topics">返回我的语料</a></div>`;
       return;

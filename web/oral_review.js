@@ -52,6 +52,7 @@ const OralReviewUI = (() => {
   });
 
   function safeDesktop() {
+    if (typeof MobileRuntime !== "undefined" && MobileRuntime.native) return true;
     if ((typeof PackState !== "undefined" && PackState.active)
       || matchMedia("(max-width: 860px)").matches) {
       $app.innerHTML = `<section class="study-page"><h1>今日口答练习在电脑端使用</h1>
@@ -209,6 +210,7 @@ const OralReviewUI = (() => {
   }
 
   function recordingUrl(card, id) {
+    if (typeof MobileRuntime !== "undefined" && MobileRuntime.native) return esc(MobileRuntime.fileUrl(id));
     return `/api/topics/${encodeURIComponent(card.topic_id)}/items/${encodeURIComponent(card.item_id)}/study/recordings/${encodeURIComponent(id)}`;
   }
 
@@ -318,6 +320,7 @@ const OralReviewUI = (() => {
       state.recorder.onstop = () => {
         state.duration = (performance.now() - state.recordStart) / 1000;
         state.blob = new Blob(state.chunks, { type: state.recorder.mimeType || mime || "audio/webm" });
+        if (state.chunks[0]?.nativePath) state.blob.nativePath = state.chunks[0].nativePath;
         if (state.blobUrl) URL.revokeObjectURL(state.blobUrl);
         state.blobUrl = URL.createObjectURL(state.blob);
         const preview = document.getElementById("oral-preview");
@@ -368,12 +371,14 @@ const OralReviewUI = (() => {
   async function playReference() {
     const sessionId = state.session.id;
     const card = state.session.current_card;
-    const span = await api("GET", `/api/topics/${encodeURIComponent(card.topic_id)}/items/${encodeURIComponent(card.item_id)}/study/audio/${card.sentence_index}`);
+    const span = await api("GET", `/api/topics/${encodeURIComponent(card.topic_id)}/items/${encodeURIComponent(card.item_id)}/study/audio/${card.sentence_index}?card_id=${encodeURIComponent(card.id)}`);
     if (state.session?.id !== sessionId) return;
+    if (MobileRuntime.native && !span.url) throw new Error("示范音频尚未完成，文字学习仍可继续。");
     state.playback?.pause();
     $audio.pause();
     $app.querySelectorAll("audio").forEach(audio => audio.pause());
-    const audio = new Audio(`/api/topics/${encodeURIComponent(card.topic_id)}/items/${encodeURIComponent(card.item_id)}/audio/podcast`);
+    const path = `/api/topics/${encodeURIComponent(card.topic_id)}/items/${encodeURIComponent(card.item_id)}/audio/podcast`;
+    const audio = new Audio(MobileRuntime.native && span.url ? MobileRuntime.fileUrl(span.url) : mediaUrl(path) || path);
     state.playback = audio;
     audio.onloadedmetadata = () => { audio.currentTime = span.start || 0; audio.play().catch(() => {}); };
     if (span.end != null) audio.ontimeupdate = () => { if (audio.currentTime >= span.end) audio.pause(); };

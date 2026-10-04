@@ -1,8 +1,8 @@
 # IELTS Pod · 你的雅思口语练习室
 
 > 当前可用：选题 → 用你最自然的方式作答 → 母语者版本的可反复收听音频 →
-> 网页精听／桌面逐句学习／Android 离线听。
-> 本地优先：所有数据只存在你自己的电脑上，不上传任何服务器。
+> 网页精听／逐句学习／Android 聊天整理、离线听与间隔口答。
+> 本地优先：原文、材料和学习记录保存在你的电脑或手机；生成时仅将所需内容交给你配置的 API 服务。
 
 仓库地址：**https://github.com/black-customer/podcast-generator**
 
@@ -13,12 +13,12 @@
 | 下载物 | 适合 | 用法 |
 | --- | --- | --- |
 | `ielts-pod-portable.zip` | Windows 电脑 | 解压 → 双击 `start.bat`（自动装依赖并启动） |
-| `ielts-pod-*-debug.apk` | Android 手机 | 安装后从电脑端导入语料包（ZIP 文件或局域网直传） |
+| `ielts-pod-*-debug.apk` | Android 手机 | 配置自己的 StepFun 服务后独立生成、学习；也可导入电脑语料包 |
 
 更新：Windows 用户直接下载新 ZIP 解压覆盖（`data/` 个人数据在同目录时会被保留），
 或继续用下方源码安装方式运行 `update_app.bat`。
 
-## 一条主流程（产品只有这一条链）
+## 雅思学习主流程
 
 ```
 安装配置 → 选题 → 输入回答 → Agent 或 API 改写 → StepFun 生成音频 → 网页下载/精听 → 安卓导入收听
@@ -41,8 +41,8 @@ Bruce 于 2026-09-29 确定新方向。完成音频后，用户可主动进入�
 学习前录音 → 根据中文逐句默写完整英文并阅读讲解 → 看完整中文口答 →
 只看原题脱稿口答 → 比较录音并复习困难句。
 
-本仓库的桌面应用已实现这组功能和暖纸色界面；手机端继续使用现有离线浏览与收听流程，
-手机学习布局另行设计。完整页面概念图、交互说明与开发交接见
+桌面与 Android 共用学习规则和暖纸界面；手机支持本地学习记录、录音与 API 生成。
+完整页面概念图、交互说明与开发交接见
 [「暖纸自习室」设计入口](docs/design/study-room-v2/README.md)。
 `pipeline.py complete` 仍只接受三份英文文本，确保音频优先完成；Agent 可在音频完成后用
 `pipeline.py study` 提交独立逐句材料。API 模式会在音频完成后用用户自己的文本额度准备材料。
@@ -54,7 +54,7 @@ Bruce 于 2026-09-29 确定新方向。完成音频后，用户可主动进入�
 再看示范并选择“独立说出／需要提示／暂时说不出”。自然的替代表达也可以独立说出。
 
 口答默认可录音，也可注明“未录音／本人自评”。日期按实际练习结果安排，记录和录音都在
-本机私有目录，默认不随语料包分享。手机端继续使用原有收听流程。交互和生产截图见
+本机私有目录，默认不随公开语料包分享；手机记录保存在应用私有目录。交互和生产截图见
 [L04 页面说明](docs/design/daily-practice-v1/README.md)。
 
 ## 快速开始
@@ -118,17 +118,30 @@ git clone https://github.com/black-customer/podcast-generator && cd podcastGener
 - 提问者与回答者的性别、音色都由你配置（设置页「提问的人 / 回答的人」两张角色卡，先选性别再
   试听选音色）；未配置 Key = dry-run 模式。
 
-## 手机 APP（Android，离线收听）
+## 手机 APP（Android，独立学习与聊天整理）
 
-独立 APK（Capacitor 壳，与网页同一套代码），导入语料包后**无需网络**：
-语料库、播放页（音字同步高亮/点句跳转全部可用；逐词点亮仅对含有效逐词时间轴的语料可用）。
+独立 APK（Capacitor 壳，与网页同一套代码）。首次在「我的」配置 StepFun Key、文本入口和
+两个角色声音；标准入口按量计费，订阅入口需使用自己已获授权的地址，失败不会自动切换。
+手机可独立完成题库作答生成、完整逐句学习、录音和今日口答，电脑无需开机。
+四个入口为「今日／材料／题库／我的」。建议首次只生成一段短聊天或一道回答，确认声音
+和材料符合预期后再导入长记录。提醒默认关闭，口答使用本人自评，不提供自动发音或雅思评分。
 
-1. **局域网导入**（推荐）：电脑端 `python run.py --host 0.0.0.0`，手机与电脑同 Wi-Fi，
+聊天结束后，通过系统分享交给 APP，或在「今日 → 整理一次英语聊天」粘贴 ChatGPT／豆包
+分享链接、保留角色的文字，或选择 TXT／Markdown／JSON 文件。先核对原始记录，点击
+「开始整理」才调用 API。链接读取依赖当前网络与分享页格式，失败时保留输入并提供文件兜底。
+音频、自然对话、来源笔记和口答队列分别准备；后台处理有通知，可取消和手动恢复。
+请求结果未知时暂停，页面会提示继续可能再次计费；已保存的有效阶段和音频片段会复用。
+
+已保存材料**无需网络**即可收听、学习、录音和记录自评。播放器支持后台媒体控制；
+逐词点亮仍只对有真实词表的语料启用。手机生成采用实测片段边界，句内估算会明确标注。
+每日晚间提醒可选，默认关闭。旧电脑语料包也可继续导入：
+
+1. **局域网导入**：电脑端 `python run.py --host 0.0.0.0`，手机与电脑同 Wi-Fi，
    APP「导入」页输入电脑地址（如 `http://192.168.1.5:8765`）和终端显示的临时配对码
    → 拉取语料包；服务重启会更新配对码；
 2. **文件导入**：电脑端导出语料包 zip → 任意方式传到手机 → APP「导入」页选择文件。
 
-自己构建 APK（需 Node 18+、JDK 17、Android SDK）：
+自己构建 APK（需 Node 20+、JDK 17、Android SDK）：
 
 ```bash
 npm --registry=https://registry.npmmirror.com install --prefix mobile
@@ -137,9 +150,32 @@ cd mobile && npx cap sync android                  # 同步 www → android 资�
 .venv/Scripts/python ../scripts/sync_mobile.py     # cap sync 会重置 Java 版本，必须重打补丁
 cd android && ./gradlew assembleDebug
 # 产物：mobile/android/app/build/outputs/apk/debug/app-debug.apk
-# 更新 Android beta：先保留语料包 ZIP，再卸载旧版并安装新版；卸载会清除 APP 内
-# 已导入的离线数据。重装后从 ZIP 或电脑重新导入，当前暂不支持无损原位升级。
+# 更新须使用相同签名覆盖安装；不要为更新卸载 APP，卸载会清除手机私有学习记录。
+# 旧 IndexedDB 包会校验后迁移；未成功前保留旧副本。
 ```
+
+### 手机任务交给电脑 Agent
+
+在「我的」导出个人任务交换 JSON，只交给自己的 Agent。此文件包含私人原文，不包含
+密钥、练习历史或录音；这是手动交接。Agent 根据文件中的聊天 ID 或话题／条目 ID
+读取指令、产出 JSON，再通过以下校验入口写出另一份交换文件：
+
+```bash
+# 聊天：结果格式由 conversation-request 输出的指令确定
+.venv/Scripts/python pipeline.py conversation-request --exchange-json <手机导出.json> --conversation-id <id>
+.venv/Scripts/python pipeline.py conversation-complete --exchange-json <手机导出.json> --conversation-id <id> --result-json <结果.json> --output-json <手机导回.json>
+# 雅思：沿用三份英文文本，另需逐句 A/B 台词及中文，格式由 mobile-request 确定
+.venv/Scripts/python pipeline.py mobile-request --exchange-json <手机导出.json> --topic-id <tid> --item-id <iid>
+.venv/Scripts/python pipeline.py mobile-complete --exchange-json <手机导出.json> --topic-id <tid> --item-id <iid> --result-json <结果.json> --output-json <手机导回.json>
+```
+
+手机「我的 → 导入处理结果」读取校验后的文件，按 ID 与原文指纹更新，保留手机学习历史。
+这些电脑命令只整理文本，不触发收费请求；导回后点击生成，手机继续制作音频和缺少的学习材料。
+
+开发验收需 Node（共享领域规则测试）、Android SDK 和可运行的模拟器：
+`bash scripts/check.sh --release`、`gradlew :app:testDebugUnitTest :app:connectedDebugAndroidTest`。
+真实分享页验收通过仪器参数提供 URL，不把真实记录写进测试或 APK；实机锁屏／录音和
+真实语音听感须另行抽查，模拟器通过不代替这两项。
 
 ## 给 Agent 的执行接口（ielts-audio）
 
@@ -170,13 +206,14 @@ Agent 产出三份文本 JSON（natural_english / podcast_text / podcast_script�
 | 超长笑声/异常段落 | QA 门禁应已自动重试；仍存在则去掉表演稿中笑声标签后重新生成 |
 | 点击句子跳不准 | 看播放器对齐标志：estimated=估算（重生成该条目升级为实测） |
 | 手机 APP 拉包失败 | 电脑端须以 `--host 0.0.0.0` 启动、地址含 `http://`、填写当次启动显示的配对码、同 Wi-Fi、防火墙放行；模拟器用 `http://10.0.2.2:8765` |
-| APP 更新后白屏 | 先卸载旧版再安装（WebView 缓存旧资源） |
+| APP 更新后白屏 | 保留应用数据，先关闭再打开；确认安装包签名、版本与资源。不要直接卸载 |
 | gradle 报"无效的源发行版：21" | 重跑 `python scripts/sync_mobile.py`（cap sync 会重置 Java 版本补丁） |
 
 ## FAQ
 
 **要花钱吗？** 软件零成本本地运行；外部服务只有你自己的 StepFun / fish.audio 配额（真实生成时消耗）。
-**数据隐私？** 全部数据在本地 `data/`；`settings.json`（含 key）永不入库、API 永不回传。
+**数据隐私？** 电脑数据在本地 `data/`，手机数据在应用私有目录；手机 Key 使用 Keystore
+加密保存，不随交换文件或语料包导出。用户点击 API 处理后，所需文本会发给其配置的服务。
 **旧语料会动吗？** 更新永不触碰 `data/`；旧条目不迁移，原始回答缺失时自动回退读取。
 **iOS 支持？** 未做；手机浏览器访问电脑端网页可作过渡。
 

@@ -1,0 +1,51 @@
+/* 手机暖纸学习界面：固定导航与媒体栏预留空间，输入区跟随键盘。 */
+body.mobile-learning{--paper:#f3ebdd;--paper-raised:#fbf7ef;--ink:#332e27;--ink-soft:#6e665a;--rule:#d7cebf;--blue:#596348;--blue-soft:#e7e7d7;--accent:#596348;--bg-base:#f3ebdd;--bg-surface:#fbf7ef;--bg-highlight:#e7e7d7;--bg-elevated:#fbf7ef;--sidebar-bg:#fbf7ef;--text-base:#332e27;--text-sub:#6e665a;--text-muted:#6e665a;--border-color:#d7cebf;background:#f3ebdd;color:#332e27;font-family:system-ui,"Microsoft YaHei",sans-serif}
+body.mobile-learning .app-shell{height:var(--mobile-vh,100dvh)}
+body.mobile-learning .sidebar,body.mobile-learning .main-content{background:#f3ebdd;color:#332e27}
+body.mobile-learning .sidebar{background:#fbf7ef}
+body.mobile-learning .nav-item.active{color:#596348;background:#e7e7d7;box-shadow:inset 0 2px 0 #596348}
+body.mobile-learning .mobile-page button,body.mobile-learning .study-button{border:1px solid #958a77;border-radius:6px;background:#fbf7ef;color:#332e27}
+body.mobile-learning .mobile-page button.primary,body.mobile-learning .study-button.primary{background:#596348;border-color:#596348;color:#fbf7ef}
+body.mobile-learning .mobile-page button:disabled{opacity:.6;cursor:default}
+body.mobile-learning .global-player{background:#fbf7ef;color:#332e27;border-top:1px solid #d7cebf}
+body.mobile-learning .mobile-page{max-width:720px;margin:0 auto;padding:12px 8px 28px;color:var(--text-primary,#332e27)}
+.mobile-page h1{font-size:1.7rem;line-height:1.35;margin:12px 0 24px}
+.mobile-section{padding:20px 0;border-bottom:1px solid var(--border-color,#d7cebf)}
+.mobile-section h2{font-size:1.15rem;margin:0 0 12px}
+.mobile-page p{line-height:1.7;overflow-wrap:anywhere}
+.mobile-page label:not(.study-button){display:block;margin:16px 0 6px;font-weight:600}
+.mobile-page input:not([type=file]):not([type=checkbox]),.mobile-page textarea,.mobile-page select{width:100%;box-sizing:border-box;min-height:48px;padding:12px;border:1px solid #958a77;border-radius:6px;background:#fbf7ef;color:#332e27;font:inherit}
+.mobile-page input[type=checkbox]{width:22px;height:22px;accent-color:#596348;vertical-align:middle;margin-right:8px}
+.mobile-page textarea{line-height:1.6;resize:vertical}
+.mobile-page button,.mobile-page .study-button{min-height:48px;padding:10px 14px;touch-action:manipulation;font:inherit}
+.mobile-page select+button{margin-top:8px}
+.mobile-row{display:flex;flex-direction:column;gap:6px;padding:18px 0;border-bottom:1px solid #d7cebf;text-decoration:none;color:inherit}
+.mobile-row span,.mobile-translation{display:block;color:#6e665a;font-size:.95rem;margin-top:6px}
+.mobile-source{padding:14px 0;border-bottom:1px solid #d7cebf;white-space:pre-wrap}
+.mobile-page details{padding:16px 0;border-bottom:1px solid #d7cebf}
+.mobile-page summary{cursor:pointer;min-height:48px;display:flex;align-items:center;font-weight:600}
+.mobile-filters{display:flex;gap:8px;margin:16px 0}
+.mobile-filters button[aria-pressed=true]{background:#596348;color:#fbf7ef}
+@media(max-width:860px){
+  body.mobile-learning .sidebar{display:flex;height:calc(64px + env(safe-area-inset-bottom));box-sizing:border-box}
+  body.mobile-learning .global-player{bottom:calc(64px + env(safe-area-inset-bottom))}
+  body.mobile-learning .global-player[style*="flex"]{display:flex!important}
+  body.mobile-learning button,body.mobile-learning .study-button{min-height:48px}
+  body.mobile-learning .nav-menu{display:flex;justify-content:space-around;width:100%;gap:0}
+  body.mobile-learning .nav-menu .nav-item{flex:1;justify-content:center;min-height:52px;font-size:14px}
+  body.mobile-learning .sidebar-footer,body.mobile-learning .brand-title{display:none}
+  body.mobile-learning .study-page{padding:12px 8px 24px}
+  body.mobile-learning .study-actions{display:flex;flex-wrap:wrap;gap:10px}
+  body.mobile-learning .study-actions>*{min-height:48px;flex:1 1 auto}
+  body.mobile-learning .study-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+  body.mobile-learning .study-step{padding:6px 3px;font-size:.8rem;flex-direction:column}
+  body.mobile-learning .study-explain-grid{grid-template-columns:1fr}
+  body.mobile-learning .dictation-word{min-height:48px;font-size:1.1rem}
+  body.mobile-learning .oral-ratings{display:flex;flex-direction:column}
+  body.mobile-learning #app{padding-bottom:calc(80px + env(safe-area-inset-bottom));scroll-padding-bottom:80px}
+  body.mobile-learning:has(#global-player[style*="flex"]) #app{padding-bottom:calc(220px + env(safe-area-inset-bottom));scroll-padding-bottom:220px}
+  body.mobile-learning .study-word{min-height:48px;font-size:16px}
+  body.mobile-learning .mobile-page *:focus-visible{outline:2px solid #596348;outline-offset:3px}
+  body.mobile-learning .mobile-page h1[tabindex="-1"]:focus-visible{outline:none}
+  body.mobile-learning .mobile-page input,body.mobile-learning .mobile-page textarea{font-size:16px}
+}

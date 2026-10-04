@@ -15,7 +15,8 @@ WEB = BASE / "web"
 WWW = BASE / "mobile" / "www"
 
 STATIC_FILES = ["app.js", "experience.js", "continuity.js", "study.js", "oral_review.js", "packreader.js", "packmode.js",
-                "style.css"]
+                "style.css", "mobile-core.js", "mobile-api-core.js", "mobile.js", "mobile.css",
+                "conversation-prompt.txt", "ielts-prompt.txt", "study-prompt.txt"]
 
 
 def patch_java17() -> None:
@@ -48,6 +49,8 @@ def sync() -> None:
     shutil.copy(WEB / "index.html", WWW / "index.html")
     for name in STATIC_FILES:
         shutil.copy(WEB / name, WWW / "static" / name)
+    shutil.copy(BASE / "data" / "question_bank_public.json", WWW / "static" / "question-bank-public.json")
+    shutil.copy(BASE / "data" / "voices.json", WWW / "static" / "voices.json")
     # 根路径资源（service worker 与 PWA manifest；壳内注册失败也不影响功能）
     shutil.copy(WEB / "sw.js", WWW / "sw.js")
     shutil.copy(WEB / "manifest.webmanifest", WWW / "manifest.webmanifest")

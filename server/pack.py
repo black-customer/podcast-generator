@@ -20,7 +20,7 @@ from pathlib import Path
 from . import library
 from .config import DATA_DIR
 
-PACK_VERSION = 1
+PACK_VERSION = 2
 AUDIO_TRACKS = ("default", "monologue", "podcast")
 
 
@@ -50,6 +50,14 @@ def _item_payload(d: Path, topic_id: str, item_id: str) -> dict:
             timelines[track] = resp
     if timelines:
         payload["timelines"] = timelines
+    from . import study
+
+    try:
+        material = study.get_material(topic_id, item_id)
+        if material.get("status") == "ready":
+            payload["material"] = material["material"]
+    except (FileNotFoundError, ValueError, KeyError):
+        pass
     return payload
 
 

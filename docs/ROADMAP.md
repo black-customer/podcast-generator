@@ -305,3 +305,15 @@ Android debug 构建、资源哈希一致。交接见 `docs/design/experience-q0
 AC：数据回归先红后绿；桌面三尺寸、手机两尺寸合成走查；发布门禁、便携启动与 Android
 debug 构建通过；238 passed / 1 skipped，42 e2e，中文临时目录便携启动通过。
 交接见 docs/design/experience-q05/README.md。源码与本地验收包交付，公开下载版另行发布。
+
+### N01 手机 API 学习与英语聊天复用 — ACTIVE（2026-10-03 Bruce 批准）
+
+独立 Android 本机处理：分享／文字／文件导入聊天、来源笔记、自然对话音频、间隔口答；
+补齐题库 API 作答生成与完整逐句学习。原生文件、Keystore、前台任务、媒体和录音；
+旧包迁移、新包材料、个人任务交换与桌面 Agent 兼容。共用前端，无新增服务器。
+AC：真实分享页 Android 读取、隔离数据回归、两条完整 UI 流程、后台与音频原生测试、
+覆盖安装和资源一致性、check.sh --release 绿；实机录音与真实 TTS 听感由 Bruce 验收。
+交接见 docs/design/mobile-learning-v1/。在人工听感／实机门通过前不标记 DONE。
+2026-10-04 工程验收包已准备：发布门禁 243 passed / 1 skipped、49 e2e；Android
+7 仪器测试与 3 JVM 测试通过，原生锁屏生成／播放、录音中断保留和兼容签名已核对。
+本地安装包为 dist/ielts-pod-mobile-learning-debug.apk；真实 API 小样与实机门待 Bruce。

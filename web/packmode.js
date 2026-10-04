@@ -65,6 +65,7 @@ async function packAudioFingerprint(bytes) {
 async function packLoadBuffer(buffer) {
   const files = parsePackZip(buffer);
   const manifest = JSON.parse(files.get("pack.json").getText());
+  if (![1, 2].includes(manifest.pack_version)) throw new Error("语料包版本不受支持，请保留原文件");
   PackState.manifest = manifest;
   PackState.bank = files.has("bank.json") ? JSON.parse(files.get("bank.json").getText()) : null;
   PackState.topics = new Map();
@@ -420,6 +421,7 @@ async function packApi(method, url) {
 
 // 音频地址解析：server 模式原样返回；pack 模式解析到 blob URL（不支持返回 null）
 function mediaUrl(path) {
+  if (typeof MobileRuntime !== "undefined" && MobileRuntime.native) return MobileRuntime.mediaUrl(path);
   if (!PackState.active) return path;
   path = path.split("/").map(decodeURIComponent).join("/");
   const m = path.match(/^\/api\/topics\/(.+)\/items\/(.+)\/audio\/(\w+)$/);

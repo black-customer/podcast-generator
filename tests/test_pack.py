@@ -53,6 +53,25 @@ def _read_zip(path: Path) -> zipfile.ZipFile:
     return zipfile.ZipFile(path)
 
 
+def test_pack_carries_material_but_never_private_progress(tmp_path, packed_topic, monkeypatch):
+    from server import study
+
+    topic = library.get_topic(packed_topic)
+    iid = topic["items"][0]["id"]
+    expected = {"version": 1, "source_fingerprint": "synthetic", "complete_chinese": "测试",
+                "sentences": [{"en": "Test.", "zh": "测试", "explanation": "讲解",
+                               "usage": "用法"}]}
+    monkeypatch.setattr(study, "get_material", lambda *a: {"status": "ready", "material": expected})
+    path = library.item_path(packed_topic, iid)
+    (path / "state.json").write_text('{"private": "do-not-export"}', encoding="utf-8")
+    output = tmp_path / "material.zip"
+    pack.build_pack(output, [packed_topic])
+    with zipfile.ZipFile(output) as z:
+        payload = json.loads(z.read(f"topics/{packed_topic}/items/{iid}/item.json"))
+        assert payload["material"] == expected
+        assert b"do-not-export" not in z.read(f"topics/{packed_topic}/items/{iid}/item.json")
+
+
 def test_build_pack_structure(tmp_path: Path, packed_topic: str):
     out = tmp_path / "p1.zip"
     result = pack.build_pack(out_path=out, topic_ids=[packed_topic])

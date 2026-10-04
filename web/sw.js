@@ -1,5 +1,5 @@
 /* Service Worker：静态资源缓存优先，API 网络优先（音频/数据保持新鲜）。 */
-const CACHE = "ielts-pod-assets-v9";
+const CACHE = "ielts-pod-assets-v10";
 const STATIC_ASSETS = [
   "/",
   "/static/app.js",
@@ -10,6 +10,8 @@ const STATIC_ASSETS = [
   "/static/style.css",
   "/static/packmode.js",
   "/static/packreader.js",
+  "/static/mobile.js",
+  "/static/mobile.css",
   "/manifest.webmanifest",
   "/static/icons/icon-32.png",
   "/static/icons/icon-192.png",

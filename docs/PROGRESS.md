@@ -691,3 +691,39 @@ Bruce 指示：除 Fish key 轮换（Bruce 自行决定）外的评审发现全�
   空私有记录、脱敏空密钥均通过；没有下载依赖，不当作全新 Windows 安装认证。
 - 无真实文本／TTS 调用；保留原有未跟踪试听样本。按现行约定提交、打 q05、推送并
   核对远端；VERSION、GitHub Release 和 APK/ZIP 上传不随源码交付更新。
+
+## 2026-10-04 会话 32：手机学习与聊天复用（工程验收包，人工门待确认）
+
+- Bruce 批准手机优先、StepFun API、后台处理与既有雅思学习一并迁移。仅既有未跟踪
+  StepFun 试听缓存，保留未动；用户真实聊天不作公开测试素材，不读取真实 Key。
+- 领域规则由同一原生安全 JS 引擎和 Node 回归执行；原话引用、角色、去重、间隔、自评、
+  草稿冲突、材料与声音改版、迁移和任务交换均先红后绿。旧输入和历史保留。
+- 原生持久化／Keystore、共享接收／解析、后台任务、Media3、M4A 后处理、录音与导出
+  已接线；手机四入口及完整雅思学习已开放。普通包增加学习材料，私人记录仍排除。
+- 专项失败均复现并定位：旧测试包名、模拟器存活和代理；启动恢复竞争通过恢复屏障和
+  提前 foreground 解决。豆包同链接存在双引号嵌套 JSON 与单引号直接快照两种响应，
+  两种格式均已锁定合成回归。录音仪器测试须在 Activity 启动前授予测试权限。
+  自动审批曾因用量无法完成审核；用户继续后沿正常审批重试，没有绕过或跳过检查。
+- 收尾增加先红后绿回归：手机导航归属与可见性、48px 触控与间距、结果未知时费用
+  提示、离页旧轮询、材料来源筛选、链接更新保留旧版、结构化内容块、一次性迁移
+  防重放、原生后台实际播放位置优先于陈旧的前端记录；旧音频指纹不得套用新文件。
+- `bash scripts/check.sh --release` 全绿：ruff、243 passed / 1 skipped、49 Playwright
+  passed、导入与服务冒烟、1533KB 便携 ZIP 隐私审计。手机专项 UI 为 7 passed，
+  覆盖聊天口答与雅思全部句子默写、两轮口答、草稿恢复及迁移防重放。
+- `gradlew -p mobile/android :app:assembleDebug :app:assembleDebugAndroidTest
+  :app:testDebugUnitTest` 成功，JVM 3 tests 全绿；Android 16 xiahua_test 的实际
+  `am instrument` 为 7 tests 全绿（含真实 WebView、Keystore、401/429/503/断网不重试、
+  取消保留、原生录音切后台保存、锁屏生成、Media3 后台及锁屏播放、真实分享解析）。
+  仪器输出留在忽略目录 data/.tmp/native-instrumentation-final.txt。
+- Android 经宿主既有代理只读读取分享链接，核对 ChatGPT 128 条、豆包 20 条；不把
+  该网络环境当作所有手机直连保证。没有执行分享页脚本、登录 Cookie 或第三方解析。
+  响度标准信号与 ffmpeg ebur128 一致；合成信号验证不能替代真人语音听感。
+- 360/390/430px 及原生 1080×2400 截图、大字体 1.3／深色系统环境检查通过；恢复测试
+  字体和系统模式。独立 finish review 修复导航与触控后 verdict 为 ship；documenter
+  核对现有暖纸系统，无额外修改。截图仅在 data/.tmp/mobile-learning-screenshots。
+- 本地 dist/ielts-pod-mobile-learning-debug.apk（Android 1.1，versionCode 2），19 份
+  资源与源码 SHA256 相同，签名与 Q05 兼容；覆盖安装保留数据，不能卸载后更新。
+  README 补充服务配置、个人交换文件与电脑校验命令。交换命令只准备文本，手机接续音频。
+- 保留既有未跟踪试听缓存。源码按既有授权提交推送并核对远端；N01 保持 ACTIVE，
+  不打完成 tag。无真实文本／TTS 调用，实机录音、系统中断和小样听感仍由 Bruce 验收。
+  GitHub Release、APK/ZIP 公开上传未执行。
