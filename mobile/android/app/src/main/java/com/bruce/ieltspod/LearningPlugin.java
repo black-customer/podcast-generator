@@ -47,6 +47,11 @@ public final class LearningPlugin extends Plugin {
         if(changed)store().write(s);ReviewReminder.schedule(getContext(),s.getJSONObject("settings").optBoolean("reminder_enabled",false));
     }}catch(Exception ignored){}finally{recovered.countDown();}});}
     @Override protected void handleOnDestroy(){mediaHandler.removeCallbacks(mediaTick);if(controller!=null)androidx.media3.session.MediaController.releaseFuture(controller);worker.shutdownNow();super.handleOnDestroy();}
+    @PluginMethod public void setAppearance(PluginCall call){getActivity().runOnUiThread(()->{
+        boolean dark=Boolean.TRUE.equals(call.getBoolean("dark",false));
+        androidx.core.view.WindowInsetsControllerCompat bars=androidx.core.view.WindowCompat.getInsetsController(getActivity().getWindow(),getActivity().getWindow().getDecorView());
+        bars.setAppearanceLightStatusBars(!dark);bars.setAppearanceLightNavigationBars(!dark);call.resolve();
+    });}
     @PluginMethod public void media(PluginCall call){getActivity().runOnUiThread(()->{
         if(controller==null){androidx.media3.session.SessionToken token=new androidx.media3.session.SessionToken(getContext(),new android.content.ComponentName(getContext(),PlaybackService.class));
             controller=new androidx.media3.session.MediaController.Builder(getContext(),token).buildAsync();}

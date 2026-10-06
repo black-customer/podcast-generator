@@ -31,6 +31,12 @@ public final class LearningMobileUiTest {
         do{Thread.sleep(100);text=js("document.getElementById('app').innerText");if(text.contains(expected))return;}while(android.os.SystemClock.elapsedRealtime()<deadline);
         fail("screen did not show "+expected+": "+text);
     }
+    private void waitBars(boolean light)throws Exception{
+        for(int i=0;i<30;i++){final boolean[] actual={false};
+            InstrumentationRegistry.getInstrumentation().runOnMainSync(()->actual[0]=androidx.core.view.WindowCompat.getInsetsController(activity.getWindow(),activity.getWindow().getDecorView()).isAppearanceLightStatusBars());
+            if(actual[0]==light)return;Thread.sleep(100);}
+        fail("system bar appearance did not follow theme");
+    }
     private void screenshot(Context app,String name)throws Exception{
         js("window.__qaPaint=false;document.getElementById('app').scrollTop=0;requestAnimationFrame(()=>requestAnimationFrame(()=>window.__qaPaint=true));");
         long deadline=android.os.SystemClock.elapsedRealtime()+5000;while(!js("window.__qaPaint===true").equals("true")){
@@ -63,7 +69,15 @@ public final class LearningMobileUiTest {
                     .put("audio",new JSONObject().put("podcast","/synthetic.m4a")))));
             db.write(state);js("MobileRuntime.snapshot().then(()=>route());");waitText("我在河边长大。");
             assertFalse(js("document.getElementById('app').innerText").contains("I grew up by the river."));
+            assertEquals("false",js("document.getElementById('home-toggle-answer').getAttribute('aria-expanded')"));
+            screenshot(app,"native-home-light.png");
+            js("document.getElementById('mobile-theme-toggle').click();");
+            waitBars(false);
+            screenshot(app,"native-home-dark.png");
+            js("document.getElementById('mobile-theme-toggle').click();");
+            waitBars(true);
             js("document.getElementById('home-toggle-answer').click();");waitText("I grew up by the river.");
+            assertEquals("true",js("document.getElementById('home-toggle-answer').getAttribute('aria-expanded')"));
             assertEquals("true",js("document.getElementById('home-answer-audio').paused"));
             assertFalse(db.read().getJSONObject("topics").getJSONObject("t").getJSONObject("items").getJSONObject("i").has("progress"));
             screenshot(app,"native-home-answer.png");

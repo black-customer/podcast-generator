@@ -9,7 +9,7 @@ import time
 
 import pytest
 import requests
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8765")
 
@@ -87,7 +87,7 @@ def test_bank_view_flow():
             page.locator(".bank-row", has_text="已有音频").first.click()
             page.wait_for_timeout(700)
             page.wait_for_selector(".bank-answer-card", timeout=5000)
-            assert page.locator("#saved-answer a", has_text="播放音频").count() == 1
+            expect(page.locator("#saved-answer a", has_text="播放音频")).to_have_count(1)
 
             # 4.5 选中未作答题 → 输入框可见可作答
             # （不精确断言跳转按钮数：同题干可能跨册重复，另一册版本或已作答）

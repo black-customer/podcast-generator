@@ -49,17 +49,44 @@ body.mobile-learning input,body.mobile-learning textarea{caret-color:var(--blue)
 .mobile-page-header h1{margin:0!important}
 body.mobile-learning .mobile-page .mobile-theme-toggle{width:48px;height:48px;padding:12px;border:0;background:transparent;color:var(--ink-soft);display:inline-flex;align-items:center;justify-content:center}
 .mobile-theme-toggle svg,.mobile-menu-row svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.home-prompt{padding:36px 0 32px;min-height:180px}
-body.mobile-learning #home-zh{font-size:28px;line-height:1.6;font-weight:650;margin:0 0 18px}
-.home-prompt .study-muted{margin:0 0 12px}
-.home-source{color:var(--ink-soft);font-size:14px;text-underline-offset:4px;display:inline-block;min-height:32px}
-.home-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.home-answer{padding:28px 0 8px}
-#home-en{font-size:22px;line-height:1.6;font-weight:500;margin:0 0 18px}
-#home-audio-notice{font-size:14px;color:var(--ink-soft)}
-body.mobile-learning .mobile-page .home-next{background:transparent;border:0;color:var(--ink-soft);display:block;margin:20px auto}
-.home-full-learning{margin-top:40px}
-.home-empty{padding:28px 0}
+.home-practice .mobile-page-header{margin:4px 0 28px}
+body.mobile-learning .home-practice :is(h1,#home-zh)[tabindex="-1"]:focus{outline:none}
+body.mobile-learning .home-practice h1{font-size:1.53em}
+body.mobile-learning .home-practice .mobile-theme-toggle{background:var(--paper-raised);border-radius:50%;color:var(--ink)}
+#home-exercise{padding:0 24px;background:var(--paper-raised);border-radius:16px}
+.home-prompt{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:36px 0 28px;min-height:240px;text-align:center}
+body.mobile-learning #home-zh{font-size:1.88em;line-height:1.55;font-weight:650;letter-spacing:-.025em;text-wrap:balance;margin:0;width:100%}
+.home-prompt .study-muted{font-size:.88em;margin:18px 0 0}
+.home-icon{width:20px;height:20px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.home-source{display:flex;align-items:center;gap:10px;color:var(--ink-soft);font-size:.765em;line-height:1.6;min-height:48px;text-decoration:none;text-underline-offset:4px;padding:0 0 14px}
+.home-source span{flex:1;min-width:0;overflow-wrap:anywhere}
+.home-source>.home-icon:first-child{width:17px;height:17px}
+.home-source>.home-icon:last-child{width:14px;height:14px}
+.home-source:hover span{text-decoration:underline}
+.home-actions{display:grid;grid-template-columns:1.15fr 1fr;gap:10px}
+body.mobile-learning .home-actions .study-button{display:flex;align-items:center;justify-content:center;gap:9px;min-height:54px;padding:12px 8px;font-size:.88em;border-radius:12px}
+body.mobile-learning .home-actions #home-listen{background:var(--paper-soft);border-color:transparent}
+.home-actions .home-icon{width:19px;height:19px}
+.home-answer{margin-top:24px;padding:24px 0 0;border-top:1px solid var(--rule)}
+#home-en{font-size:1.294em;line-height:1.55;font-weight:500;letter-spacing:-.01em;margin:0 0 18px}
+.home-answer audio{color-scheme:inherit}
+.home-answer audio::-webkit-media-controls-panel{background:var(--paper-soft)}
+#home-audio-notice{font-size:.824em;color:var(--ink-soft);margin:12px 0 0}
+#home-audio-notice:empty{display:none}
+.home-exercise-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;padding:12px 0;border-top:1px solid var(--rule)}
+#home-position{font-size:.765em;line-height:1.5;color:var(--ink-soft);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+body.mobile-learning .mobile-page .home-next{display:flex;align-items:center;gap:8px;background:transparent;border:0;color:var(--ink-soft);font-size:.824em;padding:8px 0 8px 12px;margin:0;min-height:48px}
+.home-next .home-icon{width:18px;height:18px}
+body.mobile-learning .home-actions button:active,body.mobile-learning .home-practice .mobile-theme-toggle:active{transform:scale(.97)}
+body.mobile-learning .home-practice .home-full-learning{margin-top:28px;padding:0;border:0}
+.home-full-learning>summary{gap:14px;min-height:80px;padding:10px 4px;font-size:.941em}
+.home-full-learning>summary::before{display:none}
+.home-full-learning>summary>.home-icon:first-child{color:var(--blue);width:24px;height:24px}
+.home-full-heading{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.home-full-heading small{font-size:.8125em;color:var(--ink-soft);font-weight:400}
+.home-full-learning>summary>.home-icon:last-child{color:var(--ink-soft);width:17px;height:17px}
+.home-full-learning[open]>summary>.home-icon:last-child{transform:rotate(90deg)}
+.home-empty{padding:36px 0}
 .home-empty .study-button{display:block;margin-top:16px}
 .mobile-menu-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;min-height:48px;color:var(--ink);text-decoration:none}
 .mobile-menu-row svg{width:18px;height:18px;color:var(--ink-soft)}
@@ -101,5 +128,5 @@ body.mobile-learning .bank-topic-tag,body.mobile-learning .bank-part-tag{backgro
 body.mobile-learning .reading-line,body.mobile-learning .transcript-line{color:var(--ink)}
 body.mobile-learning .reading-line.active,body.mobile-learning .transcript-line.active{background:var(--blue-soft)}
 body.mobile-learning .study-breadcrumb,body.mobile-learning .study-breadcrumb a{color:var(--ink-soft)}
-@media(max-width:380px){body.mobile-learning #app{padding-left:18px;padding-right:18px}body.mobile-learning #home-zh{font-size:26px}}
+@media(max-width:380px){body.mobile-learning #app{padding-left:18px;padding-right:18px}body.mobile-learning #home-zh{font-size:1.765em}#home-exercise{padding-left:22px;padding-right:22px}}
 @media(prefers-reduced-motion:reduce){body.mobile-learning *,body.mobile-learning *::before,body.mobile-learning *::after{scroll-behavior:auto;transition:none;animation:none}}

@@ -1,0 +1,13 @@
+{
+  "apk_sha256": "4e17a73ed6ee532e1f0876cc00ce52c0f23da5de45d5b8a35666afa22ff31129",
+  "total_bundled_assets_verified": 23,
+  "unchanged_visual_sources": 34,
+  "unchanged_packaged_pngs": 193,
+  "native_homepage_test": "1 passed; actual WebView; isolated synthetic content",
+  "unit_tests": 245,
+  "unit_skipped": 1,
+  "browser_tests": 56,
+  "release_gate": "green",
+  "signature_sha256": "ae7b7492195124494abd82f02083ec42729716f5318ed8d7c2d0e5da93d5af47",
+  "visual_acceptance": "pending user review"
+}

@@ -58,3 +58,27 @@ screenshots包含浅色首页、深色答案、设置/默写及原生空库/答�
 标题重复、分类可见性与旧样式优先级，并确认一轮。机械扫描未报告问题，但不能自动
 解析服务端/static样式链接；实际截图和交互回归用于补充验证。
 原生答案截图使用缺失的合成音频路径验证文字保留，不作为真人听感或音频精度证明。
+
+## 首页视觉修正（2026-10-06，待 Bruce 确认）
+
+Bruce 否定首轮首页视觉。保持已认可的清透白／午夜蓝与中文轻练行为，集中重排首页：
+中文居中阅读，来源与答案操作收在同一阅读面内，换句与当前候选序号位于底部；
+完整学习入口单独成行。字号跟随正文缩放，不新增统计、生成服务或学习记录写入。
+答案按钮保留图标并提供展开状态；系统栏图标随主题切换，程序聚焦标题不显示控件方框，
+可交互控件继续保留键盘焦点。静态缓存更新到v12。
+
+- 首先复现答案展开状态缺失与暗色系统栏未切换的失败，再实现并确认通过。
+- 首页与完整学习专项：13 passed / 1 deselected；最终`bash scripts/check.sh --release`：
+  ruff通过、245 passed / 1 skipped、56 e2e、启动/导入冒烟与1557KB便携包审计通过。
+  全量测试曾暴露题库测试在异步回答读取完成前断言；改为等待真实链接后专项与全量均通过。
+- 离线`gradlew :app:assembleDebug :app:assembleDebugAndroidTest`构建成功；
+  实际`LearningMobileUiTest#nativeUiImportsTextAndKeepsMobileNavigation`：1 passed。
+  本轮没有重复声称此前8个原生测试均重新运行。
+- 包内23份资源匹配源码，34份图标/启动图片源与193份原生PNG保持；签名与旧包相同。
+  证据与新包SHA256见homepage-refinement.json。
+
+本轮真实WebView截图：screenshots/native-home-light.png、native-home-dark.png、
+native-home-answer.png；浏览器两主题、三尺寸、长句与大字体截图在data/.tmp/home-refinement。
+截图仅使用合成练习，页面布局来自实际运行代码；不是生成概念图。
+本地新包dist/英语说说说-首页优化-debug.apk，旧包保留；未上传公开安装包。
+首页视觉验收继续等待 Bruce 看结果，工程门禁不能代表审美认可。

@@ -9,6 +9,7 @@ const MobileAppearance = (() => {
   };
   function refresh() {
     const dark = document.body.dataset.mobileTheme === 'dark';
+    if(MobileRuntime.native)MobileRuntime.plugin.setAppearance?.({dark})?.catch(()=>{});
     document.querySelectorAll('[data-mobile-theme-toggle]').forEach(button => {
       const label = dark ? '切换到清透白' : '切换到午夜蓝';
       button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[dark ? 'sun' : 'moon']}</svg>`;
@@ -181,6 +182,12 @@ class NativePlayer extends EventTarget {
 
 const MobileUI = (() => {
   let timer=null, homeAudio=null, homeRevision=0;
+  const homeIcons={answer:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+    listen:'<path d="m11 4-6 5H2v6h3l6 5V4ZM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/>',
+    book:'<path d="M12 5C9 3 5 3 2 4v15c3-1 7-1 10 1 3-2 7-2 10-1V4c-3-1-7-1-10 1v15"/>',
+    next:'<path d="M4 7h16l-4-4M20 17H4l4 4M20 7l-4 4M4 17l4-4"/>',
+    arrow:'<path d="m9 5 7 7-7 7"/>'};
+  const homeIcon=name=>`<svg class="home-icon" viewBox="0 0 24 24" aria-hidden="true">${homeIcons[name]}</svg>`;
   const link = id => `#/conversation/${encodeURIComponent(id)}`;
   const jobNotice = job => !job?'':`${(job.errors || []).map(e=>`<p>${esc(e.message)}</p>`).join('')}${job.inflight?'<p>上次请求是否完成无法确认；继续处理可能再次计费。已保存的有效阶段会复用。</p>':''}`;
   function layout(title,html){$app.innerHTML=`<div class="mobile-page"><h1>${esc(title)}</h1>${html}</div>`;$app.scrollTop=0;}
@@ -190,7 +197,7 @@ const MobileUI = (() => {
     const rows=data.home_practice || [];let at=0;
     $app.innerHTML=`<div class="mobile-page home-practice"><header class="mobile-page-header"><h1>练习</h1>${MobileAppearance.button()}</header>
       <section id="home-exercise"></section>
-      <details class="home-full-learning"><summary>完整学习与复习</summary>
+      <details class="home-full-learning"><summary>${homeIcon('book')}<span class="home-full-heading"><span>完整学习与复习</span><small>继续逐句学习与口答</small></span>${homeIcon('arrow')}</summary>
         ${data.active_session_id?`<a class="study-button" href="#/oral-review/${esc(data.active_session_id)}">继续本轮口答</a>`:
           data.due_count?'<button class="study-button" id="mobile-review-start">开始正式口答</button>':'<p>暂无到期口答。</p>'}
         ${(data.continue_learning || []).map(r=>`<a class="mobile-row" href="#/learn/${encodeURIComponent(r.topic_id)}/${encodeURIComponent(r.item_id)}">${esc(r.question)}</a>`).join('')}
@@ -200,14 +207,14 @@ const MobileUI = (() => {
       const host=document.getElementById('home-exercise'),row=rows[at];
       if(!row){host.innerHTML='<div class="home-empty"><h2>准备一份练习内容</h2><p>先回答一道题，或导入已有材料。中文、英文和音频准备好后，就可以在这里练习。</p><a class="study-button primary" href="#/bank">去题库选题</a><a class="study-button" href="#/materials">导入已有内容</a></div>';return;}
       host.innerHTML=`<div class="home-prompt"><h2 id="home-zh">${esc(row.zh)}</h2><p class="study-muted">先试着说成英文</p>
-        <a class="home-source" href="${esc(row.href)}">来自：${esc(row.source || '我的内容')}</a></div>
-        <div class="home-actions"><button class="study-button primary" id="home-toggle-answer">查看答案</button><button class="study-button" id="home-listen">听答案</button></div>
+        </div><a class="home-source" href="${esc(row.href)}">${homeIcon('book')}<span>来自：${esc(row.source || '我的内容')}</span>${homeIcon('arrow')}</a>
+        <div class="home-actions"><button class="study-button primary" id="home-toggle-answer" aria-expanded="false" aria-controls="home-answer">${homeIcon('answer')}<span id="home-toggle-label">查看答案</span></button><button class="study-button" id="home-listen">${homeIcon('listen')}<span>听答案</span></button></div>
         <div id="home-answer" class="home-answer" hidden><p id="home-en"></p><audio id="home-answer-audio" controls preload="none" aria-label="参考答案音频"></audio><p id="home-audio-notice" role="status"></p></div>
-        <button id="home-next" class="home-next" ${rows.length<2?'disabled':''}>换一句</button>`;
+        <div class="home-exercise-footer"><span id="home-position" aria-label="第${at+1}句，共${rows.length}句">${at+1} / ${rows.length}</span><button id="home-next" class="home-next" ${rows.length<2?'disabled':''}>${homeIcon('next')}<span>换一句</span></button></div>`;
       homeAudio=document.getElementById('home-answer-audio');
       const audio=homeAudio,isCurrent=()=>!viewStale(token) && revision===homeRevision && audio===homeAudio;
       function reveal(){document.getElementById('home-answer').hidden=false;document.getElementById('home-en').textContent=row.en;
-        document.getElementById('home-toggle-answer').textContent='收起答案';
+        document.getElementById('home-toggle-label').textContent='收起答案';document.getElementById('home-toggle-answer').setAttribute('aria-expanded','true');
         if(!audio.getAttribute('src')){audio.preload='metadata';audio.src=MobileRuntime.fileUrl(row.audio.url);}
         document.getElementById('home-audio-notice').textContent=row.audio.mode==='estimated'?row.audio.reason:'';}
       audio.onloadedmetadata=()=>{if(isCurrent())audio.currentTime=Math.min(row.audio.start,Math.max(0,audio.duration-.05));};
@@ -215,7 +222,7 @@ const MobileUI = (() => {
       audio.ontimeupdate=()=>{if(row.audio.end!=null && audio.currentTime>=row.audio.end)audio.pause();};
       audio.onerror=()=>{if(isCurrent())document.getElementById('home-audio-notice').textContent='音频暂时无法播放，文字答案仍保留。可再次点击听答案重试。';};
       document.getElementById('home-toggle-answer').onclick=()=>{const answer=document.getElementById('home-answer');
-        if(answer.hidden)reveal();else{audio.pause();answer.hidden=true;document.getElementById('home-en').textContent='';document.getElementById('home-toggle-answer').textContent='查看答案';}};
+        if(answer.hidden)reveal();else{audio.pause();answer.hidden=true;document.getElementById('home-en').textContent='';document.getElementById('home-toggle-label').textContent='查看答案';document.getElementById('home-toggle-answer').setAttribute('aria-expanded','false');}};
       document.getElementById('home-listen').onclick=async()=>{reveal();if(audio.error){audio.load();}
         try{if(row.audio.end!=null && audio.currentTime>=row.audio.end)audio.currentTime=row.audio.start;await audio.play();if(!isCurrent())audio.pause();}
         catch(e){if(isCurrent())document.getElementById('home-audio-notice').textContent=`音频未播放：${e.message}。文字答案已保留，可重试。`;}};

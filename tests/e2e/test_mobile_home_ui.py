@@ -43,7 +43,10 @@ def test_home_reveal_audio_next_and_theme_do_not_change_learning(phone):
     seed(phone)
     before = phone.evaluate("JSON.stringify(window.__mobileState)")
     expect(phone.locator("#app")).not_to_contain_text("I grew up by the river.")
+    expect(phone.locator("#home-toggle-answer")).to_have_attribute("aria-expanded", "false")
+    expect(phone.locator("#home-position")).to_have_text("1 / 2")
     phone.locator("#home-toggle-answer").click()
+    expect(phone.locator("#home-toggle-answer")).to_have_attribute("aria-expanded", "true")
     expect(phone.locator("#home-answer")).to_contain_text("I grew up by the river.")
     assert phone.locator("#home-answer-audio").evaluate("a=>a.paused")
     phone.locator("#home-listen").click()
@@ -54,6 +57,8 @@ def test_home_reveal_audio_next_and_theme_do_not_change_learning(phone):
     assert not phone.locator("#home-answer-audio").evaluate("a=>a.paused")
     phone.locator("#home-next").click()
     expect(phone.locator("#home-zh")).to_have_text("我和家人一起散步。")
+    expect(phone.locator("#home-position")).to_have_text("2 / 2")
+    expect(phone.locator("#home-toggle-answer")).to_have_attribute("aria-expanded", "false")
     expect(phone.locator("#home-answer")).to_be_hidden()
     assert phone.locator("#home-answer-audio").evaluate("a=>a.paused")
     assert phone.evaluate("JSON.stringify(window.__mobileState)") == before
@@ -119,6 +124,49 @@ def test_history_includes_saved_full_answer_recordings(phone):
     expect(phone.locator('#app')).to_contain_text('完整回答录音')
     expect(phone.locator('#app')).to_contain_text('看中文说')
     expect(phone.get_by_label('回听看中文说录音')).to_be_visible()
+
+
+def test_home_reading_surface_handles_long_sentences_and_large_text(phone):
+    seed(phone)
+    out = Path(__file__).resolve().parents[2] / 'data/.tmp/home-refinement'
+    out.mkdir(parents=True, exist_ok=True)
+    for theme in ('light', 'dark'):
+        if phone.locator('body').get_attribute('data-mobile-theme') != theme:
+            phone.locator('#mobile-theme-toggle').click()
+        for width in (360, 390, 430):
+            phone.set_viewport_size({'width': width, 'height': 844})
+            assert phone.evaluate('document.documentElement.scrollWidth <= innerWidth')
+            phone.screenshot(path=str(out / f'{theme}-{width}-home.png'))
+            phone.locator('#home-toggle-answer').click()
+            phone.wait_for_function("document.getElementById('home-answer-audio').readyState >= 1")
+            phone.screenshot(path=str(out / f'{theme}-{width}-answer.png'))
+            phone.locator('#home-toggle-answer').click()
+    phone.evaluate("""() => {
+      const item=window.__mobileState.topics.t.items.a;
+      const zh='我在河边的一座小城长大，那里的人大多彼此熟悉。';
+      const en='I grew up in a small town by the river, where most people knew each other.';
+      Object.assign(item.texts,{original_answer:zh,natural_english:en,
+        podcast_text:'B: '+en,podcast_script:'B: '+en});
+      item.material=MobileCore.validateStudyMaterial({complete_chinese:zh,sentences:[
+        {en,zh,explanation:'合成解释',usage:'合成用法'}]},item.texts);
+      item.timelines.podcast.lines[0].text=en;
+      route();
+    }""")
+    expect(phone.locator('#home-zh')).to_contain_text('我在河边的一座小城长大')
+    phone.set_viewport_size({'width': 360, 'height': 680})
+    phone.add_style_tag(content='body.mobile-learning{font-size:22px}')
+    for theme in ('light', 'dark'):
+        if phone.locator('body').get_attribute('data-mobile-theme') != theme:
+            phone.locator('#mobile-theme-toggle').click()
+        assert phone.evaluate('document.documentElement.scrollWidth <= innerWidth')
+        phone.screenshot(path=str(out / f'{theme}-long-large-text.png'))
+        for selector in ('#home-toggle-answer', '#home-listen', '#home-next'):
+            button = phone.locator(selector)
+            button.scroll_into_view_if_needed()
+            assert button.evaluate("""b => {
+              const r=b.getBoundingClientRect();
+              return b.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));
+            }"""), selector
 
 
 def test_mobile_theme_layout_and_capture(phone):
