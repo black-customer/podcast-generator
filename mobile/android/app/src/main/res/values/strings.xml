@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">IELTS Pod</string>
-    <string name="title_activity_main">IELTS Pod</string>
+    <string name="app_name">英语说说说</string>
+    <string name="title_activity_main">英语说说说</string>
     <string name="package_name">com.bruce.ieltspod</string>
     <string name="custom_url_scheme">com.bruce.ieltspod</string>
 </resources>

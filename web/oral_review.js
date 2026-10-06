@@ -32,7 +32,7 @@ const OralReviewUI = (() => {
   function leave(nextHash) {
     if (state.session && nextHash === state.currentHash) return false;
     if ((state.blob || state.recorder?.state === "recording")
-        && !confirm("当前录音还没有保存。离开后会丢失这段录音，是否离开？")) {
+        && !confirm(MobileRuntime.native ? "当前录音尚未加入练习。退出后已录内容会保留，可到我的未保存录音恢复。是否退出？" : "当前录音还没有保存。离开后会丢失这段录音，是否离开？")) {
       if (location.hash !== state.currentHash) location.hash = state.currentHash;
       return false;
     }
@@ -155,7 +155,7 @@ const OralReviewUI = (() => {
     const card = session.current_card;
     const unavailable = card.availability !== "ready";
     $app.innerHTML = `<div class="study-page oral-page">
-      <div class="study-breadcrumb"><a href="#/today">今日练习</a><span>/</span>困难句口答</div>
+      <div class="study-breadcrumb"><a href="#/today">${MobileRuntime.native?'退出练习':'今日练习'}</a><span>/</span>困难句口答</div>
       <div class="study-counter">第 ${session.current_index + 1} / ${session.card_ids.length} 句</div>
       <div class="study-question-block"><span>来源题目</span><h1>${esc(card.question)}</h1></div>
       <section class="study-task"><p class="study-counter">先看中文，自己说英文</p>
@@ -169,6 +169,7 @@ const OralReviewUI = (() => {
         <p id="oral-error" class="study-feedback" role="alert"></p>
       </section></div>`;
     $app.querySelectorAll("[data-oral]").forEach(button => button.onclick = onAction);
+    $app.querySelectorAll('input[name="oral-rating"]').forEach(input=>input.onchange=()=>{const submit=$app.querySelector('[data-oral="submit-rating"]');if(submit)submit.disabled=false;});
     bindAudioCompetition();
     ExperienceUI.recordingControls(document.getElementById("oral-recorder"), "ready");
   }
@@ -181,9 +182,10 @@ const OralReviewUI = (() => {
           <button type="button" data-oral="record-save" disabled class="primary">保存录音并查看示范</button></div>
         <audio id="oral-preview" controls hidden></audio>
         <a id="oral-download" download="oral-review.webm" hidden>下载当前录音</a></div>
-      <div class="study-actions auxiliary-actions"><button type="button" data-oral="no-record">我已口答，不录音</button>
+      <div class="study-actions auxiliary-actions"><button type="button" data-oral="no-record">我已口答，不录音</button></div>
+      ${MobileRuntime.native?'<details class="oral-help"><summary>需要帮助</summary>':''}<div class="study-actions auxiliary-actions">
         <button type="button" data-oral="hint">短暂看示范</button>
-        <button type="button" data-oral="reveal">先查看示范</button></div>
+        <button type="button" data-oral="reveal">先查看示范</button></div>${MobileRuntime.native?'</details>':''}
       <div id="oral-hint" class="study-hint" hidden></div>
       ${session.hint_used ? `<p class="study-muted">本句已使用提示，自评会如实记录。</p>` : ""}
     </div>`;
@@ -202,9 +204,11 @@ const OralReviewUI = (() => {
           `<span class="study-muted">未录音／本人自评</span>`}</div>
       ${session.recording_id ? `<button type="button" class="study-button" data-oral="no-record">改为无录音自评（保留录音文件）</button>` : ""}
       <p class="study-muted">意思完整、英文自然即可选“独立说出”；合理的其他表达也成立。</p>
-      <div class="study-actions oral-ratings"><button type="button" data-oral="independent" ${canIndependent ? "" : "disabled"}>独立说出</button>
+      ${MobileRuntime.native?`<fieldset class="oral-ratings"><legend>这次你说出来了吗？</legend>
+        ${Object.entries(ratingNames).map(([value,label])=>`<label class="oral-rating-choice"><input type="radio" name="oral-rating" id="oral-rating-${value}" value="${value}" ${(value==='independent'&&!canIndependent)||(value==='needs_hint'&&!session.responded)?'disabled':''}>${label}</label>`).join('')}
+        </fieldset><button type="button" class="study-button primary" data-oral="submit-rating" disabled>保存并继续</button>`:`<div class="study-actions oral-ratings"><button type="button" data-oral="independent" ${canIndependent ? "" : "disabled"}>独立说出</button>
         <button type="button" data-oral="needs_hint" ${session.responded ? "" : "disabled"}>需要提示</button>
-        <button type="button" data-oral="unable">暂时说不出</button></div>
+        <button type="button" data-oral="unable">暂时说不出</button></div>`}
       ${!canIndependent ? `<p class="study-muted">本次看过提示或尚未口答，不能标为独立说出。</p>` : ""}
     </div>`;
   }
@@ -225,7 +229,8 @@ const OralReviewUI = (() => {
 
   async function onAction(event) {
     const button = event.currentTarget;
-    const action = button.dataset.oral;
+    let action = button.dataset.oral;
+    if(action==='submit-rating')action=$app.querySelector('input[name="oral-rating"]:checked')?.value;
     const sessionId = state.session?.id;
     const viewHash = state.currentHash;
     const isCurrent = () => state.session?.id === sessionId && state.currentHash === viewHash;

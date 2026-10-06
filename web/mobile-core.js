@@ -295,6 +295,61 @@
       parts.push({speaker:line.speaker,en:rest.slice(0,at).trim(),zh:line.zh,split_estimated:true});rest=rest.slice(at).trim();}
     if(rest)parts.push({speaker:line.speaker,en:rest,zh:line.zh,split_estimated:parts.length>0});return parts;
   }
+  function homePracticeCandidates(s,overview) {
+    overview=overview || {};var pool=[],bySource={},ordered=[],seen={};
+    function span(path,timeline,en,duration) {
+      if(!path)return null;
+      var line=values((timeline || {}).lines).filter(function(l){return typeof l.text==='string' && l.text.indexOf(en)>=0
+        && l.role!=='a' && l.speaker!=='A' && isFinite(l.start) && isFinite(l.end) && l.start>=0 && l.end>l.start;})[0];
+      if(!line)return {url:path,start:0,end:duration>0?duration:null,mode:'estimated',reason:'未取得单句定位，播放完整回答。'};
+      var exact=line.text===en,at=line.text.indexOf(en),scale=(line.end-line.start)/line.text.length;
+      return {url:path,start:line.start+(exact?0:at*scale),end:exact?line.end:line.start+(at+en.length)*scale,
+        mode:exact?'measured':'estimated',reason:exact?'本句边界来自实际音频片段。':'句内位置为估算，播放包含本句的片段。'};
+    }
+    function add(key,row,source,href,audio,ref) {
+      if(!row || typeof row.zh!=='string' || !row.zh.trim() || typeof row.en!=='string' || !row.en.trim() || !audio)return;
+      var entry={id:key,zh:row.zh,en:row.en,source:source,href:href,audio:audio};
+      Object.keys(ref || {}).forEach(function(k){entry[k]=ref[k];});pool.push(entry);bySource[key]=entry;
+    }
+    Object.keys(s.topics || {}).sort().forEach(function(tid){var t=s.topics[tid];
+      Object.keys(t.items || {}).sort().forEach(function(iid){var i=t.items[iid],m=i.material;
+        if(!m || !Array.isArray(m.sentences) || m.source_fingerprint!==sourceFingerprint(i.texts || {}))return;
+        m.sentences.forEach(function(row,n){if(!row || typeof row.en!=='string')return;add('ielts/'+tid+'/'+iid+'/'+n,row,t.name || i.title,
+          '#/learn/'+encodeURIComponent(tid)+'/'+encodeURIComponent(iid),
+          span((i.audio || {}).podcast || (i.audio || {}).default,(i.timelines || {}).podcast,row.en,(i.meta || {}).duration_sec_podcast),
+          {kind:'ielts',topic_id:tid,item_id:iid,sentence_index:n,source_fingerprint:m.source_fingerprint});});
+      });
+    });
+    Object.keys(s.conversations || {}).sort().forEach(function(cid){var c=s.conversations[cid];
+      (c.dialogue || []).forEach(function(row,n){if(!row || row.speaker!=='B' || typeof row.en!=='string')return;
+        add('chat/'+cid+'/'+n,row,c.title,'#/conversation/'+encodeURIComponent(cid),
+          span(c.audio,c.timeline,row.en,c.duration),{kind:'conversation',conversation_id:cid});});
+    });
+    function push(entry){if(entry && !seen[entry.id]){seen[entry.id]=true;ordered.push(entry);}}
+    function fromCard(card){
+      if(!card || card.paused || card.superseded || typeof card.en!=='string' || !card.en.trim()
+        || typeof card.zh!=='string' || !card.zh.trim())return null;
+      if(card.kind==='ielts'){var found=bySource['ielts/'+card.topic_id+'/'+card.item_id+'/'+card.sentence_index];
+        return found && found.source_fingerprint===card.source_fingerprint?found:null;}
+      var c=s.conversations[card.conversation_id];if(!c)return null;
+      var base=pool.filter(function(r){return r.conversation_id===card.conversation_id && r.en===card.en;})[0];
+      if(base)return base;
+      function spoken(rows){return (rows || []).some(function(r){return r.speaker==='B' && typeof r.en==='string' && r.en.indexOf(card.en)>=0;});}
+      var audio=spoken(c.dialogue)?span(c.audio,c.timeline,card.en,c.duration):null;
+      if(!audio && c.previous_audio){var old=c.previous_audio;
+        if(spoken(old.dialogue))audio=span(old.path,old.timeline,card.en,old.duration);}
+      if(!audio)return null;
+      return {id:'chat-note/'+card.id,zh:card.zh,en:card.en,source:c.title,kind:'conversation',
+        conversation_id:c.id,href:'#/conversation/'+encodeURIComponent(c.id),audio:audio};
+    }
+    var active=(s.sessions || {})[overview.active_session_id];
+    if(active)push(fromCard((s.cards || {})[(active.cards || active.card_ids || [])[active.current_index]]));
+    (overview.continue_learning || []).forEach(function(row){var i=((s.topics[row.topic_id] || {}).items || {})[row.item_id];
+      var n=(i && i.progress || {}).sentence_index || 0;push(bySource['ielts/'+row.topic_id+'/'+row.item_id+'/'+n]);});
+    (overview.due_preview || []).slice().sort(function(a,b){return String(a.due_date || '').localeCompare(String(b.due_date || ''))
+      || String(a.id).localeCompare(String(b.id));}).forEach(function(card){push(fromCard(card));});
+    pool.forEach(push);return ordered;
+  }
   var exported={createState:createState,openState:openState,addDays:addDays,hash:hash,copy:copy,values:values,
     normalizeMessages:normalizeMessages,parseTranscript:parseTranscript,messagesFromChatGPT:messagesFromChatGPT,
     parseChatGPTPage:parseChatGPTPage,messagesFromDoubao:messagesFromDoubao,parseDoubaoPage:parseDoubaoPage,
@@ -303,5 +358,6 @@
     saveDraft:saveDraft,migratePack:migratePack,exportExchange:exportExchange,importExchange:importExchange,splitMessages:splitMessages};
   exported.validateIeltsResult=validateIeltsResult;exported.validateStudyMaterial=validateStudyMaterial;exported.splitAudioLine=splitAudioLine;
   exported.sourceFingerprint=sourceFingerprint;
+  exported.homePracticeCandidates=homePracticeCandidates;
   root.MobileCore=exported;if(typeof module!=='undefined')module.exports=exported;
 }(this));

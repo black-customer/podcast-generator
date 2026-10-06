@@ -118,9 +118,13 @@
       var job={id:iid,job_id:iid,topic_id:tid,item_id:iid,kind:'ielts',state:'queued',phase:'rewrite',errors:[],created_at:now};s.jobs[iid]=job;return C.copy(job);
     }
     if(path==='/api/study/today'){var due=vals(s.cards).filter(function(c){return !c.paused && !c.superseded && c.due_date<=now.slice(0,10);}),pending=[];
-      vals(s.topics).forEach(function(t){vals(t.items).forEach(function(i){if(i.material && progress(i).stage!=='summary')pending.push({topic_id:t.id,item_id:i.id,question:i.texts.question,stage:progress(i).stage});});});
-      var active=vals(s.sessions).filter(function(x){return x.state==='active';})[0];return {pending_learning:pending,continue_learning:pending,
-        due_count:due.length,due_preview:due.slice(0,10),needs_material_count:0,needs_material:[],has_learning_records:!!s.attempts.length,active_session_id:active?active.id:null};}
+      vals(s.topics).forEach(function(t){vals(t.items).forEach(function(i){var p=i.progress;
+        if(i.material && p && p.stage!=='summary' && (p.stage!=='before' || p.before_started))
+          pending.push({topic_id:t.id,item_id:i.id,question:i.texts.question,stage:p.stage});});});
+      var active=vals(s.sessions).filter(function(x){return x.state==='active';})[0],overview={pending_learning:pending,continue_learning:pending,
+        due_count:due.length,due_preview:due.slice(0,10),needs_material_count:0,needs_material:[],has_learning_records:!!s.attempts.length,active_session_id:active?active.id:null};
+      overview.home_practice=C.homePracticeCandidates(s,{active_session_id:overview.active_session_id,
+        continue_learning:pending,due_preview:due});return overview;}
     if(path==='/api/study/review')return vals(s.cards);
     if(path==='/api/study/review-sessions' && method==='POST')return publicSession(s,C.startSession(s,now,body.card_ids).id);
     m=path.match(/^\/api\/study\/review-sessions\/([^/]+)(.*)$/);if(m){

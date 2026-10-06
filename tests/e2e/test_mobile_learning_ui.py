@@ -99,6 +99,7 @@ def test_import_then_oral_review_without_answer_leak(phone):
       sessionStorage.setItem('synthetic-native-clock',window.__mobileNow);
     }""")
     phone.goto(BASE + "/#/today")
+    phone.get_by_text("完整学习与复习", exact=True).click()
     phone.locator("#mobile-review-start").click()
     expect(phone.locator(".oral-page")).to_be_visible()
     capture(phone, "oral-prompt-390.png")
@@ -106,13 +107,14 @@ def test_import_then_oral_review_without_answer_leak(phone):
     phone.locator('[data-oral="no-record"]').click()
     expect(phone.locator("#app")).to_contain_text("Mushrooms have some dietary fiber.")
     capture(phone, "oral-compare-390.png")
-    phone.locator('[data-oral="independent"]').click()
+    phone.locator('#oral-rating-independent').check()
+    phone.locator('[data-oral="submit-rating"]').click()
     expect(phone.locator("#app")).to_contain_text("本轮口答完成")
     expect(phone.locator("#app")).to_contain_text("2026-10-07")
 
 
 def test_mobile_settings_does_not_persist_key_and_layout(phone):
-    phone.goto(BASE + "/#/my")
+    phone.goto(BASE + "/#/my/services")
     phone.locator("#mobile-key").fill("synthetic-test-secret")
     phone.locator("#mobile-save-settings").click()
     expect(phone.locator("#mobile-settings-status")).to_have_text("配置已保存。")
@@ -127,26 +129,27 @@ def test_mobile_settings_does_not_persist_key_and_layout(phone):
 
 def test_mobile_navigation_owns_one_destination_and_warns_unknown_request(phone):
     for route, owner in (("today", "today"), ("materials", "materials"),
-                         ("my", "my"), ("bank", "bank"), ("chat-import", "today")):
+                         ("my", "my"), ("bank", "bank"), ("chat-import", "materials")):
         phone.goto(BASE + "/#/" + route)
         expect(phone.locator('.nav-menu [aria-current="page"]')).to_have_count(1)
         expect(phone.locator('.nav-menu [aria-current="page"]')).to_have_attribute(
             "href", "#/" + owner
         )
         expect(phone.locator(".nav-menu .active")).to_have_count(1)
-        for destination in ("今日", "材料", "题库", "我的"):
+        for destination in ("练习", "内容", "题库", "我的"):
             expect(phone.locator(".nav-menu").get_by_text(destination, exact=True)).to_be_visible()
-    phone.goto(BASE + "/#/my")
+    phone.goto(BASE + "/#/my/services")
     phone.evaluate("document.body.classList.add('player-route')")
     expect(phone.locator(".sidebar")).to_be_visible()
     assert phone.locator("#mobile-save-settings").bounding_box()["height"] >= 48
+    phone.goto(BASE + "/#/my/voices")
     select = phone.locator("#mobile-voice-a").bounding_box()
     preview = phone.locator('[data-preview-role="a"]').bounding_box()
     assert preview["y"] - select["y"] - select["height"] >= 8
     phone.evaluate("""() => {
       window.__mobileState.jobs.pending={id:'pending',kind:'conversation',state:'interrupted',
        inflight:'text',errors:[{message:'服务返回 HTTP 429，请稍后手动继续'}]};
-      route();
+      location.hash='#/my/tasks';
     }""")
     expect(phone.locator("#app")).to_contain_text("可能再次计费")
     expect(phone.locator("#app")).to_contain_text("HTTP 429")
@@ -170,7 +173,7 @@ def test_mobile_leaving_generation_stops_redirect_and_material_source_filter(pho
     phone.locator("#bank-answer-submit").click()
     expect(phone.locator("#api-stage-row")).to_be_visible()
     phone.goto(BASE + "/#/my")
-    expect(phone.locator("#mobile-save-settings")).to_be_visible()
+    expect(phone.get_by_role("link", name="生成服务")).to_be_visible()
     phone.evaluate("Object.values(window.__mobileState.jobs).forEach(j=>j.state='done')")
     phone.wait_for_timeout(1300)
     assert phone.url.endswith("#/my")

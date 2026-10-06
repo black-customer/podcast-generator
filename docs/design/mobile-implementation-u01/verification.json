@@ -1,0 +1,17 @@
+{
+  "web_assets_verified": 21,
+  "unchanged_icon_sources": 30,
+  "unchanged_packaged_pngs": 193,
+  "jvm_tests": 3,
+  "app_name": "英语说说说",
+  "app_id": "com.bruce.ieltspod",
+  "apk_sha256": "fb466e8373d12faca92322f622e4cfc6e20c540cc697cc137796d5d5fa8680cd",
+  "public_data_assets_verified": 2,
+  "total_bundled_assets_verified": 23,
+  "native_instrumentation_tests": 8,
+  "unit_tests": 245,
+  "unit_skipped": 1,
+  "browser_tests": 55,
+  "release_gate": "green",
+  "upgrade_test": "same-signature replacement retained test marker"
+}

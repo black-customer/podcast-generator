@@ -1,11 +1,11 @@
 {
-  "name": "IELTS Pod",
-  "short_name": "IELTS Pod",
-  "description": "把自己的表达变成自然英语音频",
+  "name": "英语说说说",
+  "short_name": "英语说说说",
+  "description": "用自己的内容练习英语口语，多开口说",
   "start_url": "/#/practice",
   "display": "standalone",
-  "background_color": "#F3EBDD",
-  "theme_color": "#596348",
+  "background_color": "#F5F7FB",
+  "theme_color": "#3150D5",
   "icons": [
     {
       "src": "/static/icons/icon-192.png",

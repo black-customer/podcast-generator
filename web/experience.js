@@ -49,7 +49,8 @@ const ExperienceUI = (() => {
       if (!button) return;
       const current = index === ({ ready: 0, recording: 1, stopped: 2 })[phase];
       button.classList.toggle("primary", current && !(phase === "ready" && hasSaved));
-      button.hidden = index > 0 && !current;
+      button.hidden = (index === 0 && phase === "recording") || (index > 0 && !current);
+      if (index === 0 && phase === "stopped" && typeof MobileRuntime !== 'undefined' && MobileRuntime.native) button.textContent = '重录一版';
     });
   }
   function memoReads() {

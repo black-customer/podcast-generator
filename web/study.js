@@ -38,7 +38,7 @@ const StudyUI = (() => {
   function leave(nextHash) {
     if (nextHash === state.currentHash) return !(state.blob || state.recorder?.state === "recording");
     if (nextHash && (state.blob || state.recorder?.state === "recording")
-      && !confirm("当前录音还没有保存，离开会丢失这段录音。是否离开？")) {
+      && !confirm(MobileRuntime.native ? "当前录音尚未加入练习。退出后已录内容会保留，可到我的未保存录音恢复。是否退出？" : "当前录音还没有保存，离开会丢失这段录音。是否离开？")) {
       location.hash = state.currentHash;
       return false;
     }
@@ -66,8 +66,7 @@ const StudyUI = (() => {
   }
   function shell(content, stage = "before") {
     $app.innerHTML = `<div class="study-page">
-      <div class="study-breadcrumb"><a href="#/topics">我的语料</a><span>/</span>
-        <a href="#/topic/${encodeURIComponent(state.topicId)}">${esc(state.topicId)}</a><span>/</span>学习</div>
+      <div class="study-breadcrumb">${MobileRuntime.native ? '<a href="#/materials">退出学习</a>' : `<a href="#/topics">我的语料</a><span>/</span><a href="#/topic/${encodeURIComponent(state.topicId)}">${esc(state.topicId)}</a>`}<span>/</span>学习</div>
       ${state.review ? "" : steps(stage)}
       ${content}
       <div class="study-footer"><a href="#/topics">返回我的语料</a></div>

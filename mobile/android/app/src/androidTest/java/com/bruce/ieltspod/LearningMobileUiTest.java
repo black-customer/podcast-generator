@@ -38,7 +38,7 @@ public final class LearningMobileUiTest {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();Thread.sleep(200);
         Bitmap image=InstrumentationRegistry.getInstrumentation().getUiAutomation().takeScreenshot();assertNotNull(image);
         File dir=new File(app.getCacheDir(),"mobile-qa");dir.mkdirs();try(FileOutputStream out=new FileOutputStream(new File(dir,name))){image.compress(Bitmap.CompressFormat.PNG,100,out);}image.recycle();}
-    @Test public void nativeUiImportsTextAndKeepsWarmMobileNavigation()throws Exception{
+    @Test public void nativeUiImportsTextAndKeepsMobileNavigation()throws Exception{
         Context app=InstrumentationRegistry.getInstrumentation().getTargetContext();LearningStore.testRoot=new File(app.getCacheDir(),"learning-ui-"+java.util.UUID.randomUUID());
         try{app.startActivity(new Intent(app,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));Thread.sleep(2500);
             AtomicReference<MainActivity> current=new AtomicReference<>();
@@ -48,13 +48,29 @@ public final class LearningMobileUiTest {
             long boot=android.os.SystemClock.elapsedRealtime()+20000;
             while(!js("typeof MobileRuntime!=='undefined' && MobileRuntime.native && MobileRuntime.state!==null").equals("true")){
                 if(android.os.SystemClock.elapsedRealtime()>boot)fail("native UI did not finish booting");Thread.sleep(100);}
-            js("location.hash='#/today';route();");waitText("今天练什么");
-            assertEquals("true",js("MobileRuntime.native"));assertEquals("rgb(243, 235, 221)",js("getComputedStyle(document.body).backgroundColor"));
+            js("location.hash='#/today';route();");waitText("准备一份练习内容");
+            js("document.body.setAttribute('data-mobile-theme','light');");
+            assertEquals("true",js("MobileRuntime.native"));assertEquals("rgb(245, 247, 251)",js("getComputedStyle(document.body).backgroundColor"));
             screenshot(app,"native-today.png");
+            assertEquals("英语说说说",app.getApplicationInfo().loadLabel(app.getPackageManager()).toString());
+            LearningStore db=new LearningStore(app);JSONObject state=db.read();
+            JSONObject texts=new JSONObject().put("question","Where did you grow up?")
+                .put("original_answer","我在河边长大。").put("natural_english","I grew up by the river.")
+                .put("podcast_text","B: I grew up by the river.").put("podcast_script","B: I grew up by the river.");
+            state.getJSONObject("topics").put("t",new JSONObject().put("id","t").put("name","合成来源")
+                .put("items",new JSONObject().put("i",new JSONObject().put("id","i").put("texts",texts)
+                    .put("material",LearningEngineTest.homeMaterial(db,texts))
+                    .put("audio",new JSONObject().put("podcast","/synthetic.m4a")))));
+            db.write(state);js("MobileRuntime.snapshot().then(()=>route());");waitText("我在河边长大。");
+            assertFalse(js("document.getElementById('app').innerText").contains("I grew up by the river."));
+            js("document.getElementById('home-toggle-answer').click();");waitText("I grew up by the river.");
+            assertEquals("true",js("document.getElementById('home-answer-audio').paused"));
+            assertFalse(db.read().getJSONObject("topics").getJSONObject("t").getJSONObject("items").getJSONObject("i").has("progress"));
+            screenshot(app,"native-home-answer.png");
             js("location.hash='#/chat-import';");waitText("整理一次英语聊天");
             js("document.getElementById('chat-import-input').value='User: How do I say dietary fiber?\\nAssistant: Dietary fiber.';document.getElementById('chat-read').click();");
             waitText("2 条文本发言");screenshot(app,"native-chat.png");
-            js("location.hash='#/my';");waitText("我的自然表达的声音");screenshot(app,"native-settings.png");
+            js("location.hash='#/my/voices';");waitText("我的自然表达的声音");screenshot(app,"native-settings.png");
             assertEquals("4",js("document.querySelectorAll('.nav-menu .nav-item').length"));
             assertEquals("1",js("document.querySelectorAll('.nav-menu .active').length"));
             assertEquals("#/my",js("document.querySelector('.nav-menu [aria-current]').getAttribute('href')"));

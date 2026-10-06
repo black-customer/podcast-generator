@@ -549,9 +549,7 @@ async function playItem(topicId, item, autoPlay = true, token = null) {
   document.getElementById("gp-title").textContent = publicTitle(item.title) || "未命名曲目";
   setTimeout(updateMediaSession, 0);
   const topicName = (PlayerState.currentTopic && PlayerState.currentTopic.name) || "";
-  document.getElementById("gp-sub").textContent = [
-    "IELTS Pod", topicName,
-  ].filter(Boolean).join(" / ");
+  document.getElementById("gp-sub").textContent = topicName || "精听播放器";
   document.getElementById("gp-download").href = audioUrl;
 
   const remakeBtn = document.getElementById("remake-item");
@@ -2091,7 +2089,7 @@ function showApiJobWait(res) {
     </div>
     <p class="bank-answer-hint" id="api-job-hint">⏳ 正在处理……</p>
     <div class="bank-answer-actions" id="api-job-fallback" style="display:none;">
-      ${MobileRuntime.native ? '<a class="study-button" href="#/my">查看任务、继续或交给电脑</a>' : `<button class="bank-submit-btn" data-agent-topic="${esc(res.topic_id)}" data-agent-item="${esc(res.item_id)}">改用 Agent 模式</button>`}
+      ${MobileRuntime.native ? '<a class="study-button" href="#/my/tasks">查看任务、继续或交给电脑</a>' : `<button class="bank-submit-btn" data-agent-topic="${esc(res.topic_id)}" data-agent-item="${esc(res.item_id)}">改用 Agent 模式</button>`}
     </div>`;
   const mark = (phase) => {
     const order = ["rewrite", "save", "tts"];
@@ -2202,7 +2200,7 @@ async function BankView(token) {
 
   const partTabs = [["1", "Part 1 · 日常问答"], ["2", "Part 2 · 独白描述"], ["3", "Part 3 · 深入讨论"]]
     .map(([v, label]) =>
-      `<button class="bank-tab ${p.part === v ? "active" : ""}" onclick="bankGo({part: '${v}'})">${label}</button>`
+      `<button class="bank-tab ${p.part === v ? "active" : ""}" title="${esc(label)}" aria-label="${esc(label)}" onclick="bankGo({part: '${v}'})">${MobileRuntime.native?'Part '+v:label}</button>`
     ).join("");
 
   const topicOptions = [`<option value="">全部话题（${data.total}）</option>`]
@@ -2225,8 +2223,8 @@ async function BankView(token) {
       const st = await api("GET", "/api/settings");
       if (!st.stepfun_api_key_set && !st.fish_api_key_set) {
         setupBanner = `
-        <a class="setup-banner" href="${MobileRuntime.native ? '#/my' : '#/setup'}">
-          <span>👋 欢迎使用 IELTS Pod！开始前，先完成 3 项设置（连接语音服务 · 选择提问者 · 选择回答者）</span>
+        <a class="setup-banner" href="${MobileRuntime.native ? '#/my/services' : '#/setup'}">
+          <span>开始前，先连接语音服务并选择两位说话者的声音。</span>
           <strong>去设置 →</strong>
         </a>`;
       }

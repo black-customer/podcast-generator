@@ -6,6 +6,15 @@
 
 web
 
+## Confirmed Brand and Audience
+
+On 2026-10-06 Bruce named the product **英语说说说** and confirmed that it serves Chinese
+English learners. The purpose is an English speaking learning tool, with IELTS speaking as a
+core scenario and everyday expression / voice-chat reuse as complementary scenarios.
+Chinese is the interface and brand language; English remains the learning material language.
+The name directly expresses repeated speaking. There is no separate English brand name.
+System display names use this Chinese name; in-app pages use functional titles without brand banners.
+
 ## Users
 
 Primary user: Bruce, a Chinese English learner preparing IELTS speaking answers and building a
@@ -19,10 +28,11 @@ loop without learning the project's internal track or script terminology.
 
 ## Product Purpose
 
-Turn the user's own ideas into natural native-English audio that is pleasant enough to replay and
-clear enough to imitate. Success means the user can choose an IELTS question, answer freely in
-Chinese or English, receive a faithful lightly edited native-English rendition, and repeatedly
-listen to it like an ordinary podcast clip.
+Help Chinese learners speak English more often using their own meanings. A learner can choose an
+IELTS question or reuse an English conversation, receive faithful natural-English audio that is
+pleasant to replay and clear to imitate, then practise reconstructing and independently speaking
+the expression. Generating an audio clip is a foundation for the learning loop, not the complete
+product outcome; listening remains freely available without mandatory study.
 
 The audio remains immediately playable. A learner may then enter a guided study session: record
 an initial answer, reconstruct every English sentence from its Chinese meaning, read saved
@@ -32,9 +42,10 @@ IELTS or pronunciation score when it has not measured one.
 
 ## Positioning
 
-Unlike general podcasts, TV dialogue, or IELTS model answers, every clip is built from the user's
-own meaning and anchored to a specific question. The durable advantage is personally relevant,
-native-like input that contains expressions the user actually wants to say.
+Materials are built from the learner's own meaning and anchored to an IELTS question or an actual
+conversation source. The learning loop connects natural input, retrieval, recordings and review to
+repeated independent speaking. The durable advantage is personally relevant native-like expression
+that the user wants to say and can practise with their own attempts.
 
 ## Operating Context
 
@@ -64,6 +75,16 @@ acceptance, visual direction, and milestone acceptance.
 
 ## Brand Commitments
 
+The Chinese name **英语说说说** is confirmed. Bruce retained the existing app icon and rejected
+the new icon candidates and the large blue home banner. Keep all original icon resources unchanged.
+Home directly offers Chinese-to-English oral practice, answer reveal and existing answer audio.
+Home practice never marks study complete or updates a review schedule; formal learning stays separate.
+
+Bruce approved both the R3 light porcelain / cobalt palette and the dark midnight / ice-blue palette,
+with a one-tap theme switch. Their final tokens and screenshots are in the U01 implementation handoff.
+The final mobile behavior and implementation evidence are at `docs/design/mobile-implementation-u01/`.
+The R4 icon candidates and banner are discarded history rather than implementation references.
+
 The next desktop visual direction is a warm, quiet reading room: warm paper, brown ink and muted
 olive actions. The design contract and complete reference screens are in `DESIGN.md` and
 `docs/design/study-room-v2/`. The earlier blue-white screens remain historical references.
@@ -73,7 +94,7 @@ olive actions. The design contract and complete reference screens are in `DESIGN
 - More than one hundred real Bruce corpus items, plus public examples and an IELTS question bank.
 - Working PC and Android flows, real Fish-generated samples, word-level alignment, and Playwright
   coverage.
-- Existing icon assets and product name are functional rather than binding identity assets.
+- The Chinese system display name and original icon assets are binding; in-app branding is removed.
 - No testimonials, commercial claims, or external brand photography may be invented.
 
 ## Product Principles

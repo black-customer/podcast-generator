@@ -1,6 +1,40 @@
 /* Android 交互与桥接；桌面保留现有服务调用和媒体元素。 */
 "use strict";
 
+const MobileAppearance = (() => {
+  const key = 'english-speaking-theme';
+  const icons = {
+    moon: '<path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/>'
+  };
+  function refresh() {
+    const dark = document.body.dataset.mobileTheme === 'dark';
+    document.querySelectorAll('[data-mobile-theme-toggle]').forEach(button => {
+      const label = dark ? '切换到清透白' : '切换到午夜蓝';
+      button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[dark ? 'sun' : 'moon']}</svg>`;
+      button.setAttribute('aria-label', label);button.title = label;
+    });
+    document.querySelectorAll('[data-mobile-theme-name]').forEach(node=>{node.textContent=dark?'午夜蓝':'清透白';});
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = dark ? '#111827' : '#F5F7FB';
+  }
+  function init() {
+    let value='light';try { value=localStorage.getItem(key)==='dark'?'dark':'light'; } catch (_) {}
+    document.body.dataset.mobileTheme=value;refresh();
+  }
+  function toggle() {
+    const value=document.body.dataset.mobileTheme==='dark'?'light':'dark';
+    document.body.dataset.mobileTheme=value;
+    try { localStorage.setItem(key,value); } catch (_) { toast('主题已切换，本机偏好暂时无法保存。'); }
+    refresh();
+  }
+  function button(id='mobile-theme-toggle') {
+    return `<button id="${id}" class="mobile-theme-toggle" data-mobile-theme-toggle type="button" aria-label="切换主题"></button>`;
+  }
+  document.addEventListener('click',event=>{if(event.target.closest('[data-mobile-theme-toggle]'))toggle();});
+  return {init,refresh,button};
+})();
+
 const MobileRuntime = (() => {
   const native = !!window.Capacitor?.isNativePlatform?.();
   const plugin = native ? (window.Capacitor.Plugins.Learning || window.Capacitor.registerPlugin("Learning")) : null;
@@ -62,6 +96,7 @@ const MobileRuntime = (() => {
   async function init() {
     if(!native)return;
     document.body.classList.add("mobile-learning");
+    MobileAppearance.init();
     const viewport=()=>document.documentElement.style.setProperty('--mobile-vh',`${visualViewport?.height || innerHeight}px`);
     viewport();visualViewport?.addEventListener('resize',viewport);
     await snapshot();await migratePack();
@@ -101,12 +136,17 @@ const MobileRuntime = (() => {
   function navigation(hash=location.hash) {
     if(!native)return;
     const nav=document.querySelector(".sidebar-nav") || document.querySelector(".sidebar nav");
-    if(nav)nav.innerHTML=[['today','今日'],['materials','材料'],['bank','题库'],['my','我的']].map(([route,text])=>
-      `<a class="nav-item" href="#/${route}" data-filter="${route}"><span>${text}</span></a>`).join("");
+    const shapes={today:'<path d="M8 3h8v4H8zM6 5H4v16h16V5h-2M8 12l2 2 5-5"/>',
+      bank:'<path d="M4 4h7v16H4zM13 4h7v16h-7M7 8h1M16 8h1"/>',
+      materials:'<path d="M4 4h7v16H4zM11 4h9v16h-9M7 8h1M14 8h3M14 12h3"/>',
+      my:'<circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>'};
+    if(nav)nav.innerHTML=[['today','练习'],['bank','题库'],['materials','内容'],['my','我的']].map(([route,text])=>
+      `<a class="nav-item" href="#/${route}" data-filter="${route}"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">${shapes[route]}</svg><span>${text}</span></a>`).join("");
     const path=hash.replace(/^#\//,'').split(/[/?]/)[0];
     const owner=['my','settings','mobile-history','study-history','import'].includes(path)?'my'
       : ['bank','practice','setup'].includes(path)?'bank'
-      : ['today','oral-review','chat-import',''].includes(path)?'today':'materials';
+      : ['today','oral-review',''].includes(path)?'today':'materials';
+    document.body.classList.toggle('mobile-task', /^(learn|oral-review|review-practice)$/.test(path));
     nav?.querySelectorAll('.nav-item').forEach(a=>{const selected=a.dataset.filter===owner;
       a.classList.toggle('active',selected);if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   }
@@ -140,28 +180,61 @@ class NativePlayer extends EventTarget {
 }
 
 const MobileUI = (() => {
-  let timer=null;
+  let timer=null, homeAudio=null, homeRevision=0;
   const link = id => `#/conversation/${encodeURIComponent(id)}`;
   const jobNotice = job => !job?'':`${(job.errors || []).map(e=>`<p>${esc(e.message)}</p>`).join('')}${job.inflight?'<p>上次请求是否完成无法确认；继续处理可能再次计费。已保存的有效阶段会复用。</p>':''}`;
   function layout(title,html){$app.innerHTML=`<div class="mobile-page"><h1>${esc(title)}</h1>${html}</div>`;$app.scrollTop=0;}
-  function reset(){clearTimeout(timer);timer=null;}
+  function stopHomeAudio(){homeRevision++;if(homeAudio){homeAudio.pause();homeAudio.removeAttribute('src');homeAudio.load();}}
+  function reset(){clearTimeout(timer);timer=null;stopHomeAudio();homeAudio=null;$app.querySelectorAll('audio').forEach(audio=>audio.pause());}
   async function today(token){const data=await api("GET","/api/study/today");if(viewStale(token))return;
-    layout("今天练什么",`<section class="mobile-section"><h2>继续积累你的表达</h2><a class="study-button primary" href="#/chat-import">整理一次英语聊天</a></section>
-      <section class="mobile-section"><h2>到期口答</h2><p>${data.due_count?`${data.due_count} 个学习点等待练习。每轮最多 10 个。`:"今天没有到期内容。可以听听已有对话，或开始一道新题。"}</p>
-      ${data.active_session_id?`<a class="study-button primary" href="#/oral-review/${esc(data.active_session_id)}">继续本轮口答</a>`:
-        data.due_count?'<button class="study-button primary" id="mobile-review-start">开始口答</button>':''}</section>
-      <section class="mobile-section"><h2>继续学习</h2>${data.continue_learning.map(r=>`<a class="mobile-row" href="#/learn/${encodeURIComponent(r.topic_id)}/${encodeURIComponent(r.item_id)}">${esc(r.question)}</a>`).join('') || '<p>暂无未完成的雅思学习。</p>'}
-      <a class="study-button" href="#/bank">从一道题开始</a></section>`);
+    const rows=data.home_practice || [];let at=0;
+    $app.innerHTML=`<div class="mobile-page home-practice"><header class="mobile-page-header"><h1>练习</h1>${MobileAppearance.button()}</header>
+      <section id="home-exercise"></section>
+      <details class="home-full-learning"><summary>完整学习与复习</summary>
+        ${data.active_session_id?`<a class="study-button" href="#/oral-review/${esc(data.active_session_id)}">继续本轮口答</a>`:
+          data.due_count?'<button class="study-button" id="mobile-review-start">开始正式口答</button>':'<p>暂无到期口答。</p>'}
+        ${(data.continue_learning || []).map(r=>`<a class="mobile-row" href="#/learn/${encodeURIComponent(r.topic_id)}/${encodeURIComponent(r.item_id)}">${esc(r.question)}</a>`).join('')}
+      </details></div>`;
+    MobileAppearance.refresh();
+    function renderCard(){stopHomeAudio();const revision=homeRevision;
+      const host=document.getElementById('home-exercise'),row=rows[at];
+      if(!row){host.innerHTML='<div class="home-empty"><h2>准备一份练习内容</h2><p>先回答一道题，或导入已有材料。中文、英文和音频准备好后，就可以在这里练习。</p><a class="study-button primary" href="#/bank">去题库选题</a><a class="study-button" href="#/materials">导入已有内容</a></div>';return;}
+      host.innerHTML=`<div class="home-prompt"><h2 id="home-zh">${esc(row.zh)}</h2><p class="study-muted">先试着说成英文</p>
+        <a class="home-source" href="${esc(row.href)}">来自：${esc(row.source || '我的内容')}</a></div>
+        <div class="home-actions"><button class="study-button primary" id="home-toggle-answer">查看答案</button><button class="study-button" id="home-listen">听答案</button></div>
+        <div id="home-answer" class="home-answer" hidden><p id="home-en"></p><audio id="home-answer-audio" controls preload="none" aria-label="参考答案音频"></audio><p id="home-audio-notice" role="status"></p></div>
+        <button id="home-next" class="home-next" ${rows.length<2?'disabled':''}>换一句</button>`;
+      homeAudio=document.getElementById('home-answer-audio');
+      const audio=homeAudio,isCurrent=()=>!viewStale(token) && revision===homeRevision && audio===homeAudio;
+      function reveal(){document.getElementById('home-answer').hidden=false;document.getElementById('home-en').textContent=row.en;
+        document.getElementById('home-toggle-answer').textContent='收起答案';
+        if(!audio.getAttribute('src')){audio.preload='metadata';audio.src=MobileRuntime.fileUrl(row.audio.url);}
+        document.getElementById('home-audio-notice').textContent=row.audio.mode==='estimated'?row.audio.reason:'';}
+      audio.onloadedmetadata=()=>{if(isCurrent())audio.currentTime=Math.min(row.audio.start,Math.max(0,audio.duration-.05));};
+      audio.onplay=()=>{if(!isCurrent()){audio.pause();return;}$audio.pause();$app.querySelectorAll('audio').forEach(a=>{if(a!==audio)a.pause();});};
+      audio.ontimeupdate=()=>{if(row.audio.end!=null && audio.currentTime>=row.audio.end)audio.pause();};
+      audio.onerror=()=>{if(isCurrent())document.getElementById('home-audio-notice').textContent='音频暂时无法播放，文字答案仍保留。可再次点击听答案重试。';};
+      document.getElementById('home-toggle-answer').onclick=()=>{const answer=document.getElementById('home-answer');
+        if(answer.hidden)reveal();else{audio.pause();answer.hidden=true;document.getElementById('home-en').textContent='';document.getElementById('home-toggle-answer').textContent='查看答案';}};
+      document.getElementById('home-listen').onclick=async()=>{reveal();if(audio.error){audio.load();}
+        try{if(row.audio.end!=null && audio.currentTime>=row.audio.end)audio.currentTime=row.audio.start;await audio.play();if(!isCurrent())audio.pause();}
+        catch(e){if(isCurrent())document.getElementById('home-audio-notice').textContent=`音频未播放：${e.message}。文字答案已保留，可重试。`;}};
+      document.getElementById('home-next').onclick=()=>{at=(at+1)%rows.length;renderCard();ExperienceUI.focus(document.getElementById('home-zh'));};
+    }
+    renderCard();
     document.getElementById('mobile-review-start')?.addEventListener('click',async()=>{try{const s=await api('POST','/api/study/review-sessions',{});location.hash=`#/oral-review/${s.id}`;}catch(e){toast(e.message);}});
   }
   async function materials(token){const [chat,topics]=await Promise.all([api('GET','/api/conversations'),api('GET','/api/topics')]);if(viewStale(token))return;
-    layout('我的材料',`<input id="mobile-search" type="search" aria-label="搜索材料" placeholder="搜索聊天、原话或回答">
+    layout('我的内容',`<button id="mobile-add-content" class="study-button">添加内容</button>
+      <section id="mobile-add-options" class="mobile-add-options" hidden><h2>添加内容</h2><a class="mobile-row" href="#/bank">回答一道雅思题</a><a class="mobile-row" href="#/chat-import">导入英语聊天</a><a class="mobile-row" href="#/import">导入语料包</a></section>
+      <input id="mobile-search" type="search" aria-label="搜索材料" placeholder="搜索聊天、原话或回答">
       <div class="mobile-filters" role="group" aria-label="材料类型"><button data-kind="all" aria-pressed="true">全部</button><button data-kind="conversation">聊天</button><button data-kind="ielts">雅思</button></div>
       <label for="mobile-source">来源</label><select id="mobile-source"><option value="all">全部来源</option><option value="chatgpt">ChatGPT</option><option value="doubao">豆包</option><option value="file">文字或文件</option><option value="ielts">雅思回答</option></select><div id="mobile-material-results"></div>`);
     const rows=[...chat.map(c=>({kind:'conversation',provider:c.provider,title:c.title,href:link(c.id),status:c.has_audio?'可收听':c.status==='imported'?'等待整理':'等待音频',text:c.title+' '+JSON.stringify(MobileRuntime.state?.conversations[c.id] || {})})),
       ...topics.flatMap(t=>Object.values(MobileRuntime.state?.topics[t.id]?.items || {}).map(i=>({kind:'ielts',provider:'ielts',title:i.title,href:`#/play/${encodeURIComponent(t.id)}/${encodeURIComponent(i.id)}`,status:i.audio?.podcast?'可收听':'等待生成',text:Object.values(i.texts).join(' ')})))];
     let kind='all';const render=()=>{const needle=document.getElementById('mobile-search').value.toLowerCase(),provider=document.getElementById('mobile-source').value;document.getElementById('mobile-material-results').innerHTML=rows.filter(r=>(kind==='all'||r.kind===kind)&&(provider==='all'||r.provider===provider)&&r.text.toLowerCase().includes(needle)).map(r=>
       `<a class="mobile-row" href="${esc(r.href)}"><strong>${esc(r.title)}</strong><span>${r.kind==='conversation'?'聊天':'雅思'} · ${esc(r.status)}</span></a>`).join('') || '<p>没有匹配材料。</p>';};
+    document.getElementById('mobile-add-content').onclick=()=>{const options=document.getElementById('mobile-add-options');options.hidden=!options.hidden;document.getElementById('mobile-add-content').setAttribute('aria-expanded',String(!options.hidden));};
     document.getElementById('mobile-search').addEventListener('input',render);document.getElementById('mobile-source').addEventListener('change',render);$app.querySelectorAll('[data-kind]').forEach(b=>b.addEventListener('click',()=>{kind=b.dataset.kind;$app.querySelectorAll('[data-kind]').forEach(x=>x.setAttribute('aria-pressed',x===b));render();}));render();
   }
   function importView(){const saved=sessionStorage.getItem('chat-import-draft') || '';
@@ -207,17 +280,26 @@ const MobileUI = (() => {
   }
   async function download(name,data){if(MobileRuntime.native){await MobileRuntime.plugin.exportDocument({name,data:JSON.stringify(data,null,2),mime:'application/json'});return;}
     const u=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);}
-  async function my(token){const [settings,jobs,voices]=await Promise.all([api('GET','/api/settings'),api('GET','/api/jobs'),api('GET','/api/voices')]);if(viewStale(token))return;
+  async function my(token,section=''){
+    await MobileRuntime.snapshot();if(viewStale(token))return;
+    if(!section){const row=(href,text)=>`<a class="mobile-menu-row" href="${href}"><span>${text}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></a>`;
+      layout('我的',`<section class="mobile-section"><h2>记录</h2>${row('#/mobile-history','学习记录')}${row('#/review','句子库')}${row('#/my/recordings','未保存录音')}</section>
+        <section class="mobile-section"><h2>设置</h2><div class="mobile-menu-row"><span>外观 · <span data-mobile-theme-name></span></span>${MobileAppearance.button('my-theme-toggle')}</div>
+        ${row('#/my/services','生成服务')}${row('#/my/voices','音色角色')}${row('#/my/tasks','后台任务')}${row('#/my/files','导入与导出')}${row('#/my/storage','本机存储')}${row('#/my/preferences','练习偏好')}</section>`);
+      MobileAppearance.refresh();return;
+    }
+    const [settings,jobs,voices]=await Promise.all([api('GET','/api/settings'),api('GET','/api/jobs'),api('GET','/api/voices')]);if(viewStale(token))return;
     const options=selected=>voices.filter(v=>v.provider==='stepfun').map(v=>`<option value="${esc(v.voice_id)}" ${v.voice_id===selected?'selected':''}>${esc(v.name)} · ${v.gender==='female'?'女声':'男声'}</option>`).join('');
-    layout('我的',`<section class="mobile-section"><h2>处理服务</h2><p>${settings.stepfun_api_key_configured?'已配置 StepFun Key':'请先配置 StepFun Key；密钥只保存在这台手机。'}</p>
+    layout('我的',`<section class="mobile-section"><h2>处理服务</h2><div class="mobile-service-fields"><p>${settings.stepfun_api_key_configured?'已配置 StepFun Key':'请先配置 StepFun Key；密钥只保存在这台手机。'}</p>
       <label for="mobile-key">StepFun API Key</label><input id="mobile-key" type="password" autocomplete="off" placeholder="留空保留现有密钥">
       <label for="mobile-model">文本模型</label><input id="mobile-model" value="${esc(settings.stepfun_text_model || 'step-5-preview')}">
       <label for="mobile-base">文本接口地址</label><input id="mobile-base" type="url" value="${esc(settings.stepfun_text_base_url || '')}" placeholder="留空使用标准计费入口">
-      <p>标准入口按量计费。订阅用户可填写自己已获授权的专用入口；失败时不会自动切换。</p>
+      <p>标准入口按量计费。订阅用户可填写自己已获授权的专用入口；失败时不会自动切换。</p></div><div class="mobile-voice-fields">
       <label for="mobile-voice-a">对话伙伴的声音</label><select id="mobile-voice-a">${options(settings.question_voice_id || 'lively-girl')}</select><button data-preview-role="a">生成试听（使用语音额度）</button>
       <label for="mobile-voice-b">我的自然表达的声音</label><select id="mobile-voice-b">${options(settings.answer_voice_id || 'vibrant-youth')}</select><button data-preview-role="b">生成试听（使用语音额度）</button>
-      <audio id="mobile-preview" controls hidden></audio>
+      <audio id="mobile-preview" controls hidden></audio></div><div class="mobile-preference-fields">
       <label><input type="checkbox" id="mobile-reminder" ${settings.reminder_enabled?'checked':''}>每天晚间提醒到期复习（约 20:00，默认关闭）</label>
+      <label for="mobile-hint-seconds">短暂提示时长</label><select id="mobile-hint-seconds">${[3,5,8].map(n=>`<option value="${n}" ${Number(localStorage.getItem('study-hint-seconds') || 5)===n?'selected':''}>${n} 秒</option>`).join('')}</select></div>
       <button id="mobile-save-settings" class="study-button primary">保存配置</button><p id="mobile-settings-status" role="status"></p></section>
       <section class="mobile-section"><h2>任务</h2>${jobs.map(j=>`<div class="mobile-row"><span>${esc(j.kind==='conversation'?'聊天整理':'雅思生成')} · ${esc(j.state)}</span>
         ${jobNotice(j)}
@@ -238,29 +320,53 @@ const MobileUI = (() => {
       section.querySelectorAll('[data-recover-record]').forEach(b=>b.addEventListener('click',async()=>{try{const r=pending[+b.dataset.recoverRecord],s=r.source || {};
         if(!s.session_id && !(s.topic_id && s.item_id))throw new Error('缺少原练习信息，可以导出录音保存。');
         await MobileRuntime.plugin.attachRecording({path:r.path,url:s.topic_id?`/api/topics/${encodeURIComponent(s.topic_id)}/items/${encodeURIComponent(s.item_id)}/study/recordings`:'',
-          body:{stage:s.stage,duration_sec:r.duration_sec,session_id:s.session_id || ''}});await MobileRuntime.snapshot();my(token);
+          body:{stage:s.stage,duration_sec:r.duration_sec,session_id:s.session_id || ''}});await MobileRuntime.snapshot();if(!viewStale(token))my(token,section);
       }catch(e){toast(e.message);}}));
     }
-    document.getElementById('mobile-save-settings').addEventListener('click',async e=>{const button=e.currentTarget;button.disabled=true;try{const payload={stepfun_text_model:document.getElementById('mobile-model').value.trim(),stepfun_text_base_url:document.getElementById('mobile-base').value.trim(),
-      question_voice_id:document.getElementById('mobile-voice-a').value.trim(),answer_voice_id:document.getElementById('mobile-voice-b').value.trim(),reminder_enabled:document.getElementById('mobile-reminder').checked};
-      if(payload.reminder_enabled)await MobileRuntime.plugin.reminderPermission();const key=document.getElementById('mobile-key');if(key.value.trim())payload.stepfun_api_key=key.value.trim();
-      await api('PUT','/api/settings',payload);key.value='';document.getElementById('mobile-settings-status').textContent='配置已保存。';}catch(e){document.getElementById('mobile-settings-status').textContent=e.message;}finally{button.disabled=false;}});
+    document.getElementById('mobile-save-settings').addEventListener('click',async e=>{const button=e.currentTarget;button.disabled=true;try{
+      const payload={},fields={'mobile-model':'stepfun_text_model','mobile-base':'stepfun_text_base_url','mobile-voice-a':'question_voice_id','mobile-voice-b':'answer_voice_id'};
+      Object.entries(fields).forEach(([id,name])=>{const input=document.getElementById(id);if(input)payload[name]=input.value.trim();});
+      const reminder=document.getElementById('mobile-reminder');if(reminder){payload.reminder_enabled=reminder.checked;if(reminder.checked && !settings.reminder_enabled)await MobileRuntime.plugin.reminderPermission();}
+      const key=document.getElementById('mobile-key');if(key?.value.trim())payload.stepfun_api_key=key.value.trim();
+      const hintValue=document.getElementById('mobile-hint-seconds')?.value;
+      await api('PUT','/api/settings',payload);if(key)key.value='';if(hintValue)localStorage.setItem('study-hint-seconds',hintValue);
+      const status=document.getElementById('mobile-settings-status');if(!viewStale(token) && status)status.textContent='配置已保存。';}catch(e){const status=document.getElementById('mobile-settings-status');if(!viewStale(token) && status)status.textContent=e.message;}finally{button.disabled=false;}});
     $app.querySelectorAll('[data-preview-role]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;try{
       const result=await api('POST','/api/mobile/voice-preview',{voice:document.getElementById(`mobile-voice-${b.dataset.previewRole}`).value});
+      if(viewStale(token))return;
       const player=document.getElementById('mobile-preview');player.src=MobileRuntime.fileUrl(result.path);player.hidden=false;await player.play();
     }catch(e){toast(e.message);}finally{b.disabled=false;}}));
-    $app.querySelectorAll('[data-resume]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;try{await api('POST',`/api/jobs/${b.dataset.resume}/resume`,{});my(token);}catch(e){toast(e.message);b.disabled=false;}}));
-    $app.querySelectorAll('[data-cancel]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;try{await api('POST',`/api/jobs/${b.dataset.cancel}/cancel`,{});my(token);}catch(e){toast(e.message);b.disabled=false;}}));
+    $app.querySelectorAll('[data-resume]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;try{await api('POST',`/api/jobs/${b.dataset.resume}/resume`,{});if(!viewStale(token))my(token,section);}catch(e){toast(e.message);b.disabled=false;}}));
+    $app.querySelectorAll('[data-cancel]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;try{await api('POST',`/api/jobs/${b.dataset.cancel}/cancel`,{});if(!viewStale(token))my(token,section);}catch(e){toast(e.message);b.disabled=false;}}));
     document.getElementById('mobile-export').addEventListener('click',async()=>download('personal-learning-exchange.json',await api('GET','/api/mobile/exchange')));
     document.getElementById('mobile-exchange-file').addEventListener('change',async e=>{try{const f=e.target.files[0];if(f){await api('POST','/api/mobile/exchange',JSON.parse(await f.text()));toast('处理结果已导入，学习历史保留');}}catch(e){toast(e.message);}});
+    const titles={services:'生成服务',voices:'音色角色',preferences:'练习偏好',tasks:'后台任务',files:'导入与导出',storage:'本机存储',recordings:'未保存录音'};
+    const sections=[...$app.querySelectorAll('.mobile-section')],index={services:0,voices:0,preferences:0,tasks:1,files:2,storage:3,recordings:4}[section];
+    sections.forEach((node,n)=>{if(n!==index)node.remove();});
+    if(index===0){['service','voice','preference'].forEach(type=>{if(type!==({services:'service',voices:'voice',preferences:'preference'})[section])$app.querySelector(`.mobile-${type}-fields`)?.remove();});}
+    $app.querySelector('.mobile-section > h2')?.remove();
+    $app.querySelector('h1').textContent=titles[section] || '我的';
+    if(!sections[index])$app.querySelector('.mobile-page').insertAdjacentHTML('beforeend','<p>没有待恢复的录音。</p>');
+    $app.querySelector('h1').insertAdjacentHTML('beforebegin','<a class="mobile-back" href="#/my">返回我的</a>');
   }
-  async function history(token){const data=await api('GET','/api/study/history');if(viewStale(token))return;
-    layout('学习记录',data.days.map(d=>`<section class="mobile-section"><h2>${esc(d.date)}</h2>${d.attempts.map(a=>`<p>${esc(a.zh)}<span class="mobile-translation">${({independent:'独立说出',needs_hint:'需要提示',unable:'说不出'})[a.outcome]} · ${a.recorded?'已录音':'本人自评'} · 下次 ${esc(a.next_due_date)}</span></p>`).join('')}</section>`).join('') || '<p>完成一次口答后，这里会保留实际练习记录。</p>');
+  async function history(token){await MobileRuntime.snapshot();if(viewStale(token))return;
+    const data=await api('GET','/api/study/history');if(viewStale(token))return;
+    const recordings=[],names={before:'学习前',chinese:'看中文说',recall:'脱稿说'};
+    Object.values(MobileRuntime.state.topics || {}).forEach(t=>Object.values(t.items || {}).forEach(i=>
+      (i.progress?.recordings || []).forEach(r=>recordings.push({...r,title:i.title || i.texts?.question || t.name,
+        href:`#/learn/${encodeURIComponent(t.id)}/${encodeURIComponent(i.id)}`}))));
+    recordings.sort((a,b)=>(Date.parse(b.created_at)||0)-(Date.parse(a.created_at)||0));
+    layout('学习记录',`${recordings.length?`<section class="mobile-section"><h2>完整回答录音</h2>${recordings.map(r=>{
+      const label=names[r.stage] || '录音';return `<div class="mobile-row"><a href="${esc(r.href)}">${esc(r.title)}</a><span>${label} · ${esc(String(r.created_at || '时间未知').replace('T',' '))}</span>
+        ${r.path?`<audio controls preload="none" aria-label="回听${label}录音" src="${esc(MobileRuntime.fileUrl(r.path))}"></audio>`:'<p>音频暂不可用，原记录保留。</p>'}</div>`;}).join('')}</section>`:''}
+      <h2>口答练习记录</h2>${(data.days || []).map(d=>`<section class="mobile-section"><h3>${esc(d.date)}</h3>${d.attempts.map(a=>`<p>${esc(a.zh)}<span class="mobile-translation">${({independent:'独立说出',needs_hint:'需要提示',unable:'说不出'})[a.outcome]} · ${a.recorded?'已录音':'本人自评'} · 下次 ${esc(a.next_due_date)}</span></p>
+        ${a.recorded && a.recording_id?`<audio controls preload="none" aria-label="回听口答录音" src="${esc(MobileRuntime.fileUrl(a.recording_id))}"></audio>`:''}`).join('')}</section>`).join('') || '<p>完成一次口答后，这里会保留实际练习记录。</p>'}`);
+    $app.querySelectorAll('audio').forEach(audio=>audio.onplay=()=>{$audio.pause();$app.querySelectorAll('audio').forEach(other=>{if(other!==audio)other.pause();});});
   }
   function route(hash,token){if(!MobileRuntime.native)return false;reset();MobileRuntime.navigation(hash);
     const [path,arg]=hash.replace(/^#\//,'').split('/');let action;
     if(path==='today' || !path)action=()=>today(token);else if(path==='materials' || path==='topics')action=()=>materials(token);
-    else if(path==='my' || path==='settings')action=()=>my(token);else if(path==='chat-import')action=()=>importView();
+    else if(path==='my' || path==='settings')action=()=>my(token,arg || '');else if(path==='chat-import')action=()=>importView();
     else if(path==='conversation')action=()=>conversation(decodeURIComponent(arg),token);else if(path==='mobile-history' || path==='study-history')action=()=>history(token);
     else if(path==='done'){const parts=hash.replace(/^#\//,'').split('/');action=()=>{location.hash=`#/play/${parts[1]}/${parts[2]}`;};}
     if(!action)return false;Promise.resolve().then(action).catch(e=>{if(!viewStale(token))layout('读取失败',`<p>${esc(e.message)}</p><a class="study-button" href="#/today">返回今日</a>`);});return true;
