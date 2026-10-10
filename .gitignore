@@ -67,6 +67,7 @@ bruce_kit/cards/
 
 # glm-workflow 单题速通：文本源入库，可再生产物（音频/卡片/HTML）不入库
 glm-workflow/output/
+workflows/daily-ielts/output/
 
 # Bruce 学习套件（organic 漫谈版）：脚本/文本/概念图入库；音频可由脚本再生，不入库
 bruce_study_suite/audio/
