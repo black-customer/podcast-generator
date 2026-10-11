@@ -1,4 +1,4 @@
-"""把已完成的单题问答导出为四张练习卡、音频和竖屏视频；不调用付费 API。"""
+"""单题导出三张备忘录长图和独立带字幕问答视频；不调用付费 API。"""
 from __future__ import annotations
 
 import argparse
@@ -45,6 +45,11 @@ def validate_source(lesson: dict, item: Path, bank: dict) -> dict:
         raise ValueError("逐句英文必须与音频文稿中的 B 回答一致")
     if not all(s.get("zh", "").strip() for s in lesson["sentences"]):
         raise ValueError("每句英文必须有对应中文")
+    chinese_lines = lesson.get("chinese_lines")
+    if chinese_lines and re.sub(r"\s+", "", "".join(chinese_lines)) != re.sub(
+        r"\s+", "", "".join(s["zh"] for s in lesson["sentences"])
+    ):
+        raise ValueError("中文回答分行必须完整保留逐句中文，不能增删内容")
     if lesson["answer_origin"] not in {"原创示范", "本人回答", "已有回答"}:
         raise ValueError("必须明确回答来源")
     if not 1 <= len(lesson["chunks"]) <= 3:
@@ -80,7 +85,8 @@ def validate_source(lesson: dict, item: Path, bank: dict) -> dict:
         for s in bank.get("sets", []) if question["id"] in s["question_ids"]
     ]
     return {
-        "question": question["text"], "answer": answer, "part": question["part"],
+        "question": question["text"], "question_zh": question.get("text_zh", ""),
+        "answer": answer, "part": question["part"], "topic_zh": topic.get("name_zh", ""),
         "topic": topic["name_en"], "season": " / ".join(seasons) or "考季未核实",
         "question_id": question["id"], "alignment": alignment,
     }
@@ -90,102 +96,167 @@ def esc(text: str) -> str:
     return html.escape(str(text), quote=True)
 
 
+IMAGE_SIZE = (1260, 2800)
+VIDEO_SIZE = (1080, 1920)
+MATERIAL_FILES = ("01-chinese.png", "02-dialogue.mp4", "03-bilingual.png", "04-notes.png")
+
 STYLE = """
-*{box-sizing:border-box}body{margin:0;background:#E6EFF4;color:#142F46;
-font-family:'Microsoft YaHei','Segoe UI',sans-serif}
-.card{width:1080px;height:1440px;padding:68px 88px 170px;position:relative;overflow:hidden}
-.mast{display:flex;justify-content:space-between;align-items:center;font-size:28px;
-padding-bottom:30px;border-bottom:2px solid #A9BCC9;letter-spacing:1px}
-.steps{display:flex;gap:12px}
-.steps span{width:13px;height:13px;border-radius:50%;background:#A9BCC9}
-.steps .on{background:#195DC6}
-.eyebrow{margin:42px 0 18px;font-size:29px;color:#195DC6;font-weight:700}
-h1{font-size:76px;line-height:1.28;letter-spacing:-2px;margin:0 0 32px;font-weight:900}
-.topic{font-size:27px;margin:22px 0 16px;color:#405E72}
-.question{font-family:Georgia,serif;font-size:37px;line-height:1.35;margin:0 0 34px}
-.zh{font-size:46px;line-height:1.6;margin:0 0 8px}
-.prompt{background:#D8F074;display:inline-block;padding:12px 23px;font-size:29px;
-font-weight:700;margin:24px 0 0;border-radius:8px}
-.audio-panel{background:#195DC6;color:#FFFFFF;border-radius:24px;padding:48px;margin:48px 0}
-.audio-panel h2{font-size:43px;margin:0 0 28px}
-.audio-panel p{font-size:31px;line-height:1.6;margin:0}
-.wave{display:flex;height:150px;align-items:center;gap:13px;margin:22px 0 28px}
-.wave i{display:block;width:11px;background:#D8F074;border-radius:9px}
-.english{font-family:Georgia,serif;font-size:47px;line-height:1.44;margin:0 0 25px}
-mark{background:#D8F074;color:inherit;box-decoration-break:clone;padding:0 3px}
-.notes h1{font-size:60px;margin-bottom:24px}
-.note{padding:18px 0;border-top:2px solid #A9BCC9}.phrase{font-family:Georgia,serif;
-font-size:43px;line-height:1.3;margin:0 0 6px}.meaning{font-size:30px;margin:0 0 12px}
-.example{font-family:Georgia,serif;font-size:29px;line-height:1.4;margin:0;color:#405E72}
-.transfer{margin-top:32px;background:#D8F074;padding:23px 28px;border-radius:12px;
-font-size:30px;line-height:1.55}.transfer strong{display:block;font-size:32px}
-.footer{position:absolute;bottom:60px;left:88px;right:88px;font-size:23px;line-height:1.65;
-color:#405E72;border-top:2px solid #A9BCC9;padding-top:17px}
-.footer b{color:#142F46;font-size:27px}.reading h1{font-size:64px;margin-bottom:35px}
+*{box-sizing:border-box}html,body{margin:0;background:#FDFBF7;color:#25221E}
+body{font-family:'Microsoft YaHei',sans-serif}
+.sheet{width:1260px;height:2800px;padding:100px 94px 76px;display:flex;
+flex-direction:column;overflow:hidden}
+.season{font:46px/1.4 Georgia,'Microsoft YaHei',serif;margin:0 0 62px;color:#66615A}
+.topic{font:70px/1.35 Georgia,serif;font-weight:700;margin:0}
+.topic span{font:56px/1.4 'Microsoft YaHei',sans-serif;font-weight:500;margin-left:30px}
+.sheet>header{padding-bottom:44px;border-bottom:2px solid #DAD4CB}
+.question{margin:42px 0 34px}.role{font-size:43px;font-weight:700;margin:0 0 20px}
+.q-en{font:56px/1.4 Georgia,serif;font-weight:700;margin:0 0 20px}
+.q-zh{font-size:51px;line-height:1.6;margin:0}
+.sheet>main{flex:1;min-height:0}.sheet>footer{font-size:29px;line-height:1.6;
+margin-top:44px;color:#6C665F}
+.chinese>main{display:flex;flex-direction:column}
+.chinese-answer{display:flex;flex:1;flex-direction:column;justify-content:space-between}
+.answer-line{font-size:76px;line-height:1.5;white-space:nowrap;margin:0}
+.bilingual .q-en{font-size:49px}.bilingual .q-zh{font-size:46px}
+.bilingual>main{display:flex;flex-direction:column;justify-content:space-between;gap:30px}
+.pair{padding:0 0 18px}.pair-en{font:54px/1.38 Georgia,serif;margin:0 0 18px}
+.pair-zh{font-size:51px;line-height:1.58;margin:0;color:#5B554D}
+.notes>main{display:flex;flex-direction:column;justify-content:space-between;gap:38px}
+.notes-label{font:60px/1.4 'KaiTi','Microsoft YaHei',serif;margin:40px 0 38px}
+.note{padding-bottom:32px;border-bottom:2px solid #E6E0D8}
+.note:last-child{border-bottom:0;padding-bottom:0}
+.phrase{font:60px/1.4 Georgia,serif;font-weight:700;margin:0 0 26px}
+mark{color:inherit;background:linear-gradient(transparent 70%,#F0D1D2 70%);padding:0}
+.meaning{font:70px/1.45 'KaiTi','Microsoft YaHei',serif;color:#863B38;margin:0 0 24px}
+.usage{font-size:45px;line-height:1.6;margin:0 0 30px}
+.example-en{font:51px/1.5 Georgia,serif;margin:0 0 18px}
+.example-zh{font-size:48px;line-height:1.55;color:#5B554D;margin:0}
+.recording{width:1080px;height:1920px;padding:92px 78px 74px}
+.recording .season{font-size:34px;margin-bottom:38px}
+.recording .topic{font-size:53px}.recording .topic span{font-size:45px;margin-left:24px}
+.recording .caption{display:flex;flex-direction:column;justify-content:center}
+.recording .role{color:#863B38;font-size:38px;margin:0 0 38px}
+.cue-en{font:54px/1.5 Georgia,serif;margin:0 0 42px}
+.cue-zh{font-size:65px;line-height:1.6;margin:0}
+.recording>footer{font-size:25px;margin-top:24px}
 """
 
 
-def card_html(lesson: dict, source: dict, stage: int) -> str:
-    titles = ["先开口", "再听音", "看英文", "学会用"]
-    topic = f"IELTS Speaking · Part {source['part']} · {source['topic']}"
-    question = f'<p class="question">{esc(source["question"])}</p>'
-    if stage == 0:
-        paragraphs = "".join(f'<p class="zh">{esc(s["zh"])}</p>' for s in lesson["sentences"])
-        body = (
-            f'<h1>{esc(lesson["headline"]).replace(chr(10), "<br>")}</h1>'
-            f'<p class="topic">{esc(topic)}</p>{question}'
-            f'{paragraphs}<p class="prompt">暂停一下，把这段话说成英语。</p>'
+def memo_header(lesson: dict, source: dict) -> str:
+    topic_zh = lesson.get("topic_label_zh") or source["topic_zh"]
+    return (
+        '<header>'
+        f'<p class="season">{esc(source["season"])} · Part {source["part"]}</p>'
+        f'<h1 class="topic">{esc(source["topic"])}<span>{esc(topic_zh)}</span></h1>'
+        '</header>'
+    )
+
+
+def material_html(lesson: dict, source: dict, kind: str, cue: dict | None = None) -> str:
+    header = memo_header(lesson, source)
+    question = (
+        '<section class="question"><h2 class="role">考官：</h2>'
+        f'<p class="q-en">{esc(source["question"])}</p>'
+        f'<p class="q-zh">{esc(source["question_zh"])}</p></section>'
+    )
+    if kind == "chinese":
+        lines = lesson.get("chinese_lines") or [s["zh"] for s in lesson["sentences"]]
+        body = question + '<main><h2 class="role">考生：</h2><div class="chinese-answer">'
+        body += "".join(f'<p class="answer-line">{esc(line)}</p>' for line in lines)
+        body += "</div></main>"
+    elif kind == "bilingual":
+        pairs = "".join(
+            '<section class="pair">'
+            f'<p class="pair-en">{esc(s["en"])}</p>'
+            f'<p class="pair-zh">{esc(s["zh"])}</p></section>'
+            for s in lesson["sentences"]
         )
-    elif stage == 1:
-        heights = [32, 56, 90, 120, 65, 140, 105, 46, 82, 124, 60, 36, 100, 146,
-                   88, 40, 116, 68, 32, 86, 130, 48, 102, 66, 34, 80]
-        wave = "".join(f'<i style="height:{h}px"></i>' for h in heights)
-        body = (
-            '<h1>先听一遍。<br>暂时不看答案。</h1>'
-            f'<p class="topic">{esc(topic)}</p>{question}'
-            '<div class="audio-panel"><h2>听声音，抓住意思。</h2>'
-            f'<div class="wave" aria-hidden="true">{wave}</div>'
-            '<p>这一次只有声音。<br>听完后，试着复述你听到的回答。</p></div>'
-            '<p class="prompt">下一页揭示英文。</p>'
+        body = question + f"<main>{pairs}</main>"
+    elif kind == "notes":
+        notes = "".join(
+            '<section class="note">'
+            f'<h2 class="phrase"><mark>{esc(c.get("display_en") or c["en"])}</mark></h2>'
+            f'<p class="meaning">{esc(c["zh"])}</p>'
+            + (f'<p class="usage">{esc(c["usage"])}</p>' if c.get("usage") else "")
+            + f'<p class="example-en">{esc(c["example"])}</p>'
+            + (f'<p class="example-zh">{esc(c["example_zh"])}</p>'
+               if c.get("example_zh") else "")
+            + "</section>" for c in lesson["chunks"]
         )
-    elif stage == 2:
-        paragraphs = []
-        for sentence in lesson["sentences"]:
-            text = esc(sentence["en"])
-            for chunk in lesson["chunks"]:
-                text = text.replace(esc(chunk["en"]), f'<mark>{esc(chunk["en"])}</mark>')
-            paragraphs.append(f'<p class="english">{text}</p>')
+        body = f'<h2 class="notes-label">重点语块</h2><main>{notes}</main>'
+    elif kind == "recording" and cue:
+        role = "考官" if cue["speaker"] == "a" else "考生"
         body = (
-            '<h1>再听一遍，<br>对照你的表达。</h1>'
-            f'<p class="topic">{esc(topic)}</p>' + "".join(paragraphs)
-            + '<p class="prompt">留意停顿和语气，再跟着说一遍。</p>'
+            f'<main class="caption"><p class="role">{role}</p>'
+            f'<p class="cue-en">{esc(cue["en"])}</p>'
+            f'<p class="cue-zh">{esc(cue["zh"])}</p></main>'
         )
     else:
-        notes = "".join(
-            f'<div class="note"><p class="phrase">{esc(c["en"])}</p>'
-            f'<p class="meaning">{esc(c["zh"])}</p>'
-            f'<p class="example">{esc(c["example"])}</p></div>'
-            for c in lesson["chunks"]
-        )
-        body = (
-            f'<h1>带走这 {len(lesson["chunks"])} 个表达，<br>换个场景说。</h1>{notes}'
-            '<div class="transfer"><strong>轮到你了 · 暂停开口</strong>'
-            f'{esc(lesson["transfer_zh"])}</div>'
-        )
-    dots = "".join(f'<span class="{"on" if i == stage else ""}"></span>' for i in range(4))
-    footer = (
-        f'<b>英语说说说 · 每天练一道题</b><br>'
-        f'本地题库标签：{esc(source["season"])} · {esc(lesson["answer_origin"])}<br>'
-        '考季未作当季独立核验；示范供练习，回答请换成自己的经历。'
-    )
+        raise ValueError("未知材料类型或缺少字幕")
+    footer = f'{esc(lesson["answer_origin"])} · 本地题库整理标签'
     return (
-        f'<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>{titles[stage]}</title>'
-        f'<style>{STYLE}</style><body><article class="card '
-        f'{"reading" if stage == 2 else "notes" if stage == 3 else ""}">'
-        f'<header class="mast"><b>英语说说说</b><div class="steps">{dots}</div></header>'
-        f'<p class="eyebrow">0{stage + 1} / 04 · {titles[stage]}</p>'
-        f'<main>{body}</main><footer class="footer">{footer}</footer></article></body></html>'
+        '<!doctype html><html lang="zh-CN"><meta charset="utf-8">'
+        f'<title>{esc(source["topic"])}</title><style>{STYLE}</style><body>'
+        f'<article class="sheet {kind}">{header}{body}<footer>{footer}</footer>'
+        '</article></body></html>'
     )
+
+
+def spoken_text(text: str) -> str:
+    return norm(re.sub(r"\[[^\]]*\]", "", text))
+
+
+def tokens(text: str) -> list[str]:
+    return re.findall(r"[a-z0-9]+(?:'[a-z]+)?", text.lower().replace("’", "'"))
+
+
+def caption_cues(lesson: dict, source: dict, speed: float) -> list[dict]:
+    """字幕使用实测单句跨度或真实词时间戳；没有就拒绝按字数猜时间。"""
+    texts = [
+        {"speaker": "a", "en": source["question"], "zh": source["question_zh"]},
+        *[{"speaker": "b", **s} for s in lesson["sentences"]],
+    ]
+    segments = source["alignment"].get("segments", [])
+    word_entries = [
+        {"token": token, "start": word["start"], "end": word["end"]}
+        for word in source["alignment"].get("words", [])
+        for token in tokens(word["text"])
+    ]
+    segment_cursor, word_cursor = 0, 0
+    cues = []
+    for text in texts:
+        span = None
+        for i in range(segment_cursor, len(segments)):
+            candidate = segments[i]
+            if (candidate.get("speaker", "").lower() == text["speaker"]
+                    and spoken_text(candidate["text"]) == norm(text["en"])):
+                span = candidate
+                segment_cursor = i + 1
+                break
+        expected = tokens(text["en"])
+        if span is None and word_entries:
+            actual = [w["token"] for w in word_entries]
+            for i in range(word_cursor, len(actual) - len(expected) + 1):
+                if actual[i:i + len(expected)] == expected:
+                    span = {"start": word_entries[i]["start"],
+                            "end": word_entries[i + len(expected) - 1]["end"]}
+                    word_cursor = i + len(expected)
+                    break
+        if span is None:
+            raise ValueError("缺少逐句真实时间轴；请准备逐句音频对齐，不能估算字幕")
+        cue = {**text, "start": float(span["start"]) / speed, "end": float(span["end"]) / speed}
+        if cue["end"] <= cue["start"] or (cues and cue["start"] < cues[-1]["start"]):
+            raise ValueError("字幕时间顺序异常")
+        cues.append(cue)
+    return cues
+
+
+def srt_time(seconds: float) -> str:
+    ms = round(seconds * 1000)
+    hours, ms = divmod(ms, 3600000)
+    minutes, ms = divmod(ms, 60000)
+    secs, ms = divmod(ms, 1000)
+    return f"{hours:02}:{minutes:02}:{secs:02},{ms:03}"
 
 
 def run(command: list[str]) -> str:
@@ -209,184 +280,176 @@ def publish_text(lesson: dict, source: dict) -> str:
         "已有回答": "本期根据已有回答整理，观众请换成自己的经历练习。",
     }
     return (
-        f"标题：{lesson['headline'].replace(chr(10), '')}｜每天练一道雅思口语\n\n"
-        "先看中文开口，再盲听，最后对照英文。\n"
-        "不要只收藏：挑一个表达，换成你自己的经历说一遍。\n\n"
-        f"本期题目：{source['question']}\n"
-        f"话题：{source['topic']}｜Part {source['part']}\n"
-        f"题库标签：{source['season']}（本地记录，未作当季独立核验）\n"
-        f"回答来源：{lesson['answer_origin']}。{origins[lesson['answer_origin']]}\n"
-        "语音为 AI 合成，示范供练习，不作分数保证。\n\n"
-        "#雅思口语 #英语口语 #英语听力 #每天练英语\n\n"
-        f"置顶评论建议：{lesson['transfer_zh']}\n\n"
-        "发布：上传 publish.mp4，封面选 01.png；检查平台 AI 标识选项。\n"
-        "图文备选：按 01–04.png 顺序上传，并自行确认平台能否完整保留示范音频。\n"
-        "本地未上传或发布到任何平台。\n"
+        f'{source["question"]}\n{source["question_zh"]}\n\n'
+        f'Part {source["part"]} · {source["topic"]} · {source["season"]}\n'
+        f'{origins[lesson["answer_origin"]]}\n'
+        "题源为本地整理记录，考季未作当季独立核验；语音为 AI 合成。\n\n"
+        "四份材料：中文回答长图、带中英字幕的问答录音视频、逐句中英对照长图、语块笔记。\n"
+        "图文和录音视频分别发布，不合并为四步练习视频。\n"
+        "#雅思口语 #英语口语 #英语笔记\n"
     )
 
 
-def build(lesson_path: Path, item: Path, output: Path, speed: float = 0.82) -> Path:
+def render_shot(page, doc: str, path: Path, size: tuple[int, int]) -> dict:
+    page.set_viewport_size({"width": size[0], "height": size[1]})
+    page.set_content(doc)
+    page.evaluate("document.fonts.ready")
+    page.evaluate("window.scrollTo(0, 0)")
+    metrics = page.evaluate("""() => {
+        const sheet = document.querySelector('.sheet');
+        const footer = sheet.querySelector('footer').getBoundingClientRect();
+        const main = sheet.querySelector('main').getBoundingClientRect();
+        const nodes = [...sheet.querySelectorAll('main *, .question *, header *')];
+        const outside = nodes.some(el => {
+            const r = el.getBoundingClientRect();
+            return r.left < 0 || r.right > innerWidth ||
+                el.scrollWidth > el.clientWidth + 3 ||
+                (el.closest('main') && r.bottom > footer.top - 12);
+        });
+        return {width: innerWidth, height: innerHeight, outside,
+                mainBottom: main.bottom, footerTop: footer.top};
+    }""")
+    if metrics["outside"] or metrics["mainBottom"] > metrics["footerTop"] - 12:
+        raise ValueError(f"材料正文溢出或碰到页脚：{path.name} {metrics}")
+    page.screenshot(path=str(path))
+    return metrics
+
+
+def preview_html(lesson: dict) -> str:
+    return (
+        '<!doctype html><html lang="zh-CN"><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width,initial-scale=1">'
+        '<title>四份口语材料</title><style>'
+        'body{margin:40px auto;padding:0 20px;max-width:740px;background:#FDFBF7;'
+        'color:#25221E;font-family:Microsoft YaHei,sans-serif}'
+        'h1{font-size:28px;font-weight:600}h2{font-size:20px;margin:0 0 20px}'
+        'section{margin:54px 0 68px}img,video{display:block;width:100%;height:auto}'
+        'video{max-height:760px;margin:auto;object-fit:contain}'
+        'a{color:#863B38;text-underline-offset:4px}a:focus-visible{outline:2px solid #863B38}'
+        '::selection{background:#F0D1D2}p{font-size:15px;line-height:1.7}</style>'
+        f'<h1>{esc(lesson["headline"])}</h1>'
+        '<p><a href="01-chinese.png" download>中文长图</a> · '
+        '<a href="02-dialogue.mp4" download>问答录音视频</a> · '
+        '<a href="03-bilingual.png" download>中英对照</a> · '
+        '<a href="04-notes.png" download>语块笔记</a></p>'
+        '<section><h2>中文回答</h2><img src="01-chinese.png" alt="只含中文回答的备忘录"></section>'
+        '<section><h2>问答录音</h2><video controls playsinline preload="metadata" '
+        'poster="assets/recording-cover.png" src="02-dialogue.mp4"></video></section>'
+        '<section><h2>逐句中英对照</h2><img src="03-bilingual.png" alt="每句中英文相邻"></section>'
+        '<section><h2>语块笔记</h2><img src="04-notes.png" alt="重点语块、用法和例句"></section>'
+        '</html>'
+    )
+
+
+def build(lesson_path: Path, item: Path, output: Path, speed: float = 1.0) -> Path:
     from playwright.sync_api import sync_playwright
 
     output = output.resolve()
-    if OUTPUT_ROOT.resolve() not in output.parents or output.exists():
-        raise ValueError("输出必须是 daily-ielts/output 内尚不存在的新目录")
+    if (OUTPUT_ROOT.resolve() not in output.parents or output.exists()
+            or output.with_suffix(".zip").exists()):
+        raise ValueError("输出必须是 daily-ielts/output 内尚不存在的新目录和 ZIP")
     if not 0.7 <= speed <= 1.1:
         raise ValueError("速度必须在 0.7–1.1 之间")
     lesson = read_json(lesson_path)
     source = validate_source(lesson, item, read_json(ROOT / "data/question_bank_public.json"))
+    if not source["question_zh"]:
+        raise ValueError("题库缺少中文题目，先准备经核对的翻译")
+    cues = caption_cues(lesson, source, speed)
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".build-", dir=OUTPUT_ROOT) as staging:
         dest = Path(staging)
-        measurements = []
-        with sync_playwright() as playwright:
-            browser = playwright.chromium.launch()
-            page = browser.new_page(viewport={"width": 1080, "height": 1440}, device_scale_factor=1)
-            for stage in range(4):
-                doc = card_html(lesson, source, stage)
-                if stage == 1 and esc(source["answer"]) in doc:
-                    raise ValueError("盲听卡泄露了完整答案")
-                page.set_content(doc)
-                page.evaluate("document.fonts.ready")
-                metrics = page.evaluate("""() => {
-                    const main = document.querySelector('main').getBoundingClientRect();
-                    const footer = document.querySelector('footer').getBoundingClientRect();
-                    const outside = [...document.querySelectorAll('main *')].some(el => {
-                        const r = el.getBoundingClientRect();
-                        return r.left < 88 || r.right > 992 || el.scrollWidth > el.clientWidth + 2;
-                    });
-                    return {mainBottom: main.bottom, footerTop: footer.top, outside};
-                }""")
-                if metrics["mainBottom"] > metrics["footerTop"] - 18 or metrics["outside"]:
-                    raise ValueError(f"第 {stage + 1} 张卡片发生内容溢出：{metrics}")
-                measurements.append(metrics)
-                (dest / f"0{stage + 1}.html").write_text(doc, encoding="utf-8")
-                page.screenshot(path=str(dest / f"0{stage + 1}.png"))
-            browser.close()
-        audio = dest / "answer.mp3"
+        assets = dest / "assets"
+        assets.mkdir()
         run([
             "ffmpeg", "-v", "error", "-i", str(item / "audio_podcast.mp3"),
-            "-af", f"atempo={speed},loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", "44100",
-            "-ac", "1", "-b:a", "128k", str(audio),
+            "-af", f"atempo={speed},loudnorm=I=-16:TP=-1.5:LRA=11",
+            "-ar", "44100", "-ac", "1", "-b:a", "128k", str(assets / "answer.mp3"),
         ])
-        audio_info = probe(audio)
+        audio_info = probe(assets / "answer.mp3")
         duration = float(audio_info["format"]["duration"])
-        volume = run(["ffmpeg", "-hide_banner", "-i", str(audio),
+        volume = run(["ffmpeg", "-hide_banner", "-i", str(assets / "answer.mp3"),
                       "-af", "volumedetect", "-f", "null", "-"])
-        mean_match = re.search(r"mean_volume: (-?[\d.]+) dB", volume)
-        if not mean_match or float(mean_match[1]) < -45:
-            raise ValueError("导出音频近似静音，不能交付")
-        stages = [12.0, duration + 1.0, duration + 1.0, 12.0]
-        total = sum(stages)
-        question_end = max(
-            (s["end"] for s in source["alignment"].get("segments", [])
-             if s.get("speaker", "").lower() == "a"), default=0,
-        ) / speed
-        if question_end <= 0:
-            raise ValueError("缺少提问者真实时间轴，不能截取提问音频")
-        run([
-            "ffmpeg", "-v", "error", "-i", str(audio), "-af",
-            f"atrim=end={question_end},apad", "-t", str(stages[0]),
-            "-ar", "44100", "-ac", "1", str(dest / "prompt.wav"),
-        ])
-        run([
-            "ffmpeg", "-v", "error", "-i", str(audio), "-af", "apad",
-            "-t", str(stages[1]), "-ar", "44100", "-ac", "1", str(dest / "listen.wav"),
-        ])
-        run([
-            "ffmpeg", "-v", "error", "-f", "lavfi", "-i",
-            "anullsrc=r=44100:cl=mono", "-t", str(stages[3]), str(dest / "practice.wav"),
-        ])
-
-        def concat_file(paths: list[Path], name: str, durations: list[float] | None = None):
-            lines = ["ffconcat version 1.0"]
-            for i, path in enumerate(paths):
-                quoted = path.as_posix().replace("'", "'\\''")
-                lines.append(f"file '{quoted}'")
-                if durations is not None:
-                    lines.append(f"duration {durations[i]:.6f}")
-            if durations is not None:
-                lines.append(lines[-2])
-            result = dest / name
-            result.write_text("\n".join(lines) + "\n", encoding="utf-8")
-            return result
-
-        audio_list = concat_file(
-            [dest / name for name in ("prompt.wav", "listen.wav", "listen.wav", "practice.wav")],
-            "audio.ffconcat",
-        )
-        run([
-            "ffmpeg", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(audio_list),
-            "-ar", "44100", "-ac", "1", str(dest / "soundtrack.wav"),
-        ])
-        visual_list = concat_file([dest / f"0{i}.png" for i in range(1, 5)],
-                                  "cards.ffconcat", stages)
-        video = dest / "publish.mp4"
+        match = re.search(r"mean_volume: (-?[\d.]+) dB", volume)
+        if not match or float(match[1]) < -45:
+            raise ValueError("录音近似静音，不能交付")
+        if cues[-1]["end"] > duration + 0.15:
+            raise ValueError("字幕超出录音时长")
+        measurements = {}
+        frames = []
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page()
+            for kind, name in (("chinese", MATERIAL_FILES[0]),
+                               ("bilingual", MATERIAL_FILES[2]), ("notes", MATERIAL_FILES[3])):
+                doc = material_html(lesson, source, kind)
+                (assets / f"{kind}.html").write_text(doc, encoding="utf-8")
+                measurements[kind] = render_shot(page, doc, dest / name, IMAGE_SIZE)
+            for i, cue in enumerate(cues):
+                doc = material_html(lesson, source, "recording", cue)
+                frame = assets / f"caption-{i:02}.png"
+                measurements[f"caption-{i}"] = render_shot(page, doc, frame, VIDEO_SIZE)
+                frames.append(frame)
+                if i == 0:
+                    (assets / "recording-cover.png").write_bytes(frame.read_bytes())
+            browser.close()
+        lines = ["ffconcat version 1.0"]
+        for i, frame in enumerate(frames):
+            quoted = frame.as_posix().replace("'", "'\\''")
+            start = 0 if i == 0 else cues[i]["start"]
+            end = cues[i + 1]["start"] if i + 1 < len(cues) else duration
+            lines += [f"file '{quoted}'", f"duration {end - start:.6f}"]
+        lines.append(lines[-2])
+        visual_list = assets / "frames.ffconcat"
+        visual_list.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        video = dest / MATERIAL_FILES[1]
         run([
             "ffmpeg", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(visual_list),
-            "-i", str(dest / "soundtrack.wav"), "-vf",
-            "pad=1080:1920:0:160:color=0xE6EFF4,setsar=1", "-map", "0:v", "-map", "1:a",
-            "-t", str(total), "-r", "24", "-threads", "2", "-c:v", "libx264",
-            "-preset", "veryfast", "-crf", "23",
+            "-i", str(assets / "answer.mp3"), "-t", str(duration), "-r", "24",
+            "-threads", "2", "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
             "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart",
             str(video),
         ])
         video_info = probe(video)
         video_stream = next(s for s in video_info["streams"] if "width" in s)
-        if (video_stream["width"], video_stream["height"]) != (1080, 1920):
-            raise ValueError("视频不是要求的 1080×1920")
-        if abs(float(video_info["format"]["duration"]) - total) > 0.25:
-            raise ValueError("视频时长与四步计划不一致")
-        for path in dest.iterdir():
-            if path.suffix in {".wav", ".ffconcat"}:
-                path.unlink()
+        if (video_stream["width"], video_stream["height"]) != VIDEO_SIZE:
+            raise ValueError("录音视频尺寸异常")
+        if abs(float(video_info["format"]["duration"]) - duration) > 0.15:
+            raise ValueError("录音视频必须只播放原问答一次")
+        subtitles = "\n\n".join(
+            f'{i + 1}\n{srt_time(c["start"])} --> {srt_time(c["end"])}\n{c["en"]}\n{c["zh"]}'
+            for i, c in enumerate(cues)
+        )
+        (assets / "subtitles.srt").write_text(subtitles + "\n", encoding="utf-8")
+        (dest / "index.html").write_text(preview_html(lesson), encoding="utf-8")
         (dest / "publish.txt").write_text(publish_text(lesson, source), encoding="utf-8")
-        (dest / "lesson.json").write_text(json.dumps(lesson, ensure_ascii=False, indent=2),
-                                       encoding="utf-8")
         provenance = {k: v for k, v in source.items() if k != "alignment"}
-        provenance["bank_file"] = "data/question_bank_public.json"
-        provenance["verification_scope"] = "本地题干、话题与考季标签匹配；非当季官方真题认证"
-        (dest / "source.json").write_text(json.dumps(provenance, ensure_ascii=False, indent=2),
-                                       encoding="utf-8")
-        (dest / "verification.json").write_text(json.dumps({
-            "ready": True, "cards": measurements, "audio": audio_info, "video": video_info,
+        provenance["verification_scope"] = "本地题库匹配；非当季官方真题认证"
+        (dest / "source.json").write_text(
+            json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        (dest / "lesson.json").write_text(
+            json.dumps(lesson, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        verification = {
+            "ready": True, "material_contract": "four-materials-v2",
+            "materials": list(MATERIAL_FILES), "image_size": list(IMAGE_SIZE),
+            "cards": measurements, "audio": audio_info, "video": video_info,
             "source_audio_sha256": hashlib.sha256(
                 (item / "audio_podcast.mp3").read_bytes()
             ).hexdigest(),
-            "stage_seconds": stages, "speed": speed, "mean_volume_db": float(mean_match[1]),
-            "listening_gate": "源QA通过且非静音；自然度、切换节奏与手机显示仍需人工试听预览",
-        }, ensure_ascii=False, indent=2), encoding="utf-8")
-        gallery = "".join(
-            f'<a href="0{i}.png"><img src="0{i}.png" alt="练习第 {i} 步"></a>'
-            for i in range(1, 5)
+            "speed": speed, "mean_volume_db": float(match[1]), "caption_cues": cues,
+            "dialogue_turns": ["a", "b"],
+            "listening_gate": "QA、实测字幕与非静音检查通过；自然度由 Bruce 抽听",
+        }
+        (dest / "verification.json").write_text(
+            json.dumps(verification, ensure_ascii=False, indent=2), encoding="utf-8"
         )
-        index = (
-            '<!doctype html><html lang="zh-CN"><meta charset="utf-8">'
-            '<meta name="viewport" content="width=device-width,initial-scale=1">'
-            '<title>每日雅思口语 · 本期</title><style>'
-            'body{background:#E6EFF4;color:#142F46;font-family:Microsoft YaHei,sans-serif;'
-            'max-width:1500px;margin:30px auto;padding:20px}a{color:#195DC6}'
-            '.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}'
-            '.grid img{width:100%;border-radius:12px}video{max-height:660px;max-width:100%}'
-            'a:focus-visible{outline:3px solid #195DC6}audio{max-width:100%}</style>'
-            f'<h1>{esc(lesson["headline"]).replace(chr(10), "")}</h1>'
-            '<p>四步练习：先说 → 盲听 → 揭示 → 迁移</p>'
-            '<p><a href="publish.mp4" download>下载视频</a> · '
-            '<a href="answer.mp3" download>下载问答音频</a> · '
-            '<a href="publish.txt">发布文案</a></p>'
-            '<audio controls src="answer.mp3"></audio>'
-            f'<div class="grid">{gallery}</div>'
-            '<h2>发布视频预览</h2><video controls preload="metadata" src="publish.mp4"></video>'
-            '<p>题库考季标签尚未作当季独立核验；语音为 AI 合成。</p></html>'
-        )
-        (dest / "index.html").write_text(index, encoding="utf-8")
+        visual_list.unlink()
         output.parent.mkdir(parents=True, exist_ok=True)
         dest.rename(output)
-    zip_path = output.with_suffix(".zip")
-    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_STORED) as bundle:
-        for path in output.iterdir():
-            if path.suffix != ".html" or path.name == "index.html":
-                bundle.write(path, path.name)
+    with zipfile.ZipFile(output.with_suffix(".zip"), "w", compression=zipfile.ZIP_STORED) as bundle:
+        for name in MATERIAL_FILES:
+            bundle.write(output / name, name)
     return output
 
 
@@ -395,6 +458,6 @@ if __name__ == "__main__":
     parser.add_argument("--lesson", type=Path, required=True)
     parser.add_argument("--item-dir", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--speed", type=float, default=0.82)
+    parser.add_argument("--speed", type=float, default=1.0)
     args = parser.parse_args()
     print(build(args.lesson, args.item_dir, args.out, args.speed))

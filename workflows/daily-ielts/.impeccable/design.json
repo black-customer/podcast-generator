@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T03:02:03Z",
+  "title": "Design System: 每日雅思口语材料",
+  "extensions": {
+    "colorMeta": {
+      "paper": {"role": "neutral", "displayName": "米白纸面", "canonical": "#FDFBF7"},
+      "ink": {"role": "neutral", "displayName": "深墨正文", "canonical": "#25221E"},
+      "annotation": {"role": "primary", "displayName": "棕红批注", "canonical": "#863B38"},
+      "underline": {"role": "secondary", "displayName": "淡粉划线", "canonical": "#F0D1D2"},
+      "season": {"role": "neutral", "displayName": "月份灰", "canonical": "#66615A"},
+      "translation": {"role": "neutral", "displayName": "翻译灰", "canonical": "#5B554D"},
+      "footer": {"role": "neutral", "displayName": "页脚灰", "canonical": "#6C665F"},
+      "header-rule": {"role": "neutral", "displayName": "页眉细线", "canonical": "#DAD4CB"},
+      "note-rule": {"role": "neutral", "displayName": "笔记细线", "canonical": "#E6E0D8"}
+    },
+    "typographyMeta": {
+      "topic": {"displayName": "英文话题", "purpose": "共用图片页眉的英文话题。"},
+      "season": {"displayName": "月份与 Part", "purpose": "本地题库的月份范围与题型。"},
+      "question-en": {"displayName": "英文题目", "purpose": "中文回答图片的完整英文题目；中英对照图片缩为49px。"},
+      "question-zh": {"displayName": "中文题目", "purpose": "英文题目紧邻的中文；中英对照图片缩为46px。"},
+      "chinese-answer": {"displayName": "中文回答", "purpose": "分行铺开的完整中文回答。"},
+      "bilingual-en": {"displayName": "句对英文", "purpose": "一组中英对照的英文句子。"},
+      "bilingual-zh": {"displayName": "句对中文", "purpose": "紧跟对应英文的中文意思。"},
+      "phrase": {"displayName": "重点语块", "purpose": "淡粉划线的英文表达。"},
+      "meaning": {"displayName": "手写释义", "purpose": "棕红楷体中文释义；是字体渲染。"},
+      "usage": {"displayName": "语块用法", "purpose": "使用条件或搭配说明。"},
+      "example-en": {"displayName": "英文例句", "purpose": "可迁移的英文用法示例。"},
+      "example-zh": {"displayName": "中文例句", "purpose": "英文例句的对应中文。"},
+      "cue-en": {"displayName": "录音英文字幕", "purpose": "当前实测语音句的英文。"},
+      "cue-zh": {"displayName": "录音中文字幕", "purpose": "当前英文字幕对应的中文。"},
+      "footer": {"displayName": "来源页脚", "purpose": "回答来源与本地题库标签。"}
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "备忘录纸面",
+      "kind": "custom",
+      "refersTo": "memo-sheet",
+      "description": "1260×2800导出画布；示例文字仅用于组件预览。",
+      "html": "<article class=\"ds-memo-sheet\"><main class=\"ds-memo-main\"><p class=\"ds-memo-text\">中文回答</p></main></article>",
+      "css": ".ds-memo-sheet{box-sizing:border-box;width:1260px;height:2800px;padding:100px 94px 76px;display:flex;flex-direction:column;overflow:hidden;background:#FDFBF7;color:#25221E;font-family:'Microsoft YaHei',sans-serif}.ds-memo-main{flex:1;min-height:0}.ds-memo-text{font-size:76px;line-height:1.5;white-space:nowrap;margin:0}"
+    },
+    {
+      "name": "月份与话题页眉",
+      "kind": "custom",
+      "refersTo": "memo-header",
+      "description": "真实本地题库月份、Part与中英话题。",
+      "html": "<header class=\"ds-memo-header\"><p class=\"ds-season\">2026年5–8月 · Part 1</p><h1 class=\"ds-topic\">Music<span>音乐</span></h1></header>",
+      "css": ".ds-memo-header{padding-bottom:44px;border-bottom:2px solid #DAD4CB;background:#FDFBF7;color:#25221E;font-family:'Microsoft YaHei',sans-serif}.ds-season{font:46px/1.4 Georgia,'Microsoft YaHei',serif;margin:0 0 62px;color:#66615A}.ds-topic{font:70px/1.35 Georgia,serif;font-weight:700;margin:0}.ds-topic span{font:56px/1.4 'Microsoft YaHei',sans-serif;font-weight:500;margin-left:30px}"
+    },
+    {
+      "name": "双语题目",
+      "kind": "custom",
+      "refersTo": "question-block",
+      "description": "考官标签与紧邻的完整中英题目。",
+      "html": "<section class=\"ds-question\"><h2 class=\"ds-question-role\">考官：</h2><p class=\"ds-question-en\">Does happy music make you feel more excited?</p><p class=\"ds-question-zh\">开心的音乐会让你更激动吗？</p></section>",
+      "css": ".ds-question{margin:42px 0 34px;background:#FDFBF7;color:#25221E;font-family:'Microsoft YaHei',sans-serif}.ds-question-role{font-size:43px;font-weight:700;margin:0 0 20px}.ds-question-en{font:56px/1.4 Georgia,serif;font-weight:700;margin:0 0 20px}.ds-question-zh{font-size:51px;line-height:1.6;margin:0}"
+    },
+    {
+      "name": "中文回答行",
+      "kind": "custom",
+      "refersTo": "chinese-line",
+      "description": "完整中文回答的单行；行间空间由整张纸面分配。",
+      "html": "<p class=\"ds-answer-line\">我喜欢听音乐。</p>",
+      "css": ".ds-answer-line{font-family:'Microsoft YaHei',sans-serif;font-size:76px;line-height:1.5;white-space:nowrap;margin:0;background:#FDFBF7;color:#25221E}"
+    },
+    {
+      "name": "逐句中英对照",
+      "kind": "custom",
+      "refersTo": "bilingual-pair",
+      "description": "示例内容展示英文一句与对应中文紧贴成组。",
+      "html": "<section class=\"ds-pair\"><p class=\"ds-pair-en\">I like listening to music.</p><p class=\"ds-pair-zh\">我喜欢听音乐。</p></section>",
+      "css": ".ds-pair{padding:0 0 18px;background:#FDFBF7;color:#25221E;font-family:'Microsoft YaHei',sans-serif}.ds-pair-en{font:54px/1.38 Georgia,serif;margin:0 0 18px}.ds-pair-zh{font-size:51px;line-height:1.58;margin:0;color:#5B554D}"
+    },
+    {
+      "name": "手写语块笔记",
+      "kind": "custom",
+      "refersTo": "phrase-note",
+      "description": "表达、中文意义、用法及中英例句；内容是组件示例。",
+      "html": "<section class=\"ds-note\"><h2 class=\"ds-phrase\"><mark>in a happy mood</mark></h2><p class=\"ds-meaning\">心情愉快</p><p class=\"ds-usage\">用来描述当时的心情。</p><p class=\"ds-example-en\">I'm in a happy mood today.</p><p class=\"ds-example-zh\">我今天心情愉快。</p></section>",
+      "css": ".ds-note{padding-bottom:32px;border-bottom:2px solid #E6E0D8;background:#FDFBF7;color:#25221E;font-family:'Microsoft YaHei',sans-serif}.ds-note:last-child{border-bottom:0;padding-bottom:0}.ds-phrase{font:60px/1.4 Georgia,serif;font-weight:700;margin:0 0 26px}.ds-phrase mark{color:inherit;background:linear-gradient(transparent 70%,#F0D1D2 70%);padding:0}.ds-meaning{font:70px/1.45 'KaiTi','Microsoft YaHei',serif;color:#863B38;margin:0 0 24px}.ds-usage{font-size:45px;line-height:1.6;margin:0 0 30px}.ds-example-en{font:51px/1.5 Georgia,serif;margin:0 0 18px}.ds-example-zh{font-size:48px;line-height:1.55;color:#5B554D;margin:0}"
+    },
+    {
+      "name": "录音字幕",
+      "kind": "custom",
+      "refersTo": "recording-caption",
+      "description": "视频当前说话人与相邻中英字幕；时间来自真实对齐。",
+      "html": "<main class=\"ds-caption\"><p class=\"ds-caption-role\">考官</p><p class=\"ds-cue-en\">Does happy music make you feel more excited?</p><p class=\"ds-cue-zh\">开心的音乐会让你更激动吗？</p></main>",
+      "css": ".ds-caption{display:flex;flex-direction:column;justify-content:center;min-height:0;flex:1;background:#FDFBF7;color:#25221E;font-family:'Microsoft YaHei',sans-serif}.ds-caption-role{color:#863B38;font-size:38px;font-weight:700;margin:0 0 38px}.ds-cue-en{font:54px/1.5 Georgia,serif;margin:0 0 42px}.ds-cue-zh{font-size:65px;line-height:1.6;margin:0}"
+    },
+    {
+      "name": "本地下载链接",
+      "kind": "custom",
+      "refersTo": "preview-download",
+      "description": "预览中的原生下载链接，保留可见键盘焦点。",
+      "html": "<a class=\"ds-download\" href=\"01-chinese.png\" download>中文长图</a>",
+      "css": ".ds-download{font-family:'Microsoft YaHei',sans-serif;font-size:15px;line-height:1.7;color:#863B38;text-underline-offset:4px}.ds-download:focus-visible{outline:2px solid #863B38}.ds-download::selection{background:#F0D1D2}"
+    }
+  ],
+  "narrative": {
+    "northStar": "普通备忘录，漂亮手写笔记",
+    "overview": "本系统只约束 workflows/daily-ielts/ 的导出材料与本地预览。读者通过题目、回答、逐句翻译和语块笔记理解并复用表达；纸面和文字承担视觉层级。本地预览安静地展示独立文件，录音使用浏览器原生控件。这里不继承桌面学习页或手机主题的界面配色。\n\n视觉以 Bruce 的备忘录和笔记截图为参考；当前落地是平整米白纸面、英文衬线文字、清楚的中文和楷体释义。楷体是字体渲染，不宣称每个字由人手写。本文从 build.py 的 STYLE、material_html() 和 preview_html() 提取已实现的值，不加入未来设想。",
+    "keyCharacteristics": [
+      "三张固定比例长图与一个独立问答录音视频。",
+      "中文回答逐行铺开，英文与中文逐句相邻。",
+      "棕红楷体释义与淡粉语块划线，装饰让位于内容。",
+      "平面纸张、细分隔线、原生视频控件。"
+    ],
+    "rules": [
+      {"name": "The Paper Rule", "body": "导出材料使用同一米白纸面和深墨正文，棕红与淡粉只服务文字批注。", "section": "colors"},
+      {"name": "The Sentence Pair Rule", "body": "每句英文后紧跟对应中文，句内距离小于句组之间的距离。", "section": "typography"}
+    ],
+    "dos": [
+      "Do 保留三张 9:20 长图与一个独立 9:16 问答录音视频的文件契约。",
+      "Do 按真实录音逐句对应中英文，中文回答分行保持原意和完整内容。",
+      "Do 让纸面、字号、行距、释义和局部划线承担阅读层级。",
+      "Do 在本地预览使用原生视频控件，并明确本地题库月份与回答来源。"
+    ],
+    "donts": [
+      "Don't 把本目录套成蓝绿应用卡片或四步合成练习视频。",
+      "Don't 加入进度圆点、波形、装饰横幅、自定义按钮或迁移挑战。",
+      "Don't 把整篇英文和整篇中文分开排，或在中文回答区泄露英文答案。",
+      "Don't 用技术 QA 代替听感和审美验收，或把本地月份标签写成已核验官方新题。"
+    ]
+  }
+}

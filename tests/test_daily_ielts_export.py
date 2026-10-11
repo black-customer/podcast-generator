@@ -32,10 +32,12 @@ def source(tmp_path):
              "example": "A walk helps me clear my head."},
         ],
         "transfer_zh": "换成你的经历：你会怎样放松？",
+        "chinese_lines": ["是的，我喜欢。", "散步能让我清醒一下。"],
     }
     bank = {
-        "questions": [{"id": "q_walk", "text": question, "part": 1, "topic_id": "t_walk"}],
-        "topics": [{"id": "t_walk", "name_en": "Walking"}],
+        "questions": [{"id": "q_walk", "text": question, "text_zh": "你喜欢散步吗？",
+                       "part": 1, "topic_id": "t_walk"}],
+        "topics": [{"id": "t_walk", "name_en": "Walking", "name_zh": "散步"}],
         "sets": [],
     }
     (tmp_path / "question.txt").write_text(question, encoding="utf-8")
@@ -47,6 +49,11 @@ def source(tmp_path):
         "mode": "measured",
         "text_fingerprint": text_fingerprint(transcript),
         "audio_signature": audio_signature(tmp_path / "audio_podcast.mp3"),
+        "segments": [
+            {"speaker": "a", "text": question, "start": 0.0, "end": 1.8},
+            {"speaker": "b", "text": "Yes, I do.", "start": 2.1, "end": 3.3},
+            {"speaker": "b", "text": "It helps me clear my head.", "start": 3.6, "end": 6.1},
+        ],
     }
     (tmp_path / "alignment_podcast.json").write_text(json.dumps(alignment))
     return tmp_path, lesson, bank
@@ -107,3 +114,55 @@ def test_publish_copy_distinguishes_real_answer_and_authored_example(source, ori
         assert "示例经历并非本人经历" not in copy_text
     else:
         assert "示例经历并非本人经历" in copy_text
+
+
+def test_first_memo_shows_question_translation_and_only_chinese_answer(source):
+    item, lesson, bank = source
+    validated = exporter.validate_source(lesson, item, bank)
+    doc = exporter.material_html(lesson, validated, "chinese")
+    assert "Do you enjoy walking?" in doc
+    assert "你喜欢散步吗？" in doc
+    assert "是的，我喜欢。" in doc
+    assert "散步能让我清醒一下。" in doc
+    assert "Yes, I do." not in doc
+    assert "It helps me clear my head." not in doc
+
+
+def test_bilingual_memo_keeps_each_translation_next_to_its_english(source):
+    item, lesson, bank = source
+    validated = exporter.validate_source(lesson, item, bank)
+    doc = exporter.material_html(lesson, validated, "bilingual")
+    groups = doc.split('<section class="pair">')[1:]
+    assert len(groups) == 2
+    for group, sentence in zip(groups, lesson["sentences"], strict=True):
+        assert sentence["en"] in group
+        assert sentence["zh"] in group
+
+
+def test_subtitles_follow_measured_question_and_answer_sentences(source):
+    item, lesson, bank = source
+    validated = exporter.validate_source(lesson, item, bank)
+    cues = exporter.caption_cues(lesson, validated, speed=0.8)
+    assert [c["speaker"] for c in cues] == ["a", "b", "b"]
+    assert cues[0]["zh"] == "你喜欢散步吗？"
+    assert cues[1]["start"] == pytest.approx(2.1 / 0.8)
+    assert cues[2]["end"] == pytest.approx(6.1 / 0.8)
+    assert [c["en"] for c in cues[1:]] == [s["en"] for s in lesson["sentences"]]
+
+
+def test_subtitles_refuse_estimates_when_audio_has_only_a_full_answer_span(source):
+    item, lesson, bank = source
+    validated = exporter.validate_source(lesson, item, bank)
+    validated["alignment"]["segments"] = [
+        {"speaker": "a", "text": validated["question"], "start": 0, "end": 1.8},
+        {"speaker": "b", "text": validated["answer"], "start": 2.1, "end": 6.1},
+    ]
+    with pytest.raises(ValueError, match="逐句.*时间"):
+        exporter.caption_cues(lesson, validated, speed=1)
+
+
+def test_reject_chinese_lines_that_drop_part_of_the_answer(source):
+    item, lesson, bank = source
+    lesson["chinese_lines"] = ["是的，我喜欢。"]
+    with pytest.raises(ValueError, match="中文.*分行"):
+        exporter.validate_source(lesson, item, bank)
