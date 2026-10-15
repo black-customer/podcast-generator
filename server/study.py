@@ -18,7 +18,11 @@ Return one JSON object only with complete_chinese and sentences. Each sentence h
 explanation, usage and optionally original_error {quote, issue, correction}. Copy every supplied
 English answer sentence exactly and in order into en. Explain useful grammar and collocations in
 Chinese. The complete Chinese meaning and each zh must preserve the learner's original meaning;
-do not invent experiences. Only report an original_error when an exact English quote from the raw
+do not invent experiences. Keep the reference achievable, not needlessly advanced. Optionally add
+outline and groups arrays of {label: Chinese content cue, indices: zero-based sentence indices};
+use only supplied sentence meanings. For Part 3 add one related English followup question.
+Each sentence may have gap_kind: text_supported_error, explicit_gap, or refinement.
+Only report an original_error when an exact English quote from the raw
 answer proves a real grammatical or spelling error. Never treat a valid alternative wording as an
 error. Chinese input is not evidence of an English error. Do not infer pronunciation or scores."""
 
@@ -93,6 +97,13 @@ def validate_material(material: dict, texts: dict) -> dict:
             "zh", "en", "explanation", "usage"
         )}
         error = row.get("original_error")
+        kind = row.get("gap_kind")
+        if kind is not None:
+            if kind not in {"text_supported_error", "explicit_gap", "refinement"}:
+                raise MaterialError("缺口分类错误")
+            if kind == "text_supported_error" and not error:
+                raise MaterialError("个人错误缺少原话证据")
+            entry["gap_kind"] = kind
         if error is not None:
             if not isinstance(error, dict) or any(
                 not isinstance(error.get(key), str) or not error[key].strip()
@@ -100,18 +111,44 @@ def validate_material(material: dict, texts: dict) -> dict:
             ):
                 raise MaterialError(f"第 {index} 句个人错误缺少原话、问题或改法")
             quote = error["quote"].strip()
+            if re.search(r"发音|口音|重音|语调|评分|pronunciation|intonation|accent|score",
+                         error["issue"], re.I):
+                raise MaterialError("文字不能证明发音或评分问题")
             if quote not in original or len(_spoken_words(quote)) < 2:
                 raise MaterialError(f"第 {index} 句个人错误没有可核对的原始英文证据")
             entry["original_error"] = {
                 key: error[key].strip() for key in ("quote", "issue", "correction")
             }
         cleaned.append(entry)
-    return {
+    result = {
         "version": VERSION,
         "source_fingerprint": source_fingerprint(texts),
         "complete_chinese": chinese.strip(),
         "sentences": cleaned,
     }
+    for name in ("outline", "groups"):
+        if name in material:
+            blocks = material[name]
+            if not isinstance(blocks, list) or len(blocks) > len(expected):
+                raise MaterialError("内容提纲格式错误")
+            for block in blocks:
+                if (not isinstance(block, dict) or not isinstance(block.get("label"), str)
+                        or not block["label"].strip()):
+                    raise MaterialError("内容提纲缺少提示")
+                indices = block.get("indices")
+                if not isinstance(indices, list) or not indices or any(
+                    isinstance(n, bool) or not isinstance(n, int) or not 0 <= n < len(expected)
+                    for n in indices
+                ) or len(set(indices)) != len(indices):
+                    raise MaterialError("内容提纲必须引用实际句子")
+            result[name] = blocks
+    if "followup" in material:
+        followup = material["followup"]
+        if (not isinstance(followup, str) or not followup.strip() or len(followup) > 1000
+                or re.search(r"[\u4e00-\u9fff]", followup)):
+            raise MaterialError("追问需要有效英文问题")
+        result["followup"] = followup.strip()
+    return result
 
 
 def save_material(topic_id: str, item_id: str, material: dict) -> dict:
@@ -163,10 +200,20 @@ def generate_material(topic_id: str, item_id: str) -> dict:
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": json.dumps({
             "question": full.get("question"),
+            "ielts_part": library.load_meta(library.item_path(topic_id, item_id)).get("ielts_part"),
             "original_answer": original,
             "exact_spoken_sentences": sentences,
         }, ensure_ascii=False)},
     ]
+    from . import study_progress
+    private = study_progress.get_progress(topic_id, item_id)
+    inputs = (private.get("training") or {}).get("inputs") or private.get("training_inputs")
+    if inputs:
+        messages.append({"role": "user", "content": json.dumps({
+            "supplemental_intent_not_spoken": inputs.get("intent", ""),
+            "external_feedback_unverified": inputs.get("feedback", ""),
+            "instruction": "Neither field is evidence of an error in the raw English answer.",
+        }, ensure_ascii=False)})
     settings = load_settings()
     if settings.get("dry_run"):
         raise MaterialError("dry-run 不调用文本模型；可用 Agent 材料命令准备")

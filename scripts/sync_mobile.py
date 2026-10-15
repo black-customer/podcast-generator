@@ -16,7 +16,8 @@ WWW = BASE / "mobile" / "www"
 
 STATIC_FILES = ["app.js", "experience.js", "continuity.js", "study.js", "oral_review.js", "packreader.js", "packmode.js",
                 "style.css", "mobile-core.js", "mobile-api-core.js", "mobile.js", "mobile.css",
-                "conversation-prompt.txt", "ielts-prompt.txt", "study-prompt.txt"]
+                "conversation-prompt.txt", "ielts-prompt.txt", "study-prompt.txt",
+                "training-core.js", "training.js", "training-baseline.js", "training.css"]
 
 
 def patch_java17() -> None:

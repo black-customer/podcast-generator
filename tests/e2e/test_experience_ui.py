@@ -21,7 +21,7 @@ def test_navigation_actual_round_and_recording_recovery():
         page = browser.new_page(viewport={"width": 1280, "height": 800},
                                 permissions=["microphone"])
         _mock_api(page)
-        page.goto(BASE_URL + "/#/today")
+        page.goto(BASE_URL + "/#/sentence-today")
         expect(page.locator("#today-start")).to_have_text("开始本轮 · 1 句")
         expect(page.locator(".nav-item.active")).to_have_count(1)
         expect(page.locator(".nav-item[href='#/practice']")).to_have_text("题库")
@@ -130,11 +130,11 @@ def test_delayed_episode_does_not_replace_new_route():
         page.goto(BASE_URL + "/#/episode/demo/podcast")
         page.get_by_role("heading", name="整集与章节").wait_for()
         page.locator("#nav-today").click()
-        page.locator("#today-start").wait_for()
+        page.get_by_role("heading", name="今日练习", exact=True).wait_for()
         pending[0].fulfill(json={"topic_name": "Synthetic episode", "items": [],
                                  "item_count": 0, "total_sec": 0})
         page.wait_for_timeout(100)
-        expect(page.locator("#today-start")).to_be_visible()
+        expect(page.get_by_role("heading", name="今日练习", exact=True)).to_be_visible()
         browser.close()
 
 
@@ -278,7 +278,7 @@ def test_desktop_synthetic_screenshots(sample, width, height):  # noqa: F811
             if not reference:
                 assert page.locator(".nav-item.active").count() <= 1, name
 
-        capture("today", "#/today", "#today-start")
+        capture("today", "#/sentence-today", "#today-start")
         capture("oral-prompt", "#/oral-review/session-test", "#oral-recorder")
         page.locator("[data-oral='no-record']").click()
         page.locator(".oral-compare").wait_for()

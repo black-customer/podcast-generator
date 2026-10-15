@@ -283,6 +283,15 @@ def answer_versions() -> dict[str, list[dict]]:
                 "created_at": _creation_time(meta.get("created_at")),
             }
             key = norm_title(texts.get("question") or title)
+            from . import study_progress, training
+            if (study_progress.PRIVATE_DIR / t["id"] / it["id"] / "state.json").exists():
+                try:
+                    state = training.get(t["id"], it["id"])["state"]
+                    entry["training_status"] = state["status"]
+                    entry["training_due"] = bool(not state["paused"] and state["due_date"]
+                                                 and state["due_date"] <= library.now_iso()[:10])
+                except (ValueError, FileNotFoundError):
+                    entry["training_status"] = "unstarted"
             result.setdefault(key, []).append(entry)
     for versions in result.values():
         versions.sort(key=lambda v: (
@@ -340,6 +349,7 @@ def query_questions(
     random_pick: bool = False,
     set_filter: str | None = None,
     answer_status: str = "all",
+    training_status: str = "all",
 ) -> dict:
     """题库查询：part/topic 精确过滤，q 中英不区分大小写子串，页参数钳制。
 
@@ -376,6 +386,9 @@ def query_questions(
             continue
         if answer_status == "unanswered" and answered_item is not None:
             continue
+        status = (answered_item or {}).get("training_status", "unstarted")
+        if training_status != "all" and training_status != status:
+            continue
         rows.append(
             {
                 **row,
@@ -384,6 +397,8 @@ def query_questions(
                 "answered": answered_item is not None,
                 "has_audio": bool(answered_item and answered_item["has_audio"]),
                 "answered_item": answered_item,
+                "training_status": status,
+                "training_due": (answered_item or {}).get("training_due", False),
                 "set_labels": [s["short"] for s in my_sets],
                 "core": is_core,
             }

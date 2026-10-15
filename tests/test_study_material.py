@@ -53,6 +53,23 @@ def test_material_roundtrip_and_order(item):
     assert study.get_material(tid, iid)["status"] == "ready"
 
 
+def test_training_material_optional_fields_are_validated(item):
+    tid, iid, _ = item
+    data = material()
+    data.update(outline=[{"label": "活动与感受", "indices": [0, 1]}],
+                groups=[{"label": "经历", "indices": [0]}], followup="Why does it help?复")
+    with pytest.raises(study.MaterialError):
+        study.save_material(tid, iid, data)
+    data["followup"] = "Why does it help?"
+    data["sentences"][1]["gap_kind"] = "text_supported_error"
+    saved = study.save_material(tid, iid, data)
+    assert saved["outline"] == data["outline"]
+    assert saved["followup"] == "Why does it help?"
+    data["outline"][0]["indices"] = [90]
+    with pytest.raises(study.MaterialError):
+        study.save_material(tid, iid, data)
+
+
 def test_rejects_made_up_errors_and_wrong_audio_text(item):
     tid, iid, path = item
     bad = material()

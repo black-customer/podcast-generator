@@ -63,7 +63,7 @@ public final class GenerationService extends Service {
         if(job.getString("kind").equals("study")){
             notifyPhase("补齐逐句学习材料");JSONObject item=state.getJSONObject("topics").getJSONObject(job.getString("topic_id")).getJSONObject("items").getJSONObject(job.getString("item_id"));
             try{
-                JSONObject material=text(id,db.asset("public/static/study-prompt.txt")+"\nTexts:\n"+item.getJSONObject("texts"),settings,key);
+                JSONObject material=text(id,db.asset("public/static/study-prompt.txt")+"\nIELTS Part: "+item.getJSONObject("meta").optInt("ielts_part",1)+"\nTexts:\n"+item.getJSONObject("texts")+learnerSupplement(item),settings,key);
                 Object validated=db.invoke("validateStudyMaterial",new JSONArray().put(material).put(item.getJSONObject("texts")),null);
                 synchronized(LearningStore.LOCK){JSONObject s=db.read(),current=s.getJSONObject("topics").getJSONObject(job.getString("topic_id")).getJSONObject("items").getJSONObject(job.getString("item_id"));
                     current.put("material",new JSONObject(String.valueOf(validated)));current.getJSONObject("meta").put("study_status","ready");db.write(s);}
@@ -87,7 +87,7 @@ public final class GenerationService extends Service {
         }else{
             JSONObject item=state.getJSONObject("topics").getJSONObject(job.getString("topic_id")).getJSONObject("items").getJSONObject(job.getString("item_id"));
             if(item.getJSONObject("texts").optString("podcast_text").isEmpty()){
-                notifyPhase("整理忠实英文回答");JSONObject result=text(id,db.asset("public/static/ielts-prompt.txt")+"\nQuestion: "+item.getJSONObject("texts").getString("question")+"\nRaw answer: "+item.getJSONObject("texts").getString("original_answer"),settings,key);
+                notifyPhase("整理忠实英文回答");JSONObject result=text(id,db.asset("public/static/ielts-prompt.txt")+"\nQuestion: "+item.getJSONObject("texts").getString("question")+"\nRaw answer: "+item.getJSONObject("texts").getString("original_answer")+learnerSupplement(item),settings,key);
                 db.invoke("validateIeltsResult",new JSONArray().put(result).put(item.getJSONObject("texts").getString("original_answer")),null);
                 synchronized(LearningStore.LOCK){JSONObject s=db.read(),i=s.getJSONObject("topics").getJSONObject(job.getString("topic_id")).getJSONObject("items").getJSONObject(job.getString("item_id")),t=i.getJSONObject("texts");
                     for(String k:new String[]{"natural_english","podcast_text","podcast_script"})t.put(k,result.getString(k));
@@ -121,12 +121,20 @@ public final class GenerationService extends Service {
         }
         if(job.getString("kind").equals("ielts")){
             JSONObject i=snapshot().getJSONObject("topics").getJSONObject(job.getString("topic_id")).getJSONObject("items").getJSONObject(job.getString("item_id"));
-            if(!i.has("material")){notifyPhase("准备逐句中文与讲解");JSONObject material=text(id,db.asset("public/static/study-prompt.txt")+"\nTexts:\n"+i.getJSONObject("texts"),settings,key);
+            if(!i.has("material")){notifyPhase("准备逐句中文与讲解");JSONObject material=text(id,db.asset("public/static/study-prompt.txt")+"\nIELTS Part: "+i.getJSONObject("meta").optInt("ielts_part",1)+"\nTexts:\n"+i.getJSONObject("texts")+learnerSupplement(i),settings,key);
                 Object validated=db.invoke("validateStudyMaterial",new JSONArray().put(material).put(i.getJSONObject("texts")),null);
                 synchronized(LearningStore.LOCK){JSONObject s=db.read();s.getJSONObject("topics").getJSONObject(job.getString("topic_id")).getJSONObject("items").getJSONObject(job.getString("item_id"))
                     .put("material",new JSONObject(String.valueOf(validated)));db.write(s);}}
         }
         update(id,j->{j.put("state","done").put("phase","completed");j.remove("inflight");});
+    }
+    private String learnerSupplement(JSONObject item)throws Exception{
+        JSONObject progress=item.optJSONObject("progress");
+        if(progress==null)return "";
+        JSONObject training=progress.optJSONObject("training");
+        JSONObject inputs=training==null?progress.optJSONObject("training_inputs"):training.optJSONObject("inputs");
+        if(inputs==null)return "";
+        return "\nSupplemental data (not spoken raw answer; feedback is unverified, never error evidence): "+inputs;
     }
     private File writeFragment(File f,byte[] bytes)throws Exception{db.writeMedia(f,bytes);return f;}
     @Override public void onTimeout(int startId,int type){stopSelf();}

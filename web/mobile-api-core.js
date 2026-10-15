@@ -2,6 +2,7 @@
 (function(root){
   'use strict';
   var C=root.MobileCore || require('./mobile-core.js');
+  var T=root.TrainingCore || (typeof require==='function'?require('./training-core.js'):null);
   function bad(m){throw new Error(m);}
   function vals(o){return C.values(o);}
   function norm(s){return String(s || '').toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g,' ').trim();}
@@ -35,11 +36,14 @@
     var setFilter=q.set_filter || q.set || '';
     function memberships(r){return (bank.sets || []).filter(function(x){return (x.question_ids || []).indexOf(r.id)>=0;});}
     function inSet(r){return setFilter==='core'?coreIds.indexOf(r.topic_id)>=0:!setFilter || memberships(r).some(function(x){return x.id===setFilter;});}
-    var answered={};vals(s.topics).forEach(function(t){vals(t.items).forEach(function(i){if((i.texts.original_answer || '').trim())
-      answered[norm(i.texts.question)]={topic_id:t.id,item_id:i.id,has_audio:!!(i.audio || {}).podcast};});});
+    var answered={};vals(s.topics).forEach(function(t){vals(t.items).forEach(function(i){if((i.texts.original_answer || '').trim()){
+      var key=norm(i.texts.question),stamp=(i.meta || {}).created_at || '',prior=answered[key],ts=T.context(C,s,i,bank).state;
+      if(!prior || stamp>=prior.created_at)answered[key]={topic_id:t.id,item_id:i.id,has_audio:!!(i.audio || {}).podcast,created_at:stamp,
+        training_status:ts.status,training_due:!!(!ts.paused && ts.due_date && ts.due_date<=new Date().toISOString().slice(0,10))};}});});
     var rows=(bank.questions || []).filter(function(r){var a=answered[norm(r.text)];return (!q.part || r.part===+q.part) &&
       (!q.topic || r.topic_id===q.topic) && (!q.q || (r.text+' '+(r.text_zh || '')).toLowerCase().indexOf(q.q.toLowerCase())>=0) &&
       (q.answer_status!=='answered' || !!a) && (q.answer_status!=='unanswered' || !a) &&
+      (!q.training_status || q.training_status==='all' || q.training_status===(a?a.training_status:'unstarted')) &&
       inSet(r);});
     var size=Math.max(1,Math.min(100,+q.page_size || 20)),count=Math.ceil(rows.length/size),page=Math.max(1,Math.min(+q.page || 1,count || 1));
     var selected=null;if((q.random==='1' || q.random==='true') && rows.length){selected=rows[Math.floor(Math.random()*rows.length)];page=Math.floor(rows.indexOf(selected)/size)+1;}
@@ -48,13 +52,15 @@
       out.topic_name_en=t.name_en || '';out.topic_name_zh=t.name_zh || '';out.topic_label=[t.name_zh,t.name_en].filter(Boolean).join(' · ');
       out.topic_name=t.name_zh || t.name_en || '';out.core=coreIds.indexOf(r.topic_id)>=0;
       out.set_labels=memberships(r).map(function(x){return x.start_month+'–'+x.end_month+'月';});
-      out.answered_item=answered[norm(r.text)] || null;out.has_audio=!!(out.answered_item || {}).has_audio;out.answered=!!out.answered_item;out.sets=[];return out;});
+      out.answered_item=answered[norm(r.text)] || null;out.has_audio=!!(out.answered_item || {}).has_audio;out.answered=!!out.answered_item;out.sets=[];
+      out.training_status=(out.answered_item || {}).training_status || 'unstarted';out.training_due=!!(out.answered_item || {}).training_due;return out;});
     var topics=(bank.topics || []).map(function(t){var x=C.copy(t);x.count=(bank.questions || []).filter(function(r){return r.topic_id===t.id && (!q.part || r.part===+q.part) && inSet(r);}).length;return x;}).filter(function(t){return t.count>0;});
     return {available:!!(bank.questions || []).length,items:result,total:rows.length,page:page,pageCount:count,page_size:size,
       topics:topics,sets:(bank.sets || []).map(function(x){var out=C.copy(x);out.short=x.start_month+'–'+x.end_month+'月';return out;}),selected_page:page};
   }
   function route(s,method,url,body,now,bank){
     C.openState(s);body=body || {};bank=bank || {};var path=url.split('?')[0].split('/').map(decodeURIComponent).join('/'),q=query(url),m;
+    if(path==='/api/study/training')return T.overview(C,s,bank,now);
     if(path==='/api/health')return {ok:true,mode:'mobile',version:'mobile-learning-1'};
     if(path==='/api/conversations')return vals(s.conversations).map(function(c){return {id:c.id,title:c.title,provider:c.provider,status:c.status,created_at:c.created_at,has_audio:!!c.audio,message_count:c.messages.length};});
     if(path==='/api/conversations/import' && method==='POST')return C.importConversation(s,body,now);
@@ -72,6 +78,17 @@
         if(!found && c.previous_audio && ref){found=(c.previous_audio.timeline.lines || []).filter(function(l){return l.text.indexOf(ref)>=0;})[0];if(found)audio=c.previous_audio.path;}
         return {url:audio,start:found?found.start:0,end:found?found.end:c.duration || 0,mode:found?'measured':'estimated',reason:found?'播放包含该表达的实测片段。':'未取得单句定位，播放完整对话。'};}
       i=findItem(s,tid,iid);
+      if(suffix==='/study/training' || suffix==='/study/training/actions'){
+        var ctx=T.context(C,s,i,bank);
+        if(method==='POST'){
+          if(body.recording_id && !((i.progress || {}).recordings || []).some(function(r){return r.id===body.recording_id;}))bad('录音不属于当前题目');
+          var changed=T.reduce(ctx.state,body,ctx.material,now,ctx.part),p=progress(i);
+          changed.awaiting_material=!i.material;
+          if(p.training && p.training.fingerprint!==changed.fingerprint)(p.training_history || (p.training_history=[])).push(p.training);
+          p.training=changed;ctx.state=changed;
+        }
+        return ctx;
+      }
       if(!suffix){if(method==='PATCH'){
         if(typeof body.original_answer!=='string' || !body.original_answer.trim())bad('原始回答不能为空');
         i.texts.original_answer=body.original_answer;i.material=null;i.meta.study_status='needs_input';
@@ -99,6 +116,7 @@
       if(suffix==='/study/oral-review')return {cards:vals(s.cards).filter(function(c){return c.topic_id===tid && c.item_id===iid;})};
       if(suffix==='/study/recordings' && method==='POST'){var rec={id:body.id || C.hash(now).slice(0,24),stage:body.stage,created_at:now,
         duration_sec:body.duration_sec || 0,path:body.path,mime_type:body.mime_type || 'audio/mp4'};
+        var existing=progress(i).recordings.filter(function(r){return r.id===rec.id;})[0];if(existing)return C.copy(existing);
         progress(i).recordings.push(rec);return rec;}
       var deleted=suffix.match(/^\/study\/recordings\/([^/]+)$/);if(deleted && method==='DELETE'){
         progress(i).recordings=progress(i).recordings.filter(function(r){return r.id!==deleted[1];});return {ok:true};}
@@ -114,10 +132,13 @@
       var question=(bank.questions || []).filter(function(r){return r.id===body.question_id;})[0];if(!question || !String(body.answer || '').trim())bad('题目或回答为空');
       var tid='mobile-ielts',iid=C.hash(now+String(Object.keys(s.jobs).length)).slice(0,24);
       if(!s.topics[tid])s.topics[tid]={id:tid,name:'我的雅思回答',items:{}};
-      s.topics[tid].items[iid]={id:iid,title:question.text,texts:{question:question.text,original_answer:body.answer},audio:{},meta:{created_at:now,status:'empty'}};
+      s.topics[tid].items[iid]={id:iid,title:question.text,texts:{question:question.text,original_answer:body.answer},audio:{},meta:{created_at:now,status:'empty',ielts_part:question.part}};
+      if(body.intent || body.feedback)progress(s.topics[tid].items[iid]).training_inputs={answer:body.answer,intent:body.intent || '',feedback:body.feedback || ''};
       var job={id:iid,job_id:iid,topic_id:tid,item_id:iid,kind:'ielts',state:'queued',phase:'rewrite',errors:[],created_at:now};s.jobs[iid]=job;return C.copy(job);
     }
-    if(path==='/api/study/today'){var due=vals(s.cards).filter(function(c){return !c.paused && !c.superseded && c.due_date<=now.slice(0,10);}),pending=[];
+    if(path==='/api/study/today'){var due=vals(s.cards).filter(function(c){
+      var item=((s.topics[c.topic_id] || {}).items || {})[c.item_id],ts=item?T.context(C,s,item,bank).state:null,attempts=ts?ts.attempts:[],last=attempts[attempts.length-1];
+      return !c.paused && !c.superseded && c.due_date<=now.slice(0,10) && !(last && last.rating==='independent' && last.created_at.slice(0,10)===now.slice(0,10));}),pending=[];
       vals(s.topics).forEach(function(t){vals(t.items).forEach(function(i){var p=i.progress;
         if(i.material && p && p.stage!=='summary' && (p.stage!=='before' || p.before_started))
           pending.push({topic_id:t.id,item_id:i.id,question:i.texts.question,stage:p.stage});});});

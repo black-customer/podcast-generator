@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict'),C=require('../web/mobile-api-core.js');
+const T=require('../web/training-core.js'),s=C.createState(),now='2026-10-15T10:00:00+08:00';
+s.topics.t={id:'t',name:'Synthetic',items:{i:{id:'i',texts:{question:'Q?',original_answer:'I cook.'},audio:{},meta:{},material:{source_fingerprint:'x',complete_chinese:'做饭',sentences:[{zh:'做饭',en:'I cook.',explanation:'说明',usage:'用法'}]}}}};
+const before=JSON.stringify(s),bank={questions:[]};
+s.topics.t.items.i.texts.podcast_text='A: Q?\nB: I cook.';
+const pristine=JSON.stringify(s);
+let ctx=C.route(s,'GET','/api/topics/t/items/i/study/training',{},now,bank),counter=0;
+assert.equal(JSON.stringify(s),pristine);
+function action(action,data={}){ctx=C.route(s,'POST','/api/topics/t/items/i/study/training/actions',{version:2,action_id:String(counter++),fingerprint:ctx.state.fingerprint,action,...data},now,bank);}
+action('start');action('inputs',{answer:'I cook.',intent:'放松',feedback:'建议'});action('understand');
+action('sentence',{index:0,rating:'independent'});action('outline_done');action('whole',{rating:'independent',no_recording:true});
+const exchange=C.exportExchange(s);assert.equal(exchange.version,2);
+assert.ok(exchange.topics.t.items.i.training_private.current.attempts.length);
+assert.ok(!JSON.stringify(exchange).includes('nativePath'));
+const target=C.createState();C.importExchange(target,exchange,now);
+assert.equal(target.topics.t.items.i.progress.training_history.length,1);
+assert.notEqual(T.context(C,target,target.topics.t.items.i,bank).state.status,'mastered');
+const snapshot=JSON.stringify(target);
+assert.throws(()=>C.importExchange(target,{...exchange,version:99},now));assert.equal(JSON.stringify(target),snapshot);
+const broken=JSON.parse(JSON.stringify(exchange));broken.topics.t.items.i.training_private.version=99;
+assert.throws(()=>C.importExchange(target,broken,now));assert.equal(JSON.stringify(target),snapshot);
+console.log('Training mobile compatibility passed');

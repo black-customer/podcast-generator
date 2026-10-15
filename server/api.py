@@ -294,7 +294,8 @@ def api_save_study_progress(topic_id: str, item_id: str, body: dict):
 
 @router.post("/topics/{topic_id}/items/{item_id}/study/recordings")
 async def api_save_study_recording(
-    topic_id: str, item_id: str, request: Request, stage: str, duration_sec: float
+    topic_id: str, item_id: str, request: Request, stage: str, duration_sec: float,
+    upload_key: str | None = None,
 ):
     if int(request.headers.get("content-length") or 0) > 30 * 1024 * 1024:
         raise _err(413, "录音超过 30 MB")
@@ -302,7 +303,7 @@ async def api_save_study_recording(
         data = await request.body()
         return study_progress.save_recording(
             topic_id, item_id, stage, data, duration_sec,
-            request.headers.get("content-type") or ""
+            request.headers.get("content-type") or "", upload_key=upload_key,
         )
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
@@ -358,6 +359,34 @@ class OralCardIn(BaseModel):
 @router.get("/study/today")
 def api_study_today():
     return oral_review.today_overview()
+
+
+@router.get("/study/training")
+def api_training_overview():
+    from . import training
+    return training.overview()
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/study/training")
+def api_training(topic_id: str, item_id: str):
+    from . import training
+    try:
+        return training.get(topic_id, item_id)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(409, str(exc)) from exc
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/study/training/actions")
+def api_training_action(topic_id: str, item_id: str, body: dict):
+    from . import training
+    try:
+        return training.action(topic_id, item_id, body)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(409, str(exc)) from exc
 
 
 @router.post("/study/review-sessions")
@@ -864,6 +893,7 @@ def api_bank_questions(
     random: bool = False,
     set_filter: str | None = None,
     answer_status: Literal["all", "answered", "unanswered"] = "all",
+    training_status: Literal["all", "unstarted", "training", "awaiting_review", "mastered"] = "all",
 ):
     try:
         snapshot = bank.load_bank()
@@ -880,6 +910,7 @@ def api_bank_questions(
     result = bank.query_questions(
         snapshot,
         answer_status=answer_status,
+        training_status=training_status,
         part=part,
         topic_id=topic,
         q=q,
@@ -945,6 +976,8 @@ class GenerationRequestIn(BaseModel):
     topic: str | None = None
     answer: str
     mode: Literal["agent", "api"] = "agent"
+    intent: str = ""
+    feedback: str = ""
 
 
 @router.post("/generation-requests")
@@ -953,6 +986,8 @@ def api_generation_requests(body: GenerationRequestIn):
     answer = (body.answer or "").strip()
     if not answer:
         raise _err(422, "回答不能为空")
+    if len(body.intent) > 30000 or len(body.feedback) > 30000:
+        raise _err(422, "补充内容过长")
     if body.question_id:
         try:
             snapshot = bank.load_bank()
@@ -976,6 +1011,13 @@ def api_generation_requests(body: GenerationRequestIn):
     target = library.get_or_create_topic(topic_name)
     fields = {"question": question_text, "original_answer": answer, **bank.answer_fields(answer)}
     created = library.create_item(target["id"], fields)
+    if body.intent or body.feedback:
+        private = study_progress.get_progress(target["id"], created["id"])
+        private["training_inputs"] = {"answer": answer, "intent": body.intent,
+                                      "feedback": body.feedback}
+        study_progress._write(target["id"], created["id"], private)
+    if body.question_id:
+        library.update_item_meta(target["id"], created["id"], ielts_part=question.get("part", 1))
     out = {
         "topic_id": target["id"],
         "item_id": created["id"],
@@ -987,6 +1029,10 @@ def api_generation_requests(body: GenerationRequestIn):
         out["agent_prompt"] = rewrite.build_agent_prompt(
             target["id"], created["id"], question_text, answer
         )
+        if body.intent or body.feedback:
+            out["agent_prompt"] += (
+                "\n## 独立补充（不属于实际说出的原话）\n中文补充意图：" + body.intent
+                + "\n外部反馈（待核对的建议，不能作为错误证据）：" + body.feedback)
         return out
     try:
         job = jobs.start_api_generation(target["id"], created["id"], question_text, answer)

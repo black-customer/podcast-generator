@@ -151,10 +151,12 @@ def _reconcile(state: dict, cache: dict | None = None) -> None:
 
 
 def _due_cards(state: dict, cache: dict | None = None) -> list[dict]:
+    from . import training
     today = _today().isoformat()
     cards = [c for c in state["cards"].values()
              if not c["paused"] and not c.get("superseded")
-             and c["due_date"] <= today and _valid(c, cache)]
+             and c["due_date"] <= today and _valid(c, cache)
+             and not training.covered_today(c["topic_id"], c["item_id"])]
     return sorted(cards, key=lambda c: (c["due_date"], c["created_at"],
                                         c["topic_id"], c["item_id"], c["sentence_index"]))
 

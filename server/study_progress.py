@@ -1,5 +1,6 @@
 """本机私有练习记录：草稿、复习事实与分版本录音。"""
 
+import hashlib
 import json
 import os
 import threading
@@ -107,6 +108,7 @@ def save_progress(topic_id: str, item_id: str, update: dict) -> dict:
 def save_recording(
     topic_id: str, item_id: str, stage: str, data: bytes, duration_sec: float, media_type: str,
     sentence_index: int | None = None, session_id: str | None = None,
+    upload_key: str | None = None,
 ) -> dict:
     if stage not in RECORDING_STAGES:
         raise ValueError("非法录音阶段")
@@ -123,6 +125,15 @@ def save_recording(
         raise ValueError("口答录音缺少句子或轮次")
     with _LOCK:
         state = get_progress(topic_id, item_id)
+        if upload_key:
+            if not isinstance(upload_key, str) or len(upload_key) > 128:
+                raise ValueError("录音上传标识错误")
+            previous = next((r for r in state["recordings"]
+                             if r.get("upload_key") == upload_key), None)
+            if previous:
+                if previous.get("content_digest") != hashlib.sha256(data).hexdigest():
+                    raise ValueError("录音上传标识与内容不一致")
+                return previous
         folder = _folder(topic_id, item_id)
         folder.mkdir(parents=True, exist_ok=True)
         rec_id = uuid.uuid4().hex
@@ -139,6 +150,8 @@ def save_recording(
                      "filename": name}
             if stage == "oral_review":
                 entry.update({"sentence_index": sentence_index, "session_id": session_id})
+            if upload_key:
+                entry.update(upload_key=upload_key, content_digest=hashlib.sha256(data).hexdigest())
             state["recordings"].append(entry)
             state["last_activity_at"] = library.now_iso()
             _write(topic_id, item_id, state)

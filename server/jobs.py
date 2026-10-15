@@ -255,8 +255,11 @@ def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, a
 
     try:
         _set_phase("rewrite")
+        from . import study_progress
+        extra = study_progress.get_progress(topic_id, item_id).get("training_inputs") or {}
+        options = {"supplement": extra} if extra.get("intent") or extra.get("feedback") else {}
         texts, _repairs = rewrite.generate_texts(
-            load_settings(), question, answer, cancel=cancel_event
+            load_settings(), question, answer, cancel=cancel_event, **options
         )
         _set_phase("save")
         texts["original_answer"] = answer

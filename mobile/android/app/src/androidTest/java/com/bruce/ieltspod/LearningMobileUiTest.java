@@ -54,7 +54,7 @@ public final class LearningMobileUiTest {
             long boot=android.os.SystemClock.elapsedRealtime()+20000;
             while(!js("typeof MobileRuntime!=='undefined' && MobileRuntime.native && MobileRuntime.state!==null").equals("true")){
                 if(android.os.SystemClock.elapsedRealtime()>boot)fail("native UI did not finish booting");Thread.sleep(100);}
-            js("location.hash='#/today';route();");waitText("准备一份练习内容");
+            js("location.hash='#/today';route();");waitText("把一道题练到能够独立回答");
             js("document.body.setAttribute('data-mobile-theme','light');");
             assertEquals("true",js("MobileRuntime.native"));assertEquals("rgb(245, 247, 251)",js("getComputedStyle(document.body).backgroundColor"));
             screenshot(app,"native-today.png");
@@ -67,7 +67,7 @@ public final class LearningMobileUiTest {
                 .put("items",new JSONObject().put("i",new JSONObject().put("id","i").put("texts",texts)
                     .put("material",LearningEngineTest.homeMaterial(db,texts))
                     .put("audio",new JSONObject().put("podcast","/synthetic.m4a")))));
-            db.write(state);js("MobileRuntime.snapshot().then(()=>route());");waitText("我在河边长大。");
+            db.write(state);js("MobileRuntime.snapshot().then(()=>{location.hash='#/light-practice';route();});");waitText("我在河边长大。");
             assertFalse(js("document.getElementById('app').innerText").contains("I grew up by the river."));
             assertEquals("false",js("document.getElementById('home-toggle-answer').getAttribute('aria-expanded')"));
             screenshot(app,"native-home-light.png");
@@ -81,6 +81,18 @@ public final class LearningMobileUiTest {
             assertEquals("true",js("document.getElementById('home-answer-audio').paused"));
             assertFalse(db.read().getJSONObject("topics").getJSONObject("t").getJSONObject("items").getJSONObject("i").has("progress"));
             screenshot(app,"native-home-answer.png");
+            js("location.hash='#/train/t/i';");waitText("先回答这道题");
+            js("document.querySelector('[data-train=start-without]').click();");waitText("确认原回答");
+            js("document.querySelector('[data-train=inputs]').click();");waitText("开始这一轮练习");
+            js("document.querySelector('[data-train=understand]').click();");waitText("独立说出了");
+            screenshot(app,"native-training-sentence.png");
+            js("document.querySelector('[data-train=sentence-independent]').click();");waitText("隐藏提示，独立回答");
+            js("document.querySelector('[data-train=outline_done]').click();");waitText("本人检查");
+            js("document.getElementById('training-no-recording').checked=true;document.querySelectorAll('[name=training-check]').forEach(x=>x.checked=true);document.querySelector('[data-train=whole-independent]').click();");
+            waitText("本次完成，待复验");screenshot(app,"native-training-summary.png");
+            assertEquals("true",js("document.querySelector('.training-header').getBoundingClientRect().top>=40"));
+            assertEquals("none",js("getComputedStyle(document.querySelector('.training-page h1')).outlineStyle"));
+            assertEquals("awaiting_review",db.read().getJSONObject("topics").getJSONObject("t").getJSONObject("items").getJSONObject("i").getJSONObject("progress").getJSONObject("training").getString("status"));
             js("location.hash='#/chat-import';");waitText("整理一次英语聊天");
             js("document.getElementById('chat-import-input').value='User: How do I say dietary fiber?\\nAssistant: Dietary fiber.';document.getElementById('chat-read').click();");
             waitText("2 条文本发言");screenshot(app,"native-chat.png");

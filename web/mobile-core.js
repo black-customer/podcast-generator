@@ -243,14 +243,17 @@
     s.migration.legacy_pack=true;return s;
   }
   function exportExchange(s) {
-    var conversations={},topics={};values(s.conversations).forEach(function(c){var out=copy(c);delete out.audio;delete out.timeline;delete out.previous_audio;conversations[c.id]=out;});
+    var conversations={},topics={},hasTraining=false;values(s.conversations).forEach(function(c){var out=copy(c);delete out.audio;delete out.timeline;delete out.previous_audio;conversations[c.id]=out;});
     values(s.topics).forEach(function(t){var out={id:t.id,name:t.name,items:{}};values(t.items).forEach(function(i){
       out.items[i.id]={id:i.id,title:i.title,texts:copy(i.texts || {}),meta:copy(i.meta || {}),audio:{}};
       if(i.dialogue)out.items[i.id].dialogue=copy(i.dialogue);if(i.material)out.items[i.id].material=copy(i.material);
-    });topics[t.id]=out;});return {version:1,type:'personal_learning_exchange',conversations:conversations,topics:topics};
+      if(i.progress && (i.progress.training || i.progress.training_history)){
+        hasTraining=true;out.items[i.id].training_private={version:2,current:copy(i.progress.training || null),history:copy(i.progress.training_history || [])};
+      }
+    });topics[t.id]=out;});return {version:hasTraining?2:1,type:'personal_learning_exchange',conversations:conversations,topics:topics};
   }
   function importExchange(s,exchange,now) {
-    if(exchange.version!==1 || exchange.type!=='personal_learning_exchange')fail('个人交换包版本不支持');
+    if([1,2].indexOf(exchange.version)<0 || exchange.type!=='personal_learning_exchange')fail('个人交换包版本不支持');
     var original=s;s=copy(s);
     values(exchange.conversations).forEach(function(c){var imported=importConversation(s,c,now);
       if(imported.source_fingerprint!==c.source_fingerprint)fail('交换包原始记录指纹不一致');
@@ -258,9 +261,18 @@
     values(exchange.topics || {}).forEach(function(t){var entries=[];values(t.items || {}).forEach(function(i){
       var old=s.topics[t.id] && s.topics[t.id].items[i.id];if(old && old.texts.original_answer!==i.texts.original_answer)fail('原始回答已变化，请重新导出任务');
       if(i.dialogue){validateIeltsResult({natural_english:i.texts.natural_english,podcast_text:i.texts.podcast_text,podcast_script:i.texts.podcast_script,dialogue:i.dialogue},i.texts.original_answer);}
-      var entry=copy(i);entry.topic_id=t.id;entry.audio={};if(i.material)entry.material=validateStudyMaterial(i.material,i.texts);entries.push(entry);
+      var entry=copy(i);entry.topic_id=t.id;entry.audio={};if(i.material)entry.material=validateStudyMaterial(i.material,i.texts);
+      if(entry.training_private){var privateData=entry.training_private;
+        if(exchange.version!==2 || privateData.version!==2 || !Array.isArray(privateData.history))fail('训练交换记录版本不支持');
+        [privateData.current].concat(privateData.history).forEach(function(record){if(record && (record.version!==2 || !Array.isArray(record.attempts) || !record.sentences || !record.inputs || typeof record.fingerprint!=='string'))fail('训练交换记录损坏');});
+      }
+      entries.push(entry);
       values(s.jobs).forEach(function(j){if(j.topic_id===t.id && j.item_id===i.id && (j.state==='queued' || j.state==='running'))j.state='cancelled';});
-    });migratePack(s,{pack_version:2,topics:[{id:t.id,name:t.name}]},entries);});
+    });migratePack(s,{pack_version:2,topics:[{id:t.id,name:t.name}]},entries);
+      entries.forEach(function(entry){if(!entry.training_private)return;var target=s.topics[t.id].items[entry.id],p=target.progress,records=[entry.training_private.current].concat(entry.training_private.history).filter(Boolean);
+        p.training_history=p.training_history || [];records.forEach(function(record){if(p.training && JSON.stringify(p.training)===JSON.stringify(record))return;
+          if(!p.training_history.some(function(old){return JSON.stringify(old)===JSON.stringify(record);}))p.training_history.push(copy(record));});delete target.training_private;});
+    });
     Object.keys(original).forEach(function(k){delete original[k];});Object.keys(s).forEach(function(k){original[k]=s[k];});
     return s;
   }
@@ -285,6 +297,13 @@
     if(!material.complete_chinese || !Array.isArray(material.sentences) || material.sentences.length!==expected.length)fail('逐句学习材料不完整');
     material.sentences.forEach(function(row,i){if(row.en!==expected[i] || !row.zh || !row.explanation || !row.usage)fail('材料与 B 回答的句子不对应');
       var e=row.original_error;if(e){if(!e.quote || String(texts.original_answer || '').indexOf(e.quote)<0 || !e.issue || !e.correction || /发音|评分|pronunciation|score/i.test(e.issue))fail('个人错误没有原话证据');}});
+    ['outline','groups'].forEach(function(key){if(material[key]!==undefined){
+      if(!Array.isArray(material[key]) || material[key].length>expected.length)fail('内容提纲格式错误');
+      material[key].forEach(function(b){var seen={};if(!b || typeof b.label!=='string' || !b.label.trim() || !Array.isArray(b.indices) || !b.indices.length)fail('内容提纲缺少提示');
+        b.indices.forEach(function(n){if(typeof n!=='number' || n%1 || n<0 || n>=expected.length || seen[n])fail('内容提纲必须引用实际句子');seen[n]=true;});});
+    }});
+    material.sentences.forEach(function(r){if(r.gap_kind!==undefined && (['text_supported_error','explicit_gap','refinement'].indexOf(r.gap_kind)<0 || (r.gap_kind==='text_supported_error' && !r.original_error)))fail('缺口分类缺少原话证据');});
+    if(material.followup!==undefined && (typeof material.followup!=='string' || !material.followup.trim() || material.followup.length>1000 || /[\u4e00-\u9fff]/.test(material.followup)))fail('追问需要有效英文问题');
     var out=copy(material);out.version=1;out.source_fingerprint=sourceFingerprint(texts);return out;
   }
   function sourceFingerprint(texts){return hash('['+['original_answer','natural_english','podcast_text','podcast_script'].map(function(k){return JSON.stringify(texts[k] || '');}).join(', ')+']');}

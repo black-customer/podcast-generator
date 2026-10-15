@@ -68,6 +68,7 @@ def phone():
                                       service_workers="block")
         context.add_init_script(
             (ROOT / "web/mobile-core.js").read_text(encoding="utf-8") + "\n" +
+            (ROOT / "web/training-core.js").read_text(encoding="utf-8") + "\n" +
             (ROOT / "web/mobile-api-core.js").read_text(encoding="utf-8") + "\n" + MOCK
         )
         page = context.new_page()
@@ -98,7 +99,7 @@ def test_import_then_oral_review_without_answer_leak(phone):
       window.__mobileNow='2026-10-04T10:00:00+08:00';
       sessionStorage.setItem('synthetic-native-clock',window.__mobileNow);
     }""")
-    phone.goto(BASE + "/#/today")
+    phone.goto(BASE + "/#/light-practice")
     phone.get_by_text("完整学习与复习", exact=True).click()
     phone.locator("#mobile-review-start").click()
     expect(phone.locator(".oral-page")).to_be_visible()
@@ -197,7 +198,7 @@ def test_mobile_leaving_generation_stops_redirect_and_material_source_filter(pho
 
 def test_completed_legacy_migration_is_not_replayed_on_boot(phone):
     phone.goto(BASE + "/#/today")
-    expect(phone.locator(".mobile-page")).to_be_visible()
+    expect(phone.locator(".training-page")).to_be_visible()
     count = phone.evaluate("""async() => {
       window.__mobileState.migration.legacy_pack=true;await MobileRuntime.snapshot();
       PackState.active=true;PackState.manifest={pack_version:1,topics:[]};

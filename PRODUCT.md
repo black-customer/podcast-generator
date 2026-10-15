@@ -28,6 +28,15 @@ loop without learning the project's internal track or script terminology.
 
 ## Product Purpose
 
+On 2026-10-15 Bruce approved IELTS single-question training v2. The default loop is an initial
+attempt, confirmed original text and gaps, a stable faithful reference, oral recall with optional
+dictation, outline-supported then question-only speaking, and delayed whole-question review.
+The new behavioral authority is docs/design/ielts-training-v2/README.md. Every sentence remains
+available; dictation is support when needed rather than a universal gate. Both home screens
+prioritize continuing a question, delayed review, and starting a question. Lightweight sentence
+practice and conversation reuse remain secondary. Mastery labels explicitly mean self-review,
+not automated IELTS scoring. The older mandatory-dictation account below is historical.
+
 Help Chinese learners speak English more often using their own meanings. A learner can choose an
 IELTS question or reuse an English conversation, receive faithful natural-English audio that is
 pleasant to replay and clear to imitate, then practise reconstructing and independently speaking

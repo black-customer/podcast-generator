@@ -12,7 +12,7 @@ phone = mobile_fixture.phone
 
 
 def seed(page):
-    page.goto(BASE + "/#/today")
+    page.goto(BASE + "/#/light-practice")
     page.evaluate("""() => {
       const items={};
       for(const [id,en,zh] of [['a','I grew up by the river.','我在河边长大。'],
@@ -68,7 +68,7 @@ def test_home_reveal_audio_next_and_theme_do_not_change_learning(phone):
 
 
 def test_home_empty_navigation_and_settings_details(phone):
-    phone.goto(BASE + "/#/today")
+    phone.goto(BASE + "/#/light-practice")
     expect(phone.locator("#app")).to_contain_text("准备一份练习内容")
     for text in ("练习", "题库", "内容", "我的"):
         expect(phone.locator(".nav-menu").get_by_text(text, exact=True)).to_be_visible()
@@ -174,7 +174,7 @@ def test_mobile_theme_layout_and_capture(phone):
     out = Path(__file__).resolve().parents[2] / 'data/.tmp/u01-screenshots'
     out.mkdir(parents=True, exist_ok=True)
     for theme in ('light', 'dark'):
-        phone.goto(BASE + '/#/today')
+        phone.goto(BASE + '/#/light-practice')
         expect(phone.locator('#home-zh')).to_be_visible()
         if phone.locator('body').get_attribute('data-mobile-theme') != theme:
             phone.locator('#mobile-theme-toggle').click()
@@ -206,7 +206,7 @@ def test_mobile_theme_layout_and_capture(phone):
         expect(phone.locator('.study-chinese')).to_be_visible()
         expect(phone.locator('.sidebar')).to_be_hidden()
         phone.screenshot(path=str(out / f'{theme}-390-dictation.png'))
-        phone.goto(BASE + '/#/today')
+        phone.goto(BASE + '/#/light-practice')
         zoom = phone.add_style_tag(content='body.mobile-learning{font-size:22px}')
         assert phone.evaluate('document.documentElement.scrollWidth <= innerWidth')
         phone.screenshot(path=str(out / f'{theme}-390-large-font.png'))

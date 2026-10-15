@@ -74,6 +74,7 @@ public final class LearningStore {
             Scriptable scope=cx.initSafeStandardObjects();
             ScriptableObject.putProperty(scope,"NativeDigest",org.mozilla.javascript.Context.javaToJS(new Digest(),scope));
             cx.evaluateString(scope,asset("public/static/mobile-core.js"),"mobile-core",1,null);
+            cx.evaluateString(scope,asset("public/static/training-core.js"),"training-core",1,null);
             cx.evaluateString(scope,asset("public/static/mobile-api-core.js"),"mobile-api",1,null);
             String input=args.toString();
             if(state!=null)input="["+state.toString()+(args.length()>0?","+input.substring(1):"]");

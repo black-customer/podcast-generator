@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 def _conversation(document: dict, conversation_id: str) -> dict:
-    if (document.get("version") != 1
+    if (document.get("version") not in (1, 2)
             or document.get("type") != "personal_learning_exchange"):
         raise ValueError("个人交换文件版本不受支持")
     conversation = document.get("conversations", {}).get(conversation_id)
@@ -77,7 +77,8 @@ def complete(document: dict, conversation_id: str, result: dict) -> dict:
 
 
 def _ielts_item(document: dict, topic_id: str, item_id: str) -> dict:
-    if document.get("version") != 1 or document.get("type") != "personal_learning_exchange":
+    if (document.get("version") not in (1, 2)
+            or document.get("type") != "personal_learning_exchange"):
         raise ValueError("个人交换文件版本不受支持")
     item = document.get("topics", {}).get(topic_id, {}).get("items", {}).get(item_id)
     if not isinstance(item, dict) or not item.get("texts", {}).get("original_answer"):

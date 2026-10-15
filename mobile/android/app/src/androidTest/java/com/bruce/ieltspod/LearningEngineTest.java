@@ -11,6 +11,28 @@ import static org.junit.Assert.*;
 /** Android 上执行实际发货的共享引擎；不改用户目录、不使用网络或真实凭据。 */
 @RunWith(AndroidJUnit4.class)
 public final class LearningEngineTest {
+    @Test public void questionTrainingIsReadonlyUntilAnExplicitAction()throws Exception{
+        LearningStore db=new LearningStore(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        JSONObject state=db.call("createState",new JSONArray());
+        JSONObject item=new JSONObject().put("id","i").put("texts",new JSONObject().put("question","Do you cook?").put("original_answer","I cook."))
+            .put("audio",new JSONObject()).put("meta",new JSONObject())
+            .put("material",new JSONObject().put("source_fingerprint","synthetic").put("sentences",new JSONArray()
+                .put(new JSONObject().put("en","I cook.").put("zh","我做饭。"))));
+        state.getJSONObject("topics").put("t",new JSONObject().put("id","t").put("name","Synthetic")
+            .put("items",new JSONObject().put("i",item)));
+        String url="/api/topics/t/items/i/study/training",now="2026-10-15T10:00:00+08:00";
+        JSONObject ctx=new JSONObject(String.valueOf(db.invoke("route",new JSONArray().put("GET").put(url)
+            .put(new JSONObject()).put(now).put(new JSONObject()),state)));
+        assertFalse(state.getJSONObject("topics").getJSONObject("t").getJSONObject("items").getJSONObject("i").has("progress"));
+        JSONObject command=new JSONObject().put("version",2).put("fingerprint",ctx.getJSONObject("state").getString("fingerprint"))
+            .put("action_id","start").put("action","start").put("unexposed",true);
+        ctx=new JSONObject(String.valueOf(db.invoke("route",new JSONArray().put("POST").put(url+"/actions")
+            .put(command).put(now).put(new JSONObject()),state)));
+        assertEquals("inputs",ctx.getJSONObject("state").getString("phase"));
+        ctx=new JSONObject(String.valueOf(db.invoke("route",new JSONArray().put("POST").put(url+"/actions")
+            .put(command).put(now).put(new JSONObject()),state)));
+        assertEquals(1,ctx.getJSONObject("state").getJSONObject("receipts").length());
+    }
     @Test public void homePracticeUsesNativeDigestWithoutCreatingProgress() throws Exception {
         LearningStore db=new LearningStore(InstrumentationRegistry.getInstrumentation().getTargetContext());
         JSONObject state=db.call("createState",new JSONArray());

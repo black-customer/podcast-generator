@@ -103,7 +103,7 @@ const MobileRuntime = (() => {
     await snapshot();await migratePack();
     if(navigator.mediaDevices) navigator.mediaDevices.getUserMedia=async()=>{
       const parts=location.hash.slice(2).split('/').map(decodeURIComponent);let source={};
-      if(parts[0]==='learn')source={topic_id:parts[1],item_id:parts[2],stage:state.topics[parts[1]]?.items[parts[2]]?.progress?.stage || 'before'};
+      if(parts[0]==='learn' || parts[0]==='train')source={topic_id:parts[1],item_id:parts[2],stage:parts[0]==='train'?(state.topics[parts[1]]?.items[parts[2]]?.progress?.training?.phase==='before'?'before':'recall'):state.topics[parts[1]]?.items[parts[2]]?.progress?.stage || 'before'};
       if(parts[0]==='oral-review'){const s=state.sessions[parts[1]];source={session_id:parts[1],card_id:s?.cards[s.current_index],stage:'oral_review'};}
       await plugin.recordStart({source});return {getTracks:()=>[{stop(){}}]};
     };
@@ -146,8 +146,8 @@ const MobileRuntime = (() => {
     const path=hash.replace(/^#\//,'').split(/[/?]/)[0];
     const owner=['my','settings','mobile-history','study-history','import'].includes(path)?'my'
       : ['bank','practice','setup'].includes(path)?'bank'
-      : ['today','oral-review',''].includes(path)?'today':'materials';
-    document.body.classList.toggle('mobile-task', /^(learn|oral-review|review-practice)$/.test(path));
+      : ['today','train','oral-review','light-practice',''].includes(path)?'today':'materials';
+    document.body.classList.toggle('mobile-task', /^(learn|train|oral-review|review-practice)$/.test(path));
     nav?.querySelectorAll('.nav-item').forEach(a=>{const selected=a.dataset.filter===owner;
       a.classList.toggle('active',selected);if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   }
@@ -200,7 +200,7 @@ const MobileUI = (() => {
       <details class="home-full-learning"><summary>${homeIcon('book')}<span class="home-full-heading"><span>完整学习与复习</span><small>继续逐句学习与口答</small></span>${homeIcon('arrow')}</summary>
         ${data.active_session_id?`<a class="study-button" href="#/oral-review/${esc(data.active_session_id)}">继续本轮口答</a>`:
           data.due_count?'<button class="study-button" id="mobile-review-start">开始正式口答</button>':'<p>暂无到期口答。</p>'}
-        ${(data.continue_learning || []).map(r=>`<a class="mobile-row" href="#/learn/${encodeURIComponent(r.topic_id)}/${encodeURIComponent(r.item_id)}">${esc(r.question)}</a>`).join('')}
+        ${(data.continue_learning || []).map(r=>`<a class="mobile-row" href="#/train/${encodeURIComponent(r.topic_id)}/${encodeURIComponent(r.item_id)}">${esc(r.question)}</a>`).join('')}
       </details></div>`;
     MobileAppearance.refresh();
     function renderCard(){stopHomeAudio();const revision=homeRevision;
@@ -361,7 +361,7 @@ const MobileUI = (() => {
     const recordings=[],names={before:'学习前',chinese:'看中文说',recall:'脱稿说'};
     Object.values(MobileRuntime.state.topics || {}).forEach(t=>Object.values(t.items || {}).forEach(i=>
       (i.progress?.recordings || []).forEach(r=>recordings.push({...r,title:i.title || i.texts?.question || t.name,
-        href:`#/learn/${encodeURIComponent(t.id)}/${encodeURIComponent(i.id)}`}))));
+        href:`#/train/${encodeURIComponent(t.id)}/${encodeURIComponent(i.id)}`}))));
     recordings.sort((a,b)=>(Date.parse(b.created_at)||0)-(Date.parse(a.created_at)||0));
     layout('学习记录',`${recordings.length?`<section class="mobile-section"><h2>完整回答录音</h2>${recordings.map(r=>{
       const label=names[r.stage] || '录音';return `<div class="mobile-row"><a href="${esc(r.href)}">${esc(r.title)}</a><span>${label} · ${esc(String(r.created_at || '时间未知').replace('T',' '))}</span>
@@ -372,7 +372,7 @@ const MobileUI = (() => {
   }
   function route(hash,token){if(!MobileRuntime.native)return false;reset();MobileRuntime.navigation(hash);
     const [path,arg]=hash.replace(/^#\//,'').split('/');let action;
-    if(path==='today' || !path)action=()=>today(token);else if(path==='materials' || path==='topics')action=()=>materials(token);
+    if(path==='today' || !path)action=()=>TrainingUI.today(token);else if(path==='light-practice')action=()=>today(token);else if(path==='materials' || path==='topics')action=()=>materials(token);
     else if(path==='my' || path==='settings')action=()=>my(token,arg || '');else if(path==='chat-import')action=()=>importView();
     else if(path==='conversation')action=()=>conversation(decodeURIComponent(arg),token);else if(path==='mobile-history' || path==='study-history')action=()=>history(token);
     else if(path==='done'){const parts=hash.replace(/^#\//,'').split('/');action=()=>{location.hash=`#/play/${parts[1]}/${parts[2]}`;};}

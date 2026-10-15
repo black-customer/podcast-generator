@@ -810,7 +810,7 @@ async function TopicDetailView(topicId, token) {
       <div>${it.duration_sec_podcast ? fmtDur(it.duration_sec_podcast) : (it.duration_sec ? fmtDur(it.duration_sec) : "—")}</div>
       <div class="track-actions"><a class="btn-pill" style="padding:4px 12px;font-size:12px;" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">播放</a>
         ${it.has_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
-          `<a class="study-entry-link" href="#/learn/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">${it.study_status === "ready" ? "继续学习" : "开始学习"}</a>` : ""}</div>
+          `<a class="study-entry-link" href="#/train/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">${it.study_status === "ready" ? "继续学习" : "开始学习"}</a>` : ""}</div>
     </div>
   `).join("");
 
@@ -896,7 +896,7 @@ async function TrackPlayerView(topicId, itemId, token) {
           ${item.has_audio_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
             `<span>${studyStatusName(item.study_status)}</span>` : ""}
           ${item.has_audio_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
-            `<a class="study-entry-link" href="#/learn/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">开始／继续学习</a>` : ""}
+            `<a class="study-entry-link" href="#/train/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">开始／继续学习</a>` : ""}
         </div>
         <div class="lyrics-panel" id="lyrics-panel">
           <div id="pod-stream" class="transcript" style="display:${PlayerState.track === 'podcast' ? 'block' : 'none'}">
@@ -1974,6 +1974,7 @@ function bankParams() {
     set: p.get("set") || "",
     q: p.get("q") || "",
     answer_status: p.get("answer_status") || "all",
+    training_status: p.get("training_status") || "all",
     write: p.get("write") || "",
     page: parseInt(p.get("page") || "1", 10) || 1,
     sel: p.get("sel") || "",
@@ -1983,7 +1984,7 @@ function bankParams() {
 function bankGo(overrides) {
   const cur = bankParams();
   const next = { ...cur, ...overrides };
-  const filterChanged = ["part", "topic", "set", "q", "answer_status"].some(
+  const filterChanged = ["part", "topic", "set", "q", "answer_status", "training_status"].some(
     (k) => overrides[k] !== undefined && overrides[k] !== cur[k]
   );
   if (filterChanged) { next.page = 1; next.sel = ""; next.write = ""; bankRandomPick = null; }
@@ -1994,6 +1995,7 @@ function bankGo(overrides) {
   if (next.set) qs.set("set", next.set);
   if (next.q) qs.set("q", next.q);
   if (next.answer_status !== "all") qs.set("answer_status", next.answer_status);
+  if (next.training_status !== "all") qs.set("training_status", next.training_status);
   if (next.write) qs.set("write", next.write);
   if (next.page > 1) qs.set("page", String(next.page));
   if (next.sel) qs.set("sel", next.sel);
@@ -2008,7 +2010,7 @@ async function bankRandomGo() {
   const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&random=1` +
     (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
     (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "") +
-    (p.q ? `&q=${encodeURIComponent(p.q)}` : "") + `&answer_status=${p.answer_status}`;
+    (p.q ? `&q=${encodeURIComponent(p.q)}` : "") + `&answer_status=${p.answer_status}&training_status=${p.training_status}`;
   try {
     const res = await api("GET", query);
     if (!res.items || !res.items.length) { toast("该筛选下没有题目"); return; }
@@ -2144,7 +2146,8 @@ async function bankSubmitAnswer(questionId) {
   btn.disabled = true;
   btn.textContent = mode === "api" ? "启动生成中…" : "创建条目中…";
   try {
-    const res = await api("POST", "/api/generation-requests", { question_id: questionId, answer, mode });
+    const res = await api("POST", "/api/generation-requests", { question_id: questionId, answer, mode, ...TrainingBaseline.values() });
+    await TrainingBaseline.attach(questionId, res, answer).catch(e=>toast('回答已提交，首答暂未关联：'+e.message));
     await AnswerExperience.submitted(draft, answer, mode);
     if (viewStale(token)) { toast("回答已提交，可在我的语料中查看。"); return; }
     if (draft && (draft.answer.trim() !== answer || draft.mode !== mode)) toast("新输入的文字与选择仍保存在未提交草稿中。");
@@ -2173,6 +2176,7 @@ async function BankView(token) {
   try {
     const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&page=${p.page}` +
       `&answer_status=${encodeURIComponent(p.answer_status)}` +
+      `&training_status=${encodeURIComponent(p.training_status)}` +
       (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
       (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "") +
       (p.q ? `&q=${encodeURIComponent(p.q)}` : "");
@@ -2265,6 +2269,7 @@ async function BankView(token) {
       <div class="bank-row-text">${esc(it.text)}</div>
       <div class="bank-row-meta">
         <span class="bank-topic-tag">${esc(it.topic_name)}</span>
+        ${it.training_status && it.training_status!=='unstarted'?`<span class="bank-badge">${({training:'训练中',awaiting_review:'待复验',mastered:'稳定掌握·本人复验'})[it.training_status]}${it.training_due?' · 已到期':''}</span>`:''}
         ${it.has_audio ? `<span class="bank-badge">▶ 已有音频</span>` : (it.answered ? `<span class="bank-badge bank-badge-dim">已作答·未生成</span>` : "")}
         ${it.core ? `<span class="bank-part-tag">必考</span>` : ""}
         ${(it.set_labels || []).map((l) => `<span class="bank-topic-tag">${esc(l)}</span>`).join("")}
@@ -2286,6 +2291,7 @@ async function BankView(token) {
       <div class="bank-tabs">${partTabs}</div>
       <label class="bank-status-label">作答状态<select id="bank-status" class="bank-select" onchange="bankGo({answer_status: this.value})">${[["all", "全部"], ["unanswered", "未回答"], ["answered", "已回答"]].map(([v, l]) => `<option value="${v}" ${p.answer_status === v ? "selected" : ""}>${l}</option>`).join("")}</select></label>
       <select id="bank-topic" class="bank-select" aria-label="话题" onchange="bankGo({topic: this.value})">${topicOptions}</select>
+      <label class="bank-status-label">训练状态<select id="bank-training-status" class="bank-select" onchange="bankGo({training_status: this.value})">${[['all','全部'],['unstarted','未开始'],['training','训练中'],['awaiting_review','待复验'],['mastered','稳定掌握']].map(([v,l])=>`<option value="${v}" ${p.training_status===v?'selected':''}>${l}</option>`).join('')}</select></label>
       <select id="bank-set" class="bank-select" aria-label="考季或必考话题" onchange="bankGo({set: this.value})">${setOptions}</select>
       <div class="bank-search">
         <input id="bank-q" value="${esc(p.q)}" placeholder="搜索题干（中英文）"
@@ -2327,7 +2333,7 @@ async function BankView(token) {
     const radio = $app.querySelector(`[name='bank-gen-mode'][value='${previousMode}']`);
     if (radio) radio.checked = true;
   }
-  if (selItem) { AnswerExperience.savedAnswer(selItem, token); AnswerExperience.bindDraft(selItem); }
+  if (selItem) { AnswerExperience.savedAnswer(selItem, token); AnswerExperience.bindDraft(selItem); TrainingBaseline.mount(selItem).catch(e=>toast('首答草稿读取失败：'+e.message)); }
   AnswerExperience.recoveryList(token);
 }
 
@@ -2464,6 +2470,8 @@ const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup", "#/today",
   "#/oral-review", "#/study-history"];
 
 function route() {
+  if (typeof TrainingBaseline !== "undefined") TrainingBaseline.leave();
+  if (typeof TrainingUI !== "undefined") TrainingUI.reset();
   AnswerExperience.leave();
   const episodeAudio = document.getElementById("ep-audio");
   if (episodeAudio) ListeningExperience.detach(episodeAudio);
@@ -2471,8 +2479,7 @@ function route() {
   if (doneAudio) ListeningExperience.detach(doneAudio);
   const token = ++routeToken;
   const packActive = typeof PackState !== "undefined" && PackState.active;
-  const hash = location.hash || (packActive || matchMedia("(max-width: 860px)").matches
-    ? "#/practice" : "#/today");
+  const hash = location.hash || (packActive ? "#/practice" : "#/today");
   if (typeof OralReviewUI !== "undefined" && !OralReviewUI.leave(hash)) return;
   if (typeof StudyUI !== "undefined" && !StudyUI.leave(hash)) return;
   if (!hash.startsWith("#/bank") && !hash.startsWith("#/practice")) genWaitStop();
@@ -2488,7 +2495,7 @@ function route() {
   document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
   const base = hash.split("?")[0];
   const owner = base.startsWith("#/play/") || base.startsWith("#/episode/") ? "playing"
-    : base === "#/today" || base.startsWith("#/oral-review/") || base === "#/study-history" ? "today"
+    : base === "#/today" || base.startsWith("#/train/") || base.startsWith("#/oral-review/") || base === "#/study-history" ? "today"
     : base.startsWith("#/bank") || base.startsWith("#/practice") ? "bank"
     : base.startsWith("#/review") ? "review"
     : base.startsWith("#/manage") || base.startsWith("#/setup") || base.startsWith("#/voices") ? "settings"
@@ -2517,7 +2524,15 @@ function route() {
     return;
   }
 
-  if (hash === "#/today") { OralReviewUI.today(token); return; }
+  if (hash === "#/today") { TrainingUI.today(token); return; }
+  if (hash === "#/sentence-today") { OralReviewUI.today(token); return; }
+  if (hash.startsWith("#/train/")) {
+    const parts = hash.slice(8).split("/");
+    if (parts.length >= 2) {
+      TrainingUI.view(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
+      return;
+    }
+  }
   if (hash === "#/study-history") { OralReviewUI.history(token); return; }
   if (hash.startsWith("#/oral-review/")) {
     OralReviewUI.sessionView(decodeURIComponent(hash.slice("#/oral-review/".length)), token);
@@ -2790,7 +2805,7 @@ async function DoneView(topicId, itemId, token) {
         `<section class="done-study-card"><h2>${studyStatusName(item.study_status)}</h2>
           <p>${item.study_status === "ready" ? "逐句中文与讲解已就绪，可以开始完整回答的学习。" :
             "逐句材料可在学习页准备或补齐；音频仍可直接收听。"}</p>
-          <div class="study-actions"><a class="study-button primary" href="#/learn/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">开始学习</a>
+          <div class="study-actions"><a class="study-button primary" href="#/train/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">开始学习</a>
             <a class="study-button" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">打开精听播放器</a></div></section>` :
         hasAudio ? `<div class="study-actions"><a class="study-button" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">打开精听播放器</a></div>` : ""}
       ${item.natural_english ? `<details id="done-english" class="done-dialogue"><summary>查看完整英文</summary>
