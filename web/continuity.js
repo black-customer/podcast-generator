@@ -149,12 +149,12 @@ const AnswerExperience = (() => {
           const t = encodeURIComponent(ref.topic_id), id = encodeURIComponent(ref.item_id);
           root.innerHTML = `<h3>原始回答</h3>${item.original_answer ? `<pre class="answer-text">${esc(item.original_answer)}</pre>` :
             '<p class="study-muted">此旧条目未保存原始回答。下面展示已有文本。</p>'}
-            ${item.chinese ? `<details open><summary>已有中文</summary><pre class="answer-text">${esc(item.chinese)}</pre></details>` : ""}
-            ${item.natural_english || item.monologue_text || item.podcast_text ? `<details open><summary>已有英文</summary>
+            ${item.chinese ? `<details><summary>已有中文</summary><pre class="answer-text">${esc(item.chinese)}</pre></details>` : ""}
+            ${item.natural_english || item.monologue_text || item.podcast_text ? `<details><summary>已有英文</summary>
               <pre class="answer-text">${esc(item.natural_english || item.monologue_text || item.podcast_text)}</pre></details>` : ""}
-            <div class="study-actions">${item.has_audio ? `<a class="study-button primary" href="#/play/${t}/${id}">播放音频</a>` :
+            <div class="study-actions">${item.has_audio ? `<a class="study-button" href="#/play/${t}/${id}">播放音频</a>` :
               `<button class="study-button primary" id="existing-generate">继续生成 · Agent</button>`}
-            ${!offline() && item.has_audio_podcast ? `<a class="study-button" href="#/train/${t}/${id}">${item.study_status === "ready" ? "开始／继续学习" : "补齐学习材料"}</a>` : ""}
+            ${!offline() && item.has_audio_podcast ? `<a class="study-button primary" href="#/train/${t}/${id}">${item.study_status === "ready" ? "继续练习" : "准备材料并练习"}</a>` : ""}
             <a class="btn-pill" href="#/done/${t}/${id}">查看回答详情</a></div>
             ${!offline() ? `<p class="study-muted">${studyStatusName(item.study_status)}</p>` : ""}`;
           document.getElementById("existing-generate")?.addEventListener("click", async () => {
@@ -237,8 +237,8 @@ const CorpusExperience = (() => {
           const t = encodeURIComponent(r.topic_id), id = encodeURIComponent(r.item_id);
           return `<article class="corpus-search-result"><h2>${esc(publicTitle(r.title))}</h2><p class="study-muted">${esc(r.topic_name)} · ${r.has_audio ? "已有音频" : "音频未完成"}</p>
             <p class="search-snippet">${esc(r.snippet)}</p><div class="study-actions"><a class="study-button" href="#/done/${t}/${id}">查看回答</a>
-            ${r.has_audio ? `<a class="study-button primary" href="#/play/${t}/${id}">播放音频</a>` : `<a class="study-button" href="#/topic/${t}">继续生成</a>`}
-            ${!PackState.active && r.study_status ? `<a class="study-button" href="#/train/${t}/${id}">${r.study_status === "ready" ? "开始／继续学习" : "补齐学习材料"}</a>` : ""}</div></article>`;
+            ${r.has_audio ? `<a class="study-button" href="#/play/${t}/${id}">播放音频</a>` : `<a class="study-button" href="#/topic/${t}">继续生成</a>`}
+            ${!PackState.active && r.study_status ? `<a class="study-button primary" href="#/train/${t}/${id}">${r.study_status === "ready" ? "继续练习" : "准备材料并练习"}</a>` : ""}</div></article>`;
         }).join("") + (!data.results.length ? '<p>没有匹配内容。可以换个词，或清空搜索返回分类浏览。</p>' : "") +
         (data.pageCount > 1 ? `<div class="bank-pager"><button class="btn-pill" id="corpus-prev" ${data.page <= 1 ? "disabled" : ""}>上一页</button>
           <span>第 ${data.page} / ${data.pageCount} 页</span><button class="btn-pill" id="corpus-next" ${data.page >= data.pageCount ? "disabled" : ""}>下一页</button></div>` : "");

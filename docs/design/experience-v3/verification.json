@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-15",
+  "scope": "Frontend experience redesign; synthetic content only",
+  "checks": {
+    "check_with_e2e": "270 passed, 1 skipped; 66 e2e passed; lint/import/start passed",
+    "focused_regressions": "10 passed; integration 21 passed; final viewport regressions 4 passed",
+    "android_build": "assembleDebug assembleDebugAndroidTest testDebugUnitTest --offline succeeded; 3 JVM tests",
+    "android_instrumentation": "final APK full 9 passed; final real-touch IME visibility and viewport test 1 passed",
+    "resource_parity": 29,
+    "check_final": "bash scripts/check.sh: 270 passed, 1 skipped; lint/import/start passed",
+    "android_ime": "Final real-touch IME test 1 passed: native insets visible, viewport fits and focused input bottom is above keyboard"
+  },
+  "apk": {
+    "path": "dist/英语说说说-体验重做-v3-debug.apk",
+    "sha256": "9775c21077aff6d54b0f3d0898c885f90e11d0ba5f9df7ccc9420f5936c4caca"
+  },
+  "screenshots": [
+    "desktop-bank.png",
+    "desktop-before.png",
+    "desktop-content.png",
+    "desktop-dictation.png",
+    "desktop-home.png",
+    "desktop-inputs.png",
+    "desktop-player.png",
+    "desktop-reference.png",
+    "desktop-sentence.png",
+    "desktop-summary.png",
+    "desktop-whole.png",
+    "native-today.png",
+    "native-training-keyboard.png",
+    "native-training-sentence.png",
+    "native-training-summary.png",
+    "phone-bank-dark.png",
+    "phone-home-dark.png",
+    "phone-large-text.png",
+    "phone-sentence-dark.png",
+    "phone-sentence-light.png"
+  ],
+  "paid_calls": false,
+  "public_release": false,
+  "limitations": [
+    "Real-device private-corpus upgrade and subjective continuous usability require human trial",
+    "No measured IELTS score or learning-time improvement claim"
+  ],
+  "development_failures": [
+    "Initial lint lines corrected",
+    "Bank async filtering and focus/scroll race fixed with actual condition waits",
+    "Native cancellation test waits for service lifecycle quiescence; complete rerun passed",
+    "Supplemental hot reinstall recorder boot timeout; fresh-process full rerun passed",
+    "Viewport regression failed before fix; real IME visibility confirmed by native insets"
+  ]
+}

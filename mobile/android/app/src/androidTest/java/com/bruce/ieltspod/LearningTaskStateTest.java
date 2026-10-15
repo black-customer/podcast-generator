@@ -17,6 +17,19 @@ import static org.junit.Assert.*;
 /** 原生收费任务的失败与取消边界：只使用隔离文件和合成请求。 */
 @RunWith(AndroidJUnit4.class)
 public final class LearningTaskStateTest {
+    private boolean serviceAlive(Context app) {
+        android.app.ActivityManager manager=(android.app.ActivityManager)app.getSystemService(Context.ACTIVITY_SERVICE);
+        for(android.app.ActivityManager.RunningServiceInfo service:manager.getRunningServices(Integer.MAX_VALUE))
+            if(service.service.getClassName().equals(GenerationService.class.getName()))return true;
+        return false;
+    }
+    private void awaitServiceStopped(Context app)throws Exception {
+        long deadline=android.os.SystemClock.elapsedRealtime()+15000;
+        while(serviceAlive(app)){
+            if(android.os.SystemClock.elapsedRealtime()>deadline)fail("previous synthetic generation service did not stop");
+            Thread.sleep(50);
+        }
+    }
     private String queue(LearningStore db) throws Exception {
         JSONObject raw=new JSONObject().put("title","Synthetic task failure").put("messages",new JSONArray()
             .put(new JSONObject().put("id","m1").put("role","user").put("text","How do I say whole grain?"))
@@ -30,11 +43,13 @@ public final class LearningTaskStateTest {
         long deadline=android.os.SystemClock.elapsedRealtime()+15000;
         while(android.os.SystemClock.elapsedRealtime()<deadline){Thread.sleep(50);JSONObject job;
             synchronized(LearningStore.LOCK){job=db.read().getJSONObject("jobs").getJSONObject(id);}
-            if(!GenerationService.running.contains(id) && !job.optString("state").equals("queued"))return job;}
+            if(!GenerationService.running.contains(id) && !job.optString("state").equals("queued")){
+                awaitServiceStopped(InstrumentationRegistry.getInstrumentation().getTargetContext());return job;}}
         throw new AssertionError("native task did not stop");
     }
     @Test public void failuresAndCancellationNeverRetryAutomatically() throws Exception {
         Context app=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        app.stopService(new Intent(app,GenerationService.class));awaitServiceStopped(app);
         LearningStore.testRoot=new File(app.getCacheDir(),"learning-errors-"+java.util.UUID.randomUUID());LearningStore db=new LearningStore(app);
         try {
             app.startActivity(new Intent(app,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));Thread.sleep(2500);

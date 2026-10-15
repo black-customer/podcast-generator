@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 from urllib.parse import urlparse
 
+import pytest
 from playwright.sync_api import expect, sync_playwright
 
 from server import training
@@ -181,7 +182,8 @@ def test_desktop_save_failure_retry_and_material_fallback():
         browser.close()
 
 
-def test_recording_failure_survives_reload_and_retries_same_upload():
+@pytest.mark.parametrize("failure", ["upload", "refresh"])
+def test_recording_failure_survives_reload_and_retries_same_upload(failure):
     with sync_playwright() as p:
         browser = p.chromium.launch(
             args=["--use-fake-device-for-media-stream", "--use-fake-ui-for-media-stream"]
@@ -211,15 +213,21 @@ def test_recording_failure_survives_reload_and_retries_same_upload():
             "recordings": [],
         }
         uploads = []
+        failed_refresh = []
 
         def handler(route):
             if route.request.url.split("?")[0].endswith("/recordings"):
                 uploads.append(route.request.url)
-                if len(uploads) == 1:
+                if len(uploads) == 1 and failure == "upload":
                     route.fulfill(status=503, json={"detail": "synthetic offline"})
                     return
                 ctx["recordings"] = [{"id": "saved", "stage": "recall", "created_at": "now"}]
                 route.fulfill(json={"id": "saved"})
+                return
+            if (route.request.url.endswith("/training") and uploads
+                    and failure == "refresh" and not failed_refresh):
+                failed_refresh.append(True)
+                route.fulfill(status=503, json={"detail": "synthetic offline"})
                 return
             if route.request.url.endswith("/actions"):
                 ctx["state"] = training.reduce(
@@ -231,11 +239,20 @@ def test_recording_failure_survives_reload_and_retries_same_upload():
         page.goto(BASE + "/#/train/t/i")
         page.get_by_role("button", name="开始录音", exact=True).click()
         page.wait_for_timeout(250)
-        page.get_by_role("button", name="停止并保存", exact=True).click()
+        page.get_by_role("link", name="返回练习", exact=True).click()
+        expect(page.locator("#recording-leave-dialog")).to_be_visible()
+        page.get_by_role("button", name="停止并保存后离开", exact=True).click()
         expect(page.locator("#training-status")).to_contain_text("synthetic offline")
+        expect(page.locator("#recording-leave-dialog [role=status]")).to_contain_text(
+            "保存尚未成功"
+        )
+        page.get_by_role("button", name="继续留在这里", exact=True).click()
         page.reload()
+        expect(page.get_by_role("button", name="恢复并保存录音", exact=True)).to_be_visible()
+        page.evaluate("window.recoveredRoot=document.getElementById('training-root')")
         page.get_by_role("button", name="恢复并保存录音", exact=True).click()
         expect(page.locator("#training-status")).to_contain_text("录音已保存")
+        assert page.evaluate("recoveredRoot===document.getElementById('training-root')")
         assert uploads[0] == uploads[1]
         for checkbox in page.locator('[name="training-check"]').all():
             checkbox.check()

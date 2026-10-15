@@ -38,7 +38,7 @@ public final class LearningMobileUiTest {
         fail("system bar appearance did not follow theme");
     }
     private void screenshot(Context app,String name)throws Exception{
-        js("window.__qaPaint=false;document.getElementById('app').scrollTop=0;requestAnimationFrame(()=>requestAnimationFrame(()=>window.__qaPaint=true));");
+        js("window.__qaPaint=false;if(!document.activeElement.matches('input,textarea'))document.getElementById('app').scrollTop=0;requestAnimationFrame(()=>requestAnimationFrame(()=>window.__qaPaint=true));");
         long deadline=android.os.SystemClock.elapsedRealtime()+5000;while(!js("window.__qaPaint===true").equals("true")){
             if(android.os.SystemClock.elapsedRealtime()>deadline)fail("WebView did not paint");Thread.sleep(30);}
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();Thread.sleep(200);
@@ -54,9 +54,9 @@ public final class LearningMobileUiTest {
             long boot=android.os.SystemClock.elapsedRealtime()+20000;
             while(!js("typeof MobileRuntime!=='undefined' && MobileRuntime.native && MobileRuntime.state!==null").equals("true")){
                 if(android.os.SystemClock.elapsedRealtime()>boot)fail("native UI did not finish booting");Thread.sleep(100);}
-            js("location.hash='#/today';route();");waitText("把一道题练到能够独立回答");
+            js("location.hash='#/today';route();");waitText("从一道题开始，把想表达的意思说顺");
             js("document.body.setAttribute('data-mobile-theme','light');");
-            assertEquals("true",js("MobileRuntime.native"));assertEquals("rgb(245, 247, 251)",js("getComputedStyle(document.body).backgroundColor"));
+            assertEquals("true",js("MobileRuntime.native"));assertEquals("rgb(246, 247, 249)",js("getComputedStyle(document.body).backgroundColor"));
             screenshot(app,"native-today.png");
             assertEquals("英语说说说",app.getApplicationInfo().loadLabel(app.getPackageManager()).toString());
             LearningStore db=new LearningStore(app);JSONObject state=db.read();
@@ -86,9 +86,39 @@ public final class LearningMobileUiTest {
             js("document.querySelector('[data-train=inputs]').click();");waitText("开始这一轮练习");
             js("document.querySelector('[data-train=understand]').click();");waitText("独立说出了");
             screenshot(app,"native-training-sentence.png");
+            js("document.querySelector('[data-train=write]').click();");waitText("根据中文写出英文");
+            js("document.getElementById('training-dictation').focus();");
+            final float tapX=Float.parseFloat(js("(document.getElementById('training-dictation').getBoundingClientRect().left+30)*devicePixelRatio"));
+            final float tapY=Float.parseFloat(js("(document.getElementById('training-dictation').getBoundingClientRect().top+30)*devicePixelRatio"));
+            InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+                android.webkit.WebView view=activity.getBridge().getWebView();view.requestFocus();long time=android.os.SystemClock.uptimeMillis();
+                android.view.MotionEvent down=android.view.MotionEvent.obtain(time,time,android.view.MotionEvent.ACTION_DOWN,tapX,tapY,0);
+                android.view.MotionEvent up=android.view.MotionEvent.obtain(time,time+80,android.view.MotionEvent.ACTION_UP,tapX,tapY,0);
+                view.dispatchTouchEvent(down);view.dispatchTouchEvent(up);down.recycle();up.recycle();
+                android.view.inputmethod.InputMethodManager keyboard=(android.view.inputmethod.InputMethodManager)app.getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(view,android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
+            });
+            long keyboardDeadline=android.os.SystemClock.elapsedRealtime()+7000;final boolean[] keyboardVisible={false};
+            while(!keyboardVisible[0]){
+                InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+                    androidx.core.view.WindowInsetsCompat insets=androidx.core.view.ViewCompat.getRootWindowInsets(activity.getBridge().getWebView());
+                    keyboardVisible[0]=insets!=null && insets.isVisible(androidx.core.view.WindowInsetsCompat.Type.ime());
+                });
+                if(android.os.SystemClock.elapsedRealtime()>keyboardDeadline)fail("soft keyboard did not become visible");Thread.sleep(50);
+            }
+            assertEquals("true",js("document.querySelector('.app-shell').getBoundingClientRect().height<=visualViewport.height+2"));
+            long inputDeadline=android.os.SystemClock.elapsedRealtime()+7000;
+            while(!js("document.getElementById('training-dictation').getBoundingClientRect().bottom<=visualViewport.height+2").equals("true")){
+                if(android.os.SystemClock.elapsedRealtime()>inputDeadline)fail("focused input was covered by the keyboard");Thread.sleep(50);
+            }
+            screenshot(app,"native-training-keyboard.png");
+            InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+                android.view.inputmethod.InputMethodManager keyboard=(android.view.inputmethod.InputMethodManager)app.getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.hideSoftInputFromWindow(activity.getBridge().getWebView().getWindowToken(),0);
+            });
             js("document.querySelector('[data-train=sentence-independent]').click();");waitText("隐藏提示，独立回答");
-            js("document.querySelector('[data-train=outline_done]').click();");waitText("本人检查");
-            js("document.getElementById('training-no-recording').checked=true;document.querySelectorAll('[name=training-check]').forEach(x=>x.checked=true);document.querySelector('[data-train=whole-independent]').click();");
+            js("document.querySelector('[data-train=outline_done]').click();");waitText("不录音，我已完成口答");
+            js("document.getElementById('training-no-recording').click();document.querySelectorAll('[name=training-check]').forEach(x=>x.checked=true);document.querySelector('[data-train=whole-independent]').click();");
             waitText("本次完成，待复验");screenshot(app,"native-training-summary.png");
             assertEquals("true",js("document.querySelector('.training-header').getBoundingClientRect().top>=40"));
             assertEquals("none",js("getComputedStyle(document.querySelector('.training-page h1')).outlineStyle"));

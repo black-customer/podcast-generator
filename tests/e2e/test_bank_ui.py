@@ -60,6 +60,7 @@ def test_bank_view_flow():
             page.wait_for_timeout(400)
             assert "set=qs_2026_05_08" in page.url
             rows = page.locator(".bank-row")
+            expect(rows.first.locator(".bank-row-meta")).to_contain_text("5–8月")
             assert rows.count() > 0, "Part1 5-8月必有结果"
             tags = page.locator(".bank-row").first.locator(".bank-topic-tag").all_inner_texts()
             assert any("5–8月" in t for t in tags), f"行标签缺考季: {tags}"

@@ -2,6 +2,12 @@
 "use strict";
 
 const ExperienceUI = (() => {
+  let keyboardNavigation=false;
+  document.addEventListener('pointerdown',()=>{keyboardNavigation=false;});
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Tab' || event.key==='Enter' && !event.target.matches('input,textarea'))
+      keyboardNavigation=true;
+  });
   function focus(target) {
     if (!target) return;
     if (!target.matches("input,button,select,textarea,a")) target.tabIndex = -1;
@@ -89,6 +95,7 @@ const ExperienceUI = (() => {
   }
   const observer = new MutationObserver(records => {
     guardAsync($app);
+    if (!keyboardNavigation || $app.querySelector('#training-root')) return;
     if (!records.some(record => record.target === $app && record.addedNodes.length)) return;
     if ($app.querySelector("[aria-busy='true']")) return;
     const target = $app.querySelector(".study-word") || $app.querySelector(".study-explanation h3")

@@ -6,6 +6,14 @@
 
 web
 
+## Current Experience Direction
+
+On 2026-10-15 Bruce approved replacing the prior visual system, prioritizing the complete desktop
+IELTS preparation journey. The current contract is docs/design/experience-v3/README.md and DESIGN.md.
+Use neutral surfaces, consistent sans-serif controls, a restrained accent, focused training and staged
+recording/self-review. Android shares the UI and retains light/dark themes. Earlier aesthetic notes
+below are historical; the icon, Chinese name and product/data/learning commitments remain binding.
+
 ## Confirmed Brand and Audience
 
 On 2026-10-06 Bruce named the product **英语说说说** and confirmed that it serves Chinese

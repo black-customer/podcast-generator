@@ -2335,6 +2335,7 @@ async function BankView(token) {
   }
   if (selItem) { AnswerExperience.savedAnswer(selItem, token); AnswerExperience.bindDraft(selItem); TrainingBaseline.mount(selItem).catch(e=>toast('首答草稿读取失败：'+e.message)); }
   AnswerExperience.recoveryList(token);
+  if (typeof UIContinuity !== 'undefined') UIContinuity.restoreBank();
 }
 
 // 9. 语料包导入管理（B02）：LAN 直传 / 文件导入 / 存档清除
@@ -2470,6 +2471,8 @@ const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup", "#/today",
   "#/oral-review", "#/study-history"];
 
 function route() {
+  if (typeof UIContinuity !== 'undefined' && !UIContinuity.allowNavigation(location.hash)) return;
+  if (typeof UIContinuity !== 'undefined') UIContinuity.navigation(location.hash);
   if (typeof TrainingBaseline !== "undefined") TrainingBaseline.leave();
   if (typeof TrainingUI !== "undefined") TrainingUI.reset();
   AnswerExperience.leave();
@@ -2480,6 +2483,7 @@ function route() {
   const token = ++routeToken;
   const packActive = typeof PackState !== "undefined" && PackState.active;
   const hash = location.hash || (packActive ? "#/practice" : "#/today");
+  document.body.classList.remove('training-focus');
   if (typeof OralReviewUI !== "undefined" && !OralReviewUI.leave(hash)) return;
   if (typeof StudyUI !== "undefined" && !StudyUI.leave(hash)) return;
   if (!hash.startsWith("#/bank") && !hash.startsWith("#/practice")) genWaitStop();
