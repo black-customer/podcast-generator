@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-16",
+  "priority": "desktop web",
+  "gate": {
+    "command": "bash scripts/check.sh --with-e2e",
+    "result": "CHECK GREEN",
+    "unit_api_passed": 270,
+    "skipped": 1,
+    "e2e_passed": 72
+  },
+  "android": {
+    "build": "assembleDebug assembleDebugAndroidTest successful",
+    "jvm": "UP-TO-DATE, prior 3 passing results reused",
+    "apk_resources_matched": 29,
+    "native_instrumentation": "not completed this revision"
+  },
+  "visual": {
+    "synthetic_screenshots": 20,
+    "desktop_widths": [
+      1280,
+      1440,
+      2048
+    ],
+    "mobile": "light, dark, enlarged text",
+    "review": "ship for five corrected findings",
+    "human_approval": "pending"
+  },
+  "local_web": {
+    "url": "http://127.0.0.1:8765/#/today",
+    "verified_files": [
+      "index.html",
+      "product-ui.css",
+      "training.js"
+    ],
+    "hashes_match": true
+  },
+  "release": "no public APK/ZIP or Release",
+  "privacy": "no private corpus, keys or recordings in evidence"
+}

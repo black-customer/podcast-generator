@@ -53,6 +53,7 @@ const UIContinuity = (() => {
       positions.set(current, scroller?.scrollTop || 0);
       sessionStorage.setItem('experience-bank-route', current);
     }
+    if (current.split('?')[0] !== hash.split('?')[0] && scroller) scroller.scrollTop = 0;
     current = hash;
   }
   function restoreBank() {

@@ -56,7 +56,7 @@ public final class LearningMobileUiTest {
                 if(android.os.SystemClock.elapsedRealtime()>boot)fail("native UI did not finish booting");Thread.sleep(100);}
             js("location.hash='#/today';route();");waitText("从一道题开始，把想表达的意思说顺");
             js("document.body.setAttribute('data-mobile-theme','light');");
-            assertEquals("true",js("MobileRuntime.native"));assertEquals("rgb(246, 247, 249)",js("getComputedStyle(document.body).backgroundColor"));
+            assertEquals("true",js("MobileRuntime.native"));assertEquals("rgb(244, 245, 248)",js("getComputedStyle(document.body).backgroundColor"));
             screenshot(app,"native-today.png");
             assertEquals("英语说说说",app.getApplicationInfo().loadLabel(app.getPackageManager()).toString());
             LearningStore db=new LearningStore(app);JSONObject state=db.read();

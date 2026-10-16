@@ -8,11 +8,15 @@ web
 
 ## Current Experience Direction
 
-On 2026-10-15 Bruce approved replacing the prior visual system, prioritizing the complete desktop
-IELTS preparation journey. The current contract is docs/design/experience-v3/README.md and DESIGN.md.
-Use neutral surfaces, consistent sans-serif controls, a restrained accent, focused training and staged
-recording/self-review. Android shares the UI and retains light/dark themes. Earlier aesthetic notes
-below are historical; the icon, Chinese name and product/data/learning commitments remain binding.
+On 2026-10-16 Bruce authorized an aesthetic upgrade across all visible pages after rejecting
+v3's first-open home screen. The current visual contract is docs/design/experience-v4/README.md
+and DESIGN.md; experience-v3 is archived history. The implemented system uses mist-gray surfaces,
+white work areas, ink text and indigo actions, with consistent system sans-serif typography.
+Desktop preparation remains the priority; Android shares the UI with light/dark themes. Home pairs
+one real next action with the training route, while question lists, materials, training, playback
+and settings share coherent hierarchy. Independent screenshot review concluded ship after five
+fixes; this does not constitute Bruce's visual acceptance. Earlier aesthetic notes below are
+historical; the original icon, Chinese name and product/data/learning commitments remain binding.
 
 ## Confirmed Brand and Audience
 

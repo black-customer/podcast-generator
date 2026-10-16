@@ -17,7 +17,7 @@ const MobileAppearance = (() => {
     });
     document.querySelectorAll('[data-mobile-theme-name]').forEach(node=>{node.textContent=dark?'午夜蓝':'清透白';});
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.content = dark ? '#14181f' : '#f6f7f9';
+    if (meta) meta.content = dark ? '#151923' : '#f4f5f8';
   }
   function init() {
     let value='light';try { value=localStorage.getItem(key)==='dark'?'dark':'light'; } catch (_) {}

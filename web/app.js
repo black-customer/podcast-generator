@@ -1622,7 +1622,7 @@ function mgRenderTopicList(topics) {
         <div class="mg-topic-name">${esc(t.name)}</div>
         <div class="mg-hint">${t.stats.total} 条 · 已生成 ${t.stats.generated} · 待生成 ${t.stats.ready + t.stats.empty} · 共 ${fmtDur(t.total_sec)}</div>
       </div>
-      <button class="mg-btn tiny danger" data-del="${esc(t.id)}" title="删除话题">🗑</button>
+      <button class="mg-btn tiny danger" data-del="${esc(t.id)}" title="删除话题" aria-label="删除">删除</button>
     </div>
   `).join("") || `<p class="mg-hint">还没有话题</p>`;
 
@@ -1764,8 +1764,8 @@ async function mgLoadTopic(topicId, keepEditorClosed = false, token = null) {
       </div>
       <div class="mg-item-actions">
         <button class="mg-btn tiny" data-edit="${esc(it.id)}">编辑</button>
-        <button class="mg-btn tiny" data-gen="${esc(it.id)}">⚡ 生成</button>
-        <button class="mg-btn tiny danger" data-del-item="${esc(it.id)}">🗑</button>
+        <button class="mg-btn tiny" data-gen="${esc(it.id)}">生成</button>
+        <button class="mg-btn tiny danger" data-del-item="${esc(it.id)}" aria-label="删除">删除</button>
       </div>
     </div>
   `).join("") || `<p class="mg-hint">该话题暂无条目</p>`;
@@ -1818,9 +1818,9 @@ async function mgOpenEditor(topicId, itemId) {
     <div class="mg-editor-head">
       <h4>✏️ 编辑条目</h4>
       <div class="mg-actions">
-        <button class="mg-btn tiny" id="mg-copy-rewrite">📋 复制改写请求</button>
-        <button class="mg-btn tiny" id="mg-copy-voice">🎚 复制配音请求</button>
-        <button class="mg-btn tiny" id="mg-preview-item">▶ 试听</button>
+        <button class="mg-btn tiny" id="mg-copy-rewrite">复制改写请求</button>
+        <button class="mg-btn tiny" id="mg-copy-voice">复制配音请求</button>
+        <button class="mg-btn tiny" id="mg-preview-item">试听</button>
       </div>
     </div>
     ${MG_FIELDS.map(([f, label, rows]) => `
@@ -2284,7 +2284,7 @@ async function BankView(token) {
   const bankHtml = `
     <div class="hero-banner">
       <h1 class="hero-title">题库</h1>
-      <div class="hero-desc">选一道雅思口语题，用你最自然的方式作答——母语者版本由 Agent 或 API 改写后生成可反复听的音频。</div>
+      <div class="hero-desc">从熟悉的话题开始，用自己的经历回答。</div>
     </div>
 
     <div class="bank-toolbar">
