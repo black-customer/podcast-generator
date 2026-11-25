@@ -1,25 +1,26 @@
 """Bruce 个性化口语学习包：7 集训练音频生成器。
 
-读取 bruce_kit/episodes/EP*.json 文稿，用 Fish 免费档（s2.1-pro-free）真实合成：
-- dlg 块：A(教练 Mia/中文) + B(母语男声) 多说话人单次生成
+读取 bruce_kit/episodes/EP*.json 文稿，用本地语音引擎合成：
+- dlg 块：A(教练 Mia/中文) + B(母语男声) 按单语片段合成
 - shadow 块：母语男声单句 + 等比例跟读停顿
 - warmup 块：教练中文提示 → 提示音 → 5 秒检索窗口 → 母语者答案
 
-每块合成结果按内容哈希缓存于 data/.tmp/bruce_kit_cache/，中断重跑不重复计费。
+每块合成结果按内容哈希缓存于 data/.tmp/bruce_kit_cache/，中断重跑可复用已有片段。
 输出：bruce_kit/audio/EP{n}_{slug}.mp3（-16 LUFS 响度归一）。
 """
 import argparse
 import hashlib
 import json
 import sys
+import uuid
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE_DIR))
 
 from server.audio import _run, concat_mp3, make_silence, probe_duration  # noqa: E402
-from server.config import TMP_DIR, load_settings  # noqa: E402
-from server.tts import estimate_seconds, fish_tts_dialogue, fish_tts_segment  # noqa: E402
+from server.config import TMP_DIR, is_dry_run, load_settings  # noqa: E402
+from server.tts import estimate_seconds, render_dialogue  # noqa: E402
 
 EPISODES_DIR = BASE_DIR / "bruce_kit" / "episodes"
 OUTPUT_DIR = BASE_DIR / "bruce_kit" / "audio"
@@ -38,9 +39,9 @@ def _cached_tts(kind: str, voice: str, text: str, settings: dict) -> Path:
             "kind": kind,
             "voice": voice,
             "text": text,
-            "model": settings.get("model"),
-            "speed": settings.get("speed"),
-            "temperature": settings.get("temperature"),
+            "engine": "kokoro-local-v1",
+            "question_voice": settings.get("kokoro_question_voice"),
+            "answer_voice": settings.get("kokoro_answer_voice"),
         },
         ensure_ascii=False,
         sort_keys=True,
@@ -48,14 +49,14 @@ def _cached_tts(kind: str, voice: str, text: str, settings: dict) -> Path:
     digest = hashlib.sha1(fingerprint.encode("utf-8")).hexdigest()
     path = CACHE_DIR / f"{digest}.mp3"
     if not path.exists():
-        if kind == "dlg":
-            lines = [(part[0], part[1]) for part in json.loads(text)]
-            path.write_bytes(fish_tts_dialogue(lines, settings))
-        else:
-            reference = (
-                settings.get("reference_id_b") if voice == "mia" else settings.get("reference_id")
-            )
-            path.write_bytes(fish_tts_segment(text, settings, reference_id=str(reference)))
+        lines = (json.loads(text) if kind == "dlg" else
+                 [("a" if voice == "mia" else "b", text)])
+        pending = path.with_suffix(f".{uuid.uuid4().hex}.staged.mp3")
+        try:
+            render_dialogue(lines, pending, settings)
+            pending.replace(path)
+        finally:
+            pending.unlink(missing_ok=True)
         print(f"    [tts] {kind}/{voice}: {len(text)} 字符 -> 缓存 {digest[:10]}")
     return path
 
@@ -138,8 +139,8 @@ def main() -> int:
     args = parser.parse_args()
 
     settings = load_settings()
-    if not (settings.get("fish_api_key") or "").strip():
-        print("未配置 fish_api_key（data/settings.json），拒绝静默 dry-run。", file=sys.stderr)
+    if is_dry_run(settings):
+        print("请先配置本地语音环境并关闭试运行。", file=sys.stderr)
         return 2
 
     only = {part.strip().upper() for part in args.only.split(",")} if args.only else None

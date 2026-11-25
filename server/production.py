@@ -6,7 +6,7 @@ Agent 协作接口：Agent 会话把批量改写产物写成 Markdown 任务包�
 import re
 
 from . import audioqa, library
-from .config import DATA_DIR
+from .speech_bridge import VOICES
 
 # ---------------------------------------------------------------- 脚本 lint
 
@@ -174,37 +174,11 @@ def import_batch(topic_name: str, markdown: str, lint: bool = True) -> dict:
 
 # ---------------------------------------------------------------- 音色真源 (M15)
 
-VOICES_FILE = DATA_DIR / "voices.json"
-
-
 def get_voice_catalog() -> list[dict]:
-    voices = library.read_voices()
-    for v in voices:
-        v.setdefault("provider", "fish")
-        v.setdefault("voice_id", v.get("reference_id", ""))
-        v.setdefault("speed", 1.0)
-        v.setdefault("temperature", None)
-    return voices
-
-
-def find_voice(reference_id: str, provider: str | None = None) -> dict | None:
-    for v in get_voice_catalog():
-        if provider and v.get("provider") != provider:
-            continue
-        if v.get("reference_id") == reference_id or v.get("voice_id") == reference_id:
-            return v
-    return None
-
-
-def voice_generation_settings(settings: dict, reference_id: str) -> dict:
-    """试听使用候选音色自己的参数，避免被当前全局预设污染。"""
-    resolved = dict(settings)
-    voice = find_voice(reference_id)
-    resolved["reference_id"] = reference_id
-    resolved["speed"] = float((voice or {}).get("speed") or 1.0)
-    temperature = (voice or {}).get("temperature")
-    resolved["temperature"] = 0.70 if temperature in (None, "") else float(temperature)
-    return resolved
+    return [{"provider": "kokoro_local", "voice_id": voice, "name": name,
+             "gender": "female" if voice.startswith("af_") else "male",
+             "cloned": voice == "golden_self"}
+            for voice, name in VOICES.items()]
 
 
 # ---------------------------------------------------------------- 自媒体草稿 (M16)

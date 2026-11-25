@@ -129,11 +129,19 @@ def align_reference_words(path: Path, text: str, align: Callable[..., dict]) -> 
 
 
 def preview_line(text: str, voice: str, output: str,
-                 profile_hash: str | None = None, require_profile: bool = True) -> dict:
+                 profile_hash: str | None = None, require_profile: bool = True,
+                 lang: str = "en-us") -> dict:
     from backend.engine.audio_io import _synthesize_kokoro_sync
     from backend.engine.voice_profile import get_voice_profile
 
     final = Path(output)
+    if lang == "cmn" or voice.startswith(("zf_", "zm_")):
+        from backend.engine.audio_io import _get_kokoro, sf
+
+        final.parent.mkdir(parents=True, exist_ok=True)
+        samples, rate = _get_kokoro().create(text, voice=voice, lang="cmn")
+        sf.write(str(final), samples, int(rate), subtype="PCM_16")
+        return {"voice": voice}
     profile = get_voice_profile() if voice == "golden_self" else None
     if voice == "golden_self" and require_profile and not profile:
         raise ValueError("尚未配置母语分身，请先在 ChineseAccent 建立声纹")

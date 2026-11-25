@@ -343,7 +343,7 @@ def main() -> int:
     parser.add_argument("--force", action="store_true", help="音频已存在也重新合成")
     parser.add_argument(
         "--skip-audio", action="store_true",
-        help="跳过 TTS 只出文字/图片产物（TTS 网络不可用时先迭代内容）",
+        help="跳过 TTS 只出文字/图片产物（本地语音引擎不可用时先迭代内容）",
     )
     args = parser.parse_args()
 
@@ -357,9 +357,6 @@ def main() -> int:
         return 2
 
     settings = load_settings()
-    if not (settings.get("fish_api_key") or "").strip():
-        print("未配置 fish_api_key，拒绝静默 dry-run。", file=sys.stderr)
-        return 2
 
     out_dir = OUT_ROOT / kit["id"]
     out_dir.mkdir(parents=True, exist_ok=True)

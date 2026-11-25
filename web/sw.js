@@ -1,5 +1,5 @@
 /* Service Worker：静态资源缓存优先，API 网络优先（音频/数据保持新鲜）。 */
-const CACHE = "ielts-pod-assets-v17";
+const CACHE = "ielts-pod-assets-v18";
 const STATIC_ASSETS = [
   "/",
   "/static/app.js",
@@ -43,24 +43,19 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
+  if (!["http:", "https:"].includes(url.protocol) || url.origin !== self.location.origin) return;
   if (event.request.method !== "GET") return;
   // API：仅网络（数据实时性优先；不提供从未真正写入的"失败回缓存"）
   if (url.pathname.startsWith("/api/")) {
     return;
   }
   // 静态资源：缓存优先，后台更新
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      const fresh = fetch(event.request)
-        .then((res) => {
-          if (res.ok) {
-            const copy = res.clone();
-            caches.open(CACHE).then((cache) => cache.put(event.request, copy));
-          }
-          return res;
-        })
-        .catch(() => cached);
-      return cached || fresh;
-    })
-  );
+  const fresh = fetch(event.request).then(response => ({
+    response, copy: response.ok && response.type === "basic" ? response.clone() : null,
+  }));
+  event.waitUntil(fresh.then(async ({copy}) => {
+    if (copy) await (await caches.open(CACHE)).put(event.request, copy);
+  }).catch(() => {}));
+  event.respondWith(caches.match(event.request).catch(() => undefined)
+    .then(cached => cached || fresh.then(({response}) => response)));
 });

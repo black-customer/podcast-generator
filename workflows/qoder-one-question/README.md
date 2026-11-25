@@ -68,14 +68,9 @@ kit/                                  个人全套材料（私人语料，不进
 拷走整个 `workflows/qoder-one-question/` 目录即可，只依赖：
 
 - Python 3.11 + `playwright`（Chromium）+ `ffmpeg` 在 PATH
-- 宿主项目的 `server/stepfun.py`、`server/tts.py`、`server/audio.py`、`server/config.py`
-- TTS 后端由 `data/settings.json` 的 `tts_provider` 选择：`stepfun`（默认，`stepaudio-2.5-tts`，境内直连）
-  或 `fish`（多说话人一次成型，但境内需要代理）。换第三家只需替换 `engine.Synth.__call__` 与 `_stepfun_dialogue`
-- **StepFun 限速按「开放平台累计充值」定档，与消费端 App 会员无关**（实测确认）：
-  V0（充值 ¥0）= **10 RPM / 5 并发**；V1（充值 ¥100）= **1000 RPM / 100 并发**。
-  引擎按 `settings.stepfun_rpm`（默认 9）主动压速，不靠上游 429 重试硬撞；
-  升到 V1 后把这个值改成 300 就提速，不用改代码。
-  StepFun 一次只能一个音色，所以引擎逐行合成再拼接，行间距用 `stepfun_gap_ms`
+- 宿主项目的语音、音频与配置模块
+- ChineseAccent 的本地 Kokoro 模型与语音环境。中英文分段在本机合成，英文可使用已配置的分身。
+- 已生成的历史音频可直接播放。相同文稿和音色的分段缓存可复用。
 
 **不要带上 `kit/`**——那是锚定本人真实录音的私人材料。
 `one-question-creator` 是自媒体附加层，别人只要备考，可以整层删掉，Stage 1 不受影响。
@@ -92,7 +87,7 @@ python -m one_question.creator ../lessons/<id>/lesson.json --no-video   # 不碰
 
 ## 已知边界
 
-- 音频合成需要网络（TTS 上游）。网络不通时**卡片、页面、封面、文案照常产出**，
+- 本地语音环境缺失时**卡片、页面、封面、文案照常产出**，
   并写 `PENDING.json` 记下重跑命令；不会整条流程崩掉。
 - 诊断器是规则包，覆盖的是高频中式错误。它没命中不代表你说对了——
   教学判断仍由 Agent 在写 lesson.json 时补足。

@@ -523,11 +523,42 @@ body.reading-notes-theme .arcade-recording { border-color:#b3343d; color:#9a2530
 .radio-player header { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; }
 .radio-playback { display:flex; align-items:center; flex-wrap:wrap; gap:14px; padding:18px 0; }
 .radio-playback audio { width:min(100%, 32rem); }
-.radio-transcript { max-height:27rem; overflow:auto; margin:0; padding:0; list-style:none; border-top:1px solid var(--rule); }
-.radio-transcript button { width:100%; display:grid; grid-template-columns:3rem minmax(0,1fr) 3.4rem; align-items:baseline; gap:8px; padding:12px; border:0; border-bottom:1px solid var(--rule); background:transparent; color:var(--ink); font:inherit; text-align:left; cursor:pointer; }
-.radio-transcript button > :first-child, .radio-transcript time { font-size:.875rem; color:var(--ink-soft); }
-.radio-transcript button[aria-current] { background:var(--blue-soft); }
-.radio-transcript time { text-align:right; font-variant-numeric:tabular-nums; }
+.work-progress { display:grid; gap:8px; margin-block:10px; }
+.work-progress-inline { width:100%; min-width:0; }
+.work-progress-meta { display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 16px; color:var(--ink-soft); font-size:.875rem; }
+.work-progress-values { display:flex; gap:10px; font-variant-numeric:tabular-nums; }
+.work-progress-track { height:5px; overflow:hidden; border-radius:4px; background:var(--rule); }
+.work-progress-fill { position:relative; width:var(--work-progress); height:100%; border-radius:inherit; overflow:hidden; background:var(--blue); transition:width 280ms ease; }
+.work-progress-fill::after { content:""; position:absolute; inset:0; background:linear-gradient(112deg, transparent 30%, #ffffff55 50%, transparent 70%); animation:progress-shine 2s linear infinite; }
+.work-progress-track.indeterminate .work-progress-fill { animation:progress-indeterminate 1.6s ease-in-out infinite alternate; background:linear-gradient(90deg, var(--blue), #7564cb); }
+.work-progress.indeterminate [role=status]::before { content:""; display:inline-block; width:.5em; height:.5em; margin-inline-end:.45em; border-radius:50%; vertical-align:.1em; background:var(--blue); animation:progress-pulse 1.2s ease-in-out infinite alternate; }
+.is-busy::before { content:""; display:inline-block; flex:none; width:.8em; height:.8em; margin-inline-end:.45em; border:1.5px solid currentColor; border-inline-end-color:transparent; border-radius:50%; animation:progress-spin .8s linear infinite; }
+.arcade-recording::before { content:""; display:inline-block; width:.6em; height:.6em; margin-inline-end:.5em; border-radius:50%; background:var(--red, #b3343d); animation:progress-pulse 1.2s ease-in-out infinite alternate; }
+@keyframes progress-shine { from { transform:translateX(-100%); } to { transform:translateX(100%); } }
+@keyframes progress-indeterminate { from { transform:translateX(0); } to { transform:translateX(185%); } }
+@keyframes progress-spin { to { transform:rotate(360deg); } }
+@keyframes progress-pulse { to { opacity:.4; } }
+@media (prefers-reduced-motion:reduce) {
+  .work-progress-fill, .work-progress-fill::after, .is-busy::before, .arcade-recording::before,
+  .work-progress.indeterminate [role=status]::before {
+    animation:none !important; transition:none;
+  }
+}
+.coach-material { display:grid; gap:16px; }
+.coach-material h3, .coach-material p { margin-block:.35em .6em; }
+.coach-material ul { padding-inline-start:1.25em; }
+.coach-material li + li { margin-top:.5em; }
+.coach-diagnoses { display:grid; gap:10px; margin:0; padding:0; list-style:none; }
+.coach-diagnoses li { padding:10px 0; border-top:1px solid var(--rule); overflow-wrap:anywhere; }
+.coach-error { color:var(--danger, #b3343d); }
+.coach-fix, .coach-audio-ready { color:var(--success, #247048); }
+.coach-compare { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; overflow-wrap:anywhere; }
+.coach-avail { overflow-anchor:none; min-block-size:8.75rem; }
+#coach-audio-message:empty { display:none; }
+.voice-card-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.voice-card-actions [aria-pressed="true"] { background:var(--blue-soft); color:var(--blue); }
+body[data-mobile-theme="dark"] { --danger:#ffabb2; --success:#8ad8ad; }
+@media (max-width:700px) { .coach-compare { grid-template-columns:1fr; } }
 .radio-history { padding:16px 0; }
 .radio-history ul { list-style:none; padding:0; margin:0; }
 .radio-history li { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--rule); }
@@ -542,7 +573,6 @@ body.reading-notes-theme .arcade-recording { border-color:#b3343d; color:#9a2530
   .arcade-board, .arcade-frame { padding:18px; }
   .arcade-line { grid-template-columns:minmax(0, 1fr); gap:3px; }
   .arcade-tracks, .arcade-setting-row { grid-template-columns:minmax(0, 1fr); }
-  .radio-transcript button { grid-template-columns:2.3rem minmax(0,1fr) 2.5rem; padding:10px 3px; }
   .arcade-steps li { gap:4px; font-size:.75rem; }
   .arcade-steps li span { flex-basis:20px; height:20px; }
 }

@@ -43,10 +43,9 @@ def test_text_credentials_are_write_only():
     assert "test-two" not in repr(data)
 
 
-def test_explicit_stepfun_and_keyless_local_config():
+def test_removed_stepfun_and_keyless_local_config():
     old = {**config.DEFAULT_SETTINGS, "stepfun_api_key": "test"}
-    assert not config.is_llm_configured(old)
-    assert rewrite.text_config({**old, "llm_provider": "stepfun"})[0] == rewrite.TEXT_API_URL
+    assert not config.is_llm_configured({**old, "llm_provider": "stepfun"})
     url, model, key = rewrite.text_config({
         **config.DEFAULT_SETTINGS, "llm_provider": "custom", "llm_base_url": "http://localhost/v1",
         "llm_model": "example", "stepfun_api_key": "test",

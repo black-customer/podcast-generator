@@ -16,7 +16,7 @@ sys.path.insert(0, str(BASE_DIR))
 
 from server.audio import _run, probe_duration
 from server.config import TMP_DIR, load_settings
-from server.tts import fish_tts_dialogue
+from server.tts import render_dialogue
 
 OUTPUT_DIR = BASE_DIR / "bruce_study_suite" / "audio"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -118,10 +118,8 @@ def generate_all():
 
         print(f"\n[{idx}/5] 正在合成漫谈播客: {title} ({out_name})...")
 
-        # 使用 Fish TTS 多说话人单次流式合成整段对话（模型具备完整上下文，接话语气最自然）
-        raw_bytes = fish_tts_dialogue(ep["dialogue"], settings)
         tmp_raw = TMP_DIR / f"organic_{ep_id}_{uuid.uuid4().hex[:6]}.mp3"
-        tmp_raw.write_bytes(raw_bytes)
+        render_dialogue(ep["dialogue"], tmp_raw, settings)
 
         # 进行 -16 LUFS 广播级母带响度归一化
         print("  - 执行 -16 LUFS 广播级母带响度优化...")

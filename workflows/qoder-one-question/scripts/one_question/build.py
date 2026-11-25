@@ -286,7 +286,7 @@ def page(lesson: dict, info: dict | None, extras: list[tuple[str, str]] | None =
         wins = len(info["windows"])
         step1 = (f"① 听完整音频 {int(info['duration']) // 60} 分 {int(info['duration']) % 60:02d} 秒，"
                  f"{wins} 个窗口全部出声 →")
-        audio_block = (f'<h3 class="eng">TTS 后端：{E(str(info.get("provider", "stepfun")))}'
+        audio_block = (f'<h3 class="eng">TTS 后端：{E(str(info.get("provider", "kokoro_local")))}'
                        f' · {int(info["duration"])}s · {wins} 个窗口</h3>'
                        '<audio controls src="audio.mp3"></audio>')
     else:
@@ -362,7 +362,7 @@ def run(lesson_path: Path, dry: bool = False, cards_only: bool = False,
 def _attempt_audio(lesson: dict, lesson_path: Path, out: Path, wait_network: float,
                    provider: str | None = None,
                    audio_name: str = "audio.mp3") -> dict | None:
-    """合成音频。失败不抛异常——卡片和页面不该被网络卡死。"""
+    """合成音频。语音失败时仍输出卡片和页面。"""
     deadline = time.monotonic() + max(0.0, wait_network)
     attempt, last = 0, ""
     while True:
@@ -370,14 +370,12 @@ def _attempt_audio(lesson: dict, lesson_path: Path, out: Path, wait_network: flo
         try:
             from server.config import load_settings
             settings = load_settings()
-            if provider:
-                settings["tts_provider"] = provider
             synth = En.Synth(settings, out / ".cache")
             tl = En.Timeline()
             build_audio(lesson, synth, tl)
             info = tl.render(out / audio_name)
             info.update({"scheduled": round(tl.scheduled, 2),
-                         "provider": provider or settings.get("tts_provider"),
+                         "provider": settings.get("tts_provider"),
                          "api_calls": synth.stats["api_calls"],
                          "cache_hits": synth.stats["cache_hits"]})
             if info["duration"] > CAPS["audio_seconds_max"]:
@@ -391,7 +389,7 @@ def _attempt_audio(lesson: dict, lesson_path: Path, out: Path, wait_network: flo
                                ensure_ascii=False, indent=2), encoding="utf-8")
             (out / "PENDING.json").unlink(missing_ok=True)
             return info
-        except Exception as exc:  # noqa: BLE001  网络、配额、上游 5xx 都走这里
+        except Exception as exc:  # noqa: BLE001  单独记录可重试的语音失败
             last = f"{type(exc).__name__}: {exc}"
             En.say_ok(f"! 音频合成第 {attempt} 次失败：{last[:150]}")
             if time.monotonic() >= deadline:
@@ -401,8 +399,7 @@ def _attempt_audio(lesson: dict, lesson_path: Path, out: Path, wait_network: flo
     (out / "PENDING.json").write_text(json.dumps({
         "lesson_id": lesson["id"],
         "reason": last[:300],
-        "hint": "这台机器访问 api.fish.audio 需要本地代理；代理没开时只有音频会失败，"
-                "卡片和页面照常可用。",
+        "hint": "检查设置中的 ChineseAccent 目录与本地模型，卡片和页面照常可用。",
         "retry": f"python -m one_question.build {lesson_path.as_posix()}",
     }, ensure_ascii=False, indent=2), encoding="utf-8")
     En.say_ok("! 音频跳过，已写出 PENDING.json。卡片与页面仍然可用。")
@@ -449,11 +446,11 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--cards-only", action="store_true", help="只出卡片和页面，不碰 TTS")
     ap.add_argument("--wait-network", type=float, default=0.0,
-                    help="TTS 失败后最多再等这么多秒（代理刚重启时有用）")
-    ap.add_argument("--provider", choices=("stepfun", "qwen", "fish"),
+                    help="TTS 失败后最多重试这么多秒")
+    ap.add_argument("--provider", choices=("kokoro_local",),
                     help="覆盖本次合成的 TTS 后端")
     ap.add_argument("--out", default="audio.mp3",
-                    help="输出音频文件名（换后端做 A/B 时用，如 audio_qwen.mp3）")
+                    help="输出音频文件名（指定另一个本地音频文件名）")
     a = ap.parse_args()
     for s in (sys.stdout, sys.stderr):
         try:

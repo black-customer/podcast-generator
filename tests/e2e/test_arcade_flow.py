@@ -20,7 +20,9 @@ SENTENCES = [
      "original_error": {"quote": "It help me unwind", "issue": "第三人称单数",
                         "correction": "It helps me unwind"}},
     {"zh": "我尽量每周游两次。", "en": "I try to go twice a week.",
-     "key_chunk": "twice a week", "audio": {"scope": "sentence", "start": 2.4, "end": 4}},
+     "key_chunk": "twice a week", "gap_kind": "explicit_gap", "usage": "用来描述每周频率。",
+     "transfer_example": "I call my parents twice a week.",
+     "audio": {"scope": "sentence", "start": 2.4, "end": 4}},
 ]
 
 
@@ -89,7 +91,17 @@ def test_arcade_from_bank_blind_recording_through_blitz():
         page.route(grade_url, lambda route: (
             grades.append(route.request.post_data_json), route.fulfill(json={"ok": True})
         ))
-        page.route(f"**{ITEM}/arcade", lambda route: route.fulfill(json=demo))
+        available = False
+        pending = {**demo, "status": "coaching_ready", "audio_url": "",
+                   "coach_summary": {"headline": "你说清了游泳的用途，留意动词和频率表达。",
+                                     "strengths": ["先给出了具体理由"],
+                                     "focus_points": ["It 后用 helps"]},
+                   "alignment": {"lines": [], "words": []}, "chinese_intent": "下班后放松。",
+                   "audio_job": {"id": "retry-job", "state": "running", "phase": "tts",
+                                 "tts_done": 1, "tts_total": 3, "progress_pct": 33,
+                                 "tts_voice": "golden_self"}}
+        page.route(f"**{ITEM}/arcade", lambda route: route.fulfill(
+            json={**pending, **demo} if available else pending))
         page.route(f"**{demo_url}", lambda route: route.fulfill(
             body=audio_data, content_type=media))
         page.route(f"**{ITEM}/arcade/recordings/*", lambda route: route.fulfill(
@@ -120,7 +132,8 @@ def test_arcade_from_bank_blind_recording_through_blitz():
         page.route("**/api/jobs/arcade-job", lambda route: route.fulfill(json={
             "state": "error", "errors": [{"message": "当前 Key 无文本模型权限（HTTP 403）"}],
         }))
-        page.route("**/api/jobs/retry-job", lambda route: route.fulfill(json={"state": "done"}))
+        page.route("**/api/jobs/retry-job", lambda route: route.fulfill(
+            json={"state": "running", "phase": "tts", "coaching_ready": True}))
         page.route(f"**{ITEM}/retry-api", lambda route: route.fulfill(json={
             "job_id": "retry-job", "topic_id": "arcade-test", "item_id": "arcade-item",
         }))
@@ -180,6 +193,18 @@ def test_arcade_from_bank_blind_recording_through_blitz():
         expect(page.locator("#api-job-hint")).to_contain_text("403")
         page.get_by_role("button", name="重新用 AI 生成").click()
         expect(page.locator("[data-stage='1']")).to_be_visible()
+        lecture = page.get_by_role("heading", name="当场老师指导")
+        expect(lecture).to_be_visible()
+        expect(page.get_by_text("中文意图与词汇缺口")).to_be_visible()
+        expect(page.get_by_text("I call my parents twice a week.")).to_be_visible()
+        expect(page.get_by_role("progressbar")).to_have_attribute("aria-valuenow", "33")
+        play = page.get_by_role("button", name="播放母语示范问答")
+        expect(play).to_be_disabled()
+        node = lecture.element_handle()
+        _shot(page, "04-coaching-pending.png")
+        available = True
+        expect(play).to_be_enabled()
+        assert lecture.evaluate("(el, original) => el === original", node)
         expect(page.locator(".arcade-line").first).to_contain_text(prompt)
         longest = max(words, key=lambda word: word["end"] - word["start"])
         token = page.get_by_role("button", name=longest["text"], exact=True).first
@@ -254,14 +279,18 @@ def test_arcade_from_bank_blind_recording_through_blitz():
             route.fulfill(body=audio_data, content_type=media)
 
         page.route("**/api/voices/kokoro_local/*/sample", preview)
-        for control in page.locator(".arcade-voice-gallery [data-preview-vid]").all():
+        _shot(page, "10-settings.png")
+        page.goto(f"{BASE_URL}/#/voices")
+        gallery = page.locator(".voice-card-actions [data-preview-vid]")
+        expect(gallery).to_have_count(7)
+        for control in gallery.all():
             original = control.inner_text()
             control.click()
             expect(control).to_have_text("停止试听")
             control.click()
             expect(control).to_have_text(original)
         assert len(set(previews)) == 7
-        _shot(page, "10-settings.png")
+        _shot(page, "10-voices.png")
         assert not errors
         browser.close()
 
@@ -322,10 +351,24 @@ def test_radio_generates_plays_and_downloads_both_modes():
                             "start": 2, "end": 4},
                        ]}
 
+        replies = {}
+        reads = {}
+
         def generate(route):
             request = route.request.post_data_json
             offered.append(request)
-            route.fulfill(json={**episode, "language_mode": request["language_mode"]})
+            job_id = f"radio-{len(offered)}"
+            replies[job_id] = {**episode, "highlights": ["sesame dressing"],
+                               "language_mode": request["language_mode"]}
+            route.fulfill(json={"job_id": job_id, "state": "running"})
+
+        def status(route):
+            job = route.request.url.rsplit("/", 1)[-1]
+            count = reads[job] = reads.get(job, 0) + 1
+            route.fulfill(json={"state": "done", "episode": replies[job]} if count >= 4 else
+                          {"state": "running", "phase": "tts", "done": 1, "total": 2})
+
+        page.route("**/api/jobs/radio-*", status)
 
         page.route("**/api/teaching-podcasts", lambda route: route.fulfill(json={"episodes": []}))
         page.route("**/api/teaching-podcasts/daily", generate)
@@ -345,12 +388,12 @@ def test_radio_generates_plays_and_downloads_both_modes():
         page.route("**/api/teaching-podcasts/*/audio*", serve_audio)
 
         page.goto(f"{BASE_URL}/#/radio?topic=arcade-test&item=arcade-item&generate=1")
-        expect(page.get_by_text("电台已生成。")).to_be_visible()
-        turns = page.locator(".radio-transcript button")
-        expect(turns.first).to_have_attribute("aria-current", "true")
+        expect(page.get_by_role("progressbar")).to_have_attribute("aria-valuenow", "50")
+        _shot(page, "12-radio-progress.png")
+        expect(page.get_by_text("电台已生成。", exact=True)).to_be_visible()
+        expect(page.locator(".radio-transcript")).to_have_count(0)
         expect(page.locator(".radio-player")).to_contain_text("Bella 与 Puck")
-        turns.nth(1).click()
-        expect(turns.nth(1)).to_have_attribute("aria-current", "true")
+        expect(page.locator(".radio-player")).to_contain_text("sesame dressing")
         page.locator(".radio-playback select").select_option("1.3")
         playback = page.locator(".radio-playback audio")
         assert playback.evaluate("(audio) => audio.playbackRate") == 1.3
@@ -363,11 +406,50 @@ def test_radio_generates_plays_and_downloads_both_modes():
         daily = page.get_by_role("button", name="生成今日电台")
         expect(daily).to_be_visible()
         page.locator("[name=language_mode]").select_option("bilingual")
-        expect(page.locator("[name=partner_voice]")).to_be_disabled()
+        expect(page.locator("[name=partner_voice]")).to_be_enabled()
         daily.click()
         expect(page.locator(".radio-player")).to_contain_text("晓晓与云希")
         assert offered == [
             {"language_mode": "en", "partner_voice": "am_puck"},
             {"language_mode": "bilingual", "partner_voice": "am_puck"},
         ]
+        browser.close()
+
+
+def test_service_worker_only_caches_basic_same_origin_responses():
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(f"{BASE_URL}/#/today")
+        expect(page.locator('meta[name="mobile-web-app-capable"]')).to_have_attribute(
+            "content", "yes",
+        )
+        result = page.evaluate("""async () => {
+          const source = await fetch('/sw.js').then(res => res.text());
+          let handler, puts = 0;
+          const worker = {location, addEventListener(name, fn) {
+            if (name === 'fetch') handler = fn;
+          }};
+          const cache = {match: async () => null, open: async () => ({put: async () => {
+            puts++;
+            throw new Error('simulated cache failure');
+          }})};
+          let type = 'basic';
+          new Function('self', 'caches', 'fetch', source)(worker, cache,
+            async () => ({type, ok: true, clone: () => ({})}));
+          async function request(url) {
+            const replies = [];
+            handler({request: {url, method: 'GET'},
+              respondWith: p => replies.push(p), waitUntil: p => replies.push(p)});
+            await Promise.all(replies);
+            return replies.length;
+          }
+          const extension = await request('chrome-extension://fixture/icon.png');
+          const foreign = await request('https://example.invalid/icon.png');
+          const local = await request(location.origin + '/static/app.js');
+          type = 'cors';
+          await request(location.origin + '/static/style.css');
+          return {extension, foreign, local, puts};
+        }""")
+        assert result == {"extension": 0, "foreign": 0, "local": 2, "puts": 1}
         browser.close()

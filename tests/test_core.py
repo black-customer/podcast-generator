@@ -195,9 +195,11 @@ def test_voice_direct_request_contains_question_and_light_direction(client):
     assert "[relaxed]" in text and "[curious]" in text
 
 
-def test_settings_reject_paid_tts_model(client):
-    r = client.put("/api/settings", json={"model": "s2.1-pro"})
-    assert r.status_code == 422
+def test_settings_ignore_removed_cloud_tts_fields(client):
+    r = client.put("/api/settings", json={"model": "s2.1-pro", "fish_api_key": "synthetic"})
+    assert r.status_code == 200
+    assert r.json()["tts_provider"] == "kokoro_local"
+    assert not {"model", "fish_api_key", "fish_api_key_set"} & r.json().keys()
 
 
 def test_api_patch_partial_update_regression(client, lib_env):

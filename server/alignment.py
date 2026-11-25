@@ -2,7 +2,7 @@
 
 三类数据来源（按可信度排序）：
 - measured：逐段合成时用 ffprobe 实测每段时长，段内句子按字符比例分配（误差不跨段累积）
-- sse：Fish /v1/tts/stream/with-timestamp 逐词时间戳（网络可用时对单次合成轨启用）
+- sse：已测量的逐词时间戳，沿用旧标签以兼容历史语料。
 - estimated：按字符权重全局估算（最后回退，前端可通过 mode 标记降级提示）
 
 alignment.json 携带文本指纹 + 音频签名，读时校验；文本编辑或音频重生成自动失效。
@@ -249,41 +249,3 @@ def derive_timeline(
             }
         )
     return tl
-
-
-# ---------------------------------------------------------------- SSE 解析（单次合成轨的逐词层）
-
-def parse_sse_events(events: list[str], chunk_offsets: list[float] | None = None) -> dict | None:
-    """解析 Fish with-timestamp SSE 流 → {words, total_duration}。
-
-    容错设计：字段名存在多种文档变体（audio/audio_base64、alignment.segments 等），
-    网络恢复后用 scripts/probe_fish_sse.py 实测校准；解析失败返回 None 而非抛错。
-    """
-    words: list[dict] = []
-    total = 0.0
-    for line in events:
-        if not line.startswith("data:"):
-            continue
-        try:
-            data = json.loads(line[5:].strip())
-        except (json.JSONDecodeError, ValueError):
-            continue
-        total = max(total, float(data.get("audio_duration") or 0.0))
-        align = data.get("alignment") or {}
-        segs = align.get("segments") or data.get("segments") or []
-        base = float(data.get("chunk_audio_offset_sec") or 0.0)
-        for w in segs:
-            t = (w.get("text") or "").strip()
-            if not t:
-                continue
-            words.append(
-                {
-                    "text": t,
-                    "start": round(base + float(w.get("start") or 0.0), 3),
-                    "end": round(base + float(w.get("end") or 0.0), 3),
-                }
-            )
-    if not words:
-        return None
-    words.sort(key=lambda w: w["start"])
-    return {"words": words, "total_duration": total}

@@ -13,10 +13,10 @@ MATERIAL_FILE = "study_material.json"
 _ACTIVE: set[tuple[str, str]] = set()
 _ACTIVE_LOCK = threading.Lock()
 
-SYSTEM_PROMPT = """You prepare faithful Chinese-English study materials for an IELTS learner.
-Return one JSON object only with complete_chinese and sentences. Each sentence has zh, en,
-explanation, usage and optionally original_error {quote, issue, correction}. Copy every supplied
-English answer sentence exactly and in order into en. Explain useful grammar and collocations in
+MATERIAL_GUIDANCE = """The material object contains complete_chinese and sentences.
+Each sentence has zh, en, explanation, usage and optionally original_error {quote, issue,
+correction}. Copy every supplied English answer sentence exactly and in order into en.
+Explain useful grammar and collocations in
 Chinese. The complete Chinese meaning and each zh must preserve the learner's original meaning;
 do not invent experiences. Keep the reference achievable, not needlessly advanced. Optionally add
 outline and groups arrays of {label: Chinese content cue, indices: zero-based sentence indices};
@@ -25,13 +25,21 @@ Each sentence may have gap_kind: text_supported_error, explicit_gap, or refineme
 Only report an original_error when an exact English quote from the raw
 answer proves a real grammatical or spelling error. Never treat a valid alternative wording as an
 error. Chinese input is not evidence of an English error. Do not infer pronunciation or scores."""
-SYSTEM_PROMPT += """ Include a key_chunk copied verbatim from each English sentence: a useful
-multiword phrase the learner can reuse. For a supported error, optionally include category as one
-of plural, tense, subject_verb_agreement, article, preposition, word_order, conjunction,
-collocation, or other. Return JSON only, e.g. {"complete_chinese":"中文","sentences":[]}."""
-SYSTEM_PROMPT += """ For an explicit lexical gap, use key_chunk for the expression the learner
-wanted to say and did not use. Optionally add transfer_example, one English sentence using the
-exact key_chunk in a different generic situation without inventing a detail about the learner."""
+MATERIAL_GUIDANCE += """ Include a key_chunk copied verbatim from each English sentence: a useful
+contiguous phrase of 2–12 English words the learner can reuse. For a supported error, set
+category to one of plural, tense, subject_verb_agreement, article, preposition, word_order,
+conjunction, collocation, or other."""
+MATERIAL_GUIDANCE += """ When a distinct meaning in the Chinese intent was missing from the
+spoken attempt, mark the sentence that expresses it with gap_kind: explicit_gap. Use key_chunk
+for the expression that fills that gap. Optionally add transfer_example, one English sentence
+using the exact key_chunk in a different situation without inventing a detail about the learner."""
+MATERIAL_GUIDANCE += """ Include coach_summary with a Chinese headline (20–60 characters),
+strengths (1–2 short Chinese strings tied to what the learner actually said), and focus_points
+(1–3 short Chinese strings about what to practise next). Do not infer speech quality or scores."""
+SYSTEM_PROMPT = (
+    "You prepare faithful Chinese-English study materials for an IELTS learner. "
+    "Return the material object as JSON with no surrounding text. " + MATERIAL_GUIDANCE
+)
 
 ERROR_LABELS = {"plural": "单复数", "tense": "时态", "subject_verb_agreement": "主谓一致",
                 "article": "冠词", "preposition": "介词", "word_order": "语序",
@@ -154,6 +162,22 @@ def validate_material(material: dict, texts: dict, *, require_chunks: bool = Fal
         "complete_chinese": chinese.strip(),
         "sentences": cleaned,
     }
+    if "coach_summary" in material:
+        summary = material["coach_summary"]
+        if not isinstance(summary, dict) or not isinstance(summary.get("headline"), str):
+            raise MaterialError("老师总评缺少标题")
+        headline = summary["headline"].strip()
+        if not 20 <= len(headline) <= 60:
+            raise MaterialError("老师总评标题须为 20–60 字")
+        coach = {"headline": headline}
+        for field, limit in (("strengths", 2), ("focus_points", 3)):
+            entries = summary.get(field)
+            if (not isinstance(entries, list) or not 1 <= len(entries) <= limit
+                    or any(not isinstance(s, str) or not 1 <= len(s.strip()) <= 240
+                           for s in entries)):
+                raise MaterialError("老师总评需要有效的亮点与练习要点")
+            coach[field] = [s.strip() for s in entries]
+        result["coach_summary"] = coach
     gaps = [{"sentence_index": index, "key_chunk": row["key_chunk"]}
             for index, row in enumerate(cleaned)
             if row.get("gap_kind") == "explicit_gap" and row.get("key_chunk")]
@@ -184,12 +208,13 @@ def validate_material(material: dict, texts: dict, *, require_chunks: bool = Fal
     return result
 
 
-def save_material(topic_id: str, item_id: str, material: dict) -> dict:
+def save_material(topic_id: str, item_id: str, material: dict, *,
+                  require_audio: bool = True) -> dict:
     with library.LIB_LOCK:
         path = library.item_path(topic_id, item_id)
         if not path.exists():
             raise FileNotFoundError("条目不存在")
-        if library.resolve_audio_file(path, "podcast") is None:
+        if require_audio and library.resolve_audio_file(path, "podcast") is None:
             raise MaterialError("播客音频尚未完成")
         result = validate_material(material, library.read_item_texts(path))
         atomic_write_text(path / MATERIAL_FILE, json.dumps(result, ensure_ascii=False, indent=2))
@@ -303,7 +328,7 @@ def prepare_async(topic_id: str, item_id: str) -> bool:
     return True
 
 
-def get_material(topic_id: str, item_id: str) -> dict:
+def get_material(topic_id: str, item_id: str, *, allow_pending_audio: bool = False) -> dict:
     path = library.item_path(topic_id, item_id)
     if not path.exists():
         raise FileNotFoundError("条目不存在")
@@ -313,9 +338,13 @@ def get_material(topic_id: str, item_id: str) -> dict:
     if not _effective_original(texts):
         result["reason"] = "缺少原始回答；请补齐后准备材料，旧音频仍可播放"
         return result
-    if library.resolve_audio_file(path, "podcast") is None:
+    has_audio = library.resolve_audio_file(path, "podcast") is not None
+    if allow_pending_audio and meta.get("stale"):
+        has_audio = False
+    if not has_audio:
         result["reason"] = "播客音频尚未完成"
-        return result
+        if not allow_pending_audio:
+            return result
     attempt_matches = meta.get("study_attempt_fingerprint") == source_fingerprint(texts)
     if attempt_matches and meta.get("study_status") == "preparing":
         with _ACTIVE_LOCK:
@@ -335,7 +364,7 @@ def get_material(topic_id: str, item_id: str) -> dict:
             if stored.get("source_fingerprint") != source_fingerprint(texts):
                 return {"status": "changed", "reason": "回答正文或原始回答已变化，请复核材料"}
             validated = validate_material(stored, texts)
-            return {"status": "ready", "material": validated}
+            return {"status": "ready" if has_audio else "coaching_ready", "material": validated}
         except (OSError, ValueError, TypeError) as exc:
             return {"status": "failed", "reason": f"材料需修复：{str(exc)[:160]}"}
     return result

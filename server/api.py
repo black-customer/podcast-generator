@@ -1,7 +1,6 @@
 """HTTP API 路由。"""
 import hashlib
 import os
-import re
 import threading
 import uuid
 from contextlib import nullcontext
@@ -29,25 +28,21 @@ from . import (
     production,
     rewrite,
     speech_bridge,
-    stepfun,
     study,
     study_progress,
     teaching_podcast,
     timeline,
-    tts,
 )
 from .config import (
     APP_VERSION,
     DATA_DIR,
-    FISH_MODELS,
+    DEFAULT_SETTINGS,
     PROMPTS_DIR,
     TMP_DIR,
     is_dry_run,
     is_llm_configured,
     load_settings,
-    real_api_key,
     real_llm_api_key,
-    real_stepfun_api_key,
     save_settings,
     speech_engine_available,
 )
@@ -84,7 +79,7 @@ class GenerateIn(BaseModel):
 
 
 class SettingsIn(BaseModel):
-    tts_provider: Literal["stepfun", "fish", "kokoro_local"] | None = None
+    tts_provider: Literal["kokoro_local"] | None = None
     speech_engine_dir: str | None = None
     kokoro_question_voice: Literal[
         "af_bella", "af_heart", "am_liam", "am_michael", "am_puck", "am_fenrir"
@@ -92,66 +87,13 @@ class SettingsIn(BaseModel):
     kokoro_answer_voice: Literal[
         "af_bella", "af_heart", "am_liam", "am_michael", "am_puck", "am_fenrir", "golden_self"
     ] | None = None
-    llm_provider: Literal["deepseek", "custom", "stepfun"] | None = None
+    llm_provider: Literal["deepseek", "custom"] | None = None
     llm_base_url: str | None = None
     llm_api_key: str | None = None
     llm_model: str | None = None
-    stepfun_api_key: str | None = None
-    stepfun_text_model: str | None = None
-    stepfun_text_base_url: str | None = None
-    stepfun_tts_model: str | None = None
-    question_voice_id: str | None = None
-    answer_voice_id: str | None = None
-    stepfun_gap_ms: float | None = None
-    fish_api_key: str | None = None
-    reference_id: str | None = None
-    reference_id_b: str | None = None
-    model: str | None = None
-    speed: float | None = None
-    segment_chars: int | None = None
-    gap_ms: float | None = None
     episode_gap_ms: float | None = None
     dry_run: bool | None = None
-    temperature: float | None = None
-    answer_voice_male: bool | None = None
-
-    @field_validator("model")
-    @classmethod
-    def _v_model(cls, v: str | None) -> str | None:
-        if v is not None and v != "s2.1-pro-free":
-            raise ValueError("零额外成本模式只允许 s2.1-pro-free")
-        return v
-
-    @field_validator("stepfun_tts_model")
-    @classmethod
-    def _v_stepfun_model(cls, v: str | None) -> str | None:
-        if v is not None and v != "stepaudio-2.5-tts":
-            raise ValueError("当前固定使用 stepaudio-2.5-tts")
-        return v
-
-    @field_validator("speed")
-    @classmethod
-    def _v_speed(cls, v: float | None) -> float | None:
-        if v is not None and not 0.5 <= v <= 2.0:
-            raise ValueError("speed 必须在 0.5–2.0")
-        return v
-
-    @field_validator("temperature")
-    @classmethod
-    def _v_temperature(cls, v: float | None) -> float | None:
-        if v is not None and not 0.0 <= v <= 1.0:
-            raise ValueError("temperature 必须在 0–1")
-        return v
-
-    @field_validator("segment_chars")
-    @classmethod
-    def _v_segment_chars(cls, v: int | None) -> int | None:
-        if v is not None and not 100 <= v <= 5000:
-            # <=0 会让 split_text 陷入无限循环；过小则碎片化
-            raise ValueError("segment_chars 必须在 100–5000")
-        return v
-
-    @field_validator("gap_ms", "episode_gap_ms", "stepfun_gap_ms")
+    @field_validator("episode_gap_ms")
     @classmethod
     def _v_gap(cls, v: float | None) -> float | None:
         if v is not None and not 0 <= v <= 10000:
@@ -416,29 +358,26 @@ class TeachingPodcastIn(BaseModel):
 
 @router.get("/teaching-podcasts")
 def api_teaching_podcasts():
-    return {"episodes": teaching_podcast.list_episodes()}
+    return {"episodes": [teaching_podcast.public_episode(episode)
+                         for episode in teaching_podcast.list_episodes()]}
 
 
 @router.post("/teaching-podcasts/daily")
 def api_daily_teaching_podcast(body: TeachingPodcastIn):
-    try:
-        return teaching_podcast.for_today(body.language_mode, body.partner_voice)
-    except ValueError as exc:
-        raise _err(422, str(exc)) from exc
-    except (speech_bridge.SpeechError, audio.FFmpegError) as exc:
-        raise _err(503, str(exc)) from exc
+    return jobs.start_teaching_podcast("daily", body.language_mode, body.partner_voice)
 
 
 @router.post("/topics/{topic_id}/items/{item_id}/teaching-podcast")
 def api_item_teaching_podcast(topic_id: str, item_id: str, body: TeachingPodcastIn):
     try:
-        return teaching_podcast.for_item(topic_id, item_id, body.language_mode, body.partner_voice)
+        if not library.item_path(topic_id, item_id).is_dir():
+            raise FileNotFoundError
     except FileNotFoundError as exc:
         raise _err(404, "题目不存在") from exc
     except ValueError as exc:
         raise _err(422, str(exc)) from exc
-    except (speech_bridge.SpeechError, audio.FFmpegError) as exc:
-        raise _err(503, str(exc)) from exc
+    return jobs.start_teaching_podcast("item", body.language_mode, body.partner_voice,
+                                      topic_id, item_id)
 
 
 @router.get("/teaching-podcasts/{episode_id}/audio")
@@ -856,136 +795,28 @@ def api_get_voices(provider: str | None = None, gender: str | None = None):
     return voices
 
 
-@router.get("/voices/{provider}/{voice_id}/sample")
-def api_provider_voice_sample(provider: str, voice_id: str, regen: bool = False):
-    if provider == "kokoro_local":
-        if voice_id not in speech_bridge.VOICES:
-            raise _err(404, "本地音色不存在")
-        return _local_voice_preview(
-            voice_id, "What I like most about it is that it helps me unwind.", regen,
-        )
-    if provider == "fish":
-        return api_voice_sample(voice_id, regen=regen)
-    if provider != "stepfun":
-        raise _err(404, "未知语音服务")
-    if not re.fullmatch(r"[a-z0-9-]{2,64}", voice_id):
-        raise _err(400, "非法的 StepFun 音色 id")
-    cache = DATA_DIR / "voice_samples" / f"stepfun-{voice_id}-v1.mp3"
-    if not regen and cache.exists() and cache.stat().st_size > 1000:
-        return FileResponse(cache, media_type="audio/mpeg")
-    settings = load_settings()
-    if not real_stepfun_api_key(settings) or bool(settings.get("dry_run")):
-        raise _err(400, "请先配置 StepFun Key 后试听")
-    voice = production.find_voice(voice_id, provider="stepfun") or {}
-    voice_settings = dict(settings)
-    voice_settings["speed"] = float(voice.get("speed") or 1.0)
-    text = (
-        "Hey, that's a good question. I don't have a perfect answer yet, well, not exactly. "
-        "I guess I'd want something practical, but still a little exciting."
+@router.get("/voices/kokoro_local/{voice_id}/sample")
+def api_provider_voice_sample(voice_id: str, regen: bool = False):
+    if voice_id not in speech_bridge.VOICES:
+        raise _err(404, "本地音色不存在")
+    return _local_voice_preview(
+        voice_id, "What I like most about it is that it helps me unwind.", regen,
     )
-    try:
-        raw = stepfun.synthesize(
-            text,
-            voice=voice_id,
-            settings=voice_settings,
-            instruction=str(voice.get("instruction") or stepfun.role_instruction("answer")),
-        )
-        cache.parent.mkdir(parents=True, exist_ok=True)
-        staged = cache.with_suffix(".staging.mp3")
-        staged.write_bytes(raw)
-        stepfun.standardize_mp3(staged)
-        staged.replace(cache)
-    except (stepfun.StepFunError, audio.FFmpegError) as exc:
-        raise _err(502, str(exc)) from exc
-    finally:
-        cache.with_suffix(".staging.mp3").unlink(missing_ok=True)
-    return FileResponse(cache, media_type="audio/mpeg")
-
-
-@router.get("/voices/{ref_id}/sample")
-def api_voice_sample(ref_id: str, regen: bool = False):
-    """音色试听：现场合成优先（真实管线、所点音色）并缓存；官方样本仅作回退。
-
-    克隆音色的官方 samples 常是基模型的声音，与实际合成听感不符（展台会误导）；
-    因此默认用该 ref 现场合成一句（1 次免费调用，结果落缓存）。regen=1 强制重合成。
-    """
-    import logging
-
-    import httpx
-
-    from server.config import FISH_MODELS_URL, real_api_key
-
-    logger = logging.getLogger(__name__)
-    ref_id = ref_id.strip()
-    if not re.fullmatch(r"[0-9a-f]{16,64}", ref_id):
-        raise _err(400, "非法的音色 id")
-
-    cache = DATA_DIR / "voice_samples" / f"{ref_id}-q02-v1.mp3"
-    if not regen and cache.exists() and cache.stat().st_size > 1000:
-        return FileResponse(cache, media_type="audio/mpeg")
-
-    s = load_settings()
-    key = real_api_key(s)
-
-    # 1) 现场合成一句（与真实生成同管线——听感即所得）
-    if key and not bool(s.get("dry_run")):
-        try:
-            voice_settings = production.voice_generation_settings(s, ref_id)
-            audio_bytes = tts.fish_tts_segment(
-                (
-                    "Hey, that's a good question. I don't have a perfect answer yet—well, "
-                    "not exactly. I guess I'd want something practical, but still a little "
-                    "exciting. You know, the kind of thing that feels easy to live with every "
-                    "day. Oh, and one more thing: it should feel like me, not like I'm trying "
-                    "too hard to impress anyone."
-                ),
-                voice_settings,
-                reference_id=ref_id,
-            )
-            cache.parent.mkdir(parents=True, exist_ok=True)
-            cache.write_bytes(audio_bytes)
-            return FileResponse(cache, media_type="audio/mpeg")
-        except tts.TTSError as e:
-            logger.warning("现场合成试听失败，回退官方样本: %s", e)
-
-    # 2) 官方样本回退（合成不可用：dry-run/无 key/失败）。不落缓存——
-    #    克隆音色的官方样本可能并非本音色，缓存会永久遮蔽真实合成结果
-    try:
-        headers = {"Authorization": f"Bearer {key}"} if key else {}
-        detail = httpx.get(f"{FISH_MODELS_URL}/{ref_id}", headers=headers, timeout=30)
-        if detail.status_code == 200:
-            samples = detail.json().get("samples") or []
-            if samples:
-                url = samples[0].get("audio")
-                if url:
-                    up = httpx.get(url, timeout=60, follow_redirects=True)
-                    if up.status_code == 200 and len(up.content) > 1000:
-                        return Response(
-                            content=up.content,
-                            media_type="audio/mpeg",
-                            headers={"Cache-Control": "no-store"},
-                        )
-    except httpx.HTTPError:
-        logger.warning("拉取官方样本也失败", exc_info=True)
-    raise _err(502, "试听生成失败（合成不可用且官方样本缺失）")
 
 
 # ---------------------------------------------------------------- settings
 
 
 def _masked_settings(s: dict) -> dict:
-    """对外脱敏：永不回传明文 API key（含 models 列表）。"""
-    out = {key: value for key, value in s.items() if not key.endswith("_api_key")}
-    out["fish_api_key"] = ""
-    out["fish_api_key_set"] = bool(real_api_key(s))
-    out["stepfun_api_key"] = ""
-    out["stepfun_api_key_set"] = bool(real_stepfun_api_key(s))
+    out = {key: value for key, value in s.items()
+           if key in DEFAULT_SETTINGS and key != "llm_api_key"}
     out["llm_api_key"] = ""
     out["llm_api_key_set"] = bool(real_llm_api_key(s))
     out["llm_configured"] = is_llm_configured(s)
     out["llm_available"] = out["llm_configured"]
     out["speech_engine_available"] = speech_engine_available(s)
-    out["models"] = FISH_MODELS
+    out["tts_ready"] = out["speech_engine_available"] and not s.get("dry_run", False)
+    out["tts_description"] = "Kokoro / Seed-VC 本地离线语音"
     return out
 
 
@@ -998,9 +829,8 @@ def api_get_settings():
 def api_put_settings(body: SettingsIn):
     update = {k: v for k, v in body.model_dump().items() if v is not None}
     # 空 key 不覆盖已存 key（脱敏模式下前端回传空串属正常）
-    for key in ("fish_api_key", "stepfun_api_key", "llm_api_key"):
-        if not (update.get(key) or "").strip():
-            update.pop(key, None)
+    if not (update.get("llm_api_key") or "").strip():
+        update.pop("llm_api_key", None)
     if "speech_engine_dir" in update:
         speech_bridge.close_workers()
     saved = save_settings(update)
@@ -1009,7 +839,7 @@ def api_put_settings(body: SettingsIn):
 
 @router.post("/settings/test")
 def api_test_settings(
-    provider: Literal["stepfun", "fish", "kokoro_local", "llm"] | None = None,
+    provider: Literal["kokoro_local", "llm"] | None = None,
     capability: Literal["tts", "text"] = "tts",
 ):
     s = load_settings()
@@ -1024,26 +854,14 @@ def api_test_settings(
         except rewrite.RewriteError as exc:
             result = {"ok": False, "message": str(exc)}
         return {"ffmpeg": {"ok": ff_ok, "message": ff_msg}, "llm": result}
-    if selected == "kokoro_local":
-        current = speech_bridge.status(s)
-        ok = current["available"] and current.get("kokoro", False)
-        return {"ffmpeg": {"ok": ff_ok, "message": ff_msg}, "kokoro_local": {
-            "ok": ok,
-            "message": "本地语音已就绪" if ok else current.get("reason", "缺少 Kokoro 模型"),
-        }}
-    if selected == "stepfun":
-        result = (
-            stepfun.test_text_connection(s)
-            if capability == "text"
-            else stepfun.test_connection(s)
-        )
-        return {"ffmpeg": {"ok": ff_ok, "message": ff_msg}, "stepfun": result}
-    if capability == "text":
-        raise _err(422, "Fish 仅作为 TTS 备选，不提供文本改写")
-    return {
-        "ffmpeg": {"ok": ff_ok, "message": ff_msg},
-        "fish": tts.test_connection(s),
-    }
+
+
+    current = speech_bridge.status(s)
+    ok = current["available"] and current.get("kokoro", False)
+    return {"ffmpeg": {"ok": ff_ok, "message": ff_msg}, "kokoro_local": {
+        "ok": ok,
+        "message": "本地语音已就绪" if ok else current.get("reason", "缺少 Kokoro 模型"),
+    }}
 
 
 # ---------------------------------------------------------------- exports
@@ -1356,6 +1174,21 @@ def api_retry_generation(topic_id: str, item_id: str):
         raise _err(409, str(exc)) from exc
     return {"topic_id": topic_id, "item_id": item_id, "mode": "api", **job,
             "result_url": f"#/done/{topic_id}/{item_id}"}
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/retry-audio")
+def api_retry_audio(topic_id: str, item_id: str):
+    try:
+        found = study.get_material(topic_id, item_id, allow_pending_audio=True)
+        if not found.get("material"):
+            raise _err(422, "先准备本题的讲评和问答文本")
+        return jobs.start_api_generation(topic_id, item_id, None, None)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+    except jobs.JobConflict as exc:
+        raise _err(409, str(exc)) from exc
 
 
 @router.get("/topics/{topic_id}/items/{item_id}/agent-task")

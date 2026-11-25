@@ -71,21 +71,12 @@ def test_meta_write_is_atomic_no_corrupt_on_concurrent_writes(env):
 
 def test_get_settings_masks_api_key(env):
     c = env["client"]
-    c.put(
-        "/api/settings",
-        json={
-            "fish_api_key": "sk-fish-SECRETKEY123",
-            "stepfun_api_key": "sk-step-SECRETKEY456",
-        },
-    )
-    s = c.get("/api/settings").json()
-    assert "SECRETKEY123" not in str(s)
-    assert "SECRETKEY456" not in str(s)
-    assert s.get("fish_api_key_set") is True
-    assert s.get("stepfun_api_key_set") is True
-    # test_connection 端点也不回传
-    r = c.post("/api/settings/test").json()
-    assert "SECRETKEY123" not in str(r)
+    c.put("/api/settings", json={"llm_api_key": "sk-text-SECRETKEY123",
+                                 "stepfun_api_key": "sk-step-SECRETKEY456"})
+    settings = c.get("/api/settings").json()
+    assert "SECRETKEY" not in str(settings)
+    assert settings["llm_api_key_set"] is True
+    assert not any(key.startswith(("stepfun_", "fish_")) for key in settings)
 
 
 # ---------------------------------------------------------------- 排序 > 100
@@ -106,46 +97,21 @@ def test_topic_ordering_beyond_100(env):
 
 def test_settings_validation_rejects_bad_values(env):
     c = env["client"]
-    # segment_chars <= 0 会触发 split_text 无限循环（审计 A33）
-    assert c.put("/api/settings", json={"segment_chars": 0}).status_code == 422
-    assert c.put("/api/settings", json={"segment_chars": -5}).status_code == 422
-    assert c.put("/api/settings", json={"speed": 5.0}).status_code == 422
-    assert c.put("/api/settings", json={"temperature": 2.0}).status_code == 422
-    assert c.put("/api/settings", json={"gap_ms": -100}).status_code == 422
-    # 合法值照常通过
-    assert c.put("/api/settings", json={"segment_chars": 500}).status_code == 200
-    assert c.put("/api/settings", json={"speed": 1.05, "temperature": 0.7}).status_code == 200
+    assert c.put("/api/settings", json={"episode_gap_ms": -100}).status_code == 422
+    assert c.put("/api/settings", json={"episode_gap_ms": 600}).status_code == 200
+    assert c.put("/api/settings", json={"kokoro_answer_voice": "unknown"}).status_code == 422
 
 
-def test_stepfun_settings_and_voice_filters(env, monkeypatch):
-    from server import api
-
-    monkeypatch.setattr(api, "DATA_DIR", env["topics"].parent)
+def test_local_settings_and_voice_filters(env):
     c = env["client"]
-    saved = c.put(
-        "/api/settings",
-        json={
-            "tts_provider": "stepfun",
-            "question_voice_id": "lively-girl",
-            "answer_voice_id": "vibrant-youth",
-        },
-    )
+    saved = c.put("/api/settings", json={"kokoro_answer_voice": "golden_self"})
     assert saved.status_code == 200
-    assert saved.json()["tts_provider"] == "stepfun"
-
-    female = c.get("/api/voices", params={"provider": "stepfun", "gender": "female"})
-    assert female.status_code == 200
-    assert len(female.json()) >= 2
-    assert all(v["provider"] == "stepfun" and v["gender"] == "female" for v in female.json())
-
-    sample = c.get("/api/voices/stepfun/lively-girl/sample")
-    assert sample.status_code == 400
-    assert "StepFun Key" in sample.json()["detail"]
-
-    connection = c.post("/api/settings/test", params={"provider": "stepfun"})
-    assert connection.status_code == 200
-    assert connection.json()["stepfun"]["mode"] == "dry_run"
-    assert c.put("/api/settings", json={"stepfun_tts_model": "stepaudio-3-tts"}).status_code == 422
+    assert saved.json()["tts_provider"] == "kokoro_local"
+    assert saved.json()["kokoro_answer_voice"] == "golden_self"
+    female = c.get("/api/voices", params={"provider": "kokoro_local", "gender": "female"})
+    assert {v["voice_id"] for v in female.json()} == {"af_bella", "af_heart"}
+    assert c.get("/api/voices/stepfun/lively-girl/sample").status_code == 404
+    assert c.post("/api/settings/test", params={"provider": "stepfun"}).status_code == 422
 
 
 def test_atomic_write_survives_lock_free_concurrency(tmp_path, monkeypatch):

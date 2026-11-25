@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 import threading
 from urllib.parse import urlsplit
@@ -16,10 +17,9 @@ from urllib.parse import urlsplit
 import httpx
 
 from .audioqa import strip_all_tags, strip_disallowed_tags
-from .config import DEFAULT_SETTINGS, real_llm_api_key, real_stepfun_api_key
+from .config import DEFAULT_SETTINGS, real_llm_api_key
 
-TEXT_API_URL = "https://api.stepfun.com/v1/chat/completions"
-DEFAULT_TEXT_MODEL = "step-5-preview"
+logger = logging.getLogger(__name__)
 MAX_REPAIRS = 1
 # 表演稿与可见文本的词义一致性下限（内容词 jaccard）。同义改写通常 >0.5。
 SEMANTIC_OVERLAP_MIN = 0.35
@@ -29,7 +29,8 @@ SYSTEM_SCHEMA = (
     "- natural_english: the clean, natural, first-person spoken English answer, "
     "directly recitable, no stage directions, no brackets.\n"
     "Keep the user's real experiences, opinions and details; never invent facts. "
-    "Use supplemental Chinese intent to express the details the learner meant to include. "
+    "Include the distinct details and meanings the learner gives in supplemental Chinese intent, "
+    "even if those details are missing from the raw English. "
     "Only quote actual English from the original attempt as evidence of an error. "
     "For a lexical gap present in the intent but missing from the attempt, mark the matching "
     "sentence as explicit_gap and provide the missing expression as its key_chunk."
@@ -167,13 +168,8 @@ def _extract_json(content: str) -> dict:
 def text_config(settings: dict) -> tuple[str, str, str]:
     provider = settings.get("llm_provider") or "deepseek"
     key = real_llm_api_key(settings)
-    if provider == "stepfun":
-        key = real_stepfun_api_key(settings)
-        base = str(settings.get("stepfun_text_base_url") or TEXT_API_URL.rsplit("/", 2)[0])
-        model = str(settings.get("stepfun_text_model") or DEFAULT_TEXT_MODEL)
-    else:
-        base = str(settings.get("llm_base_url") or DEFAULT_SETTINGS["llm_base_url"])
-        model = str(settings.get("llm_model") or DEFAULT_SETTINGS["llm_model"])
+    base = str(settings.get("llm_base_url") or DEFAULT_SETTINGS["llm_base_url"])
+    model = str(settings.get("llm_model") or DEFAULT_SETTINGS["llm_model"])
     base = base.strip().rstrip("/")
     try:
         parsed = urlsplit(base)
@@ -257,13 +253,18 @@ def generate_complete_bundle(settings: dict, question: str, english_attempt: str
 
     intent = chinese_intent or (supplement or {}).get("intent", "")
     messages = _with_supplement(build_messages(question, english_attempt, intent), supplement)
-    messages[0]["content"] += (
-        "\nInclude a study_material field in the same JSON, for example: "
-        '{"study_material":{"complete_chinese":"中文","sentences":[{"zh":"中文",'
-        '"en":"It helps me unwind.","explanation":"句子组织","usage":"搭配用法",'
-        '"key_chunk":"helps me unwind"}]}}. '
-        "Split natural_english into sentences. Copy each sentence verbatim into its material row. "
-        + study.SYSTEM_PROMPT
+    messages[0]["content"] = messages[0]["content"].replace(
+        'Schema: {"natural_english": str}.',
+        'Exactly two top-level keys: {"natural_english":"It helps me unwind.",'
+        '"study_material":{"complete_chinese":"这让我放松。","sentences":[{"zh":"这让我放松。",'
+        '"en":"It helps me unwind.","explanation":"It 指前面提到的活动。",'
+        '"usage":"help 加人和动词原形。","key_chunk":"helps me unwind"}],'
+        '"coach_summary":{"headline":"已经说出了活动带来的感受，再练一下动词形式就更自然了。",'
+        '"strengths":["给出了原因"],"focus_points":["练习第三人称单数"]}}}.',
+    ) + (
+        "\nInside study_material, supply exactly one row per sentence of natural_english, "
+        "copying each complete sentence including punctuation. "
+        "Put all Chinese explanation and feedback inside study_material. " + study.MATERIAL_GUIDANCE
     )
     content = _chat(settings, messages, cancel)
     try:
@@ -279,7 +280,8 @@ def generate_complete_bundle(settings: dict, question: str, english_attempt: str
             data.get("study_material"), {**texts, "original_answer": english_attempt},
             require_chunks=True,
         )
-    except study.MaterialError:
+    except study.MaterialError as exc:
+        logger.info("合并生成的逐句材料校验失败：%s", exc)
         # 保留已经通过校验的三份文本，材料可单独补齐。
         material = None
     return {**texts, "study_material": material}

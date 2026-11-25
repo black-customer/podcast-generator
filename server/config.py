@@ -56,41 +56,14 @@ DEFAULT_SETTINGS = {
     "tts_provider": "kokoro_local",
     "speech_engine_dir": "D:/project/ChineseAccent",
     "kokoro_question_voice": "af_bella",
-    "kokoro_answer_voice": "golden_self",
+    "kokoro_answer_voice": "am_puck",
     "llm_provider": "deepseek",
     "llm_base_url": "https://api.deepseek.com/v1",
     "llm_api_key": "",
     "llm_model": "deepseek-flash",
-    "stepfun_api_key": "",
-    "stepfun_text_model": "step-5-preview",
-    # Coding Plan 订阅者可改为 "https://api.stepfun.com/step_plan/v1" 用订阅额度；留空走标准计费
-    "stepfun_text_base_url": "",
-    "stepfun_tts_model": "stepaudio-2.5-tts",
-    "question_voice_id": "lively-girl",
-    "answer_voice_id": "vibrant-youth",
-    "stepfun_gap_ms": 280,
-    "fish_api_key": "",
-    "reference_id": "",     # 音色 A（独白用这一个；对话中扮演 A）
-    "reference_id_b": "",   # 音色 B（可选：对话中扮演 B，留空则按单音色处理）
-    "model": "s2.1-pro-free",
-    "speed": 1.0,
-    "segment_chars": 700,
-    "gap_ms": 350,          # 条目内部段落之间的停顿
     "episode_gap_ms": 600,  # 剧集中条目之间的停顿
-    "dry_run": False,       # 手动强制 dry-run；fish_api_key 为空时也会自动 dry-run
-    "temperature": None,    # 表现力 0-1（None = 服务默认）；调高更生动多变，调低更稳定
-    "answer_voice_male": True,  # Bruce 规则：对话中回答必须是男声（提问自动用女声）
+    "dry_run": False,
 }
-
-LEGACY_REFERENCE_ID_MAP = {
-    # Q02：用户明确淘汰旧少年感预设；读取时无损迁移到官方 Ethan。
-    "078eaa5208ca42a1909d2e6fac9c93f7": "536d3a5e000945adb7038665781a4aca",
-}
-
-# Fish Audio 开放模型头
-FISH_MODELS = ["s2.1-pro-free"]
-FISH_TTS_URL = "https://api.fish.audio/v1/tts"
-FISH_MODELS_URL = "https://api.fish.audio/model"
 
 
 def ensure_dirs() -> None:
@@ -137,13 +110,17 @@ def load_settings() -> dict:
                     settings.update({k: v for k, v in stored.items() if k in settings})
             except (json.JSONDecodeError, OSError):
                 pass
-        if "tts_provider" not in stored and _real_key(stored.get("fish_api_key")):
-            # 旧版隐式 Fish 配置继续有效。
-            settings["tts_provider"] = "fish"
-        settings["reference_id"] = LEGACY_REFERENCE_ID_MAP.get(
-            settings.get("reference_id"), settings.get("reference_id")
-        )
-        return settings
+
+        return _normalize_settings(settings)
+
+
+def _normalize_settings(settings: dict) -> dict:
+    settings["tts_provider"] = "kokoro_local"
+    if settings.get("llm_provider") not in {"deepseek", "custom"}:
+        settings.update({key: DEFAULT_SETTINGS[key] for key in (
+            "llm_provider", "llm_base_url", "llm_model",
+        )})
+    return settings
 
 
 def save_settings(update: dict) -> dict:
@@ -160,6 +137,7 @@ def save_settings(update: dict) -> dict:
         for k, v in update.items():
             if k in current:
                 current[k] = v
+        _normalize_settings(current)
         atomic_write_text(SETTINGS_FILE, json.dumps(current, ensure_ascii=False, indent=2))
         return current
 
@@ -171,10 +149,6 @@ def settings_keys():
 # 占位符 key（settings.example.json 复制后未替换的情况）一律视为未配置
 _PLACEHOLDER_KEYS = {
     "",
-    "your_fish_api_key_here",
-    "your-fish-api-key",
-    "your_stepfun_api_key_here",
-    "your-stepfun-api-key",
     "your_deepseek_api_key_here",
     "your_llm_api_key_here",
 }
@@ -183,14 +157,6 @@ _PLACEHOLDER_KEYS = {
 def _real_key(value: object) -> str:
     key = str(value or "").strip()
     return "" if key.lower() in _PLACEHOLDER_KEYS else key
-
-
-def real_api_key(settings: dict | None = None) -> str:
-    return _real_key((settings or {}).get("fish_api_key"))
-
-
-def real_stepfun_api_key(settings: dict | None = None) -> str:
-    return _real_key((settings or {}).get("stepfun_api_key"))
 
 
 def real_llm_api_key(settings: dict | None = None) -> str:
@@ -217,27 +183,9 @@ def speech_engine_available(settings: dict) -> bool:
 
 
 def effective_tts_provider(settings: dict) -> str:
-    provider = settings.get("tts_provider", "fish")
-    if provider == "kokoro_local" and not speech_engine_available(settings):
-        if real_stepfun_api_key(settings):
-            return "stepfun"
-        if real_api_key(settings):
-            return "fish"
-    return provider
-
-
-def real_tts_api_key(settings: dict | None = None) -> str:
-    s = settings or load_settings()
-    if effective_tts_provider(s) == "fish":
-        return real_api_key(s)
-    return real_stepfun_api_key(s)
+    return "kokoro_local"
 
 
 def is_dry_run(settings: dict | None = None) -> bool:
-    s = settings or load_settings()
-    if s.get("dry_run"):
-        return True
-    provider = effective_tts_provider(s)
-    if provider == "kokoro_local":
-        return not speech_engine_available(s)
-    return not real_tts_api_key(s)
+    s = settings if settings is not None else load_settings()
+    return bool(s.get("dry_run")) or not speech_engine_available(s)

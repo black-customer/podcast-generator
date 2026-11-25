@@ -1,4 +1,4 @@
-/* 桌面教学电台与带定位的双人台词。 */
+/* 桌面教学电台：异步生成与音频播放。 */
 
 let player = null;
 
@@ -14,42 +14,25 @@ function itemLink(topic, item) {
 
 function renderEpisode(episode, output, autoplay) {
   reset();
+  const partner = episode.voices.B === "golden_self" ? "我的母语分身" : "Puck";
+  const voices = episode.language_mode === "bilingual"
+    ? (episode.mandarin_voices ? `中文 晓晓与云希 · 英文 Bella 与 ${partner}` : "晓晓与云希")
+    : `Bella 与 ${partner}`;
   output.innerHTML = `<section class="arcade-frame radio-player">
     <header><div><h2>${esc(episode.title)}</h2>
-      <p class="arcade-muted">${episode.language_mode === "bilingual" ? "晓晓与云希" :
-        episode.voices.B === "golden_self" ? "Bella 与我的母语分身" : "Bella 与 Puck"} · ${esc(fmtDur(episode.duration))}</p></div>
+      <p class="arcade-muted">${esc(voices)} · ${esc(fmtDur(episode.duration))}</p></div>
       <button class="study-button" type="button" data-radio-download>下载 MP3</button>
     </header>
+    ${episode.highlights?.length ? `<div class="arcade-chunks" aria-label="本集重点语块">
+      ${episode.highlights.map(text => `<mark class="arcade-chunk">${esc(text)}</mark>`).join("")}</div>` : ""}
+    ${episode.dry_run ? '<p class="arcade-muted">当前音频是试运行占位。</p>' : ""}
     <div class="radio-playback"><audio controls preload="metadata" src="${esc(episode.audio_url)}"></audio>
       <label>播放速度 <select><option value="0.8">0.8×</option><option value="1" selected>1×</option>
         <option value="1.15">1.15×</option><option value="1.3">1.3×</option><option value="1.5">1.5×</option></select></label>
-    </div>
-    <ol class="radio-transcript" aria-label="主持台词">
-      ${episode.lines.map(line => `<li><button type="button" data-start="${esc(line.start)}">
-        <span>${line.speaker === "A" ? "导师" : "搭档"}</span><span>${esc(line.text)}</span>
-        <time>${esc(fmtDur(line.start))}</time></button></li>`).join("")}
-    </ol><p class="arcade-muted" role="status"></p></section>`;
+    </div><p class="arcade-muted" role="status"></p></section>`;
   const audio = player = output.querySelector("audio");
   const status = output.querySelector("[role=status]");
-  const list = output.querySelector(".radio-transcript");
-  const rows = [...list.querySelectorAll("button")];
-  let highlighted = -1;
-  const highlight = () => {
-    const index = episode.lines.findIndex(line => audio.currentTime >= line.start && audio.currentTime < line.end);
-    if (index === highlighted) return;
-    rows[highlighted]?.removeAttribute("aria-current");
-    highlighted = index;
-    const current = rows[index];
-    if (!current) return;
-    current.setAttribute("aria-current", "true");
-    if (audio.paused) return;
-    const top = current.offsetTop - list.offsetTop;
-    if (top < list.scrollTop || top + current.offsetHeight > list.scrollTop + list.clientHeight)
-      list.scrollTop = top - list.clientHeight / 3;
-  };
-  audio.addEventListener("timeupdate", highlight);
-  audio.addEventListener("seeked", highlight);
-  audio.addEventListener("play", () => { $audio.pause(); highlight(); });
+  audio.addEventListener("play", () => $audio.pause());
   audio.addEventListener("error", () => { status.textContent = "电台音频暂时无法播放，请重新打开这一期。"; });
   output.querySelector("select").onchange = event => { audio.playbackRate = Number(event.target.value); };
   const download = output.querySelector("[data-radio-download]");
@@ -67,14 +50,9 @@ function renderEpisode(episode, output, autoplay) {
       status.textContent = `下载失败：${error.message}`;
     } finally { download.disabled = false; }
   };
-  list.onclick = event => {
-    const row = event.target.closest("[data-start]");
-    if (!row) return;
-    audio.currentTime = Number(row.dataset.start);
-    audio.play().catch(() => { status.textContent = "点击播放器上的播放按钮继续。"; });
-  };
-  if (autoplay) audio.play().catch(() => { if (player === audio) status.textContent = "电台已生成，点击播放收听。"; });
-  highlight();
+  if (autoplay) audio.play().catch(() => {
+    if (player === audio) status.textContent = "电台已生成，点击播放收听。";
+  });
 }
 
 async function open(token) {
@@ -96,6 +74,8 @@ async function open(token) {
         <button class="study-button primary" type="submit">${itemScope ? "生成本题播客" : "生成今日电台"}</button>
       </form>
       <p class="arcade-muted" id="radio-engine">Bella 和 Puck 使用本地语音。</p>
+      <div id="radio-progress"></div>
+      <button class="study-button" id="radio-cancel" type="button" hidden>取消生成</button>
       <p id="radio-status" role="status"></p>
     </section>
     <div id="radio-output"></div>
@@ -109,10 +89,11 @@ async function open(token) {
   const language = form.elements.language_mode, voice = form.elements.partner_voice;
   let episodes = [], selected = null, pending = false;
   const describe = () => {
-    voice.disabled = pending || language.value === "bilingual";
+    voice.disabled = pending;
+    const partner = voice.value === "golden_self" ? "我的母语分身" : "Puck";
     document.getElementById("radio-engine").textContent = language.value === "bilingual"
-      ? "晓晓和云希使用在线语音服务，生成的双人台词会发送给该服务。"
-      : `Bella 和 ${voice.value === "golden_self" ? "我的母语分身" : "Puck"}使用本地语音。`;
+      ? `中文由晓晓和云希朗读，英文使用 Bella 和 ${partner}。语音在本机合成。`
+      : `Bella 和 ${partner}使用本地语音。`;
   };
   language.onchange = voice.onchange = describe;
   const historyRows = () => {
@@ -132,24 +113,59 @@ async function open(token) {
     const episode = entry && episodes.find(row => row.id === entry.dataset.id);
     if (episode) choose(episode, true);
   };
+  const host = $app.querySelector("#radio-progress");
+  const cancel = $app.querySelector("#radio-cancel");
   const generate = async () => {
     if (pending) return;
-    pending = true;
-    submit.disabled = language.disabled = true;
+    pending = submit.disabled = language.disabled = true;
+    submit.classList.add("is-busy");
     describe();
-    status.textContent = "正在编排台词并合成双人音频…";
+    status.textContent = "";
+    const progress = ExperienceUI.progressBar(host, "文本引擎正在编排双人播客…");
     try {
-      const body = {language_mode: language.value,
-        partner_voice: language.value === "en" ? voice.value : "am_puck"};
-      const episode = await api("POST", endpoint, body);
+      const body = {language_mode: language.value, partner_voice: voice.value};
+      const {job_id: id} = await api("POST", endpoint, body);
       if (viewStale(token)) return;
-      episodes = [episode, ...episodes.filter(row => row.id !== episode.id)];
-      choose(episode, true);
-      status.textContent = "电台已生成。";
+      const url = `/api/jobs/${encodeURIComponent(id)}`;
+      cancel.hidden = false;
+      cancel.onclick = async () => {
+        cancel.disabled = true;
+        try {
+          await api("POST", url + "/cancel");
+          status.textContent = "正在取消…";
+        } catch (error) {
+          cancel.disabled = false;
+          status.textContent = error.message;
+        }
+      };
+      while (!viewStale(token)) {
+        const job = await api("GET", url);
+        if (viewStale(token)) return;
+        if (job.state === "done") {
+          const episode = job.episode;
+          episodes = [episode, ...episodes.filter(row => row.id !== episode.id)];
+          choose(episode, true);
+          status.textContent = "电台已生成。";
+          return;
+        }
+        if (job.state === "cancelled") { status.textContent = "已取消生成。"; return; }
+        if (job.state !== "running") throw new Error(job.errors?.[0]?.message || "电台生成中断，请重试");
+        const total = job.total, done = job.done;
+        const label = job.phase === "tts" && total ? `本地语音已合成 ${done} / ${total} 段` :
+          job.phase === "master" ? "正在统一响度并检查静音…" : "文本引擎正在编排双人播客…";
+        progress.set(label, job.phase === "tts" && total ? Math.round(100 * done / total) : undefined);
+        await new Promise(resolve => setTimeout(resolve, 650));
+      }
     } catch (error) {
       if (!viewStale(token)) status.textContent = error.message;
     } finally {
+      progress.stop();
       if (!viewStale(token)) {
+        host.replaceChildren();
+        cancel.hidden = true;
+        cancel.disabled = false;
+        cancel.onclick = null;
+        submit.classList.remove("is-busy");
         pending = submit.disabled = language.disabled = false;
         describe();
       }

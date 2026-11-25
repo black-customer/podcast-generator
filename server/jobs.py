@@ -4,7 +4,7 @@ import logging
 import threading
 import uuid
 
-from . import assemble, library, rewrite, study, tts
+from . import assemble, library, rewrite, speech_bridge, study, teaching_podcast, tts
 from .config import DATA_DIR, atomic_write_text, load_settings
 
 logger = logging.getLogger(__name__)
@@ -76,6 +76,24 @@ def get_job(job_id: str) -> dict | None:
         out = dict(job)
         out.pop("cancel_event", None)
         return out
+
+
+def active_item_job(topic_id: str, item_id: str) -> dict | None:
+    """单题的最近一次 API/audio-only 任务，包含终态供恢复使用。"""
+    with JOBS_LOCK:
+        matches = (job for job in JOBS.values()
+                   if job.get("kind") in {"api_generate", "retry_audio"}
+                   and job.get("topic_id") == topic_id and job.get("current") == item_id)
+        job = max(matches, key=lambda row: (row["started_at"], row["state"] == "running",
+                                            row.get("finished_at") or ""), default=None)
+        if job is None:
+            return None
+        data = {key: job.get(key) for key in (
+            "id", "state", "phase", "tts_done", "tts_total", "tts_label", "tts_voice",
+            "progress_pct", "started_at",
+        )}
+        data["error"] = "；".join(row["message"] for row in job.get("errors", []))
+        return data
 
 
 def list_jobs(limit: int = 50) -> list[dict]:
@@ -237,7 +255,8 @@ def start_generate(
     return {"job_id": job_id, "total": len(targets)}
 
 
-def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, answer: str) -> None:
+def _run_api_generate(job_id: str, topic_id: str, item_id: str,
+                      question: str | None, answer: str | None) -> None:
     """API 模式合并改写与逐句材料，校验后自动合成音频。
 
     改写失败保留原始回答，不产生或覆盖任何音频。
@@ -253,50 +272,61 @@ def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, a
             job["phase"] = phase
             _persist_locked()
 
+    def progress(done: int, total: int, label: str, voice: str) -> None:
+        with JOBS_LOCK:
+            job.update(tts_done=done, tts_total=total, tts_label=label, tts_voice=voice,
+                       progress_pct=round(100 * done / total) if total else 0)
+
     try:
-        _set_phase("rewrite")
-        from . import study_progress
-        extra = study_progress.get_progress(topic_id, item_id).get("training_inputs") or {}
-        options = {"supplement": extra} if extra.get("intent") or extra.get("feedback") else {}
-        settings = load_settings()
-        material = None
-        texts = None
-        if rewrite.text_available(settings):
-            try:
-                texts = rewrite.generate_complete_bundle(
+        can_prepare = False
+        fingerprint = None
+        if question is not None and answer is not None:
+            _set_phase("rewrite")
+            from . import study_progress
+            extra = study_progress.get_progress(topic_id, item_id).get("training_inputs") or {}
+            options = {"supplement": extra} if extra.get("intent") or extra.get("feedback") else {}
+            settings = load_settings()
+            material = None
+            texts = None
+            if rewrite.text_available(settings):
+                try:
+                    texts = rewrite.generate_complete_bundle(
+                        settings, question, answer, cancel=cancel_event, **options
+                    )
+                    material = texts.pop("study_material")
+                except rewrite.BundleFormatError:
+                    logger.info("合并响应格式不完整，重新生成音频文本")
+            if texts is None:
+                texts, _repairs = rewrite.generate_texts(
                     settings, question, answer, cancel=cancel_event, **options
                 )
-                material = texts.pop("study_material")
-            except rewrite.BundleFormatError:
-                logger.info("合并响应格式不完整，重新生成音频文本")
-        if texts is None:
-            texts, _repairs = rewrite.generate_texts(
-                settings, question, answer, cancel=cancel_event, **options
-            )
-        if cancel_event and cancel_event.is_set():
-            raise tts.TTSCancelled("已取消")
-        _set_phase("save")
-        with library.LIB_LOCK:
-            current = library.get_item_full(topic_id, item_id)
-            if rewrite.original_answer_of(current) != answer or current.get("question") != question:
-                raise rewrite.RewriteError("生成时原始回答或题目有改动，请从当前回答重新生成")
-            library.update_item_texts(topic_id, item_id, {"original_answer": answer, **texts})
-            fingerprint = study.source_fingerprint(library.get_item_full(topic_id, item_id))
+            if cancel_event and cancel_event.is_set():
+                raise tts.TTSCancelled("已取消")
+            _set_phase("save")
+            with library.LIB_LOCK:
+                current = library.get_item_full(topic_id, item_id)
+                if (rewrite.original_answer_of(current) != answer
+                        or current.get("question") != question):
+                    raise rewrite.RewriteError("生成时原始回答或题目有改动，请从当前回答重新生成")
+                library.update_item_texts(topic_id, item_id, {"original_answer": answer, **texts})
+                fingerprint = study.source_fingerprint(library.get_item_full(topic_id, item_id))
+                if material is not None:
+                    study.save_material(topic_id, item_id, material, require_audio=False)
+            with JOBS_LOCK:
+                job["coaching_ready"] = material is not None
+            can_prepare = (material is None and not settings.get("dry_run")
+                           and rewrite.text_available(settings))
         _set_phase("tts")
-        tts.generate_item_audio(topic_id, item_id, track="podcast", cancel=cancel_event)
-        can_prepare = not settings.get("dry_run") and rewrite.text_available(settings)
-        if material is not None or can_prepare:
+        tts.generate_item_audio(topic_id, item_id, track="podcast", cancel=cancel_event,
+                                on_progress=progress)
+        if can_prepare:
             _set_phase("study")
             try:
                 with library.LIB_LOCK:
                     current = library.get_item_full(topic_id, item_id)
                     if fingerprint != study.source_fingerprint(current):
                         raise study.MaterialError("回答已更新，请重新准备逐句材料")
-                    if material is not None:
-                        study.save_material(topic_id, item_id, material)
-                if material is None:
-                    study.generate_material(topic_id, item_id, cancel=cancel_event,
-                                            require_chunks=True)
+                study.generate_material(topic_id, item_id, cancel=cancel_event, require_chunks=True)
             except (study.MaterialError, rewrite.RewriteError) as exc:
                 if cancel_event and cancel_event.is_set():
                     raise tts.TTSCancelled("已取消") from exc
@@ -305,19 +335,11 @@ def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, a
         with JOBS_LOCK:
             _finish(job, "cancelled")
         return
-    except rewrite.TextPermissionError as exc:
-        with JOBS_LOCK:
-            job["errors"].append({"item_id": item_id, "message": str(exc)[:300]})
-            _persist_locked()
-            library_update_error(topic_id, item_id, str(exc))
-            _finish(job, "error")
-        return
     except Exception as exc:
         msg = str(exc)
+        library_update_error(topic_id, item_id, msg)
         with JOBS_LOCK:
             job["errors"].append({"item_id": item_id, "message": msg[:300]})
-            _persist_locked()
-            library_update_error(topic_id, item_id, msg)
             _finish(job, "error")
         return
     with JOBS_LOCK:
@@ -332,18 +354,21 @@ def library_update_error(topic_id: str, item_id: str, message: str) -> None:
         pass
 
 
-def start_api_generation(topic_id: str, item_id: str, question: str, answer: str) -> dict:
+def start_api_generation(topic_id: str, item_id: str, question: str | None,
+                         answer: str | None) -> dict:
     """API 模式生成任务；同话题互斥。"""
     with JOBS_LOCK:
         if _running_topic_job_locked(topic_id):
             raise JobConflict("该话题已有运行中的生成任务")
         job_id = uuid.uuid4().hex[:12]
+        audio_only = question is None
         JOBS[job_id] = {
             "id": job_id,
-            "kind": "api_generate",
+            "kind": "retry_audio" if audio_only else "api_generate",
             "topic_id": topic_id,
             "track": "podcast",
-            "phase": "rewrite",
+            "phase": "tts" if audio_only else "rewrite",
+            "coaching_ready": audio_only,
             "state": "running",
             "total": 1,
             "done": 0,
@@ -361,6 +386,55 @@ def start_api_generation(topic_id: str, item_id: str, question: str, answer: str
         target=_run_api_generate, args=(job_id, topic_id, item_id, question, answer), daemon=True
     ).start()
     return {"job_id": job_id, "total": 1}
+
+
+def start_teaching_podcast(kind: str, mode: str, partner: str, topic_id: str | None = None,
+                           item_id: str | None = None) -> dict:
+    scope = [kind, mode, partner, topic_id, item_id]
+    with JOBS_LOCK:
+        for existing in JOBS.values():
+            if existing.get("radio_scope") == scope and existing["state"] == "running":
+                return {"job_id": existing["id"], "state": "running"}
+        job_id = uuid.uuid4().hex[:12]
+        cancel = threading.Event()
+        job = JOBS[job_id] = {
+            "id": job_id, "kind": "teaching_podcast", "radio_scope": scope,
+            "topic_id": topic_id or "", "current": item_id or "",
+            "phase": "script", "state": "running", "done": 0, "total": 0,
+            "label": "正在编排双人播客", "errors": [], "cancel": False,
+            "cancel_event": cancel, "started_at": _now(), "finished_at": None,
+        }
+        _prune_finished_locked()
+        _persist_locked()
+
+    def progress(phase: str, done: int, total: int, label: str) -> None:
+        with JOBS_LOCK:
+            job.update(phase=phase, done=done, total=total, label=label)
+
+    def run() -> None:
+        try:
+            if topic_id is not None and item_id is not None:
+                episode = teaching_podcast.for_item(
+                    topic_id, item_id, mode, partner, cancel=cancel, on_progress=progress,
+                )
+            else:
+                episode = teaching_podcast.for_today(mode, partner, cancel=cancel,
+                                                     on_progress=progress)
+        except (tts.TTSCancelled, speech_bridge.SpeechCancelled):
+            with JOBS_LOCK:
+                _finish(job, "cancelled")
+        except Exception as exc:
+            with JOBS_LOCK:
+                if not cancel.is_set():
+                    job["errors"].append({"item_id": item_id or "", "message": str(exc)[:300]})
+                _finish(job, "cancelled" if cancel.is_set() else "error")
+        else:
+            with JOBS_LOCK:
+                job["episode"] = teaching_podcast.public_episode(episode)
+                _finish(job, "done")
+
+    threading.Thread(target=run, name="teaching-podcast", daemon=True).start()
+    return {"job_id": job_id, "state": "running"}
 
 
 def _run_assemble(job_id: str, topic_id: str, track: str) -> None:

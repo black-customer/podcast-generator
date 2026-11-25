@@ -26,17 +26,64 @@ const ExperienceUI = (() => {
       <button type="button" class="study-button primary" id="view-retry">重新读取</button></section>`;
     target.querySelector("#view-retry").onclick = retry;
   }
+  function liveTimer(node, started = Date.now()) {
+    if (!node) return () => {};
+    const update = () => {
+      if (!node.isConnected) { clearInterval(timer); return; }
+      node.textContent = `已用时 ${Math.max(0, Math.floor((Date.now() - started) / 1000))} 秒`;
+    };
+    const timer = setInterval(update, 1000);
+    update();
+    return () => clearInterval(timer);
+  }
+  function progressBar(host, initial, started = Date.now()) {
+    host.innerHTML = `<div class="work-progress">
+      <div class="work-progress-meta"><span role="status"></span>
+      <span class="work-progress-values"><span data-progress-number></span>
+      <span data-progress-time></span></span></div>
+      <div class="work-progress-track" role="progressbar" aria-label="任务进度">
+        <div class="work-progress-fill"></div>
+      </div></div>`;
+    const root = host.firstElementChild;
+    const track = root.querySelector("[role=progressbar]");
+    const status = root.querySelector("[role=status]");
+    const number = root.querySelector("[data-progress-number]");
+    const stop = liveTimer(root.querySelector("[data-progress-time]"), started);
+    const set = (label, percent) => {
+      if (status.textContent !== label) status.textContent = label;
+      const known = Number.isFinite(percent);
+      root.classList.toggle("indeterminate", !known);
+      track.classList.toggle("indeterminate", !known);
+      if (known) track.setAttribute("aria-valuenow", percent);
+      else track.removeAttribute("aria-valuenow");
+      track.style.setProperty("--work-progress", (known ? percent : 35) + "%");
+      number.textContent = known ? `${percent}%` : "";
+    };
+    set(initial);
+    return { set, stop };
+  }
+  function pendingNear(control, label) {
+    if (!control) return () => {};
+    const host = document.createElement("div");
+    host.className = "work-progress-inline";
+    (control.closest(".arcade-controls, .voice-card-actions, .role-controls") || control).after(host);
+    control.classList.add("is-busy");
+    const pending = progressBar(host, label);
+    return () => { pending.stop(); host.remove(); control.classList.remove("is-busy"); };
+  }
   async function busy(button, label, operation) {
     if (!button || button.disabled) return;
     const previous = button.textContent;
     button.disabled = true;
     button.setAttribute("aria-busy", "true");
+    button.classList.add("is-busy");
     button.textContent = label;
     try { return await operation(); }
     finally {
       if (button.isConnected) {
         button.disabled = false;
         button.removeAttribute("aria-busy");
+        button.classList.remove("is-busy");
         button.textContent = previous;
       }
     }
@@ -103,5 +150,6 @@ const ExperienceUI = (() => {
     focus(target);
   });
   window.addEventListener("DOMContentLoaded", () => observer.observe($app, { childList: true, subtree: true }));
-  return { focus, loading, readError, busy, recordingExtension, recordingControls, memoReads };
+  return { focus, loading, readError, busy, recordingExtension, recordingControls, memoReads,
+    liveTimer, progressBar, pendingNear };
 })();

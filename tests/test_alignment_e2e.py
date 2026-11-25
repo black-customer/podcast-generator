@@ -45,12 +45,7 @@ def gen_env(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "SETTINGS_FILE", tmp_path / "settings.json")
     monkeypatch.setattr(jobs, 'JOBS_FILE', tmp_path / 'jobs.json')
     with TestClient(app) as c:
-        # dry-run + 双音色：对话文本走逐行合成路径（单次合成需网络，dry-run 本就走逐行）
-        c.put(
-            "/api/settings",
-            json={"tts_provider": "stepfun", "dry_run": True,
-                  "reference_id": "voice-a", "reference_id_b": "voice-b"},
-        )
+        c.put("/api/settings", json={"dry_run": True})
         yield c
 
 
@@ -87,13 +82,14 @@ def test_generation_writes_measured_alignment(gen_env):
     assert doc is not None, "alignment 文档缺失或指纹不匹配"
     assert doc["mode"] == "measured", f"逐行 dry-run 应为 measured，实际 {doc['mode']}"
     segs = doc["segments"]
-    assert len(segs) == 2
+    assert len(segs) == 3
     assert segs[0]["start"] == 0.0
     assert segs[0]["end"] <= segs[1]["start"]  # 换行 gap > 0
-    assert segs[1]["speaker"] == "b"
+    assert [segment["speaker"] for segment in segs] == ["a", "b", "b"]
+    assert segs[1]["end"] < segs[2]["start"]
     # 时间轴端点消费 alignment（载荷含 lines/words/mode）
     tl = gen_env.get(f"/api/topics/{tid}/items/{iid}/timeline/podcast").json()
-    assert len(tl["lines"]) == 2
+    assert len(tl["lines"]) == 3
     assert tl["lines"][0]["start"] == segs[0]["start"] and tl["lines"][0]["speaker"] == "A"
     assert tl["mode"] == "measured"
 

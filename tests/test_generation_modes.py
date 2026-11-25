@@ -193,7 +193,7 @@ def test_generate_texts_repairs_once_then_succeeds(monkeypatch):
 
     monkeypatch.setattr(rewrite.httpx, "post", fake_post)
     texts, repairs = rewrite.generate_texts(
-        {"llm_provider": "stepfun", "stepfun_api_key": "sk-test"},
+        {"llm_provider": "deepseek", "llm_api_key": "sk-test"},
         "Who was your favorite teacher?", "我的英语老师"
     )
     assert repairs == 1
@@ -212,7 +212,7 @@ def test_generate_texts_no_permission_fails_fast_without_retry(monkeypatch):
 
     monkeypatch.setattr(rewrite.httpx, "post", fake_post)
     with pytest.raises(rewrite.TextPermissionError) as ei:
-        rewrite.generate_texts({"llm_provider": "stepfun", "stepfun_api_key": "sk-test"}, "Q?", "A")
+        rewrite.generate_texts({"llm_provider": "deepseek", "llm_api_key": "sk-test"}, "Q?", "A")
     assert "Agent" in str(ei.value)
     assert len(calls) == 1
 
@@ -225,7 +225,7 @@ def test_generate_texts_structural_failure_after_one_repair(monkeypatch):
 
     monkeypatch.setattr(rewrite.httpx, "post", fake_post)
     with pytest.raises(rewrite.RewriteError):
-        rewrite.generate_texts({"llm_provider": "stepfun", "stepfun_api_key": "sk-test"}, "Q?", "A")
+        rewrite.generate_texts({"llm_provider": "deepseek", "llm_api_key": "sk-test"}, "Q?", "A")
 
 
 # ---------------------------------------------------------------- 统一入口端点
@@ -239,8 +239,8 @@ def test_generation_request_agent_mode_creates_item_without_text_api(client, mon
         raise AssertionError("Agent 模式不得调用文本 API")
 
     monkeypatch.setattr(rewrite.httpx, "post", boom)
-    saved = c.put("/api/settings", json={"stepfun_api_key": config_key}).json()
-    assert saved["stepfun_api_key_set"] is True
+    saved = c.put("/api/settings", json={"llm_api_key": config_key}).json()
+    assert saved["llm_api_key_set"] is True
 
     r = c.post(
         "/api/generation-requests",
@@ -412,8 +412,8 @@ def test_both_modes_produce_identical_structures(client, monkeypatch):
         snap(agent_res["topic_id"], agent_res["item_id"])
 
 
-def test_chat_routes_to_configured_plan_endpoint(monkeypatch):
-    """配置 stepfun_text_base_url 时文本调用走该接入点（Coding Plan 额度），默认不变。"""
+def test_chat_routes_to_custom_text_endpoint(monkeypatch):
+    """自定义接口使用指定地址，默认 DeepSeek 地址保持。"""
     from server import rewrite
 
     captured = {}
@@ -429,11 +429,11 @@ def test_chat_routes_to_configured_plan_endpoint(monkeypatch):
         return FakeResponse()
 
     monkeypatch.setattr(rewrite.httpx, "post", fake_post)
-    settings = {"llm_provider": "stepfun", "stepfun_api_key": "sk-test",
-                "stepfun_text_model": "step-5-preview"}
+    settings = {"llm_provider": "deepseek", "llm_api_key": "sk-test",
+                "llm_model": "deepseek-flash"}
     rewrite._chat(settings, [{"role": "user", "content": "hi"}], None)
-    assert captured["url"] == rewrite.TEXT_API_URL
+    assert captured["url"] == "https://api.deepseek.com/v1/chat/completions"
 
-    settings["stepfun_text_base_url"] = "https://api.stepfun.com/step_plan/v1"
+    settings.update(llm_provider="custom", llm_base_url="https://example.test/compatible/v1")
     rewrite._chat(settings, [{"role": "user", "content": "hi"}], None)
-    assert captured["url"] == "https://api.stepfun.com/step_plan/v1/chat/completions"
+    assert captured["url"] == "https://example.test/compatible/v1/chat/completions"

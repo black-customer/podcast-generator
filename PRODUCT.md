@@ -18,8 +18,9 @@ The reference distinguishes supported grammar corrections from missing expressio
 say a corrected sentence before seeing the answer, turn on pronunciation cues, switch between
 native and cloned voices, and schedule reviewed sentences through FSRS-4.5. The final retake
 compares recordings, English words per minute, long pauses, and recognized phrases when measured.
-A two-host teaching radio makes selected phrases and corrections available for listening, with
-offline English or optional online bilingual speech. The old training view is available at
+A teacher's feedback appears as soon as the text is ready, while reference audio is generated in the background.
+The teaching radio turns selected phrases and corrections into a two-host conversation, with offline English
+and Mandarin speech. The old training view is available at
 `#/legacy-train/`. Android uses its existing flow.
 
 On 2026-10-16 Bruce authorized an aesthetic upgrade across all visible pages after rejecting
@@ -48,7 +49,7 @@ personal corpus. Android is also a primary learning surface: he imports voice-ch
 uses his own StepFun API to prepare materials, listens and practises oral recall on the go.
 PC remains available for management and Agent processing; daily mobile learning needs no PC server.
 
-Open-source users run the same local workflow with their own StepFun or Fish key and corpus.
+Desktop users can bring their own DeepSeek-compatible text service and build a local corpus.
 Bruce remains the first user, but a fresh user must be able to understand and complete the core
 loop without learning the project's internal track or script terminology.
 
@@ -69,7 +70,7 @@ pleasant to replay and clear to imitate, then practise reconstructing and indepe
 the expression. Generating an audio clip is a foundation for the learning loop, not the complete
 product outcome; listening remains freely available without mandatory study.
 
-The audio remains immediately playable. A learner may then enter a guided study session: record
+The learner can read feedback while audio is generated, then listen or enter a guided study session: record
 an initial answer, reconstruct every English sentence from its Chinese meaning, read saved
 explanations, answer again with the complete Chinese meaning, then answer with only the question.
 The app keeps recordings and difficult sentences for later review. It must not claim a verified
@@ -85,8 +86,8 @@ that the user wants to say and can practise with their own attempts.
 ## Operating Context
 
 The core loop is: choose an IELTS or daily-life question → answer freely → use Agent mode or the
-optional StepFun API mode to produce natural English and a hidden performance script → generate
-audio with StepAudio 2.5 TTS (Fish remains a fallback) → replay, imitate, download, or import it
+a DeepSeek-compatible text service to prepare natural English and study material → generate audio
+locally with Kokoro or a personal Seed-VC voice → replay, imitate, download, or import it
 into Android. Text files under `data/` remain the common interface for both modes.
 
 The same web frontend runs against the local FastAPI server on PC and against imported corpus packs
@@ -97,7 +98,7 @@ acceptance, visual direction, and milestone acceptance.
 
 - Python 3.11, FastAPI, native JavaScript, no frontend build step, no CDN, no framework.
 - Local-first, with Kokoro and an optional personal Seed-VC voice through ChineseAccent.
-- Desktop API mode uses a configured DeepSeek-compatible endpoint or legacy StepFun credentials.
+- Desktop API mode uses a configured DeepSeek-compatible endpoint.
   Agent mode remains available for completing the same files without a text API call.
 - Questioner and answerer are independent roles with user-selected gender and voice.
 - Existing alignment, word highlighting, sentence seeking, bilingual display, server/pack data
@@ -107,7 +108,7 @@ acceptance, visual direction, and milestone acceptance.
   provides evidence. Audio generation keeps its three-text contract. New bundles carry the
   sentence material in the same submission, and existing material files stay readable.
 - `data/` is product data and must remain human-readable, Agent-editable, atomic, and compatible.
-- Real TTS consumes quota and runs only when explicitly requested or initiated by the user.
+- Text API requests consume the user's quota. Desktop speech synthesis and transcription run locally.
 
 ## Brand Commitments
 

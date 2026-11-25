@@ -18,7 +18,7 @@ def isolated(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "SETTINGS_FILE", tmp_path / "settings.json")
     config.atomic_write_text(
         config.SETTINGS_FILE,
-        '{"tts_provider":"stepfun","stepfun_api_key":"sk-secret-doctor-KEY-9281"}',
+        '{"tts_provider":"stepfun","llm_api_key":"sk-secret-doctor-KEY-9281"}',
     )
     return tmp_path
 
@@ -33,7 +33,7 @@ def test_doctor_collect_is_readonly_and_masks_keys(isolated):
 
     blob = repr(items)
     assert "sk-secret-doctor-KEY-9281" not in blob, "诊断绝不能输出密钥明文"
-    assert any("已配置" in i["detail"] for i in items if "Key" in i["name"] or "引擎" in i["name"])
+    assert any("已配置" in i["detail"] for i in items if i["name"] == "文本改写配置")
 
     names = {i["name"] for i in items}
     assert {"Python", "ffmpeg", "语音引擎配置", "题库", "服务端口 8765"} <= names

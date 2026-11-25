@@ -10,7 +10,7 @@
 2026-11-25 桌面 3.0 首页直达闪卡或快捷抽题。单题走 `#/train/`，闪电复习走 `#/blitz`，
 教学电台走 `#/radio`，旧训练走 `#/legacy-train/`。英文盲答原声与中文意图分别采集；
 中文语音只用于本机转写。API 生成前读取 `llm_configured`，失败后通过同条目 `retry-api`
-恢复。API 在后端拼装三文本，Agent 执行 `skills/ielts-audio/SKILL.md`，同一 `complete`
+恢复。API 在后端拼装三文本，先保存讲评，再后台自动合成示范音频。Agent 执行 `skills/ielts-audio/SKILL.md`，同一 `complete`
 可带 `study_material`，旧独立逐句命令仍可用。优先本机自动分析，发音标用于跟读。
 
 ## 常用命令
@@ -43,8 +43,9 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 <file>
   （包括 `llm_api_key` 和 `deepseek_api_key`，`/api/settings` 必须脱敏）
 - Windows 新配置默认使用 DeepSeek 兼容改写与 ChineseAccent 的 Kokoro/Seed-VC 本地语音。
   复用外挂 `.venv` 与模型，主项目不安装 PyTorch 等模型依赖，声纹与微调由 ChineseAccent 管理。
-- Fish 免费档 `s2.1-pro-free`；真实 TTS 调用花钱（配额），测试默认 dry-run，
-  真实生成只在明确需要验证听感时做
+- 桌面语音（问答、电台、试听、转写）只用本机环境。默认 Bella 提问、Puck 回答，另可选个人分身。
+  残留云语音配置读取时忽略。Android 原生生成仍使用手机自己的配置。测试默认 dry-run，
+  真实文本 API 调用需要 Bruce 授权额度。
 - ffmpeg concat 清单是 UTF-8 绝对路径：CJK 目录名是已知风险点（M04 验证）
 
 ## 代码风格

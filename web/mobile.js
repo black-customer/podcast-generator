@@ -37,6 +37,7 @@ const MobileAppearance = (() => {
 })();
 
 const MobileRuntime = (() => {
+  // 原生应用自己的服务配置由 Learning 插件处理。
   const native = !!window.Capacitor?.isNativePlatform?.();
   const plugin = native ? (window.Capacitor.Plugins.Learning || window.Capacitor.registerPlugin("Learning")) : null;
   let state = null, recorder = null;

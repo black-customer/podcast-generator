@@ -65,7 +65,9 @@ def collect() -> list[dict]:
     """汇总诊断项：{level, name, detail, hint}。只读，绝不包含密钥明文。"""
     from server import bank, library, production
     from server.config import (
-        is_dry_run, load_settings, real_api_key, real_llm_api_key, real_stepfun_api_key,
+        is_dry_run,
+        is_llm_configured,
+        load_settings,
         speech_engine_available,
     )
 
@@ -95,52 +97,21 @@ def collect() -> list[dict]:
             })
 
     settings = load_settings()
-    provider = settings["tts_provider"]
-    step_set = bool(real_stepfun_api_key(settings))
-    fish_set = bool(real_api_key(settings))
     local_set = speech_engine_available(settings)
-    text_set = bool(real_llm_api_key(settings))
+    text_set = is_llm_configured(settings)
     results.append({
-        "level": OK if (local_set or step_set or fish_set) else WARN,
+        "level": OK if local_set else WARN,
         "name": "语音引擎配置",
-        "detail": (
-            f"当前 provider={provider}；本地引擎 {'已找到' if local_set else '未找到'}；"
-            f"StepFun Key {'已配置' if step_set else '未配置'}；"
-            f"Fish Key {'已配置' if fish_set else '未配置'}"
-            + ("；dry-run 模式" if is_dry_run(settings) else "")
-        ),
-        "hint": (
-            "" if (local_set or step_set or fish_set)
-            else "在网页设置中检查本地引擎目录，或先用 dry-run 体验"
-        ),
+        "detail": ("Kokoro / Seed-VC 已找到" if local_set else "未找到本地引擎")
+        + ("；dry-run 模式" if is_dry_run(settings) else ""),
+        "hint": "" if local_set else "在网页设置中检查 ChineseAccent 目录",
     })
-    results.append({"level": OK if text_set or step_set else WARN, "name": "文本改写 Key",
-                    "detail": "已配置" if text_set else "使用旧 StepFun 配置" if step_set else "未配置",
-                    "hint": "" if text_set or step_set else "可配置文本引擎，或用 Agent 模式"})
-    keys_check = (
-        ("STEPFUN", real_stepfun_api_key(settings)),
-        ("FISH", real_api_key(settings)),
-    )
-    for name, key in keys_check:
-        if key:
-            results.append({
-                "level": OK,
-                "name": f"{name} Key 脱敏校验",
-                "detail": f"已配置（{key[:3]}***，共 {len(key)} 字符，诊断不输出明文）",
-                "hint": "",
-            })
-
+    results.append({"level": OK if text_set else WARN, "name": "文本改写配置",
+                    "detail": "已配置" if text_set else "未配置",
+                    "hint": "" if text_set else "可配置文本引擎，或用 Agent 模式"})
     voices = production.get_voice_catalog()
-    by_provider: dict[str, int] = {}
-    for voice in voices:
-        prov = voice.get("provider") or "fish"
-        by_provider[prov] = by_provider.get(prov, 0) + 1
-    results.append({
-        "level": OK if voices else WARN,
-        "name": "音色库",
-        "detail": " / ".join(f"{k} {v} 个" for k, v in sorted(by_provider.items())) or "空",
-        "hint": "" if voices else "data/voices.json 缺失或损坏",
-    })
+    results.append({"level": OK if voices else WARN, "name": "音色库",
+                    "detail": f"本地音色 {len(voices)} 个", "hint": ""})
 
     try:
         snapshot = bank.load_bank()

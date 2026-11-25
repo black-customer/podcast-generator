@@ -551,7 +551,7 @@ const StudyUI = (() => {
       <div class="study-actions"><a class="study-button" href="#/play/${encodeURIComponent(state.topicId)}/${encodeURIComponent(state.itemId)}">继续听音频</a>
         ${state.item.has_audio_podcast && original ? `<button type="button" class="primary" data-missing="prepare">准备／重试材料</button>
           <button type="button" data-missing="agent">复制 Agent 任务</button>` : ""}</div>
-      <p class="study-muted">API 准备会使用你自己的 StepFun 文本额度；Agent 可按独立材料命令提交。</p>
+      <p class="study-muted">API 准备会使用你配置的文本服务额度；Agent 可按独立材料命令提交。</p>
     </section>`);
     $app.querySelectorAll("[data-missing]").forEach(button => button.onclick = async () => {
       try {

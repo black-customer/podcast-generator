@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from server.audio import _concat_line, _run, make_silence, probe_duration
 from server.config import TMP_DIR, load_settings
-from server.tts import fish_tts_dialogue
+from server.tts import render_dialogue
 
 
 def make_beep(freq: int = 880, duration: float = 0.3) -> Path:
@@ -54,15 +54,13 @@ def main():
     ]
 
     print("正在合成 Bruce 定制音频 Part 1...")
-    part1_bytes = fish_tts_dialogue(part1_lines, settings)
     part1_file = TMP_DIR / f"bruce_part1_{uuid.uuid4().hex[:8]}.mp3"
-    part1_file.write_bytes(part1_bytes)
+    render_dialogue(part1_lines, part1_file, settings)
     print(f"Part 1 完成，时长: {probe_duration(part1_file):.1f}s")
 
     print("正在合成 Bruce 定制音频 Part 3...")
-    part3_bytes = fish_tts_dialogue(part3_lines, settings)
     part3_file = TMP_DIR / f"bruce_part3_{uuid.uuid4().hex[:8]}.mp3"
-    part3_file.write_bytes(part3_bytes)
+    render_dialogue(part3_lines, part3_file, settings)
     print(f"Part 3 完成，时长: {probe_duration(part3_file):.1f}s")
 
     # 交互输出留白（起始音 + 8秒静音 + 结束音）

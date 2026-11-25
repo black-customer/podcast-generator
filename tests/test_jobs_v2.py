@@ -34,7 +34,7 @@ def job_env(tmp_path, monkeypatch):
     with TestClient(app) as c:
         c.put(
             "/api/settings",
-            json={"dry_run": True, "reference_id": "a", "reference_id_b": "b"},
+            json={"dry_run": True},
         )
         yield c
         deadline = time.time() + 30
@@ -57,6 +57,86 @@ def _wait(c, job_id, timeout=120):
             return j
         time.sleep(0.2)
     pytest.fail("任务超时")
+
+
+def test_api_coaching_survives_audio_failure_and_audio_only_retry(job_env, monkeypatch):
+    from server import rewrite
+
+    c = job_env
+    tid = c.post("/api/topics", json={"name": "Live coach"}).json()["id"]
+    question, answer = "Why do you swim?", "It help me unwind."
+    item = library.create_item(tid, {"question": question, "original_answer": answer})
+    iid = item["id"]
+    url = f"/api/topics/{tid}/items/{iid}"
+    entered, release = threading.Event(), threading.Event()
+    calls = []
+    texts = rewrite.normalize_dialogue_payload({"natural_english": "It helps me unwind."}, question)
+    row = {"en": "It helps me unwind.", "zh": "这让我放松。", "explanation": "主谓一致",
+           "usage": "帮助某人做某事", "key_chunk": "helps me unwind"}
+
+    def bundle(*args, **kwargs):
+        calls.append("rewrite")
+        return {**texts, "study_material": {"complete_chinese": row["zh"], "sentences": [row]}}
+
+    def synthesize(*args, on_progress=None, **kwargs):
+        calls.append("tts")
+        if calls.count("tts") == 1:
+            if on_progress:
+                on_progress(1, 2, "Why do you swim?", "af_bella")
+            entered.set()
+            assert release.wait(5)
+            raise tts.TTSError("本地引擎中断")
+        return original_synthesize(*args, on_progress=on_progress, **kwargs)
+
+    original_synthesize = tts.generate_item_audio
+    monkeypatch.setattr(rewrite, "text_available", lambda _: True)
+    monkeypatch.setattr(rewrite, "generate_complete_bundle", bundle)
+    monkeypatch.setattr(tts, "generate_item_audio", synthesize)
+    job = jobs.start_api_generation(tid, iid, question, answer)
+    try:
+        assert entered.wait(5)
+        status = c.get(f"/api/jobs/{job['job_id']}").json()
+        assert status["coaching_ready"] and status["tts_done"] == 1 and status["tts_total"] == 2
+        coach = c.get(f"{url}/arcade").json()
+        assert coach["status"] == "coaching_ready"
+        assert not coach["audio_url"]
+        assert coach["sentences"][0]["key_chunk"] == row["key_chunk"]
+    finally:
+        release.set()
+    assert _wait(c, job["job_id"])["state"] == "error"
+    assert c.get(f"{url}/arcade").json()["audio_job"]["error"] == "本地引擎中断"
+    retry = c.post(f"{url}/retry-audio")
+    assert retry.status_code == 200
+    assert _wait(c, retry.json()["job_id"])["state"] == "done"
+    assert c.get(f"{url}/arcade").json()["status"] == "ready"
+    assert calls == ["rewrite", "tts", "tts"]
+
+
+def test_radio_job_exposes_progress_and_cancels_without_persisting_episode(job_env, monkeypatch):
+    from server import teaching_podcast
+
+    entered = threading.Event()
+
+    def generate(_mode, _partner, *, cancel, on_progress):
+        on_progress("tts", 1, 4, "女导师")
+        entered.set()
+        assert cancel.wait(5)
+        raise tts.TTSCancelled()
+
+    monkeypatch.setattr(teaching_podcast, "for_today", generate)
+    c = job_env
+    r = c.post("/api/teaching-podcasts/daily", json={})
+    assert r.status_code == 200
+    job_id = r.json()["job_id"]
+    assert entered.wait(5)
+    current = c.get(f"/api/jobs/{job_id}").json()
+    assert (current["state"], current["phase"], current["done"], current["total"]) == (
+        "running", "tts", 1, 4,
+    )
+    assert c.post("/api/teaching-podcasts/daily", json={}).json()["job_id"] == job_id
+    assert c.post(f"/api/jobs/{job_id}/cancel").json()["cancelled"]
+    cancelled = _wait(c, job_id)
+    assert cancelled["state"] == "cancelled" and "episode" not in cancelled
 
 
 # ---------------------------------------------------------------- 互斥
@@ -104,11 +184,11 @@ def test_jobs_persist_and_recover_as_interrupted(job_env, monkeypatch):
 
 # ---------------------------------------------------------------- 取消令牌
 
-def test_cancel_token_interrupts_tts():
+def test_cancel_token_interrupts_tts(tmp_path):
     ev = threading.Event()
     ev.set()
     with pytest.raises(tts.TTSCancelled):
-        tts._post_tts({"text": "hi"}, {"fish_api_key": "k"}, cancel=ev)
+        tts._synthesize_source("Hello.", tmp_path / "out.mp3", {"dry_run": True}, cancel=ev)
 
 
 def test_cancel_between_items_marks_cancelled(job_env):

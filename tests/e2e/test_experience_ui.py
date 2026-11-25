@@ -51,9 +51,9 @@ def test_saved_voice_selection_and_single_request():
         def mock(route):
             path = route.request.url.split("?", 1)[0]
             if path.endswith("/settings"):
-                route.fulfill(json={"stepfun_api_key_set": True,
-                                    "question_voice_id": "male-one",
-                                    "answer_voice_id": "female-one"})
+                route.fulfill(json={"llm_api_key_set": True,
+                                    "kokoro_question_voice": "male-one",
+                                    "kokoro_answer_voice": "female-one"})
             elif path.endswith("/voices"):
                 calls.append(path)
                 route.fulfill(json=[
@@ -81,8 +81,8 @@ def test_setup_duplicate_save_and_failure_preserves_input():
             if route.request.method == "PUT":
                 pending.append(route)
             elif "/voices" in route.request.url:
-                route.fulfill(json=[{"voice_id": "lively-girl", "gender": "female"},
-                                    {"voice_id": "vibrant-youth", "gender": "male"}])
+                route.fulfill(json=[{"voice_id": "af_bella", "gender": "female"},
+                                    {"voice_id": "am_puck", "gender": "male"}])
             else:
                 route.fulfill(json={})
 
@@ -232,15 +232,15 @@ def test_desktop_synthetic_screenshots(sample, width, height):  # noqa: F811
                          "topic_name": "合成验收", "zh": "我通常下班后去散步。",
                          "source": item["question"]}]
             elif path.endswith("/api/settings"):
-                body = {"tts_provider": "stepfun", "dry_run": True,
-                        "stepfun_api_key_set": False, "fish_api_key_set": False,
-                        "question_voice_id": "lively-girl", "answer_voice_id": "vibrant-youth",
+                body = {"tts_provider": "kokoro_local", "dry_run": True,
+                        "llm_api_key_set": False,
+                        "kokoro_question_voice": "af_bella", "kokoro_answer_voice": "am_puck",
                         "models": ["s2-pro"], "model": "s2-pro"}
             elif path.endswith("/api/voices"):
-                body = [{"voice_id": "lively-girl", "gender": "female", "name": "合成女声",
-                         "provider": "stepfun"},
-                        {"voice_id": "vibrant-youth", "gender": "male", "name": "合成男声",
-                         "provider": "stepfun"}]
+                body = [{"voice_id": "af_bella", "gender": "female", "name": "合成女声",
+                         "provider": "kokoro_local"},
+                        {"voice_id": "am_puck", "gender": "male", "name": "合成男声",
+                         "provider": "kokoro_local"}]
             elif path.endswith("/api/bank/questions"):
                 body = {"available": True, "total": 1, "page": 1, "pageCount": 1,
                         "topics": [], "sets": [], "items": [{"id": "sample-question",
@@ -288,7 +288,7 @@ def test_desktop_synthetic_screenshots(sample, width, height):  # noqa: F811
         page.screenshot(path=str(out / "oral-summary.png"), full_page=True)
         capture("history", "#/study-history", ".oral-history")
         capture("setup", "#/setup", "#setup-grid-q .voice-pick")
-        capture("settings", "#/manage", "#role-cards .voice-pick")
+        capture("settings", "#/manage", "#role-cards [data-role=a]")
         page.locator(".content-admin > summary").click()
         page.screenshot(path=str(out / "advanced-management.png"), full_page=True)
         capture("voices", "#/voices", ".voice-card")

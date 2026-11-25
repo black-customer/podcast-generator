@@ -59,12 +59,6 @@ def test_rewrite_rejects_single_speaker_script():
     assert rewrite.validate_texts(texts)
 
 
-def test_stepfun_segments_respect_character_limit():
-    from server import stepfun
-
-    segments = tts.split_text("x" * 1300, stepfun.MAX_CHARS)
-    assert len(segments) > 1
-    assert all(len(segment) <= stepfun.MAX_CHARS for segment in segments)
 
 
 def test_api_conflict_does_not_leave_created_item(tmp_path, monkeypatch):
@@ -222,7 +216,7 @@ def test_edit_during_generation_keeps_audio_stale(tmp_path, monkeypatch):
     monkeypatch.setattr(library, "TOPICS_DIR", topics)
     topic_id = library.create_topic("Generation review")["id"]
     item_id = library.create_item(topic_id, {"podcast_text": "A: Old?\nB: Old answer."})["id"]
-    monkeypatch.setattr(tts, "load_settings", lambda: {"tts_provider": "stepfun", "dry_run": True})
+    monkeypatch.setattr(tts, "load_settings", lambda: {"dry_run": True})
 
     def synthesize(_src, out_path, _settings, **_kwargs):
         out_path.write_bytes(b"audio")

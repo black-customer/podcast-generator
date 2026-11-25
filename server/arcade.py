@@ -13,6 +13,7 @@ from tempfile import TemporaryDirectory
 from . import (
     alignment,
     audio,
+    jobs,
     library,
     oral_review,
     prosody,
@@ -166,14 +167,21 @@ def _sentence_spans(rows: list[dict], locations: dict) -> list[dict]:
 
 
 def view(topic_id: str, item_id: str) -> dict:
+    job = jobs.active_item_job(topic_id, item_id)
     with _LOCK, library.LIB_LOCK:
         full = library.get_item_full(topic_id, item_id)
-        found = study.get_material(topic_id, item_id)
+        found = study.get_material(topic_id, item_id, allow_pending_audio=True)
         material = found.get("material", {})
+        inputs = study_progress.get_progress(topic_id, item_id).get("training_inputs") or {}
         rows = material.get("sentences", [])
         fingerprint = material.get("source_fingerprint")
         path = library.item_path(topic_id, item_id)
         mp3 = library.resolve_audio_file(path, "podcast")
+        if found["status"] == "coaching_ready" or (
+            material and job and job["phase"] in {"save", "tts"} and job["state"] == "running"
+        ):
+            mp3 = None
+            found["status"] = "coaching_ready"
         audio_url = f"/api/topics/{topic_id}/items/{item_id}/audio/podcast"
         if mp3:
             audio_url += f"?v={mp3.stat().st_mtime_ns}"
@@ -194,6 +202,8 @@ def view(topic_id: str, item_id: str) -> dict:
                       e.get("fingerprint") == fingerprint), None)
         return {"question": full["question"], "original_answer": study._effective_original(full),
                 "status": found["status"], "reason": found.get("reason", ""),
+                "coach_summary": material.get("coach_summary"),
+                "chinese_intent": inputs.get("intent", ""), "audio_job": job,
                 "source_fingerprint": fingerprint, "audio_url": audio_url if mp3 else "",
                 "dry_run": bool(library.load_meta(path).get("dry_run")), "voice": voice,
                 "alignment": locations, "answer_spans": _answer_spans(locations["lines"]),

@@ -88,12 +88,16 @@ def test_local_synthesis_offsets_measured_words(monkeypatch, tmp_path):
     monkeypatch.setattr(tts, "TMP_DIR", tmp_path)
     monkeypatch.setattr(audio, "TMP_DIR", tmp_path)
     out = tmp_path / "对话.mp3"
+    progress = []
     settings = {**config.DEFAULT_SETTINGS, "dry_run": False}
     duration, count, dialogue, _, segments, words = tts._synthesize_source(
-        "A: Why?\nB: I swim. I run.", out, settings
+        "A: Why?\nB: I swim. I run.", out, settings, on_progress=lambda *row: progress.append(row)
     )
     assert count == 3 and dialogue and out.is_file()
-    assert voices == ["af_bella", "golden_self", "golden_self"]
+    assert voices == ["af_bella", "am_puck", "am_puck"]
+    assert progress == [(0, 3, "Why?", "af_bella"), (1, 3, "Why?", "af_bella"),
+                        (1, 3, "I swim.", "am_puck"), (2, 3, "I swim.", "am_puck"),
+                        (3, 3, "I run.", "am_puck")]
     assert [part["text"] for part in segments] == ["Why?", "I swim.", "I run."]
     assert [part["start"] for part in segments] == [0.0, 1.28, 2.4]
     assert [word["start"] for word in words] == [0.1, 1.38, 2.5]
@@ -104,6 +108,21 @@ def test_local_default_falls_back_without_environment(tmp_path: Path):
     settings = {**config.DEFAULT_SETTINGS, "speech_engine_dir": str(tmp_path)}
     assert settings["tts_provider"] == "kokoro_local"
     assert config.is_dry_run(settings)
+
+
+def test_legacy_cloud_settings_migrate_to_local(monkeypatch, tmp_path):
+    settings_file = tmp_path / "settings.json"
+    settings_file.write_text(
+        '{"tts_provider":"stepfun","llm_provider":"stepfun",'
+        '"stepfun_api_key":"synthetic","fish_api_key":"synthetic"}', encoding="utf-8",
+    )
+    monkeypatch.setattr(config, "SETTINGS_FILE", settings_file)
+    settings = config.load_settings()
+    assert config.effective_tts_provider(settings) == settings["tts_provider"] == "kokoro_local"
+    assert settings["kokoro_answer_voice"] == "am_puck"
+    assert settings["llm_provider"] == "deepseek"
+    assert "stepfun_api_key" not in settings and "fish_api_key" not in settings
+    assert "stepfun_api_key" in settings_file.read_text(encoding="utf-8")
 
 
 def test_reference_word_boundaries_correct_bias_without_crossing():

@@ -456,10 +456,7 @@ function initGlobalPlayer() {
     }
     const preset = e.target.closest("[data-preset-vid]");
     if (preset) {
-      applyVoicePreset(preset.dataset.presetProvider, preset.dataset.presetVid,
-        preset.dataset.presetGender, preset.dataset.presetName,
-        parseFloat(preset.dataset.presetSpeed || "1"),
-        preset.dataset.presetTemp === "" ? null : parseFloat(preset.dataset.presetTemp));
+      applyVoicePreset(preset.dataset.presetVid, preset.dataset.presetRole, preset.dataset.presetName);
       return;
     }
     const submit = e.target.closest("[data-bank-submit]");
@@ -1094,92 +1091,23 @@ async function VoicesShowcaseView(token) {
   }
   if (viewStale(token)) return;
 
-  const curVoiceA = settings.tts_provider === "stepfun"
-    ? (settings.answer_voice_id || "").trim()
-    : (settings.reference_id || "").trim();
-  const curVoiceB = settings.tts_provider === "stepfun"
-    ? (settings.question_voice_id || "").trim()
-    : (settings.reference_id_b || "").trim();
-
-  const cardHtml = v => {
-    const voiceId = v.voice_id || v.reference_id;
-    const provider = v.provider || "fish";
-    const isCurrentProvider = provider === (settings.tts_provider || "fish");
-    const isCurA = isCurrentProvider && voiceId === curVoiceA;
-    const isCurB = isCurrentProvider && voiceId === curVoiceB;
-
-    const avatar = esc((v.name || "Voice").split(/\s|\(/)[0].slice(0, 2).toUpperCase());
-
-    return `
-      <div class="voice-card ${isCurA || isCurB ? 'active-voice' : ''}">
-        ${isCurA ? `<div class="voice-badge-active">当前首选男声</div>` : (isCurB ? `<div class="voice-badge-active" style="background:#3d7bf6;color:#fff;">当前首选女声</div>` : "")}
-        <div class="voice-header">
-          <div class="voice-avatar">${avatar}</div>
-          <div>
-            <div class="voice-name">${esc(v.name)}</div>
-            <div class="voice-tag">${esc(v.tag)}</div>
-          </div>
-        </div>
-        <div class="voice-desc">${esc(v.description)}</div>
-        <div class="voice-params">
-          <span>口音: ${esc(v.accent)}</span>
-          <span>语速: ${v.speed ?? 1.0}x</span>
-          ${v.temperature != null ? `<span>温度: ${v.temperature}</span>` : ""}
-        </div>
-        <div>
-          <button class="voice-btn" data-preview-vid="${esc(voiceId)}" data-preview-provider="${esc(provider)}" title="播放统一试听稿">试听</button>
-          ${v.gender === 'male' ? `
-            <button class="voice-btn ${isCurA ? 'btn-selected' : ''}" data-preset-vid="${esc(voiceId)}" data-preset-provider="${esc(provider)}" data-preset-gender="male" data-preset-name="${esc(v.name)}" data-preset-speed="${v.speed ?? 1.0}" data-preset-temp="${v.temperature ?? ""}">
-              ${isCurA ? "当前回答男声" : "设为回答男声"}
-            </button>
-          ` : `
-            <button class="voice-btn ${isCurB ? 'btn-selected' : ''}" data-preset-vid="${esc(voiceId)}" data-preset-provider="${esc(provider)}" data-preset-gender="female" data-preset-name="${esc(v.name)}" data-preset-speed="${v.speed ?? 1.0}" data-preset-temp="${v.temperature ?? ""}">
-              ${isCurB ? "当前提问女声" : "设为提问女声"}
-            </button>
-          `}
-        </div>
-      </div>
-    `;
-  };
-
-  const presets = voices.filter(v => v.tier !== "candidate");
-  const candidates = voices.filter(v => v.tier === "candidate");
-  const maleCandidates = candidates.filter(v => v.gender === "male");
-  const femaleCandidates = candidates.filter(v => v.gender === "female");
-
   $app.innerHTML = `
-    <div class="hero-banner voice-page-intro">
-      <a class="reading-breadcrumb" href="#/manage">设置 / 音色</a>
-      <div class="hero-title">选择长期模仿的声音</div>
-      <div class="hero-desc">重点听年龄感、自然度和久听是否疲劳。候选使用同一试听稿与各自参数。</div>
-    </div>
-
-    <div class="section-header">
-      <div class="section-title">当前预设</div>
-    </div>
-
+    <header class="page-heading"><div><h1>音色展台</h1>
+      <p>试听一句示范，为考官和回答者分别选择本地声音。</p></div>
+      <a class="study-button" href="#/settings">声音设置</a></header>
     <div class="voice-grid">
-      ${presets.map(cardHtml).join("")}
-    </div>
-
-    ${maleCandidates.length ? `
-    <div class="section-header" style="margin-top:28px;">
-      <div class="section-title">回答男声候选</div>
-      <div class="section-description">四个美式青年声使用同一试听稿</div>
-    </div>
-    <div class="voice-grid">
-      ${maleCandidates.map(cardHtml).join("")}
-    </div>` : ""}
-
-    ${femaleCandidates.length ? `
-    <div class="section-header" style="margin-top:28px;">
-      <div class="section-title">提问女声候选</div>
-      <div class="section-description">Mia 暂不更换，可按需试听其他方向</div>
-    </div>
-    <div class="voice-grid">
-      ${femaleCandidates.map(cardHtml).join("")}
-    </div>` : ""}
-  `;
+      ${voices.map(v => `<section class="mg-card voice-card"><h2>${esc(v.name)}</h2>
+        <div class="voice-card-actions">
+          <button class="mg-btn" data-preview-vid="${esc(v.voice_id)}" data-preview-provider="kokoro_local">试听</button>
+          ${[["question", "设为考官"], ["answer", "设为回答者"]].filter(([role]) =>
+            role === "answer" || v.voice_id !== "golden_self").map(([role, label]) => {
+              const current = settings[`kokoro_${role}_voice`] === v.voice_id;
+              return `<button type="button" class="mg-btn ${current ? "btn-selected" : ""}"
+                aria-pressed="${current}" data-preset-vid="${esc(v.voice_id)}"
+                data-preset-role="${role}" data-preset-name="${esc(v.name)}">${label}</button>`;
+            }).join("")}
+        </div></section>`).join("")}
+    </div>`;
 }
 
 let voicePreview = null;
@@ -1189,6 +1117,7 @@ function stopVoicePreview() {
   voicePreview = null;
   if (!preview) return;
   preview.controller.abort();
+  preview.end?.();
   preview.player?.pause();
   if (preview.url) URL.revokeObjectURL(preview.url);
   if (preview.button) {
@@ -1214,7 +1143,11 @@ window.previewVoice = async function(provider, referenceId, btn) {
   const preview = { key, button: btn, label: btn?.textContent, disabled: btn?.disabled,
     controller: new AbortController() };
   voicePreview = preview;
-  if (btn) btn.textContent = "加载中…";
+  if (btn) {
+    btn.textContent = "取消试听";
+    preview.end = ExperienceUI.pendingNear(btn, referenceId === "golden_self"
+      ? "正在准备母语分身。首次启动较慢…" : "正在生成本地试听…");
+  }
   const finish = () => { if (voicePreview === preview) stopVoicePreview(); };
   try {
     const data = await localAudioBlob(
@@ -1222,6 +1155,8 @@ window.previewVoice = async function(provider, referenceId, btn) {
       preview.controller.signal
     );
     if (voicePreview !== preview) return;
+    preview.end?.();
+    preview.end = null;
     preview.url = URL.createObjectURL(data);
     preview.player = new Audio(preview.url);
     preview.player.onended = finish;
@@ -1239,27 +1174,13 @@ window.previewVoice = async function(provider, referenceId, btn) {
   }
 };
 
-window.applyVoicePreset = async function(provider, referenceId, gender, voiceName, speed, temperature) {
+window.applyVoicePreset = async function(voiceId, role, name) {
   const token = routeToken;
   try {
-    const payload = { tts_provider: provider };
-    if (provider === "stepfun") {
-      if (gender === "male") payload.answer_voice_id = referenceId;
-      else payload.question_voice_id = referenceId;
-    } else if (gender === "male") {
-      payload.reference_id = referenceId;
-    } else {
-      payload.reference_id_b = referenceId;
-    }
-    // 音色自带表演参数（voices.json 为唯一真源）
-    if (speed && speed !== 1.0) payload.speed = speed;
-    if (temperature != null) payload.temperature = temperature;
-    await api("PUT", "/api/settings", payload);
-    toast(`已将【${voiceName}】设为${gender === "male" ? "回答男声" : "提问女声"}`);
-    if (!viewStale(token)) VoicesShowcaseView();
-  } catch (e) {
-    toast(`设置失败：${e.message}`);
-  }
+    await api("PUT", "/api/settings", {[`kokoro_${role}_voice`]: voiceId});
+    toast(`已将${name}设为${role === "question" ? "考官" : "回答者"}`);
+    if (!viewStale(token)) VoicesShowcaseView(token);
+  } catch (error) { toast(`设置失败：${error.message}`); }
 };
 
 /* ---------------- 工作台管理（设置 / 话题 / 条目 / 生成 / 合成） ---------------- */
@@ -1274,7 +1195,7 @@ const MG_FIELDS = [
   ["question", "问题（Question）", 2],
   ["chinese", "中文自由回答（Chinese）", 6],
   ["natural_english", "Natural English（改写后的地道口语）", 6],
-  ["fish_script", "Fish Script（配音稿，可留空）", 6],
+  ["fish_script", "旧版表演稿（可留空）", 6],
   ["monologue_text", "独白轨原文（Monologue Text，可留空）", 6],
   ["monologue_script", "独白轨配音稿（Monologue Script，可留空）", 6],
   ["podcast_text", "播客轨原文（Podcast Text，A:/B: 逐行对话）", 8],
@@ -1321,23 +1242,18 @@ async function ManageView(token) {
   }
   if (viewStale(token)) return;
 
-  const modelOpts = (settings.models || [])
-    .map(m => `<option value="${esc(m)}" ${m === settings.model ? "selected" : ""}>${esc(m)}</option>`)
-    .join("");
   const modeBadge = health
     ? `<span class="mg-pill ${health.mode === "live" ? "ok" : "warn"}">${health.mode === "live" ? "LIVE" : "DRY-RUN"}</span>
        <span class="mg-hint">ffmpeg: ${esc(health.ffmpeg.ok ? "可用" : health.ffmpeg.message)}</span>`
     : "";
-  const localVoice = settings.tts_provider === "kokoro_local";
-  const legacyText = settings.llm_provider === "stepfun";
-  const textKeyHint = (legacyText ? settings.stepfun_api_key_set : settings.llm_api_key_set)
+  const textKeyHint = settings.llm_api_key_set
     ? "已保存，输入新值可替换" : "粘贴当前服务的 API Key";
 
   $app.innerHTML = `
     <div class="section-header settings-page-head">
       <div>
         <div class="section-title">声音与生成设置</div>
-        <p class="section-description">选择语音引擎与两个角色的声音；技术参数只在排错时调整。</p>
+        <p class="section-description">${settings.llm_provider === "custom" ? "自定义文本接口" : "DeepSeek 文本"} + 本地离线语音</p>
       </div>
       <div class="settings-head-actions">${modeBadge}<a class="text-action" href="#/import">离线语料包</a></div>
     </div>
@@ -1348,14 +1264,13 @@ async function ManageView(token) {
           <label class="mg-label">服务<select class="mg-input" id="arcade-llm-provider">
             <option value="deepseek" ${settings.llm_provider === "deepseek" ? "selected" : ""}>DeepSeek</option>
             <option value="custom" ${settings.llm_provider === "custom" ? "selected" : ""}>自定义兼容接口</option>
-            <option value="stepfun" ${legacyText ? "selected" : ""}>StepFun</option>
           </select></label>
           <label class="mg-label">API Key<input class="mg-input" type="password" id="arcade-llm-key"
             autocomplete="off" placeholder="${textKeyHint}"></label>
         </div>
         <details class="mg-advanced"><summary>高级设置</summary><div class="arcade-setting-row">
-          <label class="mg-label">Base URL<input class="mg-input" id="arcade-llm-url" value="${esc((legacyText ? settings.stepfun_text_base_url : settings.llm_base_url) || "")}"></label>
-          <label class="mg-label">模型<input class="mg-input" id="arcade-llm-model" value="${esc((legacyText ? settings.stepfun_text_model : settings.llm_model) || "")}"></label>
+          <label class="mg-label">Base URL<input class="mg-input" id="arcade-llm-url" value="${esc(settings.llm_base_url || "")}"></label>
+          <label class="mg-label">模型<input class="mg-input" id="arcade-llm-model" value="${esc(settings.llm_model || "")}"></label>
         </div></details>
         <div class="mg-actions"><button type="submit" class="mg-btn primary">保存文本设置</button>
           <button type="button" class="mg-btn" id="arcade-llm-test">测试连接</button>
@@ -1372,87 +1287,21 @@ async function ManageView(token) {
         <a class="mg-btn primary" href="#/voices">音色展台</a>
       </div>
       <form id="mg-settings-form">
-        ${settings.tts_provider === "stepfun" && settings.speech_engine_available
-          ? '<div class="arcade-local-switch"><p>如果 StepFun 额度已用完，可以切换到本机离线语音。</p><button type="button" class="mg-btn primary" id="arcade-use-local">切换到本地语音</button></div>' : ""}
-        <div class="engine-cards" id="engine-cards">
-          <label class="engine-card arcade-local-engine ${localVoice ? "selected" : ""}">
-            <input type="radio" name="mg-engine" value="kokoro_local" ${localVoice ? "checked" : ""}>
-            <div class="engine-head"><strong>本地语音引擎</strong><span class="mg-chip">离线合成</span></div>
-            <p class="engine-desc" id="arcade-speech-status" role="status">正在检查 ChineseAccent…</p>
-          </label>
-        </div>
-        <h3 class="settings-group-title">角色声音</h3><div class="role-cards" id="role-cards"></div>
-        <div class="voice-summary mg-hint" id="voice-summary"></div>
-
-        <details class="mg-advanced arcade-fallback-engines" ${localVoice ? "" : "open"}>
-          <summary>备用云语音</summary>
-          <div class="engine-cards">
-          <label class="engine-card ${settings.tts_provider === "stepfun" ? "selected" : ""}">
-            <input type="radio" name="mg-engine" value="stepfun" ${settings.tts_provider === "stepfun" ? "checked" : ""}>
-            <div class="engine-head"><strong>StepFun</strong></div>
-            <p class="engine-desc">自然流畅，适合对话与口语练习 · StepAudio TTS 2.5</p>
-            <div class="engine-row">
-              <input class="mg-input" type="password" id="mg-s-stepkey" value="" autocomplete="off"
-                placeholder="${settings.stepfun_api_key_set ? "已保存（输入新值可替换）" : "粘贴 StepFun API Key"}">
-              <button type="button" class="mg-btn" id="mg-test-stepfun">测试连接</button>
-            </div>
-            <span class="mg-hint" id="mg-test-stepfun-result">${settings.stepfun_api_key_set ? "已配置 Key" : "未配置"}</span>
-          </label>
-          <label class="engine-card ${settings.tts_provider === "fish" ? "selected" : ""}">
-            <input type="radio" name="mg-engine" value="fish" ${settings.tts_provider === "fish" ? "checked" : ""}>
-            <div class="engine-head"><strong>Fish Audio</strong><span class="mg-chip">备选</span></div>
-            <p class="engine-desc">高质量多语音选择，作为备用方案</p>
-            <div class="engine-row">
-              <input class="mg-input" type="password" id="mg-s-key" value="" autocomplete="off"
-                placeholder="${settings.fish_api_key_set ? "已保存（输入新值可替换）" : "fish.audio API Key（可选）"}">
-              <button type="button" class="mg-btn" id="mg-test-fish">测试连接</button>
-            </div>
-            <span class="mg-hint" id="mg-test-fish-result">${settings.fish_api_key_set ? "已配置 Key" : "未配置"}</span>
-          </label>
-          </div>
-        </details>
-
-        <div class="mg-actions">
-          <button type="submit" class="mg-btn primary">保存声音设置</button>
-          <span class="mg-hint" id="mg-test-result"></span>
-        </div>
-        <details class="mg-advanced">
-          <summary>高级设置（语速 · 模型名 · fish 音色 ID · 生成参数）</summary>
+        <p class="engine-desc" id="arcade-speech-status" role="status">正在检查 ChineseAccent…</p>
+        <div class="role-cards" id="role-cards"></div>
+        <details class="mg-advanced"><summary>高级设置</summary>
           <label class="mg-label">ChineseAccent 目录
             <input class="mg-input" id="arcade-speech-directory" value="${esc(settings.speech_engine_dir || "")}">
           </label>
-          <label class="mg-label">音色 A Reference ID（fish 独白 / 对话 A 声）
-            <input class="mg-input" id="mg-s-refa" value="${esc(settings.reference_id || "")}">
+          <label class="mg-label">条目间停顿（毫秒）
+            <input class="mg-input" type="number" min="0" max="10000" id="mg-s-egap"
+              value="${esc(String(settings.episode_gap_ms ?? 600))}">
           </label>
-          <label class="mg-label">音色 B Reference ID（fish 对话 B 声，留空按单音色）
-            <input class="mg-input" id="mg-s-refb" value="${esc(settings.reference_id_b || "")}">
-          </label>
-          <div class="mg-row2">
-            <label class="mg-label">模型
-              <select class="mg-input" id="mg-s-model">${modelOpts}</select>
-            </label>
-            <label class="mg-label">语速
-              <input class="mg-input" type="number" step="0.05" min="0.8" max="2" id="mg-s-speed" value="${esc(String(settings.speed ?? 1.0))}">
-            </label>
-          </div>
-          <div class="mg-row2">
-            <label class="mg-label">temperature（0–1，留空=服务默认）
-              <input class="mg-input" type="number" step="0.01" min="0" max="1" id="mg-s-temp" value="${settings.temperature == null ? "" : esc(String(settings.temperature))}">
-            </label>
-            <label class="mg-label">分段字符数
-              <input class="mg-input" type="number" min="100" id="mg-s-seg" value="${esc(String(settings.segment_chars ?? 700))}">
-            </label>
-          </div>
-          <div class="mg-row2">
-            <label class="mg-label">段间停顿 (ms)
-              <input class="mg-input" type="number" min="0" id="mg-s-gap" value="${esc(String(settings.gap_ms ?? 350))}">
-            </label>
-            <label class="mg-label">条目间停顿 (ms)
-              <input class="mg-input" type="number" min="0" id="mg-s-egap" value="${esc(String(settings.episode_gap_ms ?? 600))}">
-            </label>
-          </div>
-          <label class="mg-check"><input type="checkbox" id="mg-s-dry" ${settings.dry_run ? "checked" : ""}> 强制 dry-run（生成占位音频，不调用 API）</label>
+          <label class="mg-check"><input type="checkbox" id="mg-s-dry" ${settings.dry_run ? "checked" : ""}> 试运行（生成占位音频）</label>
         </details>
+        <div class="mg-actions"><button type="submit" class="mg-btn primary">保存声音设置</button>
+          <button type="button" class="mg-btn" id="mg-test-local">检查本地语音</button>
+          <span class="mg-hint" id="mg-test-result" role="status"></span></div>
       </form>
     </div>
 
@@ -1490,10 +1339,8 @@ async function ManageView(token) {
     </details>
   `;
 
-  const preferences = $app.querySelector(".study-preference");
   const settingsForm = document.getElementById("mg-settings-form");
-  settingsForm.insertBefore(preferences, settingsForm.querySelector(".arcade-fallback-engines"));
-  settingsForm.appendChild(settingsForm.querySelector(".mg-actions"));
+  settingsForm.insertBefore($app.querySelector(".study-preference"), settingsForm.querySelector(".mg-actions"));
   document.getElementById("study-hint-duration").onchange = e =>
     localStorage.setItem("study-hint-seconds", e.target.value);
   const llmProvider = document.getElementById("arcade-llm-provider");
@@ -1503,24 +1350,20 @@ async function ManageView(token) {
   const llmModel = document.getElementById("arcade-llm-model");
   llmProvider.onchange = () => {
     const provider = llmProvider.value;
-    llmUrl.value = provider === "stepfun" ? settings.stepfun_text_base_url || "" :
-      provider === "custom" && settings.llm_provider === "custom" ? settings.llm_base_url : "https://api.deepseek.com/v1";
-    llmModel.value = provider === "stepfun" ? settings.stepfun_text_model || "" :
-      provider === "custom" && settings.llm_provider === "custom" ? settings.llm_model : "deepseek-flash";
+    llmUrl.value = provider === "custom" && settings.llm_provider === "custom" ? settings.llm_base_url : "https://api.deepseek.com/v1";
+    llmModel.value = provider === "custom" && settings.llm_provider === "custom" ? settings.llm_model : "deepseek-flash";
     llmKey.value = "";
-    llmKey.placeholder = (provider === "stepfun" ? settings.stepfun_api_key_set : settings.llm_api_key_set)
+    llmKey.placeholder = settings.llm_api_key_set
       ? "已保存，输入新值可替换" : "粘贴当前服务的 API Key";
   };
   const llmSave = async () => {
     const provider = llmProvider.value;
     const url = llmUrl.value.trim(), model = llmModel.value.trim(), key = llmKey.value;
-    const credentials = provider === "stepfun" ? {stepfun_text_base_url: url,
-      stepfun_text_model: model, stepfun_api_key: key} :
-      {llm_base_url: url, llm_model: model, llm_api_key: key};
-    const saved = await api("PUT", "/api/settings", {llm_provider: provider, ...credentials});
+    const saved = await api("PUT", "/api/settings", { llm_provider: provider,
+      llm_base_url: url, llm_model: model, llm_api_key: key });
     Object.assign(settings, saved);
     llmKey.value = "";
-    if (provider === "stepfun" ? saved.stepfun_api_key_set : saved.llm_api_key_set)
+    if (saved.llm_api_key_set)
       llmKey.placeholder = "已保存，输入新值可替换";
     return saved;
   };
@@ -1532,17 +1375,6 @@ async function ManageView(token) {
     }
     catch (error) { llmResult.textContent = error.message; }
   };
-  document.getElementById("arcade-use-local")?.addEventListener("click", async event => {
-    const button = event.currentTarget;
-    button.disabled = true;
-    try {
-      await api("PUT", "/api/settings", {tts_provider: "kokoro_local"});
-      if (!viewStale(token)) await ManageView(token);
-    } catch (error) {
-      button.disabled = false;
-      if (!viewStale(token)) toast(error.message);
-    }
-  });
   document.getElementById("arcade-llm-test").onclick = async event => {
     const control = event.currentTarget;
     control.disabled = true;
@@ -1572,196 +1404,49 @@ async function ManageView(token) {
   }
 
   // ---- 设置表单：引擎卡 + 角色卡（概念 07 / B06 旅程）----
-  const engineOf = () => document.querySelector('input[name="mg-engine"]:checked')?.value || "kokoro_local";
-  const chosenVoices = {
-    kokoro_local: { q: settings.kokoro_question_voice || "af_bella", a: settings.kokoro_answer_voice || "golden_self" },
-    stepfun: {
-      q: settings.question_voice_id || "lively-girl",
-      a: settings.answer_voice_id || "vibrant-youth",
-    },
-    fish: {
-      q: settings.reference_id_b || "",
-      a: settings.reference_id || "",
-    },
-  };
-  const pick = { qGender: "female", aGender: "male" };
-  let voicesCache = null;
-  const readVoices = ExperienceUI.memoReads();
-  let roleRevision = 0;
-  const mgVoices = async (provider) => {
-    if (!voicesCache || voicesCache.provider !== provider) {
-      voicesCache = { provider, list: await readVoices(`/api/voices?provider=${encodeURIComponent(provider)}`) };
-    }
-    return voicesCache.list;
-  };
-  const mgSummary = () => {
-    const el = document.getElementById("voice-summary");
-    const provider = engineOf();
-    const pair = chosenVoices[provider];
-    const voices = voicesCache && voicesCache.provider === provider ? voicesCache.list : [];
-    const nameOf = id => {
-      const found = voices.find(v => (v.voice_id || v.reference_id) === id);
-      return found ? found.name : (window.ArcadeUI?.voiceNames[id] || id || "未选择");
-    };
-    if (el) el.textContent = `最终音频：${nameOf(pair.q)} 提问，${nameOf(pair.a)} 回答。`;
-  };
-  const mgRenderRoles = async () => {
-    const revision = ++roleRevision;
-    const box = document.getElementById("role-cards");
-    if (!box) return;
-    const provider = engineOf();
-    if (provider === "kokoro_local") {
-      const names = window.ArcadeUI.voiceNames;
-      const pair = chosenVoices[provider];
-      box.innerHTML = [["q", "考官提问"], ["a", "回答示范"]].map(([role, title]) =>
-        `<div class="arcade-local-role"><label class="mg-label">${title}<select class="mg-input" data-role="${role}">
-        ${Object.entries(names).filter(([voice]) => role === "a" || voice !== "golden_self").map(([voice, name]) =>
-          `<option value="${esc(voice)}" ${pair[role] === voice ? "selected" : ""}>${esc(name)}</option>`).join("")}</select></label>
-        <button type="button" class="mg-btn" data-local-preview="${role}">试听${title}</button></div>`).join("") +
-        `<div class="arcade-voice-gallery">${[["女声", ["af_bella", "af_heart"]],
-          ["男声", ["am_puck", "am_liam", "am_michael", "am_fenrir"]], ["个人分身", ["golden_self"]]]
-          .map(([heading, choices]) => `<section><h4>${heading}</h4><div>${choices.map(voice =>
-            `<button type="button" class="mg-btn" data-preview-provider="kokoro_local" data-preview-vid="${esc(voice)}">试听 ${esc(names[voice])}</button>`
-          ).join("")}</div></section>`).join("")}</div>`;
-      box.querySelectorAll("select").forEach(select => select.onchange = () => {
-        pair[select.dataset.role] = select.value;
-        mgSummary();
-      });
-      box.querySelectorAll("[data-local-preview]").forEach(control => control.onclick = () => {
-        const voice = pair[control.dataset.localPreview];
-        window.previewVoice(provider, voice, control);
-      });
-      mgSummary();
-      return;
-    }
-    box.innerHTML = `<p class="mg-hint">加载音色库…</p>`;
-    let voices;
+  const roles = document.getElementById("role-cards");
+  const result = document.getElementById("mg-test-result");
+  const renderRoles = async () => {
+    roles.textContent = "正在读取本地音色…";
     try {
-      voices = await mgVoices(provider);
+      const voices = await api("GET", "/api/voices");
+      if (!roles.isConnected) return;
+      roles.innerHTML = [["q", "question", "考官", "af_bella"], ["a", "answer", "回答者", "am_puck"]]
+        .map(([role, field, title, fallback]) => `<div class="role-card">
+          <label class="mg-label">${title}<select class="mg-input" data-role="${role}">
+            ${voices.filter(v => role === "a" || v.voice_id !== "golden_self").map(v =>
+              `<option value="${esc(v.voice_id)}" ${v.voice_id === (settings[`kokoro_${field}_voice`] || fallback)
+                ? "selected" : ""}>${esc(v.name)}</option>`).join("")}</select></label>
+          <button type="button" class="mg-btn" data-role-preview="${role}">试听${title}</button>
+        </div>`).join("");
+      roles.querySelectorAll("[data-role-preview]").forEach(control => {
+        control.onclick = () => window.previewVoice("kokoro_local",
+          roles.querySelector(`[data-role="${control.dataset.rolePreview}"]`).value, control);
+      });
     } catch (_) {
-      if (viewStale(token) || revision !== roleRevision || !box.isConnected) return;
-      box.innerHTML = `<p class="mg-hint">音色库读取失败，已保存的选择仍保留。</p><button type="button" class="mg-btn">重试读取</button>`;
-      box.querySelector("button").onclick = () => mgRenderRoles();
-      return;
+      if (!roles.isConnected) return;
+      roles.innerHTML = '<button class="mg-btn" type="button">重新读取音色</button>';
+      roles.querySelector("button").onclick = renderRoles;
     }
-    if (viewStale(token) || revision !== roleRevision || !box.isConnected) return;
-    if (!box.dataset.initialized) {
-      for (const role of ["q", "a"]) {
-        const selected = voices.find(v => (v.voice_id || v.reference_id) === chosenVoices[provider][role]);
-        if (selected?.gender) pick[role + "Gender"] = selected.gender;
-      }
-      box.dataset.initialized = "true";
-    }
-    const renderRole = (role, title, sub) => {
-      const gender = pick[role + "Gender"];
-      const list = voices.filter(v => (v.gender || "") === gender);
-      const cur = chosenVoices[provider][role];
-      const cards = list.map(v => {
-        const vid = v.voice_id || v.reference_id;
-        return `<div class="voice-pick ${vid === cur ? "selected" : ""}" data-vid="${esc(vid)}" data-role="${role}">
-          <button type="button" class="voice-pick-play" data-preview-vid="${esc(vid)}" data-preview-provider="${esc(provider)}" title="试听">▶</button>
-          <button type="button" class="voice-pick-name" aria-label="选择 ${esc(v.name || vid)}">${esc(v.name || vid)}</button>
-          <div class="voice-pick-meta">${esc(v.accent || "English")} · ${esc(v.age_tone || "")}</div>
-          <div class="voice-pick-desc">${esc(v.description || v.tag || "")}</div>
-        </div>`;
-      }).join("") || `<p class="mg-hint">该性别暂无可用音色</p>`;
-      return `<div class="role-card">
-        <div class="role-head"><div><h4>${title}</h4><p>${sub}</p></div>
-          <div class="seg-gender" data-role="${role}">
-            <button type="button" class="${gender === "male" ? "active" : ""}" data-g="male">男声</button>
-            <button type="button" class="${gender === "female" ? "active" : ""}" data-g="female">女声</button>
-          </div></div>
-        <div class="voice-pick-grid">${cards}</div>
-      </div>`;
-    };
-    box.innerHTML = renderRole("q", "提问的人", "Interviewer · 与你对话的考官声音")
-      + renderRole("a", "回答的人", "Candidate · 你自己的回答声音");
-    box.querySelectorAll(".seg-gender button").forEach(b => {
-      b.onclick = () => {
-        pick[b.closest(".seg-gender").dataset.role + "Gender"] = b.dataset.g;
-        mgRenderRoles();
-      };
-    });
-    box.querySelectorAll(".voice-pick").forEach(el => {
-      el.onclick = (ev) => {
-        if (ev.target.closest(".voice-pick-play")) return;
-        const role = el.dataset.role;
-        chosenVoices[provider][role] = el.dataset.vid;
-        box.querySelectorAll(`.voice-pick[data-role="${role}"]`).forEach(x => x.classList.toggle("selected", x === el));
-        mgSummary();
-      };
-    });
-    mgSummary();
   };
-  document.querySelectorAll('input[name="mg-engine"]').forEach(r => {
-    r.onchange = () => {
-      document.querySelectorAll(".engine-card").forEach(c =>
-        c.classList.toggle("selected", c.querySelector("input").checked));
-      mgRenderRoles();
-    };
-  });
-  mgRenderRoles();
-
-  document.getElementById("mg-settings-form").onsubmit = async (e) => {
-    e.preventDefault();
-    const tempRaw = document.getElementById("mg-s-temp").value.trim();
-    const provider = engineOf();
-    const payload = {
-      tts_provider: provider,
-      stepfun_api_key: document.getElementById("mg-s-stepkey").value,
-      fish_api_key: document.getElementById("mg-s-key").value,
-      reference_id: document.getElementById("mg-s-refa").value.trim(),
-      reference_id_b: document.getElementById("mg-s-refb").value.trim(),
-      model: document.getElementById("mg-s-model").value,
-      speed: parseFloat(document.getElementById("mg-s-speed").value) || 1.0,
-      segment_chars: parseInt(document.getElementById("mg-s-seg").value, 10) || 700,
-      gap_ms: parseFloat(document.getElementById("mg-s-gap").value) || 0,
-      episode_gap_ms: parseFloat(document.getElementById("mg-s-egap").value) || 0,
-      dry_run: document.getElementById("mg-s-dry").checked,
-    };
-    if (provider === "kokoro_local") {
-      const directory = document.getElementById("arcade-speech-directory").value.trim();
-      if (directory !== settings.speech_engine_dir) payload.speech_engine_dir = directory;
-      payload.kokoro_question_voice = chosenVoices.kokoro_local.q;
-      payload.kokoro_answer_voice = chosenVoices.kokoro_local.a;
-    } else if (provider === "stepfun") {
-      payload.question_voice_id = chosenVoices.stepfun.q;
-      payload.answer_voice_id = chosenVoices.stepfun.a;
-    } else {
-      // fish：角色卡选择映射到 A/B reference（男=回答 A，女=提问 B）
-      try {
-        const list = await mgVoices("fish");
-        const qv = list.find(v => (v.voice_id || v.reference_id) === chosenVoices.fish.q);
-        const av = list.find(v => (v.voice_id || v.reference_id) === chosenVoices.fish.a);
-        if (qv && qv.gender === "female") payload.reference_id_b = qv.reference_id;
-        if (av && av.gender === "male") payload.reference_id = av.reference_id;
-      } catch (_) { /* 保持高级设置里的手工 ID */ }
-    }
-    if (tempRaw !== "") payload.temperature = parseFloat(tempRaw);
+  renderRoles();
+  settingsForm.onsubmit = async event => {
+    event.preventDefault();
+    const directory = document.getElementById("arcade-speech-directory").value.trim();
     try {
-      Object.assign(settings, await api("PUT", "/api/settings", payload));
-      if (provider === "kokoro_local") checkSpeech();
-      document.getElementById("mg-test-result").textContent = "声音设置已保存。";
-      toast("声音设置已保存");
-    } catch (err) {
-      document.getElementById("mg-test-result").textContent = `保存失败：${err.message}。本页输入仍保留，可以重试。`;
-    }
+      const update = {
+        kokoro_question_voice: roles.querySelector("[data-role=q]")?.value || undefined,
+        kokoro_answer_voice: roles.querySelector("[data-role=a]")?.value || undefined,
+        episode_gap_ms: Number(document.getElementById("mg-s-egap").value),
+        dry_run: document.getElementById("mg-s-dry").checked,
+      };
+      if (directory !== (settings.speech_engine_dir || "")) update.speech_engine_dir = directory;
+      Object.assign(settings, await api("PUT", "/api/settings", update));
+      result.textContent = "声音设置已保存。";
+      checkSpeech();
+    } catch (error) { result.textContent = error.message; }
   };
-  const mgTestEngine = (provider, btnId, resultId) => {
-    document.getElementById(btnId).onclick = async () => {
-      const $r = document.getElementById(resultId);
-      $r.textContent = "测试中…";
-      try {
-        const r = await api("POST", `/api/settings/test?provider=${provider}`);
-        const res = r.stepfun || r.fish || {};
-        $r.textContent = `${res.ok ? "✓ 连接成功" : "✗ 失败"} · ${res.message || ""}`;
-      } catch (err) {
-        $r.textContent = "失败：" + err.message;
-      }
-    };
-  };
-  mgTestEngine("stepfun", "mg-test-stepfun", "mg-test-stepfun-result");
-  mgTestEngine("fish", "mg-test-fish", "mg-test-fish-result");
+  document.getElementById("mg-test-local").onclick = checkSpeech;
 
   // ---- 话题 ----
   document.getElementById("mg-create-topic").onclick = async () => {
@@ -2201,13 +1886,15 @@ async function bankRandomGo() {
 }
 
 // R03 双模式等待状态：路由切换时必须清理轮询定时器
-const GenWaitState = { pollTimer: null };
+const GenWaitState = { pollTimer: null, progress: null };
 
 function genWaitStop() {
   if (GenWaitState.pollTimer) {
     clearInterval(GenWaitState.pollTimer);
     GenWaitState.pollTimer = null;
   }
+  GenWaitState.progress?.stop();
+  GenWaitState.progress = null;
   window.onfocus = null;
 }
 
@@ -2300,14 +1987,15 @@ function showApiJobWait(res, card = document.querySelector(".bank-answer-card"))
   const waitToken = routeToken;
   if (!card) return;
   card.innerHTML = `
-    <div class="bank-answer-q">${MobileRuntime.native ? "StepFun 正在生成" : "正在准备音频和练习材料"}</div>
-    <div class="api-stage-row" id="api-stage-row">
+    <div class="bank-answer-q">${MobileRuntime.native ? "正在生成练习材料" : "正在准备当场讲评"}</div>
+    <div id="api-job-progress"></div>
+    <div ${MobileRuntime.native ? "" : "hidden"} class="api-stage-row" id="api-stage-row">
       <span class="api-stage" data-phase="rewrite">① 母语者改写</span>
       <span class="api-stage" data-phase="save">② 写入语料</span>
       <span class="api-stage" data-phase="tts">③ 合成音频</span>
       ${MobileRuntime.native ? "" : '<span class="api-stage" data-phase="study">④ 逐句材料</span>'}
     </div>
-    <p class="bank-answer-hint" id="api-job-hint">⏳ 正在处理……</p>
+    <p class="bank-answer-hint" id="api-job-hint"></p>
     <div class="bank-answer-actions" id="api-job-fallback" style="display:none;">
       ${MobileRuntime.native ? '<a class="study-button" href="#/my/tasks">查看任务、继续或交给电脑</a>' : `${retryApiButton(res.topic_id, res.item_id)}
         <a class="study-button" href="#/manage">去设置</a>
@@ -2321,7 +2009,12 @@ function showApiJobWait(res, card = document.querySelector(".bank-answer-card"))
     });
   };
   mark("rewrite");
+  const host = card.querySelector("#api-job-progress");
+  GenWaitState.progress = ExperienceUI.progressBar(host, MobileRuntime.native ? "正在处理…" : "文本引擎正在批改…");
+  let reading = false;
   GenWaitState.pollTimer = setInterval(async () => {
+    if (reading) return;
+    reading = true;
     try {
       if (viewStale(waitToken)) { genWaitStop(); return; }
       const job = await api("GET", `/api/jobs/${encodeURIComponent(res.job_id)}`);
@@ -2330,19 +2023,24 @@ function showApiJobWait(res, card = document.querySelector(".bank-answer-card"))
         genWaitStop();location.hash = `#/play/${encodeURIComponent(res.topic_id)}/${encodeURIComponent(res.item_id)}`;return;
       }
       if (job.phase) mark(MobileRuntime.native && job.phase === 'audio' ? 'tts' : job.phase);
-      if (job.state === "done") {
+      if (job.state === "running") {
+        const label = {save: "正在保存讲评…", tts: "正在合成示范语音…", study: "正在准备逐句材料…"};
+        GenWaitState.progress?.set(label[job.phase] || "文本引擎正在批改…");
+      }
+      if (job.state === "done" || job.coaching_ready && window.ArcadeUI?.enabled()) {
         genWaitStop();
         const destination = window.ArcadeUI?.enabled() ? "train" : "done";
         location.hash = `#/${destination}/${encodeURIComponent(res.topic_id)}/${encodeURIComponent(res.item_id)}`;
       } else if (job.state === "error" || job.state === "cancelled" || job.state === "interrupted") {
         genWaitStop();
+        host.replaceChildren();
         const msg = (job.errors || []).map((e) => e.message).join("；") || "任务失败";
         const hint = document.getElementById("api-job-hint");
         if (hint) hint.textContent = `✗ ${msg}${job.inflight ? ' 上次请求结果未知，继续可能再次计费；请到我的查看任务。' : ''}`;
         const fb = document.getElementById("api-job-fallback");
         if (fb) fb.style.display = "";
       }
-    } catch (_) { /* 下轮重试 */ }
+    } catch (_) { /* 下轮重试 */ } finally { reading = false; }
   }, 1000);
 }
 
@@ -2466,7 +2164,7 @@ async function BankView(token) {
       defaultApi ||= modern && !!st.llm_configured;
       if (viewStale(token)) return;
       if (modern && !st.llm_configured) setupBanner = apiSetupBanner();
-      else if (!modern && !(st.stepfun_api_key_set || st.fish_api_key_set)) {
+      else if (MobileRuntime.native && !st.stepfun_api_key_configured) {
         setupBanner = `
         <a class="setup-banner" href="${MobileRuntime.native ? '#/my/services' : '#/manage'}">
           <span>${modern ? "配置文本改写引擎，即可生成后直接开练。" : "开始前，先连接语音服务并选择两位说话者的声音。"}</span>
@@ -2742,7 +2440,8 @@ function route() {
   if (doneAudio) ListeningExperience.detach(doneAudio);
   const token = ++routeToken;
   const packActive = typeof PackState !== "undefined" && PackState.active;
-  const hash = location.hash || (packActive ? "#/practice" : "#/today");
+  const requested = location.hash || (packActive ? "#/practice" : "#/today");
+  const hash = requested === "#/settings" ? "#/manage" : requested;
   document.body.classList.remove('training-focus');
   if (typeof OralReviewUI !== "undefined" && !OralReviewUI.leave(hash)) return;
   if (typeof StudyUI !== "undefined" && !StudyUI.leave(hash)) return;
@@ -2897,7 +2596,7 @@ function route() {
   TopicsGalleryView(token);
 }
 
-// R04 首次配置向导（概念 01）：连接语音服务 → 选择提问者 → 选择回答者
+// R04 首次配置向导（概念 01）：配置文本 → 选择提问者 → 选择回答者
 async function SetupView(token) {
   ExperienceUI.loading("首次配置");
   let settings;
@@ -2911,10 +2610,10 @@ async function SetupView(token) {
   if (viewStale(token)) return;
 
   const state = {
-    provider: "stepfun",
+    provider: "kokoro_local",
     qGender: "female", aGender: "male",
-    q: settings.question_voice_id || "lively-girl",
-    a: settings.answer_voice_id || "vibrant-youth",
+    q: settings.kokoro_question_voice || "af_bella",
+    a: settings.kokoro_answer_voice || "am_puck",
   };
 
   const roleBlock = (role, title, sub) => `
@@ -2935,19 +2634,19 @@ async function SetupView(token) {
       </div>
     </header>
     <div class="setup-steps">
-      <span class="setup-step active">1 连接语音服务</span><i>→</i>
+      <span class="setup-step active">1 配置文本</span><i>→</i>
       <span class="setup-step">2 选择提问者</span><i>→</i>
       <span class="setup-step">3 选择回答者</span>
     </div>
     <div class="mg-card">
-      <h3>1. 连接语音服务</h3>
-      <p class="mg-hint">选择一个语音服务提供商，用于生成提问和回答的语音。</p>
+      <h3>1. 配置文本</h3>
+      <p class="mg-hint">DeepSeek 负责改写和讲评，两个角色的语音均在本机合成。</p>
       <div class="engine-row" style="margin-top:10px;">
         <input class="mg-input grow" type="password" id="setup-key" autocomplete="off"
-          placeholder="${settings.stepfun_api_key_set ? "StepFun Key 已保存，可直接下一步" : "粘贴 StepFun API Key（platform.stepfun.com 申请）"}">
+          placeholder="${settings.llm_api_key_set ? "文本 Key 已保存" : "粘贴 DeepSeek API Key"}">
         <button type="button" class="mg-btn" id="setup-test">测试连接</button>
       </div>
-      <span class="mg-hint" id="setup-test-result">${settings.stepfun_api_key_set ? "已配置 StepFun Key" : "未配置密钥时仅生成占位音频；真实语音需要配置服务"}</span>
+      <span class="mg-hint" id="setup-test-result">${settings.llm_configured ? "文本服务已配置" : "也可以跳过密钥，使用 Agent 模式。"}</span>
     </div>
     ${roleBlock("q", "2. 选择提问者", "这是与你对话的 AI 考官声音，用于提出雅思口语问题")}
     ${roleBlock("a", "3. 选择回答者", "这是你自己的回答声音，用于朗读你的作答内容")}
@@ -2973,13 +2672,11 @@ async function SetupView(token) {
     if (viewStale(token) || !grid.isConnected) return;
     const gender = state[role + "Gender"];
     const cur = role === "q" ? state.q : state.a;
-    grid.innerHTML = voices.filter(v => (v.gender || "") === gender).map(v => {
-      const vid = v.voice_id || v.reference_id;
+    grid.innerHTML = voices.filter(v => v.gender === gender && (role === "a" || v.voice_id !== "golden_self")).map(v => {
+      const vid = v.voice_id;
       return `<div class="voice-pick ${vid === cur ? "selected" : ""}" data-vid="${esc(vid)}" data-role="${role}">
         <button type="button" class="voice-pick-play" data-preview-vid="${esc(vid)}" data-preview-provider="${esc(state.provider)}" title="试听">▶</button>
         <button type="button" class="voice-pick-name" aria-label="选择 ${esc(v.name || vid)}">${esc(v.name || vid)}</button>
-        <div class="voice-pick-meta">${esc(v.accent || "English")} · ${esc(v.age_tone || "")}</div>
-        <div class="voice-pick-desc">${esc(v.description || v.tag || "")}</div>
       </div>`;
     }).join("") || `<p class="mg-hint">该性别暂无可用音色</p>`;
     grid.querySelectorAll(".voice-pick").forEach(el => {
@@ -3018,9 +2715,9 @@ async function SetupView(token) {
     $r.textContent = "测试中…";
     try {
       const key = document.getElementById("setup-key").value.trim();
-      if (key) await api("PUT", "/api/settings", { stepfun_api_key: key });
-      const r = await api("POST", "/api/settings/test?provider=stepfun");
-      const res = r.stepfun || {};
+      if (key) await api("PUT", "/api/settings", { llm_api_key: key });
+      const r = await api("POST", "/api/settings/test?provider=llm");
+      const res = r.llm || {};
       $r.textContent = `${res.ok ? "✓" : "✗"} ${res.message || ""}${res.mode === "dry_run" ? "（dry-run：生成占位音频，不调 API）" : ""}`;
       await renderGrid("q");
       await renderGrid("a");
@@ -3033,11 +2730,10 @@ async function SetupView(token) {
     try {
       const key = document.getElementById("setup-key").value.trim();
       const payload = {
-        tts_provider: state.provider,
-        question_voice_id: state.q,
-        answer_voice_id: state.a,
+        kokoro_question_voice: state.q,
+        kokoro_answer_voice: state.a,
       };
-      if (key) payload.stepfun_api_key = key;
+      if (key) payload.llm_api_key = key;
       await api("PUT", "/api/settings", payload);
       location.hash = "#/practice";
     } catch (err) {

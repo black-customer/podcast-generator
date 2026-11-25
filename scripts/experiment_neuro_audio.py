@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from server.audio import _concat_line, _run, make_silence, probe_duration
 from server.config import TMP_DIR, load_settings
-from server.tts import fish_tts_dialogue
+from server.tts import render_dialogue
 
 
 def make_beep(freq: int = 880, duration: float = 0.3) -> Path:
@@ -57,16 +57,14 @@ def main():
     ]
 
     print("正在合成 Part 1 (引导 + 示范 + 语块特写 + 考官提问)...")
-    part1_bytes = fish_tts_dialogue(part1_lines, settings)
     part1_file = TMP_DIR / f"exp_part1_{uuid.uuid4().hex[:8]}.mp3"
-    part1_file.write_bytes(part1_bytes)
-    print(f"Part 1 完成，文件大小: {len(part1_bytes)} bytes，时长: {probe_duration(part1_file):.1f}s")
+    render_dialogue(part1_lines, part1_file, settings)
+    print(f"Part 1 完成，时长: {probe_duration(part1_file):.1f}s")
 
     print("正在合成 Part 3 (收尾复盘 + 核心句强化)...")
-    part3_bytes = fish_tts_dialogue(part3_lines, settings)
     part3_file = TMP_DIR / f"exp_part3_{uuid.uuid4().hex[:8]}.mp3"
-    part3_file.write_bytes(part3_bytes)
-    print(f"Part 3 完成，文件大小: {len(part3_bytes)} bytes，时长: {probe_duration(part3_file):.1f}s")
+    render_dialogue(part3_lines, part3_file, settings)
+    print(f"Part 3 完成，时长: {probe_duration(part3_file):.1f}s")
 
     # 阶段 2：输出窗口（起始提示音 + 7.5 秒静音 + 结束提示音）
     beep_start = make_beep(freq=660, duration=0.25)

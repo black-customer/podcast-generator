@@ -1,5 +1,4 @@
 """从已校验逐句材料生成本机双人教学电台。"""
-import asyncio
 import hashlib
 import json
 import os
@@ -7,21 +6,31 @@ import re
 import shutil
 import threading
 import wave
+from collections.abc import Callable
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from . import audio, audioqa, library, mastering, oral_review, speech_bridge, study
+from . import (
+    audio,
+    audioqa,
+    library,
+    mastering,
+    oral_review,
+    rewrite,
+    speech_bridge,
+    study,
+    study_progress,
+    tts,
+)
 from .config import DATA_DIR, TMP_DIR, load_settings
 from .speech_worker import matched_chunks
 
 EPISODE_DIR = DATA_DIR / "teaching_podcasts"
 _LOCK = threading.Lock()
 _CJK = re.compile(r"[\u3400-\u9fff]")
-_EDGE_FEMALE = "zh-CN-XiaoxiaoMultilingualNeural"
-_EDGE_FEMALE_FALLBACK = "zh-CN-XiaoxiaoNeural"
-_EDGE_MALE = "zh-CN-YunxiNeural"
+Progress = Callable[[str, int, int, str], None]
 _STAGE_DIRECTION = re.compile(
-    r"\[|\]|<|>|[（(][^）)]*(?:pause|silence|wait|静音|停顿|等待)|"
+    r"\[|\]|<|>|[（(][^）)]*(?:pause|silence|wait|静音|停顿|等待|笑声|轻笑|叹气|laugh|sigh|chuckle)|"
     r"\b(?:pause|wait|silence)\s+(?:for\s+)?(?:\d+|three)\s*s",
     re.I,
 )
@@ -32,7 +41,7 @@ def validate_script(lines: list[dict], targets: list[str]) -> None:
     tutors = []
     for line in lines:
         role, text = line.get("speaker"), line.get("text")
-        if (role not in {"A", "B"} or role == previous or not isinstance(text, str)
+        if (role not in ("A", "B") or role == previous or not isinstance(text, str)
                 or not text.strip() or _STAGE_DIRECTION.search(text)
                 or ("\n" in text or "\r" in text)):
             raise ValueError("台词需由女导师和男搭档轮流自然说出，不含舞台指令")
@@ -44,90 +53,96 @@ def validate_script(lines: list[dict], targets: list[str]) -> None:
         raise ValueError("双人教学播客需要两位主持人与每个目标表达")
 
 
-def build_script(question: str, points: list[dict], mode: str,
-                 *, daily: bool = False) -> list[dict]:
-    bilingual = mode == "bilingual"
-    lines: list[dict] = []
-    question = question.translate(str.maketrans("", "", "[]<>"))
-    if _CJK.search(question):
-        question = "Which phrase would you reach for here?"
+def _validate_turns(turns: object, mode: str, targets: list[str]) -> list[dict]:
+    if not isinstance(turns, list) or not 2 <= len(turns) <= 32:
+        raise ValueError("电台剧本需要 2–32 轮双人台词")
+    cleaned, lines = [], []
+    for turn in turns:
+        if not isinstance(turn, dict):
+            raise ValueError("电台台词须是 JSON 对象")
+        segments = turn.get("segments")
+        if segments is None and isinstance(turn.get("text"), str):
+            segments = tts.language_segments(turn["text"])
+        if not isinstance(segments, list) or not 1 <= len(segments) <= 12:
+            raise ValueError("每轮电台台词需要有效的语音分段")
+        normalized = []
+        for row in segments:
+            if (not isinstance(row, dict) or row.get("lang") not in ("zh", "en")
+                    or not isinstance(row.get("text"), str) or not row["text"].strip()
+                    or len(row["text"]) > 600 or _STAGE_DIRECTION.search(row["text"])):
+                raise ValueError("电台分段需要有效的语言和可直接朗读的台词")
+            detected = tts.language_segments(" ".join(row["text"].split()))
+            if not detected or (mode == "en" and any(p["lang"] != "en" for p in detected)):
+                raise ValueError("全英文电台需要纯英文台词")
+            normalized.extend(detected)
+        role = turn.get("speaker")
+        lines.append({"speaker": role, "text": " ".join(row["text"] for row in normalized)})
+        cleaned.append({"speaker": role, "segments": normalized})
+    if mode == "bilingual" and not any(
+        row["lang"] == "zh" for turn in cleaned for row in turn["segments"]
+    ):
+        raise ValueError("中英电台剧本缺少中文台词")
+    validate_script(lines, targets)
+    return cleaned
 
-    def turn(speaker: str, text: str) -> None:
-        text = " ".join(text.split())
-        if _CJK.search(text) and re.search(r"[A-Za-z]", text):
-            raise ValueError("中英文分别交给独立台词")
-        lines.append({"speaker": speaker, "text": text})
 
-    turn("A", "今天聊几处开口时容易卡住的表达。先听意思，说出一个词也可以。"
-         if bilingual else "Picture this: we're halfway through an answer, the idea is there, "
-         "and one expression just won't come. Let's see what makes it easier to find next time.")
-    turn("B", "That happens to me all the time. I have the idea in my head, and then I reach "
-         "for the most ordinary word I know.")
-    for i, row in enumerate(points):
-        target = row["key_chunk"]
-        example = row.get("transfer_example") or row["en"]
-        error = row.get("original_error")
-        cue = row["zh"].translate(str.maketrans("", "", "[]<>"))
-        if bilingual:
-            # 中文意群有时保留术语；英文目标在随后一轮另说。
-            cue = re.sub(r"[\x00-\x7f]+", " ", cue).strip()
-            open_line = f"想说的是这层意思。{cue} 你会怎么开口？"
-            if error:
-                issue = re.sub(r"[\x00-\x7f]+", " ", error["issue"]).strip()
-                open_line = f"这句意思是这样。{cue} {issue}。试着先说一遍。"
-        elif error:
-            quote = error["quote"].translate(str.maketrans("", "", "[]<>"))
-            open_line = f'You said, "{quote}." What small change would keep the meaning?'
-        elif i == 0:
-            open_line = f"Let's take this one. {question} "
-            open_line += "One short phrase can do a lot of work here."
-        else:
-            open_line = "Here's another moment that feels familiar. Can you reach for a phrase "
-            open_line += "that says the same thing a little more precisely?"
-        turn("A", open_line)
-        # 犹豫写成有意义的搭档台词，留出抢答空间又保持连续声音。
-        clue = target.split(maxsplit=1)[0]
-        turn("B", f"Hmm, starts with {clue}. What comes next?" if not daily and len(points) > 1 else
-             f"Hmm, I think it starts with {clue}. I can picture what I mean. "
-             "Give me the rest of that phrase.")
-        if error:
-            explanation = f'Try this wording: "{row["en"]}" The bit to keep together is {target}.'
-        else:
-            explanation = f'Yes, {target}. Put it back into the answer and you get: "{row["en"]}"'
-        turn("A", explanation)
-        turn("B", "That sounds like something I'd actually say. Where else could I use it?")
-        scenario = (f'In a different conversation, you could say, "{example}"'
-                    if row.get("transfer_example")
-                    else f'Imagine a friend wants a quick example. You could reply, "{example}"')
-        turn("A", scenario)
-        turn("B", f"Okay, {target}. I can carry that into another answer without learning "
-             "the whole thing by heart." if len(points) == 1 and not daily else
-             f"Okay, {target}. I can carry that into another answer.")
-        if daily:
-            turn("A", "Try saying the line again with one detail from your own life. "
-                 "Leave the phrase together and change a detail around it.")
-            turn("B", "I can swap in a different time or place. That gives me something "
-                 "to say when the question comes up again, without memorizing a script.")
-    if daily:
-        turn("A", "On the next question, listen for the idea first. If it fits, try the expression "
-             "once. You'll remember more when the words are tied to something you actually mean.")
-        turn("B", "I like that. I'll think of a real example, say it out loud, and see which "
-             "expressions I can retrieve. I'll leave anything that doesn't fit for another answer.")
-        if len(points) == 1:
-            turn("A", "Let's do one more pass. Imagine a friend hears your answer and asks for "
-                 "a little more detail. Say why that idea matters or how it came about.")
-            turn("B", "Hmm, I'd start with one thing I can picture, then add why it stands out. "
-                 "Keeping the answer simple gives me time to find the words I want.")
-            turn("A", f"Exactly. Bring back {points[0]['key_chunk']} when it fits. You can give "
-                 "the answer your own ending and still get some practice with the same expression.")
-            turn("B", "That's a plan. I'll say my own version on the way out. Next time I hear "
-                 "the question, I'll see what I can bring back without looking at the sentence.")
-    elif len(points) == 1:
-        turn("A", "Try slipping that phrase into one new sentence later on. A small change of "
-             "scene is enough to make it your own.")
-        turn("B", "Deal. I'll keep the useful bit handy and let the next answer be different.")
-    validate_script(lines, [row["key_chunk"] for row in points])
-    return lines
+def draft_episode_with_llm(context: dict, mode: str, cancel: threading.Event | None) -> dict:
+    language = "ENGLISH MODE. Write every spoken segment in English. "
+    example = '{"speaker":"A","segments":[{"lang":"en","text":"How do you unwind?"}]}'
+    if mode == "bilingual":
+        language = (
+            "中英双语电台。两位主播用普通话交流、分析和点拨，用英文引用原话、带读和举例。"
+            "女导师 A 的第一段必须是普通话，男搭档 B 也必须至少说一段普通话。"
+            "不要把中文讲解翻译成英文。每个分段只包含一种语言，普通话标 zh，英文标 en。"
+        )
+        example = ('{"speaker":"A","segments":[{"lang":"zh","text":"你是怎么放松的？"},'
+                   '{"lang":"en","text":"How do you unwind?"}]},'
+                   '{"speaker":"B","segments":[{"lang":"zh","text":"我会先想到散步。"}]}')
+    messages = [
+        {"role": "system", "content": (
+            language + " Write a short, natural IELTS teaching podcast with a female coach A "
+            "and a male "
+            "partner B. Start with A and alternate turns. Use the learner's exact English attempt, "
+            "their Chinese intent and the supplied evidence. Discuss why the literal wording can "
+            "be tempting, then let the hosts model the reusable phrases and show how they work "
+            "in everyday situations. Use a relaxed conversation with room for natural follow-ups. "
+            "Never invent personal facts or mistakes. A should speak every key_chunk in points. "
+            "Aim for 8–14 short turns. No labels, stage directions, scores, or scripted silences. "
+            ' Return JSON only: {"title":"short title","highlights":["key_chunk"],'
+            '"turns":[' + example + ']}. The sample shows the structure only; use the given topic.'
+        )},
+        {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
+    ]
+    result = rewrite._extract_json(rewrite._chat(load_settings(), messages, cancel))
+    title = result.get("title")
+    if not isinstance(title, str) or not 1 <= len(title.strip()) <= 100:
+        raise ValueError("电台剧本缺少有效标题")
+    targets = [row["key_chunk"] for row in context["points"]]
+    turns = _validate_turns(result.get("turns"), mode, targets)
+    highlights = result.get("highlights")
+    selected = list(dict.fromkeys(phrase for phrase in highlights
+                                  if isinstance(phrase, str) and phrase in targets)
+                    ) if isinstance(highlights, list) else []
+    return {"title": title.strip(), "highlights": (selected + [
+        phrase for phrase in targets if phrase not in selected
+    ])[:4], "turns": turns}
+
+
+def _dry_script(question: str, points: list[dict], mode: str, daily: str | None) -> dict:
+    lead = [{"lang": "zh", "text": "来听几个可以直接用到口答里的表达。"}]
+    reply = [{"lang": "zh", "text": "我再说一遍。"}]
+    if mode == "en":
+        lead = reply = []
+    targets = [row["key_chunk"] for row in points]
+    return {"title": f"{daily} 今日电台" if daily else question, "highlights": targets,
+            "turns": [
+                {"speaker": "A", "segments": lead + [
+                    {"lang": "en", "text": row["en"]} for row in points
+                ]},
+                {"speaker": "B", "segments": reply + [
+                    {"lang": "en", "text": "Let me try that again."}
+                ]},
+            ]}
 
 
 def _targets(rows: list[dict], limit: int, *, prioritize_gaps: bool = True) -> list[dict]:
@@ -150,21 +165,27 @@ def _item_points(topic_id: str, item_id: str) -> list[dict]:
     return found.get("material", {}).get("sentences", []) if found["status"] == "ready" else []
 
 
-def for_item(topic_id: str, item_id: str, mode: str, partner: str) -> dict:
+def _context(topic_id: str, item_id: str, full: dict) -> dict:
+    progress = study_progress.get_progress(topic_id, item_id)
+    inputs = progress.get("training_inputs") or (progress.get("training") or {}).get("inputs") or {}
+    return {"question": full["question"], "original_answer": rewrite.original_answer_of(full),
+            "chinese_intent": inputs.get("intent", "")}
+
+
+def for_item(topic_id: str, item_id: str, mode: str, partner: str, **options) -> dict:
     full = library.get_item_full(topic_id, item_id)
     rows = _item_points(topic_id, item_id)
-    gaps = [row for row in rows
-            if row.get("original_error") or row.get("gap_kind") == "explicit_gap"]
-    points = _targets(gaps or rows, 2 if gaps else 1)
-    return generate(full["question"], points, mode, partner)
+    points = _targets(rows, 4)
+    return generate(full["question"], points, mode, partner,
+                    context=_context(topic_id, item_id, full), **options)
 
 
-def for_today(mode: str, partner: str) -> dict:
+def for_today(mode: str, partner: str, **options) -> dict:
     today = oral_review._today().isoformat()
     with oral_review._LOCK:
         review = oral_review._load()
     attempts = [row for row in reversed(review["attempts"]) if row["date"] == today]
-    rows, sources = [], {}
+    rows, sources, practiced = [], {}, []
 
     def source_row(entry: dict) -> None:
         key = entry["topic_id"], entry["item_id"]
@@ -180,6 +201,9 @@ def for_today(mode: str, partner: str) -> dict:
     for key in dict.fromkeys((row["topic_id"], row["item_id"]) for row in attempts):
         try:
             sources[key] = _item_points(*key)
+            full = library.get_item_full(*key)
+            if sources[key] and len(practiced) < 6:
+                practiced.append({**_context(*key, full), "points": _targets(sources[key], 2)})
         except FileNotFoundError:
             sources[key] = []
         rows.extend(sources[key])
@@ -187,6 +211,7 @@ def for_today(mode: str, partner: str) -> dict:
     rows.clear()
     old = sorted((card for card in review["cards"].values()
                   if not card["paused"] and not card.get("superseded")
+                  and card["due_date"] <= today
                   and (card.get("last_reviewed") or card.get("learned_at") or "")[:10] != today),
                  key=lambda card: card["due_date"])
     seen_today = {attempt.get("card_id") for attempt in attempts}
@@ -198,35 +223,29 @@ def for_today(mode: str, partner: str) -> dict:
                         2, prioritize_gaps=False)
     question = attempts[0].get("question", "") if attempts else ""
     return generate(question or "Which expression comes back to you first?", current + previous,
-                    mode, partner, daily=today)
+                    mode, partner, daily=today, context={"practiced": practiced,
+                                                       "due_expressions": previous}, **options)
 
 
-def _edge_speak(text: str, voice: str, output: Path) -> str:
-    try:
-        from edge_tts import Communicate
-        from edge_tts.exceptions import NoAudioReceived
-    except ImportError as exc:
-        raise ValueError(
-            "中英电台需要安装 edge-tts：.venv/Scripts/python -m pip install edge-tts"
-        ) from exc
-    try:
-        try:
-            asyncio.run(Communicate(text, voice, receive_timeout=25).save(str(output)))
-        except NoAudioReceived:
-            voice = _EDGE_FEMALE_FALLBACK if voice == _EDGE_FEMALE else voice
-            asyncio.run(Communicate(text, voice, receive_timeout=25).save(str(output)))
-        return voice
-    except Exception as exc:
-        raise ValueError("中英电台连接语音服务失败，请检查网络后重试") from exc
+def _check_cancel(cancel: threading.Event | None) -> None:
+    if cancel and cancel.is_set():
+        raise tts.TTSCancelled("已取消")
 
 
-def _join_audio(paths: list[Path], target: Path) -> tuple[float, list[tuple[float, float]]]:
+def _join_audio(paths: list[tuple[Path, str]], target: Path
+                ) -> tuple[float, list[tuple[float, float]]]:
     combined = target.parent / "joined.wav"
     pcm = target.parent / "turn.wav"
     spans, position, rate = [], 0, 24000
     with wave.open(str(combined), "wb") as merged:
         merged.setparams((1, 2, rate, 0, "NONE", "not compressed"))
-        for path in paths:
+        previous = None
+        for path, speaker in paths:
+            if previous is not None:
+                gap = round(rate * (0.06 if speaker == previous else 0.24))
+                merged.writeframesraw(bytes(gap * 2))
+                position += gap
+            previous = speaker
             audio._run(["ffmpeg", "-y", "-i", str(path), "-ac", "1", "-ar", str(rate),
                         "-c:a", "pcm_s16le", str(pcm)], timeout=40)
             with wave.open(str(pcm), "rb") as part:
@@ -243,55 +262,78 @@ def _join_audio(paths: list[Path], target: Path) -> tuple[float, list[tuple[floa
 
 
 def generate(question: str, points: list[dict], mode: str, partner: str,
-             *, daily: str | None = None) -> dict:
+             *, daily: str | None = None, context: dict | None = None,
+             cancel: threading.Event | None = None, on_progress: Progress | None = None) -> dict:
     if not points:
         raise ValueError("先完成有重点语块的逐句材料，再生成教学电台")
     if mode not in {"en", "bilingual"} or partner not in {"am_puck", "golden_self"}:
         raise ValueError("未知的电台语言或搭档音色")
-    if mode == "bilingual" and partner != "am_puck":
-        raise ValueError("中英电台使用晓晓和云希，请切回默认搭档")
     settings = load_settings()
+    dry = bool(settings.get("dry_run"))
+    _check_cancel(cancel)
+    if on_progress:
+        on_progress("script", 0, 0, "正在根据原话与意图编排双人播客")
+    script = (_dry_script(question, points, mode, daily) if dry else
+              draft_episode_with_llm({"question": question, **(context or {}), "points": points},
+                                     mode, cancel))
+    _check_cancel(cancel)
+    voices = {"A": "af_bella", "B": partner}
+    mandarin = {"A": "zf_xiaoxiao", "B": "zm_yunxi"}
     profile_hash = None
-    if partner == "golden_self":
+    if partner == "golden_self" and not dry:
         profile_hash = speech_bridge.request(
-            settings, "profile_revision", timeout=15,
+            settings, "profile_revision", timeout=15, cancel=cancel,
         ).get("profile_hash")
         if not profile_hash:
             raise ValueError("尚未配置母语分身")
-    voices = ({"A": "af_bella", "B": partner} if mode == "en" else
-              {"A": _EDGE_FEMALE, "B": _EDGE_MALE})
-    script = build_script(question, points, mode, daily=bool(daily))
-    title = f"{daily} 今日电台" if daily else question
-    digest = json.dumps([title, voices, profile_hash, script], ensure_ascii=False)
+    digest = json.dumps([daily, mode, voices, profile_hash, dry, script], ensure_ascii=False)
     episode_id = hashlib.sha256(digest.encode()).hexdigest()[:24]
-    with _LOCK:
-        try:
-            return get_episode(episode_id)
-        except FileNotFoundError:
-            pass
-        TMP_DIR.mkdir(parents=True, exist_ok=True)
-        with TemporaryDirectory(prefix="teaching-radio-", dir=TMP_DIR) as directory:
-            work = Path(directory)
-            paths = []
-            for index, line in enumerate(script):
-                voice = voices[line["speaker"]]
-                path = work / f"line-{index}.{'wav' if mode == 'en' else 'mp3'}"
-                if mode == "en":
-                    speech_bridge.request(
-                        settings, "preview_line", text=line["text"], voice=voice, output=path,
-                        profile_hash=profile_hash if voice == "golden_self" else None,
-                    )
-                else:
-                    voices[line["speaker"]] = _edge_speak(line["text"], voice, path)
-                paths.append(path)
-            target = work / "episode.mp3"
-            duration, timings = _join_audio(paths, target)
-            episode = {"id": episode_id, "title": title, "created_at": library.now_iso(),
-                       "kind": "daily" if daily else "item", "language_mode": mode,
-                       "voices": voices, "duration": duration,
-                       "audio_url": f"/api/teaching-podcasts/{episode_id}/audio",
-                       "lines": [{**line, "start": start, "end": end}
-                                 for line, (start, end) in zip(script, timings, strict=True)]}
+    segments = [{**row, "speaker": turn["speaker"]} for turn in script["turns"]
+                for row in turn["segments"]]
+    total = len(segments)
+    _check_cancel(cancel)
+    try:
+        return get_episode(episode_id)
+    except FileNotFoundError:
+        pass
+    TMP_DIR.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(prefix="teaching-radio-", dir=TMP_DIR) as directory:
+        work = Path(directory)
+        paths = []
+        if on_progress:
+            on_progress("tts", 0, total, "正在启动本地语音")
+        for index, line in enumerate(segments):
+            _check_cancel(cancel)
+            speaker, lang = line["speaker"], line["lang"]
+            voice = mandarin[speaker] if lang == "zh" else voices[speaker]
+            path = work / f"line-{index}.wav"
+            if dry:
+                audio.make_tone(tts.estimate_seconds(line["text"]), path)
+            else:
+                speech_bridge.request(
+                    settings, "preview_line", text=line["text"], voice=voice, output=path,
+                    lang="cmn" if lang == "zh" else "en-us", cancel=cancel,
+                    profile_hash=profile_hash if voice == "golden_self" else None,
+                )
+            paths.append((path, speaker))
+            if on_progress:
+                on_progress("tts", index + 1, total, "女导师" if speaker == "A" else "男搭档")
+        _check_cancel(cancel)
+        if on_progress:
+            on_progress("master", total, total, "正在统一响度并检查静音")
+        target = work / "episode.mp3"
+        duration, timings = _join_audio(paths, target)
+        episode = {"id": episode_id, "title": script["title"], "created_at": library.now_iso(),
+                   "kind": "daily" if daily else "item", "language_mode": mode,
+                   "voices": voices, "duration": duration, "highlights": script["highlights"],
+                   "mandarin_voices": mandarin if mode == "bilingual" else {},
+                   "dry_run": dry, "audio_url": f"/api/teaching-podcasts/{episode_id}/audio",
+                   "lines": [{**line, "start": start, "end": end}
+                             for line, (start, end) in zip(segments, timings, strict=True)]}
+        with _LOCK:
+            _check_cancel(cancel)
+            if (EPISODE_DIR / episode_id).exists():
+                return get_episode(episode_id)
             EPISODE_DIR.mkdir(parents=True, exist_ok=True)
             with TemporaryDirectory(prefix=".episode-", dir=EPISODE_DIR) as staging:
                 partial = Path(staging)
@@ -299,8 +341,13 @@ def generate(question: str, points: list[dict], mode: str, partner: str,
                 (partial / "episode.json").write_text(
                     json.dumps(episode, ensure_ascii=False, indent=2), encoding="utf-8",
                 )
+                _check_cancel(cancel)
                 os.replace(partial, EPISODE_DIR / episode_id)
     return episode
+
+
+def public_episode(episode: dict) -> dict:
+    return {key: value for key, value in episode.items() if key != "lines"}
 
 
 def audio_file(episode_id: str) -> Path:

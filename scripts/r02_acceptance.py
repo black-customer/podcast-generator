@@ -1,16 +1,11 @@
 #!/usr/bin/env python
-"""R02 真实验收：5 条代表语料走 StepFun 生产合成路径 + 技术 QA + Fish A/B 清单。
+"""离线试听验收：用既有语料生成本地样片，与历史成品对照。
 
-- 只调用 StepFun；key 从 data/.tmp/stepfun_api_key.txt 读入内存，绝不落盘/打印/回传。
-- 合成走 tts._synthesize_with_qa（生产同路径：逐行角色音色 + 44.1kHz 标准化 + 母带 + QA），
-  输出到 data/.tmp/r02_acceptance/（gitignored），不触碰 data/ 正式语料。
-- 技术门：QA verdict=pass；与 Fish 成品时长比 0.55–2.0（出界即疑变速/截断）。
-
-用法：.venv/Scripts/python scripts/r02_acceptance.py [--only N]
+用法：.venv/Scripts/python scripts/r02_acceptance.py [--only 样本名]
+所有输出写入 data/.tmp/r02_acceptance/。
 """
 import json
 import sys
-import time
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
@@ -19,14 +14,11 @@ sys.path.insert(0, str(BASE))
 from server import (  # noqa: E402
     audioqa,  # noqa: E402
     library,
-    stepfun,
     tts,
 )
-from server.config import load_settings  # noqa: E402
+from server.config import load_settings, speech_engine_available  # noqa: E402
 
-KEY_FILE = BASE / "data" / ".tmp" / "stepfun_api_key.txt"
 OUT = BASE / "data" / ".tmp" / "r02_acceptance"
-FREE_TIER_SPACING = 6.5  # 免费档 10 RPM，预先匀速，少挨 429
 
 # (label, topic_id, item_id, track)
 CASES = [
@@ -59,26 +51,11 @@ def ffprobe_duration(path: Path) -> float:
 
 def main() -> int:
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else ""
-    if not KEY_FILE.exists():
-        print("缺少 data/.tmp/stepfun_api_key.txt（先放入 StepFun key）")
-        return 1
-    key = KEY_FILE.read_text(encoding="utf-8").strip()
     settings = load_settings()
-    settings.update(tts_provider="stepfun", stepfun_api_key=key, dry_run=False)
-
-    # 免费档匀速节流（脚本层；产品代码保持 Retry-After/退避语义）
-    real_synth = stepfun.synthesize
-    last = 0.0
-
-    def throttled(*args, **kwargs):
-        nonlocal last
-        wait = last + FREE_TIER_SPACING - time.monotonic()
-        if wait > 0:
-            time.sleep(wait)
-        last = time.monotonic()
-        return real_synth(*args, **kwargs)
-
-    stepfun.synthesize = throttled
+    if not speech_engine_available(settings):
+        print("本地语音引擎不可用，请检查 ChineseAccent 目录")
+        return 1
+    settings["dry_run"] = False
 
     OUT.mkdir(parents=True, exist_ok=True)
     passed, failed = [], []
@@ -91,12 +68,12 @@ def main() -> int:
             print(f"[{idx}] {label}: 无 {track} 源文本（{field}），跳过")
             failed.append((label, "无源文本"))
             continue
-        fish_path = library.item_path(topic_id, item_id) / (
+        previous_path = library.item_path(topic_id, item_id) / (
             "audio_monologue.mp3" if track == "monologue" else "audio_podcast.mp3"
         )
         out = OUT / f"{idx:02d}-{label}.mp3"
-        print(f"[{idx}/5] {label} voice={settings.get('answer_voice_id')} "
-              f"q={settings.get('question_voice_id')} chars={len(src)}")
+        print(f"[{idx}/5] {label} voice={settings.get('kokoro_answer_voice')} "
+              f"q={settings.get('kokoro_question_voice')} chars={len(src)}")
         try:
             result, qa, _eff, _words = tts._synthesize_with_qa(
                 src, out, settings, force_monologue=(track == "monologue")
@@ -108,17 +85,17 @@ def main() -> int:
         dur = result[0]
         qa_path = OUT / f"{idx:02d}-{label}.qa.json"
         audioqa.save_qa_report(qa, qa_path)
-        fish_dur = ffprobe_duration(fish_path) if fish_path.exists() else 0.0
-        ratio = dur / fish_dur if fish_dur else 0.0
+        previous_dur = ffprobe_duration(previous_path) if previous_path.exists() else 0.0
+        ratio = dur / previous_dur if previous_dur else 0.0
         checks = {
             "qa_verdict": qa.get("verdict"),
             "duration_sec": round(dur, 2),
-            "fish_duration_sec": round(fish_dur, 2),
-            "ratio_vs_fish": round(ratio, 3) if fish_dur else None,
+            "previous_duration_sec": round(previous_dur, 2),
+            "ratio_vs_previous": round(ratio, 3) if previous_dur else None,
             "segments": result[1],
             "mode": result[3],
         }
-        ok = qa.get("verdict") == "pass" and dur > 3 and (not fish_dur or 0.55 <= ratio <= 2.0)
+        ok = qa.get("verdict") == "pass" and dur > 3 and (not previous_dur or 0.55 <= ratio <= 2.0)
         (passed if ok else failed).append((label, json.dumps(checks, ensure_ascii=False)))
         print(f"    {'PASS' if ok else 'FAIL'} {json.dumps(checks, ensure_ascii=False)}")
 
@@ -126,10 +103,11 @@ def main() -> int:
     for idx, (label, topic_id, item_id, track) in enumerate(CASES, 1):
         if only and only != label:
             continue
-        fish_path = library.item_path(topic_id, item_id) / (
+        previous_path = library.item_path(topic_id, item_id) / (
             "audio_monologue.mp3" if track == "monologue" else "audio_podcast.mp3"
         )
-        print(f"\n{label}\n  FISH    : {fish_path}\n  STEPFUN : {OUT / f'{idx:02d}-{label}.mp3'}")
+        local_path = OUT / f"{idx:02d}-{label}.mp3"
+        print(f"\n{label}\n  历史音频 : {previous_path}\n  本地音频 : {local_path}")
 
     print(f"\n结果: {len(passed)} PASS / {len(failed)} FAIL")
     if failed:

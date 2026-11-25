@@ -32,7 +32,7 @@ import bruce_kit_content as C  # noqa: E402
 
 from server.audio import _concat_line, _run, make_silence, probe_duration  # noqa: E402
 from server.config import TMP_DIR, load_settings  # noqa: E402
-from server.tts import fish_tts_dialogue  # noqa: E402
+from server.tts import render_dialogue  # noqa: E402
 
 for _stream in (sys.stdout, sys.stderr):  # Windows 控制台默认 GBK，中文与符号日志会崩
     try:
@@ -77,10 +77,11 @@ def make_cue(freq: int, seconds: float, gain: float = 0.3) -> Path:
 
 
 def synth(lines: list[tuple[str, str]], settings: dict, speed: float | None = None) -> Path:
-    """一次多说话人合成，结果按内容哈希缓存，重跑不重复花配额。"""
+    """一次多说话人合成，结果按内容哈希缓存，重跑复用已生成片段。"""
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     payload = json.dumps(
-        {"lines": [[s, t] for s, t in lines], "speed": speed, "model": settings.get("model")},
+        {"lines": [[s, t] for s, t in lines], "speed": speed, "engine": "kokoro-local-v1",
+         "voices": [settings.get("kokoro_question_voice"), settings.get("kokoro_answer_voice")]},
         ensure_ascii=False,
     )
     key = hashlib.sha256(payload.encode("utf-8")).hexdigest()[:24]
@@ -88,13 +89,14 @@ def synth(lines: list[tuple[str, str]], settings: dict, speed: float | None = No
     if out.exists() and out.stat().st_size > 2000:
         STATS["cache_hits"] += 1
         return out
-    run_settings = dict(settings) if speed is None else {**settings, "speed": speed}
-    audio = fish_tts_dialogue([(sp, for_tts(tx)) for sp, tx in lines], run_settings)
-    if len(audio) < 1500:
-        raise RuntimeError(f"合成结果过短（{len(audio)} bytes），判定失败：{lines[0][1][:40]}")
     tmp = CACHE_DIR / f"{out.stem}.{uuid.uuid4().hex[:6]}.tmp.mp3"
-    tmp.write_bytes(audio)
-    tmp.replace(out)
+    try:
+        render_dialogue([(sp, for_tts(tx)) for sp, tx in lines], tmp, settings, speed=speed or 1.0)
+        if tmp.stat().st_size < 1500:
+            raise RuntimeError("本地合成结果过短")
+        tmp.replace(out)
+    finally:
+        tmp.unlink(missing_ok=True)
     STATS["api_calls"] += 1
     return out
 

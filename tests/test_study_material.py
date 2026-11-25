@@ -53,6 +53,28 @@ def test_material_roundtrip_and_order(item):
     assert study.get_material(tid, iid)["status"] == "ready"
 
 
+def test_coaching_material_can_be_read_before_audio(item):
+    tid, iid, path = item
+    (path / "audio_podcast.mp3").unlink()
+    data = material()
+    data["coach_summary"] = {
+        "headline": "你清楚说出了下班后的习惯，下一遍注意第三人称和动词原形。",
+        "strengths": ["先说了具体活动"],
+        "focus_points": ["It 后用 helps"],
+    }
+    with pytest.raises(study.MaterialError, match="音频"):
+        study.save_material(tid, iid, data)
+    saved = study.save_material(tid, iid, data, require_audio=False)
+    assert saved["coach_summary"] == data["coach_summary"]
+    assert study.get_material(tid, iid)["status"] == "needs_input"
+    pending = study.get_material(tid, iid, allow_pending_audio=True)
+    assert pending == {"status": "coaching_ready", "material": saved}
+    data["coach_summary"]["focus_points"] = ["  "]
+    with pytest.raises(study.MaterialError, match="总评"):
+        study.save_material(tid, iid, data, require_audio=False)
+    assert study.get_material(tid, iid, allow_pending_audio=True) == pending
+
+
 def test_training_material_optional_fields_are_validated(item):
     tid, iid, _ = item
     data = material()

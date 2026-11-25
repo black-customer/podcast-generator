@@ -20,7 +20,7 @@ const isReview = ctx => ctx.kind !== "train";
 const voiceLabel = data => voiceNames[data.voice] || "示范回答";
 
 function stageNav(step) {
-  return `<ol class="arcade-steps" aria-label="练习步骤">${["听懂与抓重点", "逐句开口", "脱稿回答"].map(
+  return `<ol class="arcade-steps" aria-label="练习步骤">${["当场老师指导", "逐句开口", "脱稿回答"].map(
     (label, index) => `<li ${step === index + 1 ? 'aria-current="step"' : ""}${step > index + 1 ?
       ' class="done"' : ""}><span>${index + 1}</span>${label}</li>`).join("")}</ol>`;
 }
@@ -181,6 +181,7 @@ async function open(tid, iid, token) {
     render(ctx);
     if (ctx.data.audio_url && ctx.data.status === "ready") play(ctx, ctx.data.audio_url, 0);
     if (ctx.data.status === "preparing") pollMaterial(ctx);
+    if (ctx.data.audio_job?.state === "running" && ctx.data.status === "coaching_ready") pollAudio(ctx);
   } catch (error) {
     if (active(ctx)) ExperienceUI.readError("暂时无法读取本题", error);
   }
@@ -216,30 +217,128 @@ function pollMaterial(ctx) {
 
 function reference(ctx) {
   const d = ctx.data;
-  if (d.status !== "ready") return `<section class="arcade-frame"><h2>准备本题的逐句材料</h2>
+  if (!["ready", "coaching_ready"].includes(d.status)) return `<section class="arcade-frame"><h2>准备本题的逐句材料</h2>
     <p>${esc(d.reason)}</p><div class="arcade-controls">${d.audio_url ? button("demo", "播放完整问答") : ""}
     ${d.audio_url && d.status !== "preparing" ? button("prepare", "准备逐句材料", "primary") : ""}
     <a class="study-button" href="#/legacy-train/${esc(encodeURIComponent(ctx.tid))}/${esc(encodeURIComponent(ctx.iid))}">打开历史训练</a></div></section>`;
-  const lines = d.alignment.lines;
-  const words = d.alignment.words;
-  return `<div class="arcade-reference">
-    <section class="arcade-frame arcade-script"><header><h2>听完整问答</h2>${button("demo", "播放问答")}</header>
-    ${d.dry_run ? '<p class="arcade-muted">当前音频是试运行占位。</p>' : ""}
-    ${lines.map(line => {
-      const within = words.filter(word => word.start >= line.start - 0.03 && word.start < line.end);
-      return `<div class="arcade-line"><span>${line.speaker === "A" ? "考官" : esc(voiceLabel(d))}</span>
-        <p>${timedText(line, within)}</p></div>`;
-    }).join("") || d.sentences.map(row => `<p>${esc(row.en)}</p>`).join("")}</section>
-    <section class="arcade-frame arcade-notes"><h2>带走这些表达</h2>
-      <div class="arcade-chunks">${[...new Set(d.sentences.map(row => row.key_chunk).filter(Boolean))].slice(0, 3).map(chunk).join("")
-        || '<p class="arcade-muted">这份材料尚未标注语块。</p>'}</div>
-      ${d.sentences.some(row => row.gap_kind === "explicit_gap") ?
-        `<h3>这次想说的词块</h3><div class="arcade-chunks">${d.sentences.filter(row =>
-          row.gap_kind === "explicit_gap").map(row => chunk(row.key_chunk)).join("")}</div>` : ""}
-    </section></div>
-    <div class="arcade-controls arcade-proceed">${button("next", `${d.sentences.some(row => row.original_error)
+  const summary = d.coach_summary;
+  const errors = d.sentences.filter(row => row.original_error);
+  const gaps = d.sentences.filter(row => row.gap_kind === "explicit_gap");
+  const categories = {plural: "单复数", tense: "时态", subject_verb_agreement: "主谓一致",
+    article: "冠词", preposition: "介词", word_order: "语序", conjunction: "连词",
+    collocation: "搭配", other: "语法或用词"};
+  const list = entries => `<ul>${entries.map(text => `<li>${esc(text)}</li>`).join("")}</ul>`;
+  return `<div class="coach-material">
+    <section class="arcade-frame coach-avail" id="coach-audio" aria-label="示范音频">
+      <div id="coach-progress"></div><p id="coach-audio-message" role="status"></p>
+      <div class="arcade-controls" id="coach-actions">
+        ${button("demo", "播放母语示范问答")}${button("retry-audio", "仅重新合成音频")}
+      </div>
+    </section>
+    <section class="arcade-frame"><h2>当场老师指导</h2>
+      ${summary ? `<p><strong>${esc(summary.headline)}</strong></p>
+        <div class="coach-compare"><div><h3>值得保留</h3>${list(summary.strengths)}</div>
+        <div><h3>本轮练习重点</h3>${list(summary.focus_points)}</div></div>` : ""}
+      ${errors.length ? `<h3>原话纠错</h3><ol class="coach-diagnoses">${errors.map(({original_error: e}) =>
+        `<li><p><span class="coach-error">你的原话</span> · ${esc(categories[e.category] || "语法或用词")}</p>
+        <p class="coach-error" lang="en">${esc(e.quote)}</p><p>${esc(e.issue)}</p>
+        <p class="coach-fix">地道改法 <strong lang="en">${esc(e.correction)}</strong></p></li>`).join("")}</ol>` : ""}
+      ${d.chinese_intent || gaps.length ? `<h3>中文意图与词汇缺口</h3>
+        ${d.chinese_intent ? `<p>${esc(d.chinese_intent)}</p>` : ""}
+        <ol class="coach-diagnoses">${gaps.map(row => `<li><p>${esc(row.zh)}</p>
+          ${chunk(row.key_chunk)}<p>${esc(row.usage)}</p>
+          ${row.transfer_example ? `<p lang="en">${esc(row.transfer_example)}</p>` : ""}</li>`).join("")}</ol>` : ""}
+    </section>
+    <section class="arcade-frame arcade-script"><h2>完整地道示范</h2>
+      <div class="coach-compare"><div><h3>你的原话</h3><p lang="en">${esc(d.original_answer)}</p></div>
+        <div><h3>母语示范</h3><div id="coach-reference">${referenceLines(d)}</div></div></div>
+      <p class="arcade-muted" id="coach-dry" ${d.dry_run && d.audio_url ? "" : "hidden"}>当前音频是试运行占位。</p>
+      <details><summary>逐句讲解</summary><ol>${d.sentences.map(row =>
+        `<li><p lang="en">${esc(row.en)}</p><p>${esc(row.zh)}</p><p>${esc(row.explanation)}</p>
+        ${chunk(row.key_chunk)}</li>`).join("")}</ol></details>
+    </section>
+    <div class="arcade-controls arcade-proceed">${button("next", `${errors.length
       ? "先重说原话中的问题句" : "开始逐句开口"} ${hotkey("Space")}`, "primary")}
-      ${RadioUI.itemLink(ctx.tid, ctx.iid)}</div>`;
+      ${RadioUI.itemLink(ctx.tid, ctx.iid)}</div>
+  </div>`;
+}
+
+function referenceLines(d) {
+  return d.alignment.lines.map(line => {
+    const within = d.alignment.words.filter(word => word.start >= line.start - 0.03 && word.start < line.end);
+    return `<div class="arcade-line"><span>${line.speaker === "A" ? "考官" : esc(voiceLabel(d))}</span>
+      <p>${timedText(line, within)}</p></div>`;
+  }).join("") || d.sentences.map(row => `<p lang="en">${esc(row.en)}</p>`).join("");
+}
+
+function updateAudio(ctx) {
+  const host = $app.querySelector("#coach-progress");
+  if (!host) return;
+  const d = ctx.data, job = d.audio_job;
+  const ready = d.status === "ready" && Boolean(d.audio_url);
+  const running = job?.state === "running" && !ready;
+  const message = $app.querySelector("#coach-audio-message");
+  const text = ready ? "示范音频已就绪" : running ?
+    (job.tts_voice === "golden_self" ? "分身首次启动较慢，可以先看下方讲评。" : "") :
+    (job?.error || "示范音频尚未就绪，可以重新合成。");
+  if (message.textContent !== text) message.textContent = text;
+  message.classList.toggle("coach-audio-ready", ready);
+  $app.querySelector("#coach-actions [data-arcade=demo]").disabled = !ready;
+  $app.querySelector("#coach-actions [data-arcade=retry-audio]").hidden = ready || running;
+  $app.querySelector(".arcade-proceed [data-arcade=next]").disabled = !ready;
+  $app.querySelector("[data-free-listen]").hidden = !ready;
+  if (running) {
+    if (ctx.audioProgress?.host !== host || ctx.audioProgress.id !== job.id) {
+      ctx.audioProgress?.bar.stop();
+      ctx.audioProgress = {host, id: job.id, bar: ExperienceUI.progressBar(host,
+        "正在启动本地语音…", Date.parse(job.started_at) || Date.now())};
+    }
+    const voice = voiceNames[job.tts_voice] || "本地语音";
+    ctx.audioProgress.bar.set(job.tts_total ?
+      (job.tts_done === job.tts_total ? "正在检查音频与对齐结果…" :
+        `${voice} 正在合成 · 已完成 ${job.tts_done} / ${job.tts_total} 句`) :
+      "正在启动本地语音…", job.tts_total ? job.progress_pct : undefined);
+  } else if (ctx.audioProgress) {
+    ctx.audioProgress.bar.stop();
+    ctx.audioProgress = null;
+    host.replaceChildren();
+  }
+}
+
+function pollAudio(ctx) {
+  clearTimeout(ctx.poll);
+  ctx.poll = setTimeout(async () => {
+    if (!active(ctx)) return;
+    try {
+      const previous = ctx.data;
+      const updated = await api("GET", ctx.url);
+      if (!active(ctx)) return;
+      ctx.data = updated;
+      if (!previous.audio_url && updated.audio_url) {
+        const lines = $app.querySelector("#coach-reference");
+        if (lines) lines.innerHTML = referenceLines(updated);
+        const dry = $app.querySelector("#coach-dry");
+        if (dry) dry.hidden = !updated.dry_run;
+      }
+      updateAudio(ctx);
+      if (updated.audio_job?.state === "running") pollAudio(ctx);
+    } catch (error) {
+      if (active(ctx)) { note(error.message); pollAudio(ctx); }
+    }
+  }, 650);
+}
+
+async function retryAudio(ctx) {
+  const control = $app.querySelector("[data-arcade=retry-audio]");
+  await ExperienceUI.busy(control, "正在重新合成…", async () => {
+    try {
+      const job = await api("POST", `${itemPath(ctx.tid, ctx.iid)}/retry-audio`);
+      if (!active(ctx)) return;
+      ctx.data.audio_job = {id: job.job_id, state: "running", phase: "tts"};
+      updateAudio(ctx);
+      pollAudio(ctx);
+    } catch (error) { if (active(ctx)) note(error.message); }
+  });
 }
 
 function repair(ctx) {
@@ -388,13 +487,14 @@ function render(ctx) {
   else body = comparison(ctx);
   $app.innerHTML = `<main class="arcade-workspace" data-stage="${review ? "blitz" : esc(ctx.step)}">
     <header class="arcade-nav"><a href="#/today">← 今日练习</a>
-      ${review ? "" : `<a href="#/play/${esc(encodeURIComponent(ctx.tid))}/${esc(encodeURIComponent(ctx.iid))}">自由收听</a>`}</header>
+      ${review ? "" : `<a data-free-listen ${ctx.data.audio_url ? "" : "hidden"} href="#/play/${esc(encodeURIComponent(ctx.tid))}/${esc(encodeURIComponent(ctx.iid))}">自由收听</a>`}</header>
     ${review ? "" : stageNav(Math.min(ctx.step, 3))}
     ${ctx.step === 3 ? "" : `<h1 class="arcade-title" tabindex="-1">${esc(review ? "闪电刷句" : ctx.data.question)}</h1>`}
     ${body}<p class="arcade-status" id="arcade-status" role="status"></p>
     <button class="study-button" id="arcade-retry" hidden>重试保存录音</button>
   </main>`;
   bindPracticeActions($app.querySelector(".arcade-workspace"), ctx);
+  if (!review && ctx.step === 1 && ctx.repairIndex == null) updateAudio(ctx);
   if (!review && ctx.step >= 2 && ctx.step <= 3) restoreTake(ctx);
 }
 
@@ -516,7 +616,9 @@ async function playAlternate(ctx, row, voice) {
   const fingerprint = row.source_fingerprint || ctx.data?.source_fingerprint;
   const destination = `${url}/arcade/sentences/${index}/voice/${voice}?source_fingerprint=${encodeURIComponent(fingerprint)}`;
   const revision = playbackRevision;
-  note(voice === "golden_self" ? "正在准备母语分身…" : "正在准备母语示范…");
+  note("");
+  const end = ExperienceUI.pendingNear($app.querySelector("[data-answer-voice]"),
+    voice === "golden_self" ? "正在准备母语分身。首次启动较慢…" : "正在准备母语示范…");
   try {
     const blob = await localAudioBlob(destination, request.signal);
     if (!active(ctx) || playbackRevision !== revision) return;
@@ -528,7 +630,7 @@ async function playAlternate(ctx, row, voice) {
     note("");
   } catch (error) {
     if (!request.signal.aborted && active(ctx) && playbackRevision === revision) note(error.message);
-  }
+  } finally { end(); }
 }
 
 function reveal(ctx, sound = true) {
@@ -658,8 +760,9 @@ async function storeTake(ctx, take) {
   const query = new URLSearchParams({ stage: take.stage, duration_sec: take.duration,
     upload_key: take.uploadKey, source_fingerprint: ctx.data.source_fingerprint });
   if (take.stage === "chunk") query.set("sentence_index", take.index);
+  const end = active(ctx) ? ExperienceUI.pendingNear($app.querySelector("[data-arcade=record]"),
+    "正在保存录音并本机分析…") : () => {};
   try {
-    if (active(ctx)) note("保存录音，正在本机分析…");
     const saved = await upload(`${ctx.url}/recordings?${query}`, take.data);
     await TrainingBaseline.keepRecording(null, take.savePath).catch(() => {});
     if (!active(ctx)) return;
@@ -676,7 +779,7 @@ async function storeTake(ctx, take) {
     note("");
   } catch (error) {
     if (active(ctx)) showRetry(ctx, take, error.message);
-  } finally { ctx.busy = false; }
+  } finally { end(); ctx.busy = false; }
 }
 
 async function record(ctx) {
@@ -728,8 +831,10 @@ async function prepare(ctx) {
 async function download(ctx) {
   if (ctx.busy) return;
   ctx.busy = true;
+  const control = $app.querySelector("[data-arcade=export]");
+  if (control) control.disabled = true;
+  const end = ExperienceUI.pendingNear(control, "正在拼接三段音频…");
   try {
-    note("正在拼接三段音频…");
     const res = await fetch(`${ctx.url}/export-evolution`, { method: "POST" });
     if (!res.ok) throw new Error((await res.json()).detail || "导出失败");
     const url = URL.createObjectURL(await res.blob());
@@ -740,12 +845,13 @@ async function download(ctx) {
     setTimeout(() => URL.revokeObjectURL(url), 5000);
     if (active(ctx)) note("三合一音频已导出。");
   } catch (error) { if (active(ctx)) note(error.message); }
-  finally { ctx.busy = false; }
+  finally { end(); if (control) control.disabled = false; ctx.busy = false; }
 }
 
 function action(ctx, name) {
   if (!active(ctx)) return;
-  if (name === "demo") play(ctx, ctx.data.audio_url);
+  if (name === "demo" && ctx.data.audio_url) play(ctx, ctx.data.audio_url);
+  if (name === "retry-audio") retryAudio(ctx);
   if (name === "prepare") prepare(ctx);
   if (name === "next") {
     stopAudio();
@@ -785,6 +891,7 @@ function reset() {
   stopAudio();
   if (session) {
     clearTimeout(session.poll);
+    session.audioProgress?.bar.stop();
     session.audioContext?.close().catch(() => {});
     session.altController?.abort();
     if (session.altUrl) URL.revokeObjectURL(session.altUrl);
@@ -838,7 +945,8 @@ function bindBlind(qid) {
     control.disabled = true;
     intentControl.disabled = true;
     submit.disabled = true;
-    status.textContent = "正在本机转写盲答…";
+    status.textContent = "";
+    const end = ExperienceUI.pendingNear(control, "Whisper 正在本机转写盲答…");
     try {
       const saved = await upload(`/api/arcade/transcribe-blind?language=en&duration_sec=${take.duration}`, take.data);
       if (!control.isConnected) return;
@@ -858,6 +966,7 @@ function bindBlind(qid) {
       control.textContent = "重试转写";
       control.onclick = () => run(take);
     } finally {
+      end();
       control.disabled = false;
       intentControl.disabled = false;
       if (submit.textContent === "一键生成并直接开练" || submit.textContent === "提交作答") submit.disabled = false;
@@ -868,8 +977,9 @@ function bindBlind(qid) {
     intentControl.disabled = true;
     submit.disabled = true;
     try {
-      await capture(180, sec => { control.textContent = `结束并转写 · ${fmtDur(sec)}`; submit.disabled = true; },
+      await capture(180, sec => { control.textContent = `结束并转写 · ${fmtDur(sec)}`; submit.disabled = true; control.classList.add("arcade-recording"); },
         async (blob, duration) => {
+          control.classList.remove("arcade-recording");
           control.textContent = "录制英文盲答";
           if (!blob.size || duration < .25) {
             status.textContent = "录音太短，请再说一次。";
@@ -892,9 +1002,10 @@ function bindBlind(qid) {
     const restore = () => {
       control.disabled = submit.disabled = intentControl.disabled = false;
       intentControl.textContent = label;
+      intentControl.classList.remove("arcade-recording");
     };
     try {
-      await capture(180, sec => { intentControl.textContent = `结束并转写 · ${fmtDur(sec)}`; },
+      await capture(180, sec => { intentControl.textContent = `结束并转写 · ${fmtDur(sec)}`; intentControl.classList.add("arcade-recording"); },
         async (blob, duration) => {
           if (!intent.isConnected) return;
           if (!blob.size || duration < .25) {
@@ -903,7 +1014,9 @@ function bindBlind(qid) {
             return;
           }
           intentControl.disabled = true;
-          intentStatus.textContent = "正在本机转写中文…";
+          intentControl.classList.remove("arcade-recording");
+          intentStatus.textContent = "";
+          const end = ExperienceUI.pendingNear(intentControl, "Whisper 正在本机转写中文…");
           try {
             const saved = await upload(`/api/arcade/transcribe-intent?duration_sec=${duration}`, blob);
             if (!intent.isConnected) return;
@@ -915,7 +1028,7 @@ function bindBlind(qid) {
               : "没有识别到中文，可以重录或输入。";
           } catch (error) {
             intentStatus.textContent = error.message;
-          } finally { restore(); }
+          } finally { end(); restore(); }
         });
     } catch (error) {
       intentStatus.textContent = `无法录音。${error.message}`;

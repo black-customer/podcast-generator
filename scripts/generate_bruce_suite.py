@@ -23,7 +23,7 @@ sys.path.insert(0, str(BASE_DIR))
 
 from server.audio import _concat_line, _run, make_silence, probe_duration
 from server.config import TMP_DIR, load_settings
-from server.tts import fish_tts_dialogue
+from server.tts import render_dialogue
 
 OUTPUT_DIR = BASE_DIR / "bruce_study_suite" / "audio"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -215,15 +215,13 @@ def generate_suite():
 
         # 合成 Part 1
         print("  - 合成 Part 1 (痛点剖析 + 示范 + 语块精讲 + 考官提问)...")
-        part1_bytes = fish_tts_dialogue(cfg["part1_lines"], settings)
         part1_tmp = TMP_DIR / f"{track_id}_p1_{uuid.uuid4().hex[:6]}.mp3"
-        part1_tmp.write_bytes(part1_bytes)
+        render_dialogue(cfg["part1_lines"], part1_tmp, settings)
 
         # 合成 Part 3
         print("  - 合成 Part 3 (复盘鼓励 + 核心答句肌肉固化)...")
-        part3_bytes = fish_tts_dialogue(cfg["part3_lines"], settings)
         part3_tmp = TMP_DIR / f"{track_id}_p3_{uuid.uuid4().hex[:6]}.mp3"
-        part3_tmp.write_bytes(part3_bytes)
+        render_dialogue(cfg["part3_lines"], part3_tmp, settings)
 
         # 静音留白
         silence = make_silence(cfg.get("silence_sec", 8.0))

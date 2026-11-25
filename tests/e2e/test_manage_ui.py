@@ -25,15 +25,12 @@ def test_manage_view_workflow():
         page.wait_for_selector("#mg-settings-form", state="attached", timeout=5000)
         assert page.locator("#mg-topic-list").is_hidden(), "旧内容管理默认应折叠"
 
-        # 2. 本地音色在主层，历史云服务与参数仍在折叠入口内。
+        # 2. 只提供本地角色音色，并保留目录和试运行设置。
         page.locator("#mg-settings-form summary", has_text="高级设置").click()
-        fallback = page.locator(".arcade-fallback-engines")
-        if not fallback.evaluate("node => node.open"):
-            fallback.locator("summary").click()
-        assert page.locator("#mg-s-model option").count() >= 1
-        assert page.is_visible("#mg-test-stepfun")
-        assert page.is_visible("#mg-test-fish")
+        assert page.is_visible("#arcade-speech-directory")
+        assert page.is_visible("#mg-test-local")
         assert page.is_visible("#role-cards")
+        assert page.locator("#mg-settings-form input[type=password]").count() == 0
 
         # 旧内容管理保留在高级折叠中，不干扰普通用户的声音设置任务
         page.locator(".content-admin > summary").click()
