@@ -392,6 +392,18 @@ def api_item_teaching_podcast(topic_id: str, item_id: str, body: TeachingPodcast
                                       topic_id, item_id)
 
 
+@router.post("/captures/{capture_id}/teaching-podcast")
+def api_capture_teaching_podcast(capture_id: str, body: TeachingPodcastIn):
+    try:
+        captures.get_capture(capture_id)
+    except FileNotFoundError as exc:
+        raise _err(404, "素材不存在") from exc
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+    return jobs.start_teaching_podcast("capture", body.language_mode, body.partner_voice,
+                                      capture_id=capture_id)
+
+
 @router.get("/teaching-podcasts/{episode_id}/audio")
 def api_teaching_podcast_audio(episode_id: str, download: bool = False):
     try:

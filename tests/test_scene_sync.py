@@ -66,3 +66,12 @@ def test_scene_backup_validation_and_dedup(tmp_path, monkeypatch):
     again = client.post(path, json=backup).json()
     assert first["imported"] == again["duplicates"] == 1
     assert first["capture_ids"] == again["capture_ids"]
+
+def test_scene_private_data_rejects_rebound_host_and_overflow_timestamp(tmp_path, monkeypatch):
+    client = _setup(tmp_path, monkeypatch)
+    for path in ("/api/captures", "/api/cards", "/api/arcade/blitz", "/api/teaching-podcasts"):
+        assert client.get(path, headers={"Host": "attacker.test"}).status_code == 403
+    backup = _backup()
+    backup["notes"][0]["time"] = 10 ** 1000
+    assert client.post("/api/captures/scenes/import-json", json=backup).status_code == 400
+    assert not captures.list_captures()

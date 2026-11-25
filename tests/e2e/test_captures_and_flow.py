@@ -10,7 +10,7 @@ from pathlib import Path
 from playwright.sync_api import expect, sync_playwright
 
 from server.prosody import annotate_sentence
-from tests.test_captures import PIXEL, card
+from tests.test_captures import card
 
 BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8765")
 ID = "card_9f8e7d6c5b4a3210"
@@ -68,8 +68,23 @@ def test_capture_inbox_and_micro_session():
             route.fulfill(json=data)
 
         page.route("**/api/**", mock)
+        image = page.evaluate("""() => {
+          const frame = document.createElement("canvas");
+          frame.width = 640; frame.height = 360;
+          const ctx = frame.getContext("2d");
+          ctx.fillStyle = "#172e43";
+          ctx.fillRect(0, 0, 640, 360);
+          ctx.fillStyle = "#25465c";
+          ctx.fillRect(80, 60, 480, 190);
+          ctx.fillStyle = "#e4eff5";
+          ctx.textAlign = "center";
+          ctx.font = "22px sans-serif";
+          ctx.fillText("合成场景 · Synthetic scene", 320, 160);
+          ctx.fillText("I didn't mean to put you on the spot.", 320, 316);
+          return frame.toDataURL("image/png");
+        }""")
         page.route("**/assets/frame.png", lambda r: r.fulfill(
-            body=base64.b64decode(PIXEL.split(",")[1]), content_type="image/png"))
+            body=base64.b64decode(image.split(",")[1]), content_type="image/png"))
         audio = BytesIO()
         with wave.open(audio, "wb") as wav:
             wav.setparams((1, 2, 16000, 0, "NONE", "not compressed"))
@@ -78,7 +93,11 @@ def test_capture_inbox_and_micro_session():
             body=audio.getvalue(), content_type="audio/wav"))
         page.goto(BASE_URL + "/#/captures")
         expect(page.get_by_role("heading", name=fixture["target_chunk"])).to_be_visible()
-        expect(page.get_by_role("img", name="素材的原始截屏")).to_be_visible()
+        frame = page.get_by_role("img", name="素材的原始截屏")
+        expect(frame).to_be_visible()
+        page.wait_for_function(
+            """() => document.querySelector('.capture-image img').naturalWidth > 0"""
+        )
         shots = os.environ.get("CAPTURE_SCREENSHOT_DIR")
         if shots:
             Path(shots).mkdir(parents=True, exist_ok=True)
@@ -93,7 +112,7 @@ def test_capture_inbox_and_micro_session():
         page.get_by_role("button", name="导入新素材").first.click()
         backup = {"format": "caption-study-backup", "schemaVersion": 1, "notes": [{
             "id": "test-note", "time": 258,
-            "source": {"url": "https://www.bilibili.com/video/BV1234567890"}, "imageUrl": PIXEL,
+            "source": {"url": "https://www.bilibili.com/video/BV1234567890"}, "imageUrl": image,
         }]}
         page.locator("#scene-backup").set_input_files({
             "name": "scenes.json", "mimeType": "application/json",

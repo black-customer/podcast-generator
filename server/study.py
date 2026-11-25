@@ -33,6 +33,10 @@ MATERIAL_GUIDANCE += """ When a distinct meaning in the Chinese intent was missi
 spoken attempt, mark the sentence that expresses it with gap_kind: explicit_gap. Use key_chunk
 for the expression that fills that gap. Optionally add transfer_example, one English sentence
 using the exact key_chunk in a different situation without inventing a detail about the learner."""
+MATERIAL_GUIDANCE += """ Optionally add short Chinese prompts for a reusable phrase:
+trigger_context for a situation that calls for it, disambiguator for what makes it different,
+feynman_hook for a plain-language explanation, and transfer_prompt_zh for a new situation to try.
+Use generic situations; never add claims about the learner."""
 MATERIAL_GUIDANCE += """ Include coach_summary with a Chinese headline (20–60 characters),
 strengths (1–2 short Chinese strings tied to what the learner actually said), and focus_points
 (1–3 short Chinese strings about what to practise next). Do not infer speech quality or scores."""
@@ -40,6 +44,8 @@ SYSTEM_PROMPT = (
     "You prepare faithful Chinese-English study materials for an IELTS learner. "
     "Return the material object as JSON with no surrounding text. " + MATERIAL_GUIDANCE
 )
+
+CHUNK_CUE_FIELDS = ("trigger_context", "disambiguator", "feynman_hook", "transfer_prompt_zh")
 
 ERROR_LABELS = {"plural": "单复数", "tense": "时态", "subject_verb_agreement": "主谓一致",
                 "article": "冠词", "preposition": "介词", "word_order": "语序",
@@ -116,6 +122,10 @@ def validate_material(material: dict, texts: dict, *, require_chunks: bool = Fal
         entry = {field: row[field].strip() for field in (
             "zh", "en", "explanation", "usage"
         )}
+        for field in CHUNK_CUE_FIELDS:
+            value = row.get(field)
+            if isinstance(value, str) and 0 < len(value.strip()) <= 240:
+                entry[field] = value.strip()
         chunk = row.get("key_chunk")
         if chunk is not None or require_chunks:
             from .speech_worker import matched_chunks, tokens

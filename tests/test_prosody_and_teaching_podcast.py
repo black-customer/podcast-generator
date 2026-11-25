@@ -83,6 +83,8 @@ def test_today_draws_gaps_from_practised_items_and_old_fsrs_cards(monkeypatch):
         "attempts": [attempt], "cards": {"old": old},
     })
     monkeypatch.setattr(radio.oral_review, "_today", lambda: date.fromisoformat(today))
+    monkeypatch.setattr(radio.arcade, "_fresh_ielts", lambda *_: [])
+    monkeypatch.setattr(radio.captures, "list_cards", lambda **_: [])
     monkeypatch.setattr(radio, "_item_points", lambda *key: items[key])
     monkeypatch.setattr(radio.library, "get_item_full",
                         lambda *_: {"question": attempt["question"]})

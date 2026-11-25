@@ -7,12 +7,15 @@ import shutil
 import threading
 import wave
 from collections.abc import Callable
+from datetime import timedelta
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from . import (
+    arcade,
     audio,
     audioqa,
+    captures,
     library,
     mastering,
     oral_review,
@@ -100,14 +103,17 @@ def draft_episode_with_llm(context: dict, mode: str, cancel: threading.Event | N
                    '{"speaker":"B","segments":[{"lang":"zh","text":"我会先想到散步。"}]}')
     messages = [
         {"role": "system", "content": (
-            language + " Write a short, natural IELTS teaching podcast with a female coach A "
+            language + " Write a short, natural English-learning podcast with a female coach A "
             "and a male "
             "partner B. Start with A and alternate turns. Use the learner's exact English attempt, "
-            "their Chinese intent and the supplied evidence. Discuss why the literal wording can "
+            "their Chinese intent and the supplied evidence when available. For scenes or "
+            "excerpts, use the supplied context and bridge from it to new examples rather than "
+            "attributing the dialogue to the learner. Discuss why the literal wording can "
             "be tempting, then let the hosts model the reusable phrases and show how they work "
             "in everyday situations. Use a relaxed conversation with room for natural follow-ups. "
             "Never invent personal facts or mistakes. A should speak every key_chunk in points. "
-            "Aim for 8–14 short turns. No labels, stage directions, scores, or scripted silences. "
+            "Aim for about two to three minutes and 8–14 short turns. "
+            "No labels, stage directions, scores, or scripted silences. "
             ' Return JSON only: {"title":"short title","highlights":["key_chunk"],'
             '"turns":[' + example + ']}. The sample shows the structure only; use the given topic.'
         )},
@@ -180,11 +186,48 @@ def for_item(topic_id: str, item_id: str, mode: str, partner: str, **options) ->
                     context=_context(topic_id, item_id, full), **options)
 
 
+def _capture_point(row: dict) -> dict:
+    source = row["capture"]["source"]
+    fields = ("en", "zh", "chunk_zh", "trigger_context", "usage_boundary",
+              "disambiguator", "feynman_hook", "transfer_example_en")
+    return {**{key: row[key] for key in fields if row.get(key)},
+            "key_chunk": row["chunk_in_sentence"], "target_chunk": row["target_chunk"],
+            "source_type": row["capture"]["source_type"],
+            "series_title": source.get("series_title", ""),
+            "episode_title": source.get("episode_title", "")}
+
+
+def _blend(groups: list[list[dict]], limit: int) -> list[dict]:
+    ordered = []
+    for index in range(max(map(len, groups), default=0)):
+        ordered.extend(group[index] for group in groups if index < len(group))
+    return _targets(ordered, limit, prioritize_gaps=False)
+
+
+def for_capture(capture_id: str, mode: str, partner: str, **options) -> dict:
+    capture = captures.get_capture(capture_id)
+    source = capture["source"]
+    series = source.get("series_id")
+    if capture["source_type"] == "scene" and series:
+        rows = [row for row in captures.list_cards(status="active", source_type="scene")
+                if row["capture"]["source"].get("series_id") == series]
+    else:
+        rows = captures.list_cards(status="active", capture_id=capture_id)
+    points = _targets([_capture_point(row) for row in rows], 4, prioritize_gaps=False)
+    if not points:
+        raise ValueError("请先确认入库至少一条看剧表达")
+    title = source.get("series_title") or capture["title"]
+    return generate(f"{title} · 表达复盘", points, mode, partner, capture_id=capture_id,
+                    context={"series_title": title, "focus": "scene recap"}, **options)
+
+
 def for_today(mode: str, partner: str, **options) -> dict:
-    today = oral_review._today().isoformat()
+    day = oral_review._today()
+    today = day.isoformat()
     with oral_review._LOCK:
         review = oral_review._load()
     attempts = [row for row in reversed(review["attempts"]) if row["date"] == today]
+    speaking_attempts = [row for row in attempts if row.get("card_kind") != "capture"]
     rows, sources, practiced = [], {}, []
 
     def source_row(entry: dict) -> None:
@@ -198,7 +241,7 @@ def for_today(mode: str, partner: str, **options) -> dict:
         if 0 <= index < len(sources[key]) and sources[key][index]["en"] == entry["en"]:
             rows.append(sources[key][index])
 
-    for key in dict.fromkeys((row["topic_id"], row["item_id"]) for row in attempts):
+    for key in dict.fromkeys((row["topic_id"], row["item_id"]) for row in speaking_attempts):
         try:
             sources[key] = _item_points(*key)
             full = library.get_item_full(*key)
@@ -210,7 +253,8 @@ def for_today(mode: str, partner: str, **options) -> dict:
     current = _targets(rows, 2)
     rows.clear()
     old = sorted((card for card in review["cards"].values()
-                  if not card["paused"] and not card.get("superseded")
+                  if card.get("card_kind") != "capture" and not card["paused"]
+                  and not card.get("superseded")
                   and card["due_date"] <= today
                   and (card.get("last_reviewed") or card.get("learned_at") or "")[:10] != today),
                  key=lambda card: card["due_date"])
@@ -221,10 +265,26 @@ def for_today(mode: str, partner: str, **options) -> dict:
     used = {row["key_chunk"].casefold() for row in current}
     previous = _targets([row for row in rows if row.get("key_chunk", "").casefold() not in used],
                         2, prioritize_gaps=False)
-    question = attempts[0].get("question", "") if attempts else ""
-    return generate(question or "Which expression comes back to you first?", current + previous,
+    ielts = current + previous
+    if len(ielts) < 4:
+        ielts.extend(arcade._fresh_ielts(set(review["cards"]), 4 - len(ielts)))
+    recent = (day - timedelta(days=2)).isoformat()
+    groups = {"scene": [], "snippet": []}
+    for row in captures.list_cards(status="active"):
+        kind = row["capture"]["source_type"]
+        if kind not in groups:
+            continue
+        schedule = review["cards"].get(row["id"], {})
+        due = not schedule or schedule["due_date"] <= today
+        fresh = (schedule.get("created_at") or row["capture"]["created_at"])[:10] >= recent
+        if not schedule.get("paused") and (due or fresh or row["id"] in seen_today):
+            groups[kind].append(_capture_point(row))
+    points = _blend([ielts, groups["scene"], groups["snippet"]], 4)
+    question = speaking_attempts[0].get("question", "") if speaking_attempts else ""
+    return generate(question or "Which expression comes back to you first?", points,
                     mode, partner, daily=today, context={"practiced": practiced,
                                                        "due_expressions": previous}, **options)
+
 
 
 def _check_cancel(cancel: threading.Event | None) -> None:
@@ -263,16 +323,17 @@ def _join_audio(paths: list[tuple[Path, str]], target: Path
 
 def generate(question: str, points: list[dict], mode: str, partner: str,
              *, daily: str | None = None, context: dict | None = None,
+             capture_id: str | None = None,
              cancel: threading.Event | None = None, on_progress: Progress | None = None) -> dict:
     if not points:
-        raise ValueError("先完成有重点语块的逐句材料，再生成教学电台")
+        raise ValueError("先确认一张语块卡或完成带语块的逐句材料，再生成教学电台")
     if mode not in {"en", "bilingual"} or partner not in {"am_puck", "golden_self"}:
         raise ValueError("未知的电台语言或搭档音色")
     settings = load_settings()
     dry = bool(settings.get("dry_run"))
     _check_cancel(cancel)
     if on_progress:
-        on_progress("script", 0, 0, "正在根据原话与意图编排双人播客")
+        on_progress("script", 0, 0, "正在根据这些表达编排双人播客")
     script = (_dry_script(question, points, mode, daily) if dry else
               draft_episode_with_llm({"question": question, **(context or {}), "points": points},
                                      mode, cancel))
@@ -286,7 +347,10 @@ def generate(question: str, points: list[dict], mode: str, partner: str,
         ).get("profile_hash")
         if not profile_hash:
             raise ValueError("尚未配置母语分身")
-    digest = json.dumps([daily, mode, voices, profile_hash, dry, script], ensure_ascii=False)
+    episode_key = [daily, mode, voices, profile_hash, dry, script]
+    if capture_id:
+        episode_key.append(capture_id)
+    digest = json.dumps(episode_key, ensure_ascii=False)
     episode_id = hashlib.sha256(digest.encode()).hexdigest()[:24]
     segments = [{**row, "speaker": turn["speaker"]} for turn in script["turns"]
                 for row in turn["segments"]]
@@ -330,6 +394,8 @@ def generate(question: str, points: list[dict], mode: str, partner: str,
                    "dry_run": dry, "audio_url": f"/api/teaching-podcasts/{episode_id}/audio",
                    "lines": [{**line, "start": start, "end": end}
                              for line, (start, end) in zip(segments, timings, strict=True)]}
+        if capture_id:
+            episode.update(kind="capture", capture_id=capture_id)
         with _LOCK:
             _check_cancel(cancel)
             if (EPISODE_DIR / episode_id).exists():

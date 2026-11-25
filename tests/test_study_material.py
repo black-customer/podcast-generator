@@ -300,3 +300,14 @@ def test_generate_material_repairs_on_invalid_json(legacy_item, monkeypatch):
     assert calls["n"] == 2
     assert study.get_material(tid, iid)["status"] == "ready"
     assert saved["sentences"][0]["en"] == "I go for a walk."
+
+def test_optional_chunk_cues_preserved_with_legacy_material(item):
+    tid, iid, path = item
+    data = material()
+    cues = {"trigger_context": "下班后想出去走走", "disambiguator": "泛指散步",
+            "feynman_hook": "把散步作为消遣", "transfer_prompt_zh": "邀请朋友饭后散步"}
+    data["sentences"][0].update(cues)
+    saved = study.save_material(tid, iid, data)
+    assert {key: saved["sentences"][0][key] for key in cues} == cues
+    assert all(key not in saved["sentences"][1] for key in cues)
+    assert study.get_material(tid, iid)["material"] == saved

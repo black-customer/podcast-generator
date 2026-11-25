@@ -445,8 +445,8 @@ def start_capture_job(kind: str, ids: list[str]) -> dict:
 
 
 def start_teaching_podcast(kind: str, mode: str, partner: str, topic_id: str | None = None,
-                           item_id: str | None = None) -> dict:
-    scope = [kind, mode, partner, topic_id, item_id]
+                           item_id: str | None = None, *, capture_id: str | None = None) -> dict:
+    scope = [kind, mode, partner, topic_id, item_id, capture_id]
     with JOBS_LOCK:
         for existing in JOBS.values():
             if existing.get("radio_scope") == scope and existing["state"] == "running":
@@ -469,7 +469,11 @@ def start_teaching_podcast(kind: str, mode: str, partner: str, topic_id: str | N
 
     def run() -> None:
         try:
-            if topic_id is not None and item_id is not None:
+            if capture_id is not None:
+                episode = teaching_podcast.for_capture(
+                    capture_id, mode, partner, cancel=cancel, on_progress=progress,
+                )
+            elif topic_id is not None and item_id is not None:
                 episode = teaching_podcast.for_item(
                     topic_id, item_id, mode, partner, cancel=cancel, on_progress=progress,
                 )

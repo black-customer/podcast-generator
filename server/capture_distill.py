@@ -5,7 +5,7 @@ import base64
 import json
 import threading
 
-from . import captures, rewrite
+from . import captures, oral_review, rewrite
 from .config import load_settings
 
 GUIDANCE = """Extract one or two high-value English chunks from the supplied text or images.
@@ -77,6 +77,7 @@ def complete_from_json(payload: dict, *, synthesize_audio: bool = True,
             if row["status"] == "archived":
                 continue
             captures.approve_card(card_id)
+            oral_review.enroll_capture_card(capture_id, card_id)
             if synthesize_audio:
                 try:
                     captures.synthesize_card_audio(capture_id, card_id)

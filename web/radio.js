@@ -58,20 +58,26 @@ function renderEpisode(episode, output, autoplay) {
 async function open(token) {
   const params = new URLSearchParams(location.hash.split("?")[1]);
   const topic = params.get("topic"), item = params.get("item");
-  const itemScope = Boolean(topic && item);
-  const endpoint = itemScope ? `/api/topics/${encodeURIComponent(topic)}/items/${encodeURIComponent(item)}/teaching-podcast`
+  const capture = params.get("capture");
+  const itemScope = Boolean(topic && item && !capture);
+  const endpoint = capture ? `/api/captures/${encodeURIComponent(capture)}/teaching-podcast`
+    : itemScope ? `/api/topics/${encodeURIComponent(topic)}/items/${encodeURIComponent(item)}/teaching-podcast`
     : "/api/teaching-podcasts/daily";
+  const back = capture ? "#/captures/inbox"
+    : itemScope ? `#/train/${encodeURIComponent(topic)}/${encodeURIComponent(item)}` : "#/today";
+  const heading = capture ? "剧集表达复盘" : itemScope ? "本题教学播客" : "今日电台";
+  const action = capture ? "生成剧集复盘" : itemScope ? "生成本题播客" : "生成今日电台";
   $app.innerHTML = `<main class="arcade-home radio-home" aria-labelledby="radio-title">
     <header class="arcade-home-head"><div><h1 id="radio-title">教学电台</h1><p>听女导师和男搭档把重点语块带进一段对话。</p></div>
-    <a class="study-button" href="${itemScope ? `#/train/${esc(encodeURIComponent(topic))}/${esc(encodeURIComponent(item))}` : "#/today"}">${itemScope ? "返回本题" : "今日练习"}</a></header>
+    <a class="study-button" href="${esc(back)}">${capture ? "返回素材" : itemScope ? "返回本题" : "今日练习"}</a></header>
     <section class="arcade-frame radio-controls">
-      <h2>${itemScope ? "本题教学播客" : "今日电台"}</h2>
+      <h2>${heading}</h2>
       <form class="arcade-controls">
         <label>语言 <select name="language_mode"><option value="en">全英文漫谈</option>
           <option value="bilingual">中英结合电台</option></select></label>
         <label>男搭档 <select name="partner_voice"><option value="am_puck">Puck</option>
           <option value="golden_self">我的母语分身</option></select></label>
-        <button class="study-button primary" type="submit">${itemScope ? "生成本题播客" : "生成今日电台"}</button>
+        <button class="study-button primary" type="submit">${action}</button>
       </form>
       <p class="arcade-muted" id="radio-engine">Bella 和 Puck 使用本地语音。</p>
       <div id="radio-progress"></div>

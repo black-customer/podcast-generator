@@ -22,7 +22,10 @@ SCENE_SYNC_ROUTES = {
     ("GET", "/api/captures/scenes/ping"),
     ("POST", "/api/captures/scenes/inbox"),
 }
-SCENE_LOCAL_ROUTES = {"/api/settings/scene-sync-token", "/api/captures/scenes/import-json"}
+DESKTOP_PRIVATE_API = (
+    "/api/captures", "/api/cards", "/api/settings/scene-sync-token",
+    "/api/arcade/blitz", "/api/arcade/error-board", "/api/teaching-podcasts", "/api/jobs",
+)
 MOBILE_ORIGINS = ("https://localhost", "capacitor://localhost")
 app.add_middleware(
     CORSMiddleware,
@@ -44,7 +47,8 @@ async def protect_local_api(request: Request, call_next):
     scene_sync = (request.method, path) in SCENE_SYNC_ROUTES
     origin = request.headers.get("origin", "")
     same_origin = f"{request.url.scheme}://{request.headers.get('host', '')}"
-    if scene_sync or path in SCENE_LOCAL_ROUTES:
+    desktop_private = path.startswith(DESKTOP_PRIVATE_API)
+    if desktop_private:
         local_host = (request.url.hostname in {"127.0.0.1", "localhost", "::1"}
                       or (client_host == "testclient" and request.url.hostname == "testserver"))
         if not local_client or not local_host:
@@ -56,7 +60,6 @@ async def protect_local_api(request: Request, call_next):
                 or not secrets.compare_digest(supplied.encode(), token.encode())):
             return Response(status_code=403)
         return await call_next(request)
-    desktop_private = path in SCENE_LOCAL_ROUTES or path.startswith(("/api/captures", "/api/cards"))
     if desktop_private and origin and origin != same_origin:
         return Response(status_code=403)
     if origin and origin not in MOBILE_ORIGINS and origin != same_origin:

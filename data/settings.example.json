@@ -7,6 +7,11 @@
   "llm_base_url": "https://api.deepseek.com/v1",
   "llm_api_key": "",
   "llm_model": "deepseek-flash",
+  "vision_base_url": "",
+  "vision_model": "",
+  "vision_api_key": "",
+  "daily_session_limit": 8,
+  "reaction_timer_enabled": false,
   "episode_gap_ms": 600,
   "dry_run": false
 }

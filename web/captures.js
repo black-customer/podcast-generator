@@ -149,6 +149,8 @@ function open(token) {
         ${ctx.index === rows.length - 1 ? "disabled" : ""}>下一张</button>
         ${row.status !== "active" ? '<button class="study-button primary" type="button" data-approve>确认入库 <kbd>Enter</kbd></button>' : ""}
         ${row.status !== "archived" ? '<button class="study-button" type="button" data-archive>归档 <kbd>Backspace</kbd></button>' : ""}
+        ${row.status === "active" && source.note_id ?
+          `<a class="study-button" href="#/radio?capture=${esc(encodeURIComponent(row.capture_id))}">生成剧集复盘</a>` : ""}
         ${row.status === "active" ? `<a class="study-button" href="${esc('/api/cards/' + row.id + '/audio')}" target="_blank" rel="noopener">听示范</a>` : ""}
       </div>
       <details><summary>编辑卡片</summary><form class="capture-edit">

@@ -5,7 +5,6 @@ import base64
 import binascii
 import hashlib
 import json
-import math
 import os
 import re
 import shutil
@@ -233,8 +232,7 @@ def ingest_scenes(notes: list[dict]) -> dict:
             raise ValueError("场景来源格式无效")
         note_id = _clean(row.get("id"), 200, "场景编号", required=True)
         time = row.get("time")
-        if (type(time) not in (int, float) or not math.isfinite(time)
-                or not 0 <= time <= 31 * 24 * 3600):
+        if (type(time) not in (int, float) or not 0 <= time <= 31 * 24 * 3600):
             raise ValueError("原片时间戳无效")
         url = _url(_clean(row["source"].get("url"), 4000, "原片链接"),
                    bilibili=True, seconds=time)
