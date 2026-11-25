@@ -19,6 +19,8 @@ from . import (
     assemble,
     audio,
     bank,
+    capture_distill,
+    captures,
     exports,
     exports_media,
     jobs,
@@ -313,7 +315,7 @@ def api_arcade_export(topic_id: str, item_id: str):
 class ArcadeGradeIn(BaseModel):
     sentence_index: int
     source_fingerprint: str
-    rating: Literal["good", "again"]
+    rating: Literal["good", "again", "easy", "suspend"]
     submission_id: str
 
 
@@ -329,10 +331,12 @@ def api_arcade_grade(topic_id: str, item_id: str, body: ArcadeGradeIn):
 
 
 @router.get("/arcade/blitz")
-def api_arcade_blitz(summary: bool = False, include_pending: bool = False):
+def api_arcade_blitz(summary: bool = False, include_pending: bool = False,
+                     source: Literal["all", "ielts", "scene", "snippet"] = "all",
+                     limit: int | None = None):
     if summary:
-        return {"due_count": len(oral_review.blitz_cards())}
-    return arcade.home_cards() if include_pending else arcade.blitz()
+        return {"due_count": len(oral_review.unified_due_cards(source))}
+    return arcade.home_cards(source, limit, include_pending)
 
 
 @router.get("/topics/{topic_id}/items/{item_id}/arcade/sentences/{index}/voice/{voice}")
@@ -1318,3 +1322,183 @@ def api_voice_direct_request(topic_id: str, item_id: str):
     text = template.replace("{{NATURAL_ENGLISH}}", item["natural_english"])
     text = text.replace("{{IELTS_QUESTION}}", item.get("question") or "(Question not provided)")
     return {"text": text}
+
+
+# ---------------------------------------------------------------- 私有素材
+
+
+class SnippetIn(BaseModel):
+    text: str = ""
+    images: list[str] | None = None
+    title: str = ""
+    source_url: str = ""
+    note: str = ""
+
+
+class ApproveCardIn(BaseModel):
+    goal_type: Literal["activate_chunk", "comprehend_input", "fix_error", "fill_gap"] | None = None
+
+
+class CaptureGradeIn(BaseModel):
+    rating: Literal["good", "again", "easy", "suspend"]
+    submission_id: str
+    source_fingerprint: str | None = None
+
+
+@router.post("/captures/snippet")
+def api_capture_snippet(body: SnippetIn):
+    try:
+        return captures.ingest_snippet(**body.model_dump())
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+
+
+@router.get("/captures")
+def api_list_captures():
+    return {"captures": captures.list_captures()}
+
+
+@router.post("/captures/distill-pending")
+def api_distill_pending():
+    try:
+        return jobs.start_capture_job("capture_distill", capture_distill.pending_ids())
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+    except jobs.JobConflict as exc:
+        raise _err(409, str(exc)) from exc
+
+
+@router.get("/captures/agent-task")
+def api_capture_agent_task():
+    return {"prompt": capture_distill.build_agent_prompt()}
+
+
+@router.get("/captures/{capture_id}")
+def api_get_capture(capture_id: str):
+    try:
+        return captures.get_capture(capture_id)
+    except (FileNotFoundError, ValueError) as exc:
+        raise _err(404, str(exc)) from exc
+
+
+@router.delete("/captures/{capture_id}")
+def api_delete_capture(capture_id: str):
+    try:
+        captures.delete_capture(capture_id)
+    except (FileNotFoundError, ValueError) as exc:
+        raise _err(404, str(exc)) from exc
+    return {"deleted": True}
+
+
+@router.get("/captures/{capture_id}/assets/{name}")
+def api_capture_asset(capture_id: str, name: str):
+    try:
+        path, mime = captures.asset_file(capture_id, name)
+    except (FileNotFoundError, ValueError) as exc:
+        raise _err(404, str(exc)) from exc
+    return FileResponse(path, media_type=mime, headers={"Cache-Control": "private, no-store",
+                                                        "X-Content-Type-Options": "nosniff"})
+
+
+@router.post("/captures/{capture_id}/distill")
+def api_distill_capture(capture_id: str):
+    api_get_capture(capture_id)
+    try:
+        return jobs.start_capture_job("capture_distill", [capture_id])
+    except jobs.JobConflict as exc:
+        raise _err(409, str(exc)) from exc
+
+
+@router.get("/cards")
+def api_list_cards(status: Literal["inbox", "active", "archived"] | None = None,
+                   source_type: Literal["scene", "snippet", "chat"] | None = None,
+                   capture_id: str | None = None, q: str = ""):
+    try:
+        return {"cards": captures.list_cards(status, source_type, capture_id, q)}
+    except (FileNotFoundError, ValueError) as exc:
+        raise _err(404, str(exc)) from exc
+
+
+@router.patch("/cards/{card_id}")
+def api_patch_card(card_id: str, patch: dict):
+    allowed = {*captures.CARD_FIELDS, "disambiguator", "goal_type", "original_error"}
+    try:
+        return captures.update_card(card_id, {key: patch[key] for key in patch if key in allowed})
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+
+
+@router.post("/cards/{card_id}/approve")
+def api_approve_card(card_id: str, body: ApproveCardIn | None = None):
+    try:
+        row = captures.approve_card(card_id, goal_type=body.goal_type if body else None)
+        oral_review.enroll_capture_card(row["capture_id"], card_id)
+        job = jobs.start_capture_job("capture_audio", [card_id])
+        return {**row, **job}
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+
+
+@router.post("/cards/{card_id}/archive")
+def api_archive_card(card_id: str):
+    try:
+        return oral_review.suspend_card(card_id)
+    except (FileNotFoundError, ValueError) as exc:
+        raise _err(404, str(exc)) from exc
+
+
+@router.post("/cards/{card_id}/grade")
+def api_grade_card(card_id: str, body: CaptureGradeIn):
+    try:
+        return oral_review.grade_capture_card(card_id, body.rating, body.submission_id,
+                                              body.source_fingerprint)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+
+
+@router.get("/cards/{card_id}/audio")
+def api_capture_audio(card_id: str):
+    try:
+        row = captures.get_card(card_id)
+        if row["status"] != "active":
+            raise FileNotFoundError("卡片尚未确认入库")
+        captures.synthesize_card_audio(row["capture_id"], card_id)
+        return FileResponse(captures.audio_file(card_id), media_type="audio/mpeg",
+                            headers={"Cache-Control": "private, no-cache"})
+    except (FileNotFoundError, ValueError) as exc:
+        raise _err(404, str(exc)) from exc
+    except (OSError, RuntimeError) as exc:
+        raise _err(503, str(exc)) from exc
+
+
+@router.get("/cards/{card_id}/voice/{voice}")
+def api_capture_voice(card_id: str, voice: Literal["am_puck", "af_bella", "golden_self"]):
+    try:
+        row = captures.get_card(card_id)
+        if row["status"] != "active":
+            raise FileNotFoundError("卡片尚未确认入库")
+        return _local_voice_preview(voice, row["en"])
+    except (FileNotFoundError, ValueError) as exc:
+        raise _err(404, str(exc)) from exc
+
+
+@router.post("/cards/{card_id}/check-transfer")
+async def api_capture_transfer(card_id: str, request: Request, duration_sec: float):
+    data = await _arcade_upload(request)
+    try:
+        return await run_in_threadpool(
+            arcade.check_card_transfer, card_id, data,
+            request.headers.get("content-type", ""), duration_sec,
+        )
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+    except speech_bridge.SpeechError as exc:
+        raise _err(503, str(exc)) from exc

@@ -7,7 +7,7 @@ import threading
 import uuid
 from datetime import date, datetime, timedelta
 
-from . import library, study, study_progress
+from . import captures, library, study, study_progress
 from .config import atomic_write_text
 
 REVIEW_FILE = study_progress.PRIVATE_DIR / "oral_review.json"
@@ -200,7 +200,7 @@ def _due_cards(state: dict, cache: dict | None = None, *, arcade: bool = False) 
     from . import training
     today = _today().isoformat()
     cards = [c for c in state["cards"].values()
-             if not c["paused"] and not c.get("superseded")
+             if c.get("card_kind") != "capture" and not c["paused"] and not c.get("superseded")
              and c["due_date"] <= today and _valid(c, cache)
              and (arcade or not training.covered_today(c["topic_id"], c["item_id"]))]
     return sorted(cards, key=lambda c: (c["due_date"], c["created_at"],
@@ -534,7 +534,9 @@ def blitz_cards() -> list[dict]:
 
 def grade_arcade(topic_id: str, item_id: str, index: int, fingerprint: str,
                  rating: str, submission_id: str) -> dict:
-    if rating not in {"good", "again"} or not submission_id or len(submission_id) > 100:
+    if rating not in {"good", "again", "easy", "suspend"} or not submission_id or (
+        len(submission_id) > 100
+    ):
         raise ValueError("请选择有效的复习结果")
     with _LOCK, study_progress._LOCK, library.LIB_LOCK:
         found = study.get_material(topic_id, item_id)
@@ -552,14 +554,14 @@ def grade_arcade(topic_id: str, item_id: str, index: int, fingerprint: str,
             card = _make_card(topic_id, item_id, index, found, None, "arcade")
             card["legacy"] = False
             state["cards"][card_id] = card
-        card["paused"] = False
+        card["paused"] = rating == "suspend"
         _supersede_older(state, card)
-        adjusted = card["last_adjusted_date"] != _today().isoformat()
+        adjusted = rating != "suspend" and card["last_adjusted_date"] != _today().isoformat()
         if adjusted:
-            card.update(fsrs_review(card, rating, _today()))
+            card.update(fsrs_review(card, rating, _today()), last_fsrs_grade=rating)
         result = {"card_id": card_id, "topic_id": topic_id, "item_id": item_id,
-                  "sentence_index": index, "rating": "independent" if rating == "good" else
-                  "unable", "fsrs_grade": rating, "schedule_adjusted": adjusted,
+                  "sentence_index": index, "rating": "unable" if rating == "again" else
+                  "independent", "fsrs_grade": rating, "schedule_adjusted": adjusted,
                   "submitted_at": _now_iso(), "date": _today().isoformat(),
                   "next_due_date": card["due_date"], "key_chunk": rows[index].get("key_chunk", ""),
                   "question": card["question"], "zh": card["zh"], "en": card["en"],
@@ -569,6 +571,118 @@ def grade_arcade(topic_id: str, item_id: str, index: int, fingerprint: str,
         state["attempts"].append(result)
         state["receipts"][receipt] = result
         _write(state)
+        return result
+
+
+def scaffolding_level(card: dict) -> int:
+    reps = int(card.get("reps", bool(card.get("last_adjusted_date"))))
+    if not reps:
+        return 1
+    if card.get("last_fsrs_grade") == "again":
+        return 2
+    return 3 if reps >= 3 or (card.get("stability") or 0) >= 7 else 2
+
+
+def _capture_schedule(row: dict) -> dict:
+    parent = row["capture"]
+    return {
+        "id": row["id"], "card_kind": "capture", "capture_id": parent["id"],
+        "capture_card_id": row["id"], "source_type": parent["source_type"],
+        "topic_id": "", "item_id": "", "sentence_index": 0, "question": parent["title"],
+        "source": parent["title"], "en": row["en"], "zh": row["zh"],
+        "source_fingerprint": row["content_fingerprint"],
+        "created_at": _now_iso(), "due_date": _today().isoformat(), "paused": False,
+        "last_adjusted_date": None, "superseded": False, "reps": 0,
+    }
+
+
+def enroll_capture_card(capture_id: str, card_id: str) -> dict:
+    with _LOCK:
+        row = captures.get_card(card_id)
+        if row["capture_id"] != capture_id or row["status"] != "active":
+            raise ValueError("请先确认素材卡入库")
+        state = _load()
+        scheduled = state["cards"].get(card_id)
+        if (not scheduled or scheduled["paused"]
+                or scheduled["source_fingerprint"] != row["content_fingerprint"]):
+            scheduled = state["cards"][card_id] = _capture_schedule(row)
+            _write(state)
+        return scheduled
+
+
+def suspend_card(card_id: str) -> dict:
+    with _LOCK:
+        state = _load()
+        if captures.CARD_ID.fullmatch(card_id):
+            row = captures.archive_card(card_id)
+            state["cards"].setdefault(card_id, _capture_schedule(row))
+        if card_id not in state["cards"]:
+            raise FileNotFoundError("复习卡不存在")
+        state["cards"][card_id]["paused"] = True
+        _write(state)
+        return {"id": card_id, "paused": True}
+
+
+def grade_capture_card(card_id: str, rating: str, submission_id: str,
+                       fingerprint: str | None = None) -> dict:
+    if rating not in {"good", "again", "easy", "suspend"} or not 0 < len(submission_id) <= 100:
+        raise ValueError("请选择有效的复习结果")
+    with _LOCK:
+        row = captures.get_card(card_id)
+        if fingerprint is not None and row["content_fingerprint"] != fingerprint:
+            raise ValueError("语块卡已更新，请刷新")
+        state = _load()
+        receipt = f"capture:{card_id}:{submission_id}"
+        if receipt in state["receipts"]:
+            return state["receipts"][receipt]
+        if row["status"] != "active":
+            raise ValueError("卡片需要先确认入库")
+        scheduled = state["cards"].get(card_id)
+        if not scheduled or scheduled["source_fingerprint"] != row["content_fingerprint"]:
+            scheduled = state["cards"][card_id] = _capture_schedule(row)
+        today = _today()
+        adjusted = rating != "suspend" and scheduled["last_adjusted_date"] != today.isoformat()
+        if adjusted:
+            scheduled.update(fsrs_review(scheduled, rating, today), last_fsrs_grade=rating)
+        if rating == "suspend":
+            captures.archive_card(card_id)
+            scheduled["paused"] = True
+        result = {
+            "card_id": card_id, "capture_id": row["capture_id"], "card_kind": "capture",
+            "topic_id": "", "item_id": "", "sentence_index": 0, "rating":
+            "unable" if rating == "again" else "independent", "fsrs_grade": rating,
+            "schedule_adjusted": adjusted, "next_due_date": scheduled["due_date"],
+            "scaffolding_level": scaffolding_level(scheduled),
+            "submitted_at": _now_iso(), "date": today.isoformat(), "key_chunk": row["target_chunk"],
+            "en": row["en"], "zh": row["zh"], "question": scheduled["question"],
+            "spoken_self_report": True, "recorded": False, "hint_used": False,
+            "recording_id": None, "session_id": "arcade", "submission_id": submission_id,
+        }
+        state["attempts"].append(result)
+        state["receipts"][receipt] = result
+        _write(state)
+        return result
+
+
+def unified_due_cards(source_filter: str = "all") -> list[dict]:
+    with _LOCK:
+        state, cache = _load(), {}
+        _reconcile(state, cache)
+        result = []
+        today = _today().isoformat()
+        if source_filter in ("all", "ielts"):
+            result.extend({**card, "card_kind": "ielts", "source_type": "ielts",
+                           "scaffolding_level": scaffolding_level(card)}
+                          for card in _due_cards(state, cache, arcade=True))
+        if source_filter in ("all", "scene", "snippet"):
+            kind = None if source_filter == "all" else source_filter
+            for row in captures.list_cards(status="active", source_type=kind):
+                scheduled = state["cards"].get(row["id"]) or _capture_schedule(row)
+                if scheduled["source_fingerprint"] != row["content_fingerprint"]:
+                    scheduled = _capture_schedule(row)
+                if not scheduled["paused"] and scheduled["due_date"] <= today:
+                    result.append({**scheduled, **row, "source_type": scheduled["source_type"],
+                                   "scaffolding_level": scaffolding_level(scheduled)})
         return result
 
 
@@ -601,7 +715,8 @@ def get_history(day: str | None = None, topic_id: str | None = None,
                     and (item_id is None or a["item_id"] == item_id)]
         dates: dict[str, dict] = {}
         sources = {(c["topic_id"], c["item_id"]): {"topic_id": c["topic_id"],
-            "item_id": c["item_id"], "question": c["question"]} for c in state["cards"].values()}
+            "item_id": c["item_id"], "question": c["question"]} for c in state["cards"].values()
+                   if c.get("card_kind") != "capture"}
         passed_total = 0
         undated_dictation = 0
 

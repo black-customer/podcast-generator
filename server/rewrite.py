@@ -212,6 +212,8 @@ def _chat(settings: dict, messages: list[dict], cancel: threading.Event | None, 
         if vision_base:
             settings = {**settings, "llm_base_url": vision_base, "llm_provider": "custom",
                         "llm_api_key": settings.get("vision_api_key"), "deepseek_api_key": ""}
+        elif settings.get("vision_api_key"):
+            settings["llm_api_key"] = settings["vision_api_key"]
     url, model, key = text_config(settings)
     payload = {"model": model, "messages": messages, "response_format": {"type": "json_object"},
                "temperature": 0.6, "max_tokens": 4096}

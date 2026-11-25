@@ -10,6 +10,7 @@ import os
 import re
 import shutil
 import threading
+import time as clock
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
@@ -20,6 +21,7 @@ from .config import DATA_DIR, atomic_write_text, is_dry_run, load_settings
 
 CAPTURES_DIR = DATA_DIR / "captures"
 CAPTURES_LOCK = threading.RLock()
+_AUDIO_LOCK = threading.Lock()
 IMAGE_MAX = 10 * 1024 ** 2
 BACKUP_MAX = 150 * 1024 ** 2
 ID = re.compile(r"cap_[0-9a-f]{16}")
@@ -192,12 +194,16 @@ def _ingest(source: dict, images: list[tuple[str, bytes]], title: str, *,
             filenames.append(name)
         _write(staged / "source.json", {**source, "assets": filenames})
         _write(staged / "meta.json", meta)
-        try:
-            os.replace(staged, path)
-        except OSError:
-            if (path / "meta.json").is_file() and external:
-                return _json(path / "meta.json"), False
-            raise
+        for attempt in range(5):
+            try:
+                os.replace(staged, path)
+                break
+            except OSError as exc:
+                if (path / "meta.json").is_file() and external:
+                    return _json(path / "meta.json"), False
+                if not isinstance(exc, PermissionError) or attempt == 4:
+                    raise
+                clock.sleep(0.025 * (attempt + 1))
     return meta, True
 
 
@@ -402,6 +408,11 @@ def audio_file(card_id: str) -> Path:
 
 
 def synthesize_card_audio(capture_id: str, card_id: str, *, force: bool = False) -> dict:
+    with _AUDIO_LOCK:
+        return _synthesize_card_audio(capture_id, card_id, force=force)
+
+
+def _synthesize_card_audio(capture_id: str, card_id: str, *, force: bool) -> dict:
     row = get_card(card_id)
     if row["capture_id"] != capture_id or row["status"] != "active":
         raise ValueError("请先确认入库")

@@ -18,7 +18,7 @@ STATIC_FILES = ["app.js", "experience.js", "continuity.js", "study.js", "oral_re
                 "style.css", "mobile-core.js", "mobile-api-core.js", "mobile.js", "mobile.css",
                 "conversation-prompt.txt", "ielts-prompt.txt", "study-prompt.txt",
                 "training-core.js", "training.js", "training-baseline.js", "training.css",
-                "ui-continuity.js", "product-ui.css", "arcade.js", "radio.js"]
+                "ui-continuity.js", "product-ui.css", "arcade.js", "radio.js", "captures.js"]
 
 
 def patch_java17() -> None:

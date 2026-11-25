@@ -1314,6 +1314,27 @@ async function ManageView(token) {
       <p class="mg-hint">提示隐藏后不会清除已经输入的词。</p>
     </div>
 
+    <section class="mg-card arcade-engine-settings">
+      <h3>语块复习</h3>
+      <form id="chunk-settings">
+        <label class="mg-label">每局卡数<select class="mg-input" name="limit">
+          ${[5, 8, 12, 20].map(n => `<option value="${n}" ${n === (settings.daily_session_limit || 8) ? "selected" : ""}>${n} 张</option>`).join("")}
+        </select></label>
+        <label class="mg-check"><input type="checkbox" name="timer" ${settings.reaction_timer_enabled ? "checked" : ""}> 显示反应计时</label>
+        <details class="mg-advanced"><summary>独立视觉模型</summary>
+          <p class="mg-hint">用于读取截图，填写后可与文本改写使用不同模型。</p>
+          <label class="mg-label">Base URL<input class="mg-input" name="vision_base"
+            value="${esc(settings.vision_base_url || "")}"></label>
+          <label class="mg-label">模型<input class="mg-input" name="vision_model"
+            value="${esc(settings.vision_model || "")}"></label>
+          <label class="mg-label">API Key<input class="mg-input" name="vision_key" type="password"
+            autocomplete="off" placeholder="${settings.vision_api_key_set ? "已保存" : ""}"></label>
+        </details>
+        <div class="mg-actions"><button type="submit" class="mg-btn">保存语块设置</button>
+          <span role="status"></span></div>
+      </form>
+    </section>
+
     <details class="content-admin mg-advanced" ${ManageState.adminOpen ? "open" : ""}>
       <summary>高级内容管理</summary>
       <p class="mg-hint">仅在手动维护旧语料时使用；日常生成请从「题库」进入。</p>
@@ -1339,6 +1360,22 @@ async function ManageView(token) {
     </details>
   `;
 
+  const chunkSettings = document.getElementById("chunk-settings");
+  chunkSettings.onsubmit = async event => {
+    event.preventDefault();
+    const fields = chunkSettings.elements;
+    const status = chunkSettings.querySelector("[role=status]");
+    try {
+      await api("PUT", "/api/settings", {
+        daily_session_limit: Number(fields.limit.value), reaction_timer_enabled: fields.timer.checked,
+        vision_base_url: fields.vision_base.value.trim(), vision_model: fields.vision_model.value.trim(),
+        vision_api_key: fields.vision_key.value,
+      });
+      fields.vision_key.placeholder = fields.vision_key.value ? "已保存" : fields.vision_key.placeholder;
+      fields.vision_key.value = "";
+      status.textContent = "设置已保存。";
+    } catch (error) { status.textContent = error.message; }
+  };
   const settingsForm = document.getElementById("mg-settings-form");
   settingsForm.insertBefore($app.querySelector(".study-preference"), settingsForm.querySelector(".mg-actions"));
   document.getElementById("study-hint-duration").onchange = e =>
@@ -2423,7 +2460,7 @@ function viewStale(token) {
 }
 
 const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup", "#/today", "#/radio",
-  "#/oral-review", "#/study-history"];
+  "#/oral-review", "#/study-history", "#/captures", "#/inbox"];
 
 function route() {
   if (typeof UIContinuity !== 'undefined' && !UIContinuity.allowNavigation(location.hash)) return;
@@ -2432,6 +2469,7 @@ function route() {
   if (typeof TrainingUI !== "undefined") TrainingUI.reset();
   window.ArcadeUI?.reset();
   window.RadioUI?.reset();
+  window.CapturesUI?.reset();
   stopVoicePreview();
   AnswerExperience.leave();
   const episodeAudio = document.getElementById("ep-audio");
@@ -2461,6 +2499,7 @@ function route() {
     : ["#/today", "#/legacy-today", "#/blitz"].includes(base) || base.startsWith("#/train/") || base.startsWith("#/legacy-train/") || base.startsWith("#/oral-review/") || base === "#/study-history" ? "today"
     : base.startsWith("#/bank") || base.startsWith("#/practice") ? "bank"
     : base.startsWith("#/review") ? "review"
+    : ["#/captures", "#/inbox"].includes(base) ? "captures"
     : base === "#/radio" ? "radio"
     : base.startsWith("#/manage") || base.startsWith("#/setup") || base.startsWith("#/voices") ? "settings"
     : "topics";
@@ -2469,6 +2508,7 @@ function route() {
       : el.classList.contains("nav-settings") ? "settings"
       : el.getAttribute("href") === "#/today" ? "today"
       : el.getAttribute("href") === "#/practice" ? "bank"
+      : el.getAttribute("href") === "#/captures" ? "captures"
       : el.getAttribute("href") === "#/radio" ? "radio"
       : el.getAttribute("href") === "#/review" ? "review" : "topics";
     el.classList.toggle("active", category === owner);
@@ -2497,6 +2537,10 @@ function route() {
   }
   if (hash === "#/legacy-today") { TrainingUI.today(token); return; }
   if (hash === "#/blitz" && window.ArcadeUI?.enabled()) { ArcadeUI.blitz(token); return; }
+  if (["#/captures", "#/inbox"].includes(base) && window.ArcadeUI?.enabled()) {
+    CapturesUI.open(token);
+    return;
+  }
   if (base === "#/radio" && window.ArcadeUI?.enabled()) { RadioUI.open(token); return; }
   if (hash === "#/sentence-today") { OralReviewUI.today(token); return; }
   if (hash.startsWith("#/train/") || hash.startsWith("#/legacy-train/")) {

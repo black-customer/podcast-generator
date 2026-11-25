@@ -7,12 +7,14 @@ import re
 import threading
 import uuid
 from collections import Counter
+from datetime import timedelta
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from . import (
     alignment,
     audio,
+    captures,
     jobs,
     library,
     oral_review,
@@ -337,40 +339,139 @@ def blitz() -> dict:
     return {"due_count": len(result), "cards": result}
 
 
-def home_cards() -> dict:
-    due = blitz()
-    if due["cards"]:
-        return due
-    with oral_review._LOCK:
-        enrolled = set(oral_review._load()["cards"])
+def _fresh_ielts(enrolled: set[str], count: int) -> list[dict]:
     sources = sorted(library.TOPICS_DIR.glob(f"*/items/*/{study.MATERIAL_FILE}"),
                      key=lambda path: path.stat().st_mtime, reverse=True)
+    fresh = []
     for path in sources:
         tid, iid = path.parent.parent.parent.name, path.parent.name
         try:
-            if not library.resolve_audio_file(path.parent, "podcast"):
-                continue
             found = study.get_material(tid, iid)
             if found["status"] != "ready":
                 continue
             material = found["material"]
             fingerprint = material["source_fingerprint"]
-            fresh = [index for index in range(len(material["sentences"]))
-                     if oral_review._card_id(tid, iid, index, fingerprint) not in enrolled]
-            if not fresh:
+            indices = [i for i in range(len(material["sentences"]))
+                       if oral_review._card_id(tid, iid, i, fingerprint) not in enrolled]
+            if not indices:
                 continue
             source = view(tid, iid)
             if source["source_fingerprint"] != fingerprint or not source["audio_url"]:
                 continue
-        except (FileNotFoundError, ValueError):
+        except (OSError, ValueError):
             continue
-        return {"due_count": 0, "cards": [
-            {**source["sentences"][i], "topic_id": tid, "item_id": iid, "sentence_index": i,
-             "source_fingerprint": fingerprint, "audio_url": source["audio_url"],
-             "voice": source["voice"], "question": source["question"]}
-            for i in fresh
-        ]}
-    return due
+        fresh.extend({
+            **source["sentences"][i], "topic_id": tid, "item_id": iid, "sentence_index": i,
+            "source_fingerprint": fingerprint, "audio_url": source["audio_url"],
+            "voice": source["voice"], "question": source["question"], "card_kind": "ielts",
+            "source_type": "ielts", "scaffolding_level": 1,
+        } for i in indices)
+        if len(fresh) >= count:
+            break
+    return fresh[:count]
+
+
+def _practice_row(card: dict, sources: dict) -> dict:
+    if card["card_kind"] == "capture":
+        return {**card, "key_chunk": card["target_chunk"],
+                "audio_url": f"/api/cards/{card['id']}/audio",
+                "audio": {"scope": "sentence", "start": 0, "end": None},
+                "prosody": prosody.annotate_sentence(card["en"])}
+    if "audio_url" in card:
+        row = card
+    else:
+        key = card["topic_id"], card["item_id"]
+        if key not in sources:
+            sources[key] = view(*key)
+        data = sources[key]
+        index = card["sentence_index"]
+        if data["source_fingerprint"] != card["source_fingerprint"]:
+            raise ValueError("练习材料已变化")
+        row = {**card, **data["sentences"][index], "voice": data["voice"],
+               "audio_url": data["audio_url"]}
+    key_chunk = row.get("key_chunk")
+    if key_chunk:
+        row["cloze_prompt"] = captures.make_cloze(row["en"], key_chunk)
+    row.setdefault("trigger_context", row["zh"])
+    row.setdefault("transfer_prompt_zh", "想一个自己的场景，用这个语块说一句话。")
+    row.setdefault("transfer_example_en", row.get("transfer_example", ""))
+    return row
+
+
+def _interleave(cards: list[dict]) -> list[dict]:
+    result = []
+    pool = cards.copy()
+    while pool:
+        index = 0
+        if len(result) >= 3 and len({row["source_type"] for row in result[-3:]}) == 1:
+            index = next((i for i, row in enumerate(pool)
+                          if row["source_type"] != result[-1]["source_type"]), 0)
+        result.append(pool.pop(index))
+    return result
+
+
+def home_cards(source: str = "all", limit: int | None = None,
+               include_pending: bool = True) -> dict:
+    settings = load_settings()
+    limit = min(20, max(1, limit if limit is not None else settings.get("daily_session_limit", 8)))
+    due = oral_review.unified_due_cards()
+    today = oral_review._today()
+    recent = (today - timedelta(days=2)).isoformat()
+    due.sort(key=lambda row: (not (row["created_at"][:10] >= recent or
+                                   2 <= (row.get("stability") or 0) <= 7),
+                              row["due_date"], row["created_at"], row["id"]))
+    counts = {kind: sum(row["source_type"] == kind for row in due)
+              for kind in ("ielts", "scene", "snippet")}
+    selected = [row for row in due if source in ("all", row["source_type"])]
+    if include_pending and len(selected) < limit and source in ("all", "ielts"):
+        with oral_review._LOCK:
+            enrolled = set(oral_review._load()["cards"])
+        selected.extend(_fresh_ielts(enrolled, limit - len(selected)))
+    sources, cards = {}, []
+    for row in _interleave(selected):
+        try:
+            cards.append(_practice_row(row, sources))
+        except (OSError, ValueError, IndexError):
+            continue
+        if len(cards) == limit:
+            break
+    count = len(due) if source == "all" else counts.get(source, 0)
+    return {"due_count": count, "due_total": count, "session_limit": limit,
+            "inbox_count": len(captures.list_cards(status="inbox")),
+            "reaction_timer_enabled": settings.get("reaction_timer_enabled", False),
+            "source_counts": counts, "cards": cards}
+
+
+def check_card_transfer(card_id: str, data: bytes, media_type: str, duration: float) -> dict:
+    if captures.CARD_ID.fullmatch(card_id):
+        row = captures.get_card(card_id)
+        if row["status"] != "active":
+            raise ValueError("请先确认入库")
+        target = row["target_chunk"]
+        reference = row["transfer_example_en"]
+    else:
+        with oral_review._LOCK:
+            row = oral_review._load()["cards"].get(card_id)
+        if not row or row.get("card_kind") == "capture":
+            raise FileNotFoundError("复习卡不存在")
+        found = study.get_material(row["topic_id"], row["item_id"])
+        target = found["material"]["sentences"][row["sentence_index"]].get("key_chunk", "")
+        reference = ""
+    kind = _check_upload(data, media_type, duration, 60)
+    TMP_DIR.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(prefix="transfer-", dir=TMP_DIR) as directory:
+        recording = Path(directory) / ("transfer" + _FORMATS[kind])
+        recording.write_bytes(data)
+        variants = [target]
+        words = tokens(target)
+        if "someone" in words:
+            variants.extend(" ".join(pronoun if w == "someone" else w for w in words)
+                            for pronoun in ("me", "you", "him", "her", "us", "them"))
+        result = speech_bridge.request(load_settings(), "transcribe_and_analyze",
+                                       path=recording, language="en", chunks=variants)
+    return {"transcript": result.get("transcript", ""),
+            "matched_chunks": [target] if result.get("matched_chunks") else [],
+            "reference": reference}
 
 
 def _category(error: dict) -> str:

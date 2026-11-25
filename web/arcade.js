@@ -31,8 +31,14 @@ async function home(token) {
   $app.innerHTML = `<main class="arcade-home" aria-labelledby="arcade-home-title">
     <header class="arcade-home-head"><div><h1 id="arcade-home-title">今日练习</h1>
       <p id="arcade-home-progress" role="status">正在找可练的句子…</p></div>
-      <nav aria-label="今日练习入口"><a class="study-button" href="#/radio">教学电台</a>
+      <nav aria-label="今日练习入口"><a class="study-button" href="#/radio">听今日电台</a>
       <button class="study-button" id="arcade-open-draw" type="button">范围随机抽题</button></nav></header>
+    <div class="arcade-home-filters arcade-controls" aria-label="复习来源">
+      ${[["all", "全部混练"], ["scene", "看剧表达"], ["ielts", "雅思口语"], ["snippet", "随手摘录"]]
+        .map(([value, text]) => `<button class="study-button" type="button"
+          data-review-source="${value}" aria-pressed="${value === "all"}">${text}</button>`).join("")}
+      <a class="study-button" id="arcade-inbox-count" href="#/captures">素材收集</a>
+    </div>
     <div id="arcade-home-card"></div>
     <section class="arcade-frame arcade-draw" id="arcade-draw" hidden aria-labelledby="arcade-draw-title">
       <h2 id="arcade-draw-title">抽一道新题</h2>
@@ -70,18 +76,43 @@ async function home(token) {
   }).catch(() => {
     if (active(ctx)) document.getElementById("arcade-home-board").textContent = "病历榜读取失败，请刷新重试。";
   });
-  try {
-    const {cards, due_count: count} = await api("GET", "/api/arcade/blitz?include_pending=true");
-    if (!active(ctx)) return;
-    ctx.cards = cards;
-    ctx.due = count;
-    renderHomeCard(ctx);
-  } catch (error) {
-    if (!active(ctx)) return;
-    document.getElementById("arcade-home-progress").textContent = "暂时无法读取练习材料";
-    ctx.showDraw();
-    note(error.message);
-  }
+  const filters = $app.querySelector(".arcade-home-filters");
+  ctx.source = "all";
+  ctx.load = async (source = ctx.source) => {
+    if (!active(ctx) || ctx.busy || activeCapture) return;
+    const attempt = (ctx.loadRevision || 0) + 1;
+    ctx.loadRevision = attempt;
+    try {
+      const result = await api("GET", "/api/arcade/blitz?include_pending=true" +
+        (source === "all" ? "" : `&source=${encodeURIComponent(source)}`));
+      if (!active(ctx) || attempt !== ctx.loadRevision) return;
+      stopAudio(); ctx.altController?.abort();
+      Object.assign(ctx, {source, cards: result.cards, due: result.due_total ?? result.due_count,
+        total: result.cards.length, index: 0, revealed: false, retries: new Map(),
+        completed: new Set(), practised: new Set(), submissionId: null,
+        timer: result.reaction_timer_enabled});
+      filters.querySelectorAll("button").forEach(button =>
+        button.setAttribute("aria-pressed", button.dataset.reviewSource === source));
+      document.getElementById("arcade-inbox-count").textContent = result.inbox_count
+        ? `待分拣 ${result.inbox_count}` : "素材收集";
+      const badge = document.getElementById("nav-inbox-count");
+      if (badge) {
+        badge.hidden = !result.inbox_count;
+        badge.textContent = result.inbox_count || "";
+      }
+      renderHomeCard(ctx);
+    } catch (error) {
+      if (!active(ctx)) return;
+      document.getElementById("arcade-home-progress").textContent = "暂时无法读取练习材料";
+      ctx.showDraw();
+      note(error.message);
+    }
+  };
+  filters.onclick = event => {
+    const filter = event.target.closest("[data-review-source]");
+    if (filter) ctx.load(filter.dataset.reviewSource);
+  };
+  await ctx.load();
 }
 
 function bindDraw(ctx) {
@@ -156,16 +187,26 @@ function renderHomeCard(ctx) {
   const card = document.getElementById("arcade-home-card");
   const progress = document.getElementById("arcade-home-progress");
   if (!ctx.cards.length) {
-    progress.textContent = "今天没有到期待练的句子";
-    ctx.showDraw();
+    progress.textContent = "这个范围暂时没有待练语块";
+    card.replaceChildren();
+    if (ctx.source === "all") ctx.showDraw();
     return;
   }
-  progress.textContent = ctx.due
-    ? `今日到期 ${ctx.due} 句 · 本轮已练 ${ctx.index} 句`
-    : `新材料 ${ctx.cards.length} 句 · 本轮已练 ${ctx.index} 句`;
-  card.innerHTML = sentence(ctx);
+  const row = currentRow(ctx);
+  if (!row) {
+    progress.textContent = `本局完成 · ${ctx.total} 张卡`;
+    card.innerHTML = `<section class="arcade-frame arcade-recall"><h2>今日一局达标</h2>
+      <p>本轮刷句完成</p><div class="arcade-chunks">${[...ctx.practised].map(chunk).join("")}</div>
+      <div class="arcade-controls">${button("new-round", "再来一局", "primary")}
+      <a class="study-button" href="#/radio">听今日电台</a><a class="study-button" href="#/captures">去分拣新素材</a>
+      ${button("draw", "抽一道雅思题")}${button("copy-coach", "复制今日 AI 陪练指令")}</div></section>`;
+  } else {
+    progress.textContent = `第 ${Math.min(ctx.completed.size + 1, ctx.total)} / ${ctx.total} 张${
+      ctx.index >= ctx.total ? " · 本轮重考" : ""}`;
+    card.innerHTML = row.scaffolding_level ? chunkSentence(ctx, row) : sentence(ctx);
+  }
   bindPracticeActions(card, ctx);
-  if (ctx.index >= ctx.cards.length) ctx.showDraw();
+  if (row?.scaffolding_level === 1 && row.goal_type === "comprehend_input") audioForChunk(ctx);
 }
 
 async function open(tid, iid, token) {
@@ -399,6 +440,119 @@ function sentence(ctx) {
       ${button("good", `${hotkey("1")} 顺畅`)}${button("again", `${hotkey("2")} 卡壳`)}
     </div><p class="arcade-feedback" role="status"></p>
   </section>`;
+}
+
+function chunkSentence(ctx, row) {
+  const level = row.scaffolding_level;
+  const transfer = level === 3 && row.goal_type !== "comprehend_input";
+  const source = row.capture?.source;
+  const image = source ? CapturesUI.imageMarkup(source, row.capture_id) : "";
+  const link = source ? CapturesUI.sourceLink(source) : "";
+  const listening = row.goal_type === "comprehend_input";
+  return `<section class="arcade-frame arcade-recall chunk-practice" data-revealed="${ctx.revealed}">
+    <p class="arcade-muted">${esc(({scene: "看剧表达", ielts: "雅思口语", snippet: "随手摘录"})[row.source_type])} ·
+      ${["首次练习", "情境回忆", "换个场景"][level - 1]}</p>
+    ${ctx.timer ? '<div class="arcade-reaction" aria-hidden="true" style="--reaction-time:3000ms"><span></span></div>' : ""}
+    ${level === 1 ? image : ""}
+    <p class="arcade-intent">${esc(transfer ? row.transfer_prompt_zh : row.trigger_context || row.zh)}</p>
+    ${level === 1 && row.cloze_prompt && !listening ? `<p class="chunk-cloze" lang="en">${esc(row.cloze_prompt)}</p>` : ""}
+    ${level === 2 ? `<p class="arcade-muted">${esc(row.disambiguator || row.chunk_zh || "")}</p>
+      <details><summary>看原场景</summary>${image}<p lang="en">${esc(row.en)}</p></details>` : ""}
+    ${transfer ? `<p>目标语块 ${chunk(row.target_chunk || row.key_chunk)}</p>` : ""}
+    <div class="arcade-reveal" ${ctx.revealed ? "" : "hidden"}>
+      ${transfer && row.transfer_example_en ? `<p lang="en">${highlight(row.transfer_example_en, row.key_chunk)}</p>` : ""}
+      <p class="arcade-plain-answer" lang="en">${highlight(row.en, row.chunk_in_sentence || row.key_chunk)}</p>
+      <div class="arcade-pronunciation" hidden></div>
+      <p>${esc(row.zh)}</p>
+      ${row.feynman_hook ? `<p>${esc(row.feynman_hook)}</p>` : ""}
+      ${row.usage_boundary ? `<p class="arcade-muted">${esc(row.usage_boundary)}</p>` : ""}
+      <div class="arcade-voice-control">
+        ${row.prosody ? '<label><input type="checkbox" data-prosody> 发音标 <kbd>P</kbd></label>' : ""}
+        <label>收听声音 <select data-answer-voice><option value="demo">母语示范</option>
+          <option value="golden_self" ${ctx.voicePreference === "golden_self" ? "selected" : ""}>我的母语分身</option></select></label>
+      </div>
+    </div>
+    <div class="arcade-controls">${button("reveal", `揭晓或重播 ${hotkey("Space")}`, "primary")}
+      ${listening ? button("listen-chunk", "先听原句") : ""}
+      ${row.id ? button("transfer-record", `录音试说 ${hotkey("R")}`) : ""}
+      ${link}</div>
+    <div class="arcade-controls arcade-grade" ${ctx.revealed ? "" : "hidden"}>
+      ${button("good", `${hotkey("1")} 顺畅`)}${button("again", `${hotkey("2")} 卡壳`)}
+      ${button("easy", `${hotkey("3")} 太熟`)}
+    </div>
+    <div class="arcade-controls">${button("suspend", `${hotkey("X")} 归档`)}
+      <button type="button" class="study-button" data-arcade="compare-take" hidden>听示范和我的录音</button>
+    </div><p class="arcade-feedback" role="status"></p>
+  </section>`;
+}
+
+function audioForChunk(ctx) {
+  const row = currentRow(ctx);
+  if (row.card_kind === "capture" && ctx.voicePreference === "golden_self") {
+    const relative = `/api/cards/${encodeURIComponent(row.id)}/voice/golden_self`;
+    loadChunkVoice(ctx, relative);
+    return;
+  }
+  if (row.card_kind === "capture") {
+    play(ctx, row.audio_url);
+    return;
+  }
+  if (ctx.voicePreference === "golden_self" && row.voice !== "golden_self") {
+    playAlternate(ctx, row, "golden_self");
+    return;
+  }
+  if (ctx.voicePreference === "demo" && row.voice === "golden_self") {
+    playAlternate(ctx, row, "am_puck");
+    return;
+  }
+  play(ctx, row.audio_url, row.audio?.start, row.audio?.end);
+}
+
+async function loadChunkVoice(ctx, path) {
+  ctx.altController?.abort();
+  const controller = ctx.altController = new AbortController();
+  const finish = ExperienceUI.pendingNear($app.querySelector("[data-answer-voice]"), "正在准备母语分身…");
+  try {
+    const blob = await localAudioBlob(path, controller.signal);
+    if (!active(ctx) || controller.signal.aborted) return;
+    if (ctx.altUrl) URL.revokeObjectURL(ctx.altUrl);
+    ctx.altUrl = URL.createObjectURL(blob);
+    play(ctx, ctx.altUrl);
+  } catch (error) {
+    if (active(ctx) && !controller.signal.aborted) note(error.message);
+  } finally { finish(); }
+}
+
+async function transferRecord(ctx) {
+  if (activeCapture) { activeCapture.stop(); return; }
+  if (ctx.busy) return;
+  const row = currentRow(ctx);
+  const control = $app.querySelector("[data-arcade=transfer-record]");
+  if (!row?.id || !control) return;
+  const original = control.innerHTML;
+  try {
+    await capture(60, seconds => {
+      control.textContent = `结束录音 · ${fmtDur(seconds)}`;
+      control.classList.add("arcade-recording");
+    }, async (blob, duration) => {
+      control.innerHTML = original;
+      control.classList.remove("arcade-recording");
+      if (!active(ctx) || duration < .25) return;
+      ctx.busy = true;
+      const finish = ExperienceUI.pendingNear(control, "在本机识别语块…");
+      try {
+        const result = await upload(`/api/cards/${encodeURIComponent(row.id)}/check-transfer?duration_sec=${duration}`, blob);
+        if (!active(ctx)) return;
+        ctx.transferRecording = blob;
+        const compare = $app.querySelector("[data-arcade=compare-take]");
+        if (compare) compare.hidden = false;
+        const feedback = $app.querySelector(".arcade-feedback");
+        if (feedback) feedback.textContent = result.matched_chunks.length
+          ? `识别到 ${result.matched_chunks.join("、")}` : "这次未识别到目标语块，可听示范再试一次。";
+      } catch (error) { if (active(ctx)) note(error.message); }
+      finally { finish(); ctx.busy = false; }
+    });
+  } catch (error) { if (active(ctx)) note(error.message); }
 }
 
 function pronunciation(row) {
@@ -643,6 +797,10 @@ function reveal(ctx, sound = true) {
     $app.querySelector(".arcade-grade").hidden = false;
   }
   if (!sound) return;
+  if (ctx.kind === "home" && row.scaffolding_level) {
+    audioForChunk(ctx);
+    return;
+  }
   const selected = chosenVoice(ctx, row);
   const source = (row.voice || ctx.data?.voice) === "golden_self" ? "golden_self" : "demo";
   if (selected !== source) {
@@ -662,7 +820,7 @@ function reveal(ctx, sound = true) {
 }
 
 async function grade(ctx, rating) {
-  if (!ctx.revealed || ctx.busy || activeCapture) return;
+  if ((!ctx.revealed && rating !== "suspend") || ctx.busy || activeCapture) return;
   ctx.busy = true;
   const row = currentRow(ctx);
   const review = isReview(ctx);
@@ -671,10 +829,23 @@ async function grade(ctx, rating) {
     source_fingerprint: review ? row.source_fingerprint : ctx.data.source_fingerprint,
     rating, submission_id: ctx.submissionId ||= crypto.randomUUID() };
   try {
-    await api("POST", `${url}/grade`, payload);
+    const result = await api("POST", row.card_kind === "capture" ?
+      `/api/cards/${encodeURIComponent(row.id)}/grade` : `${url}/grade`, payload);
     if (!active(ctx)) return;
     stopAudio();
     ctx.altController?.abort();
+    if (ctx.kind === "home") {
+      const key = row.id || `${row.topic_id}/${row.item_id}/${row.sentence_index}`;
+      const retries = ctx.retries.get(key) || 0;
+      if (rating === "again" && retries < 2) {
+        ctx.retries.set(key, retries + 1);
+        ctx.cards.push({...row, scaffolding_level: result.scaffolding_level || row.scaffolding_level});
+      } else {
+        ctx.completed.add(key);
+        if (rating !== "suspend" && row.key_chunk) ctx.practised.add(row.key_chunk);
+      }
+      ctx.transferRecording = null;
+    }
     ctx.index += 1;
     ctx.revealed = false;
     ctx.submissionId = null;
@@ -873,7 +1044,20 @@ function action(ctx, name) {
     }
   }
   if (name === "reveal") reveal(ctx);
-  if (name === "good" || name === "again") grade(ctx, name);
+  if (["good", "again", "easy", "suspend"].includes(name)) grade(ctx, name);
+  if (name === "listen-chunk") audioForChunk(ctx);
+  if (name === "transfer-record") transferRecord(ctx);
+  if (name === "new-round") ctx.load();
+  if (name === "draw") ctx.showDraw();
+  if (name === "copy-coach") api("GET", "/api/arcade/error-board")
+    .then(data => { if (active(ctx)) copyText(data.prompt); }).catch(error => note(error.message));
+  if (name === "compare-take" && ctx.transferRecording) {
+    const row = currentRow(ctx);
+    playTogether(ctx, [{url: row.audio_url, ...row.audio}, {blob: ctx.transferRecording}])
+      .catch(error => { if (active(ctx)) note(error.message); });
+  }
+  if (name === "prosody") $app.querySelector("[data-prosody]")?.click();
+  if (name === "original") $app.querySelector(".chunk-practice a[href^='https://www.bilibili.com']")?.click();
   if (name === "record") record(ctx);
   if (name === "skip" && !activeCapture && !ctx.busy) { ctx.step = 4; render(ctx); }
   if (name === "blind" || name === "final") play(ctx, ctx.data[name].url);
@@ -913,6 +1097,13 @@ document.addEventListener("keydown", event => {
     if (event.code === "Digit1" || event.code === "Numpad1") next = "good";
     if (event.code === "Digit2" || event.code === "Numpad2") next = "again";
     if (event.code === "KeyR" && !isReview(ctx)) { next = "record"; ctx.held = true; }
+    if (ctx.kind === "home" && currentRow(ctx).scaffolding_level) {
+      if (["Digit3", "Numpad3"].includes(event.code)) next = "easy";
+      if (event.code === "KeyX") next = "suspend";
+      if (event.code === "KeyP" && ctx.revealed) next = "prosody";
+      if (event.code === "KeyO") next = "original";
+      if (event.code === "KeyR") { next = "transfer-record"; ctx.held = true; }
+    }
   }
   if (!next || (["Space", "Enter"].includes(event.code) && event.target.closest("button,a,summary"))) return;
   event.preventDefault();

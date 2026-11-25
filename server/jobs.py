@@ -4,7 +4,17 @@ import logging
 import threading
 import uuid
 
-from . import assemble, library, rewrite, speech_bridge, study, teaching_podcast, tts
+from . import (
+    assemble,
+    capture_distill,
+    captures,
+    library,
+    rewrite,
+    speech_bridge,
+    study,
+    teaching_podcast,
+    tts,
+)
 from .config import DATA_DIR, atomic_write_text, load_settings
 
 logger = logging.getLogger(__name__)
@@ -386,6 +396,52 @@ def start_api_generation(topic_id: str, item_id: str, question: str | None,
         target=_run_api_generate, args=(job_id, topic_id, item_id, question, answer), daemon=True
     ).start()
     return {"job_id": job_id, "total": 1}
+
+
+def start_capture_job(kind: str, ids: list[str]) -> dict:
+    if not ids:
+        raise ValueError("当前没有待处理的素材")
+    with JOBS_LOCK:
+        for existing in JOBS.values():
+            if (existing["kind"] == kind and existing["state"] == "running"
+                    and set(ids).intersection(existing["capture_scope"])):
+                if set(ids).issubset(existing["capture_scope"]):
+                    return {"job_id": existing["id"], "state": "running"}
+                raise JobConflict("已有素材正在提炼，请等本批完成")
+        job_id = uuid.uuid4().hex[:12]
+        cancel = threading.Event()
+        job = JOBS[job_id] = {
+            "id": job_id, "kind": kind, "capture_scope": ids, "phase": kind, "state": "running",
+            "started_at": _now(), "finished_at": None, "cancel_event": cancel, "cancel": False,
+            "current": "", "done": 0, "total": len(ids), "errors": [],
+        }
+        _prune_finished_locked()
+        _persist_locked()
+
+    def run() -> None:
+        for identity in ids:
+            with JOBS_LOCK:
+                if cancel.is_set():
+                    _finish(job, "cancelled")
+                    return
+                job["current"] = identity
+            try:
+                if kind == "capture_distill":
+                    capture_distill.distill_capture_api(identity, cancel=cancel)
+                else:
+                    row = captures.get_card(identity)
+                    captures.synthesize_card_audio(row["capture_id"], identity)
+            except Exception as exc:
+                with JOBS_LOCK:
+                    job["errors"].append({"item_id": identity, "message": str(exc)[:300]})
+            with JOBS_LOCK:
+                job["done"] += 1
+        with JOBS_LOCK:
+            state = "cancelled" if cancel.is_set() else "error" if job["errors"] else "done"
+            _finish(job, state)
+
+    threading.Thread(target=run, name=kind, daemon=True).start()
+    return {"job_id": job_id, "state": "running"}
 
 
 def start_teaching_podcast(kind: str, mode: str, partner: str, topic_id: str | None = None,
