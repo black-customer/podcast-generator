@@ -40,15 +40,32 @@ def complete_item(
     errors = rewrite.validate_texts(texts)
     if errors:
         raise CompleteError("改写结果校验未通过:\n- " + "\n- ".join(errors))
+    supplied_material = result.get("study_material")
     try:
-        library.item_path(topic_id, item_id)
-        library.update_item_texts(topic_id, item_id, texts)
+        with library.LIB_LOCK:
+            current = library.get_item_full(topic_id, item_id)
+            if supplied_material is not None:
+                supplied_material = study.validate_material(
+                    supplied_material, {**current, **texts}, require_chunks=True
+                )
+            library.update_item_texts(topic_id, item_id, texts)
+    except study.MaterialError as exc:
+        raise CompleteError(f"逐句材料校验未通过：{exc}") from exc
     except FileNotFoundError as exc:
         raise CompleteError(f"目标条目不存在: {exc}") from exc
     mp3_path = ""
     if generate_audio:
         tts.generate_item_audio(topic_id, item_id, track="podcast")
         mp3_path = str(library.item_path(topic_id, item_id) / "audio_podcast.mp3")
+    if supplied_material is not None:
+        try:
+            with library.LIB_LOCK:
+                current = library.get_item_full(topic_id, item_id)
+                if study.source_fingerprint(current) != supplied_material["source_fingerprint"]:
+                    raise study.MaterialError("准备期间回答已变化，请重新提交")
+                study.save_material(topic_id, item_id, supplied_material)
+        except study.MaterialError as exc:
+            raise CompleteError(f"保存逐句材料失败：{exc}") from exc
     return {
         "topic_id": topic_id,
         "item_id": item_id,
@@ -136,7 +153,7 @@ def main():
     legacy.add_argument("--no-audio", action="store_true", help="Skip TTS synthesis")
 
     # R03：Agent 模式固定完成入口
-    comp = sub.add_parser("complete", help="写入 Agent 三份文本并合成音频（先校验）")
+    comp = sub.add_parser("complete", help="校验三份文本及可选逐句材料并合成音频")
     comp.add_argument("--topic-id", required=True)
     comp.add_argument("--item-id", required=True)
     comp.add_argument("--result-json", required=True, help="三份文本 JSON 文件路径，- 表示 stdin")

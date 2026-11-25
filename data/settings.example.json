@@ -1,5 +1,12 @@
 {
-  "tts_provider": "stepfun",
+  "tts_provider": "kokoro_local",
+  "speech_engine_dir": "D:/project/ChineseAccent",
+  "kokoro_question_voice": "af_bella",
+  "kokoro_answer_voice": "golden_self",
+  "llm_provider": "deepseek",
+  "llm_base_url": "https://api.deepseek.com/v1",
+  "llm_api_key": "",
+  "llm_model": "deepseek-flash",
   "stepfun_api_key": "YOUR_STEPFUN_API_KEY_HERE",
   "stepfun_text_model": "step-5-preview",
   "stepfun_text_base_url": "",

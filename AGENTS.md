@@ -7,7 +7,9 @@
 2026-09-29 的下一版设计交接入口：`docs/design/study-room-v2/README.md`。
 **L02/L03 已实现桌面逐句学习。** 后续 UI 维护以该目录的文字交互规范决定行为，
 以概念图决定布局；`docs/design/learning-mode-v1/` 和 `docs/design/v1/` 是历史图。
-音频生成仍执行 `skills/ielts-audio/SKILL.md` 的三份英文文本契约；逐句材料走独立命令。
+2026-11-24 桌面 2.0 以 `#/train/` 三步练习和 `#/blitz` 闪电复习为主，旧桌面训练走
+`#/legacy-train/`。音频生成执行 `skills/ielts-audio/SKILL.md` 三文本契约，同一 `complete`
+可带 `study_material`，旧独立逐句命令仍可用。避免补填和自证表单，优先本机自动分析。
 
 ## 常用命令
 
@@ -36,7 +38,9 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 <file>
 - Windows + Git Bash；Python venv 在 `.venv/`（用 `.venv/Scripts/python`）
 - ffmpeg 8.1 在 PATH；服务端口 8765
 - `data/settings.json` 含真实 API key：**永不提交、永不打印完整值、API 永不回传**
-  （`GET /api/settings` 必须脱敏——见 ROADMAP M04）
+  （包括 `llm_api_key` 和 `deepseek_api_key`，`/api/settings` 必须脱敏）
+- Windows 新配置默认使用 DeepSeek 兼容改写与 ChineseAccent 的 Kokoro/Seed-VC 本地语音。
+  复用外挂 `.venv` 与模型，主项目不安装 PyTorch 等模型依赖，声纹与微调由 ChineseAccent 管理。
 - Fish 免费档 `s2.1-pro-free`；真实 TTS 调用花钱（配额），测试默认 dry-run，
   真实生成只在明确需要验证听感时做
 - ffmpeg concat 清单是 UTF-8 绝对路径：CJK 目录名是已知风险点（M04 验证）
@@ -84,6 +88,6 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 <file>
 
 凡任务是「把用户的回答改写并生成播客音频」（或提到 natural_english /
 podcast_text / podcast_script / pipeline.py complete），一律以
-`skills/ielts-audio/SKILL.md` 为唯一规范：产出三份文本 JSON，执行
+`skills/ielts-audio/SKILL.md` 为唯一规范：产出三份文本和逐句材料 JSON，执行
 `pipeline.py complete --topic-id ... --item-id ... --result-json ...`。
 禁止读取/打印任何 API Key；禁止绕过校验直改 data/。

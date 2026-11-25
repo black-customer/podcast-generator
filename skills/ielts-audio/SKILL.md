@@ -7,9 +7,8 @@ description: Canonical workflow for completing an IELTS answer → native-Englis
 
 本文件是 Agent 模式的唯一规范来源（R03）。Qoder 侧只是薄包装，不要另立标准。
 
-> 音频入口仍是下方三份英文文本及 `pipeline.py complete`。逐句材料走独立的
-> `pipeline.py study` 命令，不向音频 JSON 添加字段；设计交接见
-> `docs/design/study-room-v2/README.md`。
+> Windows 2.0 的入口是 `pipeline.py complete`。同一份 JSON 提交三份英文文本和
+> `study_material`。历史三文本文件与 `pipeline.py study` 独立补材料仍兼容。
 
 ## 数据契约（三份文本 + 一份原始回答）
 
@@ -26,13 +25,21 @@ description: Canonical workflow for completing an IELTS answer → native-Englis
 
 ## 完成命令（唯一入口）
 
-1. 把三份文本写成 JSON（UTF-8，无注释）：
+1. 把三份文本与逐句材料写成 JSON（UTF-8，无注释）。
 
 ```json
 {
   "natural_english": "…",
   "podcast_text": "A: …\nB: …",
-  "podcast_script": "A: …\nB: …"
+  "podcast_script": "A: Why do you swim?\nB: It helps me unwind.",
+  "study_material": {
+    "complete_chinese": "游泳能让我放松。",
+    "sentences": [
+      {"zh": "游泳能让我放松。", "en": "It helps me unwind.",
+       "explanation": "it 承接上文的游泳", "usage": "help 加人和动词原形",
+       "key_chunk": "helps me unwind"}
+    ]
+  }
 }
 ```
 
@@ -42,26 +49,28 @@ description: Canonical workflow for completing an IELTS answer → native-Englis
 .venv/Scripts/python pipeline.py complete --topic-id <topic_id> --item-id <item_id> --result-json <json路径>
 ```
 
-- 命令先校验后原子写入，最后按当前 TTS provider（默认 StepFun）合成 `audio_podcast.mp3`。
+- 命令先校验，保存三份文本，按当前 TTS provider 合成 `audio_podcast.mp3`，最后保存
+  与该版文本绑定的逐句材料。桌面默认使用本地 Kokoro 和选定的回答音色。
 - 成功输出 `play_url`（网页完成页）与 `mp3_path`；**校验失败时按错误清单修正 JSON 重试**，
   不得手改 data/ 目录绕过校验。
 - 目标条目的 `topic_id` / `item_id` 以任务指令（agent-task）给出的为准。
 
-## 音频完成后的逐句材料
+## 逐句材料与旧条目补齐
 
-读取该条目的 `podcast_text.txt` B 回答和 `original_answer.txt`。写入另一份 UTF-8 JSON：
+根据 `podcast_text` 的 B 回答和原始回答编写材料。对旧音频补材料时可单独提交以下对象。
 
 ```json
 {
   "complete_chinese": "完整回答的中文原意",
   "sentences": [
     {"zh": "本句中文", "en": "与 B 回答播报顺序完全一致的英文句子",
-     "explanation": "句子组织说明", "usage": "词法或搭配说明"}
+     "explanation": "句子组织说明", "usage": "词法或搭配说明", "key_chunk": "原句连续词组"}
   ]
 }
 ```
 
-每句 `en` 必须与 B 回答的英文原句一致；句数和顺序一致。有证据的原始英文错误才可给句子
+每句 `en` 必须与 B 回答的英文原句一致，保留句数和顺序。`key_chunk` 是原句连续的可复用词组。
+有证据的原始英文错误才可给句子
 增加 `original_error: {"quote": "原始回答里的准确英文片段", "issue": "具体问题",
 "correction": "可行改法"}`。中文原话、发音猜测和不同但正确的表达都不能写为个人错误。
 
@@ -74,5 +83,5 @@ description: Canonical workflow for completing an IELTS answer → native-Englis
 ## 禁止事项
 
 - 不读取、不打印、不传输任何 API Key（`data/settings.json` 与 agent 无关）。
-- 不直接调用 StepFun/Fish API；文本改写由完成命令之外的环节不负责——Agent 只产出三份文本。
+- Agent 产出三份英文文本和逐句材料，调用项目命令生成音频。
 - 不修改 data/ 下其他用户的既有语料。

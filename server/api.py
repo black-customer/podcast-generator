@@ -1,14 +1,19 @@
 """HTTP API 路由。"""
 import re
 import uuid
+from contextlib import nullcontext
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, field_validator
 from starlette.background import BackgroundTask
 
 from . import (
+    arcade,
     assemble,
     audio,
     bank,
@@ -20,6 +25,7 @@ from . import (
     pack,
     production,
     rewrite,
+    speech_bridge,
     stepfun,
     study,
     study_progress,
@@ -31,9 +37,11 @@ from .config import (
     DATA_DIR,
     FISH_MODELS,
     PROMPTS_DIR,
+    TMP_DIR,
     is_dry_run,
     load_settings,
     real_api_key,
+    real_llm_api_key,
     real_stepfun_api_key,
     save_settings,
 )
@@ -69,7 +77,16 @@ class GenerateIn(BaseModel):
 
 
 class SettingsIn(BaseModel):
-    tts_provider: Literal["stepfun", "fish"] | None = None
+    tts_provider: Literal["stepfun", "fish", "kokoro_local"] | None = None
+    speech_engine_dir: str | None = None
+    kokoro_question_voice: Literal["af_bella", "am_liam", "am_michael", "am_puck"] | None = None
+    kokoro_answer_voice: Literal[
+        "af_bella", "am_liam", "am_michael", "am_puck", "golden_self"
+    ] | None = None
+    llm_provider: Literal["deepseek", "custom"] | None = None
+    llm_base_url: str | None = None
+    llm_api_key: str | None = None
+    llm_model: str | None = None
     stepfun_api_key: str | None = None
     stepfun_text_model: str | None = None
     stepfun_text_base_url: str | None = None
@@ -242,6 +259,116 @@ def api_get_study(topic_id: str, item_id: str):
         raise _err(404, str(e)) from e
     except ValueError as e:
         raise _err(400, str(e)) from e
+
+
+@router.get("/speech/status")
+def api_speech_status():
+    return speech_bridge.status(load_settings())
+
+
+async def _arcade_upload(request: Request) -> bytes:
+    data = bytearray()
+    async for chunk in request.stream():
+        if len(data) + len(chunk) > arcade.MAX_RECORDING_BYTES:
+            raise _err(413, "录音超过 30 MB")
+        data.extend(chunk)
+    return bytes(data)
+
+
+@router.post("/arcade/transcribe-blind")
+async def api_arcade_blind(request: Request, duration_sec: float,
+                           language: Literal["en", "zh"] | None = None):
+    data = await _arcade_upload(request)
+    try:
+        return await run_in_threadpool(
+            arcade.transcribe_blind, data, request.headers.get("content-type", ""),
+            duration_sec, language,
+        )
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
+    except speech_bridge.SpeechError as exc:
+        raise _err(503, str(exc)) from exc
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/arcade")
+def api_arcade_view(topic_id: str, item_id: str):
+    try:
+        return arcade.view(topic_id, item_id)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/arcade/recordings")
+async def api_arcade_recordings(topic_id: str, item_id: str, request: Request,
+                                stage: Literal["blind", "chunk", "final"], duration_sec: float,
+                                sentence_index: int | None = None, upload_key: str | None = None,
+                                source_fingerprint: str | None = None):
+    data = await _arcade_upload(request)
+    try:
+        return await run_in_threadpool(
+            arcade.record, topic_id, item_id, stage, data, request.headers.get("content-type", ""),
+            duration_sec, sentence_index, upload_key, source_fingerprint,
+        )
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/arcade/recordings/{recording_id}")
+def api_arcade_recording(topic_id: str, item_id: str, recording_id: str):
+    try:
+        path, media = arcade.recording(topic_id, item_id, recording_id)
+        return FileResponse(path, media_type=media, headers={"Cache-Control": "no-store"})
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/arcade/export-evolution")
+def api_arcade_export(topic_id: str, item_id: str):
+    try:
+        path = arcade.export(topic_id, item_id)
+        return FileResponse(path, media_type="audio/mpeg", filename="口语前后对比.mp3",
+                            background=BackgroundTask(path.unlink, missing_ok=True),
+                            headers={"Cache-Control": "no-store"})
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except (ValueError, audio.FFmpegError) as exc:
+        raise _err(400, str(exc)) from exc
+
+
+class ArcadeGradeIn(BaseModel):
+    sentence_index: int
+    source_fingerprint: str
+    rating: Literal["good", "again"]
+    submission_id: str
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/arcade/grade")
+def api_arcade_grade(topic_id: str, item_id: str, body: ArcadeGradeIn):
+    try:
+        return oral_review.grade_arcade(topic_id, item_id, body.sentence_index,
+                                       body.source_fingerprint, body.rating, body.submission_id)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
+
+
+@router.get("/arcade/blitz")
+def api_arcade_blitz(summary: bool = False):
+    if summary:
+        return {"due_count": len(oral_review.blitz_cards())}
+    return arcade.blitz()
+
+
+@router.get("/arcade/error-board")
+def api_arcade_error_board():
+    return arcade.error_board()
 
 
 @router.post("/topics/{topic_id}/items/{item_id}/study/prepare")
@@ -616,6 +743,20 @@ def api_get_voices(provider: str | None = None, gender: str | None = None):
 
 @router.get("/voices/{provider}/{voice_id}/sample")
 def api_provider_voice_sample(provider: str, voice_id: str, regen: bool = False):
+    if provider == "kokoro_local":
+        if voice_id not in speech_bridge.VOICES:
+            raise _err(404, "本地音色不存在")
+        TMP_DIR.mkdir(parents=True, exist_ok=True)
+        work = TemporaryDirectory(prefix="kokoro-preview-", dir=TMP_DIR)
+        path = Path(work.name) / "preview.wav"
+        try:
+            speech_bridge.request(load_settings(), "synthesize_line", voice=voice_id, output=path,
+                                  text="What I like most about it is that it helps me unwind.")
+        except speech_bridge.SpeechError as exc:
+            work.cleanup()
+            raise _err(503, str(exc)) from exc
+        return FileResponse(path, media_type="audio/wav",
+                            background=BackgroundTask(work.cleanup))
     if provider == "fish":
         return api_voice_sample(voice_id, regen=regen)
     if provider != "stepfun":
@@ -727,11 +868,14 @@ def api_voice_sample(ref_id: str, regen: bool = False):
 
 def _masked_settings(s: dict) -> dict:
     """对外脱敏：永不回传明文 API key（含 models 列表）。"""
-    out = dict(s)
+    out = {key: value for key, value in s.items() if not key.endswith("_api_key")}
     out["fish_api_key"] = ""
     out["fish_api_key_set"] = bool(real_api_key(s))
     out["stepfun_api_key"] = ""
     out["stepfun_api_key_set"] = bool(real_stepfun_api_key(s))
+    out["llm_api_key"] = ""
+    out["llm_api_key_set"] = bool(real_llm_api_key(s))
+    out["llm_available"] = rewrite.text_available(s)
     out["models"] = FISH_MODELS
     return out
 
@@ -745,22 +889,39 @@ def api_get_settings():
 def api_put_settings(body: SettingsIn):
     update = {k: v for k, v in body.model_dump().items() if v is not None}
     # 空 key 不覆盖已存 key（脱敏模式下前端回传空串属正常）
-    if "fish_api_key" in update and not (update["fish_api_key"] or "").strip():
-        update.pop("fish_api_key")
-    if "stepfun_api_key" in update and not (update["stepfun_api_key"] or "").strip():
-        update.pop("stepfun_api_key")
+    for key in ("fish_api_key", "stepfun_api_key", "llm_api_key"):
+        if not (update.get(key) or "").strip():
+            update.pop(key, None)
+    if "speech_engine_dir" in update:
+        speech_bridge.close_workers()
     saved = save_settings(update)
     return _masked_settings(saved)
 
 
 @router.post("/settings/test")
 def api_test_settings(
-    provider: Literal["stepfun", "fish"] | None = None,
+    provider: Literal["stepfun", "fish", "kokoro_local", "llm"] | None = None,
     capability: Literal["tts", "text"] = "tts",
 ):
     s = load_settings()
     ff_ok, ff_msg = audio.check_ffmpeg()
-    selected = provider or s.get("tts_provider") or "stepfun"
+    selected = provider or ("llm" if capability == "text" else s.get("tts_provider"))
+    if selected == "llm":
+        try:
+            content = rewrite._chat(s, [{"role": "user", "content": 'Reply in JSON: {"ok":true}'}],
+                                    None)
+            ok = rewrite._extract_json(content).get("ok") is True
+            result = {"ok": ok, "message": "文本改写连接成功" if ok else "模型未返回预期的 JSON"}
+        except rewrite.RewriteError as exc:
+            result = {"ok": False, "message": str(exc)}
+        return {"ffmpeg": {"ok": ff_ok, "message": ff_msg}, "llm": result}
+    if selected == "kokoro_local":
+        current = speech_bridge.status(s)
+        ok = current["available"] and current.get("kokoro", False)
+        return {"ffmpeg": {"ok": ff_ok, "message": ff_msg}, "kokoro_local": {
+            "ok": ok,
+            "message": "本地语音已就绪" if ok else current.get("reason", "缺少 Kokoro 模型"),
+        }}
     if selected == "stepfun":
         result = (
             stepfun.test_text_connection(s)
@@ -978,6 +1139,7 @@ class GenerationRequestIn(BaseModel):
     mode: Literal["agent", "api"] = "agent"
     intent: str = ""
     feedback: str = ""
+    blind_token: str | None = None
 
 
 @router.post("/generation-requests")
@@ -1010,7 +1172,15 @@ def api_generation_requests(body: GenerationRequestIn):
 
     target = library.get_or_create_topic(topic_name)
     fields = {"question": question_text, "original_answer": answer, **bank.answer_fields(answer)}
-    created = library.create_item(target["id"], fields)
+    try:
+        with arcade._LOCK if body.blind_token else nullcontext():
+            if body.blind_token:
+                arcade.check_blind(body.blind_token)
+            created = library.create_item(target["id"], fields)
+            if body.blind_token:
+                arcade.attach_blind(body.blind_token, target["id"], created["id"])
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
     if body.intent or body.feedback:
         private = study_progress.get_progress(target["id"], created["id"])
         private["training_inputs"] = {"answer": answer, "intent": body.intent,

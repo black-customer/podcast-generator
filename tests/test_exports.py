@@ -23,9 +23,10 @@ def exp_env(tmp_path, monkeypatch):
         d.mkdir(parents=True)
     monkeypatch.setattr(library, "TOPICS_DIR", topics)
     monkeypatch.setattr(library, "EPISODES_DIR", episodes)
-    from server import assemble, audio, config, jobs
+    from server import assemble, audio, config, exports_media, jobs
     monkeypatch.setattr(assemble, "EPISODES_DIR", episodes)
     monkeypatch.setattr(audio, "TMP_DIR", tmp_path / ".tmp")
+    monkeypatch.setattr(exports_media, "EPISODES_DIR", episodes)
     monkeypatch.setattr(config, "SETTINGS_FILE", tmp_path / "settings.json")
     monkeypatch.setattr(jobs, "JOBS_FILE", tmp_path / "jobs.json")
     monkeypatch.setattr("server.exports.EPISODES_DIR", episodes)

@@ -100,7 +100,7 @@ def test_stepfun_voice_catalog_has_both_genders():
 def test_provider_defaults_and_legacy_fish_migration(tmp_path, monkeypatch):
     settings_file = tmp_path / "settings.json"
     monkeypatch.setattr(config, "SETTINGS_FILE", settings_file)
-    assert config.load_settings()["tts_provider"] == "stepfun"
+    assert config.load_settings()["tts_provider"] == "kokoro_local"
 
     settings_file.write_text('{"fish_api_key":"fish-key"}', encoding="utf-8")
     assert config.load_settings()["tts_provider"] == "fish"

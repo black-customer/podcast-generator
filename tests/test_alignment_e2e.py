@@ -48,7 +48,8 @@ def gen_env(tmp_path, monkeypatch):
         # dry-run + 双音色：对话文本走逐行合成路径（单次合成需网络，dry-run 本就走逐行）
         c.put(
             "/api/settings",
-            json={"dry_run": True, "reference_id": "voice-a", "reference_id_b": "voice-b"},
+            json={"tts_provider": "stepfun", "dry_run": True,
+                  "reference_id": "voice-a", "reference_id_b": "voice-b"},
         )
         yield c
 

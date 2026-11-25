@@ -67,7 +67,8 @@ const AnswerExperience = (() => {
   async function bindDraft(question) {
     const input = document.getElementById("bank-answer-input");
     if (!input || offline()) return;
-    const ctx = {qid: question.id, text: question.text, input, answer: input.value, mode: "agent",
+    const mode = document.querySelector("[name='bank-gen-mode']:checked")?.value || "agent";
+    const ctx = {qid: question.id, text: question.text, input, answer: input.value, mode,
       revision: 0, dirty: false, blocked: true, chain: Promise.resolve()};
     current = ctx;
     input.disabled = true;
@@ -84,7 +85,8 @@ const AnswerExperience = (() => {
           <pre class="answer-text">${esc(restored.answer)}</pre>`;
         status(ctx, "题干变化，自动保存已暂停");
       } else {
-        input.value = restored.answer || ""; ctx.answer = input.value; ctx.mode = restored.mode || "agent";
+        input.value = restored.answer || ""; ctx.answer = input.value;
+        ctx.mode = (ctx.answer || pending) && restored.mode || mode;
         document.querySelector(`[name='bank-gen-mode'][value='${ctx.mode}']`).checked = true;
         ctx.blocked = !!pending && pending.revision !== saved.revision;
         ctx.dirty = !!pending;

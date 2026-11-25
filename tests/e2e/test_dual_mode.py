@@ -52,7 +52,7 @@ def test_agent_mode_copy_cli_complete_and_done_page():
         pytest.skip("题库快照未导入（python -m server.bank --sync）")
     stamp = int(time.time())
     before_topics = {t["id"] for t in requests.get(f"{BASE_URL}/api/topics", timeout=10).json()}
-    created_topics: list[str] = []
+    created = None
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -65,7 +65,7 @@ def test_agent_mode_copy_cli_complete_and_done_page():
 
         page.on("console", _on_console)
         try:
-            # 1. 选题作答（Agent 模式默认选中）
+            # 1. 选题并使用 Agent，以免本机的真实配置启用外部文本请求。
             page.goto(f"{BASE_URL}/#/bank")
             page.wait_for_selector(".bank-row", timeout=5000)
             un = requests.get(
@@ -75,9 +75,11 @@ def test_agent_mode_copy_cli_complete_and_done_page():
             assert target, "Part1 应存在未作答题目"
             page.locator(".bank-row", has_text=target["text"][:40]).first.click()
             page.wait_for_selector("#bank-answer-input", timeout=5000)
-            assert page.locator("input[name='bank-gen-mode'][value='agent']").is_checked()
+            page.locator("input[name='bank-gen-mode'][value='agent']").check()
             page.fill("#bank-answer-input", f"dual mode e2e {stamp}: 我的老师很有耐心。")
-            page.click("#bank-answer-submit")
+            with page.expect_response("**/api/generation-requests") as saved:
+                page.click("#bank-answer-submit")
+            created = saved.value.json()
 
             # 2. Agent 指令出现：含完成命令与目标 id，不含任何密钥字段
             page.wait_for_selector("#agent-prompt-box", timeout=5000)
@@ -86,7 +88,7 @@ def test_agent_mode_copy_cli_complete_and_done_page():
             assert "skills/ielts-audio/SKILL.md" in prompt_text
             topic_id = re.search(r"--topic-id (\S+)", prompt_text).group(1)
             item_id = re.search(r"--item-id (\S+)", prompt_text).group(1)
-            created_topics.append(topic_id)
+            assert (topic_id, item_id) == (created["topic_id"], created["item_id"])
             assert "api_key" not in prompt_text.lower()
 
             # 3. 一键复制有反馈
@@ -125,16 +127,13 @@ def test_agent_mode_copy_cli_complete_and_done_page():
             body_text = page.locator("body").inner_text()
             assert "[curious]" not in body_text and "[break]" not in body_text
         finally:
-            # 兜底：prompt 解析失败时 created_topics 为空，删掉本测试开始后新建的话题
             try:
-                after = {t["id"] for t in requests.get(f"{BASE_URL}/api/topics", timeout=10).json()}
-                created_topics.extend(after - before_topics - set(created_topics))
-            except Exception:
-                pass
-            for tid in set(created_topics):
-                try:
-                    requests.delete(f"{BASE_URL}/api/topics/{tid}", timeout=10)
-                except Exception:
-                    pass
-            browser.close()
+                if created and (tid := created.get("topic_id")):
+                    endpoint = f"{BASE_URL}/api/topics/{tid}"
+                    requests.delete(f"{endpoint}/items/{created['item_id']}", timeout=10)
+                    current = requests.get(endpoint, timeout=10).json()
+                    if tid not in before_topics and current.get("items") == []:
+                        requests.delete(endpoint, timeout=10)
+            finally:
+                browser.close()
         assert not console_errors, f"页面报错：{console_errors}"

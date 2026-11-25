@@ -8,6 +8,13 @@ web
 
 ## Current Experience Direction
 
+The Windows desktop 2.0 experience starts with an IELTS question and ends with a spoken retake.
+The learner can type or record a blind answer, hear a faithful reference with evidence-based
+corrections, retrieve one sentence at a time, and record a question-only answer. The result compares
+recordings, English words per minute, long pauses, and recognized phrases when data is available.
+The home page offers short FSRS-4.5 sentence reviews and an evidence-based error board. The old
+training view remains accessible under `#/legacy-train/`; Android continues its existing flow.
+
 On 2026-10-16 Bruce authorized an aesthetic upgrade across all visible pages after rejecting
 v3's first-open home screen. The current visual contract is docs/design/experience-v4/README.md
 and DESIGN.md; experience-v3 is archived history. The implemented system uses mist-gray surfaces,
@@ -82,15 +89,16 @@ acceptance, visual direction, and milestone acceptance.
 ## Capabilities and Constraints
 
 - Python 3.11, FastAPI, native JavaScript, no frontend build step, no CDN, no framework.
-- Local-first and zero-server; external calls use the user's own StepFun/Fish credentials.
-- Agent mode is the default and has no text-API cost; optional API mode uses StepFun JSON output.
+- Local-first, with Kokoro and an optional personal Seed-VC voice through ChineseAccent.
+- Desktop API mode uses a configured DeepSeek-compatible endpoint or legacy StepFun credentials.
+  Agent mode remains available for completing the same files without a text API call.
 - Questioner and answerer are independent roles with user-selected gender and voice.
 - Existing alignment, word highlighting, sentence seeking, bilingual display, server/pack data
   sources, exports, and Android packaging must remain functional.
 - Study content includes a meaning-preserving Chinese sentence for each English sentence,
   a saved explanation, audio linkage, and error analysis only when the learner's original input
-  provides evidence. Audio generation keeps its three-text contract; study material is submitted
-  separately after audio completion.
+  provides evidence. Audio generation keeps its three-text contract. New bundles carry the
+  sentence material in the same submission, and existing material files stay readable.
 - `data/` is product data and must remain human-readable, Agent-editable, atomic, and compatible.
 - Real TTS consumes quota and runs only when explicitly requested or initiated by the user.
 

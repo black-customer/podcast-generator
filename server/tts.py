@@ -7,14 +7,17 @@ import shutil
 import threading
 import time
 import uuid
+import wave
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import httpx
 
-from . import alignment, audio, audioqa, library, mastering, stepfun, timeline
+from . import alignment, audio, audioqa, library, mastering, speech_bridge, stepfun, timeline
 from .config import (
     FISH_TTS_URL,
     TMP_DIR,
+    effective_tts_provider,
     is_dry_run,
     load_settings,
     real_api_key,
@@ -534,6 +537,75 @@ def _synthesize_stepfun_source(
             pass
 
 
+def _synthesize_local_source(
+    src: str, out_path: Path, settings: dict, force_monologue: bool,
+    cancel: threading.Event | None,
+) -> tuple[float, int, bool, str, list[dict], list[dict]]:
+    dialogue = parse_dialogue(src) if not force_monologue else None
+    dry = is_dry_run(settings)
+    segments, words = [], []
+    rate = 44100
+    cursor = 0
+    TMP_DIR.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(prefix="kokoro-", dir=TMP_DIR) as directory:
+        work = Path(directory)
+        combined = work / "dialogue.wav"
+        with wave.open(str(combined), "wb") as merged:
+            merged.setparams((1, 2, rate, 0, "NONE", "not compressed"))
+            for turn, (speaker, text) in enumerate(dialogue or [("b", src)]):
+                role = "question" if speaker == "a" else "answer"
+                setting = f"kokoro_{role}_voice"
+                voice = settings.get(setting) or ("af_bella" if speaker == "a" else "golden_self")
+                sentences = alignment.split_sentences(stepfun.clean_text(text))
+                for index, sentence in enumerate(sentences):
+                    if cancel and cancel.is_set():
+                        raise TTSCancelled("已取消")
+                    clip = work / f"line-{turn}-{index}.wav"
+                    data: dict = {}
+                    if dry:
+                        audio.make_tone(estimate_seconds(sentence), clip)
+                    else:
+                        try:
+                            data = speech_bridge.request(settings, "synthesize_line", text=sentence,
+                                                         voice=voice, output=clip, cancel=cancel)
+                        except speech_bridge.SpeechCancelled as exc:
+                            raise TTSCancelled(str(exc)) from exc
+                        except speech_bridge.SpeechError as exc:
+                            raise TTSError(str(exc)) from exc
+                    pcm = work / "standard.wav"
+                    audio._run(["ffmpeg", "-y", "-i", str(clip), "-ar", str(rate), "-ac", "1",
+                                "-c:a", "pcm_s16le", str(pcm)])
+                    with wave.open(str(pcm), "rb") as source:
+                        frames = source.getnframes()
+                        if frames <= 0:
+                            raise TTSError("本地语音引擎生成了空音频")
+                        gap = round(rate * (0.12 if index else 0.28 if segments else 0))
+                        merged.writeframesraw(bytes(2 * gap))
+                        cursor += gap
+                        start, end = cursor / rate, (cursor + frames) / rate
+                        merged.writeframesraw(source.readframes(frames))
+                        cursor += frames
+                    segments.append({"text": sentence, "speaker": speaker,
+                                     "start": round(start, 3), "end": round(end, 3),
+                                     "voice": data.get("voice")})
+                    words.extend({"text": word["text"], "start": round(start + word["start"], 3),
+                                  "end": round(min(end, start + word["end"]), 3)}
+                                 for word in data.get("words", [])
+                                 if 0 <= word["start"] < word["end"] and
+                                 word["start"] < end - start)
+        if not segments:
+            raise TTSError("没有可合成的本地语音文本")
+        audio.concat_mp3([{"path": combined}], out_path)
+        duration = audio.probe_duration(out_path)
+        if duration <= 0:
+            raise TTSError("本地合成音频时长为 0")
+        try:
+            duration = mastering.apply_mastering(out_path, out_path, is_dialogue=bool(dialogue))
+        except audio.FFmpegError:
+            logger.warning("本地语音母带处理失败，保留基础音频", exc_info=True)
+    return duration, len(segments), bool(dialogue), "kokoro_local", segments, words
+
+
 def _synthesize_source(
     src: str,
     out_path: Path,
@@ -546,7 +618,10 @@ def _synthesize_source(
 
     alignment_segments：逐段实测的句级/行级跨度（单次合成模式为 None，由上层降级估算）。
     """
-    if settings.get("tts_provider") == "stepfun":
+    provider = effective_tts_provider(settings)
+    if provider == "kokoro_local":
+        return _synthesize_local_source(src, out_path, settings, force_monologue, cancel)
+    if provider == "stepfun":
         return _synthesize_stepfun_source(
             src, out_path, settings, force_monologue=force_monologue, cancel=cancel
         )
@@ -815,7 +890,9 @@ def generate_item_audio(
                 "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
                 "qa": qa_report["verdict"],
             }
-            _save_track_outputs(ipath, "monologue", eff_src, out_mono, dur, seg_spans, seg_words)
+            align_mode = "sse" if mode == "kokoro_local" and seg_words else "measured"
+            _save_track_outputs(ipath, "monologue", eff_src, out_mono, dur, seg_spans, seg_words,
+                                mode=align_mode)
             # 如果没有主 audio.mp3，拷贝一份（连 alignment 一起）
             if not (ipath / "audio.mp3").exists():
                 shutil.copy2(out_mono, ipath / "audio.mp3")
@@ -840,7 +917,8 @@ def generate_item_audio(
                 "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
                 "qa": qa_report["verdict"],
             }
-            pod_mode = "sse" if (mode == "dialogue_single_pass" and seg_words) else "measured"
+            word_timed = mode in {"dialogue_single_pass", "kokoro_local"} and seg_words
+            pod_mode = "sse" if word_timed else "measured"
             _save_track_outputs(
                 ipath, "podcast", eff_src, out_pod, dur, seg_spans, seg_words, mode=pod_mode
             )
@@ -869,7 +947,9 @@ def generate_item_audio(
             "qa": qa_report["verdict"],
         }
         track_key = "podcast" if is_diag else "monologue"
-        def_mode = "sse" if (mode == "dialogue_single_pass" and align_words) else "measured"
+        def_mode = "sse" if mode in {"dialogue_single_pass", "kokoro_local"} and align_words else (
+            "measured"
+        )
         _save_track_outputs(
             ipath, track_key, eff_src, out_def, dur, seg_spans, align_words, mode=def_mode
         )

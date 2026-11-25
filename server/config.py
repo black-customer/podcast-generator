@@ -53,7 +53,14 @@ def atomic_write_text(path: Path, content: str) -> None:
         tmp.unlink(missing_ok=True)
 
 DEFAULT_SETTINGS = {
-    "tts_provider": "stepfun",
+    "tts_provider": "kokoro_local",
+    "speech_engine_dir": "D:/project/ChineseAccent",
+    "kokoro_question_voice": "af_bella",
+    "kokoro_answer_voice": "golden_self",
+    "llm_provider": "deepseek",
+    "llm_base_url": "https://api.deepseek.com/v1",
+    "llm_api_key": "",
+    "llm_model": "deepseek-flash",
     "stepfun_api_key": "",
     "stepfun_text_model": "step-5-preview",
     # Coding Plan 订阅者可改为 "https://api.stepfun.com/step_plan/v1" 用订阅额度；留空走标准计费
@@ -119,6 +126,7 @@ def load_settings() -> dict:
                 stored = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
                 if isinstance(stored, dict):
                     settings.update({k: v for k, v in stored.items() if k in settings})
+                    settings["llm_api_key"] = real_llm_api_key(stored)
             except (json.JSONDecodeError, OSError):
                 pass
         elif (DATA_DIR / "settings.example.json").exists():
@@ -130,7 +138,7 @@ def load_settings() -> dict:
             except (json.JSONDecodeError, OSError):
                 pass
         if "tts_provider" not in stored and _real_key(stored.get("fish_api_key")):
-            # 升级旧安装时保持 Fish 行为；全新安装才默认 StepFun。
+            # 旧版隐式 Fish 配置继续有效。
             settings["tts_provider"] = "fish"
         settings["reference_id"] = LEGACY_REFERENCE_ID_MAP.get(
             settings.get("reference_id"), settings.get("reference_id")
@@ -146,6 +154,7 @@ def save_settings(update: dict) -> dict:
                 stored = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
                 if isinstance(stored, dict):
                     current.update({k: v for k, v in stored.items() if k in settings_keys()})
+                    current["llm_api_key"] = real_llm_api_key(stored)
             except (json.JSONDecodeError, OSError):
                 pass
         for k, v in update.items():
@@ -166,6 +175,8 @@ _PLACEHOLDER_KEYS = {
     "your-fish-api-key",
     "your_stepfun_api_key_here",
     "your-stepfun-api-key",
+    "your_deepseek_api_key_here",
+    "your_llm_api_key_here",
 }
 
 
@@ -182,13 +193,45 @@ def real_stepfun_api_key(settings: dict | None = None) -> str:
     return _real_key((settings or {}).get("stepfun_api_key"))
 
 
+def real_llm_api_key(settings: dict | None = None) -> str:
+    s = settings or {}
+    return _real_key(s.get("llm_api_key")) or _real_key(s.get("deepseek_api_key"))
+
+
+def speech_python(settings: dict) -> Path:
+    root = Path(str(settings.get("speech_engine_dir", DEFAULT_SETTINGS["speech_engine_dir"])))
+    return root / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+
+
+def speech_engine_available(settings: dict) -> bool:
+    root = Path(str(settings.get("speech_engine_dir", DEFAULT_SETTINGS["speech_engine_dir"])))
+    return (root / "backend" / "engine" / "audio_io.py").is_file() and speech_python(
+        settings
+    ).is_file()
+
+
+def effective_tts_provider(settings: dict) -> str:
+    provider = settings.get("tts_provider", "fish")
+    if provider == "kokoro_local" and not speech_engine_available(settings):
+        if real_stepfun_api_key(settings):
+            return "stepfun"
+        if real_api_key(settings):
+            return "fish"
+    return provider
+
+
 def real_tts_api_key(settings: dict | None = None) -> str:
     s = settings or load_settings()
-    if s.get("tts_provider") == "fish":
+    if effective_tts_provider(s) == "fish":
         return real_api_key(s)
     return real_stepfun_api_key(s)
 
 
 def is_dry_run(settings: dict | None = None) -> bool:
     s = settings or load_settings()
-    return bool(s.get("dry_run")) or not real_tts_api_key(s)
+    if s.get("dry_run"):
+        return True
+    provider = effective_tts_provider(s)
+    if provider == "kokoro_local":
+        return not speech_engine_available(s)
+    return not real_tts_api_key(s)

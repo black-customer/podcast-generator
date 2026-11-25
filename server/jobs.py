@@ -5,7 +5,7 @@ import threading
 import uuid
 
 from . import assemble, library, rewrite, study, tts
-from .config import DATA_DIR, atomic_write_text, load_settings
+from .config import DATA_DIR, atomic_write_text, load_settings, real_llm_api_key
 
 logger = logging.getLogger(__name__)
 
@@ -238,7 +238,7 @@ def start_generate(
 
 
 def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, answer: str) -> None:
-    """API 模式：StepFun JSON Mode 改写 → 校验落盘 → 自动 TTS。
+    """API 模式合并改写与逐句材料，校验后自动合成音频。
 
     改写失败保留原始回答，不产生或覆盖任何音频。
     """
@@ -258,18 +258,50 @@ def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, a
         from . import study_progress
         extra = study_progress.get_progress(topic_id, item_id).get("training_inputs") or {}
         options = {"supplement": extra} if extra.get("intent") or extra.get("feedback") else {}
-        texts, _repairs = rewrite.generate_texts(
-            load_settings(), question, answer, cancel=cancel_event, **options
-        )
+        settings = load_settings()
+        material = None
+        texts = None
+        combined = bool(real_llm_api_key(settings) or settings.get("llm_provider") == "custom")
+        if combined or rewrite.text_available(settings):
+            try:
+                texts = rewrite.generate_complete_bundle(
+                    settings, question, answer, cancel=cancel_event, **options
+                )
+                material = texts.pop("study_material")
+            except rewrite.BundleFormatError:
+                logger.info("合并响应格式不完整，重新生成音频文本")
+        if texts is None:
+            texts, _repairs = rewrite.generate_texts(
+                settings, question, answer, cancel=cancel_event, **options
+            )
+        if cancel_event and cancel_event.is_set():
+            raise tts.TTSCancelled("已取消")
         _set_phase("save")
-        texts["original_answer"] = answer
-        library.update_item_texts(topic_id, item_id, texts)
+        with library.LIB_LOCK:
+            current = library.get_item_full(topic_id, item_id)
+            if rewrite.original_answer_of(current) != answer or current.get("question") != question:
+                raise rewrite.RewriteError("生成时原始回答或题目有改动，请从当前回答重新生成")
+            library.update_item_texts(topic_id, item_id, texts)
+            fingerprint = study.source_fingerprint(library.get_item_full(topic_id, item_id))
         _set_phase("tts")
         tts.generate_item_audio(topic_id, item_id, track="podcast", cancel=cancel_event)
-        try:
-            study.prepare_async(topic_id, item_id)
-        except Exception:
-            logger.warning("音频已完成，逐句材料准备未启动", exc_info=True)
+        can_prepare = not settings.get("dry_run") and rewrite.text_available(settings)
+        if material is not None or can_prepare:
+            _set_phase("study")
+            try:
+                with library.LIB_LOCK:
+                    current = library.get_item_full(topic_id, item_id)
+                    if fingerprint != study.source_fingerprint(current):
+                        raise study.MaterialError("回答已更新，请重新准备逐句材料")
+                    if material is not None:
+                        study.save_material(topic_id, item_id, material)
+                if material is None:
+                    study.generate_material(topic_id, item_id, cancel=cancel_event,
+                                            require_chunks=True)
+            except (study.MaterialError, rewrite.RewriteError) as exc:
+                if cancel_event and cancel_event.is_set():
+                    raise tts.TTSCancelled("已取消") from exc
+                study.set_status(topic_id, item_id, "failed", str(exc), fingerprint)
     except tts.TTSCancelled:
         with JOBS_LOCK:
             _finish(job, "cancelled")

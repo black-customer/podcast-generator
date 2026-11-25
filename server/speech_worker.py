@@ -1,0 +1,175 @@
+"""运行在 ChineseAccent 环境的本地语音 JSON Lines 服务。"""
+
+import hashlib
+import json
+import os
+import re
+import shutil
+import sys
+from functools import lru_cache
+from pathlib import Path
+
+_ENGLISH_WORD = re.compile(r"[a-z]+(?:'[a-z]+)*|\d+", re.I)
+_HAN = re.compile(r"[\u3400-\u9fff]")
+
+
+def tokens(text: str) -> list[str]:
+    return _ENGLISH_WORD.findall(text.lower().replace("’", "'"))
+
+
+def matched_chunks(transcript: str, chunks: list[str]) -> list[str]:
+    spans = [tokens(span) for span in _HAN.split(transcript)]
+    return [chunk for chunk in dict.fromkeys(chunks) if (target := tokens(chunk)) and any(
+        observed[i:i + len(target)] == target
+        for observed in spans for i in range(len(observed) - len(target) + 1)
+    )]
+
+
+def analyze_words(words: list[dict]) -> dict:
+    timed = [word for word in words if re.search(r"\w", word["word"]) and (
+        word["end"] > word["start"]
+    )]
+    count = sum(len(tokens(word["word"])) for word in timed)
+    duration = timed[-1]["end"] - timed[0]["start"] if timed else 0
+    gaps = sum(round(float(right["start"] - left["end"]), 3) > 0.8
+               for left, right in zip(timed, timed[1:], strict=False))
+    # 混合语音的字数不能充当可比的英语语速。
+    english_only = not any(_HAN.search(word["word"]) for word in timed)
+    return {"word_count": count, "wpm": round(count * 60 / duration) if duration and
+            english_only else None, "long_pauses": gaps if timed else None}
+
+
+def status() -> dict:
+    import importlib.util
+
+    import torch
+    from backend import config
+    from backend.engine.voice_profile import get_voice_profile
+
+    profile = get_voice_profile()
+    return {
+        "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
+        "kokoro": config.KOKORO_MODEL_PATH.is_file() and config.KOKORO_VOICES_PATH.is_file(),
+        "whisper": importlib.util.find_spec("faster_whisper") is not None,
+        "profile": {key: profile.get(key) for key in (
+            "median_f0_hz", "recommended_base_voice", "finetuned"
+        )} if profile else None,
+    }
+
+
+def synthesize_line(text: str, voice: str, output: str) -> dict:
+    from backend.engine.aligner import forced_align_words
+    from backend.engine.audio_io import _synthesize_kokoro_sync
+    from backend.engine.voice_profile import get_voice_profile
+
+    final = Path(output)
+    profile = get_voice_profile() if voice == "golden_self" else None
+    if profile:
+        import torch
+        from backend.engine import voice_clone
+
+        base = profile.get("recommended_base_voice") or "am_liam"
+        source = final.with_suffix(".base.wav")
+        _synthesize_kokoro_sync(text, base, source)
+        cache_key = hashlib.sha256(f"podcast\n{base}\n{text}".encode()).hexdigest()
+        # 读取声纹与权重，派生语音留在调用方的工作目录。
+        voice_clone.GOLDEN_AUDIO_DIR = final.parent
+        release = voice_clone.release_other_voice_models
+        # 已加载的分身与对齐器可以共存；冷启动和显存紧张时用原有释放策略。
+        if (voice_clone.get_device_info()["vc_loaded"] and torch.cuda.is_available() and
+                torch.cuda.mem_get_info()[0] >= 1024 ** 3):
+            voice_clone.release_other_voice_models = lambda: None
+        try:
+            converted = voice_clone.convert_to_golden_self(
+                source, cache_key, version="natural", use_finetuned=True,
+                expected_profile_hash=profile["profile_hash"],
+            )
+        finally:
+            voice_clone.release_other_voice_models = release
+        shutil.copyfile(converted["audio_path"], final)
+    else:
+        voice = "am_liam" if voice == "golden_self" else voice
+        _synthesize_kokoro_sync(text, voice, final)
+    aligned = forced_align_words(final, text, reference=True)
+    words = [{"text": word["word"], "start": word["start"], "end": word["end"]}
+             for word in aligned["words"] if word["end"] > word["start"]]
+    return {"voice": voice, "words": words}
+
+
+@lru_cache(maxsize=2)
+def _whisper(language: str | None):
+    from faster_whisper import WhisperModel
+
+    return WhisperModel("base.en" if language == "en" else "base", device="cpu",
+                        compute_type="int8")
+
+
+def transcribe_and_analyze(path: str, language: str | None = None,
+                           chunks: list[str] | None = None) -> dict:
+    source = path
+    options = {"language": language, "beam_size": 3, "word_timestamps": True, "vad_filter": True}
+    if language is None:
+        from faster_whisper.audio import decode_audio
+        from faster_whisper.vad import VadOptions, get_speech_timestamps
+
+        rate = 16000
+        source = decode_audio(path, sampling_rate=rate)
+        speech = get_speech_timestamps(source, VadOptions(min_silence_duration_ms=300,
+                                                          speech_pad_ms=100))
+        if not speech:
+            return {"transcript": "", "words": [], **analyze_words([]), "matched_chunks": []}
+        # 逐个语音区间识别语言，保留原文件的偏移以统计真实停顿。
+        timestamps = [span[edge] / rate for span in speech for edge in ("start", "end")]
+        options.update(multilingual=True, clip_timestamps=timestamps, vad_filter=False,
+                       condition_on_previous_text=False)
+    segments, _info = _whisper(language).transcribe(source, **options)
+    words, lines = [], []
+    for segment in segments:
+        lines.append(segment.text.strip())
+        words.extend({"word": w.word.strip(), "start": float(w.start), "end": float(w.end)}
+                     for w in segment.words or [])
+    transcript = " ".join(lines)
+    return {"transcript": transcript, "words": words, **analyze_words(words),
+            "matched_chunks": matched_chunks(transcript, chunks or [])}
+
+
+def check_utterance(path: str, text: str, chunks: list[str]) -> dict:
+    from backend.engine.aligner import forced_align_words
+    from backend.engine.audio_io import decode_to_wav16k
+
+    source = Path(path)
+    wav = source.with_suffix(".ctc.wav")
+    try:
+        decode_to_wav16k(source, wav)
+        aligned = forced_align_words(wav, text)
+        heard = aligned.get("greedy_transcript", "")
+        hits = [] if aligned.get("off_script") else matched_chunks(heard, chunks)
+        return {"transcript": heard, "matched_chunks": hits}
+    finally:
+        wav.unlink(missing_ok=True)
+
+
+def main() -> None:
+    sys.path.insert(0, str(Path.cwd()))
+    # 模型及 C 扩展的诊断输出不能写入协议流。
+    protocol = os.fdopen(os.dup(sys.stdout.fileno()), "w", encoding="utf-8", buffering=1)
+    with open(os.devnull, "w") as sink:
+        os.dup2(sink.fileno(), sys.stdout.fileno())
+    methods = {function.__name__: function for function in (
+        status, synthesize_line, transcribe_and_analyze, check_utterance
+    )}
+    for line in sys.stdin:
+        request_id = None
+        try:
+            message = json.loads(line)
+            request_id = message["id"]
+            result = methods[message["method"]](**message.get("params", {}))
+            response = json.dumps({"id": request_id, "result": result}, allow_nan=False)
+        except Exception as exc:
+            error = f"本地语音引擎：{type(exc).__name__} {str(exc)[:240]}"
+            response = json.dumps({"id": request_id, "error": error})
+        print(response, file=protocol, flush=True)
+
+
+if __name__ == "__main__":
+    main()

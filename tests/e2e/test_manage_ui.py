@@ -25,8 +25,11 @@ def test_manage_view_workflow():
         page.wait_for_selector("#mg-settings-form", state="attached", timeout=5000)
         assert page.locator("#mg-topic-list").is_hidden(), "旧内容管理默认应折叠"
 
-        # 2. 设置表单应载入当前值且模型下拉有选项；双引擎测试按钮在主层（R04）
-        page.locator("#mg-settings-form .mg-advanced > summary").click()
+        # 2. 本地音色在主层，历史云服务与参数仍在折叠入口内。
+        page.locator("#mg-settings-form summary", has_text="高级设置").click()
+        fallback = page.locator(".arcade-fallback-engines")
+        if not fallback.evaluate("node => node.open"):
+            fallback.locator("summary").click()
         assert page.locator("#mg-s-model option").count() >= 1
         assert page.is_visible("#mg-test-stepfun")
         assert page.is_visible("#mg-test-fish")

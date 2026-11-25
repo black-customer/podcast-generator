@@ -59,7 +59,9 @@ def test_foreign_process_on_port_is_not_killed(args):
         assert proc.poll() is None, "无关进程被误杀"
         assert run.returncode == 2, f"应以外码 2 提示占用者非本应用，实际 {run.returncode}"
     finally:
-        proc.terminate()
+        # Windows venv 的启动器下还有实际监听的子进程。
+        subprocess.run(["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                       capture_output=True, timeout=10, check=True)
         proc.wait(timeout=10)
 
 

@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import math
 import threading
 import uuid
 from datetime import date, datetime, timedelta
@@ -12,6 +13,51 @@ from .config import atomic_write_text
 REVIEW_FILE = study_progress.PRIVATE_DIR / "oral_review.json"
 INTERVAL_DAYS = (1, 3, 7, 14, 30)
 _LOCK = threading.RLock()
+# https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm#fsrs-45
+_WEIGHTS = (0.4872, 1.4003, 3.7145, 13.8206, 5.1618, 1.2298, 0.8975, 0.031, 1.6474,
+            0.1367, 1.0461, 2.1072, 0.0793, 0.3246, 1.587, 0.2272, 2.8755)
+_FSRS_FACTOR = 19 / 81
+
+
+def fsrs_review(card: dict, rating: str, today: date) -> dict:
+    grade = {"again": 1, "hard": 2, "good": 3, "easy": 4}[rating]
+    weights = _WEIGHTS
+    last = card.get("last_reviewed") or card.get("last_adjusted_date")
+    stability = card.get("stability")
+    reps = int(card.get("reps", bool(last)))
+    lapses = int(card.get("lapses", 0))
+    difficulty = float(card.get("difficulty", weights[4]))
+    if last and not stability:
+        previous_interval = (date.fromisoformat(card["due_date"]) - date.fromisoformat(last)).days
+        stability = max(1, card.get("interval_days", previous_interval))
+    if stability and last:
+        elapsed = max(0, (today - date.fromisoformat(last)).days)
+        retrievability = (1 + _FSRS_FACTOR * elapsed / stability) ** -0.5
+        previous_difficulty = difficulty
+        difficulty = weights[7] * weights[4] + (1 - weights[7]) * (
+            previous_difficulty - weights[6] * (grade - 3)
+        )
+        if grade == 1:
+            stability = min(stability, weights[11] * previous_difficulty ** -weights[12] * (
+                (stability + 1) ** weights[13] - 1
+            ) * math.exp(weights[14] * (1 - retrievability)))
+            lapses += 1
+        else:
+            hard_penalty = weights[15] if grade == 2 else 1
+            easy_bonus = weights[16] if grade == 4 else 1
+            stability *= 1 + math.exp(weights[8]) * (11 - previous_difficulty) * (
+                stability ** -weights[9]
+            ) * (math.exp(weights[10] * (1 - retrievability)) - 1) * hard_penalty * easy_bonus
+    else:
+        difficulty = weights[4] - weights[5] * (grade - 3)
+        stability = weights[grade - 1]
+    stability = max(0.01, stability)
+    # FSRS-4.5 的目标保留率为 90% 时，区间等于稳定度。
+    interval = min(36500, max(1, round(stability)))
+    return {"stability": round(stability, 6), "difficulty": round(min(10, max(1, difficulty)), 6),
+            "reps": reps + 1, "lapses": lapses, "interval_days": interval,
+            "last_reviewed": today.isoformat(), "last_adjusted_date": today.isoformat(),
+            "due_date": (today + timedelta(days=interval)).isoformat()}
 
 
 def _today() -> date:
@@ -150,13 +196,13 @@ def _reconcile(state: dict, cache: dict | None = None) -> None:
             continue
 
 
-def _due_cards(state: dict, cache: dict | None = None) -> list[dict]:
+def _due_cards(state: dict, cache: dict | None = None, *, arcade: bool = False) -> list[dict]:
     from . import training
     today = _today().isoformat()
     cards = [c for c in state["cards"].values()
              if not c["paused"] and not c.get("superseded")
              and c["due_date"] <= today and _valid(c, cache)
-             and not training.covered_today(c["topic_id"], c["item_id"])]
+             and (arcade or not training.covered_today(c["topic_id"], c["item_id"]))]
     return sorted(cards, key=lambda c: (c["due_date"], c["created_at"],
                                         c["topic_id"], c["item_id"], c["sentence_index"]))
 
@@ -417,11 +463,15 @@ def submit_attempt(session_id: str, submission_id: str, rating: str) -> dict:
         today = _today().isoformat()
         adjusted = card["last_adjusted_date"] != today
         if adjusted:
-            card["level"] = min(card["level"] + 1, 4) if rating == "independent" else 0
-            card["due_date"] = (
-                _today() + timedelta(days=INTERVAL_DAYS[card["level"]])
-            ).isoformat()
-            card["last_adjusted_date"] = today
+            if card.get("stability"):
+                grade = {"independent": "good", "needs_hint": "hard", "unable": "again"}[rating]
+                card.update(fsrs_review(card, grade, _today()))
+            else:
+                card["level"] = min(card["level"] + 1, 4) if rating == "independent" else 0
+                card["due_date"] = (
+                    _today() + timedelta(days=INTERVAL_DAYS[card["level"]])
+                ).isoformat()
+                card["last_adjusted_date"] = today
         attempt = {
             "submission_id": submission_id, "session_id": session_id, "card_id": card["id"],
             "topic_id": card["topic_id"], "item_id": card["item_id"],
@@ -473,6 +523,53 @@ def enroll_card(topic_id: str, item_id: str, index: int) -> dict:
         _supersede_older(state, card)
         _write(state)
         return _preview(card)
+
+
+def blitz_cards() -> list[dict]:
+    with _LOCK:
+        state, cache = _load(), {}
+        _reconcile(state, cache)
+        return [dict(card) for card in _due_cards(state, cache, arcade=True)]
+
+
+def grade_arcade(topic_id: str, item_id: str, index: int, fingerprint: str,
+                 rating: str, submission_id: str) -> dict:
+    if rating not in {"good", "again"} or not submission_id or len(submission_id) > 100:
+        raise ValueError("请选择有效的复习结果")
+    with _LOCK, study_progress._LOCK, library.LIB_LOCK:
+        found = study.get_material(topic_id, item_id)
+        material = found.get("material", {})
+        rows = material.get("sentences", [])
+        if material.get("source_fingerprint") != fingerprint or not 0 <= index < len(rows):
+            raise ValueError("材料已更新，请刷新后再练")
+        state = _load()
+        card_id = _card_id(topic_id, item_id, index, fingerprint)
+        receipt = f"arcade:{card_id}:{submission_id}"
+        if receipt in state["receipts"]:
+            return state["receipts"][receipt]
+        card = state["cards"].get(card_id)
+        if card is None:
+            card = _make_card(topic_id, item_id, index, found, None, "arcade")
+            card["legacy"] = False
+            state["cards"][card_id] = card
+        card["paused"] = False
+        _supersede_older(state, card)
+        adjusted = card["last_adjusted_date"] != _today().isoformat()
+        if adjusted:
+            card.update(fsrs_review(card, rating, _today()))
+        result = {"card_id": card_id, "topic_id": topic_id, "item_id": item_id,
+                  "sentence_index": index, "rating": "independent" if rating == "good" else
+                  "unable", "fsrs_grade": rating, "schedule_adjusted": adjusted,
+                  "submitted_at": _now_iso(), "date": _today().isoformat(),
+                  "next_due_date": card["due_date"], "key_chunk": rows[index].get("key_chunk", ""),
+                  "question": card["question"], "zh": card["zh"], "en": card["en"],
+                  "spoken_self_report": True, "recorded": False, "hint_used": False,
+                  "recording_id": None,
+                  "session_id": "arcade", "submission_id": submission_id}
+        state["attempts"].append(result)
+        state["receipts"][receipt] = result
+        _write(state)
+        return result
 
 
 def get_card_for_sentence(topic_id: str, item_id: str, index: int) -> dict:

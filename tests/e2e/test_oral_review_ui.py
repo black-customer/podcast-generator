@@ -268,14 +268,18 @@ def test_late_oral_action_does_not_replace_new_route():
         browser = p.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1536, "height": 1024})
         data = _mock_api(page, delayed_action=True)
+        page.route("**/api/arcade/blitz?summary=true", lambda route: route.fulfill(
+            json={"due_count": 0}))
+        page.route("**/api/arcade/error-board", lambda route: route.fulfill(
+            json={"top": [], "today_chunks": [], "prompt": ""}))
         try:
             page.goto(f"{BASE_URL}/#/oral-review/session-test")
             page.locator("[data-oral='no-record']").click()
             page.locator("#nav-today").click()
-            page.get_by_role("heading", name="今日练习", exact=True).wait_for()
+            page.locator(".arcade-home").wait_for()
             data["pending_route"].fulfill(json=data["pending_body"])
             page.wait_for_timeout(200)
-            assert page.locator(".training-page").count() == 1
+            assert page.locator(".arcade-home").count() == 1
             assert page.locator(".oral-compare").count() == 0
         finally:
             browser.close()

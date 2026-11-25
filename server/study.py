@@ -25,6 +25,14 @@ Each sentence may have gap_kind: text_supported_error, explicit_gap, or refineme
 Only report an original_error when an exact English quote from the raw
 answer proves a real grammatical or spelling error. Never treat a valid alternative wording as an
 error. Chinese input is not evidence of an English error. Do not infer pronunciation or scores."""
+SYSTEM_PROMPT += """ Include a key_chunk copied verbatim from each English sentence: a useful
+multiword phrase the learner can reuse. For a supported error, optionally include category as one
+of plural, tense, subject_verb_agreement, article, preposition, word_order, conjunction,
+collocation, or other. Return JSON only, e.g. {"complete_chinese":"中文","sentences":[]}."""
+
+ERROR_LABELS = {"plural": "单复数", "tense": "时态", "subject_verb_agreement": "主谓一致",
+                "article": "冠词", "preposition": "介词", "word_order": "语序",
+                "conjunction": "连词", "collocation": "搭配", "other": "其他语法或用词"}
 
 
 class MaterialError(ValueError):
@@ -32,13 +40,14 @@ class MaterialError(ValueError):
 
 
 def _answer_sentences(text: str) -> list[str]:
+    from .alignment import split_sentences
     from .tts import parse_dialogue
 
     dialogue = parse_dialogue(text or "") or []
     answer = []
     for speaker, body in dialogue:
         if speaker.lower() == "b":
-            answer.extend(re.split(r"(?<=[.!?])\s+", body.strip()))
+            answer.extend(split_sentences(body))
     return [part.strip() for part in answer if part.strip()]
 
 
@@ -71,7 +80,7 @@ def expected_sentences(texts: dict) -> list[str]:
     return visible
 
 
-def validate_material(material: dict, texts: dict) -> dict:
+def validate_material(material: dict, texts: dict, *, require_chunks: bool = False) -> dict:
     if not isinstance(material, dict):
         raise MaterialError("逐句材料必须是 JSON 对象")
     original = _effective_original(texts)
@@ -96,6 +105,14 @@ def validate_material(material: dict, texts: dict) -> dict:
         entry = {field: row[field].strip() for field in (
             "zh", "en", "explanation", "usage"
         )}
+        chunk = row.get("key_chunk")
+        if chunk is not None or require_chunks:
+            from .speech_worker import matched_chunks, tokens
+
+            if (not isinstance(chunk, str) or re.search(r"[\u3400-\u9fff]", chunk) or
+                    not 2 <= len(tokens(chunk)) <= 12 or not matched_chunks(en, [chunk])):
+                raise MaterialError(f"第 {index} 句的语块须是原句中连续的 2–12 个英文词")
+            entry["key_chunk"] = chunk.strip()
         error = row.get("original_error")
         kind = row.get("gap_kind")
         if kind is not None:
@@ -119,6 +136,9 @@ def validate_material(material: dict, texts: dict) -> dict:
             entry["original_error"] = {
                 key: error[key].strip() for key in ("quote", "issue", "correction")
             }
+            category = error.get("category")
+            if isinstance(category, str) and category in ERROR_LABELS:
+                entry["original_error"]["category"] = category
         cleaned.append(entry)
     result = {
         "version": VERSION,
@@ -186,7 +206,8 @@ def set_status(
         )
 
 
-def generate_material(topic_id: str, item_id: str) -> dict:
+def generate_material(topic_id: str, item_id: str, *, cancel: threading.Event | None = None,
+                      require_chunks: bool = False) -> dict:
     """独立的一次文本模型调用；调用失败只改变材料状态。"""
     full = library.get_item_full(topic_id, item_id)
     original = _effective_original(full)
@@ -217,21 +238,23 @@ def generate_material(topic_id: str, item_id: str) -> dict:
     settings = load_settings()
     if settings.get("dry_run"):
         raise MaterialError("dry-run 不调用文本模型；可用 Agent 材料命令准备")
-    content = rewrite._chat(settings, messages, None)
+    content = rewrite._chat(settings, messages, cancel)
     try:
         result = rewrite._extract_json(content)
-        validate_material(result, full)
+        validate_material(result, full, require_chunks=require_chunks)
     except (MaterialError, rewrite.RewriteError) as exc:
         # 模型偶发漏字段、结构漂移或直接输出非 JSON：带错误清单重问一次（同 rewrite 修复模式）
         messages.append({"role": "assistant", "content": content[:4000]})
         messages.append({"role": "user", "content": (
             f"上次输出存在以下问题：{exc}。请只返回修正后的完整 JSON 对象，"
             "仍须包含 complete_chinese 与逐句 sentences，不要添加其他文字。")})
-        content = rewrite._chat(settings, messages, None)
+        content = rewrite._chat(settings, messages, cancel)
         result = rewrite._extract_json(content)
-    if fingerprint != source_fingerprint(library.get_item_full(topic_id, item_id)):
-        raise MaterialError("准备期间回答已变化，请重新准备材料")
-    return save_material(topic_id, item_id, result)
+        validate_material(result, full, require_chunks=require_chunks)
+    with library.LIB_LOCK:
+        if fingerprint != source_fingerprint(library.get_item_full(topic_id, item_id)):
+            raise MaterialError("准备期间回答已变化，请重新准备材料")
+        return save_material(topic_id, item_id, result)
 
 
 def prepare_async(topic_id: str, item_id: str) -> bool:

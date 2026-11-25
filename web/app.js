@@ -1292,6 +1292,8 @@ async function ManageView(token) {
     ? `<span class="mg-pill ${health.mode === "live" ? "ok" : "warn"}">${health.mode === "live" ? "LIVE" : "DRY-RUN"}</span>
        <span class="mg-hint">ffmpeg: ${esc(health.ffmpeg.ok ? "可用" : health.ffmpeg.message)}</span>`
     : "";
+  const localVoice = settings.tts_provider === "kokoro_local";
+  const textKeyHint = settings.llm_api_key_set ? "已保存，输入新值可替换" : "粘贴 DeepSeek API Key";
 
   $app.innerHTML = `
     <div class="section-header settings-page-head">
@@ -1301,20 +1303,52 @@ async function ManageView(token) {
       </div>
       <div class="settings-head-actions">${modeBadge}<a class="text-action" href="#/import">离线语料包</a></div>
     </div>
+    <section class="mg-card arcade-engine-settings" aria-labelledby="text-engine-title">
+      <h3 id="text-engine-title">文本改写引擎</h3>
+      <form id="arcade-text-config">
+        <div class="arcade-setting-row">
+          <label class="mg-label">服务<select class="mg-input" id="arcade-llm-provider">
+            <option value="deepseek" ${settings.llm_provider !== "custom" ? "selected" : ""}>DeepSeek</option>
+            <option value="custom" ${settings.llm_provider === "custom" ? "selected" : ""}>自定义兼容接口</option>
+          </select></label>
+          <label class="mg-label">API Key<input class="mg-input" type="password" id="arcade-llm-key"
+            autocomplete="off" placeholder="${textKeyHint}"></label>
+        </div>
+        <details class="mg-advanced"><summary>高级设置</summary><div class="arcade-setting-row">
+          <label class="mg-label">Base URL<input class="mg-input" id="arcade-llm-url" value="${esc(settings.llm_base_url || "https://api.deepseek.com/v1")}"></label>
+          <label class="mg-label">模型<input class="mg-input" id="arcade-llm-model" value="${esc(settings.llm_model || "deepseek-flash")}"></label>
+        </div></details>
+        <div class="mg-actions"><button type="submit" class="mg-btn primary">保存文本设置</button>
+          <button type="button" class="mg-btn" id="arcade-llm-test">测试连接</button>
+          <span class="mg-hint" id="arcade-llm-result" role="status">${settings.llm_api_key_set ? "已配置 Key" : settings.llm_available ? "旧文本配置可用" : ""}</span></div>
+      </form>
+    </section>
     <!-- 设置卡片：语音引擎 + 角色声音（概念 07，全宽） -->
     <div class="mg-card settings-voice-card">
       <div class="voice-setting-lead">
         <div>
-          <h3>服务与连接</h3>
-          <p>选择语音引擎和角色声音，让练习更贴近真实考场。</p>
+          <h3>本地语音与分身</h3>
+          <p>为考官和回答者分别选声音。</p>
         </div>
         <a class="mg-btn primary" href="#/voices">音色展台</a>
       </div>
       <form id="mg-settings-form">
         <div class="engine-cards" id="engine-cards">
-          <label class="engine-card ${settings.tts_provider !== "fish" ? "selected" : ""}">
-            <input type="radio" name="mg-engine" value="stepfun" ${settings.tts_provider !== "fish" ? "checked" : ""}>
-            <div class="engine-head"><strong>StepFun</strong><span class="mg-chip">推荐 · 更自然</span></div>
+          <label class="engine-card arcade-local-engine ${localVoice ? "selected" : ""}">
+            <input type="radio" name="mg-engine" value="kokoro_local" ${localVoice ? "checked" : ""}>
+            <div class="engine-head"><strong>本地语音引擎</strong><span class="mg-chip">离线合成</span></div>
+            <p class="engine-desc" id="arcade-speech-status" role="status">正在检查 ChineseAccent…</p>
+          </label>
+        </div>
+        <h3 class="settings-group-title">角色声音</h3><div class="role-cards" id="role-cards"></div>
+        <div class="voice-summary mg-hint" id="voice-summary"></div>
+
+        <details class="mg-advanced arcade-fallback-engines" ${localVoice ? "" : "open"}>
+          <summary>备用云语音</summary>
+          <div class="engine-cards">
+          <label class="engine-card ${settings.tts_provider === "stepfun" ? "selected" : ""}">
+            <input type="radio" name="mg-engine" value="stepfun" ${settings.tts_provider === "stepfun" ? "checked" : ""}>
+            <div class="engine-head"><strong>StepFun</strong></div>
             <p class="engine-desc">自然流畅，适合对话与口语练习 · StepAudio TTS 2.5</p>
             <div class="engine-row">
               <input class="mg-input" type="password" id="mg-s-stepkey" value="" autocomplete="off"
@@ -1334,10 +1368,8 @@ async function ManageView(token) {
             </div>
             <span class="mg-hint" id="mg-test-fish-result">${settings.fish_api_key_set ? "已配置 Key" : "未配置"}</span>
           </label>
-        </div>
-
-        <h3 class="settings-group-title">角色声音</h3><div class="role-cards" id="role-cards"></div>
-        <div class="voice-summary mg-hint" id="voice-summary"></div>
+          </div>
+        </details>
 
         <div class="mg-actions">
           <button type="submit" class="mg-btn primary">保存声音设置</button>
@@ -1345,6 +1377,9 @@ async function ManageView(token) {
         </div>
         <details class="mg-advanced">
           <summary>高级设置（语速 · 模型名 · fish 音色 ID · 生成参数）</summary>
+          <label class="mg-label">ChineseAccent 目录
+            <input class="mg-input" id="arcade-speech-directory" value="${esc(settings.speech_engine_dir || "")}">
+          </label>
           <label class="mg-label">音色 A Reference ID（fish 独白 / 对话 A 声）
             <input class="mg-input" id="mg-s-refa" value="${esc(settings.reference_id || "")}">
           </label>
@@ -1416,10 +1451,53 @@ async function ManageView(token) {
 
   const preferences = $app.querySelector(".study-preference");
   const settingsForm = document.getElementById("mg-settings-form");
-  settingsForm.insertBefore(preferences, settingsForm.querySelector(".mg-advanced"));
+  settingsForm.insertBefore(preferences, settingsForm.querySelector(".arcade-fallback-engines"));
   settingsForm.appendChild(settingsForm.querySelector(".mg-actions"));
   document.getElementById("study-hint-duration").onchange = e =>
     localStorage.setItem("study-hint-seconds", e.target.value);
+  const llmProvider = document.getElementById("arcade-llm-provider");
+  const llmResult = document.getElementById("arcade-llm-result");
+  const llmKey = document.getElementById("arcade-llm-key");
+  llmProvider.onchange = () => {
+    if (llmProvider.value === "deepseek") {
+      document.getElementById("arcade-llm-url").value = "https://api.deepseek.com/v1";
+      document.getElementById("arcade-llm-model").value = "deepseek-flash";
+    }
+  };
+  const llmSave = async () => {
+    const saved = await api("PUT", "/api/settings", { llm_provider: llmProvider.value,
+      llm_base_url: document.getElementById("arcade-llm-url").value.trim(),
+      llm_model: document.getElementById("arcade-llm-model").value.trim(), llm_api_key: llmKey.value });
+    llmKey.value = "";
+    if (saved.llm_api_key_set) llmKey.placeholder = "已保存，输入新值可替换";
+  };
+  document.getElementById("arcade-text-config").onsubmit = async event => {
+    event.preventDefault();
+    try { await llmSave(); llmResult.textContent = "文本设置已保存。"; }
+    catch (error) { llmResult.textContent = error.message; }
+  };
+  document.getElementById("arcade-llm-test").onclick = async event => {
+    const control = event.currentTarget;
+    control.disabled = true;
+    llmResult.textContent = "正在测试…";
+    try {
+      await llmSave();
+      const result = await api("POST", "/api/settings/test?provider=llm&capability=text");
+      llmResult.textContent = result.llm.message;
+    } catch (error) { llmResult.textContent = error.message; }
+    finally { control.disabled = false; }
+  };
+  const checkSpeech = async () => {
+    const status = document.getElementById("arcade-speech-status");
+    try {
+      const speech = await api("GET", "/api/speech/status");
+      if (viewStale(token)) return;
+      const profile = speech.profile;
+      status.textContent = speech.available ? (speech.kokoro ? "Kokoro 已就绪。" : "缺少 Kokoro 模型。") +
+        (profile ? `已识别个人声纹${profile.finetuned ? " · 已微调" : " · 尚未微调"}。` : "尚未录入声纹，分身选项将使用 Liam。") : speech.reason;
+    } catch (_) { if (!viewStale(token)) status.textContent = "本地引擎状态读取失败。"; }
+  };
+  checkSpeech();
 
   const adminDetails = document.querySelector(".content-admin");
   if (adminDetails) {
@@ -1427,8 +1505,9 @@ async function ManageView(token) {
   }
 
   // ---- 设置表单：引擎卡 + 角色卡（概念 07 / B06 旅程）----
-  const engineOf = () => ((document.querySelector('input[name="mg-engine"]:checked') || {}).value) || "stepfun";
+  const engineOf = () => document.querySelector('input[name="mg-engine"]:checked')?.value || "kokoro_local";
   const chosenVoices = {
+    kokoro_local: { q: settings.kokoro_question_voice || "af_bella", a: settings.kokoro_answer_voice || "golden_self" },
     stepfun: {
       q: settings.question_voice_id || "lively-girl",
       a: settings.answer_voice_id || "vibrant-youth",
@@ -1455,7 +1534,7 @@ async function ManageView(token) {
     const voices = voicesCache && voicesCache.provider === provider ? voicesCache.list : [];
     const nameOf = id => {
       const found = voices.find(v => (v.voice_id || v.reference_id) === id);
-      return found ? found.name : (id || "未选择");
+      return found ? found.name : (window.ArcadeUI?.voiceNames[id] || id || "未选择");
     };
     if (el) el.textContent = `最终音频：${nameOf(pair.q)} 提问，${nameOf(pair.a)} 回答。`;
   };
@@ -1464,6 +1543,25 @@ async function ManageView(token) {
     const box = document.getElementById("role-cards");
     if (!box) return;
     const provider = engineOf();
+    if (provider === "kokoro_local") {
+      const names = window.ArcadeUI.voiceNames;
+      const pair = chosenVoices[provider];
+      box.innerHTML = [["q", "考官提问"], ["a", "回答示范"]].map(([role, title]) =>
+        `<div class="arcade-local-role"><label class="mg-label">${title}<select class="mg-input" data-role="${role}">
+        ${Object.entries(names).filter(([voice]) => role === "a" || voice !== "golden_self").map(([voice, name]) =>
+          `<option value="${esc(voice)}" ${pair[role] === voice ? "selected" : ""}>${esc(name)}</option>`).join("")}</select></label>
+        <button type="button" class="mg-btn" data-local-preview="${role}">试听${title}</button></div>`).join("");
+      box.querySelectorAll("select").forEach(select => select.onchange = () => {
+        pair[select.dataset.role] = select.value;
+        mgSummary();
+      });
+      box.querySelectorAll("[data-local-preview]").forEach(control => control.onclick = () => {
+        const voice = pair[control.dataset.localPreview];
+        window.previewVoice(provider, voice, control);
+      });
+      mgSummary();
+      return;
+    }
     box.innerHTML = `<p class="mg-hint">加载音色库…</p>`;
     let voices;
     try {
@@ -1549,7 +1647,12 @@ async function ManageView(token) {
       episode_gap_ms: parseFloat(document.getElementById("mg-s-egap").value) || 0,
       dry_run: document.getElementById("mg-s-dry").checked,
     };
-    if (provider === "stepfun") {
+    if (provider === "kokoro_local") {
+      const directory = document.getElementById("arcade-speech-directory").value.trim();
+      if (directory !== settings.speech_engine_dir) payload.speech_engine_dir = directory;
+      payload.kokoro_question_voice = chosenVoices.kokoro_local.q;
+      payload.kokoro_answer_voice = chosenVoices.kokoro_local.a;
+    } else if (provider === "stepfun") {
       payload.question_voice_id = chosenVoices.stepfun.q;
       payload.answer_voice_id = chosenVoices.stepfun.a;
     } else {
@@ -1564,7 +1667,8 @@ async function ManageView(token) {
     }
     if (tempRaw !== "") payload.temperature = parseFloat(tempRaw);
     try {
-      await api("PUT", "/api/settings", payload);
+      Object.assign(settings, await api("PUT", "/api/settings", payload));
+      if (provider === "kokoro_local") checkSpeech();
       document.getElementById("mg-test-result").textContent = "声音设置已保存。";
       toast("声音设置已保存");
     } catch (err) {
@@ -2083,18 +2187,19 @@ function showApiJobWait(res) {
   const card = document.querySelector(".bank-answer-card");
   if (!card) return;
   card.innerHTML = `
-    <div class="bank-answer-q">API 模式生成中（StepFun 改写 → 校验 → 音频合成）</div>
+    <div class="bank-answer-q">${MobileRuntime.native ? "StepFun 正在生成" : "正在准备音频和练习材料"}</div>
     <div class="api-stage-row" id="api-stage-row">
       <span class="api-stage" data-phase="rewrite">① 母语者改写</span>
       <span class="api-stage" data-phase="save">② 写入语料</span>
       <span class="api-stage" data-phase="tts">③ 合成音频</span>
+      ${MobileRuntime.native ? "" : '<span class="api-stage" data-phase="study">④ 逐句材料</span>'}
     </div>
     <p class="bank-answer-hint" id="api-job-hint">⏳ 正在处理……</p>
     <div class="bank-answer-actions" id="api-job-fallback" style="display:none;">
       ${MobileRuntime.native ? '<a class="study-button" href="#/my/tasks">查看任务、继续或交给电脑</a>' : `<button class="bank-submit-btn" data-agent-topic="${esc(res.topic_id)}" data-agent-item="${esc(res.item_id)}">改用 Agent 模式</button>`}
     </div>`;
   const mark = (phase) => {
-    const order = ["rewrite", "save", "tts"];
+    const order = ["rewrite", "save", "tts", "study"];
     const idx = order.indexOf(phase);
     document.querySelectorAll("#api-stage-row .api-stage").forEach((el, i) => {
       el.classList.toggle("active", i <= idx);
@@ -2112,7 +2217,8 @@ function showApiJobWait(res) {
       if (job.phase) mark(MobileRuntime.native && job.phase === 'audio' ? 'tts' : job.phase);
       if (job.state === "done") {
         genWaitStop();
-        location.hash = `#/done/${encodeURIComponent(res.topic_id)}/${encodeURIComponent(res.item_id)}`;
+        const destination = window.ArcadeUI?.enabled() ? "train" : "done";
+        location.hash = `#/${destination}/${encodeURIComponent(res.topic_id)}/${encodeURIComponent(res.item_id)}`;
       } else if (job.state === "error" || job.state === "cancelled" || job.state === "interrupted") {
         genWaitStop();
         const msg = (job.errors || []).map((e) => e.message).join("；") || "任务失败";
@@ -2146,8 +2252,11 @@ async function bankSubmitAnswer(questionId) {
   btn.disabled = true;
   btn.textContent = mode === "api" ? "启动生成中…" : "创建条目中…";
   try {
-    const res = await api("POST", "/api/generation-requests", { question_id: questionId, answer, mode, ...TrainingBaseline.values() });
-    await TrainingBaseline.attach(questionId, res, answer).catch(e=>toast('回答已提交，首答暂未关联：'+e.message));
+    const modern = window.ArcadeUI?.enabled();
+    const source = modern ? { blind_token: ArcadeUI.blindToken(questionId) } : TrainingBaseline.values();
+    const res = await api("POST", "/api/generation-requests", { question_id: questionId, answer, mode, ...source });
+    if (modern) ArcadeUI.clearBlind(questionId);
+    else await TrainingBaseline.attach(questionId, res, answer).catch(e=>toast('回答已提交，首答暂未关联：'+e.message));
     await AnswerExperience.submitted(draft, answer, mode);
     if (viewStale(token)) { toast("回答已提交，可在我的语料中查看。"); return; }
     if (draft && (draft.answer.trim() !== answer || draft.mode !== mode)) toast("新输入的文字与选择仍保存在未提交草稿中。");
@@ -2157,7 +2266,7 @@ async function bankSubmitAnswer(questionId) {
   } catch (e) {
     toast(`提交失败：${e.message}`);
     btn.disabled = false;
-    btn.textContent = "提交作答";
+    btn.textContent = mode === "api" && window.ArcadeUI?.enabled() ? "一键生成并直接开练" : "提交作答";
   }
 }
 
@@ -2219,16 +2328,19 @@ async function BankView(token) {
 
   const selItem = (p.sel && data.items.find((it) => it.id === p.sel)) || bankRandomPick;
   const packMode = typeof PackState !== "undefined" && PackState.active;
+  const modern = window.ArcadeUI?.enabled();
   const writing = selItem && (!selItem.answered || p.write === "1");
   // 首次使用引导：一个 key 都没配时引导去设置向导（R04 概念 01）
-  let setupBanner = "";
+  let setupBanner = "", defaultApi = MobileRuntime.native;
   if (!packMode) {
     try {
       const st = await api("GET", "/api/settings");
-      if (!st.stepfun_api_key_set && !st.fish_api_key_set) {
+      defaultApi ||= modern && !!st.llm_available;
+      if (viewStale(token)) return;
+      if (!(st.llm_available || st.stepfun_api_key_set || st.fish_api_key_set)) {
         setupBanner = `
-        <a class="setup-banner" href="${MobileRuntime.native ? '#/my/services' : '#/setup'}">
-          <span>开始前，先连接语音服务并选择两位说话者的声音。</span>
+        <a class="setup-banner" href="${MobileRuntime.native ? '#/my/services' : '#/manage'}">
+          <span>${modern ? "配置文本改写引擎，即可生成后直接开练。" : "开始前，先连接语音服务并选择两位说话者的声音。"}</span>
           <strong>去设置 →</strong>
         </a>`;
       }
@@ -2248,20 +2360,20 @@ async function BankView(token) {
       ${selItem.answered ? `<label for="answer-version">已保存回答</label><select id="answer-version" class="bank-select" aria-label="切换回答版本"></select><section id="saved-answer" aria-live="polite">正在读取已有回答…</section>` : selJump}
       ${selItem.answered && !packMode && !writing ? `<button class="btn-pill" onclick="bankGo({write: '1'})">再回答一次／继续草稿</button>` : ""}
       ${packMode ? `<p class="bank-answer-hint">APP 浏览模式：已回答状态仅依据当前导入包，提交作答请在电脑端进行。</p>` : writing ? `
+      ${modern ? '<div class="arcade-blind-row"><button type="button" class="study-button" id="arcade-blind">直接开口盲答</button><p id="arcade-blind-status" role="status">在本机转写，原声留作练习前后的对比。</p></div>' : ""}
       <textarea id="bank-answer-input" rows="6"
         placeholder="用中文或英文自由作答——说出你想表达的意思，母语者版本由 Agent 或 API 改写后生成音频"></textarea>
       <p id="draft-status" class="study-muted" role="status">正在读取草稿 · 未提交</p><div id="draft-conflict"></div>
       <div class="study-actions"><button class="btn-pill" id="draft-retry">查看服务草稿／重试</button><button class="btn-pill" id="draft-discard">丢弃草稿</button></div>
       <div class="bank-answer-actions bank-mode-pick">
-        ${MobileRuntime.native ? '' : '<label><input type="radio" name="bank-gen-mode" value="agent" checked> Agent 模式（默认：复制指令给 Codex / ZCode 等 Agent）</label>'}
-        <label><input type="radio" name="bank-gen-mode" value="api" ${MobileRuntime.native ? 'checked' : ''}> API 模式（StepFun 一键改写 + 音频）</label>
+        ${MobileRuntime.native ? '' : `<label><input type="radio" name="bank-gen-mode" value="agent" ${defaultApi ? "" : "checked"}> Agent 模式</label>`}
+        <label><input type="radio" name="bank-gen-mode" value="api" ${defaultApi ? 'checked' : ''}> ${modern ? "API 模式（生成后直接开练）" : "API 模式（StepFun 一键改写 + 音频）"}</label>
       </div>
       <div class="bank-answer-actions">
-        <button id="bank-answer-submit" class="bank-submit-btn" data-bank-submit="${esc(selItem.id)}">提交作答</button>
+        <button id="bank-answer-submit" class="bank-submit-btn" data-bank-submit="${esc(selItem.id)}">${modern && defaultApi ? "一键生成并直接开练" : "提交作答"}</button>
         <button class="btn-pill" onclick="bankGo({sel: ''})">收起</button>
       </div>
-      <p class="bank-answer-hint">提交后条目进入话题「${esc(selItem.topic_name_en || selItem.topic_name)}」。
-      Agent 模式复制指令给你的 AI Agent，完成后本页自动跳转；API 模式用已配置的 StepFun Key 一次完成改写与音频。</p>` : ""}
+      <p class="bank-answer-hint">提交后条目进入话题「${esc(selItem.topic_name_en || selItem.topic_name)}」。</p>` : ""}
     </div>` : "";
 
   const rowsHtml = data.items.map((it) => `
@@ -2333,7 +2445,21 @@ async function BankView(token) {
     const radio = $app.querySelector(`[name='bank-gen-mode'][value='${previousMode}']`);
     if (radio) radio.checked = true;
   }
-  if (selItem) { AnswerExperience.savedAnswer(selItem, token); AnswerExperience.bindDraft(selItem); TrainingBaseline.mount(selItem).catch(e=>toast('首答草稿读取失败：'+e.message)); }
+  if (selItem) {
+    AnswerExperience.savedAnswer(selItem, token);
+    AnswerExperience.bindDraft(selItem).then(() => {
+      if (!modern || viewStale(token)) return;
+      const refresh = () => {
+        const submit = document.getElementById("bank-answer-submit");
+        if (submit && !submit.disabled) submit.textContent = document.querySelector(
+          '[name="bank-gen-mode"][value="api"]')?.checked ? "一键生成并直接开练" : "提交作答";
+      };
+      document.querySelectorAll('[name="bank-gen-mode"]').forEach(radio => radio.addEventListener("change", refresh));
+      refresh();
+      ArcadeUI.bindBlind(selItem.id);
+    });
+    if (!modern) TrainingBaseline.mount(selItem).catch(e=>toast('首答草稿读取失败：'+e.message));
+  }
   AnswerExperience.recoveryList(token);
   if (typeof UIContinuity !== 'undefined') UIContinuity.restoreBank();
 }
@@ -2475,6 +2601,7 @@ function route() {
   if (typeof UIContinuity !== 'undefined') UIContinuity.navigation(location.hash);
   if (typeof TrainingBaseline !== "undefined") TrainingBaseline.leave();
   if (typeof TrainingUI !== "undefined") TrainingUI.reset();
+  window.ArcadeUI?.reset();
   AnswerExperience.leave();
   const episodeAudio = document.getElementById("ep-audio");
   if (episodeAudio) ListeningExperience.detach(episodeAudio);
@@ -2499,7 +2626,7 @@ function route() {
   document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
   const base = hash.split("?")[0];
   const owner = base.startsWith("#/play/") || base.startsWith("#/episode/") ? "playing"
-    : base === "#/today" || base.startsWith("#/train/") || base.startsWith("#/oral-review/") || base === "#/study-history" ? "today"
+    : ["#/today", "#/legacy-today", "#/blitz"].includes(base) || base.startsWith("#/train/") || base.startsWith("#/legacy-train/") || base.startsWith("#/oral-review/") || base === "#/study-history" ? "today"
     : base.startsWith("#/bank") || base.startsWith("#/practice") ? "bank"
     : base.startsWith("#/review") ? "review"
     : base.startsWith("#/manage") || base.startsWith("#/setup") || base.startsWith("#/voices") ? "settings"
@@ -2528,12 +2655,21 @@ function route() {
     return;
   }
 
-  if (hash === "#/today") { TrainingUI.today(token); return; }
+  if (hash === "#/today") {
+    if (window.ArcadeUI?.enabled()) ArcadeUI.home(token);
+    else TrainingUI.today(token);
+    return;
+  }
+  if (hash === "#/legacy-today") { TrainingUI.today(token); return; }
+  if (hash === "#/blitz" && window.ArcadeUI?.enabled()) { ArcadeUI.blitz(token); return; }
   if (hash === "#/sentence-today") { OralReviewUI.today(token); return; }
-  if (hash.startsWith("#/train/")) {
-    const parts = hash.slice(8).split("/");
+  if (hash.startsWith("#/train/") || hash.startsWith("#/legacy-train/")) {
+    const parts = hash.split("/").slice(2);
     if (parts.length >= 2) {
-      TrainingUI.view(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
+      const surface = hash.startsWith("#/train/") && window.ArcadeUI?.enabled() ? ArcadeUI : TrainingUI;
+      const ids = [decodeURIComponent(parts[0]), decodeURIComponent(parts[1])];
+      if (surface === TrainingUI) surface.view(...ids, token);
+      else surface.open(...ids, token);
       return;
     }
   }

@@ -10,7 +10,7 @@ const TrainingUI = (() => {
     renderedStep='',uiLocked=false,saveInFlight=false,pendingSavePromise=null;
   const root=()=>document.getElementById('training-root');
   const path=(suffix='')=>`/api/topics/${encodeURIComponent(tid)}/items/${encodeURIComponent(iid)}/study${suffix}`;
-  const link=(t,i)=>`#/train/${encodeURIComponent(t)}/${encodeURIComponent(i)}`;
+  const link=(t,i)=>`#/${window.ArcadeUI?.enabled() ? 'legacy-train' : 'train'}/${encodeURIComponent(t)}/${encodeURIComponent(i)}`;
   const button=(text,action,primary=false,extra='')=>`<button type="button" class="study-button ${primary?'primary':''}" data-train="${action}" ${extra}>${text}</button>`;
   const text=(id,label,value='',extra='')=>`<label class="training-field" for="${id}">${label}</label><textarea id="${id}" ${extra}>${esc(value)}</textarea>`;
   function note(message){const el=document.getElementById('training-status');if(el)el.textContent=message;}

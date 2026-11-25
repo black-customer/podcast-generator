@@ -163,7 +163,7 @@ def test_desktop_save_failure_retry_and_material_fallback():
             route.fulfill(json=ctx)
 
         page.route("**/api/topics/t/items/i/study/training**", handler)
-        page.goto(BASE + "/#/train/t/i")
+        page.goto(BASE + "/#/legacy-train/t/i")
         page.get_by_role("button", name="不录音，直接继续").click()
         expect(page.locator("#training-status")).to_contain_text("synthetic save failed")
         expect(page.get_by_role("button", name="不录音，直接继续")).to_be_visible()
@@ -236,9 +236,9 @@ def test_recording_failure_survives_reload_and_retries_same_upload(failure):
             route.fulfill(json=ctx)
 
         page.route("**/api/topics/t/items/i/study/**", handler)
-        page.goto(BASE + "/#/train/t/i")
+        page.goto(BASE + "/#/legacy-train/t/i")
         page.get_by_role("button", name="开始录音", exact=True).click()
-        page.wait_for_timeout(250)
+        expect(page.get_by_role("button", name="停止并保存", exact=True)).to_be_enabled()
         page.get_by_role("link", name="返回练习", exact=True).click()
         expect(page.locator("#recording-leave-dialog")).to_be_visible()
         page.get_by_role("button", name="停止并保存后离开", exact=True).click()

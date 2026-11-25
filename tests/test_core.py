@@ -176,6 +176,7 @@ def test_safe_path_traversal():
 # ---------------------------------------------------------------- API
 
 def test_health(client):
+    client.put("/api/settings", json={"speech_engine_dir": "missing-test-speech-engine"})
     r = client.get("/api/health")
     assert r.status_code == 200
     assert r.json()["mode"] == "dry_run"  # 隔离环境下没有 key

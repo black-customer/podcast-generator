@@ -6,11 +6,13 @@
 打包完成后自动审计：zip 内绝不出现 settings.json、个人语料、voice_samples、.tmp、
 question_bank.json（私有快照）、任何 audio 文件。
 """
+import json
 import sys
 import zipfile
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE))
 OUT = BASE / "dist" / "ielts-pod-portable.zip"
 
 INCLUDE_DIRS = [
@@ -75,7 +77,8 @@ def main() -> int:
                 zf.write(f, name)
                 count += 1
 
-        # 审计（打包事故 = 泄漏）：逐条检查 zip 内路径
+    # 以读者视角审计 ZIP，Windows 写入期间的 ZipInfo 可能还保留反斜杠。
+    with zipfile.ZipFile(OUT) as zf:
         for info in zf.infolist():
             parts = set(Path(info.filename).parts)
             hit = parts & FORBIDDEN_PARTS
@@ -83,6 +86,18 @@ def main() -> int:
                 violations.append(f"{info.filename}（命中 {hit}）")
             if info.filename.endswith(FORBIDDEN_SUFFIXES):
                 violations.append(f"{info.filename}（音频/签名产物不应入包）")
+            if info.filename == "data/settings.example.json":
+                from server.config import _real_key
+
+                try:
+                    example = json.loads(zf.read(info))
+                    contains_key = any(_real_key(value) for key, value in example.items()
+                                       if key.endswith("_api_key"))
+                except (ValueError, AttributeError, zipfile.BadZipFile):
+                    violations.append("data/settings.example.json（示例配置格式无效）")
+                    continue
+                if contains_key:
+                    violations.append("data/settings.example.json（示例配置含非占位密钥）")
 
     if violations:
         print("审计失败：分享包包含禁止内容！", file=sys.stderr)
