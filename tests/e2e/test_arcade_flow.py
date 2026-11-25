@@ -70,13 +70,14 @@ def test_arcade_from_bank_blind_recording_through_blitz():
         page.on("pageerror", lambda error: errors.append(str(error)))
         demo_url = f"{ITEM}/audio/podcast"
         audio_data, media, lines, words = _demo_audio()
+        prompt = lines[0]["text"]
         rows = [{**row, "audio": {"scope": "sentence", "start": line["start"],
                                  "end": line["end"]}}
                 for row, line in zip(SENTENCES, lines[1:], strict=True)]
         assessment = {"wpm": 118, "long_pauses": 1, "matched_chunks": ["helps me unwind"]}
         blind = {"id": "blind", "url": f"{ITEM}/arcade/recordings/blind",
                  "analysis": {"wpm": 89, "long_pauses": 3}}
-        demo = {"question": QUESTION, "status": "ready", "original_answer": "It help me unwind.",
+        demo = {"question": prompt, "status": "ready", "original_answer": "It help me unwind.",
                 "source_fingerprint": "test-fingerprint", "dry_run": False, "voice": "golden_self",
                 "sentences": rows, "blind": blind, "final": None, "audio_url": demo_url,
                 "answer_spans": [row["audio"] for row in rows], "alignment": {
@@ -107,7 +108,7 @@ def test_arcade_from_bank_blind_recording_through_blitz():
             "top": [{"label": "主谓一致", "count": 2}, {"label": "时态", "count": 1}],
             "today_chunks": ["helps me unwind"], "prompt": "引导我用 helps me unwind。",
         }))
-        question = {"id": "arcade-q", "text": QUESTION, "part": 1, "topic_name": "游泳",
+        question = {"id": "arcade-q", "text": prompt, "part": 1, "topic_name": "游泳",
                     "topic_name_en": "Swimming", "answered": False}
         page.route("**/api/bank/questions?*", lambda route: route.fulfill(json={
             "available": True, "items": [question], "total": 1, "page": 1, "pages": 1,
@@ -149,7 +150,7 @@ def test_arcade_from_bank_blind_recording_through_blitz():
         stop.click()
         expect(page.locator("[data-stage='1']")).to_be_visible()
         expect(page.get_by_text("It help me unwind", exact=True)).to_be_visible()
-        expect(page.locator(".arcade-line").first).to_contain_text(QUESTION)
+        expect(page.locator(".arcade-line").first).to_contain_text(prompt)
         longest = max(words, key=lambda word: word["end"] - word["start"])
         token = page.get_by_role("button", name=longest["text"], exact=True).first
         token.click()

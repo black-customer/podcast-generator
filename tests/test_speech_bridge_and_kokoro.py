@@ -80,3 +80,44 @@ def test_reference_word_boundaries_correct_bias_without_crossing():
     assert words[0]["end"] == words[1]["start"] == 0.104
     assert words[1]["end"] == words[2]["start"] == 0.264
     assert aligned["words"][0]["start"] == 0.04
+
+
+def test_reference_alignment_keeps_time_for_spoken_numbers(tmp_path):
+    calls = []
+    wav = tmp_path / "sample.wav"
+
+    def align(path, text, *, reference):
+        assert path == wav and reference
+        calls.append(text)
+        spoken = "in two thousand twenty three"
+        rows = [("in", 0.08, 1.14)] if text == "In 2023?" else [
+            ("in", 0.08, 0.18), ("two", 0.22, 0.36), ("thousand", 0.37, 0.63),
+            ("twenty", 0.65, 0.84), ("three", 0.86, 1.14),
+        ]
+        return {"duration": 1.23, "greedy_transcript": spoken, "words": [
+            {"word": word, "start": start, "end": end} for word, start, end in rows
+        ]}
+
+    words = speech_worker.align_reference_words(wav, "In 2023?", align)
+
+    assert calls == ["In 2023?", "in two thousand twenty three"]
+    assert [row["text"] for row in words] == ["In", "2023"]
+    assert words[0]["end"] == words[1]["start"] == 0.184
+    assert words[1]["end"] == 1.166
+
+
+@pytest.mark.parametrize("text", ["I swim.", "I swim 200 metres."])
+def test_reference_alignment_uses_original_result_when_number_reading_is_unclear(tmp_path, text):
+    calls = []
+
+    def align(_path, reference_text, **_kwargs):
+        calls.append(reference_text)
+        return {"duration": 1.4, "greedy_transcript": "i swing", "words": [
+            {"word": "I", "start": 0.08, "end": 0.16},
+            {"word": "swim", "start": 0.2, "end": 0.37},
+        ]}
+
+    words = speech_worker.align_reference_words(tmp_path / "sample.wav", text, align)
+
+    assert calls == [text]
+    assert [row["text"] for row in words] == ["I", "swim"]

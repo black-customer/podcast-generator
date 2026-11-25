@@ -6,10 +6,21 @@ import os
 import re
 import shutil
 import sys
+from collections.abc import Callable
+from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
 
 _ENGLISH_WORD = re.compile(r"[a-z]+(?:'[a-z]+)*|\d+", re.I)
+_WRITTEN_WORD = re.compile(r"[a-z]+(?:['’][a-z]+)*|\d+(?:[.,]\d+)*(?:st|nd|rd|th)?", re.I)
+_SPOKEN_NUMBERS = frozenset((
+    "zero oh one two three four five six seven eight nine ten eleven twelve thirteen fourteen "
+    "fifteen sixteen seventeen eighteen nineteen twenty thirty forty fifty sixty seventy eighty "
+    "ninety hundred thousand million billion trillion first second third fourth fifth sixth "
+    "seventh eighth ninth tenth eleventh twelfth thirteenth fourteenth fifteenth sixteenth "
+    "seventeenth eighteenth nineteenth twentieth thirtieth fortieth fiftieth sixtieth seventieth "
+    "eightieth ninetieth hundredth thousandth millionth billionth trillionth"
+).split())
 _HAN = re.compile(r"[\u3400-\u9fff]")
 _REFERENCE_ONSET_PAD = 0.058
 _REFERENCE_END_PAD = 0.026
@@ -76,6 +87,40 @@ def reference_playback_words(alignment: dict) -> list[dict]:
     return spans
 
 
+def align_reference_words(path: Path, text: str, align: Callable[..., dict]) -> list[dict]:
+    """将已识别的数字读法对齐后合并回书面数字。"""
+    original = align(path, text, reference=True)
+    if not any(letter.isdigit() for letter in text):
+        return reference_playback_words(original)
+
+    written = _WRITTEN_WORD.findall(text)
+    expected = [word.lower().replace("’", "'") for word in written]
+    spoken = tokens(original["greedy_transcript"])
+    reading_lengths = [1] * len(written)
+    for tag, start, end, heard_start, heard_end in SequenceMatcher(
+        None, expected, spoken, autojunk=False
+    ).get_opcodes():
+        if tag == "equal":
+            continue
+        reading = set(spoken[heard_start:heard_end])
+        if (tag != "replace" or end - start != 1 or not written[start][0].isdigit()
+                or not reading & _SPOKEN_NUMBERS
+                or reading - _SPOKEN_NUMBERS - {"and", "point"}):
+            return reference_playback_words(original)
+        reading_lengths[start] = heard_end - heard_start
+
+    aligned = reference_playback_words(align(path, " ".join(spoken), reference=True))
+    if [word["text"].lower() for word in aligned] != spoken:
+        return reference_playback_words(original)
+    words = []
+    cursor = 0
+    for display, count in zip(written, reading_lengths, strict=True):
+        start = aligned[cursor]["start"]
+        cursor += count
+        words.append({"text": display, "start": start, "end": aligned[cursor - 1]["end"]})
+    return words
+
+
 def synthesize_line(text: str, voice: str, output: str) -> dict:
     from backend.engine.aligner import forced_align_words
     from backend.engine.audio_io import _synthesize_kokoro_sync
@@ -109,8 +154,7 @@ def synthesize_line(text: str, voice: str, output: str) -> dict:
     else:
         voice = "am_liam" if voice == "golden_self" else voice
         _synthesize_kokoro_sync(text, voice, final)
-    aligned = forced_align_words(final, text, reference=True)
-    return {"voice": voice, "words": reference_playback_words(aligned)}
+    return {"voice": voice, "words": align_reference_words(final, text, forced_align_words)}
 
 
 @lru_cache(maxsize=2)
