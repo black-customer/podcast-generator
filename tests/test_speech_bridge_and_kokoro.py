@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from server import audio, config, speech_bridge, tts
+from server import audio, config, speech_bridge, speech_worker, tts
 from server.speech_bridge import SpeechBridge, SpeechError
 
 
@@ -63,3 +63,20 @@ def test_local_default_falls_back_without_environment(tmp_path: Path):
     settings = {**config.DEFAULT_SETTINGS, "speech_engine_dir": str(tmp_path)}
     assert settings["tts_provider"] == "kokoro_local"
     assert config.is_dry_run(settings)
+
+
+def test_reference_word_boundaries_correct_bias_without_crossing():
+    aligned = {"duration": 0.4, "words": [
+        {"word": "I", "start": 0.04, "end": 0.1},
+        {"word": "swim", "start": 0.14, "end": 0.24},
+        {"word": "fast", "start": 0.32, "end": 0.39},
+        {"word": "today", "start": 0, "end": 0},
+    ]}
+
+    words = speech_worker.reference_playback_words(aligned)
+
+    assert [row["text"] for row in words] == ["I", "swim", "fast"]
+    assert words[0]["start"] == 0 and words[-1]["end"] == 0.4
+    assert words[0]["end"] == words[1]["start"] == 0.104
+    assert words[1]["end"] == words[2]["start"] == 0.264
+    assert aligned["words"][0]["start"] == 0.04

@@ -11,6 +11,8 @@ from pathlib import Path
 
 _ENGLISH_WORD = re.compile(r"[a-z]+(?:'[a-z]+)*|\d+", re.I)
 _HAN = re.compile(r"[\u3400-\u9fff]")
+_REFERENCE_ONSET_PAD = 0.058
+_REFERENCE_END_PAD = 0.026
 
 
 def tokens(text: str) -> list[str]:
@@ -57,6 +59,23 @@ def status() -> dict:
     }
 
 
+def reference_playback_words(alignment: dict) -> list[dict]:
+    """将示范词的 CTC 支撑区间扩展到更接近可听边界。"""
+    # 在 TIMIT 校准说话人上测得的中位偏差，见桌面 2.0 的走查。
+    duration = alignment["duration"]
+    spans = []
+    for word in alignment["words"]:
+        if word["end"] <= word["start"]:
+            continue
+        start = max(0.0, word["start"] - _REFERENCE_ONSET_PAD)
+        end = min(duration, word["end"] + _REFERENCE_END_PAD)
+        if spans and spans[-1]["end"] > start:
+            start = round((spans[-1]["end"] + start) / 2, 4)
+            spans[-1]["end"] = start
+        spans.append({"text": word["word"], "start": round(start, 4), "end": round(end, 4)})
+    return spans
+
+
 def synthesize_line(text: str, voice: str, output: str) -> dict:
     from backend.engine.aligner import forced_align_words
     from backend.engine.audio_io import _synthesize_kokoro_sync
@@ -91,9 +110,7 @@ def synthesize_line(text: str, voice: str, output: str) -> dict:
         voice = "am_liam" if voice == "golden_self" else voice
         _synthesize_kokoro_sync(text, voice, final)
     aligned = forced_align_words(final, text, reference=True)
-    words = [{"text": word["word"], "start": word["start"], "end": word["end"]}
-             for word in aligned["words"] if word["end"] > word["start"]]
-    return {"voice": voice, "words": words}
+    return {"voice": voice, "words": reference_playback_words(aligned)}
 
 
 @lru_cache(maxsize=2)
