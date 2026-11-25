@@ -1,6 +1,8 @@
 """HTTP API 路由。"""
 import hashlib
+import json
 import os
+import secrets
 import threading
 import uuid
 from contextlib import nullcontext
@@ -10,7 +12,7 @@ from typing import Literal
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
-from fastapi.responses import FileResponse, Response
+from fastapi.responses import FileResponse, JSONResponse, Response
 from pydantic import BaseModel, field_validator
 from starlette.background import BackgroundTask
 
@@ -53,6 +55,7 @@ router = APIRouter(prefix="/api")
 
 TrackParam = Literal["default", "monologue", "podcast"]
 _PREVIEW_LOCK = threading.Lock()
+_PAIRING_LOCK = threading.Lock()
 
 
 class TopicIn(BaseModel):
@@ -1343,6 +1346,56 @@ class CaptureGradeIn(BaseModel):
     rating: Literal["good", "again", "easy", "suspend"]
     submission_id: str
     source_fingerprint: str | None = None
+
+
+class ScenePairingIn(BaseModel):
+    reset: bool = False
+
+
+@router.post("/settings/scene-sync-token")
+def api_scene_sync_token(body: ScenePairingIn):
+    with _PAIRING_LOCK:
+        token = load_settings()["scene_sync_token"]
+        if body.reset or not isinstance(token, str) or not token:
+            token = secrets.token_urlsafe(24)
+            save_settings({"scene_sync_token": token})
+    return JSONResponse({"token": token}, headers={"Cache-Control": "no-store"})
+
+
+async def _scene_request(request: Request, *, backup: bool) -> dict:
+    body = bytearray()
+    try:
+        if int(request.headers.get("content-length", "0")) > captures.BACKUP_MAX:
+            raise HTTPException(413, "备份须小于等于 150 MiB")
+        async for chunk in request.stream():
+            if len(body) + len(chunk) > captures.BACKUP_MAX:
+                raise HTTPException(413, "备份须小于等于 150 MiB")
+            body.extend(chunk)
+        payload = json.loads(body)
+        if not isinstance(payload, dict):
+            raise ValueError("备份格式无效")
+        if backup and (payload.get("format") != "caption-study-backup"
+                       or type(payload.get("schemaVersion")) is not int
+                       or payload["schemaVersion"] != 1):
+            raise ValueError("请选择看剧脚本导出的 v1 JSON 备份")
+        return await run_in_threadpool(captures.ingest_scenes, payload.get("notes"))
+    except (ValueError, RecursionError) as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+@router.get("/captures/scenes/ping")
+def api_scene_ping():
+    return {"ok": True}
+
+
+@router.post("/captures/scenes/inbox")
+async def api_scene_inbox(request: Request):
+    return await _scene_request(request, backup=False)
+
+
+@router.post("/captures/scenes/import-json")
+async def api_scene_import(request: Request):
+    return await _scene_request(request, backup=True)
 
 
 @router.post("/captures/snippet")

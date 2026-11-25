@@ -1,6 +1,7 @@
 """浏览器演练素材分拣、来源筛选与轮内重考。"""
 
 import base64
+import json
 import os
 import wave
 from io import BytesIO
@@ -17,7 +18,8 @@ ID = "card_9f8e7d6c5b4a3210"
 
 def test_capture_inbox_and_micro_session():
     parent = {"id": "cap_a1b2c3d4e5f67890", "source_type": "scene", "title": "合成场景 · 04:18",
-              "source": {"assets": ["frame.png"], "note_id": "test-note",
+              "source": {"assets": ["frame.png"], "note_id": "test-note", "time": 258,
+                         "series_title": "合成场景", "episode_title": "第一集",
                          "source_url": "https://www.bilibili.com/video/BV1234567890?t=258"}}
     fixture = {**card(), "id": ID, "capture_id": parent["id"], "capture": parent,
                "card_kind": "capture", "source_type": "scene", "scaffolding_level": 1,
@@ -26,7 +28,7 @@ def test_capture_inbox_and_micro_session():
                "audio_url": f"/api/cards/{ID}/audio",
                "audio": {"scope": "sentence", "start": 0, "end": None}}
     fixture["prosody"] = annotate_sentence(fixture["en"])
-    grades, snippets = [], []
+    grades, snippets, imports = [], [], []
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1280, "height": 800})
@@ -42,6 +44,9 @@ def test_capture_inbox_and_micro_session():
             elif tail == "captures/snippet":
                 snippets.append(route.request.post_data_json)
                 data = {"id": parent["id"]}
+            elif tail == "captures/scenes/import-json":
+                imports.append(route.request.post_data_json)
+                data = {"imported": 1, "duplicates": 0}
             elif tail == "cards":
                 data = {"cards": [fixture]}
             elif tail.endswith("/approve"):
@@ -85,6 +90,17 @@ def test_capture_inbox_and_micro_session():
         page.get_by_role("button", name="保存素材").click()
         expect(page.get_by_text("素材已保存，可在收件箱提炼。")).to_be_visible()
         assert snippets[0]["text"] == "This is a synthetic example."
+        page.get_by_role("button", name="导入新素材").first.click()
+        backup = {"format": "caption-study-backup", "schemaVersion": 1, "notes": [{
+            "id": "test-note", "time": 258,
+            "source": {"url": "https://www.bilibili.com/video/BV1234567890"}, "imageUrl": PIXEL,
+        }]}
+        page.locator("#scene-backup").set_input_files({
+            "name": "scenes.json", "mimeType": "application/json",
+            "buffer": json.dumps(backup).encode(),
+        })
+        expect(page.get_by_text("已导入 1 条，跳过 0 条重复记录。")).to_be_visible()
+        assert imports == [backup]
         page.get_by_role("link", name="返回今日练习").click()
         expect(page.locator(".chunk-cloze")).to_contain_text("[p__]")
         page.get_by_role("button", name="看剧表达").click()

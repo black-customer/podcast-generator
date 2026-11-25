@@ -1335,6 +1335,20 @@ async function ManageView(token) {
       </form>
     </section>
 
+    <section class="mg-card" id="scene-pairing">
+      <h3>看剧脚本配对</h3>
+      <p class="mg-hint">在 CaptionNoChinese 设置中填写本机地址与配对码，再测试连接。</p>
+      <label class="mg-label">本机地址<input class="mg-input" readonly
+        value="${esc(location.origin)}"></label>
+      <label class="mg-label" hidden>配对码<input class="mg-input" readonly autocomplete="off"></label>
+      <div class="mg-actions">
+        <button class="mg-btn" type="button" data-pair>查看配对码</button>
+        <button class="mg-btn" type="button" data-copy-pair hidden>复制配对码</button>
+        <button class="mg-btn" type="button" data-reset-pair>重置配对码</button>
+        <span role="status"></span>
+      </div>
+    </section>
+
     <details class="content-admin mg-advanced" ${ManageState.adminOpen ? "open" : ""}>
       <summary>高级内容管理</summary>
       <p class="mg-hint">仅在手动维护旧语料时使用；日常生成请从「题库」进入。</p>
@@ -1359,6 +1373,25 @@ async function ManageView(token) {
     </div>
     </details>
   `;
+
+  const pairing = document.getElementById("scene-pairing");
+  const pairCode = pairing.querySelector("label[hidden] input");
+  const pairStatus = pairing.querySelector("[role=status]");
+  const pairCopy = pairing.querySelector("[data-copy-pair]");
+  const showPairing = async reset => {
+    if (reset && !confirm("重置后需要在看剧脚本重新配对。继续？")) return;
+    try {
+      const response = await api("POST", "/api/settings/scene-sync-token", {reset});
+      if (!pairing.isConnected) return;
+      pairCode.value = response.token;
+      pairCode.closest("label").hidden = false;
+      pairCopy.hidden = false;
+      pairStatus.textContent = reset ? "配对码已重置。" : "";
+    } catch (error) { pairStatus.textContent = error.message; }
+  };
+  pairing.querySelector("[data-pair]").onclick = () => showPairing(false);
+  pairing.querySelector("[data-reset-pair]").onclick = () => showPairing(true);
+  pairCopy.onclick = () => copyText(pairCode.value);
 
   const chunkSettings = document.getElementById("chunk-settings");
   chunkSettings.onsubmit = async event => {

@@ -15,6 +15,12 @@ function imageMarkup(source, id) {
     <img src="${esc(url)}" loading="lazy" alt="素材的原始截屏"></a>`;
 }
 
+function sourceLabel(source) {
+  const time = source.note_id && Number.isFinite(source.time) ? Math.floor(source.time) : null;
+  return [source.series_title, source.episode_title, time === null ? "" :
+    `${Math.floor(time / 60)}:${String(time % 60).padStart(2, "0")}`].filter(Boolean).join(" · ");
+}
+
 function sourceLink(source) {
   if (!source.source_url) return "";
   return `<a href="${esc(source.source_url)}" target="_blank" rel="noopener noreferrer"
@@ -79,7 +85,14 @@ function open(token) {
           <label>来源链接（可选）<input class="mg-input" name="source_url" type="url"></label>
           <label>备注（可选）<input class="mg-input" name="note"></label>
           <button class="study-button primary" type="submit">保存素材</button>
-        </form></section>`;
+        </form></section>
+        <section class="arcade-frame capture-form"><h2>导入看剧截屏</h2>
+          <p>选择 CaptionNoChinese 导出的 JSON 备份，或把文件拖到素材收集页面。</p>
+          <label>看剧 JSON 备份<input id="scene-backup" type="file" accept=".json,application/json"></label>
+          <p>想在看剧时直接发送？<a href="#/settings">在设置中获取本机配对码</a>。</p>
+        </section>`;
+      const filePicker = body.querySelector("#scene-backup");
+      filePicker.onchange = () => importBackup(filePicker.files[0]);
       const form = body.querySelector("form");
       const thumbs = form.querySelector("#capture-images");
       const renderImages = () => {
@@ -125,7 +138,7 @@ function open(token) {
     const source = row?.capture.source;
     const stateLabel = {pending: "待提炼", extracting: "提炼中", failed: "提炼失败"};
     body.innerHTML = (row ? `<section class="arcade-frame capture-current">
-      <div class="capture-card-header"><div><p class="arcade-muted">${esc(row.capture.title)}</p>
+      <div class="capture-card-header"><div><p class="arcade-muted">${esc(sourceLabel(source) || row.capture.title)}</p>
         <h2 lang="en">${esc(row.target_chunk)}</h2></div><span>${ctx.index + 1} / ${rows.length}</span></div>
       <div class="capture-scene">${imageMarkup(source, row.capture_id)}<div>
         <p lang="en">${esc(row.en)}</p><p>${esc(row.zh)}</p>
@@ -162,6 +175,41 @@ function open(token) {
     };
     ctx.row = row;
   }
+
+  async function importBackup(file) {
+    if (!file || ctx.importing) return;
+    ctx.importing = true;
+    notify("正在读取看剧备份…");
+    try {
+      if (file.size > 150 * 1024 * 1024) throw new Error("备份须小于等于 150 MiB");
+      const response = await fetch("/api/captures/scenes/import-json", {
+        method: "POST", headers: {"Content-Type": "application/json"}, body: file,
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || "看剧备份导入失败");
+      ctx.tab = "inbox";
+      notify(`已导入 ${data.imported} 条，跳过 ${data.duplicates} 条重复记录。`);
+      await refresh();
+    } catch (error) {
+      notify(error.message);
+      const picker = body.querySelector("#scene-backup");
+      if (picker) picker.value = "";
+    } finally { ctx.importing = false; }
+  }
+
+  root.ondragover = event => {
+    if (event.dataTransfer.types.includes("Files")) event.preventDefault();
+  };
+  root.ondrop = event => {
+    if (!event.dataTransfer.files.length) return;
+    event.preventDefault();
+    const [file] = event.dataTransfer.files;
+    if (event.dataTransfer.files.length !== 1 || !/\.json$/i.test(file.name)) {
+      notify("请拖入一个 CaptionNoChinese JSON 备份文件。");
+      return;
+    }
+    importBackup(file);
+  };
 
   async function refresh() {
     try {
@@ -263,4 +311,4 @@ function reset() {
   current = null;
 }
 
-window.CapturesUI = {open, reset, imageMarkup, sourceLink};
+window.CapturesUI = {open, reset, imageMarkup, sourceLink, sourceLabel};

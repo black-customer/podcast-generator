@@ -234,7 +234,7 @@ async function blitz(token) {
   document.body.classList.add("training-focus");
   ExperienceUI.loading("闪电刷句");
   try {
-    ctx.cards = (await api("GET", "/api/arcade/blitz")).cards;
+    ctx.cards = (await api("GET", "/api/arcade/blitz?source=ielts")).cards;
     if (active(ctx)) render(ctx);
   } catch (error) {
     if (active(ctx)) ExperienceUI.readError("暂时无法读取复习句子", error);
@@ -448,11 +448,13 @@ function chunkSentence(ctx, row) {
   const source = row.capture?.source;
   const image = source ? CapturesUI.imageMarkup(source, row.capture_id) : "";
   const link = source ? CapturesUI.sourceLink(source) : "";
+  const sourceLabel = source ? CapturesUI.sourceLabel(source) : "";
   const listening = row.goal_type === "comprehend_input";
   return `<section class="arcade-frame arcade-recall chunk-practice" data-revealed="${ctx.revealed}">
     <p class="arcade-muted">${esc(({scene: "看剧表达", ielts: "雅思口语", snippet: "随手摘录"})[row.source_type])} ·
       ${["首次练习", "情境回忆", "换个场景"][level - 1]}</p>
     ${ctx.timer ? '<div class="arcade-reaction" aria-hidden="true" style="--reaction-time:3000ms"><span></span></div>' : ""}
+    ${sourceLabel ? `<p class="arcade-muted">${esc(sourceLabel)}</p>` : ""}
     ${level === 1 ? image : ""}
     <p class="arcade-intent">${esc(transfer ? row.transfer_prompt_zh : row.trigger_context || row.zh)}</p>
     ${level === 1 && row.cloze_prompt && !listening ? `<p class="chunk-cloze" lang="en">${esc(row.cloze_prompt)}</p>` : ""}
