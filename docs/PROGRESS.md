@@ -970,3 +970,8 @@ HTML/product-ui.css/training.js通过HTTP读取后哈希与源码一致；不读
   下载和 3 秒连续静音检查。首轮双语模型返回全英文，修正提示词后复测通过。
 - 质量门禁通过，295 项单元/API、76 项 Playwright 通过，1 项跳过。单题工作流 9 项通过。
   实机走查收集到 0 条浏览器控制台错误和警告。详见 [实机验收](design/desktop-offline-voice/walkthrough.md)。
+
+## 2026-11-26 Windows 桌面 4.0
+
+- P1 建立私有素材、场景去重、语块卡校验与 Agent 批量提交。图片只通过所配置的视觉 API 或 Agent 处理。
+  音频复用本机合成。配置响应脱敏，便携包审计拒绝素材目录。

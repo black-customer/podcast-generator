@@ -91,6 +91,11 @@ class SettingsIn(BaseModel):
     llm_base_url: str | None = None
     llm_api_key: str | None = None
     llm_model: str | None = None
+    vision_base_url: str | None = None
+    vision_model: str | None = None
+    vision_api_key: str | None = None
+    daily_session_limit: Literal[5, 8, 12, 20] | None = None
+    reaction_timer_enabled: bool | None = None
     episode_gap_ms: float | None = None
     dry_run: bool | None = None
     @field_validator("episode_gap_ms")
@@ -809,9 +814,12 @@ def api_provider_voice_sample(voice_id: str, regen: bool = False):
 
 def _masked_settings(s: dict) -> dict:
     out = {key: value for key, value in s.items()
-           if key in DEFAULT_SETTINGS and key != "llm_api_key"}
+           if key in DEFAULT_SETTINGS and not key.endswith("_api_key")
+           and key != "scene_sync_token"}
     out["llm_api_key"] = ""
     out["llm_api_key_set"] = bool(real_llm_api_key(s))
+    out["vision_api_key_set"] = bool(s.get("vision_api_key"))
+    out["scene_sync_configured"] = bool(s.get("scene_sync_token"))
     out["llm_configured"] = is_llm_configured(s)
     out["llm_available"] = out["llm_configured"]
     out["speech_engine_available"] = speech_engine_available(s)
@@ -829,8 +837,9 @@ def api_get_settings():
 def api_put_settings(body: SettingsIn):
     update = {k: v for k, v in body.model_dump().items() if v is not None}
     # 空 key 不覆盖已存 key（脱敏模式下前端回传空串属正常）
-    if not (update.get("llm_api_key") or "").strip():
-        update.pop("llm_api_key", None)
+    for field in ("llm_api_key", "vision_api_key"):
+        if not (update.get(field) or "").strip():
+            update.pop(field, None)
     if "speech_engine_dir" in update:
         speech_bridge.close_workers()
     saved = save_settings(update)

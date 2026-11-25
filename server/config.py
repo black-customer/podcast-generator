@@ -61,6 +61,12 @@ DEFAULT_SETTINGS = {
     "llm_base_url": "https://api.deepseek.com/v1",
     "llm_api_key": "",
     "llm_model": "deepseek-flash",
+    "vision_base_url": "",
+    "vision_model": "",
+    "vision_api_key": "",
+    "daily_session_limit": 8,
+    "reaction_timer_enabled": False,
+    "scene_sync_token": "",
     "episode_gap_ms": 600,  # 剧集中条目之间的停顿
     "dry_run": False,
 }
@@ -120,6 +126,8 @@ def _normalize_settings(settings: dict) -> dict:
         settings.update({key: DEFAULT_SETTINGS[key] for key in (
             "llm_provider", "llm_base_url", "llm_model",
         )})
+    if settings["daily_session_limit"] not in (5, 8, 12, 20):
+        settings["daily_session_limit"] = 8
     return settings
 
 

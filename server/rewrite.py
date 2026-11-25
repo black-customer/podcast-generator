@@ -54,6 +54,10 @@ class BundleFormatError(RewriteError):
     """合并响应无法提供可用音频文本，可以改用三文本生成。"""
 
 
+class MultimodalUnsupportedError(RewriteError):
+    """当前文本服务不能读取图片。"""
+
+
 REQUIRED_FIELDS = ("natural_english", "podcast_text", "podcast_script")
 _TAG_TEXT_RE = re.compile(r"\[([^\[\]]*)\]")
 GENERATION_TAGS = frozenset({"curious", "relaxed", "uncertain", "emphasis", "break"})
@@ -195,9 +199,19 @@ def text_available(settings: dict) -> bool:
     return True
 
 
-def _chat(settings: dict, messages: list[dict], cancel: threading.Event | None) -> str:
+def _chat(settings: dict, messages: list[dict], cancel: threading.Event | None, *,
+          multimodal: bool = False) -> str:
     if cancel is not None and cancel.is_set():
         raise RewriteError("已取消")
+    vision_base = settings.get("vision_base_url")
+    vision_model = settings.get("vision_model")
+    if multimodal and (vision_base or vision_model):
+        if not vision_model:
+            raise RewriteError("请在设置中填写独立视觉模型名称")
+        settings = {**settings, "llm_model": vision_model}
+        if vision_base:
+            settings = {**settings, "llm_base_url": vision_base, "llm_provider": "custom",
+                        "llm_api_key": settings.get("vision_api_key"), "deepseek_api_key": ""}
     url, model, key = text_config(settings)
     payload = {"model": model, "messages": messages, "response_format": {"type": "json_object"},
                "temperature": 0.6, "max_tokens": 4096}
@@ -214,6 +228,10 @@ def _chat(settings: dict, messages: list[dict], cancel: threading.Event | None) 
         raise TextPermissionError(
             f"当前 Key 无文本模型权限（HTTP {response.status_code}），"
             "请改用 Agent 模式或在平台开通文本模型"
+        )
+    if multimodal and response.status_code in (400, 422):
+        raise MultimodalUnsupportedError(
+            "当前模型未接受图片，请选择多模态模型，或使用 Agent 批量看图制卡"
         )
     if response.status_code != 200:
         raise RewriteError(f"文本改写服务返回 HTTP {response.status_code}，请检查模型和额度")

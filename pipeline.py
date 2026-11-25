@@ -140,6 +140,13 @@ def main():
     parser = argparse.ArgumentParser(description="Podcast Pipeline Runner")
     sub = parser.add_subparsers(dest="command")
 
+    capture_export = sub.add_parser("export-capture-task", help="输出本地素材的 Agent 制卡指令")
+    capture_export.add_argument("--capture-id", action="append", dest="capture_ids")
+    capture_complete = sub.add_parser("complete-capture", help="验证并提交语块卡到收件箱")
+    capture_complete.add_argument("--result-json", required=True)
+    capture_complete.add_argument("--auto-approve", action="store_true")
+    capture_complete.add_argument("--no-audio", action="store_true")
+
     # 旧入口：一次性 ingest + 生成
     legacy = sub.add_parser("ingest", help="一次性写入双轨文本并生成音频")
     legacy.add_argument("--topic", required=True, help="Topic name")
@@ -189,6 +196,24 @@ def main():
     phone_complete.add_argument("--output-json", required=True)
 
     args = parser.parse_args()
+    if args.command in ("export-capture-task", "complete-capture"):
+        from server import capture_distill
+
+        try:
+            if args.command == "export-capture-task":
+                print(capture_distill.build_agent_prompt(args.capture_ids))
+            else:
+                raw = (sys.stdin.read() if args.result_json == "-" else
+                       Path(args.result_json).read_text(encoding="utf-8"))
+                result = capture_distill.complete_from_json(
+                    json.loads(raw), auto_approve=args.auto_approve,
+                    synthesize_audio=not args.no_audio,
+                )
+                print(json.dumps(result, ensure_ascii=False))
+        except (OSError, ValueError) as exc:
+            print(f"FAILED: {exc}", file=sys.stderr)
+            return 2
+        return 0
     if args.command in ("conversation-request", "conversation-complete", "mobile-request",
                         "mobile-complete"):
         from server import conversation_exchange

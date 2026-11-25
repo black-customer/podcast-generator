@@ -40,7 +40,7 @@ EXCLUDE_PREFIXES = ("docs/design/",)
 FORBIDDEN_PARTS = {
     "settings.json", "voice_samples", ".tmp", "episodes", "topics",
     "question_bank.json", "question_bank_extra.json", "jobs.json", "exports",
-    "study_private", "teaching_podcasts", "backups",
+    "study_private", "teaching_podcasts", "captures", "backups",
     "keystore.properties", "debug.keystore", "release.keystore",
 }
 # 任何媒体/签名产物后缀都不得入便携包
@@ -92,7 +92,7 @@ def main() -> int:
                 try:
                     example = json.loads(zf.read(info))
                     contains_key = any(_real_key(value) for key, value in example.items()
-                                       if key.endswith("_api_key"))
+                                       if key.endswith("_api_key") or key == "scene_sync_token")
                 except (ValueError, AttributeError, zipfile.BadZipFile):
                     violations.append("data/settings.example.json（示例配置格式无效）")
                     continue

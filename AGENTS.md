@@ -94,3 +94,9 @@ podcast_text / podcast_script / pipeline.py complete），一律以
 `skills/ielts-audio/SKILL.md` 为唯一规范：产出三份文本和逐句材料 JSON，执行
 `pipeline.py complete --topic-id ... --item-id ... --result-json ...`。
 禁止读取/打印任何 API Key；禁止绕过校验直改 data/。
+
+## 素材制卡任务路由
+
+收到看剧截图、随手摘录或 `export-capture-task` 结果时，使用
+`skills/capture-cards/SKILL.md` 和 `pipeline.py complete-capture`。私有 `data/captures/`、
+原图、`vision_api_key` 和 `scene_sync_token` 禁止进入提交、日志或便携包。
