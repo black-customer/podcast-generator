@@ -7,9 +7,11 @@
 2026-09-29 的下一版设计交接入口：`docs/design/study-room-v2/README.md`。
 **L02/L03 已实现桌面逐句学习。** 后续 UI 维护以该目录的文字交互规范决定行为，
 以概念图决定布局；`docs/design/learning-mode-v1/` 和 `docs/design/v1/` 是历史图。
-2026-11-24 桌面 2.0 以 `#/train/` 三步练习和 `#/blitz` 闪电复习为主，旧桌面训练走
-`#/legacy-train/`。音频生成执行 `skills/ielts-audio/SKILL.md` 三文本契约，同一 `complete`
-可带 `study_material`，旧独立逐句命令仍可用。避免补填和自证表单，优先本机自动分析。
+2026-11-25 桌面 3.0 首页直达闪卡或快捷抽题。单题走 `#/train/`，闪电复习走 `#/blitz`，
+教学电台走 `#/radio`，旧训练走 `#/legacy-train/`。英文盲答原声与中文意图分别采集；
+中文语音只用于本机转写。API 生成前读取 `llm_configured`，失败后通过同条目 `retry-api`
+恢复。API 在后端拼装三文本，Agent 执行 `skills/ielts-audio/SKILL.md`，同一 `complete`
+可带 `study_material`，旧独立逐句命令仍可用。优先本机自动分析，发音标用于跟读。
 
 ## 常用命令
 

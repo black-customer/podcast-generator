@@ -67,7 +67,7 @@ def test_parse_dialogue():
     assert tts.parse_dialogue("A: Hey\nB: Hi!") == [("a", "Hey"), ("b", "Hi!")]
     assert tts.parse_dialogue("Person A：One\nB: Two") == [("a", "One"), ("b", "Two")]
     assert tts.parse_dialogue("A: only one side") is None
-    assert tts.parse_dialogue("A: Hey\n普通文本行\nB: Hi") is None
+    assert tts.parse_dialogue("普通文本行\nA: Hey\nB: Hi") is None
 
 
 def test_split_text_sentence_boundaries():

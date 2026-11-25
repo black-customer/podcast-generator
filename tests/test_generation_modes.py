@@ -187,16 +187,18 @@ def test_generate_texts_repairs_once_then_succeeds(monkeypatch):
         calls.append(json)
         if len(calls) == 1:
             bad = dict(VALID_TEXTS)
-            bad.pop("podcast_text")
+            bad.pop("natural_english")
             return _Resp(content=_chat_payload(bad))
         return _Resp(content=_chat_payload(VALID_TEXTS))
 
     monkeypatch.setattr(rewrite.httpx, "post", fake_post)
     texts, repairs = rewrite.generate_texts(
-        {"stepfun_api_key": "sk-test"}, "Who was your favorite teacher?", "我的英语老师"
+        {"llm_provider": "stepfun", "stepfun_api_key": "sk-test"},
+        "Who was your favorite teacher?", "我的英语老师"
     )
     assert repairs == 1
-    assert texts == VALID_TEXTS
+    expected = rewrite.normalize_dialogue_payload(VALID_TEXTS, "Who was your favorite teacher?")
+    assert texts == expected
     assert len(calls) == 2
 
 
@@ -210,7 +212,7 @@ def test_generate_texts_no_permission_fails_fast_without_retry(monkeypatch):
 
     monkeypatch.setattr(rewrite.httpx, "post", fake_post)
     with pytest.raises(rewrite.TextPermissionError) as ei:
-        rewrite.generate_texts({"stepfun_api_key": "sk-test"}, "Q?", "A")
+        rewrite.generate_texts({"llm_provider": "stepfun", "stepfun_api_key": "sk-test"}, "Q?", "A")
     assert "Agent" in str(ei.value)
     assert len(calls) == 1
 
@@ -223,7 +225,7 @@ def test_generate_texts_structural_failure_after_one_repair(monkeypatch):
 
     monkeypatch.setattr(rewrite.httpx, "post", fake_post)
     with pytest.raises(rewrite.RewriteError):
-        rewrite.generate_texts({"stepfun_api_key": "sk-test"}, "Q?", "A")
+        rewrite.generate_texts({"llm_provider": "stepfun", "stepfun_api_key": "sk-test"}, "Q?", "A")
 
 
 # ---------------------------------------------------------------- 统一入口端点
@@ -281,10 +283,8 @@ def test_generation_request_api_mode_mock_full_chain(client, monkeypatch):
     """API 模式全链路（mock 文本改写 + dry TTS）：改写→校验→落盘→合成→同构数据。"""
     from server import rewrite
     c = client["client"]
-    monkeypatch.setattr(
-        rewrite, "generate_texts",
-        lambda settings, q, a, cancel=None: (dict(VALID_TEXTS), 0),
-    )
+    c.put("/api/settings", json={"llm_api_key": "fixture-key"})
+    monkeypatch.setattr(rewrite, "_chat", lambda *_: _chat_payload(VALID_TEXTS))
     r = c.post(
         "/api/generation-requests",
         json={"question": "Who was your favorite teacher?", "topic": "Teachers",
@@ -297,8 +297,9 @@ def test_generation_request_api_mode_mock_full_chain(client, monkeypatch):
     assert job["state"] == "done", job
     texts = library.read_item_texts(library.item_path(data["topic_id"], data["item_id"]))
     assert texts["natural_english"] == VALID_TEXTS["natural_english"]
-    assert texts["podcast_text"] == VALID_TEXTS["podcast_text"]
-    assert texts["podcast_script"] == VALID_TEXTS["podcast_script"]
+    canonical = rewrite.normalize_dialogue_payload(VALID_TEXTS, "Who was your favorite teacher?")
+    assert texts["podcast_text"] == canonical["podcast_text"]
+    assert texts["podcast_script"] == canonical["podcast_script"]
     assert texts["original_answer"] == "我最喜欢高中英语老师。"
     audio_path = library.item_path(data["topic_id"], data["item_id"]) / "audio_podcast.mp3"
     assert audio_path.exists() and audio_path.stat().st_size > 0
@@ -312,11 +313,12 @@ def test_generation_request_api_mode_mock_full_chain(client, monkeypatch):
 def test_generation_request_api_mode_permission_failure_keeps_answer_no_audio(client, monkeypatch):
     from server import rewrite
     c = client["client"]
+    c.put("/api/settings", json={"llm_api_key": "fixture-key"})
 
-    def no_permission(settings, q, a, cancel=None):
+    def no_permission(*args):
         raise rewrite.TextPermissionError("当前 Key 无文本模型权限，请改用 Agent 模式")
 
-    monkeypatch.setattr(rewrite, "generate_texts", no_permission)
+    monkeypatch.setattr(rewrite, "_chat", no_permission)
     r = c.post(
         "/api/generation-requests",
         json={"question": "Q?", "topic": "T", "answer": "原始回答内容", "mode": "api"},
@@ -383,10 +385,8 @@ def test_both_modes_produce_identical_structures(client, monkeypatch):
     import pipeline
     from server import rewrite
     c = client["client"]
-    monkeypatch.setattr(
-        rewrite, "generate_texts",
-        lambda settings, q, a, cancel=None: (dict(VALID_TEXTS), 0),
-    )
+    c.put("/api/settings", json={"llm_api_key": "fixture-key"})
+    monkeypatch.setattr(rewrite, "_chat", lambda *_: _chat_payload(VALID_TEXTS))
     api_res = c.post(
         "/api/generation-requests",
         json={"question": "Q?", "topic": "Parity", "answer": "同一个回答", "mode": "api"},
@@ -397,7 +397,8 @@ def test_both_modes_produce_identical_structures(client, monkeypatch):
         "/api/generation-requests",
         json={"question": "Q?", "topic": "Parity", "answer": "同一个回答", "mode": "agent"},
     ).json()
-    pipeline.complete_item(agent_res["topic_id"], agent_res["item_id"], dict(VALID_TEXTS))
+    pipeline.complete_item(agent_res["topic_id"], agent_res["item_id"],
+                           rewrite.normalize_dialogue_payload(VALID_TEXTS, "Q?"))
 
     def snap(tid, iid):
         d = library.item_path(tid, iid)
@@ -428,7 +429,8 @@ def test_chat_routes_to_configured_plan_endpoint(monkeypatch):
         return FakeResponse()
 
     monkeypatch.setattr(rewrite.httpx, "post", fake_post)
-    settings = {"stepfun_api_key": "sk-test", "stepfun_text_model": "step-5-preview"}
+    settings = {"llm_provider": "stepfun", "stepfun_api_key": "sk-test",
+                "stepfun_text_model": "step-5-preview"}
     rewrite._chat(settings, [{"role": "user", "content": "hi"}], None)
     assert captured["url"] == rewrite.TEXT_API_URL
 

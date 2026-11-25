@@ -29,6 +29,9 @@ SYSTEM_PROMPT += """ Include a key_chunk copied verbatim from each English sente
 multiword phrase the learner can reuse. For a supported error, optionally include category as one
 of plural, tense, subject_verb_agreement, article, preposition, word_order, conjunction,
 collocation, or other. Return JSON only, e.g. {"complete_chinese":"中文","sentences":[]}."""
+SYSTEM_PROMPT += """ For an explicit lexical gap, use key_chunk for the expression the learner
+wanted to say and did not use. Optionally add transfer_example, one English sentence using the
+exact key_chunk in a different generic situation without inventing a detail about the learner."""
 
 ERROR_LABELS = {"plural": "单复数", "tense": "时态", "subject_verb_agreement": "主谓一致",
                 "article": "冠词", "preposition": "介词", "word_order": "语序",
@@ -113,6 +116,11 @@ def validate_material(material: dict, texts: dict, *, require_chunks: bool = Fal
                     not 2 <= len(tokens(chunk)) <= 12 or not matched_chunks(en, [chunk])):
                 raise MaterialError(f"第 {index} 句的语块须是原句中连续的 2–12 个英文词")
             entry["key_chunk"] = chunk.strip()
+            example = row.get("transfer_example")
+            if (isinstance(example, str) and 0 < len(example.strip()) <= 240
+                    and not re.search(r"[\[\]\n\r\u3400-\u9fff]", example)
+                    and example.strip() != en and matched_chunks(example, [chunk])):
+                entry["transfer_example"] = example.strip()
         error = row.get("original_error")
         kind = row.get("gap_kind")
         if kind is not None:
@@ -146,6 +154,11 @@ def validate_material(material: dict, texts: dict, *, require_chunks: bool = Fal
         "complete_chinese": chinese.strip(),
         "sentences": cleaned,
     }
+    gaps = [{"sentence_index": index, "key_chunk": row["key_chunk"]}
+            for index, row in enumerate(cleaned)
+            if row.get("gap_kind") == "explicit_gap" and row.get("key_chunk")]
+    if gaps:
+        result["lexical_gaps"] = gaps
     for name in ("outline", "groups"):
         if name in material:
             blocks = material[name]

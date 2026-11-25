@@ -464,6 +464,8 @@ function initGlobalPlayer() {
     }
     const submit = e.target.closest("[data-bank-submit]");
     if (submit) { bankSubmitAnswer(submit.dataset.bankSubmit); return; }
+    const retry = e.target.closest("[data-api-topic]");
+    if (retry) { retryApiGeneration(retry); return; }
     const agent = e.target.closest("[data-agent-topic]");
     if (agent) { switchToAgentMode(agent.dataset.agentTopic, agent.dataset.agentItem); return; }
   });
@@ -797,7 +799,7 @@ async function TopicDetailView(topicId, token) {
   topicRandomCtx = { topicId, items: PlayerState.playlist };
 
   const rowsHtml = topic.items.map((it, idx) => `
-    <div class="track-row" data-id="${esc(it.id)}" onclick="location.hash='#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}'">
+    <div class="track-row" data-id="${esc(it.id)}" onclick="if(!event.target.closest('.track-actions')) location.hash='#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}'">
       <div class="track-num">${idx + 1}</div>
       <div class="track-title">${esc(publicTitle(it.title))}</div>
       <div class="track-tags">
@@ -808,7 +810,9 @@ async function TopicDetailView(topicId, token) {
           `<span class="track-pill">${studyStatusName(it.study_status)}</span>` : ""}
       </div>
       <div>${it.duration_sec_podcast ? fmtDur(it.duration_sec_podcast) : (it.duration_sec ? fmtDur(it.duration_sec) : "—")}</div>
-      <div class="track-actions"><a class="btn-pill" style="padding:4px 12px;font-size:12px;" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">播放</a>
+      <div class="track-actions">${!it.has_audio && window.ArcadeUI?.enabled()
+        ? retryApiButton(topicId, it.id)
+        : `<a class="btn-pill" style="padding:4px 12px;font-size:12px;" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">播放</a>`}
         ${it.has_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
           `<a class="study-entry-link" href="#/train/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">${it.study_status === "ready" ? "继续学习" : "开始学习"}</a>` : ""}</div>
     </div>
@@ -835,6 +839,7 @@ async function TopicDetailView(topicId, token) {
       ` : ""}
     </div>
 
+    ${window.ArcadeUI?.enabled() ? '<section class="bank-answer-card" id="topic-generation" hidden></section>' : ""}
     <div class="tracklist">
       <div class="track-header">
         <div>#</div>
@@ -1177,30 +1182,61 @@ async function VoicesShowcaseView(token) {
   `;
 }
 
-window.previewVoice = function(provider, referenceId, btn) {
-  // 单例试听：同一时间只播一个样本；再次点击停止
-  let player = window.__voicePreview;
-  if (player && !player.paused && player.dataset.ref === referenceId) {
-    player.pause();
-    return;
+let voicePreview = null;
+
+function stopVoicePreview() {
+  const preview = voicePreview;
+  voicePreview = null;
+  if (!preview) return;
+  preview.controller.abort();
+  preview.player?.pause();
+  if (preview.url) URL.revokeObjectURL(preview.url);
+  if (preview.button) {
+    preview.button.textContent = preview.label;
+    preview.button.disabled = preview.disabled;
   }
-  if (player) { player.pause(); }
-  player = new Audio(`/api/voices/${encodeURIComponent(provider)}/${encodeURIComponent(referenceId)}/sample`);
-  player.dataset.ref = referenceId;
-  window.__voicePreview = player;
-  if (btn) {
-    btn.textContent = "加载中…";
-    btn.disabled = true;
-    player.addEventListener("canplay", () => { btn.textContent = "停止"; btn.disabled = false; }, { once: true });
+}
+
+async function localAudioBlob(path, signal) {
+  const response = await fetch(path, { signal });
+  if (!response.ok) {
+    const data = await response.json().catch(() => null);
+    throw new Error(typeof data?.detail === "string" ? data.detail : `HTTP ${response.status}`);
   }
-  player.play().catch(() => {
-    toast("试听加载失败，稍后再试");
-    if (btn) { btn.textContent = "试听"; btn.disabled = false; }
-  });
-  player.addEventListener("ended", () => {
-    const cards = document.querySelectorAll(".voice-btn");
-    cards.forEach(b => { if (b.textContent === "停止") b.textContent = "试听"; });
-  });
+  return response.blob();
+}
+
+window.previewVoice = async function(provider, referenceId, btn) {
+  const key = `${provider}/${referenceId}`;
+  const same = voicePreview?.key === key;
+  stopVoicePreview();
+  if (same) return;
+  const preview = { key, button: btn, label: btn?.textContent, disabled: btn?.disabled,
+    controller: new AbortController() };
+  voicePreview = preview;
+  if (btn) btn.textContent = "加载中…";
+  const finish = () => { if (voicePreview === preview) stopVoicePreview(); };
+  try {
+    const data = await localAudioBlob(
+      `/api/voices/${encodeURIComponent(provider)}/${encodeURIComponent(referenceId)}/sample`,
+      preview.controller.signal
+    );
+    if (voicePreview !== preview) return;
+    preview.url = URL.createObjectURL(data);
+    preview.player = new Audio(preview.url);
+    preview.player.onended = finish;
+    preview.player.onerror = () => {
+      if (voicePreview !== preview) return;
+      toast("浏览器无法播放这段试听音频");
+      finish();
+    };
+    await preview.player.play();
+    if (voicePreview === preview && btn) btn.textContent = "停止试听";
+  } catch (error) {
+    if (voicePreview !== preview) return;
+    toast(`试听失败：${error.message}`);
+    finish();
+  }
 };
 
 window.applyVoicePreset = async function(provider, referenceId, gender, voiceName, speed, temperature) {
@@ -1293,7 +1329,9 @@ async function ManageView(token) {
        <span class="mg-hint">ffmpeg: ${esc(health.ffmpeg.ok ? "可用" : health.ffmpeg.message)}</span>`
     : "";
   const localVoice = settings.tts_provider === "kokoro_local";
-  const textKeyHint = settings.llm_api_key_set ? "已保存，输入新值可替换" : "粘贴 DeepSeek API Key";
+  const legacyText = settings.llm_provider === "stepfun";
+  const textKeyHint = (legacyText ? settings.stepfun_api_key_set : settings.llm_api_key_set)
+    ? "已保存，输入新值可替换" : "粘贴当前服务的 API Key";
 
   $app.innerHTML = `
     <div class="section-header settings-page-head">
@@ -1308,19 +1346,20 @@ async function ManageView(token) {
       <form id="arcade-text-config">
         <div class="arcade-setting-row">
           <label class="mg-label">服务<select class="mg-input" id="arcade-llm-provider">
-            <option value="deepseek" ${settings.llm_provider !== "custom" ? "selected" : ""}>DeepSeek</option>
+            <option value="deepseek" ${settings.llm_provider === "deepseek" ? "selected" : ""}>DeepSeek</option>
             <option value="custom" ${settings.llm_provider === "custom" ? "selected" : ""}>自定义兼容接口</option>
+            <option value="stepfun" ${legacyText ? "selected" : ""}>StepFun</option>
           </select></label>
           <label class="mg-label">API Key<input class="mg-input" type="password" id="arcade-llm-key"
             autocomplete="off" placeholder="${textKeyHint}"></label>
         </div>
         <details class="mg-advanced"><summary>高级设置</summary><div class="arcade-setting-row">
-          <label class="mg-label">Base URL<input class="mg-input" id="arcade-llm-url" value="${esc(settings.llm_base_url || "https://api.deepseek.com/v1")}"></label>
-          <label class="mg-label">模型<input class="mg-input" id="arcade-llm-model" value="${esc(settings.llm_model || "deepseek-flash")}"></label>
+          <label class="mg-label">Base URL<input class="mg-input" id="arcade-llm-url" value="${esc((legacyText ? settings.stepfun_text_base_url : settings.llm_base_url) || "")}"></label>
+          <label class="mg-label">模型<input class="mg-input" id="arcade-llm-model" value="${esc((legacyText ? settings.stepfun_text_model : settings.llm_model) || "")}"></label>
         </div></details>
         <div class="mg-actions"><button type="submit" class="mg-btn primary">保存文本设置</button>
           <button type="button" class="mg-btn" id="arcade-llm-test">测试连接</button>
-          <span class="mg-hint" id="arcade-llm-result" role="status">${settings.llm_api_key_set ? "已配置 Key" : settings.llm_available ? "旧文本配置可用" : ""}</span></div>
+          <span class="mg-hint" id="arcade-llm-result" role="status">${settings.llm_configured ? "已配置" : "当前服务还未配置"}</span></div>
       </form>
     </section>
     <!-- 设置卡片：语音引擎 + 角色声音（概念 07，全宽） -->
@@ -1333,6 +1372,8 @@ async function ManageView(token) {
         <a class="mg-btn primary" href="#/voices">音色展台</a>
       </div>
       <form id="mg-settings-form">
+        ${settings.tts_provider === "stepfun" && settings.speech_engine_available
+          ? '<div class="arcade-local-switch"><p>如果 StepFun 额度已用完，可以切换到本机离线语音。</p><button type="button" class="mg-btn primary" id="arcade-use-local">切换到本地语音</button></div>' : ""}
         <div class="engine-cards" id="engine-cards">
           <label class="engine-card arcade-local-engine ${localVoice ? "selected" : ""}">
             <input type="radio" name="mg-engine" value="kokoro_local" ${localVoice ? "checked" : ""}>
@@ -1458,24 +1499,50 @@ async function ManageView(token) {
   const llmProvider = document.getElementById("arcade-llm-provider");
   const llmResult = document.getElementById("arcade-llm-result");
   const llmKey = document.getElementById("arcade-llm-key");
+  const llmUrl = document.getElementById("arcade-llm-url");
+  const llmModel = document.getElementById("arcade-llm-model");
   llmProvider.onchange = () => {
-    if (llmProvider.value === "deepseek") {
-      document.getElementById("arcade-llm-url").value = "https://api.deepseek.com/v1";
-      document.getElementById("arcade-llm-model").value = "deepseek-flash";
-    }
+    const provider = llmProvider.value;
+    llmUrl.value = provider === "stepfun" ? settings.stepfun_text_base_url || "" :
+      provider === "custom" && settings.llm_provider === "custom" ? settings.llm_base_url : "https://api.deepseek.com/v1";
+    llmModel.value = provider === "stepfun" ? settings.stepfun_text_model || "" :
+      provider === "custom" && settings.llm_provider === "custom" ? settings.llm_model : "deepseek-flash";
+    llmKey.value = "";
+    llmKey.placeholder = (provider === "stepfun" ? settings.stepfun_api_key_set : settings.llm_api_key_set)
+      ? "已保存，输入新值可替换" : "粘贴当前服务的 API Key";
   };
   const llmSave = async () => {
-    const saved = await api("PUT", "/api/settings", { llm_provider: llmProvider.value,
-      llm_base_url: document.getElementById("arcade-llm-url").value.trim(),
-      llm_model: document.getElementById("arcade-llm-model").value.trim(), llm_api_key: llmKey.value });
+    const provider = llmProvider.value;
+    const url = llmUrl.value.trim(), model = llmModel.value.trim(), key = llmKey.value;
+    const credentials = provider === "stepfun" ? {stepfun_text_base_url: url,
+      stepfun_text_model: model, stepfun_api_key: key} :
+      {llm_base_url: url, llm_model: model, llm_api_key: key};
+    const saved = await api("PUT", "/api/settings", {llm_provider: provider, ...credentials});
+    Object.assign(settings, saved);
     llmKey.value = "";
-    if (saved.llm_api_key_set) llmKey.placeholder = "已保存，输入新值可替换";
+    if (provider === "stepfun" ? saved.stepfun_api_key_set : saved.llm_api_key_set)
+      llmKey.placeholder = "已保存，输入新值可替换";
+    return saved;
   };
   document.getElementById("arcade-text-config").onsubmit = async event => {
     event.preventDefault();
-    try { await llmSave(); llmResult.textContent = "文本设置已保存。"; }
+    try {
+      const saved = await llmSave();
+      llmResult.textContent = saved.llm_configured ? "文本设置已保存。" : "请填写 Key 或检查服务地址。";
+    }
     catch (error) { llmResult.textContent = error.message; }
   };
+  document.getElementById("arcade-use-local")?.addEventListener("click", async event => {
+    const button = event.currentTarget;
+    button.disabled = true;
+    try {
+      await api("PUT", "/api/settings", {tts_provider: "kokoro_local"});
+      if (!viewStale(token)) await ManageView(token);
+    } catch (error) {
+      button.disabled = false;
+      if (!viewStale(token)) toast(error.message);
+    }
+  });
   document.getElementById("arcade-llm-test").onclick = async event => {
     const control = event.currentTarget;
     control.disabled = true;
@@ -1494,7 +1561,7 @@ async function ManageView(token) {
       if (viewStale(token)) return;
       const profile = speech.profile;
       status.textContent = speech.available ? (speech.kokoro ? "Kokoro 已就绪。" : "缺少 Kokoro 模型。") +
-        (profile ? `已识别个人声纹${profile.finetuned ? " · 已微调" : " · 尚未微调"}。` : "尚未录入声纹，分身选项将使用 Liam。") : speech.reason;
+        (profile ? `已识别个人声纹${profile.finetuned ? " · 已微调" : " · 尚未微调"}。` : "尚未录入声纹。请先在 ChineseAccent 建立声纹。") : speech.reason;
     } catch (_) { if (!viewStale(token)) status.textContent = "本地引擎状态读取失败。"; }
   };
   checkSpeech();
@@ -1550,7 +1617,12 @@ async function ManageView(token) {
         `<div class="arcade-local-role"><label class="mg-label">${title}<select class="mg-input" data-role="${role}">
         ${Object.entries(names).filter(([voice]) => role === "a" || voice !== "golden_self").map(([voice, name]) =>
           `<option value="${esc(voice)}" ${pair[role] === voice ? "selected" : ""}>${esc(name)}</option>`).join("")}</select></label>
-        <button type="button" class="mg-btn" data-local-preview="${role}">试听${title}</button></div>`).join("");
+        <button type="button" class="mg-btn" data-local-preview="${role}">试听${title}</button></div>`).join("") +
+        `<div class="arcade-voice-gallery">${[["女声", ["af_bella", "af_heart"]],
+          ["男声", ["am_puck", "am_liam", "am_michael", "am_fenrir"]], ["个人分身", ["golden_self"]]]
+          .map(([heading, choices]) => `<section><h4>${heading}</h4><div>${choices.map(voice =>
+            `<button type="button" class="mg-btn" data-preview-provider="kokoro_local" data-preview-vid="${esc(voice)}">试听 ${esc(names[voice])}</button>`
+          ).join("")}</div></section>`).join("")}</div>`;
       box.querySelectorAll("select").forEach(select => select.onchange = () => {
         pair[select.dataset.role] = select.value;
         mgSummary();
@@ -2114,7 +2186,10 @@ async function bankRandomGo() {
   const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&random=1` +
     (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
     (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "") +
-    (p.q ? `&q=${encodeURIComponent(p.q)}` : "") + `&answer_status=${p.answer_status}&training_status=${p.training_status}`;
+    (p.q ? `&q=${encodeURIComponent(p.q)}` : "") +
+    (p.sel && window.ArcadeUI?.enabled() ? `&exclude_id=${encodeURIComponent(p.sel)}` : "") +
+    (p.answer_status !== "all" ? `&answer_status=${p.answer_status}` : "") +
+    `&training_status=${p.training_status}`;
   try {
     const res = await api("GET", query);
     if (!res.items || !res.items.length) { toast("该筛选下没有题目"); return; }
@@ -2146,9 +2221,8 @@ async function genWaitCheckItem(topicId, itemId) {
   } catch (_) { /* 条目暂不可读，下轮重试 */ }
 }
 
-function showAgentWait(res) {
+function showAgentWait(res, card = document.querySelector(".bank-answer-card")) {
   genWaitStop();
-  const card = document.querySelector(".bank-answer-card");
   if (!card) return;
   card.innerHTML = `
     <div class="bank-answer-q">条目已创建，把下面的完整指令复制给你的 Agent（Codex / ZCode / WorkBuddy…）</div>
@@ -2181,10 +2255,49 @@ window.copyAgentPrompt = async function (btn) {
   }
 };
 
-function showApiJobWait(res) {
+function apiSetupBanner() {
+  return '<a class="setup-banner" href="#/manage"><span>配置 AI 改写服务后，即可用 AI 生成练习材料。</span><strong>去设置 →</strong></a>';
+}
+
+function retryApiButton(topic, item) {
+  return `<button type="button" class="study-button primary api-retry" data-api-topic="${esc(topic)}" data-api-item="${esc(item)}">重新用 AI 生成</button>`;
+}
+
+async function retryApiGeneration(button) {
+  if (button.disabled) return;
+  const token = routeToken;
+  const {apiTopic: topic, apiItem: item} = button.dataset;
+  const old = button.textContent;
+  button.disabled = true;
+  button.textContent = "正在重试…";
+  const show = button.closest(".bank-answer-card") || document.querySelector("#topic-generation");
+  show?.querySelector(".api-retry-error")?.remove();
+  try {
+    if (!(await api("GET", "/api/settings")).llm_configured) {
+      throw new Error("当前 AI 改写服务未配置，请前往设置填写 Key 或检查服务地址");
+    }
+    if (viewStale(token)) return;
+    const result = await api("POST", `/api/topics/${encodeURIComponent(topic)}/items/${encodeURIComponent(item)}/retry-api`);
+    if (!viewStale(token)) {
+      show.hidden = false;
+      showApiJobWait(result, show);
+      show.scrollIntoView({block: "nearest"});
+    }
+  } catch (error) {
+    if (viewStale(token)) return;
+    if (!show) { toast(error.message); return; }
+    show.hidden = false;
+    show.insertAdjacentHTML("beforeend", `<p class="api-retry-error" role="status">${esc(error.message)}
+      ${/Key|配置|403|401/.test(error.message) ? '<a href="#/manage">去设置</a>' : ""}</p>`);
+  } finally {
+    button.disabled = false;
+    button.textContent = old;
+  }
+}
+
+function showApiJobWait(res, card = document.querySelector(".bank-answer-card")) {
   genWaitStop();
   const waitToken = routeToken;
-  const card = document.querySelector(".bank-answer-card");
   if (!card) return;
   card.innerHTML = `
     <div class="bank-answer-q">${MobileRuntime.native ? "StepFun 正在生成" : "正在准备音频和练习材料"}</div>
@@ -2196,7 +2309,9 @@ function showApiJobWait(res) {
     </div>
     <p class="bank-answer-hint" id="api-job-hint">⏳ 正在处理……</p>
     <div class="bank-answer-actions" id="api-job-fallback" style="display:none;">
-      ${MobileRuntime.native ? '<a class="study-button" href="#/my/tasks">查看任务、继续或交给电脑</a>' : `<button class="bank-submit-btn" data-agent-topic="${esc(res.topic_id)}" data-agent-item="${esc(res.item_id)}">改用 Agent 模式</button>`}
+      ${MobileRuntime.native ? '<a class="study-button" href="#/my/tasks">查看任务、继续或交给电脑</a>' : `${retryApiButton(res.topic_id, res.item_id)}
+        <a class="study-button" href="#/manage">去设置</a>
+        <button class="study-button" data-agent-topic="${esc(res.topic_id)}" data-agent-item="${esc(res.item_id)}">改用 Agent 模式</button>`}
     </div>`;
   const mark = (phase) => {
     const order = ["rewrite", "save", "tts", "study"];
@@ -2234,7 +2349,8 @@ function showApiJobWait(res) {
 async function switchToAgentMode(topicId, itemId) {
   try {
     const task = await api("GET", `/api/topics/${decodeURIComponent(topicId)}/items/${decodeURIComponent(itemId)}/agent-task`);
-    showAgentWait(task);
+    showAgentWait(task, document.querySelector("#topic-generation:not([hidden])") ||
+      document.querySelector(".bank-answer-card"));
   } catch (e) {
     toast("获取 Agent 指令失败：" + e.message);
   }
@@ -2253,9 +2369,17 @@ async function bankSubmitAnswer(questionId) {
   btn.textContent = mode === "api" ? "启动生成中…" : "创建条目中…";
   try {
     const modern = window.ArcadeUI?.enabled();
-    const source = modern ? { blind_token: ArcadeUI.blindToken(questionId) } : TrainingBaseline.values();
+    if (modern && mode === "api" && !(await api("GET", "/api/settings")).llm_configured) {
+      if (viewStale(token)) return;
+      document.getElementById("bank-ai-preflight").innerHTML = apiSetupBanner();
+      document.getElementById("bank-ai-preflight").querySelector("a").focus();
+      return;
+    }
+    if (viewStale(token)) return;
+    const source = modern ? { blind_token: ArcadeUI.blindToken(questionId),
+      chinese_intent: document.getElementById("arcade-intent-input")?.value || "" } : TrainingBaseline.values();
     const res = await api("POST", "/api/generation-requests", { question_id: questionId, answer, mode, ...source });
-    if (modern) ArcadeUI.clearBlind(questionId);
+    if (modern) ArcadeUI.clearBlind(questionId, source.chinese_intent);
     else await TrainingBaseline.attach(questionId, res, answer).catch(e=>toast('回答已提交，首答暂未关联：'+e.message));
     await AnswerExperience.submitted(draft, answer, mode);
     if (viewStale(token)) { toast("回答已提交，可在我的语料中查看。"); return; }
@@ -2265,8 +2389,11 @@ async function bankSubmitAnswer(questionId) {
     else showAgentWait(res);
   } catch (e) {
     toast(`提交失败：${e.message}`);
-    btn.disabled = false;
-    btn.textContent = mode === "api" && window.ArcadeUI?.enabled() ? "一键生成并直接开练" : "提交作答";
+  } finally {
+    if (btn.isConnected) {
+      btn.disabled = false;
+      btn.textContent = mode === "api" && window.ArcadeUI?.enabled() ? "一键生成并直接开练" : "提交作答";
+    }
   }
 }
 
@@ -2311,7 +2438,8 @@ async function BankView(token) {
     return;
   }
 
-  const partTabs = [["1", "Part 1 · 日常问答"], ["2", "Part 2 · 独白描述"], ["3", "Part 3 · 深入讨论"]]
+  const partTabs = [...(window.ArcadeUI?.enabled() ? [["all", "全部 Part"]] : []),
+    ["1", "Part 1 · 日常问答"], ["2", "Part 2 · 独白描述"], ["3", "Part 3 · 深入讨论"]]
     .map(([v, label]) =>
       `<button class="bank-tab ${p.part === v ? "active" : ""}" title="${esc(label)}" aria-label="${esc(label)}" onclick="bankGo({part: '${v}'})">${MobileRuntime.native?'Part '+v:label}</button>`
     ).join("");
@@ -2335,9 +2463,10 @@ async function BankView(token) {
   if (!packMode) {
     try {
       const st = await api("GET", "/api/settings");
-      defaultApi ||= modern && !!st.llm_available;
+      defaultApi ||= modern && !!st.llm_configured;
       if (viewStale(token)) return;
-      if (!(st.llm_available || st.stepfun_api_key_set || st.fish_api_key_set)) {
+      if (modern && !st.llm_configured) setupBanner = apiSetupBanner();
+      else if (!modern && !(st.stepfun_api_key_set || st.fish_api_key_set)) {
         setupBanner = `
         <a class="setup-banner" href="${MobileRuntime.native ? '#/my/services' : '#/manage'}">
           <span>${modern ? "配置文本改写引擎，即可生成后直接开练。" : "开始前，先连接语音服务并选择两位说话者的声音。"}</span>
@@ -2360,9 +2489,10 @@ async function BankView(token) {
       ${selItem.answered ? `<label for="answer-version">已保存回答</label><select id="answer-version" class="bank-select" aria-label="切换回答版本"></select><section id="saved-answer" aria-live="polite">正在读取已有回答…</section>` : selJump}
       ${selItem.answered && !packMode && !writing ? `<button class="btn-pill" onclick="bankGo({write: '1'})">再回答一次／继续草稿</button>` : ""}
       ${packMode ? `<p class="bank-answer-hint">APP 浏览模式：已回答状态仅依据当前导入包，提交作答请在电脑端进行。</p>` : writing ? `
-      ${modern ? '<div class="arcade-blind-row"><button type="button" class="study-button" id="arcade-blind">直接开口盲答</button><p id="arcade-blind-status" role="status">在本机转写，原声留作练习前后的对比。</p></div>' : ""}
-      <textarea id="bank-answer-input" rows="6"
-        placeholder="用中文或英文自由作答——说出你想表达的意思，母语者版本由 Agent 或 API 改写后生成音频"></textarea>
+      ${modern ? '<label class="arcade-answer-label" for="bank-answer-input">用英文开口回答</label><div class="arcade-blind-row"><button type="button" class="study-button" id="arcade-blind">录制英文盲答</button><p id="arcade-blind-status" role="status">在本机转写，原声用于练习前后对比。</p></div>' : ""}
+      <textarea id="bank-answer-input" rows="${modern ? 4 : 6}"
+        placeholder="${modern ? "可直接键入，或在录音转写后编辑。也可输入中文自由作答。" : "用中文或英文自由作答"}"></textarea>
+      ${modern ? '<label class="arcade-answer-label" for="arcade-intent-input">补充想表达的中文意思（可选）</label><div class="arcade-blind-row"><button type="button" class="study-button" id="arcade-intent">录制中文意图</button><p id="arcade-intent-status" role="status">仅保留转写文字。</p></div><textarea id="arcade-intent-input" rows="3" placeholder="补充刚才想说、却没说出来的细节"></textarea>' : ""}
       <p id="draft-status" class="study-muted" role="status">正在读取草稿 · 未提交</p><div id="draft-conflict"></div>
       <div class="study-actions"><button class="btn-pill" id="draft-retry">查看服务草稿／重试</button><button class="btn-pill" id="draft-discard">丢弃草稿</button></div>
       <div class="bank-answer-actions bank-mode-pick">
@@ -2373,6 +2503,7 @@ async function BankView(token) {
         <button id="bank-answer-submit" class="bank-submit-btn" data-bank-submit="${esc(selItem.id)}">${modern && defaultApi ? "一键生成并直接开练" : "提交作答"}</button>
         <button class="btn-pill" onclick="bankGo({sel: ''})">收起</button>
       </div>
+      <div id="bank-ai-preflight"></div>
       <p class="bank-answer-hint">提交后条目进入话题「${esc(selItem.topic_name_en || selItem.topic_name)}」。</p>` : ""}
     </div>` : "";
 
@@ -2593,7 +2724,7 @@ function viewStale(token) {
   return token != null && token !== routeToken;
 }
 
-const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup", "#/today",
+const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup", "#/today", "#/radio",
   "#/oral-review", "#/study-history"];
 
 function route() {
@@ -2602,6 +2733,8 @@ function route() {
   if (typeof TrainingBaseline !== "undefined") TrainingBaseline.leave();
   if (typeof TrainingUI !== "undefined") TrainingUI.reset();
   window.ArcadeUI?.reset();
+  window.RadioUI?.reset();
+  stopVoicePreview();
   AnswerExperience.leave();
   const episodeAudio = document.getElementById("ep-audio");
   if (episodeAudio) ListeningExperience.detach(episodeAudio);
@@ -2629,6 +2762,7 @@ function route() {
     : ["#/today", "#/legacy-today", "#/blitz"].includes(base) || base.startsWith("#/train/") || base.startsWith("#/legacy-train/") || base.startsWith("#/oral-review/") || base === "#/study-history" ? "today"
     : base.startsWith("#/bank") || base.startsWith("#/practice") ? "bank"
     : base.startsWith("#/review") ? "review"
+    : base === "#/radio" ? "radio"
     : base.startsWith("#/manage") || base.startsWith("#/setup") || base.startsWith("#/voices") ? "settings"
     : "topics";
   if (!MobileRuntime.native) document.querySelectorAll(".nav-item").forEach(el => {
@@ -2636,10 +2770,12 @@ function route() {
       : el.classList.contains("nav-settings") ? "settings"
       : el.getAttribute("href") === "#/today" ? "today"
       : el.getAttribute("href") === "#/practice" ? "bank"
+      : el.getAttribute("href") === "#/radio" ? "radio"
       : el.getAttribute("href") === "#/review" ? "review" : "topics";
     el.classList.toggle("active", category === owner);
     if (category === owner) el.setAttribute("aria-current", "page");
     else el.removeAttribute("aria-current");
+    if (category === "radio") el.hidden = !window.ArcadeUI?.enabled();
   });
 
   // 导航离开工作台时清理轮询定时器（修审计 A22）
@@ -2662,6 +2798,7 @@ function route() {
   }
   if (hash === "#/legacy-today") { TrainingUI.today(token); return; }
   if (hash === "#/blitz" && window.ArcadeUI?.enabled()) { ArcadeUI.blitz(token); return; }
+  if (base === "#/radio" && window.ArcadeUI?.enabled()) { RadioUI.open(token); return; }
   if (hash === "#/sentence-today") { OralReviewUI.today(token); return; }
   if (hash.startsWith("#/train/") || hash.startsWith("#/legacy-train/")) {
     const parts = hash.split("/").slice(2);
@@ -2946,6 +3083,7 @@ async function DoneView(topicId, itemId, token) {
           <p>${item.study_status === "ready" ? "逐句中文与讲解已就绪，可以开始完整回答的学习。" :
             "逐句材料可在学习页准备或补齐；音频仍可直接收听。"}</p>
           <div class="study-actions"><a class="study-button primary" href="#/train/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">开始学习</a>
+            ${window.ArcadeUI?.enabled() && item.study_status === "ready" ? RadioUI.itemLink(topicId, itemId) : ""}
             <a class="study-button" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">打开精听播放器</a></div></section>` :
         hasAudio ? `<div class="study-actions"><a class="study-button" href="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}">打开精听播放器</a></div>` : ""}
       ${item.natural_english ? `<details id="done-english" class="done-dialogue"><summary>查看完整英文</summary>

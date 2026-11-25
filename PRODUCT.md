@@ -8,12 +8,19 @@ web
 
 ## Current Experience Direction
 
-The Windows desktop 2.0 experience starts with an IELTS question and ends with a spoken retake.
-The learner can type or record a blind answer, hear a faithful reference with evidence-based
-corrections, retrieve one sentence at a time, and record a question-only answer. The result compares
-recordings, English words per minute, long pauses, and recognized phrases when data is available.
-The home page offers short FSRS-4.5 sentence reviews and an evidence-based error board. The old
-training view remains accessible under `#/legacy-train/`; Android continues its existing flow.
+Windows desktop 3.0 opens on a due or unpractised sentence. If the library has no practice
+material, the home page offers a random question filtered by IELTS part, season, topic, and answer
+status. The learner can record an English blind answer and optionally add Chinese intent by voice
+or text. The English recording supports comparison with the final retake. Chinese audio is
+temporary and only its transcript becomes part of the submitted answer context.
+
+The reference distinguishes supported grammar corrections from missing expressions. Learners can
+say a corrected sentence before seeing the answer, turn on pronunciation cues, switch between
+native and cloned voices, and schedule reviewed sentences through FSRS-4.5. The final retake
+compares recordings, English words per minute, long pauses, and recognized phrases when measured.
+A two-host teaching radio makes selected phrases and corrections available for listening, with
+offline English or optional online bilingual speech. The old training view is available at
+`#/legacy-train/`. Android uses its existing flow.
 
 On 2026-10-16 Bruce authorized an aesthetic upgrade across all visible pages after rejecting
 v3's first-open home screen. The current visual contract is docs/design/experience-v4/README.md

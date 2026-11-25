@@ -116,6 +116,10 @@ const AnswerExperience = (() => {
             const saved = await api("DELETE", `/api/answer-drafts/${encodeURIComponent(ctx.qid)}?revision=${ctx.revision}`);
             ctx.revision = saved.revision; ctx.input.value = ""; ctx.answer = "";
             ctx.dirty = false; ctx.blocked = false; clearTimeout(ctx.timer);
+            if (window.ArcadeUI?.enabled()) {
+              document.getElementById("arcade-intent-input").value = "";
+              ArcadeUI.clearBlind(ctx.qid);
+            }
             localStorage.removeItem(key(ctx.qid)); status(ctx, "草稿已丢弃 · 未提交");
           } catch (e) { status(ctx, `丢弃失败：${e.message}。文字仍保留。`); }
         };
@@ -155,7 +159,9 @@ const AnswerExperience = (() => {
             ${item.natural_english || item.monologue_text || item.podcast_text ? `<details><summary>已有英文</summary>
               <pre class="answer-text">${esc(item.natural_english || item.monologue_text || item.podcast_text)}</pre></details>` : ""}
             <div class="study-actions">${item.has_audio ? `<a class="study-button" href="#/play/${t}/${id}">播放音频</a>` :
-              `<button class="study-button primary" id="existing-generate">继续生成 · Agent</button>`}
+              window.ArcadeUI?.enabled()
+                ? `${retryApiButton(ref.topic_id, ref.item_id)}<button class="study-button" id="existing-generate">改用 Agent 模式</button>`
+                : `<button class="study-button primary" id="existing-generate">继续生成 · Agent</button>`}
             ${!offline() && item.has_audio_podcast ? `<a class="study-button primary" href="#/train/${t}/${id}">${item.study_status === "ready" ? "继续练习" : "准备材料并练习"}</a>` : ""}
             <a class="btn-pill" href="#/done/${t}/${id}">查看回答详情</a></div>
             ${!offline() ? `<p class="study-muted">${studyStatusName(item.study_status)}</p>` : ""}`;

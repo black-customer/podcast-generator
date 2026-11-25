@@ -1,11 +1,31 @@
 import sys
 import wave
 from pathlib import Path
+from types import ModuleType
 
 import pytest
 
 from server import audio, config, speech_bridge, speech_worker, tts
 from server.speech_bridge import SpeechBridge, SpeechError
+
+
+def test_status_does_not_load_torch(monkeypatch, tmp_path):
+    backend = ModuleType("backend")
+    backend.config = ModuleType("backend.config")
+    backend.config.KOKORO_MODEL_PATH = tmp_path / "model"
+    backend.config.KOKORO_VOICES_PATH = tmp_path / "voices"
+    backend.config.KOKORO_MODEL_PATH.touch()
+    backend.config.KOKORO_VOICES_PATH.touch()
+    profile = ModuleType("backend.engine.voice_profile")
+    profile.get_voice_profile = lambda: {"finetuned": False}
+    monkeypatch.setitem(sys.modules, "backend", backend)
+    monkeypatch.setitem(sys.modules, "backend.engine", ModuleType("backend.engine"))
+    monkeypatch.setitem(sys.modules, "backend.engine.voice_profile", profile)
+    monkeypatch.setitem(sys.modules, "torch", None)
+
+    info = speech_worker.status()
+    assert info["kokoro"] and info["profile"]["finetuned"] is False
+    assert info["gpu"] is None
 
 
 def test_bridge_reuses_process_and_recovers_after_timeout(tmp_path):
@@ -25,6 +45,27 @@ def test_bridge_reuses_process_and_recovers_after_timeout(tmp_path):
         with pytest.raises(SpeechError, match="超时"):
             bridge.call("slow", timeout=0.1)
         assert bridge.call("status") != first
+    finally:
+        bridge.close()
+
+
+def test_bridge_restarts_after_worker_reports_memory_failure(tmp_path):
+    worker = tmp_path / "worker.py"
+    worker.write_text(
+        "import json, os, sys\n"
+        "for line in sys.stdin:\n"
+        " r = json.loads(line)\n"
+        " data = {'error': '内存不足', 'reset': True} if r['method'] == 'clone' else "
+        "{'result': {'pid': os.getpid()}}\n"
+        " print(json.dumps({'id': r['id'], **data}), flush=True)\n",
+        encoding="utf-8",
+    )
+    bridge = SpeechBridge([sys.executable, "-u", str(worker)], tmp_path)
+    try:
+        before = bridge.call("status")
+        with pytest.raises(SpeechError, match="内存不足"):
+            bridge.call("clone")
+        assert bridge.call("status") != before
     finally:
         bridge.close()
 

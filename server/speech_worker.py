@@ -55,19 +55,26 @@ def analyze_words(words: list[dict]) -> dict:
 def status() -> dict:
     import importlib.util
 
-    import torch
     from backend import config
     from backend.engine.voice_profile import get_voice_profile
 
+    torch = sys.modules.get("torch")
     profile = get_voice_profile()
     return {
-        "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
+        "gpu": torch.cuda.get_device_name(0) if torch and torch.cuda.is_available() else None,
         "kokoro": config.KOKORO_MODEL_PATH.is_file() and config.KOKORO_VOICES_PATH.is_file(),
         "whisper": importlib.util.find_spec("faster_whisper") is not None,
         "profile": {key: profile.get(key) for key in (
             "median_f0_hz", "recommended_base_voice", "finetuned"
         )} if profile else None,
     }
+
+
+def profile_revision() -> dict:
+    from backend.engine.voice_profile import get_voice_profile
+
+    profile = get_voice_profile()
+    return {"profile_hash": profile.get("profile_hash") if profile else None}
 
 
 def reference_playback_words(alignment: dict) -> list[dict]:
@@ -121,20 +128,25 @@ def align_reference_words(path: Path, text: str, align: Callable[..., dict]) -> 
     return words
 
 
-def synthesize_line(text: str, voice: str, output: str) -> dict:
-    from backend.engine.aligner import forced_align_words
+def preview_line(text: str, voice: str, output: str,
+                 profile_hash: str | None = None, require_profile: bool = True) -> dict:
     from backend.engine.audio_io import _synthesize_kokoro_sync
     from backend.engine.voice_profile import get_voice_profile
 
     final = Path(output)
     profile = get_voice_profile() if voice == "golden_self" else None
+    if voice == "golden_self" and require_profile and not profile:
+        raise ValueError("尚未配置母语分身，请先在 ChineseAccent 建立声纹")
+    if profile_hash and (not profile or profile["profile_hash"] != profile_hash):
+        raise ValueError("声纹配置已更新，请重新试听")
     if profile:
-        import torch
-        from backend.engine import voice_clone
-
         base = profile.get("recommended_base_voice") or "am_liam"
         source = final.with_suffix(".base.wav")
         _synthesize_kokoro_sync(text, base, source)
+
+        import torch
+        from backend.engine import voice_clone
+
         cache_key = hashlib.sha256(f"podcast\n{base}\n{text}".encode()).hexdigest()
         # 读取声纹与权重，派生语音留在调用方的工作目录。
         voice_clone.GOLDEN_AUDIO_DIR = final.parent
@@ -154,7 +166,14 @@ def synthesize_line(text: str, voice: str, output: str) -> dict:
     else:
         voice = "am_liam" if voice == "golden_self" else voice
         _synthesize_kokoro_sync(text, voice, final)
-    return {"voice": voice, "words": align_reference_words(final, text, forced_align_words)}
+    return {"voice": voice}
+
+
+def synthesize_line(text: str, voice: str, output: str) -> dict:
+    from backend.engine.aligner import forced_align_words
+
+    result = preview_line(text, voice, output, require_profile=False)
+    return {**result, "words": align_reference_words(Path(output), text, forced_align_words)}
 
 
 @lru_cache(maxsize=2)
@@ -194,6 +213,14 @@ def transcribe_and_analyze(path: str, language: str | None = None,
             "matched_chunks": matched_chunks(transcript, chunks or [])}
 
 
+def transcribe_intent(path: str) -> dict:
+    segments, _info = _whisper("zh").transcribe(
+        path, language="zh", beam_size=3, vad_filter=True,
+        initial_prompt="请使用简体中文，保留日常口语和原意。", condition_on_previous_text=False,
+    )
+    return {"transcript": " ".join(segment.text.strip() for segment in segments).strip()}
+
+
 def check_utterance(path: str, text: str, chunks: list[str]) -> dict:
     from backend.engine.aligner import forced_align_words
     from backend.engine.audio_io import decode_to_wav16k
@@ -217,7 +244,8 @@ def main() -> None:
     with open(os.devnull, "w") as sink:
         os.dup2(sink.fileno(), sys.stdout.fileno())
     methods = {function.__name__: function for function in (
-        status, synthesize_line, transcribe_and_analyze, check_utterance
+        status, profile_revision, synthesize_line, preview_line, transcribe_and_analyze,
+        transcribe_intent, check_utterance
     )}
     for line in sys.stdin:
         request_id = None
@@ -227,8 +255,13 @@ def main() -> None:
             result = methods[message["method"]](**message.get("params", {}))
             response = json.dumps({"id": request_id, "result": result}, allow_nan=False)
         except Exception as exc:
-            error = f"本地语音引擎：{type(exc).__name__} {str(exc)[:240]}"
-            response = json.dumps({"id": request_id, "error": error})
+            detail = str(exc)
+            memory_failure = (isinstance(exc, MemoryError) or getattr(exc, "winerror", 0) == 1455
+                              or any(term in detail.lower()
+                                     for term in ("out of memory", "bad allocation")))
+            error = ("本机内存或页面文件不足，当前语音未能生成"
+                     if memory_failure else f"本地语音引擎：{type(exc).__name__} {detail[:240]}")
+            response = json.dumps({"id": request_id, "error": error, "reset": memory_failure})
         print(response, file=protocol, flush=True)
 
 

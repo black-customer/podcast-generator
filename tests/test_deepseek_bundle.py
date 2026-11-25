@@ -43,10 +43,10 @@ def test_text_credentials_are_write_only():
     assert "test-two" not in repr(data)
 
 
-def test_stepfun_fallback_and_keyless_local_config():
-    assert rewrite.text_config({**config.DEFAULT_SETTINGS, "stepfun_api_key": "test"})[0] == (
-        rewrite.TEXT_API_URL
-    )
+def test_explicit_stepfun_and_keyless_local_config():
+    old = {**config.DEFAULT_SETTINGS, "stepfun_api_key": "test"}
+    assert not config.is_llm_configured(old)
+    assert rewrite.text_config({**old, "llm_provider": "stepfun"})[0] == rewrite.TEXT_API_URL
     url, model, key = rewrite.text_config({
         **config.DEFAULT_SETTINGS, "llm_provider": "custom", "llm_base_url": "http://localhost/v1",
         "llm_model": "example", "stepfun_api_key": "test",
@@ -60,9 +60,9 @@ def test_bundle_keeps_valid_texts_when_material_needs_independent_retry(monkeypa
              "podcast_script": "A: Why do you swim?\nB: It helps me unwind."}
     invalid = {**texts, "study_material": {"complete_chinese": "我放松了。", "sentences": []}}
     monkeypatch.setattr(rewrite, "_chat", lambda *_: json.dumps(invalid))
-    assert rewrite.generate_complete_bundle({}, "Why do you swim?", "I can relax.") == {
-        **texts, "study_material": None,
-    }
+    result = rewrite.generate_complete_bundle({}, "Why do you swim?", "I can relax.")
+    assert result == {**rewrite.normalize_dialogue_payload(texts, "Why do you swim?"),
+                      "study_material": None}
 
 
 def test_portable_audit_rejects_key_in_example_without_printing_it(monkeypatch, tmp_path, capsys):

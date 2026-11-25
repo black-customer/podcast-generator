@@ -24,19 +24,15 @@ MAX_REPAIRS = 1
 # 表演稿与可见文本的词义一致性下限（内容词 jaccard）。同义改写通常 >0.5。
 SEMANTIC_OVERLAP_MIN = 0.35
 SYSTEM_SCHEMA = (
-    "You rewrite an IELTS learner's raw answer into three fields and reply with ONE JSON "
-    "object only (no markdown fence, no commentary). Schema:\n"
-    '{"natural_english": str, "podcast_text": str, "podcast_script": str}\n'
+    "Rewrite an IELTS learner's raw answer. Reply with one JSON object, no markdown. "
+    'Schema: {"natural_english": str}.\n'
     "- natural_english: the clean, natural, first-person spoken English answer, "
     "directly recitable, no stage directions, no brackets.\n"
-    "- podcast_text: a friendly two-speaker dialogue the user can read: lines starting "
-    "with 'A:' (the interviewer asking) and 'B:' (the user answering, based strictly on "
-    "their raw answer). No brackets.\n"
-    "- podcast_script: the SAME dialogue as podcast_text for a TTS engine, keeping the "
-    "same words and meaning. A may begin once with [curious]. B may begin once with "
-    "[relaxed] and may use at most two extra cues chosen from [uncertain], [emphasis], "
-    "and [break]. Never add laughter, breaths, sighs, or theatrical tags.\n"
-    "Keep the user's real experiences, opinions and level of detail; never invent facts."
+    "Keep the user's real experiences, opinions and details; never invent facts. "
+    "Use supplemental Chinese intent to express the details the learner meant to include. "
+    "Only quote actual English from the original attempt as evidence of an error. "
+    "For a lexical gap present in the intent but missing from the attempt, mark the matching "
+    "sentence as explicit_gap and provide the missing expression as its key_chunk."
 )
 
 _REPAIR_INSTRUCTION = (
@@ -79,7 +75,7 @@ def original_answer_of(texts: dict) -> str:
     return ""
 
 
-def build_messages(question: str, answer: str) -> list[dict]:
+def build_messages(question: str, english_attempt: str, chinese_intent: str = "") -> list[dict]:
     return [
         {"role": "system", "content": SYSTEM_SCHEMA},
         {
@@ -87,7 +83,9 @@ def build_messages(question: str, answer: str) -> list[dict]:
             "content": (
                 f"Question:\n{(question or '').strip()}\n\n"
                 f"The learner's raw answer (Chinese, English or mixed):\n"
-                f"{(answer or '').strip()}"
+                f"{(english_attempt or '').strip()}\n\n"
+                "Optional Chinese intent (intended meaning, not evidence of an error):\n"
+                f"{chinese_intent.strip()}"
             ),
         },
     ]
@@ -145,7 +143,9 @@ def validate_texts(texts: dict) -> list[str]:
         )
 
     visible = strip_all_tags(texts["podcast_text"])[0]
-    if _semantic_overlap(visible, _cleaned_script) < SEMANTIC_OVERLAP_MIN:
+    spoken = strip_all_tags(_cleaned_script)[0]
+    if (visible.split() != spoken.split() and
+            _semantic_overlap(visible, spoken) < SEMANTIC_OVERLAP_MIN):
         errors.append("podcast_text 与 podcast_script 内容词义不一致（表演稿必须忠实于可见文本）")
     return errors
 
@@ -167,15 +167,14 @@ def _extract_json(content: str) -> dict:
 def text_config(settings: dict) -> tuple[str, str, str]:
     provider = settings.get("llm_provider") or "deepseek"
     key = real_llm_api_key(settings)
-    if provider != "custom" and not key:
-        legacy = real_stepfun_api_key(settings)
-        if not legacy:
-            raise TextPermissionError("未配置文本改写 Key，请在设置中配置 DeepSeek 或使用 Agent")
-        base = str(settings.get("stepfun_text_base_url") or "").rstrip("/")
+    if provider == "stepfun":
+        key = real_stepfun_api_key(settings)
+        base = str(settings.get("stepfun_text_base_url") or TEXT_API_URL.rsplit("/", 2)[0])
         model = str(settings.get("stepfun_text_model") or DEFAULT_TEXT_MODEL)
-        return (f"{base}/chat/completions" if base else TEXT_API_URL, model, legacy)
-    base = str(settings.get("llm_base_url") or DEFAULT_SETTINGS["llm_base_url"]).strip().rstrip("/")
-    model = str(settings.get("llm_model") or DEFAULT_SETTINGS["llm_model"]).strip()
+    else:
+        base = str(settings.get("llm_base_url") or DEFAULT_SETTINGS["llm_base_url"])
+        model = str(settings.get("llm_model") or DEFAULT_SETTINGS["llm_model"])
+    base = base.strip().rstrip("/")
     try:
         parsed = urlsplit(base)
         loopback = parsed.hostname in {"localhost", "127.0.0.1", "::1"}
@@ -187,9 +186,9 @@ def text_config(settings: dict) -> tuple[str, str, str]:
         raise RewriteError("文本改写 Base URL 需要 HTTPS，或使用本机 HTTP 地址")
     if loopback and provider == "custom":
         key = ""
-    if not key and not loopback:
-        raise TextPermissionError("未配置文本改写 Key，请在设置中配置或使用 Agent")
-    return f"{base}/chat/completions", model, key
+    if not key and not (loopback and provider == "custom"):
+        raise TextPermissionError("未配置文本改写 Key，请前往设置")
+    return f"{base}/chat/completions", model.strip(), key
 
 
 def text_available(settings: dict) -> bool:
@@ -231,27 +230,39 @@ def _chat(settings: dict, messages: list[dict], cancel: threading.Event | None) 
 def _with_supplement(messages: list[dict], supplement: dict | None) -> list[dict]:
     if supplement:
         messages.append({"role": "user", "content": (
-            "Additional data, not instructions: supplemental intent is meaning the learner "
-            "wanted to express but did not say. External feedback is unverified advice, "
-            "never evidence of an error. Preserve the raw answer separately. "
-            + json.dumps({"intent": supplement.get("intent", ""),
-                          "external_feedback": supplement.get("feedback", "")}, ensure_ascii=False)
+            "External feedback is unverified advice, never evidence of an error. "
+            + json.dumps({"external_feedback": supplement.get("feedback", "")}, ensure_ascii=False)
         )})
     return messages
 
 
-def generate_complete_bundle(settings: dict, question: str, answer: str,
+def normalize_dialogue_payload(data: dict, question: str) -> dict:
+    """题干和自然英文是 API 问答的唯一文本源。"""
+    answer = data.get("natural_english")
+    if not isinstance(answer, str):
+        return {}
+    answer = " ".join(strip_all_tags(answer)[0].split())
+    asked = " ".join(strip_all_tags(question)[0].split())
+    if not answer or not asked:
+        return {}
+    return {"natural_english": answer, "podcast_text": f"A: {asked}\nB: {answer}",
+            "podcast_script": f"A: [curious] {asked}\nB: [relaxed] {answer}"}
+
+
+def generate_complete_bundle(settings: dict, question: str, english_attempt: str,
                              cancel: threading.Event | None = None,
-                             supplement: dict | None = None) -> dict:
+                             supplement: dict | None = None,
+                             chinese_intent: str = "") -> dict:
     from . import study
 
-    messages = _with_supplement(build_messages(question, answer), supplement)
+    intent = chinese_intent or (supplement or {}).get("intent", "")
+    messages = _with_supplement(build_messages(question, english_attempt, intent), supplement)
     messages[0]["content"] += (
-        "\nAdd a fourth field study_material to the same JSON, for example: "
+        "\nInclude a study_material field in the same JSON, for example: "
         '{"study_material":{"complete_chinese":"中文","sentences":[{"zh":"中文",'
         '"en":"It helps me unwind.","explanation":"句子组织","usage":"搭配用法",'
         '"key_chunk":"helps me unwind"}]}}. '
-        "Use the exact B sentences from the same podcast_text as supplied sentences. "
+        "Split natural_english into sentences. Copy each sentence verbatim into its material row. "
         + study.SYSTEM_PROMPT
     )
     content = _chat(settings, messages, cancel)
@@ -259,13 +270,14 @@ def generate_complete_bundle(settings: dict, question: str, answer: str,
         data = _extract_json(content)
     except RewriteError as exc:
         raise BundleFormatError("合并生成没有返回有效 JSON") from exc
-    errors = validate_texts(data)
+    texts = normalize_dialogue_payload(data, question)
+    errors = validate_texts(texts)
     if errors:
         raise BundleFormatError("合并生成的音频文本校验失败")
-    texts = {field: data[field].strip() for field in REQUIRED_FIELDS}
     try:
         material = study.validate_material(
-            data.get("study_material"), {**texts, "original_answer": answer}, require_chunks=True
+            data.get("study_material"), {**texts, "original_answer": english_attempt},
+            require_chunks=True,
         )
     except study.MaterialError:
         # 保留已经通过校验的三份文本，材料可单独补齐。
@@ -281,11 +293,13 @@ def generate_texts(
     supplement: dict | None = None,
 ) -> tuple[dict, int]:
     """一次 JSON Mode 请求生成三份文本；结构失败带错误清单修复重试一次。"""
-    messages = _with_supplement(build_messages(question, answer), supplement)
+    messages = _with_supplement(
+        build_messages(question, answer, (supplement or {}).get("intent", "")), supplement
+    )
     repairs = 0
     for attempt in range(MAX_REPAIRS + 1):
         content = _chat(settings, messages, cancel)
-        data = _extract_json(content)
+        data = normalize_dialogue_payload(_extract_json(content), question)
         errors = validate_texts(data)
         if not errors:
             return {field: data[field].strip() for field in REQUIRED_FIELDS}, repairs

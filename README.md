@@ -1,6 +1,7 @@
 # 英语说说说 · 多开口，说自己的英语
 
-当前源码的 Windows 网页提供三步口语练习和闪电刷句。公开安装包的版本以 GitHub Releases 为准。
+当前源码的 Windows 网页提供首页闪卡、双轨作答、三步口语练习和双人教学电台。
+公开安装包的版本以 GitHub Releases 为准。
 
 > 2026-10-06 确定新名称与定位：面向中国用户的英语口语学习工具，支持雅思口语与日常
 > 表达、聊天复用。2026-10-15源码升级为雅思单题优先首页与完整训练闭环，原图标及双主题保留。
@@ -26,17 +27,26 @@
 
 ## 雅思学习主流程
 
-在题库选题，可以打字、用输入法语音输入，或直接开口盲答。直接录音时，Faster-Whisper
-在本机转写并保留原声。配好文本服务后，生成完成自动进入练习。
+首页直接呈现到期或未练的闪卡。没有待练材料时，可按 Part、考季、话题和作答状态随机开题。
+可以打字，也可以用 Faster-Whisper 在本机转写英文盲答并保留原声。可选的中文意图只保留
+文字，用于补出想说却没说出来的表达。提交 API 生成前先检查文本服务配置。补好 Key 后可在
+失败结果、题库已有回答或语料列表点击「重新用 AI 生成」。
 
-1. 听考官和示范回答，查看可带走的语块，以及有原话依据的语法问题。
+1. 听考官和示范回答，查看语块与词汇缺口。遇到有原话依据的语法问题，先开口重说，再揭晓改法。
 2. 看中文逐句开口。`Space` 揭晓并播放本句，按住 `R` 录音、松手听示范和自己的声音。
-   `1` 顺畅、`2` 卡壳，句子自动按 FSRS-4.5 安排复习。
+   `1` 顺畅、`2` 卡壳，句子自动按 FSRS-4.5 安排复习。揭晓后可开「发音标」，也可切换母语示范与个人分身。
 3. 只看原题脱稿录一遍，回听前后原声和示范。有录音可比时，查看英语语速、长停顿和语块命中，
    也可将三段导出成一条 MP3。
 
-首页可直接进入闪电刷句，还可查看口语病历榜和复制今日 AI 陪练指令。原有训练可从
+首页也可查看口语病历榜和复制今日 AI 陪练指令。原有训练可从
 「历史训练与复验」进入。语料库提供独立播放器、语料包与 M4B/SRT 导出。
+
+### 教学电台
+
+从训练或生成结果进入本题教学播客，也可从侧栏生成今日电台。全英文由本机 Bella 与 Puck
+合成，男搭档可切到个人分身。中英模式使用在线晓晓和云希，需要先运行
+`.venv/Scripts/python -m pip install edge-tts`。在线服务未提供多语晓晓时尝试标准晓晓。
+电台可点击台词跳转、调速或下载 MP3，成品及台词 JSON 保存在 `data/teaching_podcasts/`。
 
 ## 历史逐句学习与 Android
 
@@ -70,7 +80,7 @@ Bruce 于 2026-09-29 确定新方向。完成音频后，用户可主动进入�
 （`http://127.0.0.1:8765`）。日常打开可双击 `open_app.bat`，已有服务时直接进入网页。
 在设置中配置 DeepSeek Key 并测试连接，或在高级设置中切换兼容接口。可用 Agent 模式
 准备同一套材料。默认复用 `D:/project/ChineseAccent/.venv` 合成、对齐和分析录音，网页可选
-Bella、Liam、Michael、Puck 或已录入的个人分身。声纹录制和微调在 ChineseAccent 管理。
+Bella、Heart、Puck、Liam、Michael、Fenrir 或已录入的个人分身。声纹录制和微调在 ChineseAccent 管理。
 没有声纹时，个人分身回退为 Liam。旧版显式保存的 StepFun 或 Fish 配置继续生效，也可在设置
 切到本地语音。未找到外部语音环境时使用已配置的兼容服务，或生成试运行占位。
 
@@ -117,7 +127,7 @@ git clone https://github.com/black-customer/podcast-generator && cd podcastGener
 
 ## 语音引擎与 Key
 
-- **StepFun（默认）**：[platform.stepfun.com](https://platform.stepfun.com/) 注册后创建 API Key，
+- **StepFun（可选）**：[platform.stepfun.com](https://platform.stepfun.com/) 注册后创建 API Key，
   TTS 模型固定 `stepaudio-2.5-tts`；API 模式改写额外需要文本模型权限（默认 `step-5-preview`，最强推理档）；
   订阅了 StepFun **Coding Plan** 的用户可在 `data/settings.json` 把 `stepfun_text_base_url`
   设为 `https://api.stepfun.com/step_plan/v1`，文本调用走订阅额度而非按量余额；

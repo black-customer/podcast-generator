@@ -105,7 +105,7 @@ def cleanup_stale_tmp(max_age_hours: float = 24) -> None:
     cutoff = time.time() - max_age_hours * 3600
     for p in TMP_DIR.iterdir():
         try:
-            if p.name.startswith("silence-"):
+            if p.name.startswith("silence-") or p.name == "voice_previews":
                 continue
             if p.stat().st_mtime > cutoff:
                 continue
@@ -196,6 +196,12 @@ def real_stepfun_api_key(settings: dict | None = None) -> str:
 def real_llm_api_key(settings: dict | None = None) -> str:
     s = settings or {}
     return _real_key(s.get("llm_api_key")) or _real_key(s.get("deepseek_api_key"))
+
+
+def is_llm_configured(settings: dict) -> bool:
+    from .rewrite import text_available
+
+    return text_available(settings)
 
 
 def speech_python(settings: dict) -> Path:

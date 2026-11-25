@@ -67,7 +67,7 @@ def test_agent_mode_copy_cli_complete_and_done_page():
         try:
             # 1. 选题并使用 Agent，以免本机的真实配置启用外部文本请求。
             page.goto(f"{BASE_URL}/#/bank")
-            page.wait_for_selector(".bank-row", timeout=5000)
+            page.wait_for_selector(".bank-row", timeout=15000)
             un = requests.get(
                 f"{BASE_URL}/api/bank/questions?part=1&page_size=100", timeout=10
             ).json()

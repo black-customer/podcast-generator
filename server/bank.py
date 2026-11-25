@@ -348,8 +348,9 @@ def query_questions(
     answered_map: dict[str, dict] | None = None,
     random_pick: bool = False,
     set_filter: str | None = None,
-    answer_status: str = "all",
+    answer_status: str | None = None,
     training_status: str = "all",
+    exclude_id: str | None = None,
 ) -> dict:
     """题库查询：part/topic 精确过滤，q 中英不区分大小写子串，页参数钳制。
 
@@ -404,10 +405,15 @@ def query_questions(
             }
         )
     total = len(rows)
-    if random_pick and rows:
+    if random_pick:
         import random as _random
 
-        chosen = _random.choice(rows)
+        candidates = [row for row in rows if row["id"] != exclude_id]
+        if answer_status is None:
+            candidates = [row for row in candidates if not row["answered"]] or candidates
+        if not candidates:
+            return {"items": [], "total": 0, "page": 1, "pageCount": 0, "page_size": 1}
+        chosen = _random.choice(candidates)
         selected_page = rows.index(chosen) // min(max(1, page_size), 100) + 1
         return {"items": [chosen], "total": total, "page": 1, "pageCount": 1,
                 "page_size": 1, "selected_page": selected_page}

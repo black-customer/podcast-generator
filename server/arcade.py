@@ -10,7 +10,17 @@ from collections import Counter
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from . import alignment, audio, library, oral_review, speech_bridge, study, study_progress, timeline
+from . import (
+    alignment,
+    audio,
+    library,
+    oral_review,
+    prosody,
+    speech_bridge,
+    study,
+    study_progress,
+    timeline,
+)
 from .config import TMP_DIR, atomic_write_text, load_settings
 from .speech_worker import tokens
 
@@ -69,7 +79,7 @@ def _blind_folder(token: str) -> Path:
 
 
 def transcribe_blind(data: bytes, media_type: str, duration: float,
-                     language: str | None = None) -> dict:
+                     language: str | None = "en") -> dict:
     kind = _check_upload(data, media_type, duration, 180)
     token = uuid.uuid4().hex
     work = _blind_folder(token)
@@ -90,6 +100,15 @@ def transcribe_blind(data: bytes, media_type: str, duration: float,
         raise
     return {"blind_token": token, "transcript": analysis.get("transcript", ""),
             "analysis": analysis}
+
+
+def transcribe_intent(data: bytes, media_type: str, duration: float) -> dict:
+    kind = _check_upload(data, media_type, duration, 180)
+    TMP_DIR.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(prefix="arcade-intent-", dir=TMP_DIR) as directory:
+        recording = Path(directory) / ("intent" + _FORMATS[kind])
+        recording.write_bytes(data)
+        return speech_bridge.request(load_settings(), "transcribe_intent", path=recording)
 
 
 def check_blind(token: str) -> None:
@@ -178,9 +197,10 @@ def view(topic_id: str, item_id: str) -> dict:
                 "source_fingerprint": fingerprint, "audio_url": audio_url if mp3 else "",
                 "dry_run": bool(library.load_meta(path).get("dry_run")), "voice": voice,
                 "alignment": locations, "answer_spans": _answer_spans(locations["lines"]),
-                "sentences": [{**row, "audio": span} for row, span in zip(
-                    rows, _sentence_spans(rows, locations), strict=True
-                )], "blind": _public(baseline, topic_id, item_id) if baseline else None,
+                "sentences": [
+                    {**row, "audio": span, "prosody": prosody.annotate_sentence(row["en"])}
+                    for row, span in zip(rows, _sentence_spans(rows, locations), strict=True)
+                ], "blind": _public(baseline, topic_id, item_id) if baseline else None,
                 "final": _public(final, topic_id, item_id) if final else None}
 
 
@@ -301,9 +321,46 @@ def blitz() -> dict:
             continue
         result.append({
             **oral_review._preview(card), "source_fingerprint": card["source_fingerprint"],
-            "audio_url": source["audio_url"], **source["sentences"][index],
+            "audio_url": source["audio_url"], "voice": source["voice"],
+            **source["sentences"][index],
         })
     return {"due_count": len(result), "cards": result}
+
+
+def home_cards() -> dict:
+    due = blitz()
+    if due["cards"]:
+        return due
+    with oral_review._LOCK:
+        enrolled = set(oral_review._load()["cards"])
+    sources = sorted(library.TOPICS_DIR.glob(f"*/items/*/{study.MATERIAL_FILE}"),
+                     key=lambda path: path.stat().st_mtime, reverse=True)
+    for path in sources:
+        tid, iid = path.parent.parent.parent.name, path.parent.name
+        try:
+            if not library.resolve_audio_file(path.parent, "podcast"):
+                continue
+            found = study.get_material(tid, iid)
+            if found["status"] != "ready":
+                continue
+            material = found["material"]
+            fingerprint = material["source_fingerprint"]
+            fresh = [index for index in range(len(material["sentences"]))
+                     if oral_review._card_id(tid, iid, index, fingerprint) not in enrolled]
+            if not fresh:
+                continue
+            source = view(tid, iid)
+            if source["source_fingerprint"] != fingerprint or not source["audio_url"]:
+                continue
+        except (FileNotFoundError, ValueError):
+            continue
+        return {"due_count": 0, "cards": [
+            {**source["sentences"][i], "topic_id": tid, "item_id": iid, "sentence_index": i,
+             "source_fingerprint": fingerprint, "audio_url": source["audio_url"],
+             "voice": source["voice"], "question": source["question"]}
+            for i in fresh
+        ]}
+    return due
 
 
 def _category(error: dict) -> str:

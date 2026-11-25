@@ -1,5 +1,8 @@
 """HTTP API 路由。"""
+import hashlib
+import os
 import re
+import threading
 import uuid
 from contextlib import nullcontext
 from pathlib import Path
@@ -29,6 +32,7 @@ from . import (
     stepfun,
     study,
     study_progress,
+    teaching_podcast,
     timeline,
     tts,
 )
@@ -39,16 +43,19 @@ from .config import (
     PROMPTS_DIR,
     TMP_DIR,
     is_dry_run,
+    is_llm_configured,
     load_settings,
     real_api_key,
     real_llm_api_key,
     real_stepfun_api_key,
     save_settings,
+    speech_engine_available,
 )
 
 router = APIRouter(prefix="/api")
 
 TrackParam = Literal["default", "monologue", "podcast"]
+_PREVIEW_LOCK = threading.Lock()
 
 
 class TopicIn(BaseModel):
@@ -79,11 +86,13 @@ class GenerateIn(BaseModel):
 class SettingsIn(BaseModel):
     tts_provider: Literal["stepfun", "fish", "kokoro_local"] | None = None
     speech_engine_dir: str | None = None
-    kokoro_question_voice: Literal["af_bella", "am_liam", "am_michael", "am_puck"] | None = None
-    kokoro_answer_voice: Literal[
-        "af_bella", "am_liam", "am_michael", "am_puck", "golden_self"
+    kokoro_question_voice: Literal[
+        "af_bella", "af_heart", "am_liam", "am_michael", "am_puck", "am_fenrir"
     ] | None = None
-    llm_provider: Literal["deepseek", "custom"] | None = None
+    kokoro_answer_voice: Literal[
+        "af_bella", "af_heart", "am_liam", "am_michael", "am_puck", "am_fenrir", "golden_self"
+    ] | None = None
+    llm_provider: Literal["deepseek", "custom", "stepfun"] | None = None
     llm_base_url: str | None = None
     llm_api_key: str | None = None
     llm_model: str | None = None
@@ -277,12 +286,25 @@ async def _arcade_upload(request: Request) -> bytes:
 
 @router.post("/arcade/transcribe-blind")
 async def api_arcade_blind(request: Request, duration_sec: float,
-                           language: Literal["en", "zh"] | None = None):
+                           language: Literal["en", "zh"] = "en"):
     data = await _arcade_upload(request)
     try:
         return await run_in_threadpool(
             arcade.transcribe_blind, data, request.headers.get("content-type", ""),
             duration_sec, language,
+        )
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
+    except speech_bridge.SpeechError as exc:
+        raise _err(503, str(exc)) from exc
+
+
+@router.post("/arcade/transcribe-intent")
+async def api_arcade_intent(request: Request, duration_sec: float):
+    data = await _arcade_upload(request)
+    try:
+        return await run_in_threadpool(
+            arcade.transcribe_intent, data, request.headers.get("content-type", ""), duration_sec,
         )
     except ValueError as exc:
         raise _err(400, str(exc)) from exc
@@ -360,15 +382,73 @@ def api_arcade_grade(topic_id: str, item_id: str, body: ArcadeGradeIn):
 
 
 @router.get("/arcade/blitz")
-def api_arcade_blitz(summary: bool = False):
+def api_arcade_blitz(summary: bool = False, include_pending: bool = False):
     if summary:
         return {"due_count": len(oral_review.blitz_cards())}
-    return arcade.blitz()
+    return arcade.home_cards() if include_pending else arcade.blitz()
+
+
+@router.get("/topics/{topic_id}/items/{item_id}/arcade/sentences/{index}/voice/{voice}")
+def api_arcade_sentence_voice(topic_id: str, item_id: str, index: int,
+                              voice: Literal["am_puck", "golden_self"], source_fingerprint: str):
+    try:
+        found = study.get_material(topic_id, item_id)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    material = found.get("material", {})
+    if source_fingerprint != material.get("source_fingerprint"):
+        raise _err(409, "材料已更新，请刷新后再试听")
+    rows = material["sentences"]
+    if not 0 <= index < len(rows):
+        raise _err(404, "句子不存在")
+    return _local_voice_preview(voice, rows[index]["en"])
 
 
 @router.get("/arcade/error-board")
 def api_arcade_error_board():
     return arcade.error_board()
+
+
+class TeachingPodcastIn(BaseModel):
+    language_mode: Literal["en", "bilingual"] = "en"
+    partner_voice: Literal["am_puck", "golden_self"] = "am_puck"
+
+
+@router.get("/teaching-podcasts")
+def api_teaching_podcasts():
+    return {"episodes": teaching_podcast.list_episodes()}
+
+
+@router.post("/teaching-podcasts/daily")
+def api_daily_teaching_podcast(body: TeachingPodcastIn):
+    try:
+        return teaching_podcast.for_today(body.language_mode, body.partner_voice)
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+    except (speech_bridge.SpeechError, audio.FFmpegError) as exc:
+        raise _err(503, str(exc)) from exc
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/teaching-podcast")
+def api_item_teaching_podcast(topic_id: str, item_id: str, body: TeachingPodcastIn):
+    try:
+        return teaching_podcast.for_item(topic_id, item_id, body.language_mode, body.partner_voice)
+    except FileNotFoundError as exc:
+        raise _err(404, "题目不存在") from exc
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+    except (speech_bridge.SpeechError, audio.FFmpegError) as exc:
+        raise _err(503, str(exc)) from exc
+
+
+@router.get("/teaching-podcasts/{episode_id}/audio")
+def api_teaching_podcast_audio(episode_id: str, download: bool = False):
+    try:
+        path = teaching_podcast.audio_file(episode_id)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    return FileResponse(path, media_type="audio/mpeg",
+                        filename=f"教学电台-{episode_id}.mp3" if download else None)
 
 
 @router.post("/topics/{topic_id}/items/{item_id}/study/prepare")
@@ -731,6 +811,41 @@ def api_episode_audio(topic_id: str, track: TrackParam = "default"):
 
 # ---------------------------------------------------------------- voices
 
+def _local_voice_preview(voice_id: str, text: str, regen: bool = False) -> FileResponse:
+    settings = load_settings()
+    profile_hash = None
+    if voice_id == "golden_self":
+        try:
+            profile_hash = speech_bridge.request(
+                settings, "profile_revision", timeout=15,
+            ).get("profile_hash")
+        except speech_bridge.SpeechError as exc:
+            raise _err(503, str(exc)) from exc
+        if not profile_hash:
+            raise _err(503, "尚未配置母语分身，请先建立声纹")
+    key = hashlib.sha256(
+        f"v1|{settings.get('speech_engine_dir')}|{voice_id}|{profile_hash}|{text}".encode()
+    ).hexdigest()[:24]
+    folder = TMP_DIR / "voice_previews"
+    folder.mkdir(parents=True, exist_ok=True)
+    path = folder / f"{voice_id}-{key}.wav"
+    try:
+        with _PREVIEW_LOCK:
+            if regen or not path.is_file():
+                with TemporaryDirectory(prefix="kokoro-preview-", dir=TMP_DIR) as work:
+                    output = Path(work) / "preview.wav"
+                    speech_bridge.request(
+                        settings, "preview_line", voice=voice_id, output=output,
+                        profile_hash=profile_hash, text=text,
+                    )
+                    os.replace(output, path)
+    except speech_bridge.SpeechError as exc:
+        raise _err(503, str(exc)) from exc
+    except OSError as exc:
+        raise _err(503, "本地试听文件写入失败，请重试") from exc
+    return FileResponse(path, media_type="audio/wav")
+
+
 @router.get("/voices")
 def api_get_voices(provider: str | None = None, gender: str | None = None):
     voices = production.get_voice_catalog()
@@ -746,17 +861,9 @@ def api_provider_voice_sample(provider: str, voice_id: str, regen: bool = False)
     if provider == "kokoro_local":
         if voice_id not in speech_bridge.VOICES:
             raise _err(404, "本地音色不存在")
-        TMP_DIR.mkdir(parents=True, exist_ok=True)
-        work = TemporaryDirectory(prefix="kokoro-preview-", dir=TMP_DIR)
-        path = Path(work.name) / "preview.wav"
-        try:
-            speech_bridge.request(load_settings(), "synthesize_line", voice=voice_id, output=path,
-                                  text="What I like most about it is that it helps me unwind.")
-        except speech_bridge.SpeechError as exc:
-            work.cleanup()
-            raise _err(503, str(exc)) from exc
-        return FileResponse(path, media_type="audio/wav",
-                            background=BackgroundTask(work.cleanup))
+        return _local_voice_preview(
+            voice_id, "What I like most about it is that it helps me unwind.", regen,
+        )
     if provider == "fish":
         return api_voice_sample(voice_id, regen=regen)
     if provider != "stepfun":
@@ -875,7 +982,9 @@ def _masked_settings(s: dict) -> dict:
     out["stepfun_api_key_set"] = bool(real_stepfun_api_key(s))
     out["llm_api_key"] = ""
     out["llm_api_key_set"] = bool(real_llm_api_key(s))
-    out["llm_available"] = rewrite.text_available(s)
+    out["llm_configured"] = is_llm_configured(s)
+    out["llm_available"] = out["llm_configured"]
+    out["speech_engine_available"] = speech_engine_available(s)
     out["models"] = FISH_MODELS
     return out
 
@@ -1045,7 +1154,7 @@ def api_bank_answers(question_id: str):
 
 @router.get("/bank/questions")
 def api_bank_questions(
-    part: int | None = None,
+    part: Literal["all", "1", "2", "3"] | None = None,
     topic: str | None = None,
     q: str | None = None,
     page: int = 1,
@@ -1053,8 +1162,9 @@ def api_bank_questions(
     random_pick: bool = False,
     random: bool = False,
     set_filter: str | None = None,
-    answer_status: Literal["all", "answered", "unanswered"] = "all",
+    answer_status: Literal["all", "answered", "unanswered"] | None = None,
     training_status: Literal["all", "unstarted", "training", "awaiting_review", "mastered"] = "all",
+    exclude_id: str | None = None,
 ):
     try:
         snapshot = bank.load_bank()
@@ -1068,11 +1178,12 @@ def api_bank_questions(
             "topics": [],
             "sets": [],
         }
+    part_number = int(part) if part and part != "all" else None
     result = bank.query_questions(
         snapshot,
         answer_status=answer_status,
         training_status=training_status,
-        part=part,
+        part=part_number,
         topic_id=topic,
         q=q,
         page=page,
@@ -1080,12 +1191,13 @@ def api_bank_questions(
         answered_map=bank.answered_items(),
         random_pick=random_pick or random,
         set_filter=set_filter,
+        exclude_id=exclude_id,
     )
     result["available"] = True
-    result["topics"] = bank.bank_topics(snapshot, part=part)
+    result["topics"] = bank.bank_topics(snapshot, part=part_number)
     # 考季筛选器数据：每个题集在当前 part 下的题数 + 必考题（固定五话题）计数
     part_questions = [
-        r for r in snapshot.get("questions", []) if part is None or r["part"] == part
+        r for r in snapshot.get("questions", []) if part_number is None or r["part"] == part_number
     ]
     core_tids = bank._core_topic_ids(snapshot)
     sets_out = []
@@ -1138,6 +1250,7 @@ class GenerationRequestIn(BaseModel):
     answer: str
     mode: Literal["agent", "api"] = "agent"
     intent: str = ""
+    chinese_intent: str = ""
     feedback: str = ""
     blind_token: str | None = None
 
@@ -1148,7 +1261,10 @@ def api_generation_requests(body: GenerationRequestIn):
     answer = (body.answer or "").strip()
     if not answer:
         raise _err(422, "回答不能为空")
-    if len(body.intent) > 30000 or len(body.feedback) > 30000:
+    if body.mode == "api":
+        _require_llm_configured()
+    intent = (body.chinese_intent or body.intent).strip()
+    if len(intent) > 30000 or len(body.feedback) > 30000:
         raise _err(422, "补充内容过长")
     if body.question_id:
         try:
@@ -1181,9 +1297,9 @@ def api_generation_requests(body: GenerationRequestIn):
                 arcade.attach_blind(body.blind_token, target["id"], created["id"])
     except ValueError as exc:
         raise _err(400, str(exc)) from exc
-    if body.intent or body.feedback:
+    if intent or body.feedback:
         private = study_progress.get_progress(target["id"], created["id"])
-        private["training_inputs"] = {"answer": answer, "intent": body.intent,
+        private["training_inputs"] = {"answer": answer, "intent": intent,
                                       "feedback": body.feedback}
         study_progress._write(target["id"], created["id"], private)
     if body.question_id:
@@ -1196,13 +1312,7 @@ def api_generation_requests(body: GenerationRequestIn):
         "result_url": f"#/done/{target['id']}/{created['id']}",
     }
     if body.mode == "agent":
-        out["agent_prompt"] = rewrite.build_agent_prompt(
-            target["id"], created["id"], question_text, answer
-        )
-        if body.intent or body.feedback:
-            out["agent_prompt"] += (
-                "\n## 独立补充（不属于实际说出的原话）\n中文补充意图：" + body.intent
-                + "\n外部反馈（待核对的建议，不能作为错误证据）：" + body.feedback)
+        out["agent_prompt"] = _agent_prompt(target["id"], created["id"], question_text, answer)
         return out
     try:
         job = jobs.start_api_generation(target["id"], created["id"], question_text, answer)
@@ -1211,6 +1321,41 @@ def api_generation_requests(body: GenerationRequestIn):
         raise _err(409, f"{e}（你的回答已保存为草稿条目，不会丢失）") from e
     out["job_id"] = job["job_id"]
     return out
+
+
+def _require_llm_configured() -> None:
+    if not is_llm_configured(load_settings()):
+        raise _err(422, "当前 AI 改写服务未配置，请前往设置填写 Key 或检查服务地址")
+
+
+def _agent_prompt(topic_id: str, item_id: str, question: str, answer: str) -> str:
+    prompt = rewrite.build_agent_prompt(topic_id, item_id, question, answer)
+    inputs = study_progress.get_progress(topic_id, item_id).get("training_inputs") or {}
+    if inputs.get("intent") or inputs.get("feedback"):
+        prompt += (
+            "\n## 独立补充（不属于实际说出的原话）\n中文补充意图：" + inputs.get("intent", "")
+            + "\n外部反馈（待核对的建议，不能作为错误证据）：" + inputs.get("feedback", "")
+        )
+    return prompt
+
+
+@router.post("/topics/{topic_id}/items/{item_id}/retry-api")
+def api_retry_generation(topic_id: str, item_id: str):
+    _require_llm_configured()
+    try:
+        full = library.get_item_full(topic_id, item_id)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    answer = rewrite.original_answer_of(full)
+    question = (full.get("question") or "").strip()
+    if not answer or not question:
+        raise _err(422, "缺少题目或原始回答，无法重新生成")
+    try:
+        job = jobs.start_api_generation(topic_id, item_id, question, answer)
+    except jobs.JobConflict as exc:
+        raise _err(409, str(exc)) from exc
+    return {"topic_id": topic_id, "item_id": item_id, "mode": "api", **job,
+            "result_url": f"#/done/{topic_id}/{item_id}"}
 
 
 @router.get("/topics/{topic_id}/items/{item_id}/agent-task")
@@ -1227,7 +1372,7 @@ def api_agent_task(topic_id: str, item_id: str):
         "item_id": item_id,
         "question": question,
         "answer": answer,
-        "agent_prompt": rewrite.build_agent_prompt(topic_id, item_id, question, answer),
+        "agent_prompt": _agent_prompt(topic_id, item_id, question, answer),
     }
 
 

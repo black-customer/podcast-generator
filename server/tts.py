@@ -36,7 +36,11 @@ DEFAULT_REPETITION_PENALTY = 1.20
 VALID_TRACKS = ("default", "monologue", "podcast", "all")
 
 # 对话行：A: / B: / Person A: / Person B:（或全角冒号）
-DIALOGUE_LINE_RE = re.compile(r"^\s*(?:person\s*)?([ab])\s*[:：]", re.IGNORECASE)
+DIALOGUE_LINE_RE = re.compile(
+    r"^(?P<tags>(?:\[[^\[\]\n]+\]\s*)*)"
+    r"(?:person\s*)?(?P<role>[ab]|interviewer|examiner|candidate)\s*[:：]",
+    re.IGNORECASE,
+)
 
 
 class TTSError(RuntimeError):
@@ -51,22 +55,32 @@ class TTSCancelled(RuntimeError):
 def parse_dialogue(text: str):
     """识别 A:/B: 交替对话。返回 [(speaker, line)]；不是规整对话则返回 None。"""
     lines: list[tuple[str, str]] = []
-    speakers: set[str] = set()
+    current = ""
+    parts: list[str] = []
     for raw in (text or "").replace("\r\n", "\n").split("\n"):
         raw = raw.strip()
         if not raw:
             continue
-        m = DIALOGUE_LINE_RE.match(raw)
-        if not m:
-            return None  # 出现非对话行 → 整体不按对话处理
-        speaker = m.group(1).lower()
-        body = raw[m.end():].strip().strip('"“”').strip()
-        if body:
-            lines.append((speaker, body))
-            speakers.add(speaker)
-    if len(lines) >= 2 and len(speakers) == 2:
-        return lines
-    return None
+        marker = DIALOGUE_LINE_RE.match(raw)
+        if marker:
+            if current and parts:
+                lines.append((current, " ".join(parts).strip('"“”').strip()))
+            role = marker["role"].lower()
+            current = "b" if role in {"b", "candidate"} else "a"
+            body = f"{marker['tags'].strip()} {raw[marker.end():].strip()}".strip()
+            parts = [body] if body else []
+        elif current:
+            parts.append(raw)
+        else:
+            return None
+    if current and parts:
+        lines.append((current, " ".join(parts).strip('"“”').strip()))
+    lines = [(role, body) for role, body in lines if strip_speaker_body(body)]
+    return lines if {role for role, _ in lines} == {"a", "b"} else None
+
+
+def strip_speaker_body(body: str) -> str:
+    return audioqa.strip_all_tags(body)[0].strip()
 
 
 def _split_long_unit(u: str, max_chars: int) -> tuple[str, str]:

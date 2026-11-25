@@ -5,7 +5,7 @@ import threading
 import uuid
 
 from . import assemble, library, rewrite, study, tts
-from .config import DATA_DIR, atomic_write_text, load_settings, real_llm_api_key
+from .config import DATA_DIR, atomic_write_text, load_settings
 
 logger = logging.getLogger(__name__)
 
@@ -261,8 +261,7 @@ def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, a
         settings = load_settings()
         material = None
         texts = None
-        combined = bool(real_llm_api_key(settings) or settings.get("llm_provider") == "custom")
-        if combined or rewrite.text_available(settings):
+        if rewrite.text_available(settings):
             try:
                 texts = rewrite.generate_complete_bundle(
                     settings, question, answer, cancel=cancel_event, **options
@@ -281,7 +280,7 @@ def _run_api_generate(job_id: str, topic_id: str, item_id: str, question: str, a
             current = library.get_item_full(topic_id, item_id)
             if rewrite.original_answer_of(current) != answer or current.get("question") != question:
                 raise rewrite.RewriteError("生成时原始回答或题目有改动，请从当前回答重新生成")
-            library.update_item_texts(topic_id, item_id, texts)
+            library.update_item_texts(topic_id, item_id, {"original_answer": answer, **texts})
             fingerprint = study.source_fingerprint(library.get_item_full(topic_id, item_id))
         _set_phase("tts")
         tts.generate_item_audio(topic_id, item_id, track="podcast", cancel=cancel_event)

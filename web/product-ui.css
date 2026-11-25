@@ -413,29 +413,32 @@ body.mobile-learning #app:not(:has(.training-page)) { padding-top:calc(24px + ma
 /* 桌面三步练习。 */
 body.reading-notes-theme .arcade-home,
 body.reading-notes-theme .arcade-workspace { margin:0 auto; max-width:1100px; padding:34px 0 56px; }
-.arcade-home-head { margin-bottom:24px; }
+.arcade-home-head { display:flex; flex-wrap:wrap; align-items:end; justify-content:space-between; gap:14px; margin-bottom:24px; }
 .arcade-home-head h1 { margin:0; }
-.arcade-home-head p, .arcade-new p, .arcade-board > p, .arcade-muted { margin:6px 0 0; color:var(--ink-soft); }
-.arcade-home-grid { display:grid; grid-template-columns:minmax(0, 1.45fr) minmax(0, 1fr); gap:24px; align-items:start; }
-.arcade-home-actions { display:grid; gap:20px; }
-.arcade-blitz-card, .arcade-board, .arcade-new, .arcade-frame {
+.arcade-home-head nav { display:flex; gap:8px; flex-wrap:wrap; }
+.arcade-home-head p, .arcade-muted { margin:6px 0 0; color:var(--ink-soft); }
+.arcade-board, .arcade-frame {
   border:1px solid var(--rule); border-radius:14px; padding:26px 30px; background:var(--paper-raised);
 }
-.arcade-blitz-card { background:#eaf0ff; border-color:#ccd8f4; padding:28px 32px 30px; }
-.arcade-card-meta, .arcade-recall-meta { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; color:var(--ink-soft); font-size:.875rem; font-variant-numeric:tabular-nums; }
-.arcade-card-meta span:last-child { color:#294bae; font-weight:650; }
-body.reading-notes-theme .arcade-blitz-card h2 { font-size:clamp(1.7rem, 3vw, 2.5rem); line-height:1.25; margin:22px 0 8px; }
-.arcade-blitz-card p { margin:0 0 26px; color:var(--ink-soft); }
-.arcade-new { display:flex; align-items:center; justify-content:space-between; gap:16px; }
-.arcade-new h2, .arcade-board h2, .arcade-frame h2 { margin:0; font-size:1.22rem; line-height:1.4; }
+.arcade-recall-meta { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; color:var(--ink-soft); font-size:.875rem; font-variant-numeric:tabular-nums; }
+.arcade-frame h2 { margin:0; font-size:1.22rem; line-height:1.4; }
+.arcade-board { margin-top:20px; padding:14px 20px; }
+.arcade-board summary, .arcade-repair summary { cursor:pointer; font-weight:650; }
 .arcade-board ol { margin:20px 0; padding-inline-start:1.55em; }
 .arcade-board li { padding:10px 0 10px 6px; border-bottom:1px solid var(--rule); }
 .arcade-board li::marker { color:var(--accent); font-variant-numeric:tabular-nums; }
 .arcade-board li span { float:right; color:var(--ink-soft); }
-.arcade-board .arcade-board-empty { margin:20px 0; }
 .arcade-board .arcade-chunks { margin-top:18px; }
+.arcade-board .study-button { margin-top:12px; }
 .arcade-home-footer { display:flex; gap:24px; margin-top:24px; }
 .arcade-home-footer a, .arcade-nav a { color:var(--accent); font-size:.9rem; text-underline-offset:.2em; }
+.arcade-home [hidden], .nav-item[hidden], #topic-generation[hidden] { display:none; }
+.arcade-draw { margin-top:16px; }
+.arcade-draw-filters { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; margin:18px 0; }
+.arcade-draw label, .radio-controls label { display:grid; gap:5px; color:var(--ink-soft); font-size:.875rem; }
+.arcade-home select, .arcade-voice-control select { min-width:0; min-height:40px; padding:6px 10px; border:1px solid var(--rule); border-radius:8px; background:var(--paper-raised); color:var(--ink); font:inherit; }
+.arcade-draw [role=status]:empty, #radio-status:empty, .radio-player [role=status]:empty { display:none; }
+#arcade-home-setup:not(:empty) { margin-top:14px; }
 
 .arcade-workspace { max-width:1060px; }
 .arcade-nav { display:flex; justify-content:space-between; gap:12px; margin-bottom:20px; }
@@ -458,10 +461,12 @@ body.reading-notes-theme .arcade-blitz-card h2 { font-size:clamp(1.7rem, 3vw, 2.
 .arcade-notes h3, .arcade-summary h3 { margin:20px 0 10px; font-size:1rem; }
 .arcade-chunks { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px; margin-top:12px; }
 .arcade-chunk, .arcade-hit { background:#f8ebcc; color:#634608; border-radius:5px; padding:2px 7px; overflow-wrap:anywhere; }
-.arcade-error { margin-top:10px; padding-top:9px; border-top:1px solid var(--rule); }
-.arcade-error p { margin:3px 0; }
-.arcade-error mark { border-radius:4px; padding:2px 5px; color:#892832; background:#fce6e8; }
-.arcade-error strong { color:var(--ink); font-weight:600; }
+.arcade-repair dl { display:flex; flex-wrap:wrap; gap:12px 32px; margin:0 0 20px; }
+.arcade-repair dt { color:var(--ink-soft); font-size:.875rem; }
+.arcade-repair dd { margin:4px 0 0; color:var(--ink); }
+.arcade-repair details { padding:12px 0; border-top:1px solid var(--rule); }
+.arcade-repair details p { color:var(--accent); font-size:1.15rem; }
+.arcade-repair h2:focus { outline:none; }
 
 .arcade-recall { padding:24px clamp(20px, 5vw, 58px) 34px; }
 .arcade-recall-meta { margin-bottom:8px; }
@@ -472,6 +477,13 @@ body.reading-notes-theme .arcade-blitz-card h2 { font-size:clamp(1.7rem, 3vw, 2.
 .arcade-intent { margin:30px 0 24px; max-width:32ch; color:var(--ink); font-size:clamp(1.5rem, 4vw, 2.45rem); line-height:1.5; font-weight:600; letter-spacing:-.025em; }
 .arcade-reveal { padding:14px 16px; background:var(--blue-soft); color:var(--ink); border-radius:8px; margin-bottom:16px; }
 .arcade-reveal p { margin:0; font-size:1.23rem; }
+.arcade-voice-control { display:flex; align-items:center; flex-wrap:wrap; gap:10px 20px; margin-top:14px; }
+.arcade-voice-control label { display:inline-flex; align-items:center; gap:7px; font-size:.875rem; }
+.arcade-pronunciation > p { line-height:2; }
+.arcade-pronunciation .arcade-muted { font-size:.82rem; }
+.arcade-pron-word { display:inline-block; white-space:nowrap; }
+.arcade-pron-word small, .arcade-pron-word sup { color:var(--accent); margin-inline:2px; }
+.arcade-pron-word.nuclear { text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:.2em; }
 .arcade-controls { display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-top:15px; }
 .arcade-controls[hidden], .arcade-workspace [hidden] { display:none; }
 .arcade-proceed { margin-top:22px; }
@@ -494,17 +506,43 @@ body.reading-notes-theme .arcade-recording { border-color:#b3343d; color:#9a2530
 .arcade-local-engine { grid-column:1/-1; }
 .arcade-local-role { display:flex; flex-wrap:wrap; align-items:end; gap:8px 12px; }
 .arcade-local-role label { flex:1 1 8rem; margin:0; }
+.arcade-local-switch { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; padding:12px; border-radius:8px; background:var(--blue-soft); }
+.arcade-local-switch p { margin:0; color:var(--ink); }
+.arcade-voice-gallery { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:16px 24px; padding-top:14px; border-top:1px solid var(--rule); }
+.arcade-voice-gallery h4 { margin:0 0 6px; }
+.arcade-voice-gallery section div { display:flex; flex-wrap:wrap; gap:6px; }
+.arcade-answer-label { display:block; margin-top:16px; color:var(--ink); font-weight:650; }
 .arcade-blind-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; margin:12px 0; }
 .arcade-blind-row p { margin:0; color:var(--ink-soft); font-size:.85rem; }
+.bank-answer-card:has(#arcade-intent-input) #bank-answer-input { min-height:96px; }
+.bank-answer-card #arcade-intent-input { min-height:76px; }
+.api-retry { white-space:nowrap; }
+.api-retry-error a { margin-inline-start:8px; }
+.radio-controls form { align-items:end; }
+.radio-player { margin-top:20px; }
+.radio-player header { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; }
+.radio-playback { display:flex; align-items:center; flex-wrap:wrap; gap:14px; padding:18px 0; }
+.radio-playback audio { width:min(100%, 32rem); }
+.radio-transcript { max-height:27rem; overflow:auto; margin:0; padding:0; list-style:none; border-top:1px solid var(--rule); }
+.radio-transcript button { width:100%; display:grid; grid-template-columns:3rem minmax(0,1fr) 3.4rem; align-items:baseline; gap:8px; padding:12px; border:0; border-bottom:1px solid var(--rule); background:transparent; color:var(--ink); font:inherit; text-align:left; cursor:pointer; }
+.radio-transcript button > :first-child, .radio-transcript time { font-size:.875rem; color:var(--ink-soft); }
+.radio-transcript button[aria-current] { background:var(--blue-soft); }
+.radio-transcript time { text-align:right; font-variant-numeric:tabular-nums; }
+.radio-history { padding:16px 0; }
+.radio-history ul { list-style:none; padding:0; margin:0; }
+.radio-history li { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--rule); }
+.radio-history li span { flex:none; color:var(--ink-soft); font-size:.875rem; }
+.radio-history [aria-current] { border-color:var(--accent); }
 
 @media (max-width: 850px) {
-  .arcade-home-grid, .arcade-reference { grid-template-columns:minmax(0, 1fr); }
+  .arcade-reference { grid-template-columns:minmax(0, 1fr); }
+  .arcade-draw-filters { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 560px) {
-  .arcade-blitz-card, .arcade-board, .arcade-new, .arcade-frame { padding:18px; }
-  .arcade-new { align-items:flex-start; flex-direction:column; }
+  .arcade-board, .arcade-frame { padding:18px; }
   .arcade-line { grid-template-columns:minmax(0, 1fr); gap:3px; }
   .arcade-tracks, .arcade-setting-row { grid-template-columns:minmax(0, 1fr); }
+  .radio-transcript button { grid-template-columns:2.3rem minmax(0,1fr) 2.5rem; padding:10px 3px; }
   .arcade-steps li { gap:4px; font-size:.75rem; }
   .arcade-steps li span { flex-basis:20px; height:20px; }
 }

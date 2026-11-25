@@ -11,8 +11,9 @@ from pathlib import Path
 
 from . import config
 
-VOICES = {"af_bella": "Bella", "am_liam": "Liam", "am_michael": "Michael",
-          "am_puck": "Puck", "golden_self": "我的母语分身"}
+VOICES = {"af_bella": "Bella", "af_heart": "Heart", "am_puck": "Puck",
+          "am_liam": "Liam", "am_michael": "Michael", "am_fenrir": "Fenrir",
+          "golden_self": "我的母语分身"}
 
 
 class SpeechError(RuntimeError):
@@ -114,6 +115,8 @@ class SpeechBridge:
             self.idle.daemon = True
             self.idle.start()
             if "error" in response:
+                if response.get("reset"):
+                    self.close()
                 raise SpeechError(str(response["error"]))
             return response["result"]
 
