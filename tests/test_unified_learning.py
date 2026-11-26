@@ -107,3 +107,17 @@ def test_agent_auto_approval_registers_card_in_shared_schedule(review_env):
         scheduled = oral_review._load()["cards"][card_id]
     assert scheduled["capture_id"] == capture_id
     assert scheduled["due_date"] == "2026-11-26"
+
+
+def test_home_preserves_ielts_card_when_old_chunk_cannot_be_clozed(monkeypatch):
+    row = {"card_kind": "ielts", "source_type": "ielts", "audio_url": "/sample.mp3",
+           "key_chunk": "used to study", "en": "I study at home.", "zh": "我在家学习。"}
+    monkeypatch.setattr(arcade, "load_settings", lambda: {"daily_session_limit": 8})
+    monkeypatch.setattr(oral_review, "unified_due_cards", lambda: [])
+    monkeypatch.setattr(arcade, "_fresh_ielts", lambda *_: [row])
+    monkeypatch.setattr(captures, "list_cards", lambda **_: [])
+    monkeypatch.setattr(oral_review, "_load", lambda: {"cards": {}})
+    cards = arcade.home_cards(source="ielts")["cards"]
+    assert len(cards) == 1
+    assert cards[0]["cloze_prompt"] == ""
+    assert cards[0]["en"] == row["en"]

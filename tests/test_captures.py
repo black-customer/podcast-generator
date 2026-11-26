@@ -69,16 +69,60 @@ def test_agent_validates_whole_batch_then_writes_inbox(store):
     assert (store / second["id"] / "assets" / "frame.png").as_posix() in prompt
 
 
-def test_scene_retries_preserve_first_source(store):
-    first = captures.ingest_scenes([scene()])
-    again = captures.ingest_scenes([scene() | {"userNote": "已修改"}])
-    assert first["imported"] == 1 and again["duplicates"] == 1
-    entry = captures.get_capture(first["capture_ids"][0])
-    assert entry["source"]["userNote"] == "这是测试素材"
+def test_scene_note_only_updates_pending_material(store):
+    original = scene() | {"userNote": ""}
+    first = captures.ingest_scenes([original])
+    identity = first["capture_ids"][0]
+    edited = original | {"userNote": "看完补记", "time": 90, "imageUrl": ""}
+    updated = captures.ingest_scenes([edited])
+    assert first["imported"] == 1
+    assert (updated["updated"], updated["duplicates"], updated["capture_ids"]) == (1, 0, [identity])
+    entry = captures.get_capture(identity)
+    assert entry["source"]["userNote"] == "看完补记"
     assert entry["source"]["source_url"].endswith("?p=2&t=258")
-    with pytest.raises(ValueError):
-        captures.ingest_scenes([scene("bad") | {"source": {"url": "https://example.org/"}}])
-    assert len(captures.list_captures()) == 1
+    assert entry["source"]["assets"] == ["frame.png"]
+    for note in (edited, original):
+        result = captures.ingest_scenes([note])
+        assert (result["updated"], result["duplicates"]) == (0, 1)
+    for state in ("extracting", "ready", "failed"):
+        captures.set_extract_state(identity, state, "agent")
+        result = captures.ingest_scenes([edited | {"userNote": f"重复写入 {state}"}])
+        assert (result["updated"], result["duplicates"]) == (0, 1)
+        assert captures.get_capture(identity)["source"]["userNote"] == "看完补记"
+
+
+def test_scene_season_and_empty_url_can_share_mixed_batch(store):
+    records = [
+        scene("season") | {"source": {"url": "https://www.bilibili.com/bangumi/play/ss38"}},
+        scene("episode") | {"source": {"url": "https://www.bilibili.com/bangumi/play/ep42"}},
+        scene("historical") | {"source": {"url": ""}},
+        scene("unlinked") | {"source": {}},
+        scene("video"),
+    ]
+    result = captures.ingest_scenes(records)
+    assert result["imported"] == 5
+    assert [captures.get_capture(identity)["source"]["source_url"]
+            for identity in result["capture_ids"]] == [
+        "https://www.bilibili.com/bangumi/play/ss38?t=258",
+        "https://www.bilibili.com/bangumi/play/ep42?t=258",
+        "", "", "https://www.bilibili.com/video/BV1234567890?p=2&t=258",
+    ]
+    for url in ("https://example.org/", "https://www.bilibili.com/bangumi/play/ss0"):
+        with pytest.raises(ValueError):
+            captures.ingest_scenes([scene("bad") | {"source": {"url": url}}])
+    assert len(captures.list_captures()) == 5
+
+
+def test_optional_contrast_hint_survives_goal_edit(store):
+    source = captures.ingest_snippet(text="The interviewer put me on the spot.")
+    rows = captures.prepare_cards(source["id"], [card() | {"contrast_hint": "区别于直接指责"}])
+    captures.save_cards(source["id"], rows, "agent")
+    changed = captures.update_card(rows[0]["id"], {"goal_type": "fill_gap"})
+    assert changed["contrast_hint"] == "区别于直接指责"
+    assert captures.approve_card(changed["id"], goal_type="comprehend_input")["goal_type"] == (
+        "comprehend_input"
+    )
+    assert captures.get_card(changed["id"])["goal_type"] == "comprehend_input"
 
 
 def test_distill_passes_image_to_vision_service_and_keeps_result_in_inbox(store, monkeypatch):

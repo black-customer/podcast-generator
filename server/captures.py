@@ -105,6 +105,8 @@ def validate_card_payload(raw_card: dict, *, original_english: str = "") -> dict
         raise ValueError("迁移示范需要使用新情境")
     row.update(goal_type=goal, status=status)
     row["disambiguator"] = _clean(raw_card.get("disambiguator", ""), 1500, "排除提示")
+    if hint := _clean(raw_card.get("contrast_hint", ""), 1500, "对比提示"):
+        row["contrast_hint"] = hint
     row["cloze_prompt"] = make_cloze(row["en"], row["chunk_in_sentence"])
     error = raw_card.get("original_error")
     row["original_error"] = None
@@ -147,8 +149,6 @@ def _image(value: str) -> tuple[str, bytes]:
 
 def _url(raw: str, *, bilibili: bool = False, seconds: float = 0) -> str:
     if not raw:
-        if bilibili:
-            raise ValueError("缺少 B 站原片链接")
         return ""
     parsed = urlsplit(raw)
     if (parsed.scheme not in ("http", "https") or not parsed.hostname
@@ -158,10 +158,11 @@ def _url(raw: str, *, bilibili: bool = False, seconds: float = 0) -> str:
         return raw
     if (parsed.hostname not in {"www.bilibili.com", "bilibili.com", "m.bilibili.com"}
             or parsed.port is not None or not re.fullmatch(
-                r"/(?:video/(?:BV[a-zA-Z0-9]{10}|av[0-9]+)|bangumi/play/ep[0-9]+)/?",
+                r"/(?:video/(?:BV[a-zA-Z0-9]{10}|av[0-9]+)|"
+                r"bangumi/play/(?:ep|ss)[1-9][0-9]*)/?",
                 parsed.path,
             )):
-        raise ValueError("素材需要有效的 B 站视频或分集链接")
+        raise ValueError("素材需要有效的 B 站视频、分集或剧季链接")
     params = {}
     page = parse_qs(parsed.query).get("p", [""])[0]
     if re.fullmatch(r"[1-9][0-9]{0,5}", page):
@@ -234,7 +235,7 @@ def ingest_scenes(notes: list[dict]) -> dict:
         time = row.get("time")
         if (type(time) not in (int, float) or not 0 <= time <= 31 * 24 * 3600):
             raise ValueError("原片时间戳无效")
-        url = _url(_clean(row["source"].get("url"), 4000, "原片链接"),
+        url = _url(_clean(row["source"].get("url", ""), 4000, "原片链接"),
                    bilibili=True, seconds=time)
         images = [_image(row["imageUrl"])] if row.get("imageUrl") else []
         total += sum(len(data) for _, data in images)
@@ -248,16 +249,24 @@ def ingest_scenes(notes: list[dict]) -> dict:
                   "userNote": _clean(row.get("userNote", ""), 100_000, "场景备注"),
                   "source_url": url}
         validated.append((source, images, title, f"cnc:{note_id}"))
-    ids, imported = [], 0
+    ids, imported, updated = [], 0, 0
     with CAPTURES_LOCK:
         for source, images, title, external in validated:
             meta, created = _ingest(source, images, title, kind="scene",
                                     provider="bilibili_cnc", external=external)
             ids.append(meta["id"])
             imported += created
+            if not created and meta["extract_state"] == "pending" and source["userNote"]:
+                path = capture_path(meta["id"]) / "source.json"
+                stored = _json(path)
+                if stored.get("userNote") != source["userNote"]:
+                    stored["userNote"] = source["userNote"]
+                    _write(path, stored)
+                    updated += 1
         if ids:
             _update_index()
-    return {"imported": imported, "duplicates": len(ids) - imported, "capture_ids": ids}
+    return {"imported": imported, "updated": updated, "duplicates": len(ids) - imported - updated,
+            "capture_ids": ids}
 
 
 def _update_index() -> None:

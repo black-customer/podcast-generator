@@ -446,7 +446,7 @@ function chunkSentence(ctx, row) {
   const level = row.scaffolding_level;
   const transfer = level === 3 && row.goal_type !== "comprehend_input";
   const source = row.capture?.source;
-  const image = source ? CapturesUI.imageMarkup(source, row.capture_id) : "";
+  const image = source ? CapturesUI.imageMarkup(source, row.capture_id, level === 1 && !ctx.revealed) : "";
   const link = source ? CapturesUI.sourceLink(source) : "";
   const sourceLabel = source ? CapturesUI.sourceLabel(source) : "";
   const listening = row.goal_type === "comprehend_input";
@@ -471,7 +471,7 @@ function chunkSentence(ctx, row) {
       <div class="arcade-voice-control">
         ${row.prosody ? '<label><input type="checkbox" data-prosody> 发音标 <kbd>P</kbd></label>' : ""}
         <label>收听声音 <select data-answer-voice><option value="demo">母语示范</option>
-          <option value="golden_self" ${ctx.voicePreference === "golden_self" ? "selected" : ""}>我的母语分身</option></select></label>
+          <option value="golden_self" ${chosenVoice(ctx, row) === "golden_self" ? "selected" : ""}>我的母语分身</option></select></label>
       </div>
     </div>
     <div class="arcade-controls">${button("reveal", `揭晓或重播 ${hotkey("Space")}`, "primary")}
@@ -490,7 +490,8 @@ function chunkSentence(ctx, row) {
 
 function audioForChunk(ctx) {
   const row = currentRow(ctx);
-  if (row.card_kind === "capture" && ctx.voicePreference === "golden_self") {
+  const selected = chosenVoice(ctx, row);
+  if (row.card_kind === "capture" && selected === "golden_self") {
     const relative = `/api/cards/${encodeURIComponent(row.id)}/voice/golden_self`;
     loadChunkVoice(ctx, relative);
     return;
@@ -499,11 +500,11 @@ function audioForChunk(ctx) {
     play(ctx, row.audio_url);
     return;
   }
-  if (ctx.voicePreference === "golden_self" && row.voice !== "golden_self") {
+  if (selected === "golden_self" && row.voice !== "golden_self") {
     playAlternate(ctx, row, "golden_self");
     return;
   }
-  if (ctx.voicePreference === "demo" && row.voice === "golden_self") {
+  if (selected === "demo" && row.voice === "golden_self") {
     playAlternate(ctx, row, "am_puck");
     return;
   }
@@ -663,18 +664,25 @@ function bindPracticeActions(root, ctx) {
   };
   const prosody = root.querySelector("[data-prosody]");
   if (prosody) {
-    const output = root.querySelector(".arcade-pronunciation");
-    const sync = () => {
-      output.hidden = !ctx.prosodyOn;
-      root.querySelector(".arcade-plain-answer").hidden = Boolean(ctx.prosodyOn);
-      if (ctx.prosodyOn) output.innerHTML = pronunciation(currentRow(ctx));
+    if (ctx.revealed) syncPronunciation(root, ctx);
+    else prosody.checked = Boolean(ctx.prosodyOn);
+    prosody.onchange = () => {
+      ctx.prosodyOn = prosody.checked;
+      syncPronunciation(root, ctx);
     };
-    prosody.checked = Boolean(ctx.prosodyOn);
-    if (ctx.prosodyOn && ctx.revealed) sync();
-    prosody.onchange = () => { ctx.prosodyOn = prosody.checked; sync(); };
   }
   const voice = root.querySelector("[data-answer-voice]");
   if (voice) voice.onchange = () => { ctx.voicePreference = voice.value; reveal(ctx); };
+}
+
+function syncPronunciation(root, ctx) {
+  const prosody = root.querySelector("[data-prosody]");
+  if (!prosody) return;
+  const output = root.querySelector(".arcade-pronunciation");
+  prosody.checked = Boolean(ctx.prosodyOn);
+  output.hidden = !prosody.checked;
+  root.querySelector(".arcade-plain-answer").hidden = prosody.checked;
+  if (prosody.checked) output.innerHTML = pronunciation(currentRow(ctx));
 }
 
 function note(text) {
@@ -794,7 +802,10 @@ function reveal(ctx, sound = true) {
   if (!row) return;
   if (!ctx.revealed) {
     ctx.revealed = true;
-    $app.querySelector(".arcade-recall").dataset.revealed = "true";
+    const recall = $app.querySelector(".arcade-recall");
+    recall.dataset.revealed = "true";
+    recall.querySelector(".capture-image[tabindex]")?.removeAttribute("tabindex");
+    syncPronunciation(recall, ctx);
     $app.querySelector(".arcade-reveal").hidden = false;
     $app.querySelector(".arcade-grade").hidden = false;
   }

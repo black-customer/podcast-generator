@@ -161,7 +161,7 @@ def test_mobile_bank_can_submit_and_keeps_original_answer(phone):
     expect(phone.locator("#bank-answer-input")).to_be_visible()
     phone.locator("#bank-answer-input").fill("I like mushrooms and rice.")
     phone.locator("#bank-answer-submit").click()
-    expect(phone.locator("#app")).to_contain_text("API")
+    expect(phone.locator("#api-stage-row")).to_be_visible()
     texts = phone.evaluate(
         "Object.values(window.__mobileState.topics['mobile-ielts'].items).map(i=>i.texts)"
     )

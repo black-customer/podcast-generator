@@ -391,7 +391,10 @@ def _practice_row(card: dict, sources: dict) -> dict:
                "audio_url": data["audio_url"]}
     key_chunk = row.get("key_chunk")
     if key_chunk:
-        row["cloze_prompt"] = captures.make_cloze(row["en"], key_chunk)
+        try:
+            row["cloze_prompt"] = captures.make_cloze(row["en"], key_chunk)
+        except ValueError:
+            row["cloze_prompt"] = ""
     row.setdefault("trigger_context", row["zh"])
     row.setdefault("transfer_prompt_zh", "想一个自己的场景，用这个语块说一句话。")
     row.setdefault("transfer_example_en", row.get("transfer_example", ""))

@@ -2,16 +2,26 @@
 
 let current = null;
 const captions = { inbox: "待分拣收件箱", import: "导入新素材", active: "已入库表达", archived: "已归档" };
+const goals = {activate_chunk: "学会主动用", comprehend_input: "听懂即可",
+  fill_gap: "补上表达缺口", fix_error: "纠正原话错误"};
 const labels = { target_chunk: "目标语块", chunk_in_sentence: "原句中的语块", en: "原句", zh: "中文",
   chunk_zh: "语块意思", trigger_context: "情境", disambiguator: "区别提示", explanation: "讲解",
   usage_boundary: "用法边界", feynman_hook: "理解钩子", transfer_prompt_zh: "迁移提示",
   transfer_example_en: "迁移示范" };
 
-function imageMarkup(source, id) {
+function goalSelect(row, label, attrs = "") {
+  return `<label>${label}<select class="mg-input" name="goal_type" ${attrs}>
+    ${Object.entries(goals).filter(([key]) => key !== "fix_error" || row.original_error)
+      .map(([key, text]) => `<option value="${key}" ${key === (row.goal_type || "activate_chunk")
+        ? "selected" : ""}>${text}</option>`).join("")}
+  </select></label>`;
+}
+
+function imageMarkup(source, id, covered = false) {
   const file = source.assets?.[0];
   if (!file) return "";
   const url = `/api/captures/${encodeURIComponent(id)}/assets/${encodeURIComponent(file)}`;
-  return `<a href="${esc(url)}" target="_blank" rel="noopener" class="capture-image">
+  return `<a href="${esc(url)}" target="_blank" rel="noopener" class="capture-image"${covered ? ' tabindex="-1"' : ""}>
     <img src="${esc(url)}" loading="lazy" alt="素材的原始截屏"></a>`;
 }
 
@@ -89,7 +99,7 @@ function open(token) {
         <section class="arcade-frame capture-form"><h2>导入看剧截屏</h2>
           <p>选择 CaptionNoChinese 导出的 JSON 备份，或把文件拖到素材收集页面。</p>
           <label>看剧 JSON 备份<input id="scene-backup" type="file" accept=".json,application/json"></label>
-          <p>想在看剧时直接发送？<a href="#/settings">在设置中获取本机配对码</a>。</p>
+          <p>想在看剧时直接发送？<a href="#/manage">在设置中获取本机配对码</a>。</p>
         </section>`;
       const filePicker = body.querySelector("#scene-backup");
       filePicker.onchange = () => importBackup(filePicker.files[0]);
@@ -136,24 +146,31 @@ function open(token) {
     ctx.index = Math.max(0, Math.min(ctx.index, rows.length - 1));
     const row = rows[ctx.index];
     const source = row?.capture.source;
+    const boundary = row?.contrast_hint || row?.usage_boundary;
     const stateLabel = {pending: "待提炼", extracting: "提炼中", failed: "提炼失败"};
     body.innerHTML = (row ? `<section class="arcade-frame capture-current">
       <div class="capture-card-header"><div><p class="arcade-muted">${esc(sourceLabel(source) || row.capture.title)}</p>
         <h2 lang="en">${esc(row.target_chunk)}</h2></div><span>${ctx.index + 1} / ${rows.length}</span></div>
       <div class="capture-scene">${imageMarkup(source, row.capture_id)}<div>
         <p lang="en">${esc(row.en)}</p><p>${esc(row.zh)}</p>
-        <p class="arcade-muted">${esc(row.trigger_context)}</p>${sourceLink(source)}</div></div>
+        <p class="arcade-muted">${esc(row.trigger_context)}</p>
+        <p class="arcade-muted">学习目标 · <strong>${esc(goals[row.goal_type] || goals.activate_chunk)}</strong></p>
+        ${boundary ? `<p class="arcade-muted">用法边界 · ${esc(boundary)}</p>` : ""}
+        ${sourceLink(source)}</div></div>
       <div class="arcade-controls"><button class="study-button" type="button" data-step="-1"
         ${ctx.index === 0 ? "disabled" : ""}>上一张</button>
         <button class="study-button" type="button" data-step="1"
         ${ctx.index === rows.length - 1 ? "disabled" : ""}>下一张</button>
+        ${row.status !== "active" ? goalSelect(row, "入库目标", "data-approve-goal") : ""}
         ${row.status !== "active" ? '<button class="study-button primary" type="button" data-approve>确认入库 <kbd>Enter</kbd></button>' : ""}
         ${row.status !== "archived" ? '<button class="study-button" type="button" data-archive>归档 <kbd>Backspace</kbd></button>' : ""}
         ${row.status === "active" && source.note_id ?
           `<a class="study-button" href="#/radio?capture=${esc(encodeURIComponent(row.capture_id))}">生成剧集复盘</a>` : ""}
-        ${row.status === "active" ? `<a class="study-button" href="${esc('/api/cards/' + row.id + '/audio')}" target="_blank" rel="noopener">听示范</a>` : ""}
       </div>
+      ${row.status === "active" ? `<audio controls preload="none" aria-label="听示范"
+        src="/api/cards/${esc(encodeURIComponent(row.id))}/audio"></audio>` : ""}
       <details><summary>编辑卡片</summary><form class="capture-edit">
+      ${goalSelect(row, "学习目标")}
       ${Object.entries(labels).map(([key, label]) =>
         `<label>${label}<input class="mg-input" name="${key}" value="${esc(row[key])}"></label>`).join("")}
       <button class="study-button" type="submit">保存卡片</button></form></details></section>` :
@@ -167,6 +184,12 @@ function open(token) {
             ${entry.extract_error ? `<p>${esc(entry.extract_error)}</p>` : ""}
             <button type="button" class="study-button" data-distill-one="${esc(entry.id)}">提炼这条</button></li>`).join("")}</ul></section>` : "");
     const edit = body.querySelector(".capture-edit");
+    const approval = body.querySelector("[data-approve-goal]");
+    if (edit && approval) {
+      const editorGoal = edit.elements.goal_type;
+      approval.onchange = () => { editorGoal.value = approval.value; };
+      editorGoal.onchange = () => { approval.value = editorGoal.value; };
+    }
     if (edit) edit.onsubmit = async event => {
       event.preventDefault();
       try {
@@ -190,7 +213,8 @@ function open(token) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.detail || "看剧备份导入失败");
       ctx.tab = "inbox";
-      notify(`已导入 ${data.imported} 条，跳过 ${data.duplicates} 条重复记录。`);
+      const updates = data.updated ? `更新 ${data.updated} 条备注，` : "";
+      notify(`已导入 ${data.imported} 条，${updates}跳过 ${data.duplicates} 条重复记录。`);
       await refresh();
     } catch (error) {
       notify(error.message);
@@ -233,7 +257,9 @@ function open(token) {
     if (ctx.saving || !ctx.row) return;
     ctx.saving = true;
     try {
-      await api("POST", `/api/cards/${ctx.row.id}/${action}`, {});
+      const goal = body.querySelector("[data-approve-goal]")?.value;
+      await api("POST", `/api/cards/${ctx.row.id}/${action}`,
+        action === "approve" && goal ? {goal_type: goal} : {});
       notify(action === "approve" ? "已入库，本机正在准备示范音频。" : "已归档。");
       await refresh();
     } catch (error) { notify(error.message); }

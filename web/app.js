@@ -2512,7 +2512,8 @@ function route() {
   const token = ++routeToken;
   const packActive = typeof PackState !== "undefined" && PackState.active;
   const requested = location.hash || (packActive ? "#/practice" : "#/today");
-  const hash = requested === "#/settings" ? "#/manage" : requested;
+  const aliases = {"#/settings": "#/manage", "#/captures/inbox": "#/captures"};
+  const hash = Object.hasOwn(aliases, requested) ? aliases[requested] : requested;
   document.body.classList.remove('training-focus');
   if (typeof OralReviewUI !== "undefined" && !OralReviewUI.leave(hash)) return;
   if (typeof StudyUI !== "undefined" && !StudyUI.leave(hash)) return;

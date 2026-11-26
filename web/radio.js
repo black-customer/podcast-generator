@@ -63,7 +63,7 @@ async function open(token) {
   const endpoint = capture ? `/api/captures/${encodeURIComponent(capture)}/teaching-podcast`
     : itemScope ? `/api/topics/${encodeURIComponent(topic)}/items/${encodeURIComponent(item)}/teaching-podcast`
     : "/api/teaching-podcasts/daily";
-  const back = capture ? "#/captures/inbox"
+  const back = capture ? "#/captures"
     : itemScope ? `#/train/${encodeURIComponent(topic)}/${encodeURIComponent(item)}` : "#/today";
   const heading = capture ? "剧集表达复盘" : itemScope ? "本题教学播客" : "今日电台";
   const action = capture ? "生成剧集复盘" : itemScope ? "生成本题播客" : "生成今日电台";

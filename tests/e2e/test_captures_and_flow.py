@@ -28,7 +28,13 @@ def test_capture_inbox_and_micro_session():
                "audio_url": f"/api/cards/{ID}/audio",
                "audio": {"scope": "sentence", "start": 0, "end": None}}
     fixture["prosody"] = annotate_sentence(fixture["en"])
-    grades, snippets, imports = [], [], []
+    fixture.update(goal_type="activate_chunk", contrast_hint="用于临时点名")
+    legacy_source = {**parent["source"], "source_url": ""}
+    second = {**fixture, "id": "card_aaaaaaaaaaaaaaaa", "target_chunk": "another expression",
+              "capture": {**parent, "source": legacy_source}}
+    ielts = {**fixture, "id": "review-ielts", "card_kind": "ielts", "source_type": "ielts",
+             "capture": None, "voice": "golden_self"}
+    grades, snippets, imports, goals = [], [], [], []
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1280, "height": 800})
@@ -48,13 +54,22 @@ def test_capture_inbox_and_micro_session():
                 imports.append(route.request.post_data_json)
                 data = {"imported": 1, "duplicates": 0}
             elif tail == "cards":
-                data = {"cards": [fixture]}
+                data = {"cards": [fixture, second]}
+            elif tail == f"cards/{ID}" and method == "PATCH":
+                goal = route.request.post_data_json["goal_type"]
+                goals.append(("PATCH", goal))
+                fixture["goal_type"] = goal
+                data = fixture
             elif tail.endswith("/approve"):
-                fixture["status"] = "active"
+                goal = route.request.post_data_json["goal_type"]
+                goals.append(("POST", goal))
+                fixture.update(status="active", goal_type=goal)
                 data = fixture
             elif tail.startswith("arcade/blitz"):
-                data = {"cards": [fixture] if fixture["status"] == "active" else [],
-                        "due_count": 1, "inbox_count": 0, "session_limit": 8,
+                rows = [ielts] if "source=ielts" in tail else (
+                    [fixture, second] if fixture["status"] == "active" else []
+                )
+                data = {"cards": rows, "due_count": len(rows), "inbox_count": 0, "session_limit": 8,
                         "reaction_timer_enabled": False}
             elif tail.endswith("/grade") and method == "POST":
                 rating = route.request.post_data_json["rating"]
@@ -98,12 +113,36 @@ def test_capture_inbox_and_micro_session():
         page.wait_for_function(
             """() => document.querySelector('.capture-image img').naturalWidth > 0"""
         )
+        tabs = page.locator(".capture-tabs")
+        selected = tabs.locator('[aria-pressed="true"]')
+        inactive = tabs.locator('[aria-pressed="false"]')
+        palette = "el => getComputedStyle(el).backgroundColor"
+        assert selected.evaluate(palette) != inactive.first.evaluate(palette)
+        expect(page.get_by_text("用于临时点名", exact=False)).to_be_visible()
+        expect(page.get_by_text("学会主动用", exact=True).first).to_be_visible()
         shots = os.environ.get("CAPTURE_SCREENSHOT_DIR")
         if shots:
             Path(shots).mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(Path(shots) / "inbox.png"))
+        page.get_by_role("button", name="下一张").click()
+        expect(page.get_by_role("heading", name="another expression")).to_be_visible()
+        expect(page.get_by_role("link", name="原片复听 ↗")).to_have_count(0)
+        page.get_by_role("button", name="上一张").click()
+        page.get_by_text("编辑卡片", exact=True).click()
+        edit = page.locator(".capture-edit").get_by_label("学习目标")
+        edit.select_option("comprehend_input")
+        page.get_by_role("button", name="保存卡片").click()
+        expect(page.get_by_text("卡片已更新。")).to_be_visible()
+        approval = page.locator(".capture-current").get_by_label("入库目标")
+        expect(approval).to_have_value("comprehend_input")
+        approval.select_option("fill_gap")
+        approval.blur()
         page.keyboard.press("Enter")
         expect(page.get_by_text("已入库，本机正在准备示范音频。")).to_be_visible()
+        assert goals == [("PATCH", "comprehend_input"), ("POST", "fill_gap")]
+        page.get_by_role("button", name="已入库表达").click()
+        expect(page.locator(".capture-current audio")).to_be_visible()
+        expect(page.get_by_text("补上表达缺口", exact=True).first).to_be_visible()
         page.get_by_role("button", name="导入新素材").first.click()
         page.get_by_label("英文摘录").fill("This is a synthetic example.")
         page.get_by_role("button", name="保存素材").click()
@@ -125,18 +164,34 @@ def test_capture_inbox_and_micro_session():
         page.get_by_role("button", name="看剧表达").click()
         scene_filter = page.get_by_role("button", name="看剧表达")
         expect(scene_filter).to_have_attribute("aria-pressed", "true")
+        unselected = page.get_by_role("button", name="全部混练")
+        assert scene_filter.evaluate(palette) != unselected.evaluate(palette)
         expect(page.locator(".arcade-reaction")).to_have_count(0)
+        picture = page.locator(".chunk-practice .capture-image")
+        cover = """el => {
+            const shade = getComputedStyle(el, '::after');
+            return shade.content === 'none' ? 0 : parseFloat(shade.height) / el.offsetHeight;
+        }"""
+        page.wait_for_function("document.querySelector('.capture-image img').naturalWidth > 0")
+        assert 0.26 <= picture.evaluate(cover) <= 0.30
         page.locator("[data-review-source=scene]").blur()
         page.keyboard.press("Space")
         expect(page.locator(".arcade-plain-answer")).to_be_visible()
+        assert picture.evaluate(cover) == 0
         page.keyboard.press("p")
         expect(page.locator(".arcade-pronunciation")).to_be_visible()
         page.keyboard.press("2")
+        expect(page.locator("#arcade-home-progress")).to_contain_text("第 1 / 2 张")
+        expect(page.get_by_role("link", name="原片复听 ↗")).to_have_count(0)
+        page.keyboard.press("Space")
+        expect(page.locator(".arcade-pronunciation")).to_be_visible()
+        expect(page.locator("[data-prosody]")).to_be_checked()
+        page.keyboard.press("1")
         expect(page.locator("#arcade-home-progress")).to_contain_text("重考")
         page.keyboard.press("Space")
         page.keyboard.press("1")
         expect(page.get_by_role("heading", name="今日一局达标")).to_be_visible()
-        assert grades == ["again", "good"]
+        assert grades == ["again", "good", "good"]
         page.get_by_role("button", name="再来一局").click()
         expect(page.locator(".chunk-cloze")).to_be_visible()
         page.set_viewport_size({"width": 430, "height": 900})
@@ -144,6 +199,38 @@ def test_capture_inbox_and_micro_session():
         if shots:
             page.screenshot(path=str(Path(shots) / "practice-narrow.png"))
         page.keyboard.press("x")
-        expect(page.get_by_role("heading", name="今日一局达标")).to_be_visible()
-        assert grades[-1] == "suspend" and not errors
+        expect(page.get_by_role("link", name="原片复听 ↗")).to_have_count(0)
+        assert grades[-1] == "suspend"
+        page.get_by_role("button", name="雅思口语").click()
+        page.locator("[data-review-source=ielts]").blur()
+        page.keyboard.press("Space")
+        expect(page.get_by_label("收听声音")).to_have_value("golden_self")
+        assert not errors
+        browser.close()
+
+
+
+def test_capture_settings_and_radio_links():
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.route("**/api/captures", lambda route: route.fulfill(json={"captures": []}))
+        page.route("**/api/cards", lambda route: route.fulfill(json={"cards": []}))
+        page.route("**/api/teaching-podcasts", lambda route: route.fulfill(json={"episodes": []}))
+
+        page.goto(BASE_URL + "/#/captures")
+        page.get_by_role("button", name="导入新素材").first.click()
+        settings = page.get_by_role("link", name="在设置中获取本机配对码")
+        expect(settings).to_have_attribute("href", "#/manage")
+        settings.click()
+        expect(page.get_by_role("heading", name="看剧脚本配对")).to_be_visible()
+
+        page.goto(BASE_URL + "/#/radio?capture=cap_a1b2c3d4e5f67890")
+        back = page.get_by_role("link", name="返回素材")
+        expect(back).to_have_attribute("href", "#/captures")
+        back.click()
+        expect(page.get_by_role("heading", name="素材收集")).to_be_visible()
+
+        page.goto(BASE_URL + "/#/captures/inbox")
+        expect(page.get_by_role("heading", name="素材收集")).to_be_visible()
         browser.close()
