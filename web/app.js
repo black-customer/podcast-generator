@@ -464,6 +464,10 @@ function initGlobalPlayer() {
     if (random) { bankRandomGo(random); return; }
     const copy = e.target.closest("[data-copy-agent]");
     if (copy) { copyAgentPrompt(copy); return; }
+    const navigation = e.target.closest("[data-nav-hash]");
+    if (navigation) { location.hash = navigation.dataset.navHash; return; }
+    const question = e.target.closest("[data-bank-sel]");
+    if (question) { bankGo({sel: question.dataset.bankSel}); return; }
     const track = e.target.closest("[data-track-link]");
     if (track && !e.target.closest(".track-actions")) {
       location.hash = track.dataset.trackLink;
@@ -751,7 +755,7 @@ async function TopicsGalleryView(token) {
 
   const cardsHtml = filtered.map((t, idx) => `
     <button class="album-card corpus-index-row"
-      onclick="location.hash='#/topic/${encodeURIComponent(t.id)}'">
+      data-nav-hash="${esc(`#/topic/${encodeURIComponent(t.id)}`)}">
       <span class="corpus-index-number">${String(idx + 1).padStart(2, "0")}</span>
       <span class="corpus-index-copy">
         <span class="album-name">${esc(t.name)}</span>
@@ -760,6 +764,10 @@ async function TopicsGalleryView(token) {
       <span class="corpus-index-action">打开</span>
     </button>
   `).join("");
+
+  const resumeHash = !last?.topic_id ? "" : last.kind === "episode"
+    ? `#/episode/${encodeURIComponent(last.topic_id)}/${encodeURIComponent(last.track || "default")}`
+    : `#/play/${encodeURIComponent(last.topic_id)}/${encodeURIComponent(last.item_id)}?track=${encodeURIComponent(last.track || "podcast")}`;
 
   $app.innerHTML = `
     <header class="page-heading">
@@ -771,8 +779,8 @@ async function TopicsGalleryView(token) {
     </header>
 
     ${CorpusExperience.controls(params)}
-    ${last && last.topic_id ? `
-    <button class="continue-card" onclick="location.hash='${last.kind === "episode" ? `#/episode/${encodeURIComponent(last.topic_id)}?track=${last.track}` : `#/play/${encodeURIComponent(last.topic_id)}/${encodeURIComponent(last.item_id)}?track=${last.track || "podcast"}`}';">
+    ${resumeHash ? `
+    <button class="continue-card" data-nav-hash="${esc(resumeHash)}">
       <span class="continue-label">继续上次收听</span>
       <span class="continue-title">${esc(publicTitle(last.title))}</span>
       ${last.position != null ? `<span>${last.track === "monologue" ? "独白" : "播客"} · ${last.completed ? "已听完 · 从头播放" : last.state === "audio_changed" ? "音频已更新 · 从头播放" : fmtDur(last.position)}</span>` : ""}
@@ -1602,6 +1610,7 @@ function mgRenderTopicList(topics) {
       if (!confirm(`确定删除该话题及其全部条目与整集音频？`)) return;
       try {
         await api("DELETE", `/api/topics/${encodeURIComponent(tid)}`);
+        invalidateBankRead();
         if (ManageState.topicId === tid) ManageState.topicId = null;
         toast("话题已删除");
         ManageView();
@@ -1753,6 +1762,7 @@ async function mgLoadTopic(topicId, keepEditorClosed = false, token = null) {
       if (!confirm("确定删除该条目（含音频）？")) return;
       try {
         await api("DELETE", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(btn.dataset.delItem)}`);
+        invalidateBankRead();
         toast("条目已删除");
         mgLoadTopic(topicId);
       } catch (e) {
@@ -1804,6 +1814,7 @@ async function mgOpenEditor(topicId, itemId) {
     for (const [f] of MG_FIELDS) fields[f] = document.getElementById(`mg-f-${f}`).value;
     try {
       await api("PATCH", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`, fields);
+      invalidateBankRead();
       document.getElementById("mg-save-result").textContent = "已保存 ✓";
       toast("条目已保存");
       mgLoadTopic(topicId);
@@ -2009,6 +2020,7 @@ async function genWaitCheckItem(topicId, itemId, token, card) {
   try {
     const item = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`);
     if (item.has_audio && !viewStale(token) && card.isConnected) {
+      invalidateBankRead();
       genWaitStop();
       location.hash = `#/done/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}`;
     }
@@ -2075,6 +2087,7 @@ async function retryApiGeneration(button) {
     }
     if (viewStale(token)) return;
     const result = await api("POST", `/api/topics/${encodeURIComponent(topic)}/items/${encodeURIComponent(item)}/retry-api`);
+    invalidateBankRead();
     if (!viewStale(token) && show?.isConnected) {
       show.hidden = false;
       showApiJobWait(result, show);
@@ -2138,6 +2151,7 @@ function showApiJobWait(res, card = document.querySelector(".bank-answer-card"))
         GenWaitState.progress?.set(label[job.phase] || "文本引擎正在批改…");
       }
       if (job.state === "done" || job.coaching_ready && window.ArcadeUI?.enabled()) {
+        invalidateBankRead();
         genWaitStop();
         const destination = window.ArcadeUI?.enabled() ? "train" : "done";
         location.hash = `#/${destination}/${encodeURIComponent(res.topic_id)}/${encodeURIComponent(res.item_id)}`;
@@ -2189,6 +2203,7 @@ async function bankSubmitAnswer(questionId) {
     const source = modern ? { blind_token: ArcadeUI.blindToken(questionId),
       chinese_intent: document.getElementById("arcade-intent-input")?.value || "" } : TrainingBaseline.values();
     const res = await api("POST", "/api/generation-requests", { question_id: questionId, answer, mode, ...source });
+    invalidateBankRead();
     if (modern) ArcadeUI.clearBlind(questionId, source.chinese_intent);
     else await TrainingBaseline.attach(questionId, res, answer).catch(e=>toast('回答已提交，首答暂未关联：'+e.message));
     await AnswerExperience.submitted(draft, answer, mode);
@@ -2208,6 +2223,12 @@ async function bankSubmitAnswer(questionId) {
 }
 
 let lastBankRead = null;
+let bankReadVersion = 0;
+
+function invalidateBankRead() {
+  lastBankRead = null;
+  bankReadVersion += 1;
+}
 
 async function BankView(token) {
   const previousResults = $app.querySelector(".bank-results");
@@ -2227,6 +2248,7 @@ async function BankView(token) {
   } else ExperienceUI.loading("题库");
   const p = bankParams();
   const packMode = PackState.active;
+  const readVersion = bankReadVersion;
   let data, st;
   try {
     const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&page=${p.page}` +
@@ -2236,12 +2258,15 @@ async function BankView(token) {
       (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "") +
       (p.q ? `&q=${encodeURIComponent(p.q)}` : "");
     const selectedOnly = previousResults && lastBankRead?.query === query &&
-      lastBankRead.selection !== p.sel && lastBankRead.packMode === packMode;
+      (lastBankRead.selection !== p.sel || lastBankRead.write !== p.write) &&
+      lastBankRead.packMode === packMode;
     [data, st] = await Promise.all([
       selectedOnly ? lastBankRead.data : api("GET", query),
       packMode ? null : api("GET", "/api/settings").catch(() => null),
     ]);
-    if (!viewStale(token)) lastBankRead = {query, selection: p.sel, packMode, data};
+    if (!viewStale(token) && readVersion === bankReadVersion) {
+      lastBankRead = {query, selection: p.sel, write: p.write, packMode, data};
+    }
   } catch (e) {
     if (viewStale(token)) return;
     if (previousResults?.isConnected) {
@@ -2300,8 +2325,8 @@ async function BankView(token) {
   const selJump = selItem && selItem.answered_item ? `
       <div class="bank-answer-actions" style="margin-top:12px;">
         ${selItem.answered_item.has_audio
-          ? `<button class="bank-submit-btn" onclick="location.hash='#/play/${encodeURIComponent(selItem.answered_item.topic_id)}/${encodeURIComponent(selItem.answered_item.item_id)}'">▶ 去听已有的音频</button>`
-          : `<button class="btn-pill" onclick="location.hash='#/topic/${encodeURIComponent(selItem.answered_item.topic_id)}'">查看已作答条目（还没有音频，需先生成）</button>`}
+          ? `<button class="bank-submit-btn" data-nav-hash="${esc(`#/play/${encodeURIComponent(selItem.answered_item.topic_id)}/${encodeURIComponent(selItem.answered_item.item_id)}`)}">▶ 去听已有的音频</button>`
+          : `<button class="btn-pill" data-nav-hash="${esc(`#/topic/${encodeURIComponent(selItem.answered_item.topic_id)}`)}">查看已作答条目（还没有音频，需先生成）</button>`}
       </div>` : "";
   const answerCard = selItem ? `
     <div class="bank-answer-card">
@@ -2330,7 +2355,7 @@ async function BankView(token) {
     </div>` : "";
 
   const rowsHtml = data.items.map((it) => `
-    <button type="button" class="bank-row ${it.id === p.sel ? "selected" : ""}" onclick="bankGo({sel: '${esc(it.id)}'})">
+    <button type="button" class="bank-row ${it.id === p.sel ? "selected" : ""}" data-bank-sel="${esc(it.id)}">
       <div class="bank-row-text">${esc(it.text)}</div>
       <div class="bank-row-meta">
         <span class="bank-topic-tag">${esc(it.topic_name)}</span>

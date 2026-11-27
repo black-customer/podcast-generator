@@ -274,6 +274,7 @@ body.reading-notes-theme .corpus-index-number { font-family:inherit; font-varian
 body.reading-notes-theme .album-name { font-size:1.0625rem; font-weight:600; }
 body.reading-notes-theme .album-meta { font-size:.8125rem; color:var(--ink-soft); }
 body.reading-notes-theme .continue-card { border:1px solid var(--rule); background:var(--paper-raised); color:var(--ink); border-radius:12px; box-shadow:none; }
+body.reading-notes-theme .toast-msg { background:var(--ink); color:var(--paper-raised); }
 body.reading-notes-theme .player-detail-container { border:1px solid var(--rule); border-radius:14px; overflow:hidden; background:var(--paper-raised); }
 body.reading-notes-theme .reading-sheet { padding:32px; border:0; }
 body.reading-notes-theme .player-question { font-size:1.75rem; font-weight:650; line-height:1.45; }
@@ -285,11 +286,11 @@ body.reading-notes-theme .transcript-row { border-radius:8px; padding:12px; marg
 @media (min-width:861px) {
   body.reading-notes-theme .player-detail-container {
     grid-template-columns:minmax(0,1fr) minmax(260px,34%);
-    margin:0;
+    margin:0 auto;
     min-height:0;
   }
 }
-@media (min-width:861px) and (max-width:1180px) {
+@media (max-width:1180px) {
   body.reading-notes-theme .player-detail-container { grid-template-columns:minmax(0,1fr); }
   body.reading-notes-theme .reference-rail { border-left:0; border-top:1px solid var(--rule); }
 }
@@ -388,7 +389,7 @@ body.reading-notes-theme .home-bottom h3 { font-size:.875rem; margin:24px 0 12px
   body.reading-notes-theme .bank-row { padding:18px; gap:10px; }
   body.reading-notes-theme .bank-row-action { grid-row:auto; grid-column:1 / -1; }
   body.reading-notes-theme .reading-sheet { padding:24px 20px; }
-  body.reading-notes-theme .reference-rail { border-left:0; border-top:1px solid var(--rule); padding:24px 20px; }
+  body.reading-notes-theme .reference-rail { padding:24px 20px; }
   body.reading-notes-theme :is(.mg-card,.voice-card) { padding:20px; }
   body.mobile-learning .nav-item.active { background:var(--blue-soft); }
 }
@@ -403,7 +404,7 @@ body.reading-notes-theme .global-player .time-label { display:flex; flex-wrap:no
 body.reading-notes-theme :is(.study-question-block h1,.study-intro .study-question-block h2,.study-done .done-question h2,.study-answer,.study-hint,.study-explain-grid blockquote,.today-continue strong) { font-family:inherit; }
 body.reading-notes-theme :is(.study-hint,.study-recording-row,.oral-history,.review-card) { border-color:var(--rule); color:var(--ink); }
 body.reading-notes-theme .study-hint { background:var(--blue-soft); }
-@media(max-width:700px) {
+@media(max-width:860px) {
   body.reading-notes-theme .bank-search { flex:1 0 100%; width:100%; min-width:0; order:3; }
   body.reading-notes-theme .bank-search input { width:0; min-width:0; flex:1 1 0; }
   body.reading-notes-theme .bank-search > button { flex:0 0 auto; }

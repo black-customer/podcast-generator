@@ -188,6 +188,7 @@ def render_dialogue(lines: list[tuple[str, str]], out_path: Path, settings: dict
                     speech_bridge.request(
                         settings, "preview_line", text=row["text"], output=clip,
                         voice=(mandarin if zh else voices)[speaker], lang="cmn" if zh else "en-us",
+                        require_profile=False,
                     )
                     audio._run(["ffmpeg", "-y", "-i", str(clip), "-af", f"atempo={speed}",
                                 "-ar", "44100", "-ac", "1", "-b:a", "128k", str(mp3)])

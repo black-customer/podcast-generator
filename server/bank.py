@@ -12,9 +12,14 @@ import math
 import re
 import sqlite3
 import sys
+from collections.abc import Mapping
+from copy import deepcopy
+from dataclasses import dataclass
 from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
+from types import MappingProxyType
+from typing import Any
 
 from .config import atomic_write_text
 from .library import now_iso
@@ -233,23 +238,22 @@ def merge_extra(data: dict, extra_path: Path | None = None) -> dict:
     return {"topics": topics, "questions": questions, "sets": sets}
 
 
-class _BankSnapshot(dict):
-    def __init__(self, data: dict):
-        super().__init__(data)
-        self.by_id = {name: {row["id"]: row for row in self.get(name, [])}
-                      for name in ("topics", "books", "questions")}
-        self.parts: dict[str, int] = {}
-        for row in self.get("questions", []):
-            self.parts.setdefault((row.get("text") or "").strip(), row.get("part"))
+@dataclass(frozen=True)
+class _BankSnapshot:
+    raw: Mapping[str, Any]
+    parts: Mapping[str, int | None]
 
 
 @lru_cache(maxsize=4)
 def _read_bank(path: Path, modified: int, size: int) -> _BankSnapshot:
-    return _BankSnapshot(json.loads(path.read_text(encoding="utf-8")))
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    parts: dict[str, int | None] = {}
+    for row in raw.get("questions", []):
+        parts.setdefault((row.get("text") or "").strip(), row.get("part"))
+    return _BankSnapshot(MappingProxyType(raw), MappingProxyType(parts))
 
 
-def load_bank(path: Path | str | None = None) -> dict:
-    """读题库快照；完整快照缺失时回落到仓库自带的公开子集（路人开箱即用）。"""
+def _bank_snapshot(path: Path | str | None = None) -> _BankSnapshot:
     p = Path(path) if path else BANK_PATH
     if not p.exists():
         p = PUBLIC_BANK_PATH
@@ -259,12 +263,34 @@ def load_bank(path: Path | str | None = None) -> dict:
     return _read_bank(p, stat.st_mtime_ns, stat.st_size)
 
 
+def _clone_bank(raw: Mapping[str, Any]) -> dict:
+    clone = {}
+    for name, value in raw.items():
+        if name in ("books", "topics", "questions", "sets"):
+            clone[name] = [
+                {key: deepcopy(field) if isinstance(field, (dict, list)) else field
+                 for key, field in row.items()}
+                for row in value
+            ]
+        else:
+            clone[name] = deepcopy(value)
+    return clone
+
+
+def load_bank(path: Path | str | None = None) -> dict:
+    """读题库快照；完整快照缺失时回落到仓库自带的公开子集（路人开箱即用）。"""
+    return _clone_bank(_bank_snapshot(path).raw)
+
+
+_load_file_bank = load_bank
+
+
 def question_part(text: str) -> int | None:
-    snapshot = load_bank()
-    if isinstance(snapshot, _BankSnapshot):
-        return snapshot.parts.get(text.strip())
-    return next((row.get("part") for row in snapshot.get("questions", [])
-                 if (row.get("text") or "").strip() == text.strip()), None)
+    text = text.strip()
+    if load_bank is _load_file_bank:
+        return _bank_snapshot().parts.get(text)
+    return next((row.get("part") for row in load_bank().get("questions", [])
+                 if (row.get("text") or "").strip() == text), None)
 
 
 def norm_title(text: str) -> str:
@@ -348,16 +374,14 @@ def short_set_label(row: dict) -> str:
 
 
 def _by_id(snapshot: dict, name: str, key: str | None) -> dict | None:
-    if isinstance(snapshot, _BankSnapshot):
-        return snapshot.by_id[name].get(key)
     return next((row for row in snapshot.get(name, []) if row["id"] == key), None)
 
 
-def _topic_label(snapshot: dict, question: dict) -> tuple[str, str]:
+def _topic_label(topics_by_id: dict, books_by_id: dict, question: dict) -> tuple[str, str]:
     """题目的话题中文名/英文名；无 topic_id 时回落到所属题册名。"""
-    if topic := _by_id(snapshot, "topics", question.get("topic_id")):
+    if topic := topics_by_id.get(question.get("topic_id")):
         return topic["name_zh"], topic.get("name_en") or ""
-    if book := _by_id(snapshot, "books", question.get("book_id")):
+    if book := books_by_id.get(question.get("book_id")):
         return book["title_zh"], book.get("title_en") or ""
     return "未分类", ""
 
@@ -395,6 +419,8 @@ def query_questions(
     needle = (q or "").strip().casefold()
     qsets = set_index(snapshot)
     core_tids = _core_topic_ids(snapshot)
+    topics_by_id = {row["id"]: row for row in snapshot.get("topics", [])}
+    books_by_id = {row["id"]: row for row in snapshot.get("books", [])}
     rows: list[dict] = []
     for row in snapshot.get("questions", []):
         if "原问句缺失" in (row.get("text") or ""):
@@ -414,7 +440,7 @@ def query_questions(
             continue
         if set_filter and set_filter != "core" and set_filter not in {s["id"] for s in my_sets}:
             continue
-        name_zh, name_en = _topic_label(snapshot, row)
+        name_zh, name_en = _topic_label(topics_by_id, books_by_id, row)
         answered_item = (answered_map or {}).get(norm_title(row["text"]))
         if answer_status == "answered" and answered_item is None:
             continue

@@ -402,7 +402,9 @@ function pollAudio(ctx, failures = 0) {
       else {
         ctx.audioProgress?.bar.stop();
         ctx.audioProgress = null;
-        $app.querySelector("[data-arcade=retry-audio-progress]").hidden = false;
+        $app.querySelector("#coach-progress")?.replaceChildren();
+        const retry = $app.querySelector("[data-arcade=retry-audio-progress]");
+        if (retry) retry.hidden = false;
       }
     }
   }, 650);

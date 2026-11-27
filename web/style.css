@@ -1855,7 +1855,7 @@ body.hide-zh .rail-block-zh { display: none; }
   .bank-tabs::-webkit-scrollbar { display: none; }
   .bank-tab { flex: 0 0 auto; }
   .bank-select { max-width: calc(50% - 6px); flex: 1; }
-  .bank-search { order: 3; width: 100%; min-width: 0; display: flex; gap: 8px; }
+  .bank-search { order: 3; flex: 1 0 100%; width: 100%; min-width: 0; display: flex; gap: 8px; }
   .bank-search input { min-width: 0; flex: 1; }
   .pack-lan-fields { flex-direction: column; align-items: stretch; }
   .pack-lan-fields input,

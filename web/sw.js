@@ -1,5 +1,5 @@
 /* 页面和样式脚本优先读取本机服务，离线时回落到缓存。 */
-const CACHE = "ielts-pod-assets-v24";
+const CACHE = "ielts-pod-assets-v25";
 const STATIC_ASSETS = [
   "/",
   "/static/app.js",
@@ -58,15 +58,15 @@ self.addEventListener("fetch", (event) => {
     if (copy) await (await caches.open(CACHE)).put(event.request, copy);
   }).catch(() => {}));
   const cached = () => caches.match(event.request).catch(() => undefined);
-  const response = fresh.then(result => result.response);
   if (networkFirst) {
-    event.respondWith(response.then(async result => result.ok ? result : (await cached()) || result,
+    event.respondWith(fresh.then(
+      async ({response}) => response.ok ? response : (await cached()) || response,
       async error => {
         const fallback = await cached();
         if (fallback) return fallback;
         throw error;
       }));
   } else {
-    event.respondWith(cached().then(result => result || response));
+    event.respondWith(cached().then(result => result || fresh.then(({response}) => response)));
   }
 });

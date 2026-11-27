@@ -257,6 +257,10 @@ def test_question_bank_has_direct_return_to_today_on_online_web(page, width):
     today = page.get_by_role("link", name="今日练习", exact=True)
     expect(today).to_be_visible()
     assert page.locator("html").evaluate("(element) => element.scrollWidth <= innerWidth")
+    if width == 860:
+        search = page.locator("#bank-q")
+        expect(search).to_have_attribute("placeholder", "搜索题干（中英文）")
+        assert search.bounding_box()["width"] >= 200
     shots = os.environ.get("CONTINUITY_SCREENSHOT_DIR")
     if shots:
         target = Path(shots)
@@ -338,6 +342,179 @@ def test_player_routes_use_item_path_without_track_query(page):
     assert page.evaluate("[PlayerState.loopA, PlayerState.loopB]") == [None, None]
 
 
+@pytest.mark.parametrize("width", [1600, 780])
+def test_player_card_layout(page, width):
+    item = {"id": "sample", "title": QUESTION["text"], "question": QUESTION["text"],
+            "chinese": "我通常坐公交车上班，因为车站离家很近。",
+            "status": "generated", "has_audio_podcast": True}
+    page.route("**/api/topics/continuity-fixture", lambda route: route.fulfill(json={
+        "id": "continuity-fixture", "name": "交通", "items": [item],
+    }))
+    item_url = "**/api/topics/continuity-fixture/items/sample"
+    page.route(item_url, lambda route: route.fulfill(json=item))
+    page.route(f"{item_url}/timeline/*", lambda route: route.fulfill(
+        json={"mode": "basic", "duration": 6, "lines": [
+            {"id": 0, "speaker": "A", "text": QUESTION["text"], "start": 0, "end": 2},
+            {"id": 1, "speaker": "B", "text": "I usually take the bus to work.",
+             "start": 2, "end": 6},
+        ]},
+    ))
+    page.set_viewport_size({"width": width, "height": 900})
+    page.goto(f"{BASE_URL}/#/play/continuity-fixture/sample?track=podcast")
+    expect(page.locator(".player-question")).to_have_text(QUESTION["text"])
+    expect(page.locator("#pod-stream")).to_contain_text("I usually take the bus to work.")
+    if width == 1600:
+        difference = page.locator(".player-detail-container").evaluate("""card => {
+          const {left, right} = card.getBoundingClientRect();
+          const {left: start, right: end} = card.parentElement.getBoundingClientRect();
+          return Math.abs((left - start) - (end - right));
+        }""")
+        assert difference <= 2
+    else:
+        rail = page.locator(".reference-rail")
+        assert rail.evaluate("""rail => rail.getBoundingClientRect().top >=
+          rail.previousElementSibling.getBoundingClientRect().bottom""")
+        expect(rail).to_have_css("border-left-width", "0px", timeout=1000)
+        expect(rail).to_have_css("border-top-width", "1px", timeout=1000)
+    shots = os.environ.get("CONTINUITY_SCREENSHOT_DIR")
+    if shots:
+        target = Path(shots)
+        target.mkdir(parents=True, exist_ok=True)
+        page.screenshot(path=target / f"player-{width}.png", animations="disabled")
+
+
+def test_continue_listening_opens_saved_episode_track(page):
+    page.route("**/api/topics", lambda route: route.fulfill(json=[]))
+    page.route("**/api/topics/continuity-fixture", lambda route: route.fulfill(json={
+        "id": "continuity-fixture", "name": "交通", "items": [],
+    }))
+    page.route("**/api/listening-progress/latest", lambda route: route.fulfill(json={
+        "kind": "episode", "topic_id": "continuity-fixture", "title": "交通整集",
+        "track": "monologue", "position": 12, "state": "ready",
+    }))
+    page.route("**/api/topics/continuity-fixture/episode?track=monologue",
+               lambda route: route.fulfill(json={"topic_name": "交通", "item_count": 1,
+                                                 "total_sec": 6, "items": [
+                                                     {"title": "交通示例", "offset_sec": 0},
+                                                 ]}))
+    page.goto(f"{BASE_URL}/#/topics")
+    page.get_by_role("button", name="继续上次收听", exact=False).click()
+    expect(page.locator("#ep-chapters")).to_be_visible(timeout=2500)
+    assert page.url.endswith("#/episode/continuity-fixture/monologue")
+
+
+def test_desktop_toast_uses_product_palette(page):
+    page.goto(f"{BASE_URL}/#/practice")
+    expect(page.get_by_role("heading", name="题库")).to_be_visible()
+    page.evaluate("toast('操作已保存')")
+    ink, paper = page.evaluate("""() => {
+      const sample = document.createElement('span');
+      sample.style.backgroundColor = 'var(--ink)';
+      sample.style.color = 'var(--paper-raised)';
+      document.body.append(sample);
+      const colors = getComputedStyle(sample);
+      const palette = [colors.backgroundColor, colors.color];
+      sample.remove();
+      return palette;
+    }""")
+    message = page.locator(".toast-msg")
+    expect(message).to_have_css("background-color", ink, timeout=1000)
+    expect(message).to_have_css("color", paper, timeout=1000)
+
+
+def test_bank_cache_invalidates_after_submit_and_reuses_write_toggle(page):
+    reads = []
+    submitted = []
+    other = {**QUESTION, "id": "alternate", "text": "How do you unwind after work?"}
+    saved = {"topic_id": "continuity-fixture", "item_id": "sample-answer",
+             "status": "pending", "has_audio": False}
+
+    def read_bank(route):
+        reads.append(route.request.url)
+        first = {**QUESTION, "answered": True, "answered_item": saved} if submitted else QUESTION
+        route.fulfill(json={"available": True, "items": [first, other], "total": 2,
+                            "page": 1, "pageCount": 1, "sets": [], "topics": []})
+
+    def submit(route):
+        submitted.append(route.request.post_data_json)
+        route.fulfill(json={**saved, "mode": "agent", "agent_prompt": "Synthetic instruction"})
+
+    page.route("**/api/bank/questions?*", read_bank)
+    page.route("**/api/generation-requests", submit)
+    page.route("**/api/bank/questions/*/answers", lambda route: route.fulfill(json={"answers": []}))
+    page.route(f"**{ITEM}", lambda route: route.fulfill(json={"status": "pending"}))
+    page.goto(f"{BASE_URL}/#/practice")
+    first = page.locator(".bank-row").filter(has_text=QUESTION["text"])
+    first.click()
+    assert len(reads) == 1
+    page.get_by_role("radio", name="Agent 模式").check()
+    page.locator("#bank-answer-input").fill("I usually take the bus.")
+    page.locator("#bank-answer-submit").click()
+    expect(page.locator("#agent-prompt-box")).to_have_text("Synthetic instruction")
+    assert submitted[0]["mode"] == "agent"
+    page.locator(".bank-row").filter(has_text=other["text"]).click()
+    expect(page.locator(".bank-answer-q")).to_have_text(other["text"])
+    assert len(reads) == 2
+    first.click()
+    expect(first).to_contain_text("已作答·未生成")
+    expect(page.locator(".bank-answer-q")).to_have_text(QUESTION["text"])
+    count = len(reads)
+    page.get_by_role("button", name="再回答一次／继续草稿").click()
+    expect(page.locator("#bank-answer-input")).to_be_enabled()
+    assert len(reads) == count
+
+
+def test_bank_reuses_page_when_opening_saved_answer_draft(page):
+    reads = []
+
+    def read_bank(route):
+        reads.append(route.request.url)
+        route.fulfill(json={"available": True, "items": [{**QUESTION, "answered": True}],
+                            "total": 1, "page": 1, "pageCount": 1, "sets": [], "topics": []})
+
+    page.route("**/api/bank/questions?*", read_bank)
+    page.route("**/api/bank/questions/*/answers", lambda route: route.fulfill(json={"answers": []}))
+    page.goto(f"{BASE_URL}/#/practice")
+    page.locator(".bank-row").filter(has_text=QUESTION["text"]).click()
+    page.get_by_role("button", name="再回答一次／继续草稿").click()
+    expect(page.locator("#bank-answer-input")).to_be_enabled()
+    assert len(reads) == 1
+
+
+def test_bank_selects_question_with_apostrophe_in_id(page):
+    quoted = {**QUESTION, "id": "driver's-question", "text": "What's your usual route?"}
+    page.route("**/api/bank/questions?*", lambda route: route.fulfill(json={
+        "available": True, "items": [quoted], "total": 1, "page": 1, "pageCount": 1,
+        "sets": [], "topics": [],
+    }))
+    page.goto(f"{BASE_URL}/#/practice")
+    row = page.locator(".bank-row").filter(has_text=quoted["text"])
+    row.click()
+    expect(page.locator(".bank-answer-q")).to_have_text(quoted["text"], timeout=2000)
+    expect(row).to_have_class("bank-row selected")
+
+
+def test_poll_audio_clears_progress_bar_after_retry_limit(page):
+    reads = []
+    data = {"status": "coaching_ready", "question": QUESTION["text"], "sentences": [],
+            "alignment": {"lines": [], "words": []},
+            "audio_job": {"id": "sample-job", "state": "running", "tts_voice": "am_puck"}}
+
+    def poll(route):
+        reads.append(route.request.url)
+        if len(reads) == 1:
+            route.fulfill(json=data)
+        else:
+            route.fulfill(status=503, json={"detail": "暂时无法读取音频进度"})
+
+    page.route(f"**{ITEM}/arcade", poll)
+    page.goto(f"{BASE_URL}/#/train/continuity-fixture/sample-answer")
+    expect(page.locator("#coach-progress")).to_contain_text("正在启动本地语音")
+    expect(page.get_by_role("button", name="重新读取音频进度")).to_be_visible()
+    expect(page.locator("#coach-progress")).to_be_empty(timeout=1000)
+    assert len(reads) == 4
+
+
 def test_service_worker_prefers_fresh_code_and_falls_back_offline(page):
     page.goto(f"{BASE_URL}/#/practice")
     result = page.evaluate("""async () => {
@@ -364,9 +541,19 @@ def test_service_worker_prefers_fresh_code_and_falls_back_offline(page):
       const fresh = await Promise.all(
         ['/', '/static/style.css', '/static/app.js'].map(read)
       );
+      const cacheMode = state.cacheMode;
+      const rejections = [];
+      const recordRejection = event => rejections.push(event.reason.message);
+      addEventListener('unhandledrejection', recordRejection);
       state.offline = true;
-      return {fresh, cacheMode: state.cacheMode, offline: await read('/static/app.js'),
-              api: await read('/api/settings')};
+      try {
+        const offline = await read('/static/app.js');
+        const icon = await read('/static/icons/icon-32.png');
+        await new Promise(resolve => setTimeout(resolve, 50));
+        return {fresh, cacheMode, offline, icon, rejections, api: await read('/api/settings')};
+      } finally {
+        removeEventListener('unhandledrejection', recordRejection);
+      }
     }""")
     assert result == {"fresh": ["fresh", "fresh", "fresh"], "cacheMode": "no-cache",
-                      "offline": "cached", "api": None}
+                      "offline": "cached", "icon": "cached", "rejections": [], "api": None}

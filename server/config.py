@@ -1,4 +1,5 @@
 """路径常量与 settings.json 读写。"""
+import errno
 import json
 import os
 import shutil
@@ -30,7 +31,7 @@ SETTINGS_FILE = DATA_DIR / "settings.json"
 SETTINGS_LOCK = threading.Lock()
 
 
-def atomic_replace(source: Path, target: Path) -> None:
+def _replace_with_retry(source: Path, target: Path) -> None:
     for attempt in range(5):
         try:
             os.replace(source, target)
@@ -39,6 +40,24 @@ def atomic_replace(source: Path, target: Path) -> None:
             if attempt == 4:
                 raise
             time.sleep(0.02 * (attempt + 1))
+
+
+def atomic_replace(source: Path, target: Path) -> None:
+    """跨卷时先在目标卷复制，再原子发布文件。"""
+    try:
+        _replace_with_retry(source, target)
+    except OSError as exc:
+        cross_device = exc.errno == errno.EXDEV or getattr(exc, "winerror", None) == 17
+        if not cross_device or not source.is_file():
+            raise
+        target.parent.mkdir(parents=True, exist_ok=True)
+        staged = target.with_name(f".{target.name}.{uuid4().hex}.tmp")
+        try:
+            shutil.copy2(source, staged)
+            _replace_with_retry(staged, target)
+            source.unlink(missing_ok=True)
+        finally:
+            staged.unlink(missing_ok=True)
 
 
 def atomic_write_text(path: Path, content: str) -> None:

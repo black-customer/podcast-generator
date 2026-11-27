@@ -115,7 +115,7 @@ def test_home_preserves_ielts_card_when_old_chunk_cannot_be_clozed(monkeypatch):
     monkeypatch.setattr(arcade, "load_settings", lambda: {"daily_session_limit": 8})
     monkeypatch.setattr(oral_review, "unified_due_cards", lambda **_: [])
     monkeypatch.setattr(arcade, "_fresh_ielts", lambda *_: [row])
-    monkeypatch.setattr(captures, "list_cards", lambda **_: [])
+    monkeypatch.setattr(captures, "count_cards", lambda **_: 0)
     monkeypatch.setattr(oral_review, "_load", lambda: {"cards": {}})
     cards = arcade.home_cards(source="ielts")["cards"]
     assert len(cards) == 1

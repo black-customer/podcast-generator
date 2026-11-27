@@ -65,7 +65,8 @@ def export_m4b(topic_id: str, track: str = "podcast") -> dict:
         "-c:a", "aac", "-b:a", "128k",
         str(out),
     ]
-    proc = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+    proc = subprocess.run(cmd, capture_output=True, encoding="utf-8", errors="replace",
+                          timeout=600)
     if proc.returncode != 0:
         raise RuntimeError(f"M4B 导出失败: {(proc.stderr or '')[-300:]}")
     meta_file.unlink(missing_ok=True)

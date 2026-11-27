@@ -194,10 +194,15 @@ def api_create_item(topic_id: str, body: ItemIn):
 def api_bulk_items(topic_id: str, body: BulkIn):
     """每行一个题目，批量创建条目。"""
     created = []
-    for line in body.text.splitlines():
-        line = line.strip()
-        if line:
-            created.append(library.create_item(topic_id, {"question": line}))
+    try:
+        for line in body.text.splitlines():
+            line = line.strip()
+            if line:
+                created.append(library.create_item(topic_id, {"question": line}))
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
     return {"created": len(created), "items": created}
 
 
@@ -354,6 +359,8 @@ def api_arcade_sentence_voice(topic_id: str, item_id: str, index: int,
         found = study.get_material(topic_id, item_id)
     except FileNotFoundError as exc:
         raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
     material = found.get("material", {})
     if source_fingerprint != material.get("source_fingerprint"):
         raise _err(409, "材料已更新，请刷新后再试听")
@@ -449,6 +456,8 @@ def api_study_audio(topic_id: str, item_id: str, index: int):
         # 材料未就绪=409（可重试准备）；句子序号越界=400
         code = 400 if "越界" in str(e) else 409
         raise _err(code, str(e)) from e
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
 
 
 @router.get("/topics/{topic_id}/items/{item_id}/study/progress")
@@ -582,6 +591,8 @@ def api_get_oral_session(session_id: str):
         return oral_review.get_session(session_id)
     except FileNotFoundError as exc:
         raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
 
 
 @router.post("/study/review-sessions/{session_id}/actions")
@@ -644,6 +655,8 @@ def api_pause_oral_card(card_id: str, body: OralCardIn):
         return oral_review.set_card_paused(card_id, body.paused)
     except FileNotFoundError as exc:
         raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
 
 
 @router.get("/study/history")
@@ -760,6 +773,8 @@ def api_assemble_episode(topic_id: str, track: TrackParam = "default"):
         raise _err(404, str(e)) from e
     except jobs.JobConflict as e:
         raise _err(409, str(e)) from e
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
 
 
 @router.get("/topics/{topic_id}/episode")
@@ -920,7 +935,7 @@ def api_export_m4b(topic_id: str, track: TrackParam = "podcast"):
         return exports.export_m4b(topic_id, track=track)
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
-    except (RuntimeError, audio.FFmpegError) as e:
+    except (RuntimeError, audio.FFmpegError, ValueError) as e:
         raise _err(400, str(e)) from e
 
 
@@ -999,6 +1014,8 @@ def api_content_drafts(topic_id: str):
         return production.content_drafts(topic_id)
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
 
 
 # ---------------------------------------------------------------- bank（B01 题库）
@@ -1217,6 +1234,8 @@ def api_retry_generation(topic_id: str, item_id: str):
         full = library.get_item_full(topic_id, item_id)
     except FileNotFoundError as exc:
         raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
     answer = rewrite.original_answer_of(full)
     question = (full.get("question") or "").strip()
     if not answer or not question:
@@ -1251,6 +1270,8 @@ def api_agent_task(topic_id: str, item_id: str):
         full = library.get_item_full(topic_id, item_id)
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
+    except ValueError as exc:
+        raise _err(400, str(exc)) from exc
     answer = rewrite.original_answer_of(full)
     question = (full.get("question") or "").strip()
     return {
@@ -1273,10 +1294,15 @@ def api_pack_export(topics: str | None = None):
         topic_ids = [s.strip() for s in topics.split(",") if s.strip()]
     out = DATA_DIR / "exports" / f"corpus-{uuid.uuid4().hex}.pack.zip"
     try:
+        for topic_id in topic_ids or []:
+            library.topic_dir(topic_id)
         result = pack.build_pack(out_path=out, topic_ids=topic_ids)
     except FileNotFoundError as e:
         out.unlink(missing_ok=True)
         raise _err(404, str(e)) from e
+    except ValueError as exc:
+        out.unlink(missing_ok=True)
+        raise _err(400, str(exc)) from exc
     except Exception:
         out.unlink(missing_ok=True)
         raise
@@ -1301,7 +1327,7 @@ def api_download_export(filename: str):
 def api_export_vtt(topic_id: str, item_id: str, track: TrackParam = "podcast"):
     try:
         return exports_media.export_vtt(topic_id, item_id, track=track)
-    except (FileNotFoundError, RuntimeError) as e:
+    except (FileNotFoundError, RuntimeError, ValueError) as e:
         raise _err(400, str(e)) from e
 
 
@@ -1309,7 +1335,7 @@ def api_export_vtt(topic_id: str, item_id: str, track: TrackParam = "podcast"):
 def api_export_lrc(topic_id: str, item_id: str, track: TrackParam = "podcast"):
     try:
         return exports_media.export_lrc(topic_id, item_id, track=track)
-    except (FileNotFoundError, RuntimeError) as e:
+    except (FileNotFoundError, RuntimeError, ValueError) as e:
         raise _err(400, str(e)) from e
 
 
@@ -1317,7 +1343,7 @@ def api_export_lrc(topic_id: str, item_id: str, track: TrackParam = "podcast"):
 def api_export_srt(topic_id: str, item_id: str, track: TrackParam = "podcast"):
     try:
         return exports_media.export_srt(topic_id, item_id, track=track)
-    except (FileNotFoundError, RuntimeError) as e:
+    except (FileNotFoundError, RuntimeError, ValueError) as e:
         raise _err(400, str(e)) from e
 
 
