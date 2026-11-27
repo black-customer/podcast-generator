@@ -1,5 +1,5 @@
 /* 页面和样式脚本优先读取本机服务，离线时回落到缓存。 */
-const CACHE = "ielts-pod-assets-v25";
+const CACHE = "ielts-pod-assets-v26";
 const STATIC_ASSETS = [
   "/",
   "/static/app.js",
@@ -10,6 +10,7 @@ const STATIC_ASSETS = [
   "/static/training-core.js",
   "/static/training.js",
   "/static/arcade.js",
+  "/static/decks.js",
   "/static/radio.js",
   "/static/captures.js",
   "/static/training-baseline.js",

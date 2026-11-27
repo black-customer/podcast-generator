@@ -4,12 +4,15 @@ import hashlib
 import json
 import re
 import threading
+from functools import lru_cache
+from pathlib import Path
 
 from . import library, rewrite, timeline
-from .config import atomic_write_text, load_settings
+from .config import DATA_DIR, atomic_write_text, load_settings
 
 VERSION = 1
 MATERIAL_FILE = "study_material.json"
+LEGACY_UPGRADE_FILE = DATA_DIR / "study_private" / "legacy_study_upgrades.json"
 _ACTIVE: set[tuple[str, str]] = set()
 _ACTIVE_LOCK = threading.Lock()
 
@@ -46,6 +49,7 @@ SYSTEM_PROMPT = (
 )
 
 CHUNK_CUE_FIELDS = ("trigger_context", "disambiguator", "feynman_hook", "transfer_prompt_zh")
+LEGACY_CUE_FIELDS = ("key_chunk", *CHUNK_CUE_FIELDS, "transfer_example")
 
 ERROR_LABELS = {"plural": "单复数", "tense": "时态", "subject_verb_agreement": "主谓一致",
                 "article": "冠词", "preposition": "介词", "word_order": "语序",
@@ -338,7 +342,126 @@ def prepare_async(topic_id: str, item_id: str) -> bool:
     return True
 
 
-def get_material(topic_id: str, item_id: str, *, allow_pending_audio: bool = False) -> dict:
+@lru_cache(maxsize=2)
+def _read_upgrades(path: Path, modified: int, size: int) -> dict:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("version") != 1 or not isinstance(data.get("items"), dict):
+        raise MaterialError("历史语块文件格式不受支持")
+    return data["items"]
+
+
+def legacy_upgrades(*, strict: bool = False) -> dict:
+    try:
+        stat = LEGACY_UPGRADE_FILE.stat()
+        return _read_upgrades(LEGACY_UPGRADE_FILE, stat.st_mtime_ns, stat.st_size)
+    except FileNotFoundError:
+        return {}
+    except (OSError, ValueError, AttributeError):
+        if strict:
+            raise MaterialError("历史语块文件无法读取，请先核对本机升级记录") from None
+        return {}
+
+
+def _legacy_key(topic_id: str, item_id: str) -> str:
+    return f"{topic_id}/{item_id}"
+
+
+def _legacy_source(topic_id: str, item_id: str) -> bool:
+    path = library.item_path(topic_id, item_id)
+    tags = library.load_meta(path).get("tags") or []
+    return ("bruce-真实回答" in topic_id or "bruce-真实回答" in tags
+            or (path / "original_answer.txt").is_file())
+
+
+def export_legacy_study_upgrade() -> dict:
+    items = []
+    with library.LIB_LOCK:
+        for path in sorted(library.TOPICS_DIR.glob(f"*/items/*/{MATERIAL_FILE}")):
+            topic_id, item_id = path.parents[2].name, path.parent.name
+            if not _legacy_source(topic_id, item_id):
+                continue
+            found = get_material(topic_id, item_id)
+            if found["status"] != "ready":
+                continue
+            material = found["material"]
+            rows = [{"sentence_index": index, **row}
+                    for index, row in enumerate(material["sentences"]) if not row.get("key_chunk")]
+            if rows:
+                items.append({"topic_id": topic_id, "item_id": item_id,
+                              "source_fingerprint": material["source_fingerprint"],
+                              "sentences": rows})
+    return {"version": 1, "guidance": (
+        "保留条目编号、文本指纹和句子序号。逐句只交回 key_chunk、四项语境提示和 "
+        "transfer_example。语块须连续出现在原句和迁移例句里，迁移需要使用另一个具体场景。"
+    ), "items": items}
+
+
+def apply_legacy_study_upgrade(payload: dict) -> dict:
+    if (not isinstance(payload, dict) or payload.get("version") != 1
+            or not isinstance(payload.get("items"), list) or not payload["items"]):
+        raise MaterialError("历史语块提交需要版本 1 和非空条目列表")
+    with library.LIB_LOCK:
+        upgrades = legacy_upgrades(strict=True).copy()
+        seen = set()
+        count = 0
+        for item in payload["items"]:
+            if not isinstance(item, dict):
+                raise MaterialError("历史条目格式错误")
+            tid, iid = item.get("topic_id"), item.get("item_id")
+            patches = item.get("sentences")
+            if (not all(isinstance(key, str) and library._safe_id(key) for key in (tid, iid))
+                    or not isinstance(patches, list) or not patches
+                    or not _legacy_source(tid, iid)):
+                raise MaterialError("历史条目标识或句子列表无效")
+            key = _legacy_key(tid, iid)
+            if key in seen:
+                raise MaterialError("同一历史条目不可重复提交")
+            seen.add(key)
+            found = get_material(tid, iid, _apply_upgrades=False)
+            material = found.get("material", {})
+            fp = item.get("source_fingerprint")
+            if found["status"] != "ready" or not fp or fp != material["source_fingerprint"]:
+                raise MaterialError("历史材料已变化，请重新导出")
+            rows = material["sentences"]
+            previous = upgrades.get(key, {})
+            merged = (previous.get("sentences", {}).copy()
+                      if previous.get("fingerprint") == fp else {})
+            indices = set()
+            for patch in patches:
+                if not isinstance(patch, dict):
+                    raise MaterialError("历史句子格式错误")
+                index = patch.get("sentence_index")
+                if (type(index) is not int or not 0 <= index < len(rows) or index in indices
+                        or rows[index].get("key_chunk")):
+                    raise MaterialError("历史句子序号无效、重复或已包含语块")
+                indices.add(index)
+                if set(patch) != {"sentence_index", *LEGACY_CUE_FIELDS} or any(
+                    not isinstance(patch[field], str) or not 0 < len(patch[field].strip()) <= 240
+                    for field in LEGACY_CUE_FIELDS
+                ):
+                    raise MaterialError("历史句子只能补齐语块、四项情境提示和迁移示范")
+                merged[str(index)] = {field: patch[field].strip() for field in LEGACY_CUE_FIELDS}
+            candidate = {**material, "sentences": [
+                {**row, **merged.get(str(index), {})} for index, row in enumerate(rows)]}
+            texts = library.read_item_texts(library.item_path(tid, iid))
+            checked = validate_material(candidate, texts)
+            from .captures import make_cloze
+
+            for index in indices:
+                row = checked["sentences"][index]
+                if not all(row.get(field) for field in LEGACY_CUE_FIELDS):
+                    raise MaterialError("迁移示范必须在新情境使用同一语块")
+                make_cloze(row["en"], row["key_chunk"])
+            upgrades[key] = {"fingerprint": fp, "sentences": merged}
+            count += len(indices)
+        # 单文件事务，旧材料、音频、时间轴与已有句子进度保留原字节。
+        atomic_write_text(LEGACY_UPGRADE_FILE, json.dumps({"version": 1, "items": upgrades},
+                                                        ensure_ascii=False, indent=2))
+        return {"items": len(seen), "sentences": count}
+
+
+def get_material(topic_id: str, item_id: str, *, allow_pending_audio: bool = False,
+                 _apply_upgrades: bool = True) -> dict:
     path = library.item_path(topic_id, item_id)
     if not path.exists():
         raise FileNotFoundError("条目不存在")
@@ -374,6 +497,12 @@ def get_material(topic_id: str, item_id: str, *, allow_pending_audio: bool = Fal
             if stored.get("source_fingerprint") != source_fingerprint(texts):
                 return {"status": "changed", "reason": "回答正文或原始回答已变化，请复核材料"}
             validated = validate_material(stored, texts)
+            if _apply_upgrades:
+                upgrade = legacy_upgrades().get(_legacy_key(topic_id, item_id), {})
+                if upgrade.get("fingerprint") == validated["source_fingerprint"]:
+                    for index, row in enumerate(validated["sentences"]):
+                        if not row.get("key_chunk"):
+                            row.update(upgrade["sentences"].get(str(index), {}))
             return {"status": "ready" if has_audio else "coaching_ready", "material": validated}
         except (OSError, ValueError, TypeError) as exc:
             return {"status": "failed", "reason": f"材料需修复：{str(exc)[:160]}"}

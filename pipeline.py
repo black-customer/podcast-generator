@@ -139,6 +139,10 @@ def ingest_and_generate(
 def main():
     parser = argparse.ArgumentParser(description="Podcast Pipeline Runner")
     sub = parser.add_subparsers(dest="command")
+    study_export = sub.add_parser("export-legacy-study-upgrade", help="导出历史语块升级任务到本机")
+    study_export.add_argument("--output", type=Path, required=True)
+    study_apply = sub.add_parser("apply-legacy-study-upgrade", help="原子提交已校验的历史语块")
+    study_apply.add_argument("--result-json", type=Path, required=True)
 
     capture_export = sub.add_parser("export-capture-task", help="输出本地素材的 Agent 制卡指令")
     capture_export.add_argument("--capture-id", action="append", dest="capture_ids")
@@ -196,6 +200,22 @@ def main():
     phone_complete.add_argument("--output-json", required=True)
 
     args = parser.parse_args()
+    if args.command in ("export-legacy-study-upgrade", "apply-legacy-study-upgrade"):
+        from server.config import atomic_write_text
+
+        try:
+            if args.command == "export-legacy-study-upgrade":
+                payload = study.export_legacy_study_upgrade()
+                atomic_write_text(args.output, json.dumps(payload, ensure_ascii=False, indent=2))
+                result = {"items": len(payload["items"]),
+                          "sentences": sum(len(row["sentences"]) for row in payload["items"])}
+            else:
+                result = study.apply_legacy_study_upgrade(json.loads(
+                    args.result_json.read_text(encoding="utf-8-sig")))
+        except (ValueError, OSError) as exc:
+            parser.exit(1, f"{exc}\n")
+        print(json.dumps(result))
+        return
     if args.command in ("export-capture-task", "complete-capture"):
         from server import capture_distill
 

@@ -27,17 +27,26 @@ function stageNav(step) {
 
 async function home(token) {
   const ctx = { token, kind: "home", step: 2, index: 0, revealed: false, cachedAudio: new Map() };
+  const openParams = new URLSearchParams(location.hash.split("?")[1]);
+  ctx.deckId = openParams.get("deck");
+  ctx.unitId = openParams.get("unit");
   session = ctx;
   $app.innerHTML = `<main class="arcade-home" aria-labelledby="arcade-home-title">
     <header class="arcade-home-head"><div><h1 id="arcade-home-title">今日练习</h1>
       <p id="arcade-home-progress" role="status">正在找可练的句子…</p></div>
       <nav aria-label="今日练习入口"><a class="study-button" href="#/radio">听今日电台</a>
+      <a class="study-button" href="#/decks">口语词书</a>
       <button class="study-button" id="arcade-open-draw" type="button">范围随机抽题</button></nav></header>
     <div class="arcade-home-filters arcade-controls" aria-label="复习来源">
-      ${[["all", "全部混练"], ["scene", "看剧表达"], ["ielts", "雅思口语"], ["snippet", "随手摘录"]]
+      ${[["all", "全部混练"], ["deck", "词书语块"], ["scene", "看剧表达"], ["ielts", "雅思口语"], ["snippet", "随手摘录"]]
         .map(([value, text]) => `<button class="study-button" type="button"
           data-review-source="${value}" aria-pressed="${value === "all"}">${text}</button>`).join("")}
       <a class="study-button" id="arcade-inbox-count" href="#/captures">素材收集</a>
+    </div>
+    <div id="arcade-ramp" class="arcade-controls arcade-ramp" aria-label="开始方式">
+      <button class="study-button" type="button" data-round-size="3" aria-pressed="false">先刷 3 张</button>
+      <button class="study-button" type="button" data-round-size="8" aria-pressed="false">标准 8 张</button>
+      <button class="study-button" type="button" id="arcade-warmup-start" aria-pressed="false">先听 2 分钟</button>
     </div>
     <div id="arcade-home-card"></div>
     <section class="arcade-frame arcade-draw" id="arcade-draw" hidden aria-labelledby="arcade-draw-title">
@@ -78,9 +87,16 @@ async function home(token) {
   });
   const filters = $app.querySelector(".arcade-home-filters");
   const card = document.getElementById("arcade-home-card");
-  ctx.source = "all";
-  ctx.load = async (source = ctx.source) => {
+  const requestedSource = openParams.get("source");
+  ctx.source = ctx.deckId ? "deck" :
+    ["deck", "scene", "ielts", "snippet"].includes(requestedSource) ? requestedSource : "all";
+  const ramp = document.getElementById("arcade-ramp");
+  ctx.load = async (source = ctx.source, limit = ctx.limit) => {
     if (!active(ctx) || ctx.busy || activeCapture) return;
+    if (ctx.warmup) {
+      ctx.warmup.close();
+      renderHomeCard(ctx);
+    }
     const attempt = (ctx.loadRevision || 0) + 1;
     ctx.loadRevision = attempt;
     ctx.loadingCards = card.inert = true;
@@ -88,15 +104,20 @@ async function home(token) {
     if (ctx.cards) note("正在读取练习来源…");
     try {
       const result = await api("GET", "/api/arcade/blitz?include_pending=true" +
-        (source === "all" ? "" : `&source=${encodeURIComponent(source)}`));
+        (source === "all" ? "" : `&source=${encodeURIComponent(source)}`) +
+        (ctx.deckId ? `&deck_id=${encodeURIComponent(ctx.deckId)}` : "") +
+        (ctx.unitId ? `&unit_id=${encodeURIComponent(ctx.unitId)}` : "") +
+        (limit ? `&limit=${limit}` : ""));
       if (!active(ctx) || attempt !== ctx.loadRevision) return;
       stopAudio(); ctx.altController?.abort();
-      Object.assign(ctx, {source, cards: result.cards, due: result.due_total ?? result.due_count,
+      Object.assign(ctx, {source, limit, cards: result.cards, due: result.due_total ?? result.due_count,
         total: result.cards.length, index: 0, revealed: false, retries: new Map(),
         completed: new Set(), practised: new Set(), submissionId: null,
         timer: result.reaction_timer_enabled});
       filters.querySelectorAll("button").forEach(button =>
         button.setAttribute("aria-pressed", button.dataset.reviewSource === source));
+      ramp.querySelectorAll("[data-round-size]").forEach(button =>
+        button.setAttribute("aria-pressed", button.dataset.roundSize === String(limit || result.session_limit || 8)));
       document.getElementById("arcade-inbox-count").textContent = result.inbox_count
         ? `待分拣 ${result.inbox_count}` : "素材收集";
       const badge = document.getElementById("nav-inbox-count");
@@ -122,9 +143,193 @@ async function home(token) {
   };
   filters.onclick = event => {
     const filter = event.target.closest("[data-review-source]");
-    if (filter) ctx.load(filter.dataset.reviewSource);
+    if (!filter) return;
+    if (ctx.deckId && filter.dataset.reviewSource !== "deck") {
+      const source = filter.dataset.reviewSource;
+      location.hash = source === "all" ? "#/today" : `#/today?source=${source}`;
+      return;
+    }
+    ctx.load(filter.dataset.reviewSource);
+  };
+  ramp.onclick = event => {
+    const size = event.target.closest("[data-round-size]")?.dataset.roundSize;
+    if (size) ctx.load(ctx.source, size);
+    if (event.target.closest("#arcade-warmup-start")) startWarmup(ctx, card);
   };
   await ctx.load();
+}
+
+async function startWarmup(ctx, container) {
+  if (ctx.warmup || ctx.busy || ctx.loadingCards || activeCapture) return;
+  stopAudio();
+  ctx.altController?.abort();
+  $audio.pause();
+  const start = document.getElementById("arcade-warmup-start");
+  start.setAttribute("aria-pressed", "true");
+  const audio = new Audio();
+  let rows = [], index = 0, paused = false, phase = "loading", timer, clock;
+  let remaining = 120000, lastTick = 0, delay = 2000, delayStarted = 0, failed = 0;
+  const current = () => active(ctx) && ctx.warmup === state;
+  const state = {close() {
+    ctx.warmup = null;
+    start.setAttribute("aria-pressed", "false");
+    stopTimers();
+    audio.removeAttribute("src");
+    audio.load();
+  }};
+  ctx.warmup = state;
+  container.innerHTML = `<section class="arcade-frame arcade-warmup" aria-labelledby="arcade-warmup-title">
+    <div class="arcade-warmup-head"><h2 id="arcade-warmup-title">听力热身</h2>
+      <span data-warmup-time aria-label="剩余时间">2:00</span></div>
+    <p class="arcade-intent" data-warmup-context></p><p class="warmup-example" lang="en"></p>
+    <p class="arcade-muted" role="status">正在准备可听的语块…</p>
+    <div class="arcade-controls"><button type="button" class="study-button" data-warmup-pause disabled>暂停</button>
+      <label>播放速度 <select aria-label="播放速度"><option value="0.85">0.85×</option>
+        <option value="1" selected>1.0×</option><option value="1.2">1.2×</option></select></label>
+      <button type="button" class="study-button primary" data-warmup-exit>切回开口练习</button></div>
+  </section>`;
+  const root = container.firstElementChild;
+  const status = root.querySelector("[role=status]");
+  const prompt = root.querySelector("[data-warmup-context]");
+  const example = root.querySelector(".warmup-example");
+  const pauseButton = root.querySelector("[data-warmup-pause]");
+  const exitButton = root.querySelector("[data-warmup-exit]");
+  const time = root.querySelector("[data-warmup-time]");
+  const rate = root.querySelector("select");
+  const progress = document.getElementById("arcade-home-progress");
+  progress.textContent = "热身不计入复习进度";
+  note("");
+
+  function stopTimers() {
+    clearTimeout(timer);
+    clearInterval(clock);
+    audio.pause();
+  }
+
+  function finish(message) {
+    phase = "done";
+    stopTimers();
+    pauseButton.disabled = true;
+    status.textContent = message;
+  }
+
+  function tick() {
+    const now = performance.now();
+    remaining = Math.max(0, remaining - (now - lastTick));
+    lastTick = now;
+    time.textContent = fmtDur(Math.ceil(remaining / 1000));
+    if (!remaining) finish("热身结束，可以开始开口练习。");
+  }
+
+  function next() {
+    if (!current() || phase !== "audio") return;
+    audio.pause();
+    index = (index + 1) % rows.length;
+    cue();
+  }
+
+  function playSample() {
+    if (!current() || paused || phase !== "audio") return;
+    audio.playbackRate = Number(rate.value);
+    audio.play().catch(error => {
+      if (!current() || paused || phase !== "audio" || error.name === "AbortError") return;
+      if (error.name === "NotAllowedError") {
+        togglePause();
+        status.textContent = "点击继续播放以开启声音。";
+      } else skipUnavailable();
+    });
+  }
+
+  function skipUnavailable() {
+    if (!current() || phase !== "audio" || paused) return;
+    phase = "error";
+    failed += 1;
+    status.textContent = "这句音频暂时无法播放，准备下一句…";
+    if (failed >= rows.length) finish("暂时没有可播放的音频，可以切回开口练习。");
+    else timer = setTimeout(() => { phase = "audio"; next(); }, 950);
+  }
+
+  function waitForExample() {
+    delayStarted = performance.now();
+    timer = setTimeout(() => {
+      if (!current() || paused || phase !== "cue") return;
+      phase = "audio";
+      const row = rows[index];
+      example.innerHTML = highlight(row.en, row.chunk_in_sentence || row.key_chunk);
+      audio.src = row.audio_url;
+      playSample();
+    }, delay);
+  }
+
+  function cue() {
+    phase = "cue";
+    prompt.textContent = rows[index].trigger_context || rows[index].zh;
+    example.replaceChildren();
+    status.textContent = "先想想该怎么说。";
+    delay = 2000;
+    waitForExample();
+  }
+
+  function togglePause() {
+    if (phase === "done" || phase === "loading") return;
+    paused = !paused;
+    pauseButton.textContent = paused ? "继续播放" : "暂停";
+    if (paused) {
+      tick();
+      stopTimers();
+      if (phase === "cue") delay = Math.max(0, delay - (performance.now() - delayStarted));
+      if (phase !== "done") status.textContent = "已暂停";
+    } else {
+      lastTick = performance.now();
+      clock = setInterval(tick, 100);
+      if (phase === "cue") {
+        status.textContent = "先想想该怎么说。";
+        waitForExample();
+      } else if (phase === "error") {
+        phase = "audio";
+        next();
+      } else {
+        status.textContent = "听示范";
+        playSample();
+      }
+    }
+  }
+
+  audio.onloadedmetadata = () => { audio.currentTime = rows[index]?.audio?.start || 0; };
+  audio.ontimeupdate = () => {
+    const end = rows[index]?.audio?.end;
+    if (end != null && audio.currentTime >= end) next();
+  };
+  audio.onplaying = () => {
+    if (!current() || phase !== "audio") return;
+    failed = 0;
+    status.textContent = "听示范";
+  };
+  audio.onended = next;
+  audio.onerror = skipUnavailable;
+  pauseButton.onclick = togglePause;
+  rate.onchange = () => { audio.playbackRate = Number(rate.value); };
+  exitButton.onclick = () => {
+    state.close();
+    renderHomeCard(ctx);
+    start.focus();
+  };
+  try {
+    const params = new URLSearchParams({include_pending: "true", warmup: "true", limit: "20"});
+    if (ctx.source !== "all") params.set("source", ctx.source);
+    if (ctx.deckId) params.set("deck_id", ctx.deckId);
+    if (ctx.unitId) params.set("unit_id", ctx.unitId);
+    const result = await api("GET", `/api/arcade/blitz?${params}`);
+    if (!current()) return;
+    rows = result.cards.filter(row => row.audio_url);
+    if (!rows.length) { finish("这个范围暂无可听的语块。"); return; }
+    pauseButton.disabled = false;
+    lastTick = performance.now();
+    clock = setInterval(tick, 100);
+    cue();
+  } catch (error) {
+    if (current()) finish(error.message || "热身加载失败，请切回后重试。");
+  }
 }
 
 function bindDraw(ctx) {
@@ -198,9 +403,9 @@ function bindDraw(ctx) {
 function renderHomeCard(ctx) {
   const card = document.getElementById("arcade-home-card");
   const progress = document.getElementById("arcade-home-progress");
-  if (!ctx.cards.length) {
+  if (!ctx.cards?.length) {
     progress.textContent = "这个范围暂时没有待练语块";
-    card.replaceChildren();
+    card.innerHTML = ctx.source === "deck" ? '<a class="study-button" href="#/decks">查看口语词书</a>' : "";
     if (ctx.source === "all") ctx.showDraw();
     return;
   }
@@ -485,14 +690,14 @@ function sentence(ctx) {
 
 function chunkSentence(ctx, row) {
   const level = row.scaffolding_level;
-  const transfer = level === 3 && row.goal_type !== "comprehend_input";
+  const transfer = row.card_kind === "deck" ? row.transfer_ready : level === 3 && row.goal_type !== "comprehend_input";
   const source = row.capture?.source;
   const image = source ? CapturesUI.imageMarkup(source, row.capture_id, level === 1 && !ctx.revealed) : "";
   const link = source ? CapturesUI.sourceLink(source) : "";
   const sourceLabel = source ? CapturesUI.sourceLabel(source) : "";
   const listening = row.goal_type === "comprehend_input";
   return `<section class="arcade-frame arcade-recall chunk-practice" data-revealed="${ctx.revealed}">
-    <p class="arcade-muted">${esc(({scene: "看剧表达", ielts: "雅思口语", snippet: "随手摘录"})[row.source_type])} ·
+    <p class="arcade-muted">${esc(row.deck_title || ({scene: "看剧表达", ielts: "雅思口语", snippet: "随手摘录"})[row.source_type])} ·
       ${["首次练习", "情境回忆", "换个场景"][level - 1]}</p>
     ${ctx.timer ? '<div class="arcade-reaction" aria-hidden="true" style="--reaction-time:3000ms"><span></span></div>' : ""}
     ${sourceLabel ? `<p class="arcade-muted">${esc(sourceLabel)}</p>` : ""}
@@ -520,10 +725,10 @@ function chunkSentence(ctx, row) {
       ${row.id ? button("transfer-record", `录音试说 ${hotkey("R")}`) : ""}
       ${link}</div>
     <div class="arcade-controls arcade-grade" ${ctx.revealed ? "" : "hidden"}>
-      ${button("good", `${hotkey("1")} 顺畅`)}${button("again", `${hotkey("2")} 卡壳`)}
-      ${button("easy", `${hotkey("3")} 太熟`)}
+      ${button("good", `${hotkey("1")} ${row.transfer_ready ? "已开口，完成迁移" : "顺畅"}`)}${button("again", `${hotkey("2")} 卡壳`)}
+      ${row.transfer_ready ? "" : button("easy", `${hotkey("3")} 太熟`)}
     </div>
-    <div class="arcade-controls">${button("suspend", `${hotkey("X")} 归档`)}
+    <div class="arcade-controls">${row.deck_url ? "" : button("suspend", `${hotkey("X")} 归档`)}
       <button type="button" class="study-button" data-arcade="compare-take" hidden>听示范和我的录音</button>
     </div><p class="arcade-feedback" role="status"></p>
   </section>`;
@@ -533,6 +738,18 @@ function audioForChunk(ctx) {
   if (activeCapture) return;
   const row = currentRow(ctx);
   const selected = chosenVoice(ctx, row);
+  if (row.deck_url) {
+    const suffix = row.transfer_ready ? "?transfer=true" : "";
+    if (!suffix && row.audio?.scope === "full_answer") note("这句使用原回答音频。");
+    ctx.altController?.abort();
+    if (selected === "golden_self" && (row.voice !== "golden_self" || suffix)) {
+      loadChunkVoice(ctx, row.deck_url + "/voice/golden_self" + suffix);
+    } else if (selected === "demo" && row.voice === "golden_self") {
+      loadChunkVoice(ctx, row.deck_url + "/voice/am_puck" + suffix);
+    } else if (suffix) play(ctx, row.deck_url + "/audio" + suffix);
+    else play(ctx, row.audio_url, row.audio?.start, row.audio?.end);
+    return;
+  }
   if (row.card_kind === "capture" && selected === "golden_self") {
     const relative = `/api/cards/${encodeURIComponent(row.id)}/voice/golden_self`;
     loadChunkVoice(ctx, relative);
@@ -591,6 +808,12 @@ async function transferRecord(ctx) {
       control.classList.remove("arcade-recording");
       if (!active(ctx)) return;
       if (!blob.size || duration < .25) { note("录音太短，请再说一次。"); return; }
+      if (row.deck_url) {
+        ctx.transferRecording = blob;
+        const compare = $app.querySelector("[data-arcade=compare-take]");
+        if (compare) compare.hidden = false;
+        return;
+      }
       ctx.busy = true;
       const finish = ExperienceUI.pendingNear(control, "在本机识别语块…");
       try {
@@ -904,18 +1127,26 @@ async function grade(ctx, rating) {
   const payload = { sentence_index: review ? row.sentence_index : ctx.index,
     source_fingerprint: review ? row.source_fingerprint : ctx.data.source_fingerprint,
     rating, submission_id: ctx.submissionId ||= crypto.randomUUID() };
+  if (row.deck_url) payload.transfer = Boolean(row.transfer_ready && rating !== "suspend");
   try {
-    const result = await api("POST", row.card_kind === "capture" ?
+    const result = await api("POST", row.deck_url ? `${row.deck_url}/grade` : row.card_kind === "capture" ?
       `/api/cards/${encodeURIComponent(row.id)}/grade` : `${url}/grade`, payload);
     if (!active(ctx) || ctx.cards !== round) return;
     stopAudio();
     ctx.altController?.abort();
     if (ctx.kind === "home") {
+      if (row.deck_url && !row.transfer_ready && result.transfer_ready) {
+        ctx.cards[ctx.index] = {...row, transfer_ready: true, scaffolding_level: 3};
+        Object.assign(ctx, {revealed: false, submissionId: null, transferRecording: null});
+        renderHomeCard(ctx);
+        return;
+      }
       const key = row.id || `${row.topic_id}/${row.item_id}/${row.sentence_index}`;
       const retries = ctx.retries.get(key) || 0;
-      if (rating === "again" && retries < 2) {
+      if (rating === "again" && retries < 2 && !row.transfer_ready) {
         ctx.retries.set(key, retries + 1);
-        ctx.cards.push({...row, scaffolding_level: result.scaffolding_level || row.scaffolding_level});
+        ctx.cards.push({...row, transfer_ready: false,
+          scaffolding_level: result.scaffolding_level || row.scaffolding_level});
       } else {
         ctx.completed.add(key);
         if (rating !== "suspend" && row.key_chunk) ctx.practised.add(row.key_chunk);
@@ -1164,7 +1395,9 @@ function action(ctx, name) {
     .then(data => { if (active(ctx)) copyText(data.prompt); }).catch(error => note(error.message));
   if (name === "compare-take" && ctx.transferRecording) {
     const row = currentRow(ctx);
-    playTogether(ctx, [{url: row.audio_url, ...row.audio}, {blob: ctx.transferRecording}])
+    const demo = row.deck_url && row.transfer_ready ?
+      {url: row.deck_url + "/audio?transfer=true"} : {url: row.audio_url, ...row.audio};
+    playTogether(ctx, [{blob: ctx.transferRecording}, demo])
       .catch(error => { if (active(ctx)) note(error.message); });
   }
   if (name === "prosody") $app.querySelector("[data-prosody]")?.click();
@@ -1185,6 +1418,7 @@ function reset() {
   activeCapture?.stop();
   stopAudio();
   if (session) {
+    session.warmup?.close();
     clearTimeout(session.poll);
     session.audioProgress?.bar.stop();
     session.audioContext?.close().catch(() => {});
@@ -1196,7 +1430,7 @@ function reset() {
 
 document.addEventListener("keydown", event => {
   const ctx = session;
-  if (!ctx || !active(ctx) || ctx.loadingCards || event.repeat || event.ctrlKey ||
+  if (!ctx || !active(ctx) || ctx.warmup || ctx.loadingCards || event.repeat || event.ctrlKey ||
      event.metaKey || event.altKey ||
      event.target.closest("input,textarea,select,[contenteditable]")) return;
   let next;
@@ -1210,8 +1444,8 @@ document.addEventListener("keydown", event => {
     if (event.code === "Digit2" || event.code === "Numpad2") next = "again";
     if (event.code === "KeyR" && !isReview(ctx)) { next = "record"; ctx.held = true; }
     if (ctx.kind === "home" && currentRow(ctx).scaffolding_level) {
-      if (["Digit3", "Numpad3"].includes(event.code)) next = "easy";
-      if (event.code === "KeyX") next = "suspend";
+      if (!currentRow(ctx).transfer_ready && ["Digit3", "Numpad3"].includes(event.code)) next = "easy";
+      if (event.code === "KeyX" && !currentRow(ctx).deck_url) next = "suspend";
       if (event.code === "KeyP" && ctx.revealed) next = "prosody";
       if (event.code === "KeyO") next = "original";
       if (event.code === "KeyR") { next = "transfer-record"; ctx.held = true; }

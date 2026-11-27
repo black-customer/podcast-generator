@@ -22,6 +22,7 @@ from . import (
     bank,
     capture_distill,
     captures,
+    decks,
     exports,
     exports_media,
     jobs,
@@ -345,11 +346,74 @@ def api_arcade_grade(topic_id: str, item_id: str, body: ArcadeGradeIn):
 
 @router.get("/arcade/blitz")
 def api_arcade_blitz(summary: bool = False, include_pending: bool = False,
-                     source: Literal["all", "ielts", "scene", "snippet"] = "all",
-                     limit: int | None = None):
-    if summary:
+                     source: Literal["all", "ielts", "scene", "snippet", "deck"] = "all",
+                     limit: int | None = None, deck_id: str | None = None,
+                     unit_id: str | None = None, warmup: bool = False):
+    if summary and not deck_id and source not in ("all", "deck"):
         return {"due_count": len(oral_review.unified_due_cards(source))}
-    return arcade.home_cards(source, limit, include_pending)
+    try:
+        result = arcade.home_cards(source, limit, include_pending, deck_id=deck_id, unit_id=unit_id,
+                                   warmup=warmup)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    if summary:
+        return {"due_count": result["due_count"]}
+    decks.prewarm([row for row in result["cards"]
+                   if row.get("deck_url") and row["audio_url"] == row["deck_url"] + "/audio"])
+    return result
+
+
+class DeckToggleIn(BaseModel):
+    enabled: bool
+    unit_id: str | None = None
+
+
+class DeckGradeIn(BaseModel):
+    source_fingerprint: str
+    rating: Literal["good", "again", "easy", "suspend"]
+    submission_id: str
+    transfer: bool = False
+
+
+@router.get("/decks")
+def api_deck_shelf():
+    return decks.shelf()
+
+
+@router.post("/decks/{deck_id}/toggle")
+def api_deck_toggle(deck_id: str, body: DeckToggleIn):
+    try:
+        return decks.toggle(deck_id, body.enabled, body.unit_id)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+
+
+@router.post("/decks/{deck_id}/cards/{card_id}/grade")
+def api_deck_grade(deck_id: str, card_id: str, body: DeckGradeIn):
+    try:
+        return decks.grade(deck_id, card_id, body.source_fingerprint, body.rating,
+                           body.submission_id, body.transfer)
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except ValueError as exc:
+        raise _err(422, str(exc)) from exc
+
+
+@router.get("/decks/{deck_id}/cards/{card_id}/audio")
+@router.get("/decks/{deck_id}/cards/{card_id}/voice/{voice}")
+def api_deck_audio(deck_id: str, card_id: str, voice: Literal[
+    "am_puck", "af_bella", "golden_self"
+] | None = None, transfer: bool = False):
+    try:
+        path = decks.audio_file(decks.get_card(deck_id, card_id), voice, transfer=transfer)
+        return FileResponse(path, media_type="audio/mpeg",
+                            headers={"Cache-Control": "private, no-cache"})
+    except FileNotFoundError as exc:
+        raise _err(404, str(exc)) from exc
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise _err(503, str(exc)) from exc
 
 
 @router.get("/topics/{topic_id}/items/{item_id}/arcade/sentences/{index}/voice/{voice}")

@@ -2574,7 +2574,7 @@ function viewStale(token) {
 }
 
 const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup", "#/today", "#/radio",
-  "#/oral-review", "#/study-history", "#/captures", "#/inbox"];
+  "#/oral-review", "#/study-history", "#/captures", "#/inbox", "#/decks"];
 
 function route() {
   const packActive = typeof PackState !== "undefined" && PackState.active;
@@ -2615,6 +2615,7 @@ function route() {
     : base.startsWith("#/bank") || base.startsWith("#/practice") ? "bank"
     : base.startsWith("#/review") ? "review"
     : ["#/captures", "#/inbox"].includes(base) ? "captures"
+    : base === "#/decks" ? "decks"
     : base === "#/radio" ? "radio"
     : base.startsWith("#/manage") || base.startsWith("#/setup") || base.startsWith("#/voices") ? "settings"
     : "topics";
@@ -2624,12 +2625,13 @@ function route() {
       : el.getAttribute("href") === "#/today" ? "today"
       : el.getAttribute("href") === "#/practice" ? "bank"
       : el.getAttribute("href") === "#/captures" ? "captures"
+      : el.getAttribute("href") === "#/decks" ? "decks"
       : el.getAttribute("href") === "#/radio" ? "radio"
       : el.getAttribute("href") === "#/review" ? "review" : "topics";
     el.classList.toggle("active", category === owner);
     if (category === owner) el.setAttribute("aria-current", "page");
     else el.removeAttribute("aria-current");
-    if (category === "radio") el.hidden = !window.ArcadeUI?.enabled();
+    if (category === "radio" || category === "decks") el.hidden = !window.ArcadeUI?.enabled();
   });
 
   // 导航离开工作台时清理轮询定时器（修审计 A22）
@@ -2655,6 +2657,7 @@ function route() {
     return;
   }
   if (base === "#/radio" && window.ArcadeUI?.enabled()) { RadioUI.open(token); return; }
+  if (base === "#/decks" && window.ArcadeUI?.enabled()) { DecksUI.open(token); return; }
   if (base === "#/sentence-today") { OralReviewUI.today(token); return; }
   if (base.startsWith("#/train/") || base.startsWith("#/legacy-train/")) {
     const parts = base.split("/").slice(2);

@@ -13,6 +13,7 @@ if ! "$PY" -m ruff --version > /dev/null 2>&1; then
   exit 1
 fi
 "$PY" -m ruff check server pipeline.py run.py tests
+"$PY" scripts/validate_decks.py
 
 echo "=== [2/4] 单元与 API 测试 ==="
 "$PY" -m pytest tests/ -q --ignore=tests/e2e

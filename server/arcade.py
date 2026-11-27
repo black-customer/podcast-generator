@@ -388,6 +388,23 @@ def _fresh_ielts(enrolled: set[str], count: int, with_audio: bool = True) -> lis
 
 
 def _practice_row(card: dict, sources: dict) -> dict:
+    if card["card_kind"] == "deck":
+        from . import decks
+
+        if card["deck_id"] == decks.PERSONAL_ID:
+            key = card["topic_id"], card["item_id"]
+            if key not in sources:
+                sources[key] = view(*key)
+            data = sources[key]
+            sentence = data["sentences"][card["sentence_index"]]
+            if data["audio_url"]:
+                span = sentence["audio"]
+                answer = data["answer_spans"]
+                if span["scope"] == "full_answer" and answer:
+                    span = {**span, "start": answer[0]["start"], "end": answer[-1]["end"]}
+                return {**card, "audio": span, "audio_url": data["audio_url"],
+                        "voice": data["voice"], "prosody": sentence["prosody"]}
+        return {**card, "prosody": prosody.annotate_sentence(card["en"])}
     if card["card_kind"] == "capture":
         return {**card, "key_chunk": card["target_chunk"],
                 "audio_url": f"/api/cards/{card['id']}/audio",
@@ -429,12 +446,22 @@ def _interleave(cards: list[dict]) -> list[dict]:
     return result
 
 
-def home_cards(source: str = "all", limit: int | None = None,
-               include_pending: bool = True) -> dict:
+def home_cards(source: str = "all", limit: int | None = None, include_pending: bool = True, *,
+               deck_id: str | None = None, unit_id: str | None = None,
+               warmup: bool = False) -> dict:
+    from . import decks
+
     settings = load_settings()
     limit = min(20, max(1, limit if limit is not None else settings.get("daily_session_limit", 8)))
     enrolled: set[str] = set()
-    due = oral_review.unified_due_cards(enrolled=enrolled)
+    due = (oral_review.unified_due_cards(enrolled=enrolled)
+           if not deck_id and source != "deck" else [])
+    deck_rows = decks.practice_rows(deck_id, unit_id=unit_id, warmup=warmup,
+                                    include_pending=include_pending, enrolled=enrolled) if (
+        deck_id or source in ("all", "deck")) else []
+    deck_ids = {row["id"] for row in deck_rows}
+    due = [row for row in due if row["id"] not in deck_ids]
+    enrolled.update(deck_ids)
     today = oral_review._today()
     recent = (today - timedelta(days=2)).isoformat()
     due.sort(key=lambda row: (not (row["created_at"][:10] >= recent or
@@ -442,8 +469,9 @@ def home_cards(source: str = "all", limit: int | None = None,
                               row["due_date"], row["created_at"], row["id"]))
     counts = {kind: sum(row["source_type"] == kind for row in due)
               for kind in ("ielts", "scene", "snippet")}
-    selected = [row for row in due if source in ("all", row["source_type"])]
-    if include_pending and len(selected) < limit and source in ("all", "ielts"):
+    counts["deck"] = sum(row["mastery_stage"] != "unseen" for row in deck_rows)
+    selected = [row for row in due if source in ("all", row["source_type"])] + deck_rows
+    if include_pending and not deck_id and len(selected) < limit and source in ("all", "ielts"):
         selected.extend(_fresh_ielts(enrolled, limit - len(selected)))
     sources, cards = {}, []
     for row in _interleave(selected):
@@ -453,7 +481,8 @@ def home_cards(source: str = "all", limit: int | None = None,
             continue
         if len(cards) == limit:
             break
-    count = len(due) if source == "all" else counts.get(source, 0)
+    count = (len(due) + counts["deck"] if source == "all" and not deck_id
+             else counts.get("deck" if deck_id else source, 0))
     return {"due_count": count, "due_total": count, "session_limit": limit,
             "inbox_count": captures.count_cards(status="inbox"),
             "reaction_timer_enabled": settings.get("reaction_timer_enabled", False),

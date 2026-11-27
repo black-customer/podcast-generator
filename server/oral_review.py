@@ -209,7 +209,7 @@ def _due_cards(state: dict, cache: dict | None = None, *, arcade: bool = False) 
     from . import training
     today = _today().isoformat()
     cards = [c for c in state["cards"].values()
-             if c.get("card_kind") != "capture" and not c["paused"] and not c.get("superseded")
+             if _is_ielts(c) and not c["paused"] and not c.get("superseded")
              and c["due_date"] <= today and _valid(c, cache)
              and (arcade or not training.covered_today(c["topic_id"], c["item_id"]))]
     return sorted(cards, key=lambda c: (c["due_date"], c["created_at"],
@@ -261,7 +261,7 @@ def today_overview() -> dict:
         cache: dict = {}
         _reconcile(state, cache)
         due = _due_cards(state, cache)
-        invalid = [c for c in state["cards"].values() if c.get("card_kind") != "capture"
+        invalid = [c for c in state["cards"].values() if _is_ielts(c)
                    and not c.get("superseded") and not _valid(c, cache)]
         active = next((s for s in state["sessions"].values() if s["state"] == "active"), None)
         return {
@@ -596,6 +596,24 @@ def scaffolding_level(card: dict) -> int:
     return 3 if reps >= 3 or (card.get("stability") or 0) >= 7 else 2
 
 
+def _is_ielts(card: dict) -> bool:
+    return card.get("card_kind", "ielts") == "ielts"
+
+
+def mastery_stage(card: dict) -> str:
+    if not card.get("last_adjusted_date"):
+        return "unseen"
+    if not card.get("delayed_recall"):
+        return "l1"
+    return "mastered" if card.get("transfer_passed") else "l2"
+
+
+def deck_transfer_ready(card: dict, today: str) -> bool:
+    return (mastery_stage(card) == "l2"
+            and card.get("transfer_deferred_date") != today
+            and (card.get("reps", 0) >= 3 or (card.get("stability") or 0) >= 7))
+
+
 def _capture_schedule(row: dict) -> dict:
     parent = row["capture"]
     return {
@@ -734,7 +752,7 @@ def get_history(day: str | None = None, topic_id: str | None = None,
         dates: dict[str, dict] = {}
         sources = {(c["topic_id"], c["item_id"]): {"topic_id": c["topic_id"],
             "item_id": c["item_id"], "question": c["question"]} for c in state["cards"].values()
-                   if c.get("card_kind") != "capture"}
+                   if _is_ielts(c)}
         passed_total = 0
         undated_dictation = 0
 

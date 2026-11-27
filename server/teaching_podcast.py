@@ -227,7 +227,7 @@ def for_today(mode: str, partner: str, **options) -> dict:
         review = oral_review._load()
     attempts = [row for row in reversed(review["attempts"])
                 if row["date"] == today and row.get("fsrs_grade") != "suspend"]
-    speaking_attempts = [row for row in attempts if row.get("card_kind") != "capture"]
+    speaking_attempts = [row for row in attempts if oral_review._is_ielts(row)]
     rows, sources, practiced = [], {}, []
 
     def source_row(entry: dict) -> None:
@@ -253,7 +253,7 @@ def for_today(mode: str, partner: str, **options) -> dict:
     current = _targets(rows, 2)
     rows.clear()
     old = sorted((card for card in review["cards"].values()
-                  if card.get("card_kind") != "capture" and not card["paused"]
+                  if oral_review._is_ielts(card) and not card.get("deck_id") and not card["paused"]
                   and not card.get("superseded")
                   and card["due_date"] <= today
                   and (card.get("last_reviewed") or card.get("learned_at") or "")[:10] != today),
@@ -279,7 +279,25 @@ def for_today(mode: str, partner: str, **options) -> dict:
         fresh = (schedule.get("created_at") or row["capture"]["created_at"])[:10] >= recent
         if not schedule.get("paused") and (due or fresh or row["id"] in seen_today):
             groups[kind].append(_capture_point(row))
-    points = _blend([ielts, groups["scene"], groups["snippet"]], 4)
+    from . import decks
+
+    deck_points = []
+    deck_records = [review["cards"].get(row["card_id"], {}) for row in attempts
+                    if row.get("card_kind") == "deck"]
+    deck_records.extend(row for row in review["cards"].values()
+                        if row.get("deck_id") and row.get("last_adjusted_date")
+                        and row["due_date"] <= today)
+    for scheduled in deck_records:
+        deck_id = scheduled.get("deck_id")
+        if deck_id not in review.get("enabled_decks", []) or scheduled.get("paused"):
+            continue
+        try:
+            row = decks.get_card(deck_id, scheduled["id"].rsplit(":", 1)[-1])
+        except (OSError, ValueError):
+            continue
+        if decks._fingerprint(row) == scheduled["source_fingerprint"]:
+            deck_points.append({**row, "key_chunk": row["target_chunk"], "source_type": "deck"})
+    points = _blend([ielts, groups["scene"], groups["snippet"], _targets(deck_points, 4)], 4)
     question = speaking_attempts[0].get("question", "") if speaking_attempts else ""
     return generate(question or "Which expression comes back to you first?", points,
                     mode, partner, daily=today, context={"practiced": practiced,

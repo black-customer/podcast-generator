@@ -27,6 +27,7 @@ INCLUDE_DATA = [
     "data/voices.json",
     "data/settings.example.json",
     "data/question_bank_public.json",
+    "data/spoken_decks/*.json",
 ]
 
 EXCLUDE_PARTS = {
@@ -72,10 +73,10 @@ def main() -> int:
                 zf.write(f, rel)
                 count += 1
         for name in INCLUDE_FILES + INCLUDE_DATA:
-            f = BASE / name
-            if f.exists():
-                zf.write(f, name)
-                count += 1
+            for f in sorted(BASE.glob(name)):
+                if f.is_file():
+                    zf.write(f, f.relative_to(BASE))
+                    count += 1
 
     # 以读者视角审计 ZIP，Windows 写入期间的 ZipInfo 可能还保留反斜杠。
     with zipfile.ZipFile(OUT) as zf:

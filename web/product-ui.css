@@ -431,6 +431,58 @@ body.reading-notes-theme .arcade-workspace { margin:0 auto; max-width:1100px; pa
 .arcade-home-head h1 { margin:0; }
 .arcade-home-head nav { display:flex; gap:8px; flex-wrap:wrap; }
 .arcade-home-head p, .arcade-muted { margin:6px 0 0; color:var(--ink-soft); }
+.deck-shelf { --deck-learning:color-mix(in srgb,var(--accent) 55%,var(--paper-raised)); }
+.deck-shelf .arcade-home-head { align-items:center; }
+.deck-shelf .arcade-home-head p { max-width:56ch; }
+.deck-category {
+  display:grid; grid-template-columns:minmax(9rem,.24fr) minmax(0,1fr); gap:24px;
+  padding:16px 0; border-top:1px solid var(--rule);
+}
+.deck-category h2 { margin:5px 0 0; font-size:1rem; }
+.deck-book {
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(13rem,.72fr);
+  gap:16px 24px; padding:20px; background:var(--paper-raised);
+  border:1px solid var(--rule); border-radius:12px;
+}
+.deck-book + .deck-book { margin-top:12px; }
+.deck-book h3 { margin:0; font-size:1.25rem; overflow-wrap:anywhere; }
+.deck-book p { margin:6px 0 0; }
+.deck-level, .deck-units li p { color:var(--ink-soft); font-size:.875rem; }
+.deck-progress { min-width:0; padding-top:5px; }
+.deck-progress-track { display:flex; border-radius:8px; height:7px; overflow:hidden; }
+.deck-mastered { background:var(--accent); }
+.deck-learning { background:var(--deck-learning); }
+.deck-unseen { background:var(--rule); }
+.deck-progress p { display:flex; flex-wrap:wrap; column-gap:12px; font-size:.875rem; color:var(--ink-soft); }
+.deck-progress b { color:var(--ink); font-variant-numeric:tabular-nums; }
+.deck-book-actions .arcade-controls { margin:12px 0 0; }
+.deck-units { grid-column:1 / -1; padding-top:12px; border-top:1px solid var(--rule); }
+.deck-units summary { color:var(--accent); cursor:pointer; width:fit-content; padding:5px 0; }
+.deck-units ul { display:grid; list-style:none; padding:0; margin:8px 0 0; }
+.deck-units li {
+  display:grid; align-items:center; grid-template-columns:minmax(0,1fr) minmax(10rem,.6fr) auto;
+  gap:12px; padding:10px 0; border-top:1px solid var(--rule);
+}
+.deck-units small { margin-inline-start:8px; color:var(--accent); }
+.arcade-ramp { padding:3px 0 12px; }
+.arcade-ramp .study-button[aria-pressed=true] {
+  color:var(--accent); background:var(--blue-soft); border-color:var(--accent);
+}
+.arcade-warmup-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.arcade-warmup-head h2 { margin:0; font-size:1rem; }
+.arcade-warmup [data-warmup-time] { color:var(--accent); font-weight:650; font-variant-numeric:tabular-nums; }
+.arcade-warmup .warmup-example { min-height:1.8em; font-size:1.25rem; margin:10px 0; }
+.arcade-warmup .arcade-controls { justify-content:flex-start; align-items:center; }
+.arcade-warmup label { display:flex; gap:8px; align-items:center; color:var(--ink-soft); font-size:.875rem; }
+@media (max-width:1000px) {
+  .deck-category { display:block; }
+  .deck-category h2 { margin:0 0 10px; }
+}
+@media (max-width:600px) {
+  .deck-book, .deck-units li { grid-template-columns:minmax(0,1fr); }
+  .deck-book { padding:16px; }
+  .deck-units li .study-button { justify-self:start; }
+}
 .arcade-board, .arcade-frame {
   border:1px solid var(--rule); border-radius:14px; padding:26px 30px; background:var(--paper-raised);
 }

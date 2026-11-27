@@ -44,3 +44,19 @@ def test_accidental_webm_recording_is_rejected(tmp_path, monkeypatch):
     monkeypatch.setattr(package, "INCLUDE_DATA", [])
     assert package.main() == 1
     assert not out.exists()
+
+
+def test_portable_contains_public_decks_and_rejects_private_audio(tmp_path, monkeypatch, built_zip):
+    with zipfile.ZipFile(built_zip) as archive:
+        books = [name for name in archive.namelist() if name.startswith("data/spoken_decks/")]
+        assert len(books) == 3 and all(name.endswith(".json") for name in books)
+        assert all("study_private" not in name for name in archive.namelist())
+    audio = tmp_path / "data/study_private/deck_audio/book/card.mp3"
+    audio.parent.mkdir(parents=True)
+    audio.write_bytes(b"private")
+    monkeypatch.setattr(package, "BASE", tmp_path)
+    monkeypatch.setattr(package, "INCLUDE_DIRS", [])
+    monkeypatch.setattr(package, "INCLUDE_FILES", [])
+    monkeypatch.setattr(package, "INCLUDE_DATA", ["data/study_private/deck_audio/*/*.mp3"])
+    assert package.main() == 1
+    assert not built_zip.exists()

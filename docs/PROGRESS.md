@@ -1061,3 +1061,24 @@ HTML/product-ui.css/training.js通过HTTP读取后哈希与源码一致；不读
 - 目视核对 1600px 精听卡片两侧各 128px、780px 参考区仅保留顶部 1px 分隔线、
   860px 题库输入宽 754px。截图见 `tmp/core-optimizations-closeout/`。
   合成音频在中文路径下导出为 AAC M4B，`ffprobe` 验证保留中文章节名。
+
+## 2026-11-28 Windows 桌面 5.0 · Phase 1
+
+- 公开词书首批 220 张原创卡，分为自然对话、日常社交与雅思口语，共 11 个 20 卡单元。
+  选材参照 [PHRASE List](https://doi.org/10.1093/applin/ams010)、
+  [Spoken BNC2014](https://cass.lancs.ac.uk/cass-projects/spoken-bnc2014/)、
+  [CEFR 2020 口语互动](https://www.coe.int/en/web/common-european-framework-reference-languages/cefr-descriptors)
+  和 [IELTS 口语评分](https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail)。
+- 私有升级命令逐批验证并原子保存本机补充提示。106 份真实回答已精编 155 张卡，
+  其余 352 句仍可按原方法逐句练习。个人卡优先依原时间轴播放句子，缺少可靠句位时
+  播放原回答音频。
+  写入前后 741 个源文件 SHA-256 一致，包括 213 个 MP3，计入原轨和旧镜像。
+- 书架进度由跨日提取与异境口答事实计算。新卡总量默认每日 5 张。今日练习支持 3 张或
+  8 张，热身支持 0.85×、1.0×、1.2×、暂停和自动切句。热身和已揭晓的迁移口答均不会
+  改动 FSRS 的复习间隔。已练词书可进入今日教学电台。
+- Puck 公开示范实测 2.58 秒，Bella 迁移示范 2.68 秒，均通过本机合成与母带检查。
+  播放端点响应 Range 206。Playwright 实测热身自动换句，桌面和 390px 窄窗截图
+  位于 `tmp/desktop-5-verification/`。
+- 隔离 dry-run 的 `bash scripts/check.sh --release` 通过。Ruff、360 项单元/API、
+  导入与启动冒烟、100 项 Playwright 与便携包隐私审计全绿，单元测试跳过 1 项。
+  Bruce 的桌面试用、选词与音频听感仍待验收。
