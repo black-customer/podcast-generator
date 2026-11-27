@@ -72,6 +72,7 @@ const AnswerExperience = (() => {
       revision: 0, dirty: false, blocked: true, chain: Promise.resolve()};
     current = ctx;
     input.disabled = true;
+    input.addEventListener("input", () => change(ctx));
     await pendingLeave;
     if (ctx !== current || !input.isConnected) return;
     try {
@@ -106,7 +107,6 @@ const AnswerExperience = (() => {
     } finally {
       if (ctx === current && input.isConnected) {
         input.disabled = false;
-        input.addEventListener("input", () => change(ctx));
         document.querySelectorAll("[name='bank-gen-mode']").forEach(el => el.addEventListener("change", () => change(ctx)));
         document.getElementById("draft-retry").onclick = () => ctx.blocked ? recover(ctx) : flush(ctx);
         document.getElementById("draft-discard").onclick = async () => {

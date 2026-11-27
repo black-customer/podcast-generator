@@ -13,6 +13,7 @@ import re
 import sqlite3
 import sys
 from datetime import datetime
+from functools import lru_cache
 from pathlib import Path
 
 from .config import atomic_write_text
@@ -232,6 +233,21 @@ def merge_extra(data: dict, extra_path: Path | None = None) -> dict:
     return {"topics": topics, "questions": questions, "sets": sets}
 
 
+class _BankSnapshot(dict):
+    def __init__(self, data: dict):
+        super().__init__(data)
+        self.by_id = {name: {row["id"]: row for row in self.get(name, [])}
+                      for name in ("topics", "books", "questions")}
+        self.parts: dict[str, int] = {}
+        for row in self.get("questions", []):
+            self.parts.setdefault((row.get("text") or "").strip(), row.get("part"))
+
+
+@lru_cache(maxsize=4)
+def _read_bank(path: Path, modified: int, size: int) -> _BankSnapshot:
+    return _BankSnapshot(json.loads(path.read_text(encoding="utf-8")))
+
+
 def load_bank(path: Path | str | None = None) -> dict:
     """读题库快照；完整快照缺失时回落到仓库自带的公开子集（路人开箱即用）。"""
     p = Path(path) if path else BANK_PATH
@@ -239,7 +255,16 @@ def load_bank(path: Path | str | None = None) -> dict:
         p = PUBLIC_BANK_PATH
     if not p.exists():
         raise FileNotFoundError("题库快照不存在：先运行 python -m server.bank --sync")
-    return json.loads(p.read_text(encoding="utf-8"))
+    stat = p.stat()
+    return _read_bank(p, stat.st_mtime_ns, stat.st_size)
+
+
+def question_part(text: str) -> int | None:
+    snapshot = load_bank()
+    if isinstance(snapshot, _BankSnapshot):
+        return snapshot.parts.get(text.strip())
+    return next((row.get("part") for row in snapshot.get("questions", [])
+                 if (row.get("text") or "").strip() == text.strip()), None)
 
 
 def norm_title(text: str) -> str:
@@ -312,20 +337,28 @@ def set_index(snapshot: dict) -> dict[str, list[dict]]:
     sets = snapshot.get("sets", [])
     idx: dict[str, list[dict]] = {}
     for s in sets:
-        s["short"] = f"{s['start_month']}–{s['end_month']}月"
+        s = {**s, "short": short_set_label(s)}
         for qid in s.get("question_ids", []):
             idx.setdefault(qid, []).append(s)
     return idx
 
 
+def short_set_label(row: dict) -> str:
+    return f"{row['start_month']}–{row['end_month']}月"
+
+
+def _by_id(snapshot: dict, name: str, key: str | None) -> dict | None:
+    if isinstance(snapshot, _BankSnapshot):
+        return snapshot.by_id[name].get(key)
+    return next((row for row in snapshot.get(name, []) if row["id"] == key), None)
+
+
 def _topic_label(snapshot: dict, question: dict) -> tuple[str, str]:
     """题目的话题中文名/英文名；无 topic_id 时回落到所属题册名。"""
-    for t in snapshot.get("topics", []):
-        if t["id"] == question.get("topic_id"):
-            return t["name_zh"], t.get("name_en") or ""
-    for b in snapshot.get("books", []):
-        if b["id"] == question.get("book_id"):
-            return b["title_zh"], b.get("title_en") or ""
+    if topic := _by_id(snapshot, "topics", question.get("topic_id")):
+        return topic["name_zh"], topic.get("name_en") or ""
+    if book := _by_id(snapshot, "books", question.get("book_id")):
+        return book["title_zh"], book.get("title_en") or ""
     return "未分类", ""
 
 
@@ -409,7 +442,7 @@ def query_questions(
         import random as _random
 
         candidates = [row for row in rows if row["id"] != exclude_id]
-        if answer_status is None:
+        if answer_status in (None, "all"):
             candidates = [row for row in candidates if not row["answered"]] or candidates
         if not candidates:
             return {"items": [], "total": 0, "page": 1, "pageCount": 0, "page_size": 1}
@@ -434,6 +467,8 @@ def bank_topics(snapshot: dict, part: int | None = None) -> list[dict]:
     """话题筛选器数据：每话题在当前 part 过滤下的题数。"""
     counts: dict[str, int] = {}
     for row in snapshot.get("questions", []):
+        if "原问句缺失" in (row.get("text") or ""):
+            continue
         if part is not None and row["part"] != part:
             continue
         if row["topic_id"]:
@@ -456,10 +491,7 @@ def bank_topics(snapshot: dict, part: int | None = None) -> list[dict]:
 
 
 def find_question(snapshot: dict, question_id: str) -> dict | None:
-    for row in snapshot.get("questions", []):
-        if row["id"] == question_id:
-            return row
-    return None
+    return _by_id(snapshot, "questions", question_id)
 
 
 def answer_fields(answer: str) -> dict:
@@ -473,12 +505,10 @@ def answer_fields(answer: str) -> dict:
 
 def answer_topic_name(snapshot: dict, question: dict) -> str:
     """作答入库的目标话题名：题库话题英文名（缺省回落题册英文名）。"""
-    for t in snapshot.get("topics", []):
-        if t["id"] == question.get("topic_id"):
-            return t.get("name_en") or t["name_zh"]
-    for b in snapshot.get("books", []):
-        if b["id"] == question.get("book_id"):
-            return b.get("title_en") or b["title_zh"]
+    if topic := _by_id(snapshot, "topics", question.get("topic_id")):
+        return topic.get("name_en") or topic["name_zh"]
+    if book := _by_id(snapshot, "books", question.get("book_id")):
+        return book.get("title_en") or book["title_zh"]
     return "Bank imports"
 
 

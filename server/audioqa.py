@@ -10,6 +10,7 @@
 决策 decide(report)：pass / retry（高严重度，触发去标签重试一次）/ keep_warn。
 """
 import json
+import math
 import re
 import subprocess
 from datetime import datetime
@@ -49,7 +50,7 @@ def estimate_seconds(text: str) -> float:
 # ---------------------------------------------------------------- 各项检查
 
 def check_duration_ratio(source_text: str, actual_sec: float) -> dict:
-    expected = estimate_seconds(source_text)
+    expected = estimate_seconds(strip_all_tags(source_text)[0])
     ratio = actual_sec / expected if expected > 0 else 0.0
     return {
         "kind": "duration_ratio",
@@ -65,7 +66,7 @@ def check_silence_islands(audio_path: Path, min_island: float = SILENCE_MIN_ISLA
     r = subprocess.run(
         ["ffmpeg", "-i", str(audio_path), "-af",
          f"silencedetect=noise={SILENCE_NOISE_DB}dB:d={min_island}", "-f", "null", "-"],
-        capture_output=True, text=True, timeout=120,
+        capture_output=True, encoding="utf-8", errors="replace", timeout=120,
     )
     islands = []
     starts = []
@@ -97,13 +98,15 @@ def check_silence_islands(audio_path: Path, min_island: float = SILENCE_MIN_ISLA
 def check_clipping(audio_path: Path) -> dict:
     r = subprocess.run(
         ["ffmpeg", "-i", str(audio_path), "-af", "astats=metadata=1:reset=0", "-f", "null", "-"],
-        capture_output=True, text=True, timeout=120,
+        capture_output=True, encoding="utf-8", errors="replace", timeout=120,
     )
     peak = None
     for line in (r.stderr or "").splitlines():
         if "Peak level dB" in line:
             try:
-                peak = float(line.split(":")[-1].strip())
+                value = float(line.split(":")[-1].strip())
+                if math.isfinite(value):
+                    peak = value
             except ValueError:
                 continue
     ok = peak is None or peak < -0.1

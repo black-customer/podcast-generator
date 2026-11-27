@@ -106,8 +106,8 @@ def distill_capture_api(capture_id: str, *, cancel: threading.Event | None = Non
             response = rewrite._chat(settings, messages, cancel, multimodal=bool(names))
             try:
                 result = rewrite._extract_json(response)
-                rows = captures.prepare_cards(capture_id, result.get("cards"))
-                break
+                if not result.get("error"):
+                    rows = captures.prepare_cards(capture_id, result.get("cards"))
             except (ValueError, rewrite.RewriteError) as exc:
                 if attempt:
                     raise ValueError("提炼结果未通过校验，可以重试或交给 Agent") from exc
@@ -115,12 +115,18 @@ def distill_capture_api(capture_id: str, *, cancel: threading.Event | None = Non
                     {"role": "assistant", "content": response[:12000]},
                     {"role": "user", "content": f"修复校验问题并重新返回完整 JSON：{exc}"},
                 ])
+            else:
+                if result.get("error"):
+                    raise ValueError(str(result["error"])[:300])
+                break
         if cancel and cancel.is_set():
             raise rewrite.RewriteError("已取消")
         return captures.save_cards(capture_id, rows, "api")
     except (OSError, ValueError, rewrite.RewriteError) as exc:
         try:
-            captures.set_extract_state(capture_id, "failed", "api", str(exc))
+            cancelled = cancel is not None and cancel.is_set()
+            captures.set_extract_state(capture_id, "pending" if cancelled else "failed",
+                                       "api", "" if cancelled else str(exc))
         except FileNotFoundError:
             pass
         raise

@@ -10,7 +10,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from . import alignment, audio, audioqa, library, mastering, speech_bridge, timeline
-from .config import TMP_DIR, is_dry_run, load_settings
+from .config import TMP_DIR, atomic_replace, is_dry_run, load_settings
 
 logger = logging.getLogger(__name__)
 Progress = Callable[[int, int, str, str], None]
@@ -159,6 +159,8 @@ def language_segments(text: str) -> list[dict]:
             start = i
         if current:
             language = current
+    if not language and any(char.isdigit() for char in text):
+        language = "en"
     if language:
         parts.append({"lang": language, "text": text[start:].strip()})
     return parts
@@ -181,17 +183,23 @@ def render_dialogue(lines: list[tuple[str, str]], out_path: Path, settings: dict
             for index, row in enumerate(language_segments(clean_text(text))):
                 zh = row["lang"] == "zh"
                 clip = work / f"{len(clips):03d}.wav"
-                speech_bridge.request(
-                    settings, "preview_line", text=row["text"], output=clip,
-                    voice=(mandarin if zh else voices)[speaker], lang="cmn" if zh else "en-us",
-                )
                 mp3 = clip.with_suffix(".mp3")
-                audio._run(["ffmpeg", "-y", "-i", str(clip), "-af", f"atempo={speed}",
-                            "-ar", "44100", "-ac", "1", "-b:a", "128k", str(mp3)])
+                try:
+                    speech_bridge.request(
+                        settings, "preview_line", text=row["text"], output=clip,
+                        voice=(mandarin if zh else voices)[speaker], lang="cmn" if zh else "en-us",
+                    )
+                    audio._run(["ffmpeg", "-y", "-i", str(clip), "-af", f"atempo={speed}",
+                                "-ar", "44100", "-ac", "1", "-b:a", "128k", str(mp3)])
+                except (speech_bridge.SpeechError, audio.FFmpegError) as exc:
+                    raise TTSError(str(exc)) from exc
                 clips.append({"path": mp3, "gap_before": 0.06 if index else 0.24 if clips else 0})
         if not clips:
             raise TTSError("没有可合成的练习台词")
-        audio.concat_mp3(clips, out_path)
+        try:
+            audio.concat_mp3(clips, out_path)
+        except audio.FFmpegError as exc:
+            raise TTSError(str(exc)) from exc
 
 
 def _synthesize_source(
@@ -260,14 +268,14 @@ def _synthesize_source(
                         on_progress(len(segments), total, sentence, data.get("voice") or voice)
         if not segments:
             raise TTSError("没有可合成的本地语音文本")
-        audio.concat_mp3([{"path": combined}], out_path)
-        duration = audio.probe_duration(out_path)
+        try:
+            duration = mastering.apply_mastering(combined, out_path, is_dialogue=bool(dialogue))
+        except audio.FFmpegError:
+            logger.warning("本地语音母带处理失败，回退到基础音频", exc_info=True)
+            audio.concat_mp3([{"path": combined}], out_path)
+            duration = audio.probe_duration(out_path)
         if duration <= 0:
             raise TTSError("本地合成音频时长为 0")
-        try:
-            duration = mastering.apply_mastering(out_path, out_path, is_dialogue=bool(dialogue))
-        except audio.FFmpegError:
-            logger.warning("本地语音母带处理失败，保留基础音频", exc_info=True)
     return duration, len(segments), bool(dialogue), "kokoro_local", segments, words
 
 
@@ -296,7 +304,7 @@ def _synthesize_with_qa(
             src, staged, settings, force_monologue, cancel=cancel, **options,
         )
         align_words = result[5] or []
-        report = audioqa.run_qa(staged, src, duration_sec=None, skip_vad=dry)
+        report = audioqa.run_qa(staged, src, duration_sec=result[0], skip_vad=dry)
         if report["verdict"] == "retry":
             cleaned, removed = audioqa.strip_all_tags(src)
             if not removed or not cleaned.strip() or cleaned == src:
@@ -308,14 +316,14 @@ def _synthesize_with_qa(
             effective_src = cleaned
             align_words = result[5] or []
             report = audioqa.run_qa(
-                retry_path, cleaned, duration_sec=None, skip_vad=dry
+                retry_path, cleaned, duration_sec=result[0], skip_vad=dry
             )
             if report["verdict"] == "retry":
                 raise TTSError("去标签重试后音频 QA 仍未通过")
             chosen = retry_path
         if cancel and cancel.is_set():
             raise TTSCancelled("已取消")
-        chosen.replace(out_path)
+        atomic_replace(chosen, out_path)
         return result, report, effective_src, align_words
     finally:
         staged.unlink(missing_ok=True)
@@ -365,116 +373,71 @@ def generate_item_audio(
     cancel: threading.Event | None = None,
     on_progress: Progress | None = None,
 ) -> dict:
-    """为单个条目生成音频。
-    track: 'monologue' | 'podcast' | 'all' | 'default'
-    """
+    """先在临时目录生成及验收，再将音频与时间轴发布到现有条目。"""
     if track not in VALID_TRACKS:
         raise TTSError(f"未知轨道: {track}（可选 {VALID_TRACKS}）")
     settings = load_settings()
     dry = is_dry_run(settings)
-    full = library.get_item_full(topic_id, item_id)
     ipath = library.item_path(topic_id, item_id)
-
-    meta_updates = {
-        "status": "generated",
-        "error": "",
-        "stale": False,
-        "generated_at": library.now_iso(),
-        "dry_run": dry,
-    }
-
-    results = {}
-    options = {"on_progress": on_progress} if on_progress else {}
-
-    if track in ("all", "monologue"):
-        src_mono, field_mono = library.get_track_source_text(full, "monologue")
-        if src_mono:
-            out_mono = ipath / "audio_monologue.mp3"
-            res = _synthesize_with_qa(
-                src_mono, out_mono, settings, force_monologue=True, cancel=cancel, **options
-            )
-            (dur, segs, is_diag, mode, seg_spans, seg_words), qa_report, eff_src, align_words = res
-            meta_updates["duration_sec_monologue"] = round(dur, 2)
-            meta_updates["qa_monologue"] = qa_report["verdict"]
-            audioqa.save_qa_report(qa_report, ipath / "qa_monologue.json")
-            results["monologue"] = {
-                "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
-                "qa": qa_report["verdict"],
-            }
-            align_mode = "sse" if mode == "kokoro_local" and seg_words else "measured"
-            _save_track_outputs(ipath, "monologue", eff_src, out_mono, dur, seg_spans, seg_words,
-                                mode=align_mode)
-            # 如果没有主 audio.mp3，拷贝一份（连 alignment 一起）
-            if not (ipath / "audio.mp3").exists():
-                shutil.copy2(out_mono, ipath / "audio.mp3")
-                meta_updates["duration_sec"] = round(dur, 2)
-                shutil.copy2(ipath / "alignment_monologue.json", ipath / "alignment_podcast.json")
-                shutil.copy2(ipath / "timeline_monologue.json", ipath / "timeline_podcast.json")
-        elif track == "monologue":
-            raise TTSError("没有可合成的独白文本（需 monologue_script 或 monologue_text）")
-
-    if track in ("all", "podcast"):
-        src_pod, field_pod = library.get_track_source_text(full, "podcast")
-        if src_pod:
-            out_pod = ipath / "audio_podcast.mp3"
-            res = _synthesize_with_qa(
-                src_pod, out_pod, settings, force_monologue=False, cancel=cancel, **options
-            )
-            (dur, segs, is_diag, mode, seg_spans, seg_words), qa_report, eff_src, align_words = res
-            meta_updates["duration_sec_podcast"] = round(dur, 2)
-            meta_updates["qa_podcast"] = qa_report["verdict"]
-            audioqa.save_qa_report(qa_report, ipath / "qa_podcast.json")
-            results["podcast"] = {
-                "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
-                "qa": qa_report["verdict"],
-            }
-            word_timed = mode == "kokoro_local" and seg_words
-            pod_mode = "sse" if word_timed else "measured"
-            _save_track_outputs(
-                ipath, "podcast", eff_src, out_pod, dur, seg_spans, seg_words, mode=pod_mode
-            )
-            if not (ipath / "audio.mp3").exists() and "monologue" not in results:
-                shutil.copy2(out_pod, ipath / "audio.mp3")
-                meta_updates["duration_sec"] = round(dur, 2)
-        elif track == "podcast":
-            raise TTSError("没有可合成的播客文本（需 podcast_script 或 podcast_text）")
-
-    if track == "default" or (not results and track == "all"):
-        src_def, field_def = library.get_track_source_text(full, "default")
-        if not src_def:
-            library.update_item_meta(topic_id, item_id, error="没有可合成的文本")
-            raise TTSError("没有可合成的文本")
-        out_def = ipath / "audio.mp3"
-        res = _synthesize_with_qa(src_def, out_def, settings, cancel=cancel, **options)
-        (dur, segs, is_diag, mode, seg_spans, seg_words), qa_report, eff_src, align_words = res
-        meta_updates["duration_sec"] = round(dur, 2)
-        meta_updates["tts_source"] = field_def
-        meta_updates["dialogue"] = is_diag
-        meta_updates["tts_mode"] = mode
-        meta_updates["qa_default"] = qa_report["verdict"]
-        audioqa.save_qa_report(qa_report, ipath / "qa_default.json")
-        results["default"] = {
-            "duration_sec": round(dur, 2), "segments": segs, "mode": mode,
-            "qa": qa_report["verdict"],
-        }
-        track_key = "podcast" if is_diag else "monologue"
-        def_mode = "sse" if mode in {"dialogue_single_pass", "kokoro_local"} and align_words else (
-            "measured"
-        )
-        _save_track_outputs(
-            ipath, track_key, eff_src, out_def, dur, seg_spans, align_words, mode=def_mode
-        )
-
-    # 编辑与生成可并行：在同一数据锁内比对源稿并落元数据，避免旧稿音频清除 stale 标记。
     with library.LIB_LOCK:
-        current_texts = library.read_item_texts(ipath)
-        if any(current_texts[field] != full[field] for field in library.STALE_TEXT_FIELDS):
-            meta_updates["stale"] = True
-        meta_updates["generated_at"] = library.now_iso()
-        library.update_item_meta(topic_id, item_id, **meta_updates)
-    return {
-        "ok": True,
-        "track": track,
-        "results": results,
-        "dry_run": dry,
-    }
+        full = library.get_item_full(topic_id, item_id, include_study_status=False)
+        created_at = library.load_meta(ipath).get("created_at")
+
+    selected = ("monologue", "podcast") if track == "all" else (track,)
+    sources = [(key, *library.get_track_source_text(full, key)) for key in selected]
+    if track == "all":
+        sources = [row for row in sources if row[1]]
+        if not sources:
+            sources = [("default", *library.get_track_source_text(full, "default"))]
+    if not sources[0][1]:
+        raise TTSError(f"{track} 没有可合成的文本")
+
+    updates = {"error": "", "stale": False, "dry_run": dry}
+    results = {}
+    TMP_DIR.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(prefix="item-audio-", dir=TMP_DIR) as directory:
+        work = Path(directory)
+        for key, src, field in sources:
+            target = work / ("audio.mp3" if key == "default" else f"audio_{key}.mp3")
+            result, report, effective, words = _synthesize_with_qa(
+                src, target, settings, force_monologue=key == "monologue",
+                cancel=cancel, **({"on_progress": on_progress} if on_progress else {}),
+            )
+            duration, segments, dialogue, mode, spans, _ = result
+            duration_key = "duration_sec" if key == "default" else f"duration_sec_{key}"
+            updates.update({duration_key: round(duration, 2), f"qa_{key}": report["verdict"]})
+            results[key] = {"duration_sec": round(duration, 2), "segments": segments,
+                            "mode": mode, "qa": report["verdict"]}
+            audioqa.save_qa_report(report, work / f"qa_{key}.json")
+            alignment_track = key
+            if key == "default":
+                updates.update(tts_source=field, dialogue=dialogue, tts_mode=mode)
+                alignment_track = "podcast" if dialogue else "monologue"
+            _save_track_outputs(
+                work, alignment_track, effective, target, duration, spans, words,
+                mode="sse" if words and mode in {"kokoro_local", "dialogue_single_pass"}
+                else "measured",
+            )
+
+        with library.LIB_LOCK:
+            if cancel and cancel.is_set():
+                raise TTSCancelled("已取消")
+            if not ipath.is_dir() or library.load_meta(ipath).get("created_at") != created_at:
+                raise FileNotFoundError("生成期间条目已删除")
+            # 播客是主轨。仅有独白时，用最新独白更新旧版主音频。
+            primary = ("podcast" if "podcast" in results else
+                       "monologue" if "monologue" in results
+                       and not library.resolve_audio_file(ipath, "podcast") else None)
+            if primary:
+                shutil.copy2(work / f"audio_{primary}.mp3", work / "audio.mp3")
+                primary_field = next(field for key, _, field in sources if key == primary)
+                updates.update(duration_sec=results[primary]["duration_sec"],
+                               dialogue=primary == "podcast", tts_source=primary_field,
+                               tts_mode=results[primary]["mode"])
+            current_texts = library.read_item_texts(ipath)
+            updates["stale"] = any(current_texts[key] != full[key]
+                                   for key in library.STALE_TEXT_FIELDS)
+            for artifact in work.iterdir():
+                atomic_replace(artifact, ipath / artifact.name)
+            library.update_item_meta(topic_id, item_id, generated_at=library.now_iso(), **updates)
+    return {"ok": True, "track": track, "results": results, "dry_run": dry}

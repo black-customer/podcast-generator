@@ -16,7 +16,7 @@ from urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
 from uuid import uuid4
 
 from . import alignment, library, speech_worker, tts
-from .config import DATA_DIR, atomic_write_text, is_dry_run, load_settings
+from .config import DATA_DIR, atomic_replace, atomic_write_text, is_dry_run, load_settings
 
 CAPTURES_DIR = DATA_DIR / "captures"
 CAPTURES_LOCK = threading.RLock()
@@ -25,7 +25,8 @@ IMAGE_MAX = 10 * 1024 ** 2
 BACKUP_MAX = 150 * 1024 ** 2
 ID = re.compile(r"cap_[0-9a-f]{16}")
 CARD_ID = re.compile(r"card_[0-9a-f]{16}")
-WORD = re.compile(r"[A-Za-z]+(?:['’][A-Za-z]+)?|[0-9]+")
+WORD = re.compile(r"[A-Za-z]+(?:['’][A-Za-z]+)*|[0-9]+")
+_CARD_PARENTS: dict[tuple[Path, str], str] = {}
 CJK = re.compile(r"[\u3400-\u9fff]")
 UNSUPPORTED_DIAGNOSIS = re.compile(
     r"发音|口音|重音|语调|评分|pronunciation|intonation|accent|score", re.I,
@@ -298,6 +299,8 @@ def asset_file(capture_id: str, name: str) -> tuple[Path, str]:
     ):
         raise FileNotFoundError("素材图片不存在")
     path = capture_path(capture_id) / "assets" / name
+    if not path.is_file():
+        raise FileNotFoundError("素材图片不存在")
     mime = next(key for key, pair in IMAGE_TYPES.items() if pair[0] == path.suffix[1:])
     return path, mime
 
@@ -309,27 +312,58 @@ def _rows(path: Path) -> list[dict]:
 def list_cards(status: str | None = None, source_type: str | None = None,
                capture_id: str | None = None, q: str = "") -> list[dict]:
     with CAPTURES_LOCK:
-        parents = [get_capture(capture_id)] if capture_id else [
-            get_capture(meta["id"]) for meta in list_captures(source_type)
-        ]
+        parents = [_json(capture_path(capture_id) / "meta.json")] if capture_id else (
+            list_captures(source_type)
+        )
+        needle = q.casefold()
         result = []
-        for capture in parents:
-            for row in _rows(capture_path(capture["id"])):
+        for meta in parents:
+            if source_type and meta["source_type"] != source_type:
+                continue
+            parent_id = meta["id"]
+            path = capture_path(parent_id)
+            capture = None
+            for row in _rows(path):
+                _CARD_PARENTS[CAPTURES_DIR, row["id"]] = parent_id
                 if status and row["status"] != status:
                     continue
-                if q.casefold() not in " ".join((row["en"], row["zh"],
-                                                  capture["title"])).casefold():
+                if needle not in " ".join((row["en"], row["zh"], meta["title"])).casefold():
                     continue
-                result.append({**row, "capture_id": capture["id"], "capture": capture})
+                if capture is None:
+                    capture = {**meta, "source": _json(path / "source.json")}
+                result.append({**row, "capture_id": parent_id, "capture": capture})
     return result
+
+
+def count_cards(status: str) -> int:
+    with CAPTURES_LOCK:
+        return sum(row["status"] == status for path in CAPTURES_DIR.glob("cap_*/cards.json")
+                   if ID.fullmatch(path.parent.name) for row in _rows(path.parent))
 
 
 def get_card(card_id: str) -> dict:
     if not CARD_ID.fullmatch(card_id):
         raise ValueError("卡片编号无效")
-    for row in list_cards():
-        if row["id"] == card_id:
-            return row
+    key = CAPTURES_DIR, card_id
+    with CAPTURES_LOCK:
+        parent = _CARD_PARENTS.get(key)
+        if parent:
+            try:
+                candidates = _rows(capture_path(parent))
+            except FileNotFoundError:
+                candidates = []
+            for row in candidates:
+                if row["id"] == card_id:
+                    return {**row, "capture_id": parent, "capture": get_capture(parent)}
+            _CARD_PARENTS.pop(key, None)
+        for path in CAPTURES_DIR.glob("cap_*/cards.json"):
+            if not ID.fullmatch(path.parent.name):
+                continue
+            for row in _rows(path.parent):
+                _CARD_PARENTS[CAPTURES_DIR, row["id"]] = path.parent.name
+                if row["id"] == card_id:
+                    return {**row, "capture_id": path.parent.name,
+                            "capture": get_capture(path.parent.name)}
     raise FileNotFoundError("语块卡不存在")
 
 
@@ -366,6 +400,8 @@ def save_cards(capture_id: str, rows: list[dict], mode: str) -> list[dict]:
         seen = {row["id"] for row in existing}
         result = existing + [row for row in rows if row["id"] not in seen]
         _write(path / "cards.json", {"version": 1, "cards": result})
+        for row in result:
+            _CARD_PARENTS[CAPTURES_DIR, row["id"]] = capture_id
         set_extract_state(capture_id, "ready", mode)
         return result
 
@@ -400,16 +436,19 @@ def delete_capture(capture_id: str) -> None:
         path = capture_path(capture_id).resolve()
         if path.parent != CAPTURES_DIR.resolve() or path.name != capture_id:
             raise ValueError("素材目录无效")
+        for row in _rows(path):
+            _CARD_PARENTS.pop((CAPTURES_DIR, row["id"]), None)
         shutil.rmtree(path)
         _update_index()
 
 
-def audio_file(card_id: str) -> Path:
+def audio_file(card_id: str, *, require_real: bool = False) -> Path:
     row = get_card(card_id)
     root = capture_path(row["capture_id"]) / "audio"
     path = root / f"{card_id}.mp3"
     doc = alignment.load_alignment(root / f"{card_id}.alignment.json", row["en"], path)
-    if not doc or doc.get("content_fingerprint") != row["content_fingerprint"]:
+    if (not path.is_file() or not doc or doc.get("content_fingerprint")
+            != row["content_fingerprint"] or (require_real and doc.get("dry_run"))):
         raise FileNotFoundError("示范音频尚未就绪")
     return path
 
@@ -423,14 +462,14 @@ def _synthesize_card_audio(capture_id: str, card_id: str, *, force: bool) -> dic
     row = get_card(card_id)
     if row["capture_id"] != capture_id or row["status"] != "active":
         raise ValueError("请先确认入库")
+    settings = load_settings()
     if not force:
         try:
-            existing = audio_file(card_id)
+            existing = audio_file(card_id, require_real=not is_dry_run(settings))
         except FileNotFoundError:
             pass
         else:
             return {"audio_url": f"/api/cards/{card_id}/audio", "size": existing.stat().st_size}
-    settings = load_settings()
     path = capture_path(capture_id) / "audio"
     path.mkdir(exist_ok=True)
     with TemporaryDirectory(prefix=".synth-", dir=path) as directory:
@@ -448,6 +487,6 @@ def _synthesize_card_audio(capture_id: str, card_id: str, *, force: bool) -> dic
             if (now["status"] != "active"
                     or now["content_fingerprint"] != row["content_fingerprint"]):
                 raise ValueError("合成期间卡片已更新，请重新播放")
-            staged.replace(path / f"{card_id}.mp3")
+            atomic_replace(staged, path / f"{card_id}.mp3")
             alignment.save_alignment(doc, path / f"{card_id}.alignment.json")
     return {"audio_url": f"/api/cards/{card_id}/audio", "dry_run": doc["dry_run"]}

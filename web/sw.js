@@ -1,5 +1,5 @@
-/* Service Worker：静态资源缓存优先，API 网络优先（音频/数据保持新鲜）。 */
-const CACHE = "ielts-pod-assets-v23";
+/* 页面和样式脚本优先读取本机服务，离线时回落到缓存。 */
+const CACHE = "ielts-pod-assets-v24";
 const STATIC_ASSETS = [
   "/",
   "/static/app.js",
@@ -50,13 +50,23 @@ self.addEventListener("fetch", (event) => {
   if (url.pathname.startsWith("/api/")) {
     return;
   }
-  // 静态资源：缓存优先，后台更新
-  const fresh = fetch(event.request).then(response => ({
+  const networkFirst = url.pathname === "/" || /^\/static\/.*\.(?:js|css)$/.test(url.pathname);
+  const fresh = fetch(event.request, networkFirst ? {cache: "no-cache"} : undefined).then(response => ({
     response, copy: response.ok && response.type === "basic" ? response.clone() : null,
   }));
   event.waitUntil(fresh.then(async ({copy}) => {
     if (copy) await (await caches.open(CACHE)).put(event.request, copy);
   }).catch(() => {}));
-  event.respondWith(caches.match(event.request).catch(() => undefined)
-    .then(cached => cached || fresh.then(({response}) => response)));
+  const cached = () => caches.match(event.request).catch(() => undefined);
+  const response = fresh.then(result => result.response);
+  if (networkFirst) {
+    event.respondWith(response.then(async result => result.ok ? result : (await cached()) || result,
+      async error => {
+        const fallback = await cached();
+        if (fallback) return fallback;
+        throw error;
+      }));
+  } else {
+    event.respondWith(cached().then(result => result || response));
+  }
 });

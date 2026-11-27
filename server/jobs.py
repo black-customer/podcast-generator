@@ -147,7 +147,6 @@ def _run_generate(
     job_id: str,
     topic_id: str,
     item_ids: list[str],
-    force: bool,
     track: str = "default",
 ) -> None:
     with JOBS_LOCK:
@@ -165,14 +164,16 @@ def _run_generate(
             job["current"] = item_id
             _persist_locked()
         try:
-            if force:
-                library.update_item_meta(topic_id, item_id, stale=False)
             tts.generate_item_audio(topic_id, item_id, track=track, cancel=cancel_event)
         except tts.TTSCancelled:
             with JOBS_LOCK:
                 _finish(job, "cancelled")
             return
         except Exception as exc:  # 单条失败不阻断批次
+            if cancel_event and cancel_event.is_set():
+                with JOBS_LOCK:
+                    _finish(job, "cancelled")
+                return
             msg = str(exc)
             with JOBS_LOCK:
                 job["errors"].append({"item_id": item_id, "message": msg[:300]})
@@ -259,7 +260,7 @@ def start_generate(
         _prune_finished_locked()
         _persist_locked()
     t = threading.Thread(
-        target=_run_generate, args=(job_id, topic_id, targets, force, track), daemon=True
+        target=_run_generate, args=(job_id, topic_id, targets, track), daemon=True
     )
     t.start()
     return {"job_id": job_id, "total": len(targets)}
@@ -346,6 +347,10 @@ def _run_api_generate(job_id: str, topic_id: str, item_id: str,
             _finish(job, "cancelled")
         return
     except Exception as exc:
+        if cancel_event and cancel_event.is_set():
+            with JOBS_LOCK:
+                _finish(job, "cancelled")
+            return
         msg = str(exc)
         library_update_error(topic_id, item_id, msg)
         with JOBS_LOCK:
@@ -433,8 +438,14 @@ def start_capture_job(kind: str, ids: list[str]) -> dict:
                     captures.synthesize_card_audio(row["capture_id"], identity)
             except Exception as exc:
                 with JOBS_LOCK:
+                    if cancel.is_set():
+                        _finish(job, "cancelled")
+                        return
                     job["errors"].append({"item_id": identity, "message": str(exc)[:300]})
             with JOBS_LOCK:
+                if cancel.is_set():
+                    _finish(job, "cancelled")
+                    return
                 job["done"] += 1
         with JOBS_LOCK:
             state = "cancelled" if cancel.is_set() else "error" if job["errors"] else "done"

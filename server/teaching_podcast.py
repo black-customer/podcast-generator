@@ -1,7 +1,6 @@
 """从已校验逐句材料生成本机双人教学电台。"""
 import hashlib
 import json
-import os
 import re
 import shutil
 import threading
@@ -25,7 +24,7 @@ from . import (
     study_progress,
     tts,
 )
-from .config import DATA_DIR, TMP_DIR, load_settings
+from .config import DATA_DIR, TMP_DIR, atomic_replace, load_settings
 from .speech_worker import matched_chunks
 
 EPISODE_DIR = DATA_DIR / "teaching_podcasts"
@@ -226,7 +225,8 @@ def for_today(mode: str, partner: str, **options) -> dict:
     today = day.isoformat()
     with oral_review._LOCK:
         review = oral_review._load()
-    attempts = [row for row in reversed(review["attempts"]) if row["date"] == today]
+    attempts = [row for row in reversed(review["attempts"])
+                if row["date"] == today and row.get("fsrs_grade") != "suspend"]
     speaking_attempts = [row for row in attempts if row.get("card_kind") != "capture"]
     rows, sources, practiced = [], {}, []
 
@@ -267,7 +267,7 @@ def for_today(mode: str, partner: str, **options) -> dict:
                         2, prioritize_gaps=False)
     ielts = current + previous
     if len(ielts) < 4:
-        ielts.extend(arcade._fresh_ielts(set(review["cards"]), 4 - len(ielts)))
+        ielts.extend(arcade._fresh_ielts(set(review["cards"]), 4 - len(ielts), False))
     recent = (day - timedelta(days=2)).isoformat()
     groups = {"scene": [], "snippet": []}
     for row in captures.list_cards(status="active"):
@@ -332,12 +332,6 @@ def generate(question: str, points: list[dict], mode: str, partner: str,
     settings = load_settings()
     dry = bool(settings.get("dry_run"))
     _check_cancel(cancel)
-    if on_progress:
-        on_progress("script", 0, 0, "正在根据这些表达编排双人播客")
-    script = (_dry_script(question, points, mode, daily) if dry else
-              draft_episode_with_llm({"question": question, **(context or {}), "points": points},
-                                     mode, cancel))
-    _check_cancel(cancel)
     voices = {"A": "af_bella", "B": partner}
     mandarin = {"A": "zf_xiaoxiao", "B": "zm_yunxi"}
     profile_hash = None
@@ -347,6 +341,12 @@ def generate(question: str, points: list[dict], mode: str, partner: str,
         ).get("profile_hash")
         if not profile_hash:
             raise ValueError("尚未配置母语分身")
+    if on_progress:
+        on_progress("script", 0, 0, "正在根据这些表达编排双人播客")
+    script = (_dry_script(question, points, mode, daily) if dry else
+              draft_episode_with_llm({"question": question, **(context or {}), "points": points},
+                                     mode, cancel))
+    _check_cancel(cancel)
     episode_key = [daily, mode, voices, profile_hash, dry, script]
     if capture_id:
         episode_key.append(capture_id)
@@ -408,7 +408,7 @@ def generate(question: str, points: list[dict], mode: str, partner: str,
                     json.dumps(episode, ensure_ascii=False, indent=2), encoding="utf-8",
                 )
                 _check_cancel(cancel)
-                os.replace(partial, EPISODE_DIR / episode_id)
+                atomic_replace(partial, EPISODE_DIR / episode_id)
     return episode
 
 

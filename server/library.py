@@ -145,12 +145,12 @@ def item_summary(d: Path) -> dict:
     now = time.monotonic()
     cached = _SUMMARY_CACHE.get(str(d))
     if cached and now - cached[2] < _SUMMARY_TTL_SEC:
-        return cached[1]
+        return cached[1].copy()
 
     sig = _item_signature(d)
     if cached and cached[0] == sig:
         _SUMMARY_CACHE[str(d)] = (sig, cached[1], now)
-        return cached[1]
+        return cached[1].copy()
 
     meta = load_meta(d)
     texts = read_item_texts(d)
@@ -182,38 +182,44 @@ def item_summary(d: Path) -> dict:
         from . import study
         entry["study_status"] = study.get_material(d.parent.parent.name, d.name)["status"]
     _SUMMARY_CACHE[str(d)] = (sig, entry, now)
-    return entry
+    return entry.copy()
 
 
 def invalidate_item_cache(d: Path) -> None:
     _SUMMARY_CACHE.pop(str(d), None)
 
 
-def list_topics() -> list[dict]:
+def topic_dirs() -> list[Path]:
+    if not TOPICS_DIR.exists():
+        return []
+    return [path for path in sorted(TOPICS_DIR.iterdir(), key=_numeric_order_key)
+            if path.is_dir() and not path.name.startswith(".")]
+
+
+def list_topics(*, include_titles: bool = False) -> list[dict]:
     with LIB_LOCK:
         result = []
-        if not TOPICS_DIR.exists():
-            return result
-        for tpath in sorted(TOPICS_DIR.iterdir(), key=_numeric_order_key):
-            if not tpath.is_dir() or tpath.name.startswith("."):
-                continue
+        for tpath in topic_dirs():
             stats = {"total": 0, "empty": 0, "ready": 0, "generated": 0, "error": 0}
             total_sec = 0.0
+            titles = []
             for d in item_dirs(tpath):
                 stats["total"] += 1
-                meta = load_meta(d)
                 entry = item_summary(d)
                 status = entry["status"]
-                if meta.get("error"):
+                if include_titles:
+                    titles.append(entry["title"])
+                if entry["error"]:
                     stats["error"] += 1
                 stats[status if status in ("empty", "ready", "generated") else "empty"] += 1
-                total_sec += float(meta.get("duration_sec") or 0)
+                total_sec += float(entry["duration_sec"] or 0)
             result.append(
                 {
                     "id": tpath.name,
                     "name": load_topic_name(tpath),
                     "stats": stats,
                     "total_sec": round(total_sec, 1),
+                    **({"titles": titles} if include_titles else {}),
                 }
             )
         return result
@@ -275,9 +281,10 @@ def get_or_create_topic(name: str) -> dict:
     """按名查找（忽略大小写）或新建话题；查找与创建在同一锁内，防并发双击重复建话题。"""
     name = (name or "").strip() or "未命名话题"
     with LIB_LOCK:
-        for t in list_topics():
-            if t["name"].strip().casefold() == name.casefold():
-                return t
+        for folder in topic_dirs():
+            current = load_topic_name(folder)
+            if current.strip().casefold() == name.casefold():
+                return {"id": folder.name, "name": current}
         return create_topic(name)
 
 
@@ -518,6 +525,8 @@ def update_item_texts(topic_id: str, item_id: str, fields: dict) -> dict:
 def update_item_meta(topic_id: str, item_id: str, **updates) -> None:
     with LIB_LOCK:
         d = item_path(topic_id, item_id)
+        if not d.is_dir():
+            raise FileNotFoundError("条目不存在")
         meta = load_meta(d)
         meta.update(updates)
         meta["status"] = compute_status(d)
@@ -539,7 +548,7 @@ def _original_answer_effective(texts: dict) -> str:
     return original_answer_of(texts)
 
 
-def get_item_full(topic_id: str, item_id: str) -> dict:
+def get_item_full(topic_id: str, item_id: str, *, include_study_status: bool = True) -> dict:
     with LIB_LOCK:
         d = item_path(topic_id, item_id)
         if not d.exists():
@@ -574,7 +583,7 @@ def get_item_full(topic_id: str, item_id: str) -> dict:
             # 不改变 original_answer 字段的读写语义
             "original_answer_effective": _original_answer_effective(texts),
         }
-        if result["has_audio_podcast"]:
+        if include_study_status and result["has_audio_podcast"]:
             from . import study
             result["study_status"] = study.get_material(topic_id, item_id)["status"]
         return result

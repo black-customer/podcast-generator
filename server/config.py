@@ -30,6 +30,17 @@ SETTINGS_FILE = DATA_DIR / "settings.json"
 SETTINGS_LOCK = threading.Lock()
 
 
+def atomic_replace(source: Path, target: Path) -> None:
+    for attempt in range(5):
+        try:
+            os.replace(source, target)
+            return
+        except PermissionError:
+            if attempt == 4:
+                raise
+            time.sleep(0.02 * (attempt + 1))
+
+
 def atomic_write_text(path: Path, content: str) -> None:
     """原子写：先写临时文件再 os.replace，进程崩溃不留半截文件。
 
@@ -41,14 +52,7 @@ def atomic_write_text(path: Path, content: str) -> None:
     tmp = path.with_name(f"{path.name}.{uuid4().hex}.tmp~")
     try:
         tmp.write_text(content, encoding="utf-8")
-        for attempt in range(5):
-            try:
-                os.replace(tmp, path)
-                return
-            except PermissionError:
-                if attempt == 4:
-                    raise
-                time.sleep(0.02 * (attempt + 1))
+        atomic_replace(tmp, path)
     finally:
         tmp.unlink(missing_ok=True)
 
@@ -77,6 +81,24 @@ def ensure_dirs() -> None:
         d.mkdir(parents=True, exist_ok=True)
 
 
+def cleanup_voice_previews(folder: Path) -> None:
+    entries = []
+    cutoff = time.time() - 7 * 86400
+    for path in folder.glob("*.wav"):
+        if path.name.startswith("sample-"):
+            continue
+        try:
+            entries.append((path.stat().st_mtime, path))
+        except OSError:
+            continue
+    for index, (modified, path) in enumerate(sorted(entries, reverse=True)):
+        if index >= 64 or modified < cutoff:
+            try:
+                path.unlink(missing_ok=True)
+            except OSError:
+                continue
+
+
 def cleanup_stale_tmp(max_age_hours: float = 24) -> None:
     """清理异常退出遗留的临时工作产物（silence-*.mp3 是缓存，保留）。"""
     if not TMP_DIR.exists():
@@ -84,7 +106,10 @@ def cleanup_stale_tmp(max_age_hours: float = 24) -> None:
     cutoff = time.time() - max_age_hours * 3600
     for p in TMP_DIR.iterdir():
         try:
-            if p.name.startswith("silence-") or p.name == "voice_previews":
+            if p.name == "voice_previews":
+                cleanup_voice_previews(p)
+                continue
+            if p.name.startswith("silence-") or p.name == "speech-numba":
                 continue
             if p.stat().st_mtime > cutoff:
                 continue

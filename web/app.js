@@ -151,6 +151,15 @@ function initGlobalPlayer() {
     $playBtn.classList.toggle("is-playing", !$audio.paused);
   }
 
+  function playNeighbor(offset) {
+    const item = PlayerState.playlist[PlayerState.currentIndex + offset];
+    const topic = PlayerState.currentTopic;
+    if (!item || !topic) return;
+    if (document.body.classList.contains("player-route")) {
+      location.hash = `#/play/${encodeURIComponent(topic.id)}/${encodeURIComponent(item.id)}`;
+    } else playItem(topic.id, item);
+  }
+
   $playBtn.onclick = () => {
     if (!$audio.src) return;
     if ($audio.paused) {
@@ -171,16 +180,8 @@ function initGlobalPlayer() {
     try {
       navigator.mediaSession.setActionHandler("play", () => $audio.play().catch(() => {}));
       navigator.mediaSession.setActionHandler("pause", () => $audio.pause());
-      navigator.mediaSession.setActionHandler("previoustrack", () => {
-        if (PlayerState.playlist.length && PlayerState.currentIndex > 0) {
-          playItem(PlayerState.currentTopic.id, PlayerState.playlist[PlayerState.currentIndex - 1]);
-        }
-      });
-      navigator.mediaSession.setActionHandler("nexttrack", () => {
-        if (PlayerState.playlist.length && PlayerState.currentIndex < PlayerState.playlist.length - 1) {
-          playItem(PlayerState.currentTopic.id, PlayerState.playlist[PlayerState.currentIndex + 1]);
-        }
-      });
+      navigator.mediaSession.setActionHandler("previoustrack", () => playNeighbor(-1));
+      navigator.mediaSession.setActionHandler("nexttrack", () => playNeighbor(1));
       navigator.mediaSession.setActionHandler("seekbackward", () => {
         if ($audio.duration) $audio.currentTime = Math.max(0, $audio.currentTime - 15);
       });
@@ -233,13 +234,15 @@ function initGlobalPlayer() {
   }
 
   // 核心时间轴驱动：进度更新、A-B 循环与卡拉OK歌词高亮居中平滑跟随
+  let activeLine = null, activeWord = null;
   $audio.ontimeupdate = () => {
     if (!$audio.duration) return;
     const cur = $audio.currentTime;
     const pct = (cur / $audio.duration) * 100;
     $progressFill.style.width = `${pct}%`;
-    $curTime.textContent = fmtPad(cur);
-    $totalTime.textContent = fmtPad($audio.duration);
+    const elapsed = fmtPad(cur), total = fmtPad($audio.duration);
+    if ($curTime.textContent !== elapsed) $curTime.textContent = elapsed;
+    if ($totalTime.textContent !== total) $totalTime.textContent = total;
 
     // A-B 循环：到 B 点回跳 A 点
     if (PlayerState.loopA !== null && PlayerState.loopB !== null && PlayerState.loopB > PlayerState.loopA) {
@@ -257,18 +260,18 @@ function initGlobalPlayer() {
         PlayerState.activeWordIndex = -1;
         const line = PlayerState.timeline[idx];
 
-        document.querySelectorAll(".transcript-row.active").forEach(el => {
-          el.classList.remove("active");
-        });
+        activeLine?.classList.remove("active");
+        activeWord?.classList.remove("on");
+        activeWord = null;
 
         const prefix = PlayerState.track === "podcast" ? "pod-line-" : "mono-line-";
-        const activeEl = document.getElementById(`${prefix}${line.id}`);
-        if (activeEl) {
-          activeEl.classList.add("active");
+        activeLine = document.getElementById(`${prefix}${line.id}`);
+        if (activeLine) {
+          activeLine.classList.add("active");
           if (!PlayerState.userIsScrolling) {
             // 标记程序性滚动窗口：scrollIntoView 触发的 onscroll 不是用户翻阅（修 A24）
             PlayerState.programmaticScrollUntil = Date.now() + 900;
-            activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            activeLine.scrollIntoView({ behavior: "smooth", block: "center" });
           }
         }
       }
@@ -281,12 +284,14 @@ function initGlobalPlayer() {
           if (wi !== PlayerState.activeWordIndex) {
             PlayerState.activeWordIndex = wi;
             const prefix = PlayerState.track === "podcast" ? "pod-word-" : "mono-word-";
-            document.querySelectorAll(".karaoke-word.on").forEach(el => el.classList.remove("on"));
-            if (wi !== -1) {
-              const el = document.getElementById(`${prefix}${wi}`);
-              if (el) el.classList.add("on");
-            }
+            activeWord?.classList.remove("on");
+            activeWord = wi < 0 ? null : document.getElementById(`${prefix}${wi}`);
+            activeWord?.classList.add("on");
           }
+        } else if (activeWord) {
+          activeWord.classList.remove("on");
+          activeWord = null;
+          PlayerState.activeWordIndex = -1;
         }
       }
     }
@@ -294,9 +299,7 @@ function initGlobalPlayer() {
 
   $audio.onended = () => {
     ListeningExperience.complete($audio);
-    if (PlayerState.playlist.length && PlayerState.currentIndex < PlayerState.playlist.length - 1) {
-      playItem(PlayerState.currentTopic.id, PlayerState.playlist[PlayerState.currentIndex + 1]);
-    }
+    playNeighbor(1);
   };
 
   $progressTrack.onclick = (e) => {
@@ -306,17 +309,8 @@ function initGlobalPlayer() {
     $audio.currentTime = ratio * $audio.duration;
   };
 
-  $prevBtn.onclick = () => {
-    if (PlayerState.playlist.length && PlayerState.currentIndex > 0) {
-      playItem(PlayerState.currentTopic.id, PlayerState.playlist[PlayerState.currentIndex - 1]);
-    }
-  };
-
-  $nextBtn.onclick = () => {
-    if (PlayerState.playlist.length && PlayerState.currentIndex < PlayerState.playlist.length - 1) {
-      playItem(PlayerState.currentTopic.id, PlayerState.playlist[PlayerState.currentIndex + 1]);
-    }
-  };
+  $prevBtn.onclick = () => playNeighbor(-1);
+  $nextBtn.onclick = () => playNeighbor(1);
 
   // 音量（播放条常驻控制）
   if ($volumeInput) {
@@ -347,6 +341,7 @@ function initGlobalPlayer() {
       const item = PlayerState.currentItem;
       if (!topic || !item) { toast("还没有选中曲目"); return; }
       const track = PlayerState.track;
+      const token = routeToken;
       const label = $remakeBtn.querySelector("span") || $remakeBtn;
       $remakeBtn.disabled = true;
       label.textContent = "正在重制…";
@@ -363,7 +358,7 @@ function initGlobalPlayer() {
         }
         PlayerState.mediaRevision = Date.now();
         toast("重制完成，已载入新音频");
-        route();
+        if (!viewStale(token)) route();
       } catch (e) {
         toast(`重制失败：${e.message}`);
       } finally {
@@ -409,11 +404,11 @@ function initGlobalPlayer() {
     renderLoopUI();
   };
 
-  window.clearLoop = function() {
+  window.clearLoop = function(notify = true) {
     PlayerState.loopA = null;
     PlayerState.loopB = null;
     renderLoopUI();
-    toast("已清除 A-B 循环");
+    if (notify) toast("已清除 A-B 循环");
   };
 
   window.replayCurrentLine = function() {
@@ -465,13 +460,26 @@ function initGlobalPlayer() {
     if (retry) { retryApiGeneration(retry); return; }
     const agent = e.target.closest("[data-agent-topic]");
     if (agent) { switchToAgentMode(agent.dataset.agentTopic, agent.dataset.agentItem); return; }
+    const random = e.target.closest("[data-bank-random]");
+    if (random) { bankRandomGo(random); return; }
+    const copy = e.target.closest("[data-copy-agent]");
+    if (copy) { copyAgentPrompt(copy); return; }
+    const track = e.target.closest("[data-track-link]");
+    if (track && !e.target.closest(".track-actions")) {
+      location.hash = track.dataset.trackLink;
+      return;
+    }
+    const line = e.target.closest(".transcript-row[data-start]");
+    if (line) seekToTime(Number(line.dataset.start));
   });
 
   // ---- 键盘快捷键（聚焦交互元素时放行原生行为）----
   document.addEventListener("keydown", (e) => {
+    if (!document.body.classList.contains("player-route") || e.ctrlKey || e.metaKey ||
+        e.altKey || e.repeat || e.defaultPrevented) return;
     const t = e.target;
-    if (t && (["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"].includes(t.tagName)
-      || t.isContentEditable || (t.closest && t.closest("button, a, [role='button']")))) return;
+    if (t.isContentEditable ||
+        t.closest?.("input,textarea,select,button,a,summary,audio,video,[role='button']")) return;
     if (e.code === "Space") {
       e.preventDefault();
       if ($audio.src) $audio.paused ? $audio.play().catch(() => {}) : $audio.pause();
@@ -510,6 +518,11 @@ function setTrack(newTrack) {
 
 async function playItem(topicId, item, autoPlay = true, token = null) {
   const request = PlayerState.playRequest = (PlayerState.playRequest || 0) + 1;
+  if (PlayerState.pendingSeek) {
+    $audio.removeEventListener("loadedmetadata", PlayerState.pendingSeek);
+    PlayerState.pendingSeek = null;
+  }
+  window.clearLoop(false);
   ListeningExperience.detach($audio);
   const source = {kind: "item", topic_id: topicId, item_id: item.id, track: PlayerState.track};
   const resume = await ListeningExperience.prepare(source);
@@ -581,7 +594,7 @@ async function loadTimeline(topicId, itemId, track) {
     if (request !== PlayerState.timelineRequest) return;
     if (data && Array.isArray(data.lines) && data.lines.length > 0) {
       PlayerState.timeline = data.lines;
-      PlayerState.words = Array.isArray(data.words) ? data.words : [];
+      PlayerState.words = Array.isArray(data.words) ? data.words.sort((a, b) => a.start - b.start) : [];
       PlayerState.timelineMode = data.mode || "estimated";
       renderLiveTimelineUI();
       return;
@@ -604,18 +617,23 @@ function formatBodyText(raw) {
 }
 
 // 句文本渲染：有逐词数据时拆成词 span（供卡拉OK逐词点亮）
-function renderLineText(line, lineIndex) {
+function renderLineText(line) {
   const words = PlayerState.words;
   const prefix = PlayerState.track === "podcast" ? "pod-word-" : "mono-word-";
   if (!words.length) return formatBodyText(line.text);
-  const inLine = words
-    .map((w, i) => ({ ...w, i }))
-    .filter(w => w.start >= line.start - 0.01 && w.end <= line.end + 0.01);
-  if (inLine.length < 2) return formatBodyText(line.text);
-  // 用词表重建句子（词表即模型实际读出的文本）
-  return inLine
-    .map(w => `<span class="karaoke-word" id="${prefix}${w.i}">${esc(w.text)}</span>`)
-    .join(" ");
+  let start = 0, end = words.length;
+  while (start < end) {
+    const middle = Math.floor((start + end) / 2);
+    if (words[middle].start < line.start - 0.01) start = middle + 1;
+    else end = middle;
+  }
+  const spans = [];
+  for (let i = start; i < words.length && words[i].start <= line.end + 0.01; i++) {
+    if (words[i].end <= line.end + 0.01) {
+      spans.push(`<span class="karaoke-word" id="${prefix}${i}">${esc(words[i].text)}</span>`);
+    }
+  }
+  return spans.length < 2 ? formatBodyText(line.text) : spans.join(" ");
 }
 
 // 渲染实时同步歌词流
@@ -644,10 +662,10 @@ function renderLiveTimelineUI() {
 
   const rowsHtml = timeline.map(line => `
     <div class="transcript-row" id="${PlayerState.track === 'podcast' ? 'pod' : 'mono'}-line-${line.id}"
-         data-start="${line.start}" onclick="seekToTime(${line.start})" title="跳播此句">
+         data-start="${esc(line.start)}" title="跳播此句">
       <span class="row-marker" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5 19 12 8 18.5z"/></svg></span>
       <span class="row-time">${fmtPad(line.start)}</span>
-      <span class="row-text">${renderLineText(line, line.id)}</span>
+      <span class="row-text">${renderLineText(line)}</span>
     </div>
   `).join("");
 
@@ -664,12 +682,17 @@ function renderLiveTimelineUI() {
 
 // 点击句子精准跳转（元数据未就绪时排队等待，修 A32）
 window.seekToTime = function(seconds) {
-  if (!$audio.src) return;
-  const apply = () => { $audio.currentTime = seconds; };
-  if (!$audio.duration || isNaN($audio.duration)) {
-    $audio.addEventListener("loadedmetadata", apply, { once: true });
+  if (!$audio.src || !Number.isFinite(seconds)) return;
+  if (PlayerState.pendingSeek) $audio.removeEventListener("loadedmetadata", PlayerState.pendingSeek);
+  if ($audio.readyState < 1) {
+    const apply = PlayerState.pendingSeek = () => {
+      PlayerState.pendingSeek = null;
+      $audio.currentTime = seconds;
+    };
+    $audio.addEventListener("loadedmetadata", apply, {once: true});
   } else {
-    apply();
+    PlayerState.pendingSeek = null;
+    $audio.currentTime = seconds;
   }
   if ($audio.paused) {
     $audio.play().catch(() => {});
@@ -781,8 +804,10 @@ async function TopicDetailView(topicId, token) {
   ExperienceUI.loading("话题与回答");
   let topic, manifestPod = null;
   try {
-    topic = await api("GET", `/api/topics/${encodeURIComponent(topicId)}`);
-    try { manifestPod = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/episode?track=podcast`); } catch (_) {}
+    const endpoint = `/api/topics/${encodeURIComponent(topicId)}`;
+    [topic, manifestPod] = await Promise.all([
+      api("GET", endpoint), api("GET", `${endpoint}/episode?track=podcast`).catch(() => null),
+    ]);
   } catch (e) {
     if (viewStale(token)) return;
     ExperienceUI.readError("加载失败", e);
@@ -796,12 +821,12 @@ async function TopicDetailView(topicId, token) {
   topicRandomCtx = { topicId, items: PlayerState.playlist };
 
   const rowsHtml = topic.items.map((it, idx) => `
-    <div class="track-row" data-id="${esc(it.id)}" onclick="if(!event.target.closest('.track-actions')) location.hash='#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}'">
+    <div class="track-row" data-id="${esc(it.id)}" data-track-link="#/play/${encodeURIComponent(topicId)}/${encodeURIComponent(it.id)}">
       <div class="track-num">${idx + 1}</div>
       <div class="track-title">${esc(publicTitle(it.title))}</div>
       <div class="track-tags">
-        ${it.stale ? '<span class="track-pill" style="color:var(--warn)">待更新</span>' : ""}
-        ${it.error ? '<span class="track-pill" style="color:var(--err)">错误</span>' : ""}
+        ${it.stale ? '<span class="track-pill track-pill-stale">待更新</span>' : ""}
+        ${it.error ? '<span class="track-pill track-pill-error">错误</span>' : ""}
         ${it.has_audio ? '<span class="track-pill ok">可精听</span>' : '<span class="track-pill">待生成</span>'}
         ${it.has_podcast && !(typeof PackState !== "undefined" && PackState.active) ?
           `<span class="track-pill">${studyStatusName(it.study_status)}</span>` : ""}
@@ -857,8 +882,10 @@ async function TrackPlayerView(topicId, itemId, token) {
   ExperienceUI.loading("精听播放器");
   let item, topic;
   try {
-    topic = await api("GET", `/api/topics/${encodeURIComponent(topicId)}`);
-    item = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`);
+    const endpoint = `/api/topics/${encodeURIComponent(topicId)}`;
+    [topic, item] = await Promise.all([
+      api("GET", endpoint), api("GET", `${endpoint}/items/${encodeURIComponent(itemId)}`),
+    ]);
   } catch (e) {
     if (viewStale(token)) return;
     ExperienceUI.readError("加载失败", e);
@@ -1378,8 +1405,11 @@ async function ManageView(token) {
   const pairCode = pairing.querySelector("label[hidden] input");
   const pairStatus = pairing.querySelector("[role=status]");
   const pairCopy = pairing.querySelector("[data-copy-pair]");
+  const pairActions = pairing.querySelectorAll("[data-pair], [data-reset-pair]");
   const showPairing = async reset => {
+    if ([...pairActions].some(action => action.disabled)) return;
     if (reset && !confirm("重置后需要在看剧脚本重新配对。继续？")) return;
+    pairActions.forEach(action => { action.disabled = true; });
     try {
       const response = await api("POST", "/api/settings/scene-sync-token", {reset});
       if (!pairing.isConnected) return;
@@ -1388,6 +1418,7 @@ async function ManageView(token) {
       pairCopy.hidden = false;
       pairStatus.textContent = reset ? "配对码已重置。" : "";
     } catch (error) { pairStatus.textContent = error.message; }
+    finally { pairActions.forEach(action => { action.disabled = false; }); }
   };
   pairing.querySelector("[data-pair]").onclick = () => showPairing(false);
   pairing.querySelector("[data-reset-pair]").onclick = () => showPairing(true);
@@ -1935,7 +1966,9 @@ function bankGo(overrides) {
 
 // 随机来一题（保持当前 part/topic 过滤，随机结果钉在作答卡展示）
 let bankRandomPick = null;
-async function bankRandomGo() {
+async function bankRandomGo(button = document.querySelector("[data-bank-random]")) {
+  if (!button || button.disabled) return;
+  button.disabled = true;
   const token = routeToken;
   const p = bankParams();
   const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&random=1` +
@@ -1947,16 +1980,18 @@ async function bankRandomGo() {
     `&training_status=${p.training_status}`;
   try {
     const res = await api("GET", query);
-    if (!res.items || !res.items.length) { toast("该筛选下没有题目"); return; }
     if (viewStale(token)) return; // 用户已导航离开：不得覆写新视图
+    if (!res.items || !res.items.length) { toast("该筛选下没有题目"); return; }
     bankGo({sel: res.items[0].id, page: res.selected_page || 1});
   } catch (e) {
-    toast(`随机取题失败：${e.message}`);
+    if (!viewStale(token)) toast(`随机取题失败：${e.message}`);
+  } finally {
+    button.disabled = false;
   }
 }
 
 // R03 双模式等待状态：路由切换时必须清理轮询定时器
-const GenWaitState = { pollTimer: null, progress: null };
+const GenWaitState = { pollTimer: null, progress: null, onFocus: null };
 
 function genWaitStop() {
   if (GenWaitState.pollTimer) {
@@ -1965,13 +2000,15 @@ function genWaitStop() {
   }
   GenWaitState.progress?.stop();
   GenWaitState.progress = null;
-  window.onfocus = null;
+  if (GenWaitState.onFocus) window.removeEventListener("focus", GenWaitState.onFocus);
+  GenWaitState.onFocus = null;
 }
 
-async function genWaitCheckItem(topicId, itemId) {
+async function genWaitCheckItem(topicId, itemId, token, card) {
+  if (viewStale(token) || !card.isConnected) return;
   try {
     const item = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}`);
-    if (item.has_audio) {
+    if (item.has_audio && !viewStale(token) && card.isConnected) {
       genWaitStop();
       location.hash = `#/done/${encodeURIComponent(topicId)}/${encodeURIComponent(itemId)}`;
     }
@@ -1981,16 +2018,19 @@ async function genWaitCheckItem(topicId, itemId) {
 function showAgentWait(res, card = document.querySelector(".bank-answer-card")) {
   genWaitStop();
   if (!card) return;
+  const token = routeToken;
   card.innerHTML = `
     <div class="bank-answer-q">条目已创建，把下面的完整指令复制给你的 Agent（Codex / ZCode / WorkBuddy…）</div>
     <pre id="agent-prompt-box" class="agent-prompt-box">${esc(res.agent_prompt)}</pre>
     <div class="bank-answer-actions">
-      <button id="agent-copy-btn" class="bank-submit-btn" onclick="copyAgentPrompt(this)">一键复制给 Agent</button>
+      <button id="agent-copy-btn" class="bank-submit-btn" data-copy-agent>一键复制给 Agent</button>
       <a class="btn-pill" href="#/topic/${encodeURIComponent(res.topic_id)}" style="text-decoration:none;">查看话题</a>
     </div>
     <p class="bank-answer-hint" id="agent-wait-hint">⏳ 等待 Agent 执行完成……检测到音频后自动进入完成页（切回本窗口会立即检查）。</p>`;
-  window.onfocus = () => genWaitCheckItem(res.topic_id, res.item_id);
-  GenWaitState.pollTimer = setInterval(() => genWaitCheckItem(res.topic_id, res.item_id), 2000);
+  const check = () => genWaitCheckItem(res.topic_id, res.item_id, token, card);
+  GenWaitState.onFocus = check;
+  window.addEventListener("focus", check);
+  GenWaitState.pollTimer = setInterval(check, 2000);
 }
 
 window.copyAgentPrompt = async function (btn) {
@@ -2035,7 +2075,7 @@ async function retryApiGeneration(button) {
     }
     if (viewStale(token)) return;
     const result = await api("POST", `/api/topics/${encodeURIComponent(topic)}/items/${encodeURIComponent(item)}/retry-api`);
-    if (!viewStale(token)) {
+    if (!viewStale(token) && show?.isConnected) {
       show.hidden = false;
       showApiJobWait(result, show);
       show.scrollIntoView({block: "nearest"});
@@ -2086,9 +2126,9 @@ function showApiJobWait(res, card = document.querySelector(".bank-answer-card"))
     if (reading) return;
     reading = true;
     try {
-      if (viewStale(waitToken)) { genWaitStop(); return; }
+      if (viewStale(waitToken)) return;
       const job = await api("GET", `/api/jobs/${encodeURIComponent(res.job_id)}`);
-      if (viewStale(waitToken)) { genWaitStop(); return; }
+      if (viewStale(waitToken)) return;
       if (MobileRuntime.native && job.phase === "audio_ready") {
         genWaitStop();location.hash = `#/play/${encodeURIComponent(res.topic_id)}/${encodeURIComponent(res.item_id)}`;return;
       }
@@ -2115,12 +2155,14 @@ function showApiJobWait(res, card = document.querySelector(".bank-answer-card"))
 }
 
 async function switchToAgentMode(topicId, itemId) {
+  const token = routeToken;
   try {
-    const task = await api("GET", `/api/topics/${decodeURIComponent(topicId)}/items/${decodeURIComponent(itemId)}/agent-task`);
+    const task = await api("GET", `/api/topics/${encodeURIComponent(topicId)}/items/${encodeURIComponent(itemId)}/agent-task`);
+    if (viewStale(token)) return;
     showAgentWait(task, document.querySelector("#topic-generation:not([hidden])") ||
       document.querySelector(".bank-answer-card"));
   } catch (e) {
-    toast("获取 Agent 指令失败：" + e.message);
+    if (!viewStale(token)) toast("获取 Agent 指令失败：" + e.message);
   }
 }
 
@@ -2165,18 +2207,27 @@ async function bankSubmitAnswer(questionId) {
   }
 }
 
+let lastBankRead = null;
+
 async function BankView(token) {
   const previousResults = $app.querySelector(".bank-results");
   const previousAnswerId = previousResults?.querySelector("[data-bank-submit]")?.dataset.bankSubmit;
   const previousDraft = previousResults?.querySelector("#bank-answer-input")?.value;
   const previousMode = previousResults?.querySelector("[name='bank-gen-mode']:checked")?.value;
   document.getElementById("bank-read-error")?.remove();
+  $app.querySelector(".filter-loading")?.remove();
+  let loading;
   if (previousResults) {
     previousResults.inert = true; previousResults.setAttribute("aria-busy", "true");
-    previousResults.insertAdjacentHTML("afterbegin", '<p class="filter-loading" role="status">正在读取筛选结果…</p>');
+    loading = document.createElement("p");
+    loading.className = "filter-loading";
+    loading.setAttribute("role", "status");
+    loading.textContent = "正在读取筛选结果…";
+    previousResults.before(loading);
   } else ExperienceUI.loading("题库");
   const p = bankParams();
-  let data;
+  const packMode = PackState.active;
+  let data, st;
   try {
     const query = `/api/bank/questions?part=${encodeURIComponent(p.part)}&page=${p.page}` +
       `&answer_status=${encodeURIComponent(p.answer_status)}` +
@@ -2184,16 +2235,24 @@ async function BankView(token) {
       (p.topic ? `&topic=${encodeURIComponent(p.topic)}` : "") +
       (p.set ? `&set_filter=${encodeURIComponent(p.set)}` : "") +
       (p.q ? `&q=${encodeURIComponent(p.q)}` : "");
-    data = await api("GET", query);
+    const selectedOnly = previousResults && lastBankRead?.query === query &&
+      lastBankRead.selection !== p.sel && lastBankRead.packMode === packMode;
+    [data, st] = await Promise.all([
+      selectedOnly ? lastBankRead.data : api("GET", query),
+      packMode ? null : api("GET", "/api/settings").catch(() => null),
+    ]);
+    if (!viewStale(token)) lastBankRead = {query, selection: p.sel, packMode, data};
   } catch (e) {
     if (viewStale(token)) return;
     if (previousResults?.isConnected) {
+      previousResults.inert = false;
+      previousResults.removeAttribute("aria-busy");
       const output = document.createElement("section"); output.id = "bank-read-error";
       previousResults.before(output);
       ExperienceUI.readError("筛选读取失败", e, () => BankView(token), output);
     } else ExperienceUI.readError("题库加载失败", e);
     return;
-  }
+  } finally { loading?.remove(); }
   if (viewStale(token)) return;
 
   if (!data.available) {
@@ -2223,25 +2282,20 @@ async function BankView(token) {
     )).join("");
 
   const selItem = (p.sel && data.items.find((it) => it.id === p.sel)) || bankRandomPick;
-  const packMode = typeof PackState !== "undefined" && PackState.active;
   const modern = window.ArcadeUI?.enabled();
   const writing = selItem && (!selItem.answered || p.write === "1");
   // 首次使用引导：一个 key 都没配时引导去设置向导（R04 概念 01）
   let setupBanner = "", defaultApi = MobileRuntime.native;
-  if (!packMode) {
-    try {
-      const st = await api("GET", "/api/settings");
-      defaultApi ||= modern && !!st.llm_configured;
-      if (viewStale(token)) return;
-      if (modern && !st.llm_configured) setupBanner = apiSetupBanner();
-      else if (MobileRuntime.native && !st.stepfun_api_key_configured) {
-        setupBanner = `
+  if (st) {
+    defaultApi ||= modern && !!st.llm_configured;
+    if (modern && !st.llm_configured) setupBanner = apiSetupBanner();
+    else if (MobileRuntime.native && !st.stepfun_api_key_configured) {
+      setupBanner = `
         <a class="setup-banner" href="${MobileRuntime.native ? '#/my/services' : '#/manage'}">
           <span>${modern ? "配置文本改写引擎，即可生成后直接开练。" : "开始前，先连接语音服务并选择两位说话者的声音。"}</span>
           <strong>去设置 →</strong>
         </a>`;
-      }
-    } catch (_) { /* 设置读取失败不打断题库 */ }
+    }
   }
   const selJump = selItem && selItem.answered_item ? `
       <div class="bank-answer-actions" style="margin-top:12px;">
@@ -2309,7 +2363,7 @@ async function BankView(token) {
           onkeydown="if(event.key==='Enter')bankGo({q: document.getElementById('bank-q').value.trim()})">
         <button class="btn-pill" onclick="bankGo({q: document.getElementById('bank-q').value.trim()})">搜索</button>
       </div>
-      <button class="bank-tab bank-random" onclick="bankRandomGo()" title="从当前筛选中随机抽一题">随机来一题</button>
+      <button class="bank-tab bank-random" data-bank-random title="从当前筛选中随机抽一题">随机来一题</button>
     </div>
 
     <div class="bank-results">${setupBanner}${!packMode ? '<details id="draft-library" class="draft-library"><summary>找回未提交草稿</summary></details>' : '<p class="study-muted">已回答状态仅依据当前导入包。</p>'}
@@ -2317,7 +2371,7 @@ async function BankView(token) {
     ${answerCard}
 
     <div class="bank-list">
-      ${rowsHtml || `<p class="empty-state">当前组合筛选没有匹配的题目。</p><button class="btn-pill" onclick="bankGo({topic:'',set:'',q:'',answer_status:'all'})">清除筛选</button>`}
+      ${rowsHtml || `<p class="empty-state">当前组合筛选没有匹配的题目。</p><button class="btn-pill" onclick="bankGo({topic:'',set:'',q:'',answer_status:'all',training_status:'all'})">清除筛选</button>`}
     </div>
 
     ${data.pageCount > 0 ? `
@@ -2337,6 +2391,8 @@ async function BankView(token) {
       select.innerHTML = updated.querySelectorAll(".bank-select")[i].innerHTML);
     toolbar.querySelectorAll(".bank-tabs button").forEach((button, i) =>
       button.className = updated.querySelectorAll(".bank-tabs button")[i].className);
+    const search = toolbar.querySelector("#bank-q");
+    if (search.value !== p.q) search.value = p.q;
   } else $app.innerHTML = bankHtml;
   if (previousAnswerId && previousAnswerId === selItem?.id) {
     const input = document.getElementById("bank-answer-input");
@@ -2346,6 +2402,7 @@ async function BankView(token) {
   }
   if (selItem) {
     AnswerExperience.savedAnswer(selItem, token);
+    if (modern) ArcadeUI.bindBlind(selItem.id);
     AnswerExperience.bindDraft(selItem).then(() => {
       if (!modern || viewStale(token)) return;
       const refresh = () => {
@@ -2355,7 +2412,6 @@ async function BankView(token) {
       };
       document.querySelectorAll('[name="bank-gen-mode"]').forEach(radio => radio.addEventListener("change", refresh));
       refresh();
-      ArcadeUI.bindBlind(selItem.id);
     });
     if (!modern) TrainingBaseline.mount(selItem).catch(e=>toast('首答草稿读取失败：'+e.message));
   }
@@ -2496,8 +2552,17 @@ const PACK_UNSUPPORTED_VIEWS = ["#/manage", "#/voices", "#/setup", "#/today", "#
   "#/oral-review", "#/study-history", "#/captures", "#/inbox"];
 
 function route() {
-  if (typeof UIContinuity !== 'undefined' && !UIContinuity.allowNavigation(location.hash)) return;
-  if (typeof UIContinuity !== 'undefined') UIContinuity.navigation(location.hash);
+  const packActive = typeof PackState !== "undefined" && PackState.active;
+  const requested = location.hash || (packActive ? "#/practice" : "#/today");
+  const aliases = {"#/settings": "#/manage", "#/captures/inbox": "#/captures"};
+  const [pathname] = requested.split("?");
+  const base = aliases[pathname] || pathname;
+  const hash = base + requested.slice(pathname.length);
+  if (typeof UIContinuity !== 'undefined' && !UIContinuity.allowNavigation(hash)) return;
+  if (typeof OralReviewUI !== "undefined" && !OralReviewUI.leave(hash)) return;
+  if (typeof StudyUI !== "undefined" && !StudyUI.leave(hash)) return;
+  if (typeof UIContinuity !== 'undefined') UIContinuity.navigation(hash);
+  genWaitStop();
   if (typeof TrainingBaseline !== "undefined") TrainingBaseline.leave();
   if (typeof TrainingUI !== "undefined") TrainingUI.reset();
   window.ArcadeUI?.reset();
@@ -2510,25 +2575,16 @@ function route() {
   const doneAudio = document.getElementById("done-audio");
   if (doneAudio) ListeningExperience.detach(doneAudio);
   const token = ++routeToken;
-  const packActive = typeof PackState !== "undefined" && PackState.active;
-  const requested = location.hash || (packActive ? "#/practice" : "#/today");
-  const aliases = {"#/settings": "#/manage", "#/captures/inbox": "#/captures"};
-  const hash = Object.hasOwn(aliases, requested) ? aliases[requested] : requested;
   document.body.classList.remove('training-focus');
-  if (typeof OralReviewUI !== "undefined" && !OralReviewUI.leave(hash)) return;
-  if (typeof StudyUI !== "undefined" && !StudyUI.leave(hash)) return;
-  if (!hash.startsWith("#/bank") && !hash.startsWith("#/practice")) genWaitStop();
-  document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
+  document.body.classList.toggle("player-route", base.startsWith("#/play/"));
   if (typeof MobileUI !== "undefined" && MobileUI.route(hash, token)) return;
   if (typeof PackState !== "undefined" && PackState.active
-    && PACK_UNSUPPORTED_VIEWS.some(v => hash === v || hash.startsWith(v + "/"))) {
+    && PACK_UNSUPPORTED_VIEWS.some(v => base === v || base.startsWith(v + "/"))) {
     $app.innerHTML = `<div class="study-page"><h1>离线包模式不支持此页面</h1>
       <p class="study-muted">当前使用离线语料包，设置与音色展台需要在电脑端服务模式使用。</p>
       <a class="study-button primary" href="#/topics">返回我的语料</a></div>`;
     return;
   }
-  document.body.classList.toggle("player-route", hash.startsWith("#/play/"));
-  const base = hash.split("?")[0];
   const owner = base.startsWith("#/play/") || base.startsWith("#/episode/") ? "playing"
     : ["#/today", "#/legacy-today", "#/blitz"].includes(base) || base.startsWith("#/train/") || base.startsWith("#/legacy-train/") || base.startsWith("#/oral-review/") || base === "#/study-history" ? "today"
     : base.startsWith("#/bank") || base.startsWith("#/practice") ? "bank"
@@ -2552,121 +2608,119 @@ function route() {
   });
 
   // 导航离开工作台时清理轮询定时器（修审计 A22）
-  if (!hash.startsWith("#/manage") && ManageState.pollTimer) {
+  if (!base.startsWith("#/manage") && ManageState.pollTimer) {
     clearInterval(ManageState.pollTimer);
     ManageState.pollTimer = null;
   }
-  // 离开题库视图时清理双模式等待轮询（R03）
-  if (!hash.startsWith("#/bank") && !hash.startsWith("#/practice")) genWaitStop();
 
-  if (hash.startsWith("#/import")) {
+  if (base.startsWith("#/import")) {
     ImportView(token);
     return;
   }
 
-  if (hash === "#/today") {
+  if (base === "#/today") {
     if (window.ArcadeUI?.enabled()) ArcadeUI.home(token);
     else TrainingUI.today(token);
     return;
   }
-  if (hash === "#/legacy-today") { TrainingUI.today(token); return; }
-  if (hash === "#/blitz" && window.ArcadeUI?.enabled()) { ArcadeUI.blitz(token); return; }
+  if (base === "#/legacy-today") { TrainingUI.today(token); return; }
+  if (base === "#/blitz" && window.ArcadeUI?.enabled()) { ArcadeUI.blitz(token); return; }
   if (["#/captures", "#/inbox"].includes(base) && window.ArcadeUI?.enabled()) {
     CapturesUI.open(token);
     return;
   }
   if (base === "#/radio" && window.ArcadeUI?.enabled()) { RadioUI.open(token); return; }
-  if (hash === "#/sentence-today") { OralReviewUI.today(token); return; }
-  if (hash.startsWith("#/train/") || hash.startsWith("#/legacy-train/")) {
-    const parts = hash.split("/").slice(2);
+  if (base === "#/sentence-today") { OralReviewUI.today(token); return; }
+  if (base.startsWith("#/train/") || base.startsWith("#/legacy-train/")) {
+    const parts = base.split("/").slice(2);
     if (parts.length >= 2) {
-      const surface = hash.startsWith("#/train/") && window.ArcadeUI?.enabled() ? ArcadeUI : TrainingUI;
+      const surface = base.startsWith("#/train/") && window.ArcadeUI?.enabled() ? ArcadeUI : TrainingUI;
       const ids = [decodeURIComponent(parts[0]), decodeURIComponent(parts[1])];
       if (surface === TrainingUI) surface.view(...ids, token);
       else surface.open(...ids, token);
       return;
     }
   }
-  if (hash === "#/study-history") { OralReviewUI.history(token); return; }
-  if (hash.startsWith("#/oral-review/")) {
-    OralReviewUI.sessionView(decodeURIComponent(hash.slice("#/oral-review/".length)), token);
+  if (base === "#/study-history") { OralReviewUI.history(token); return; }
+  if (base.startsWith("#/oral-review/")) {
+    OralReviewUI.sessionView(decodeURIComponent(base.slice("#/oral-review/".length)), token);
     return;
   }
 
-  if (hash.startsWith("#/learn/")) {
-    const parts = hash.slice(8).split("/");
+  if (base.startsWith("#/learn/")) {
+    const parts = base.slice(8).split("/");
     if (parts.length >= 2) {
       StudyUI.view(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
       return;
     }
   }
 
-  if (hash === "#/review-done") { StudyUI.reviewDone(token); return; }
+  if (base === "#/review-done") { StudyUI.reviewDone(token); return; }
 
-  if (hash.startsWith("#/review-practice/")) {
-    const parts = hash.slice("#/review-practice/".length).split("/");
+  if (base.startsWith("#/review-practice/")) {
+    const parts = base.slice("#/review-practice/".length).split("/");
     if (parts.length >= 3) {
       StudyUI.reviewPractice(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), Number(parts[2]), token);
       return;
     }
   }
 
-  if (hash.startsWith("#/review/")) {
-    const parts = hash.slice(9).split("/");
+  if (base.startsWith("#/review/")) {
+    const parts = base.slice(9).split("/");
     if (parts.length >= 3) {
       StudyUI.reviewDetail(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), Number(parts[2]), token);
       return;
     }
   }
-  if (hash === "#/review") { StudyUI.review(token); return; }
+  if (base === "#/review") { StudyUI.review(token); return; }
 
-  if (hash.startsWith("#/done/")) {
-    const parts = hash.slice(7).split("/");
+  if (base.startsWith("#/done/")) {
+    const parts = base.slice(7).split("/");
     if (parts.length >= 2) {
       DoneView(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
       return;
     }
   }
 
-  if (hash.startsWith("#/bank") || hash.startsWith("#/practice")) {
+  if (base.startsWith("#/bank") || base.startsWith("#/practice")) {
     // #/practice 为 R04 默认入口；#/bank 保留旧链接别名
     BankView(token);
     return;
   }
 
-  if (hash.startsWith("#/setup")) {
+  if (base.startsWith("#/setup")) {
     SetupView(token);
     return;
   }
 
-  if (hash.startsWith("#/voices")) {
+  if (base.startsWith("#/voices")) {
     VoicesShowcaseView(token);
     return;
   }
 
-  if (hash.startsWith("#/manage")) {
+  if (base.startsWith("#/manage")) {
     ManageView(token);
     return;
   }
 
-  if (hash.startsWith("#/episode/")) {
-    const parts = hash.slice(10).split("/");
+  if (base.startsWith("#/episode/")) {
+    const parts = base.slice(10).split("/");
     if (parts.length >= 2) {
       EpisodePlayerView(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
       return;
     }
   }
 
-  if (hash.startsWith("#/play/")) {
-    const parts = hash.slice(7).split("/");
+  if (base.startsWith("#/play/")) {
+    const parts = base.slice(7).split("/");
     if (parts.length >= 2) {
       TrackPlayerView(decodeURIComponent(parts[0]), decodeURIComponent(parts[1]), token);
       return;
     }
   }
 
-  if (hash.startsWith("#/topic/")) {
-    const tid = hash.slice(8);
+  if (base.startsWith("#/topic/")) {
+    const tid = base.slice(8);
     TopicDetailView(decodeURIComponent(tid), token);
     return;
   }

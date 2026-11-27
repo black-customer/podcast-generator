@@ -227,7 +227,7 @@ def _indices(indices: list, rows: list) -> None:
 
 
 def context(tid: str, iid: str) -> dict:
-    item = library.get_item_full(tid, iid)
+    item = library.get_item_full(tid, iid, include_study_status=False)
     found = study.get_material(tid, iid)
     material = found.get("material") or {}
     path = library.item_path(tid, iid)
@@ -264,10 +264,7 @@ def context(tid: str, iid: str) -> dict:
     # 旧条目通过题库题干匹配推断 Part，未匹配时不伪造题型。
     from . import bank
 
-    for question in bank.load_bank().get("questions", []):
-        if question.get("text", "").strip() == item.get("question", "").strip():
-            part = question.get("part", part)
-            break
+    part = bank.question_part(item.get("question", "")) or part
     return {
         "state": state,
         "material": material,

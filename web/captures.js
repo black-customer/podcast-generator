@@ -62,11 +62,11 @@ function open(token) {
         `<button class="study-button" type="button" data-capture-tab="${key}">${label}</button>`).join("")}
     </nav>
     <div class="arcade-controls" id="capture-actions">
-      <button type="button" class="study-button" data-distill>多模态 API 批量提炼</button>
-      <button type="button" class="study-button" data-agent>复制 Agent 批量制卡指令</button>
+      <button type="button" class="study-button" data-distill disabled>多模态 API 批量提炼</button>
+      <button type="button" class="study-button" data-agent disabled>复制 Agent 批量制卡指令</button>
       <button type="button" class="study-button" data-cancel hidden>取消提炼</button>
     </div>
-    <div id="capture-progress"></div><p id="capture-status" role="status"></p>
+    <div id="capture-progress"></div><p id="capture-status" role="status">正在读取素材…</p>
     <div id="capture-body"></div><div id="capture-import" hidden></div>
   </main>`;
   const root = $app.firstElementChild;
@@ -89,6 +89,7 @@ function open(token) {
     body.hidden = ctx.tab === "import";
     importPanel.hidden = !body.hidden;
     if (ctx.tab === "import") {
+      ctx.player?.pause();
       if (importPanel.firstElementChild) return;
       importPanel.innerHTML = `<section class="arcade-frame capture-form">
         <h2>随手摘录或粘贴截图</h2><form id="capture-snippet">
@@ -126,7 +127,11 @@ function open(token) {
         const files = [...event.clipboardData.files].filter(file => file.type.startsWith("image/"));
         if (files.length) { event.preventDefault(); addImages(files); }
       };
-      form.elements.images.onchange = () => addImages([...form.elements.images.files]);
+      form.elements.images.onchange = () => {
+        const picker = form.elements.images;
+        addImages([...picker.files]);
+        picker.value = "";
+      };
       thumbs.onclick = event => {
         if (!event.target.matches("[data-remove]")) return;
         ctx.images.splice(Number(event.target.dataset.remove), 1);
@@ -190,7 +195,11 @@ function open(token) {
         <h2>待提炼素材</h2><ul>${pending.map(entry =>
           `<li><strong>${esc(entry.title)}</strong><span>${esc(stateLabel[entry.extract_state])}</span>
             ${entry.extract_error ? `<p>${esc(entry.extract_error)}</p>` : ""}
-            <button type="button" class="study-button" data-distill-one="${esc(entry.id)}">提炼这条</button></li>`).join("")}</ul></section>` : "");
+            <button type="button" class="study-button" data-distill-one="${esc(entry.id)}"
+              ${ctx.busy ? "disabled" : ""}>提炼这条</button></li>`).join("")}</ul></section>` : "");
+    ctx.player?.pause();
+    ctx.player = body.querySelector("audio");
+    ctx.player?.addEventListener("play", () => $audio.pause());
     const edit = body.querySelector(".capture-edit");
     const approval = body.querySelector("[data-approve-goal]");
     if (edit && approval) {
@@ -200,11 +209,14 @@ function open(token) {
     }
     if (edit) edit.onsubmit = async event => {
       event.preventDefault();
+      if (ctx.saving) return;
+      ctx.saving = true;
       try {
         await api("PATCH", `/api/cards/${row.id}`, Object.fromEntries(new FormData(edit)));
         notify("卡片已更新。");
         await refresh();
       } catch (error) { notify(error.message); }
+      finally { ctx.saving = false; }
     };
     ctx.row = row;
   }
@@ -218,8 +230,9 @@ function open(token) {
       const response = await fetch("/api/captures/scenes/import-json", {
         method: "POST", headers: {"Content-Type": "application/json"}, body: file,
       });
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.detail || "看剧备份导入失败");
+      if (!Number.isInteger(data.imported)) throw new Error("看剧备份导入返回了无效结果");
       ctx.tab = "inbox";
       const updates = data.updated ? `更新 ${data.updated} 条备注，` : "";
       notify(`已导入 ${data.imported} 条，${updates}跳过 ${data.duplicates} 条重复记录。`);
@@ -248,9 +261,11 @@ function open(token) {
   };
 
   async function refresh() {
+    const revision = ctx.refreshRevision = (ctx.refreshRevision || 0) + 1;
     try {
       const [entries, cards] = await Promise.all([api("GET", "/api/captures"), api("GET", "/api/cards")]);
-      if (!live()) return;
+      if (!live() || revision !== ctx.refreshRevision) return;
+      if (status.textContent === "正在读取素材…") notify("");
       ctx.entries = entries.captures;
       ctx.cards = cards.cards;
       const badge = document.getElementById("nav-inbox-count");
@@ -260,7 +275,9 @@ function open(token) {
         badge.textContent = count || "";
       }
       render();
-    } catch (error) { notify(error.message); }
+    } catch (error) {
+      if (revision === ctx.refreshRevision) notify(error.message);
+    }
   }
 
   async function sortCard(action) {
@@ -279,15 +296,22 @@ function open(token) {
   async function distill(endpoint) {
     if (ctx.busy || !confirm("发送所选素材文字与截图给当前配置的模型进行提炼？")) return;
     ctx.busy = true;
+    root.querySelectorAll("[data-distill], [data-distill-one]").forEach(button => {
+      button.disabled = true;
+    });
     const host = root.querySelector("#capture-progress");
     const progress = ExperienceUI.progressBar(host, "正在提炼语块…");
     const cancel = root.querySelector("[data-cancel]");
     try {
       const {job_id: id} = await api("POST", endpoint);
       cancel.hidden = false;
-      cancel.onclick = async () => {
-        try { await api("POST", `/api/jobs/${id}/cancel`); }
-        catch (error) { notify(error.message); }
+      cancel.onclick = () => {
+        if (cancel.disabled) return;
+        cancel.disabled = true;
+        api("POST", `/api/jobs/${id}/cancel`).catch(error => {
+          cancel.disabled = false;
+          notify(error.message);
+        });
       };
       while (live()) {
         const job = await api("GET", `/api/jobs/${id}`);
@@ -305,6 +329,7 @@ function open(token) {
       progress.stop();
       host.replaceChildren();
       cancel.hidden = true;
+      cancel.disabled = false;
       if (live()) await refresh();
     }
   }
@@ -331,21 +356,30 @@ function open(token) {
   });
   ctx.key = event => {
     if (!live() || ctx.tab !== "inbox" || !ctx.row || event.repeat ||
-        event.target.closest("input,textarea,select,[contenteditable]") ||
+        event.target.closest?.("input,textarea,select,[contenteditable],audio,video") ||
         event.ctrlKey || event.altKey || event.metaKey) return;
     if (event.key === "Enter" && !event.target.closest("button,a,summary")) {
-      event.preventDefault(); sortCard("approve");
-    } else if (event.key === "Backspace") { event.preventDefault(); sortCard("archive"); }
+      event.preventDefault(); event.stopImmediatePropagation(); sortCard("approve");
+    } else if (event.key === "Backspace") {
+      event.preventDefault(); event.stopImmediatePropagation(); sortCard("archive");
+    }
     else if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
-      event.preventDefault(); ctx.index += event.key === "ArrowLeft" ? -1 : 1; render();
+      event.preventDefault(); event.stopImmediatePropagation();
+      const next = ctx.index + (event.key === "ArrowLeft" ? -1 : 1);
+      if (next < 0 || next >= ctx.cards.filter(row => row.status === ctx.tab).length) return;
+      ctx.index = next;
+      render();
     }
   };
-  document.addEventListener("keydown", ctx.key);
+  document.addEventListener("keydown", ctx.key, true);
   refresh();
 }
 
 function reset() {
-  if (current) document.removeEventListener("keydown", current.key);
+  if (current) {
+    current.player?.pause();
+    document.removeEventListener("keydown", current.key, true);
+  }
   current = null;
 }
 

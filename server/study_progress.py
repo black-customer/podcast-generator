@@ -51,20 +51,20 @@ def save_progress(topic_id: str, item_id: str, update: dict) -> dict:
     if not isinstance(update, dict):
         raise ValueError("练习进度格式错误")
     stage = update.get("stage")
-    if stage is not None and stage not in STAGES:
+    if "stage" in update and (not isinstance(stage, str) or stage not in STAGES):
         raise ValueError("非法学习阶段")
     if "before_started" in update and not isinstance(update["before_started"], bool):
         raise ValueError("学习入口状态错误")
     index = update.get("sentence_index")
-    if index is not None and (not isinstance(index, int) or not 0 <= index < 10000):
+    if "sentence_index" in update and (type(index) is not int or not 0 <= index < 10000):
         raise ValueError("句子序号错误")
     draft = update.get("draft")
-    if draft is not None and (not isinstance(draft, list) or len(draft) > 200 or any(
+    if "draft" in update and (not isinstance(draft, list) or len(draft) > 200 or any(
         not isinstance(word, str) or len(word) > 100 for word in draft
     )):
         raise ValueError("草稿格式错误")
     facts = update.get("facts")
-    if facts is not None and (not isinstance(facts, dict) or len(facts) > 10000):
+    if "facts" in update and (not isinstance(facts, dict) or len(facts) > 10000):
         raise ValueError("复习记录格式错误")
     if facts is not None:
         for key, value in facts.items():
@@ -195,7 +195,7 @@ def review_items() -> list[dict]:
             found = study.get_material(topic_id, item_id)
             if found["status"] != "ready":
                 continue
-            full = library.get_item_full(topic_id, item_id)
+            full = library.get_item_full(topic_id, item_id, include_study_status=False)
         except (FileNotFoundError, ValueError):
             continue
         sentences = found["material"]["sentences"]

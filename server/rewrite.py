@@ -321,10 +321,14 @@ def generate_texts(
     repairs = 0
     for attempt in range(MAX_REPAIRS + 1):
         content = _chat(settings, messages, cancel)
-        data = normalize_dialogue_payload(_extract_json(content), question)
-        errors = validate_texts(data)
-        if not errors:
-            return {field: data[field].strip() for field in REQUIRED_FIELDS}, repairs
+        try:
+            data = normalize_dialogue_payload(_extract_json(content), question)
+            errors = validate_texts(data)
+        except RewriteError as exc:
+            errors = [str(exc)]
+        else:
+            if not errors:
+                return {field: data[field].strip() for field in REQUIRED_FIELDS}, repairs
         if attempt >= MAX_REPAIRS:
             break
         repairs += 1

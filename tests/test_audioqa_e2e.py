@@ -78,6 +78,7 @@ def test_anomalous_audio_triggers_safe_retry(qa_env, monkeypatch):
                 capture_output=True, timeout=120,
             )
             padded.replace(out_path)
+            result = (audio_mod.probe_duration(out_path), *result[1:])
         return result
 
     monkeypatch.setattr(tts, "_synthesize_source", fake_synth)

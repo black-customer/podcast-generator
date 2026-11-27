@@ -78,6 +78,13 @@ def _load() -> dict:
 
 
 def _write(state: dict) -> None:
+    receipts = state["receipts"]
+    if len(receipts) > 500:
+        recent = set(list(receipts)[-500:])
+        active = {sid for sid, session in state["sessions"].items()
+                  if session["state"] == "active"}
+        state["receipts"] = {key: value for key, value in receipts.items()
+                             if key in recent or key.partition(":")[0] in active}
     atomic_write_text(REVIEW_FILE, json.dumps(state, ensure_ascii=False, indent=2))
 
 
@@ -162,6 +169,8 @@ def _reconcile(state: dict, cache: dict | None = None) -> None:
         tid, iid = path.parent.parent.name, path.parent.name
         try:
             progress = study_progress.get_progress(tid, iid)
+            if not progress.get("facts"):
+                continue
             found = _material(tid, iid, cache)
             if found["status"] != "ready":
                 continue
@@ -252,8 +261,8 @@ def today_overview() -> dict:
         cache: dict = {}
         _reconcile(state, cache)
         due = _due_cards(state, cache)
-        invalid = [c for c in state["cards"].values()
-                   if not c.get("superseded") and not _valid(c, cache)]
+        invalid = [c for c in state["cards"].values() if c.get("card_kind") != "capture"
+                   and not c.get("superseded") and not _valid(c, cache)]
         active = next((s for s in state["sessions"].values() if s["state"] == "active"), None)
         return {
             "today": _today().isoformat(), "due_count": len(due),
@@ -265,7 +274,9 @@ def today_overview() -> dict:
             "has_learning_records": study_progress.PRIVATE_DIR.exists() and any(
                 study_progress.PRIVATE_DIR.glob("*/*/state.json")
             ),
-            "history": {"undated_legacy_count": sum(c["legacy"] for c in state["cards"].values())},
+            "history": {"undated_legacy_count": sum(
+                bool(c.get("legacy")) for c in state["cards"].values()
+            )},
         }
 
 
@@ -562,13 +573,15 @@ def grade_arcade(topic_id: str, item_id: str, index: int, fingerprint: str,
         result = {"card_id": card_id, "topic_id": topic_id, "item_id": item_id,
                   "sentence_index": index, "rating": "unable" if rating == "again" else
                   "independent", "fsrs_grade": rating, "schedule_adjusted": adjusted,
+                  "scaffolding_level": scaffolding_level(card),
                   "submitted_at": _now_iso(), "date": _today().isoformat(),
                   "next_due_date": card["due_date"], "key_chunk": rows[index].get("key_chunk", ""),
                   "question": card["question"], "zh": card["zh"], "en": card["en"],
                   "spoken_self_report": True, "recorded": False, "hint_used": False,
                   "recording_id": None,
                   "session_id": "arcade", "submission_id": submission_id}
-        state["attempts"].append(result)
+        if rating != "suspend":
+            state["attempts"].append(result)
         state["receipts"][receipt] = result
         _write(state)
         return result
@@ -658,16 +671,21 @@ def grade_capture_card(card_id: str, rating: str, submission_id: str,
             "spoken_self_report": True, "recorded": False, "hint_used": False,
             "recording_id": None, "session_id": "arcade", "submission_id": submission_id,
         }
-        state["attempts"].append(result)
+        if rating != "suspend":
+            state["attempts"].append(result)
         state["receipts"][receipt] = result
         _write(state)
         return result
 
 
-def unified_due_cards(source_filter: str = "all") -> list[dict]:
+def unified_due_cards(
+    source_filter: str = "all", *, enrolled: set[str] | None = None,
+) -> list[dict]:
     with _LOCK:
         state, cache = _load(), {}
         _reconcile(state, cache)
+        if enrolled is not None:
+            enrolled.update(state["cards"])
         result = []
         today = _today().isoformat()
         if source_filter in ("all", "ielts"):

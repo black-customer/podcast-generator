@@ -13,7 +13,8 @@ class FFmpegError(RuntimeError):
 def check_ffmpeg() -> tuple[bool, str]:
     try:
         r = subprocess.run(
-            ["ffmpeg", "-version"], capture_output=True, text=True, timeout=15
+            ["ffmpeg", "-version"], capture_output=True, encoding="utf-8",
+            errors="replace", timeout=15,
         )
         if r.returncode == 0:
             first = (r.stdout or "").splitlines()[0][:80] if r.stdout else "ok"
@@ -27,7 +28,8 @@ def check_ffmpeg() -> tuple[bool, str]:
 
 def _run(args: list[str], timeout: float = 600) -> None:
     try:
-        proc = subprocess.run(args, capture_output=True, text=True, timeout=timeout)
+        proc = subprocess.run(args, capture_output=True, encoding="utf-8",
+                              errors="replace", timeout=timeout)
     except subprocess.TimeoutExpired as exc:
         raise FFmpegError(f"ffmpeg 超时（>{timeout:.0f}s）: {args[0]} …") from exc
     if proc.returncode != 0:
@@ -42,7 +44,7 @@ def probe_duration(path: Path) -> float:
             "-show_entries", "format=duration",
             "-of", "csv=p=0", str(path),
         ],
-        capture_output=True, text=True, timeout=30,
+        capture_output=True, encoding="utf-8", errors="replace", timeout=30,
     )
     try:
         return float(r.stdout.strip())

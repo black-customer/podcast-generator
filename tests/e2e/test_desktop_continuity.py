@@ -265,3 +265,108 @@ def test_question_bank_has_direct_return_to_today_on_online_web(page, width):
     today.click()
     expect(page.get_by_role("heading", name="今日练习")).to_be_visible()
     expect(today).to_have_attribute("aria-current", "page")
+
+
+def test_global_shortcuts_leave_question_bank_keys_alone(page):
+    page.goto(f"{BASE_URL}/#/practice")
+    expect(page.get_by_role("heading", name="题库")).to_be_visible()
+    events = page.evaluate("""() => [
+      {code: 'ArrowRight'}, {code: 'Space'}, {code: 'KeyR', repeat: true},
+      {code: 'KeyA', ctrlKey: true}, {code: 'ArrowLeft', altKey: true},
+    ].map(options => document.body.dispatchEvent(
+      new KeyboardEvent('keydown', {bubbles: true, cancelable: true, ...options})
+    ))""")
+    assert events == [True] * 5
+    expect(page.locator("#toast-root")).to_be_empty()
+
+
+def test_intent_button_returns_to_recording_after_transcription(page):
+    page.route("**/api/arcade/transcribe-intent?*", lambda route: route.fulfill(
+        json={"transcript": "上班坐公交。"},
+    ))
+    page.goto(f"{BASE_URL}/#/bank?sel={QUESTION['id']}")
+    expect(page.locator("#bank-answer-input")).to_be_enabled()
+    control = page.locator("#arcade-intent")
+    control.click()
+    expect(control).to_contain_text("0:01")
+    control.click()
+    expect(page.locator("#arcade-intent-input")).to_have_value("上班坐公交。")
+    expect(control).to_have_text("录制中文意图")
+    expect(page.locator("#bank-answer-submit")).to_be_enabled()
+
+
+def test_failed_bank_filter_leaves_previous_results_interactive(page):
+    pending = []
+    page.route("**/api/bank/questions?part=2&*", lambda route: pending.append(route))
+    page.goto(f"{BASE_URL}/#/practice")
+    first = page.locator(".bank-row").first
+    expect(first).to_be_visible()
+    with page.expect_request("**/api/bank/questions?part=2&*"):
+        page.get_by_role("button", name="Part 2 · 独白描述").click()
+    loading = page.get_by_role("status", name="", exact=True).filter(has_text="正在读取筛选结果")
+    expect(loading).to_be_visible()
+    assert loading.bounding_box()["y"] < first.bounding_box()["y"]
+    pending[0].fulfill(status=503, json={"detail": "题库暂时不可用"})
+    expect(page.get_by_role("heading", name="筛选读取失败")).to_be_visible()
+    expect(page.locator(".bank-results")).not_to_have_attribute("aria-busy", "true")
+    expect(page.locator(".bank-results")).not_to_have_attribute("inert", "")
+    expect(first).to_be_visible()
+
+
+def test_player_routes_use_item_path_without_track_query(page):
+    item = {"id": "sample", "title": QUESTION["text"], "question": QUESTION["text"],
+            "status": "generated", "has_audio_podcast": True}
+    following = {**item, "id": "next", "title": "A second question",
+                 "question": "A second question"}
+    page.route("**/api/topics/continuity-fixture", lambda route: route.fulfill(json={
+        "id": "continuity-fixture", "name": "交通", "items": [item, following],
+    }))
+    page.route("**/api/topics/continuity-fixture/items/*", lambda route: route.fulfill(
+        status=404, json={"detail": "unexpected player path"},
+    ))
+    page.route("**/api/topics/continuity-fixture/items/sample",
+               lambda route: route.fulfill(json=item))
+    page.route("**/api/topics/continuity-fixture/items/next",
+               lambda route: route.fulfill(json=following))
+    page.goto(f"{BASE_URL}/#/play/continuity-fixture/sample?track=podcast")
+    expect(page.locator(".player-question")).to_have_text(QUESTION["text"])
+    expect(page.locator("#gp-title")).to_have_text(QUESTION["text"])
+    page.evaluate("() => { PlayerState.loopA = 1; PlayerState.loopB = 2; }")
+    page.get_by_role("button", name="下一首").click()
+    expect(page.locator(".player-question")).to_have_text(following["question"])
+    expect(page.locator("#gp-title")).to_have_text(following["title"])
+    assert page.evaluate("[PlayerState.loopA, PlayerState.loopB]") == [None, None]
+
+
+def test_service_worker_prefers_fresh_code_and_falls_back_offline(page):
+    page.goto(f"{BASE_URL}/#/practice")
+    result = page.evaluate("""async () => {
+      const script = await fetch('/sw.js').then(response => response.text());
+      const cached = {value: 'cached'};
+      const state = {offline: false, cacheMode: null};
+      let fire;
+      const worker = {location, addEventListener(name, handler) {
+        if (name === 'fetch') fire = handler;
+      }};
+      const cache = {match: async () => cached, open: async () => ({put: async () => {}})};
+      const network = async (_, options) => {
+        state.cacheMode = options?.cache;
+        if (state.offline) throw new Error('offline');
+        return {ok: true, type: 'basic', value: 'fresh', clone: () => ({})};
+      };
+      new Function('self', 'caches', 'fetch', script)(worker, cache, network);
+      const read = async path => {
+        let response;
+        fire({request: {url: new URL(path, location).href, method: 'GET'},
+              waitUntil() {}, respondWith(value) { response = value; }});
+        return (await response)?.value || null;
+      };
+      const fresh = await Promise.all(
+        ['/', '/static/style.css', '/static/app.js'].map(read)
+      );
+      state.offline = true;
+      return {fresh, cacheMode: state.cacheMode, offline: await read('/static/app.js'),
+              api: await read('/api/settings')};
+    }""")
+    assert result == {"fresh": ["fresh", "fresh", "fresh"], "cacheMode": "no-cache",
+                      "offline": "cached", "api": None}

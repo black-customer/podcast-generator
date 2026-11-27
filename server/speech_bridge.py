@@ -7,6 +7,7 @@ import queue
 import subprocess
 import threading
 import time
+from contextlib import contextmanager, suppress
 from pathlib import Path
 
 from . import config
@@ -55,7 +56,8 @@ class SpeechBridge:
         except (OSError, ValueError):
             pass
         finally:
-            stream.close()
+            with suppress(OSError):
+                stream.close()
             responses.put(None)
 
     def close(self) -> None:
@@ -68,18 +70,37 @@ class SpeechBridge:
                 if process.poll() is None:
                     process.kill()
                 process.wait()
-                process.stdin.close()
+                with suppress(OSError):
+                    process.stdin.close()
 
     def _expire(self, request_id: int) -> None:
         with self.lock:
             if self.request_id == request_id:
                 self.close()
 
-    def call(self, method: str, *, timeout: float = 180,
-             cancel: threading.Event | None = None, **params) -> dict:
-        with self.lock:
+    @contextmanager
+    def _request_lock(self, timeout: float, cancel: threading.Event | None):
+        deadline = time.monotonic() + timeout
+        while True:
             if cancel and cancel.is_set():
                 raise SpeechCancelled("已取消")
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise SpeechError("等待本地语音引擎超时，可以重试")
+            if self.lock.acquire(timeout=min(0.2, remaining)):
+                break
+        try:
+            if cancel and cancel.is_set():
+                raise SpeechCancelled("已取消")
+            if time.monotonic() >= deadline:
+                raise SpeechError("等待本地语音引擎超时，可以重试")
+            yield deadline
+        finally:
+            self.lock.release()
+
+    def call(self, method: str, *, timeout: float = 180,
+             cancel: threading.Event | None = None, **params) -> dict:
+        with self._request_lock(timeout, cancel) as deadline:
             if self.idle:
                 self.idle.cancel()
             self.request_id += 1
@@ -91,7 +112,6 @@ class SpeechBridge:
                 message = {"id": request_id, "method": method, "params": params}
                 self.process.stdin.write(json.dumps(message, default=os.fspath) + "\n")
                 self.process.stdin.flush()
-                deadline = time.monotonic() + timeout
                 while True:
                     if cancel and cancel.is_set():
                         raise SpeechCancelled("已取消")
@@ -128,8 +148,10 @@ _bridges: dict[Path, SpeechBridge] = {}
 @atexit.register
 def close_workers() -> None:
     with _guard:
-        for bridge in _bridges.values():
-            bridge.close()
+        bridges = list(_bridges.values())
+        _bridges.clear()
+    for bridge in bridges:
+        bridge.close()
 
 
 def request(settings: dict, method: str, **params) -> dict:

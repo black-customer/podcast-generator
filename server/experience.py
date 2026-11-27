@@ -6,6 +6,8 @@ import json
 import math
 import threading
 from datetime import UTC, datetime
+from functools import lru_cache
+from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
@@ -75,8 +77,8 @@ def _question(qid: str) -> dict | None:
         return None
 
 
-def _draft(qid: str, record: dict) -> dict:
-    question = _question(qid)
+def _draft(qid: str, record: dict, snapshot: dict | None = None) -> dict:
+    question = bank.find_question(snapshot, qid) if snapshot is not None else _question(qid)
     return {"question_id": qid, "revision": 0, "answer": "", "mode": "agent", **record,
             "question_missing": question is None,
             "question_changed": bool(record.get("question_text") and question
@@ -92,8 +94,12 @@ class DraftIn(BaseModel):
 
 @router.get("/answer-drafts")
 def drafts_list():
+    try:
+        snapshot = bank.load_bank()
+    except FileNotFoundError:
+        snapshot = {}
     with LOCK:
-        return {"drafts": [_draft(qid, record) for qid, record in
+        return {"drafts": [_draft(qid, record, snapshot) for qid, record in
                            _load("answer_drafts")["records"].items() if record.get("answer")]}
 
 
@@ -136,6 +142,22 @@ def draft_delete(question_id: str, revision: int):
         return _draft(question_id, record)
 
 
+@lru_cache(maxsize=128)
+def _digest(path: Path, stamp: tuple[int, int, int]) -> str:
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+@lru_cache(maxsize=128)
+def _duration(path: Path, stamp: tuple[int, int, int]) -> float:
+    return audio.probe_duration(path)
+
+
+def _stamp(path: Path) -> tuple[int, int, int]:
+    stat = path.stat()
+    return stat.st_mtime_ns, stat.st_size, stat.st_ctime_ns
+
+
 def _source(kind: str, topic_id: str, item_id: str, track: str) -> dict:
     _id(topic_id)
     if kind not in ("item", "episode") or track not in ("default", "monologue", "podcast"):
@@ -155,7 +177,7 @@ def _source(kind: str, topic_id: str, item_id: str, track: str) -> dict:
             "podcast" if path.name.endswith("_podcast.mp3") else track)
         if actual == "default" and kind == "item":
             actual = "podcast" if library.load_meta(path.parent).get("dialogue") else "monologue"
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        digest = _digest(path, _stamp(path))
         return {"kind": kind, "topic_id": topic_id, "item_id": item_id, "track": actual,
                 "title": title, "audio_fingerprint": digest}
     except (OSError, ValueError) as exc:
@@ -220,7 +242,7 @@ def progress_put(body: ProgressIn):
         path = (assemble.episode_path(body.topic_id, track=source["track"])
                 if body.kind == "episode" else library.resolve_audio_file(
                     library.item_path(body.topic_id, body.item_id), source["track"]))
-        duration = audio.probe_duration(path)
+        duration = _duration(path, _stamp(path))
         position = min(body.position, max(0, duration - 0.05)) if duration > 0 else 0
         doc["records"][_key(source)] = {**source, "position": position,
                                        "duration": duration, "completed": body.completed,

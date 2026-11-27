@@ -113,7 +113,7 @@ def test_home_preserves_ielts_card_when_old_chunk_cannot_be_clozed(monkeypatch):
     row = {"card_kind": "ielts", "source_type": "ielts", "audio_url": "/sample.mp3",
            "key_chunk": "used to study", "en": "I study at home.", "zh": "我在家学习。"}
     monkeypatch.setattr(arcade, "load_settings", lambda: {"daily_session_limit": 8})
-    monkeypatch.setattr(oral_review, "unified_due_cards", lambda: [])
+    monkeypatch.setattr(oral_review, "unified_due_cards", lambda **_: [])
     monkeypatch.setattr(arcade, "_fresh_ielts", lambda *_: [row])
     monkeypatch.setattr(captures, "list_cards", lambda **_: [])
     monkeypatch.setattr(oral_review, "_load", lambda: {"cards": {}})

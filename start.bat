@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 rem 一键启动播客生成器
 setlocal
 cd /d "%~dp0"

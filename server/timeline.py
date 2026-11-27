@@ -156,6 +156,17 @@ def load_timeline(file_path: Path) -> list[dict]:
     return []
 
 
+def load_track_alignment(file: Path, src: str, audio_path: Path) -> dict | None:
+    from . import alignment, audioqa
+
+    document = alignment.load_alignment(file, src, audio_path)
+    if document is None:
+        stripped, removed = audioqa.strip_all_tags(src)
+        if removed:
+            document = alignment.load_alignment(file, stripped, audio_path)
+    return document
+
+
 def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") -> dict:
     """时间轴端点主入口。返回 {"lines", "words", "mode"}。
 
@@ -165,41 +176,31 @@ def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") 
     from . import alignment, library
 
     ipath = library.item_path(topic_id, item_id)
-    full = library.get_item_full(topic_id, item_id)
-
-    cache = (
-        ipath / f"timeline_{track}.json"
-        if track in ("monologue", "podcast")
-        else ipath / "timeline_podcast.json"
-    )
-
+    full = library.get_item_full(topic_id, item_id, include_study_status=False)
     audio_path = library.resolve_audio_file(ipath, track)
-    src, _ = library.get_track_source_text(full, track)
-    if not src:
-        src, _ = library.get_track_source_text(full, "default")
-
-    # 1) 实测 alignment（指纹不匹配 = 文本或音频已变 → 自动失效）
-    if src and audio_path:
-        align_file = (
-            ipath / f"alignment_{track}.json"
-            if track in ("monologue", "podcast")
-            else ipath / "alignment_podcast.json"
-        )
-        doc = alignment.load_alignment(align_file, expect_text=src, expect_audio=audio_path)
-        if doc:
-            return {
-                "lines": alignment.derive_timeline(doc),
-                "words": doc.get("words") or [],
-                "mode": doc.get("mode") or "measured",
-            }
-
-    # 2) 旧版缓存
-    cached = load_timeline(cache)
-    if cached:
-        return {"lines": cached, "words": [], "mode": "estimated"}
-
-    if not audio_path or not src:
+    if audio_path is None:
         return {"lines": [], "words": [], "mode": "estimated"}
+    source_field = None
+    if track == "default":
+        if audio_path.name == "audio.mp3":
+            meta = library.load_meta(ipath)
+            track = "podcast" if meta.get("dialogue") else "monologue"
+            source_field = meta.get("tts_source")
+        else:
+            track = audio_path.stem.removeprefix("audio_")
+    src, _ = library.get_track_source_text(full, track)
+    if isinstance(source_field, str) and isinstance(recorded := full.get(source_field), str):
+        src = recorded.strip() or src
+    if not src:
+        return {"lines": [], "words": [], "mode": "estimated"}
+    cache = ipath / f"timeline_{track}.json"
+    align_file = ipath / f"alignment_{track}.json"
+    doc = load_track_alignment(align_file, src, audio_path)
+    if doc:
+        return {"lines": alignment.derive_timeline(doc), "words": doc.get("words") or [],
+                "mode": doc.get("mode") or "measured"}
+    if not align_file.is_file() and (cached := load_timeline(cache)):
+        return {"lines": cached, "words": [], "mode": "estimated"}
 
     # 3) 估算回退
     if track == "monologue":
@@ -207,6 +208,7 @@ def get_or_create_timeline(topic_id: str, item_id: str, track: str = "podcast") 
     else:
         tl = generate_timeline_for_dialogue(src, audio_path)
         tl = tl or generate_timeline_for_monologue(src, audio_path)
-    if tl:
-        save_timeline(tl, cache)
+    with library.LIB_LOCK:
+        if tl and ipath.is_dir():
+            save_timeline(tl, cache)
     return {"lines": tl, "words": [], "mode": "estimated"}

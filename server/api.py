@@ -1,7 +1,6 @@
 """HTTP API 路由。"""
 import hashlib
 import json
-import os
 import secrets
 import threading
 import uuid
@@ -43,6 +42,8 @@ from .config import (
     DEFAULT_SETTINGS,
     PROMPTS_DIR,
     TMP_DIR,
+    atomic_replace,
+    cleanup_voice_previews,
     is_dry_run,
     is_llm_configured,
     load_settings,
@@ -131,16 +132,14 @@ def health():
 
 @router.get("/topics")
 def api_list_topics():
-    topics = library.list_topics()
+    topics = library.list_topics(include_titles=True)
     try:
         index = bank.category_index(bank.load_bank())
     except Exception:
         index = {"norms": set(), "names": set()}
     for t in topics:
         # 语料库用户概念只有「雅思口语 / 日常表达」两类（R04）；题库来源话题归前者
-        full = library.get_topic(t["id"])
-        titles = [it.get("title") or "" for it in full.get("items", [])]
-        t["category"] = bank.topic_category(t.get("name") or "", titles, index)
+        t["category"] = bank.topic_category(t["name"], t.pop("titles"), index)
     return topics
 
 
@@ -228,6 +227,12 @@ def api_speech_status():
 
 
 async def _arcade_upload(request: Request) -> bytes:
+    try:
+        length = int(request.headers.get("content-length") or 0)
+    except ValueError as exc:
+        raise _err(400, "录音长度无效") from exc
+    if length > arcade.MAX_RECORDING_BYTES:
+        raise _err(413, "录音超过 30 MB")
     data = bytearray()
     async for chunk in request.stream():
         if len(data) + len(chunk) > arcade.MAX_RECORDING_BYTES:
@@ -422,14 +427,16 @@ def api_prepare_study(topic_id: str, item_id: str):
             return current
         if current["status"] == "needs_input" and "原始回答" in current["reason"]:
             raise _err(409, current["reason"])
+        if not library.resolve_audio_file(library.item_path(topic_id, item_id), "podcast"):
+            raise _err(409, "先生成播客音频，再准备逐句材料")
         started = study.prepare_async(topic_id, item_id)
         return {"status": "preparing", "started": started}
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
-    except ValueError as e:
-        raise _err(400, str(e)) from e
     except study.MaterialError as e:
         raise _err(409, str(e)) from e
+    except ValueError as e:
+        raise _err(400, str(e)) from e
 
 
 @router.get("/topics/{topic_id}/items/{item_id}/study/audio/{index}")
@@ -450,6 +457,8 @@ def api_study_progress(topic_id: str, item_id: str):
         return study_progress.get_progress(topic_id, item_id)
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
+    except ValueError as e:
+        raise _err(400, str(e)) from e
 
 
 @router.patch("/topics/{topic_id}/items/{item_id}/study/progress")
@@ -467,12 +476,10 @@ async def api_save_study_recording(
     topic_id: str, item_id: str, request: Request, stage: str, duration_sec: float,
     upload_key: str | None = None,
 ):
-    if int(request.headers.get("content-length") or 0) > 30 * 1024 * 1024:
-        raise _err(413, "录音超过 30 MB")
+    data = await _arcade_upload(request)
     try:
-        data = await request.body()
-        return study_progress.save_recording(
-            topic_id, item_id, stage, data, duration_sec,
+        return await run_in_threadpool(
+            study_progress.save_recording, topic_id, item_id, stage, data, duration_sec,
             request.headers.get("content-type") or "", upload_key=upload_key,
         )
     except FileNotFoundError as e:
@@ -499,6 +506,8 @@ def api_delete_study_recording(topic_id: str, item_id: str, recording_id: str):
         return {"ok": True}
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
+    except ValueError as e:
+        raise _err(400, str(e)) from e
 
 
 @router.get("/study/review")
@@ -597,11 +606,10 @@ def api_oral_attempt(session_id: str, body: OralAttemptIn):
 
 @router.post("/study/review-sessions/{session_id}/recording")
 async def api_oral_recording(session_id: str, request: Request, duration_sec: float):
-    if int(request.headers.get("content-length") or 0) > 30 * 1024 * 1024:
-        raise _err(413, "录音超过 30 MB")
+    data = await _arcade_upload(request)
     try:
-        return oral_review.save_session_recording(
-            session_id, await request.body(), duration_sec,
+        return await run_in_threadpool(
+            oral_review.save_session_recording, session_id, data, duration_sec,
             request.headers.get("content-type") or "",
         )
     except FileNotFoundError as exc:
@@ -705,7 +713,9 @@ def api_generate_item(topic_id: str, item_id: str, body: GenerateIn):
         return jobs.start_generate(topic_id, force=body.force, item_ids=[item_id], track=body.track)
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
-    except RuntimeError as e:
+    except jobs.JobConflict as e:
+        raise _err(409, str(e)) from e
+    except (RuntimeError, ValueError) as e:
         raise _err(400, str(e)) from e
 
 
@@ -715,7 +725,9 @@ def api_generate_topic(topic_id: str, body: GenerateIn):
         return jobs.start_generate(topic_id, force=body.force, track=body.track)
     except FileNotFoundError as e:
         raise _err(404, str(e)) from e
-    except RuntimeError as e:
+    except jobs.JobConflict as e:
+        raise _err(409, str(e)) from e
+    except (RuntimeError, ValueError) as e:
         raise _err(400, str(e)) from e
 
 
@@ -774,7 +786,8 @@ def api_episode_audio(topic_id: str, track: TrackParam = "default"):
 
 # ---------------------------------------------------------------- voices
 
-def _local_voice_preview(voice_id: str, text: str, regen: bool = False) -> FileResponse:
+def _local_voice_preview(voice_id: str, text: str, regen: bool = False, *,
+                         fixed_sample: bool = False) -> FileResponse:
     settings = load_settings()
     profile_hash = None
     if voice_id == "golden_self":
@@ -791,7 +804,10 @@ def _local_voice_preview(voice_id: str, text: str, regen: bool = False) -> FileR
     ).hexdigest()[:24]
     folder = TMP_DIR / "voice_previews"
     folder.mkdir(parents=True, exist_ok=True)
-    path = folder / f"{voice_id}-{key}.wav"
+    prefix = "sample-" if fixed_sample else ""
+    path = folder / f"{prefix}{voice_id}-{key}.wav"
+    if not regen and path.is_file():
+        return FileResponse(path, media_type="audio/wav")
     try:
         with _PREVIEW_LOCK:
             if regen or not path.is_file():
@@ -801,7 +817,8 @@ def _local_voice_preview(voice_id: str, text: str, regen: bool = False) -> FileR
                         settings, "preview_line", voice=voice_id, output=output,
                         profile_hash=profile_hash, text=text,
                     )
-                    os.replace(output, path)
+                    atomic_replace(output, path)
+                    cleanup_voice_previews(folder)
     except speech_bridge.SpeechError as exc:
         raise _err(503, str(exc)) from exc
     except OSError as exc:
@@ -824,7 +841,7 @@ def api_provider_voice_sample(voice_id: str, regen: bool = False):
     if voice_id not in speech_bridge.VOICES:
         raise _err(404, "本地音色不存在")
     return _local_voice_preview(
-        voice_id, "What I like most about it is that it helps me unwind.", regen,
+        voice_id, "What I like most about it is that it helps me unwind.", regen, fixed_sample=True,
     )
 
 
@@ -859,9 +876,10 @@ def api_put_settings(body: SettingsIn):
     for field in ("llm_api_key", "vision_api_key"):
         if not (update.get(field) or "").strip():
             update.pop(field, None)
-    if "speech_engine_dir" in update:
-        speech_bridge.close_workers()
+    previous_path = load_settings()["speech_engine_dir"] if "speech_engine_dir" in update else None
     saved = save_settings(update)
+    if previous_path is not None and saved["speech_engine_dir"] != previous_path:
+        speech_bridge.close_workers()
     return _masked_settings(saved)
 
 
@@ -945,21 +963,25 @@ def api_search(q: str = "", page: int | None = None, page_size: int = 20):
         return {"results": []}
     q_lower = q.strip().lower()
     results = []
-    for t in library.list_topics():
-        for it in (library.get_topic(t["id"]).get("items") or []):
-            full = library.get_item_full(t["id"], it["id"])
-            fields = ("title", "question", "original_answer", "chinese", "natural_english",
-                      "monologue_text", "podcast_text", "podcast_script")
-            blob = " ".join((full.get(f, "") or "") for f in fields).lower()
-            if q_lower in blob:
-                matched = next((str(full.get(f) or "") for f in fields
-                                if q_lower in str(full.get(f) or "").lower()), "")
+    fields = ("title", "question", "original_answer", "chinese", "natural_english",
+              "monologue_text", "podcast_text", "podcast_script")
+    with library.LIB_LOCK:
+        for topic in library.topic_dirs():
+            name = library.load_topic_name(topic)
+            for path in library.item_dirs(topic):
+                texts = library.read_item_texts(path)
+                texts["title"] = library.item_title(texts, path.name)
+                values = [texts.get(field) or "" for field in fields]
+                if q_lower not in " ".join(values).lower() or not path.is_dir():
+                    continue
+                summary = library.item_summary(path)
+                matched = next((value for value in values if q_lower in value.lower()), "")
                 offset = max(0, matched.lower().find(q_lower) - 45)
                 results.append({
-                    "topic_id": t["id"], "topic_name": t["name"],
-                    "item_id": it["id"], "title": it["title"], "status": it["status"],
+                    "topic_id": topic.name, "topic_name": name,
+                    "item_id": path.name, "title": summary["title"], "status": summary["status"],
                     "snippet": matched[offset:offset + 180],
-                    "has_audio": full["has_audio"], "study_status": full.get("study_status"),
+                    "has_audio": summary["has_audio"], "study_status": summary.get("study_status"),
                 })
     if page is None:
         return {"results": results}
@@ -1043,7 +1065,9 @@ def api_bank_questions(
     result["topics"] = bank.bank_topics(snapshot, part=part_number)
     # 考季筛选器数据：每个题集在当前 part 下的题数 + 必考题（固定五话题）计数
     part_questions = [
-        r for r in snapshot.get("questions", []) if part_number is None or r["part"] == part_number
+        r for r in snapshot.get("questions", [])
+        if (part_number is None or r["part"] == part_number)
+        and "原问句缺失" not in (r.get("text") or "")
     ]
     core_tids = bank._core_topic_ids(snapshot)
     sets_out = []
@@ -1052,7 +1076,8 @@ def api_bank_questions(
         n = sum(1 for r in part_questions if r["id"] in s_ids)
         if n:
             sets_out.append(
-                {"id": s["id"], "name_zh": s["name_zh"], "short": s["short"], "count": n}
+                {"id": s["id"], "name_zh": s["name_zh"], "short": bank.short_set_label(s),
+                 "count": n}
             )
     core_n = sum(1 for r in part_questions if r["topic_id"] in core_tids)
     sets_out.append({"id": "core", "name_zh": "必考题", "short": "必考", "count": core_n})
@@ -1383,7 +1408,7 @@ async def _scene_request(request: Request, *, backup: bool) -> dict:
             if len(body) + len(chunk) > captures.BACKUP_MAX:
                 raise HTTPException(413, "备份须小于等于 150 MiB")
             body.extend(chunk)
-        payload = json.loads(body)
+        payload = await run_in_threadpool(json.loads, body)
         if not isinstance(payload, dict):
             raise ValueError("备份格式无效")
         if backup and (payload.get("format") != "caption-study-backup"

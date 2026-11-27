@@ -304,6 +304,7 @@ function reference(ctx) {
       <div id="coach-progress"></div><p id="coach-audio-message" role="status"></p>
       <div class="arcade-controls" id="coach-actions">
         ${button("demo", "播放母语示范问答")}${button("retry-audio", "仅重新合成音频")}
+        <button class="study-button" type="button" data-arcade="retry-audio-progress" hidden>重新读取音频进度</button>
       </div>
     </section>
     <section class="arcade-frame"><h2>当场老师指导</h2>
@@ -376,7 +377,7 @@ function updateAudio(ctx) {
   }
 }
 
-function pollAudio(ctx) {
+function pollAudio(ctx, failures = 0) {
   clearTimeout(ctx.poll);
   ctx.poll = setTimeout(async () => {
     if (!active(ctx)) return;
@@ -385,6 +386,7 @@ function pollAudio(ctx) {
       const updated = await api("GET", ctx.url);
       if (!active(ctx)) return;
       ctx.data = updated;
+      note("");
       if (!previous.audio_url && updated.audio_url) {
         const lines = $app.querySelector("#coach-reference");
         if (lines) lines.innerHTML = referenceLines(updated);
@@ -394,7 +396,14 @@ function pollAudio(ctx) {
       updateAudio(ctx);
       if (updated.audio_job?.state === "running") pollAudio(ctx);
     } catch (error) {
-      if (active(ctx)) { note(error.message); pollAudio(ctx); }
+      if (!active(ctx)) return;
+      note(error.message);
+      if (failures < 2) pollAudio(ctx, failures + 1);
+      else {
+        ctx.audioProgress?.bar.stop();
+        ctx.audioProgress = null;
+        $app.querySelector("[data-arcade=retry-audio-progress]").hidden = false;
+      }
     }
   }, 650);
 }
@@ -519,6 +528,7 @@ function chunkSentence(ctx, row) {
 }
 
 function audioForChunk(ctx) {
+  if (activeCapture) return;
   const row = currentRow(ctx);
   const selected = chosenVoice(ctx, row);
   if (row.card_kind === "capture" && selected === "golden_self") {
@@ -527,6 +537,7 @@ function audioForChunk(ctx) {
     return;
   }
   if (row.card_kind === "capture") {
+    ctx.altController?.abort();
     play(ctx, row.audio_url);
     return;
   }
@@ -538,21 +549,27 @@ function audioForChunk(ctx) {
     playAlternate(ctx, row, "am_puck");
     return;
   }
+  ctx.altController?.abort();
   play(ctx, row.audio_url, row.audio?.start, row.audio?.end);
 }
 
 async function loadChunkVoice(ctx, path) {
+  stopAudio();
+  const revision = playbackRevision;
   ctx.altController?.abort();
   const controller = ctx.altController = new AbortController();
-  const finish = ExperienceUI.pendingNear($app.querySelector("[data-answer-voice]"), "正在准备母语分身…");
+  const reveal = $app.querySelector(".arcade-reveal");
+  const anchor = reveal?.hidden ? "[data-arcade=listen-chunk]" : "[data-answer-voice]";
+  const finish = ExperienceUI.pendingNear($app.querySelector(anchor), "正在准备母语分身…");
   try {
     const blob = await localAudioBlob(path, controller.signal);
-    if (!active(ctx) || controller.signal.aborted) return;
-    if (ctx.altUrl) URL.revokeObjectURL(ctx.altUrl);
+    if (!active(ctx) || controller.signal.aborted || playbackRevision !== revision) return;
+    const previous = ctx.altUrl;
     ctx.altUrl = URL.createObjectURL(blob);
     play(ctx, ctx.altUrl);
+    if (previous) URL.revokeObjectURL(previous);
   } catch (error) {
-    if (active(ctx) && !controller.signal.aborted) note(error.message);
+    if (active(ctx) && !controller.signal.aborted && playbackRevision === revision) note(error.message);
   } finally { finish(); }
 }
 
@@ -570,7 +587,8 @@ async function transferRecord(ctx) {
     }, async (blob, duration) => {
       control.innerHTML = original;
       control.classList.remove("arcade-recording");
-      if (!active(ctx) || duration < .25) return;
+      if (!active(ctx)) return;
+      if (!blob.size || duration < .25) { note("录音太短，请再说一次。"); return; }
       ctx.busy = true;
       const finish = ExperienceUI.pendingNear(control, "在本机识别语块…");
       try {
@@ -584,6 +602,10 @@ async function transferRecord(ctx) {
           ? `识别到 ${result.matched_chunks.join("、")}` : "这次未识别到目标语块，可听示范再试一次。";
       } catch (error) { if (active(ctx)) note(error.message); }
       finally { finish(); ctx.busy = false; }
+    }, error => {
+      control.innerHTML = original;
+      control.classList.remove("arcade-recording");
+      if (active(ctx)) note(error.message);
     });
   } catch (error) { if (active(ctx)) note(error.message); }
 }
@@ -729,14 +751,19 @@ function stopAudio() {
 }
 
 function play(ctx, url, start = 0, end = null) {
-  if (!url || !active(ctx)) return;
+  if (!url || !active(ctx) || activeCapture) return;
   stopAudio();
+  const revision = playbackRevision;
   $audio.pause();
   const source = ctx.audio || (ctx.audio = new Audio());
   if (source.getAttribute("src") !== url) source.src = url;
-  source.currentTime = start;
+  const current = () => active(ctx) && revision === playbackRevision;
+  const seek = () => { if (current()) source.currentTime = start; };
+  if (source.readyState < 1) source.addEventListener("loadedmetadata", seek, {once: true});
+  else seek();
   let frame = 0;
   const update = () => {
+    if (!current()) return;
     if (end != null && source.currentTime >= end) { stopAudio(); return; }
     $app.querySelectorAll(".arcade-word[data-end]").forEach(word => word.classList.toggle("spoken",
       source.currentTime >= Number(word.dataset.start) && source.currentTime < Number(word.dataset.end)));
@@ -744,11 +771,12 @@ function play(ctx, url, start = 0, end = null) {
   };
   playback = () => {
     cancelAnimationFrame(frame);
+    source.removeEventListener("loadedmetadata", seek);
     source.pause();
     $app.querySelectorAll(".arcade-word.spoken").forEach(word => word.classList.remove("spoken"));
   };
   source.play().then(update).catch(error => {
-    if (active(ctx) && error.name !== "AbortError" && error.name !== "NotAllowedError") {
+    if (current() && error.name !== "AbortError" && error.name !== "NotAllowedError") {
       note("音频暂时无法播放，请点击播放重试。");
     }
   });
@@ -768,7 +796,7 @@ function audioBuffer(ctx, url) {
 }
 
 async function playTogether(ctx, tracks) {
-  if (!active(ctx)) return;
+  if (!active(ctx) || activeCapture) return;
   stopAudio();
   const revision = playbackRevision;
   const audioContext = ctx.audioContext || (ctx.audioContext = new AudioContext());
@@ -828,6 +856,7 @@ async function playAlternate(ctx, row, voice) {
 }
 
 function reveal(ctx, sound = true) {
+  if (activeCapture) return;
   const row = currentRow(ctx);
   if (!row) return;
   if (!ctx.revealed) {
@@ -902,12 +931,17 @@ async function grade(ctx, rating) {
   } finally { ctx.busy = false; }
 }
 
-async function capture(limit, onUpdate, onTake) {
-  if (activeCapture) { activeCapture.stop(); return; }
+async function capture(limit, onUpdate, onTake, onError = error => note(error.message)) {
+  if (activeCapture) { activeCapture.stop(); return false; }
   if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
     throw new Error("浏览器无法录音，打开本机网页并允许使用麦克风。");
   }
+  stopAudio();
+  $audio.pause();
+  session?.altController?.abort();
   let stopped = false;
+  let settled = false;
+  let timer;
   let recorder;
   const own = { stop() {
     stopped = true;
@@ -917,25 +951,37 @@ async function capture(limit, onUpdate, onTake) {
   let stream;
   try {
     stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    if (stopped) { stream.getTracks().forEach(track => track.stop()); activeCapture = null; return; }
+    const release = () => {
+      clearInterval(timer);
+      stream.getTracks().forEach(track => track.stop());
+      if (activeCapture === own) activeCapture = null;
+    };
+    if (stopped) { release(); return false; }
     recorder = new MediaRecorder(stream);
     const parts = [];
     const start = performance.now();
     recorder.ondataavailable = event => { if (event.data.size) parts.push(event.data); };
     const elapsed = () => (performance.now() - start) / 1000;
+    recorder.onerror = event => {
+      if (settled) return;
+      settled = true;
+      release();
+      onError(event.error || new Error("录音中断，请重试"));
+    };
     recorder.onstop = async () => {
-      clearInterval(timer);
-      stream.getTracks().forEach(track => track.stop());
-      if (activeCapture === own) activeCapture = null;
+      if (settled) return;
+      settled = true;
+      release();
       const blob = new Blob(parts, { type: recorder.mimeType || "audio/webm" });
       await onTake(blob, Math.min(limit, Math.max(.1, elapsed())));
     };
     recorder.start();
-    const timer = setInterval(() => {
+    timer = setInterval(() => {
       if (elapsed() >= limit) own.stop();
       else onUpdate(Math.floor(elapsed()));
     }, 150);
     onUpdate(0);
+    return true;
   } catch (error) {
     stream?.getTracks().forEach(track => track.stop());
     if (activeCapture === own) activeCapture = null;
@@ -945,7 +991,7 @@ async function capture(limit, onUpdate, onTake) {
 
 async function upload(url, blob) {
   const response = await fetch(url, { method: "POST", headers: { "Content-Type": blob.type }, body: blob });
-  const data = await response.json();
+  const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(typeof data.detail === "string" ? data.detail : "录音保存失败");
   return data;
 }
@@ -1029,11 +1075,18 @@ async function record(ctx) {
       }
       await TrainingBaseline.keepRecording(take).catch(() => {});
       await storeTake(ctx, take);
+    }, error => {
+      control.innerHTML = label;
+      control.classList.remove("arcade-recording");
+      if (active(ctx)) note(error.message);
     });
   } catch (error) { note(`无法录音。${error.message}`); }
 }
 
 async function prepare(ctx) {
+  const control = $app.querySelector("[data-arcade=prepare]");
+  if (!control || control.disabled) return;
+  control.disabled = true;
   try {
     await api("POST", `${itemPath(ctx.tid, ctx.iid)}/study/prepare`);
     if (!active(ctx)) return;
@@ -1042,6 +1095,7 @@ async function prepare(ctx) {
     render(ctx);
     pollMaterial(ctx);
   } catch (error) { if (active(ctx)) note(error.message); }
+  finally { control.disabled = false; }
 }
 
 async function download(ctx) {
@@ -1052,7 +1106,7 @@ async function download(ctx) {
   const end = ExperienceUI.pendingNear(control, "正在拼接三段音频…");
   try {
     const res = await fetch(`${ctx.url}/export-evolution`, { method: "POST" });
-    if (!res.ok) throw new Error((await res.json()).detail || "导出失败");
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).detail || "导出失败");
     const url = URL.createObjectURL(await res.blob());
     const a = document.createElement("a");
     a.href = url;
@@ -1068,6 +1122,11 @@ function action(ctx, name) {
   if (!active(ctx) || ctx.loadingCards) return;
   if (name === "demo" && ctx.data.audio_url) play(ctx, ctx.data.audio_url);
   if (name === "retry-audio") retryAudio(ctx);
+  if (name === "retry-audio-progress") {
+    $app.querySelector("[data-arcade=retry-audio-progress]").hidden = true;
+    updateAudio(ctx);
+    pollAudio(ctx);
+  }
   if (name === "prepare") prepare(ctx);
   if (name === "retry-material-progress") {
     document.getElementById("arcade-material-retry").hidden = true;
@@ -1144,7 +1203,7 @@ document.addEventListener("keydown", event => {
       ? "next" : "repair-answer";
   }
   if (ctx.step === 2 && (ctx.data || ctx.cards) && currentRow(ctx)) {
-    if (event.code === "Space") next = "reveal";
+    if (event.code === "Space" && !activeCapture) next = "reveal";
     if (event.code === "Digit1" || event.code === "Numpad1") next = "good";
     if (event.code === "Digit2" || event.code === "Numpad2") next = "again";
     if (event.code === "KeyR" && !isReview(ctx)) { next = "record"; ctx.held = true; }
@@ -1225,8 +1284,13 @@ function bindBlind(qid) {
     started = true;
     if (retryTake) { await run(retryTake); return; }
     control.disabled = intentControl.disabled = submit.disabled = true;
+    const restore = () => {
+      control.disabled = intentControl.disabled = submit.disabled = false;
+      control.classList.remove("arcade-recording");
+      control.textContent = recordLabel();
+    };
     try {
-      await capture(180, sec => {
+      const recording = await capture(180, sec => {
         control.disabled = false;
         control.textContent = `结束并转写 · ${fmtDur(sec)}`;
         control.classList.add("arcade-recording");
@@ -1243,23 +1307,31 @@ function bindBlind(qid) {
           const take = { data: blob, duration, savePath: key };
           await TrainingBaseline.keepRecording(take).catch(() => {});
           if (control.isConnected) await run(take);
+        }, error => {
+          status.textContent = error.message;
+          restore();
         });
+      if (!recording) restore();
     } catch (error) {
       status.textContent = `无法录音。${error.message}`;
-      control.disabled = submit.disabled = intentControl.disabled = false;
+      restore();
     }
   });
-  intentControl.onclick = async () => {
+  intentControl.addEventListener("click", async () => {
     if (activeCapture) { activeCapture.stop(); return; }
     const label = intentControl.textContent;
-    control.disabled = submit.disabled = true;
+    control.disabled = submit.disabled = intentControl.disabled = true;
     const restore = () => {
       control.disabled = submit.disabled = intentControl.disabled = false;
       intentControl.textContent = label;
       intentControl.classList.remove("arcade-recording");
     };
     try {
-      await capture(180, sec => { intentControl.textContent = `结束并转写 · ${fmtDur(sec)}`; intentControl.classList.add("arcade-recording"); },
+      const recording = await capture(180, sec => {
+        intentControl.disabled = false;
+        intentControl.textContent = `结束并转写 · ${fmtDur(sec)}`;
+        intentControl.classList.add("arcade-recording");
+      },
         async (blob, duration) => {
           if (!intent.isConnected) return;
           if (!blob.size || duration < .25) {
@@ -1283,12 +1355,16 @@ function bindBlind(qid) {
           } catch (error) {
             intentStatus.textContent = error.message;
           } finally { end(); restore(); }
+        }, error => {
+          intentStatus.textContent = error.message;
+          restore();
         });
+      if (!recording) restore();
     } catch (error) {
       intentStatus.textContent = `无法录音。${error.message}`;
       restore();
     }
-  };
+  });
   TrainingBaseline.recoverRecording(key).then(take => {
     if (!take || !control.isConnected || started || activeCapture) return;
     retryTake = take;

@@ -185,11 +185,14 @@ def synthesize_line(text: str, voice: str, output: str) -> dict:
 
 
 @lru_cache(maxsize=2)
-def _whisper(language: str | None):
+def _whisper_model(model: str):
     from faster_whisper import WhisperModel
 
-    return WhisperModel("base.en" if language == "en" else "base", device="cpu",
-                        compute_type="int8")
+    return WhisperModel(model, device="cpu", compute_type="int8")
+
+
+def _whisper(language: str | None):
+    return _whisper_model("base.en" if language == "en" else "base")
 
 
 def transcribe_and_analyze(path: str, language: str | None = None,

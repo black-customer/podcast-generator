@@ -4,7 +4,9 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import threading
+import time
 import uuid
 from collections import Counter
 from datetime import timedelta
@@ -12,7 +14,6 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from . import (
-    alignment,
     audio,
     captures,
     jobs,
@@ -84,6 +85,16 @@ def _blind_folder(token: str) -> Path:
 def transcribe_blind(data: bytes, media_type: str, duration: float,
                      language: str | None = "en") -> dict:
     kind = _check_upload(data, media_type, duration, 180)
+    cutoff = time.time() - 86400
+    with _LOCK:
+        for expired in TMP_DIR.glob("arcade-blind-*"):
+            if not re.fullmatch(r"arcade-blind-[0-9a-f]{32}", expired.name):
+                continue
+            try:
+                if expired.stat().st_mtime < cutoff and not expired.is_symlink():
+                    shutil.rmtree(expired, ignore_errors=True)
+            except OSError:
+                continue
     token = uuid.uuid4().hex
     work = _blind_folder(token)
     work.mkdir(parents=True)
@@ -171,7 +182,7 @@ def _sentence_spans(rows: list[dict], locations: dict) -> list[dict]:
 def view(topic_id: str, item_id: str) -> dict:
     job = jobs.active_item_job(topic_id, item_id)
     with _LOCK, library.LIB_LOCK:
-        full = library.get_item_full(topic_id, item_id)
+        full = library.get_item_full(topic_id, item_id, include_study_status=False)
         found = study.get_material(topic_id, item_id, allow_pending_audio=True)
         material = found.get("material", {})
         inputs = study_progress.get_progress(topic_id, item_id).get("training_inputs") or {}
@@ -193,7 +204,7 @@ def view(topic_id: str, item_id: str) -> dict:
         voice = None
         if mp3:
             src, _ = library.get_track_source_text(full, "podcast")
-            doc = alignment.load_alignment(path / "alignment_podcast.json", src, mp3) or {}
+            doc = timeline.load_track_alignment(path / "alignment_podcast.json", src, mp3) or {}
             voices = {row.get("voice") for row in doc.get("segments", [])
                       if row.get("speaker") == "b"}
             if len(voices) == 1:
@@ -339,7 +350,7 @@ def blitz() -> dict:
     return {"due_count": len(result), "cards": result}
 
 
-def _fresh_ielts(enrolled: set[str], count: int) -> list[dict]:
+def _fresh_ielts(enrolled: set[str], count: int, with_audio: bool = True) -> list[dict]:
     sources = sorted(library.TOPICS_DIR.glob(f"*/items/*/{study.MATERIAL_FILE}"),
                      key=lambda path: path.stat().st_mtime, reverse=True)
     fresh = []
@@ -354,6 +365,11 @@ def _fresh_ielts(enrolled: set[str], count: int) -> list[dict]:
             indices = [i for i in range(len(material["sentences"]))
                        if oral_review._card_id(tid, iid, i, fingerprint) not in enrolled]
             if not indices:
+                continue
+            if not with_audio:
+                fresh.extend(material["sentences"][i] for i in indices)
+                if len(fresh) >= count:
+                    break
                 continue
             source = view(tid, iid)
             if source["source_fingerprint"] != fingerprint or not source["audio_url"]:
@@ -417,7 +433,8 @@ def home_cards(source: str = "all", limit: int | None = None,
                include_pending: bool = True) -> dict:
     settings = load_settings()
     limit = min(20, max(1, limit if limit is not None else settings.get("daily_session_limit", 8)))
-    due = oral_review.unified_due_cards()
+    enrolled: set[str] = set()
+    due = oral_review.unified_due_cards(enrolled=enrolled)
     today = oral_review._today()
     recent = (today - timedelta(days=2)).isoformat()
     due.sort(key=lambda row: (not (row["created_at"][:10] >= recent or
@@ -427,8 +444,6 @@ def home_cards(source: str = "all", limit: int | None = None,
               for kind in ("ielts", "scene", "snippet")}
     selected = [row for row in due if source in ("all", row["source_type"])]
     if include_pending and len(selected) < limit and source in ("all", "ielts"):
-        with oral_review._LOCK:
-            enrolled = set(oral_review._load()["cards"])
         selected.extend(_fresh_ielts(enrolled, limit - len(selected)))
     sources, cards = {}, []
     for row in _interleave(selected):
@@ -440,7 +455,7 @@ def home_cards(source: str = "all", limit: int | None = None,
             break
     count = len(due) if source == "all" else counts.get(source, 0)
     return {"due_count": count, "due_total": count, "session_limit": limit,
-            "inbox_count": len(captures.list_cards(status="inbox")),
+            "inbox_count": captures.count_cards(status="inbox"),
             "reaction_timer_enabled": settings.get("reaction_timer_enabled", False),
             "source_counts": counts, "cards": cards}
 
@@ -457,9 +472,18 @@ def check_card_transfer(card_id: str, data: bytes, media_type: str, duration: fl
             row = oral_review._load()["cards"].get(card_id)
         if not row or row.get("card_kind") == "capture":
             raise FileNotFoundError("复习卡不存在")
-        found = study.get_material(row["topic_id"], row["item_id"])
-        target = found["material"]["sentences"][row["sentence_index"]].get("key_chunk", "")
-        reference = ""
+        try:
+            found = study.get_material(row["topic_id"], row["item_id"])
+        except FileNotFoundError as exc:
+            raise ValueError("练习材料已更新，请刷新") from exc
+        material = found.get("material", {})
+        index = row["sentence_index"]
+        rows = material.get("sentences", [])
+        if (found["status"] != "ready" or material.get("source_fingerprint")
+                != row["source_fingerprint"] or not 0 <= index < len(rows)):
+            raise ValueError("练习材料已更新，请刷新")
+        target = rows[index].get("key_chunk", "")
+        reference = rows[index].get("transfer_example", "")
     kind = _check_upload(data, media_type, duration, 60)
     TMP_DIR.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(prefix="transfer-", dir=TMP_DIR) as directory:
@@ -506,7 +530,8 @@ def error_board() -> dict:
         attempts = oral_review._load()["attempts"]
     today = oral_review._today().isoformat()
     chunks = list(dict.fromkeys(entry["key_chunk"] for entry in reversed(attempts)
-                               if entry["date"] == today and entry.get("key_chunk")))[:12]
+                               if entry["date"] == today and entry.get("key_chunk")
+                               and entry.get("fsrs_grade") != "suspend"))[:12]
     ranked = sorted(counts.items(), key=lambda pair: (-pair[1], pair[0]))
     top = [{"category": key, "label": study.ERROR_LABELS[key], "count": count}
            for key, count in ranked]

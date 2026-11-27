@@ -270,7 +270,7 @@ a { color: inherit; text-decoration: none; }
 .track-num { text-align: center; color: var(--text-muted); }
 .track-title { font-weight: 600; color: #fff; }
 .track-row.active .track-title { color: var(--accent); }
-.track-tags { display: flex; gap: 6px; }
+.track-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .track-pill {
   font-size: 11px;
   padding: 2px 7px;
@@ -1414,7 +1414,7 @@ body.reading-notes-theme :focus-visible {
 .transcript-row::before {
   content: "";
   position: absolute;
-  inset: 16px 0;
+  inset: 0;
   z-index: 0;
   background: var(--current-line);
   opacity: 0;
@@ -1844,7 +1844,6 @@ body.hide-zh .rail-block-zh { display: none; }
   .bar-seg,
   .bar-icon,
   .bar-cta { display: none; }
-  .lyrics-panel { min-height: 500px; }
   .reference-rail { padding-bottom: 190px; }
   .track-header { display: none; }
   .track-row { grid-template-columns: 30px minmax(0,1fr) 72px; padding: 14px 4px; }
@@ -1999,7 +1998,7 @@ body:not(.player-route) .global-player { display: none !important; }
 .seg-gender button.active { background: var(--blue); color: #fff; font-weight: 600; }
 .voice-pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
 .voice-pick {
-  position: relative; padding: 12px; border: 1.5px solid var(--rule); border-radius: 10px;
+  position: relative; padding: 12px 42px 12px 12px; border: 1.5px solid var(--rule); border-radius: 10px;
   background: var(--paper); cursor: pointer; transition: border-color .15s ease;
 }
 .voice-pick.selected { border-color: var(--blue); background: var(--blue-soft); }
@@ -2098,12 +2097,12 @@ body:not(.player-route) .global-player { display: none !important; }
   .main-content { background: var(--paper); scrollbar-color: #b8aa96 transparent; }
   .album-card.corpus-index-row:hover, .track-row:hover { background: #f5efe5; }
   .btn-pill, .mg-btn, .voice-btn, .bar-pill { border-color: #b9ac99; color: var(--ink); }
-  .btn-pill:hover, .mg-btn:hover, .voice-btn:hover, .bar-pill:hover {
+  .btn-pill:hover, .mg-btn:hover, .voice-btn:hover {
     background: #efeadf; border-color: var(--blue); color: var(--blue);
   }
-  .track-pill, .bank-topic-tag, .bank-part-tag, .reading-tags span,
+  .track-pill, .bank-topic-tag, .reading-tags span,
   .player-cover, .voice-avatar { background: #eee7dc; color: var(--ink-soft); }
-  .track-row { grid-template-columns: 44px minmax(0, 1fr) 150px 76px 180px; }
+  .track-header, .track-row { grid-template-columns: 44px minmax(0, 1fr) 150px 76px 180px; }
   .track-actions { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
   .study-entry-link { color: var(--blue); font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
   .reading-tags .study-entry-link { align-self: center; padding: 5px 12px; border-radius: 5px; background: var(--blue); color: #fff; text-decoration: none; }
@@ -2303,7 +2302,7 @@ input, textarea { caret-color: #596348; }
 .view-state { max-width: var(--content-width); margin: 0 auto; padding: 32px; }
 .view-state h1 { margin-bottom: 16px; }
 .view-state p { line-height: 1.8; margin-bottom: 16px; overflow-wrap: anywhere; }
-.filter-loading { padding: 12px 0; color: var(--ink-soft); }
+.filter-loading { margin: 0; padding: 12px 0; color: var(--ink-soft); }
 .auxiliary-actions { padding-top: 16px; border-top: 1px solid var(--rule); }
 .voice-pick-name { border: 0; background: transparent; color: inherit; font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
 .nav-menu .nav-settings { margin-top: auto; border-top: 1px solid var(--rule); border-radius: 0; }
@@ -2373,7 +2372,7 @@ input, textarea { caret-color: #596348; }
   .bank-tabs { width: 100%; }
   .bank-results { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
   .bank-results:has(.bank-answer-card) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .bank-results > .setup-banner, .bank-results > .bank-pager, .bank-results > .filter-loading { grid-column: 1 / -1; }
+  .bank-results > .setup-banner, .bank-results > .bank-pager { grid-column: 1 / -1; }
   .bank-results > .bank-answer-card { grid-column: 2; grid-row: 2; margin: 0; position: sticky; top: 0; }
   .bank-results > .bank-list { display: flex; flex-direction: column; grid-column: 1; grid-row: 2; }
   .bank-results:not(:has(.bank-answer-card)) > .bank-list { grid-column: 1 / -1; }

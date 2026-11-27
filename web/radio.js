@@ -154,18 +154,29 @@ async function open(token) {
       const url = `/api/jobs/${encodeURIComponent(id)}`;
       cancel.hidden = false;
       cancel.disabled = Boolean(existing?.cancel);
-      cancel.onclick = async () => {
+      cancel.onclick = () => {
+        if (cancel.disabled) return;
         cancel.disabled = true;
-        try {
-          const result = await api("POST", url + "/cancel");
+        api("POST", url + "/cancel").then(result => {
           if (result.cancelled && !viewStale(token) && cancel.onclick) status.textContent = "正在取消…";
-        } catch (error) {
+        }).catch(error => {
+          if (viewStale(token)) return;
           cancel.disabled = false;
           status.textContent = error.message;
-        }
+        });
       };
+      let failures = 0;
       while (!viewStale(token)) {
-        const job = await api("GET", url);
+        let job;
+        try {
+          job = await api("GET", url);
+          failures = 0;
+        } catch (error) {
+          if (viewStale(token)) return;
+          if (++failures >= 3) throw error;
+          await new Promise(resolve => setTimeout(resolve, 650));
+          continue;
+        }
         if (viewStale(token)) return;
         if (job.state === "done") {
           const episode = job.episode;
