@@ -85,6 +85,13 @@ def _public_catalog(files: tuple) -> dict:
                             or not row["disambiguator"]
                             or _text(entry, "cloze_prompt") != row["cloze_prompt"]):
                         raise ValueError(f"卡片 {card_id} 重复，或挖空 / 迁移示范无效")
+                    guidance = [re.sub(r"[\W_]+", "", row[key]).casefold() for key in (
+                        "disambiguator", "feynman_hook", "usage_boundary")]
+                    if not all(guidance) or any(
+                        left in right for i, left in enumerate(guidance)
+                        for j, right in enumerate(guidance) if i != j
+                    ):
+                        raise ValueError(f"卡片 {card_id} 的讲解字段重复或无有效正文")
                     all_cards.add(card_id)
                     phrases.add(phrase)
                     identity = f"deck:{book_id}:{card_id}"
@@ -169,9 +176,26 @@ def _fingerprint(row: dict) -> str:
     return row.get("source_fingerprint") or row["content_fingerprint"]
 
 
+def _review_fingerprint(row: dict) -> str:
+    if row["deck_id"] == PERSONAL_ID:
+        return row["source_fingerprint"]
+    facts = [row[key] for key in (
+        "en", "zh", "target_chunk", "chunk_in_sentence", "cloze_prompt", "goal_type",
+        "trigger_context", "transfer_prompt_zh", "transfer_example_en",
+    )]
+    return hashlib.sha256(json.dumps(facts, ensure_ascii=False).encode()).hexdigest()
+
+
 def _schedule(state: dict, row: dict) -> dict:
     old = state["cards"].get(row["id"], {})
-    return old if old.get("source_fingerprint") == _fingerprint(row) else {}
+    if old.get("source_fingerprint") == _fingerprint(row):
+        return old
+    if not old or row["deck_id"] == PERSONAL_ID:
+        return {}
+    if revision := old.get("review_fingerprint"):
+        return old if revision == _review_fingerprint(row) else {}
+    # 旧公开卡仅记录完整内容指纹与中英原句。沿用同一张卡已经积累的复习证据。
+    return old if (old.get("en"), old.get("zh")) == (row["en"], row["zh"]) else {}
 
 
 def _progress(rows: list[dict], state: dict) -> dict:
@@ -321,13 +345,14 @@ def grade(deck_id: str, card_id: str, fingerprint: str, rating: str, submission_
         if adjusted and not old.get("last_adjusted_date") and not _quota(state, today):
             raise ValueError("今天的新卡额度已用完")
         schedule = {**old, "id": row["id"], "deck_id": deck_id,
-                    "card_kind": "ielts" if deck_id == PERSONAL_ID else "deck",
+                    "card_kind": "deck",
                     "source_type": "deck", "topic_id": row.get("topic_id", ""),
                     "item_id": row.get("item_id", ""),
                     "sentence_index": row.get("sentence_index", 0),
                     "question": old.get("question", row["deck_title"]),
                     "source": old.get("source", row["deck_title"]),
                     "source_fingerprint": fingerprint, "en": row["en"], "zh": row["zh"],
+                    "review_fingerprint": _review_fingerprint(row),
                     "created_at": old.get("created_at", oral_review._now_iso()),
                     "due_date": old.get("due_date", today), "paused": rating == "suspend",
                     "last_adjusted_date": old.get("last_adjusted_date"),

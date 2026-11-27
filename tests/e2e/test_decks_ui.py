@@ -73,10 +73,13 @@ def test_shelf_and_home_warmup():
             page.screenshot(path=str(path / "shelf-desktop.png"), full_page=True)
         page.get_by_role("button", name="开始学习").first.click()
         expect(page).to_have_url(re.compile(r"#/today\?deck=conversation-engine$"))
-        page.get_by_role("button", name="先刷 3 张").click()
+        short_round = page.get_by_role("button", name="先刷 3 张")
+        short_round.click()
         expect(page.locator("#arcade-home-progress")).to_have_text("第 1 / 3 张")
+        expect(short_round).to_have_attribute("aria-pressed", "true")
         page.get_by_role("button", name="先听 2 分钟").click()
         expect(page.get_by_role("region", name="听力热身")).to_be_visible()
+        expect(page.locator("#arcade-ramp [aria-pressed=true]")).to_have_text("先听 2 分钟")
         page.get_by_role("button", name="暂停").click()
         expect(page.get_by_role("button", name="继续播放")).to_be_visible()
         page.get_by_label("播放速度").select_option("0.85")
@@ -89,6 +92,7 @@ def test_shelf_and_home_warmup():
         page.keyboard.press("1")
         page.get_by_role("button", name="切回开口练习").click()
         expect(page.locator("#arcade-home-progress")).to_have_text("第 1 / 3 张")
+        expect(page.locator("#arcade-ramp [aria-pressed=true]")).to_have_text("先刷 3 张")
         assert grades == []
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(BASE + "/#/decks")
@@ -97,4 +101,36 @@ def test_shelf_and_home_warmup():
         assert page.evaluate("document.documentElement.scrollWidth === innerWidth")
         if shots:
             page.screenshot(path=str(path / "shelf-narrow.png"), full_page=True)
+        browser.close()
+
+
+def test_deck_card_skip_and_duplicate_guidance():
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch()
+        page = browser.new_page(viewport={"width": 1440, "height": 1000}, service_workers="block")
+        prompt = "先留几秒查清楚。"
+        row = {"card_kind": "deck", "source_type": "deck", "deck_title": "自然对话引擎",
+               "deck_url": "/api/decks/conversation-engine/cards/give-me-a-second",
+               "scaffolding_level": 2, "id": "one", "source_fingerprint": "demo",
+               "en": "Give me a second.", "zh": "给我几秒。", "trigger_context": "同事等你查邮件。",
+               "disambiguator": prompt, "feynman_hook": " 先留几秒查清楚！",
+               "usage_boundary": "先留几秒查清楚", "key_chunk": "give me a second"}
+        second = {**row, "id": "two", "deck_url": "/api/decks/conversation-engine/cards/second"}
+        page.route("**/api/arcade/blitz?*", lambda route: route.fulfill(json={
+            "cards": [row, second], "due_count": 2}))
+        results = []
+        page.route("**/api/decks/*/cards/*/grade", lambda route: (
+            results.append(route.request.post_data_json), route.fulfill(json={})))
+        page.goto(BASE + "/#/today?deck=conversation-engine")
+        page.get_by_role("button", name="揭晓或重播").click()
+        expect(page.locator(".chunk-practice p", has_text="先留几秒查清楚")).to_have_count(1)
+        if shots := os.environ.get("DECK_SCREENSHOT_DIR"):
+            path = Path(shots)
+            path.mkdir(parents=True, exist_ok=True)
+            page.screenshot(path=str(path / "card-skip-desktop.png"), full_page=True)
+        page.keyboard.press("x")
+        expect(page.locator("#arcade-home-progress")).to_have_text("第 2 / 2 张")
+        page.get_by_role("button", name="跳过此卡").click()
+        expect(page.locator("#arcade-home-progress")).to_have_text("本局完成 · 2 张卡")
+        assert [entry["rating"] for entry in results] == ["suspend", "suspend"]
         browser.close()

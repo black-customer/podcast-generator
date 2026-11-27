@@ -91,6 +91,13 @@ async function home(token) {
   ctx.source = ctx.deckId ? "deck" :
     ["deck", "scene", "ielts", "snippet"].includes(requestedSource) ? requestedSource : "all";
   const ramp = document.getElementById("arcade-ramp");
+  const roundButtons = ramp.querySelectorAll("[data-round-size]");
+  const warmupStart = ramp.querySelector("#arcade-warmup-start");
+  ctx.updateRamp = () => {
+    warmupStart.setAttribute("aria-pressed", Boolean(ctx.warmup));
+    roundButtons.forEach(button => button.setAttribute("aria-pressed",
+      !ctx.warmup && button.dataset.roundSize === String(ctx.roundSize)));
+  };
   ctx.load = async (source = ctx.source, limit = ctx.limit) => {
     if (!active(ctx) || ctx.busy || activeCapture) return;
     if (ctx.warmup) {
@@ -110,14 +117,14 @@ async function home(token) {
         (limit ? `&limit=${limit}` : ""));
       if (!active(ctx) || attempt !== ctx.loadRevision) return;
       stopAudio(); ctx.altController?.abort();
-      Object.assign(ctx, {source, limit, cards: result.cards, due: result.due_total ?? result.due_count,
+      Object.assign(ctx, {source, limit, roundSize: limit || result.session_limit || 8,
+        cards: result.cards, due: result.due_total ?? result.due_count,
         total: result.cards.length, index: 0, revealed: false, retries: new Map(),
         completed: new Set(), practised: new Set(), submissionId: null,
         timer: result.reaction_timer_enabled});
       filters.querySelectorAll("button").forEach(button =>
         button.setAttribute("aria-pressed", button.dataset.reviewSource === source));
-      ramp.querySelectorAll("[data-round-size]").forEach(button =>
-        button.setAttribute("aria-pressed", button.dataset.roundSize === String(limit || result.session_limit || 8)));
+      ctx.updateRamp();
       document.getElementById("arcade-inbox-count").textContent = result.inbox_count
         ? `待分拣 ${result.inbox_count}` : "素材收集";
       const badge = document.getElementById("nav-inbox-count");
@@ -165,19 +172,19 @@ async function startWarmup(ctx, container) {
   ctx.altController?.abort();
   $audio.pause();
   const start = document.getElementById("arcade-warmup-start");
-  start.setAttribute("aria-pressed", "true");
   const audio = new Audio();
   let rows = [], index = 0, paused = false, phase = "loading", timer, clock;
   let remaining = 120000, lastTick = 0, delay = 2000, delayStarted = 0, failed = 0;
   const current = () => active(ctx) && ctx.warmup === state;
   const state = {close() {
     ctx.warmup = null;
-    start.setAttribute("aria-pressed", "false");
+    ctx.updateRamp();
     stopTimers();
     audio.removeAttribute("src");
     audio.load();
   }};
   ctx.warmup = state;
+  ctx.updateRamp();
   container.innerHTML = `<section class="arcade-frame arcade-warmup" aria-labelledby="arcade-warmup-title">
     <div class="arcade-warmup-head"><h2 id="arcade-warmup-title">听力热身</h2>
       <span data-warmup-time aria-label="剩余时间">2:00</span></div>
@@ -696,6 +703,14 @@ function chunkSentence(ctx, row) {
   const link = source ? CapturesUI.sourceLink(source) : "";
   const sourceLabel = source ? CapturesUI.sourceLabel(source) : "";
   const listening = row.goal_type === "comprehend_input";
+  const distinction = level === 2 ? row.disambiguator || row.chunk_zh : "";
+  const shownNotes = new Set();
+  const guidance = (text, style = "") => {
+    const key = text?.replace(/[^\p{L}\p{N}]/gu, "").toLowerCase();
+    if (!key || shownNotes.has(key)) return "";
+    shownNotes.add(key);
+    return `<p${style ? ` class="${style}"` : ""}>${esc(text)}</p>`;
+  };
   return `<section class="arcade-frame arcade-recall chunk-practice" data-revealed="${ctx.revealed}">
     <p class="arcade-muted">${esc(row.deck_title || ({scene: "看剧表达", ielts: "雅思口语", snippet: "随手摘录"})[row.source_type])} ·
       ${["首次练习", "情境回忆", "换个场景"][level - 1]}</p>
@@ -704,7 +719,7 @@ function chunkSentence(ctx, row) {
     ${level === 1 ? image : ""}
     <p class="arcade-intent">${esc(transfer ? row.transfer_prompt_zh : row.trigger_context || row.zh)}</p>
     ${level === 1 && row.cloze_prompt && !listening ? `<p class="chunk-cloze" lang="en">${esc(row.cloze_prompt)}</p>` : ""}
-    ${level === 2 ? `<p class="arcade-muted">${esc(row.disambiguator || row.chunk_zh || "")}</p>
+    ${level === 2 ? `${guidance(distinction, "arcade-muted")}
       <details><summary>看原场景</summary>${image}<p lang="en">${esc(row.en)}</p></details>` : ""}
     ${transfer ? `<p>目标语块 ${chunk(row.target_chunk || row.key_chunk)}</p>` : ""}
     <div class="arcade-reveal" ${ctx.revealed ? "" : "hidden"}>
@@ -712,8 +727,8 @@ function chunkSentence(ctx, row) {
       <p class="arcade-plain-answer" lang="en">${highlight(row.en, row.chunk_in_sentence || row.key_chunk)}</p>
       <div class="arcade-pronunciation" hidden></div>
       <p>${esc(row.zh)}</p>
-      ${row.feynman_hook ? `<p>${esc(row.feynman_hook)}</p>` : ""}
-      ${row.usage_boundary ? `<p class="arcade-muted">${esc(row.usage_boundary)}</p>` : ""}
+      ${guidance(row.feynman_hook)}
+      ${guidance(row.usage_boundary, "arcade-muted")}
       <div class="arcade-voice-control">
         ${row.prosody ? '<label><input type="checkbox" data-prosody> 发音标 <kbd>P</kbd></label>' : ""}
         <label>收听声音 <select data-answer-voice><option value="demo">母语示范</option>
@@ -728,7 +743,7 @@ function chunkSentence(ctx, row) {
       ${button("good", `${hotkey("1")} ${row.transfer_ready ? "已开口，完成迁移" : "顺畅"}`)}${button("again", `${hotkey("2")} 卡壳`)}
       ${row.transfer_ready ? "" : button("easy", `${hotkey("3")} 太熟`)}
     </div>
-    <div class="arcade-controls">${row.deck_url ? "" : button("suspend", `${hotkey("X")} 归档`)}
+    <div class="arcade-controls">${button("suspend", `${hotkey("X")} ${row.deck_url ? "跳过此卡" : "归档"}`)}
       <button type="button" class="study-button" data-arcade="compare-take" hidden>听示范和我的录音</button>
     </div><p class="arcade-feedback" role="status"></p>
   </section>`;
@@ -1445,7 +1460,7 @@ document.addEventListener("keydown", event => {
     if (event.code === "KeyR" && !isReview(ctx)) { next = "record"; ctx.held = true; }
     if (ctx.kind === "home" && currentRow(ctx).scaffolding_level) {
       if (!currentRow(ctx).transfer_ready && ["Digit3", "Numpad3"].includes(event.code)) next = "easy";
-      if (event.code === "KeyX" && !currentRow(ctx).deck_url) next = "suspend";
+      if (event.code === "KeyX") next = "suspend";
       if (event.code === "KeyP" && ctx.revealed) next = "prosody";
       if (event.code === "KeyO") next = "original";
       if (event.code === "KeyR") { next = "transfer-record"; ctx.held = true; }

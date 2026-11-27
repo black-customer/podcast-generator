@@ -121,6 +121,8 @@ def _source_info(topic_id: str, item_id: str) -> dict:
 
 
 def _valid(card: dict, cache: dict | None = None) -> bool:
+    if not _is_ielts(card):
+        return False
     try:
         found = _material(card["topic_id"], card["item_id"], cache)
         rows = found.get("material", {}).get("sentences", [])
@@ -565,9 +567,12 @@ def grade_arcade(topic_id: str, item_id: str, index: int, fingerprint: str,
             card = _make_card(topic_id, item_id, index, found, None, "arcade")
             card["legacy"] = False
             state["cards"][card_id] = card
-        card["paused"] = rating == "suspend"
-        _supersede_older(state, card)
-        adjusted = rating != "suspend" and card["last_adjusted_date"] != _today().isoformat()
+        owns_schedule = _is_ielts(card)
+        if owns_schedule:
+            card["paused"] = rating == "suspend"
+            _supersede_older(state, card)
+        adjusted = (owns_schedule and rating != "suspend"
+                    and card["last_adjusted_date"] != _today().isoformat())
         if adjusted:
             card.update(fsrs_review(card, rating, _today()), last_fsrs_grade=rating)
         result = {"card_id": card_id, "topic_id": topic_id, "item_id": item_id,
@@ -597,7 +602,7 @@ def scaffolding_level(card: dict) -> int:
 
 
 def _is_ielts(card: dict) -> bool:
-    return card.get("card_kind", "ielts") == "ielts"
+    return card.get("card_kind", "ielts") == "ielts" and not card.get("deck_id")
 
 
 def mastery_stage(card: dict) -> str:

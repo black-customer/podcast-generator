@@ -13,6 +13,26 @@ def test_builtin_decks_have_220_unique_cards():
     assert {book["category"] for book in books.values()} == {"core", "daily", "ielts"}
     assert sorted(len(book["units"]) for book in books.values()) == [3, 3, 5]
     assert sum(len(unit["cards"]) for book in books.values() for unit in book["units"]) == 220
+    for book in books.values():
+        for unit in book["units"]:
+            for row in unit["cards"]:
+                notes = [row[k].rstrip("。！？") for k in (
+                    "disambiguator", "feynman_hook", "usage_boundary")]
+                assert not any(left in right for i, left in enumerate(notes)
+                               for j, right in enumerate(notes) if i != j), row["id"]
+
+
+def test_loader_rejects_duplicate_guidance(tmp_path, monkeypatch):
+    path = decks.DECKS_DIR / "conversation-engine.json"
+    raw = json.loads(path.read_bytes())
+    row = raw["units"][0]["cards"][0]
+    row["disambiguator"] = "请对方等几秒。"
+    row["usage_boundary"] = "适用于请求留出一点时间。"
+    row["feynman_hook"] = "适用于请求留出一点时间！"
+    (tmp_path / path.name).write_text(json.dumps(raw), encoding="utf-8")
+    monkeypatch.setattr(decks, "DECKS_DIR", tmp_path)
+    with pytest.raises(ValueError, match="讲解.*重复"):
+        decks.public_catalog()
 
 
 @pytest.fixture
@@ -78,6 +98,82 @@ def test_mastery_requires_delayed_recall_and_transfer(review, monkeypatch):
     monkeypatch.setattr(teaching_podcast, "generate", lambda q, points, *a, **kw: points)
     points = teaching_podcast.for_today("english", "am_puck")
     assert any(point.get("key_chunk") == row["key_chunk"] for point in points)
+
+
+def test_public_card_keeps_schedule_when_only_guidance_changes(review, monkeypatch):
+    path, advance, _ = review
+    book = "conversation-engine"
+    decks.toggle(book, True)
+    row = decks.get_card(book, "give-me-a-second")
+    result = decks.grade(book, row["card_id"], row["content_fingerprint"], "good", "first", False)
+    state = json.loads(path.read_bytes())
+    for value in state["cards"].values():
+        value.pop("review_fingerprint", None)
+    oral_review._write(state)
+    changed = {**row, "disambiguator": "事情几秒内能做完。", "content_fingerprint": "updated"}
+    advance(date.fromisoformat(result["next_due_date"]))
+    monkeypatch.setattr(decks, "get_card", lambda *_: changed)
+    next_result = decks.grade(book, row["card_id"], "updated", "good", "later", False)
+    assert next_result["mastery_stage"] == "l2"
+    state = json.loads(path.read_bytes())
+    assert decks._schedule(state, {**changed, "content_fingerprint": "new-copy"})["reps"] == 2
+    assert decks._schedule(state, {**changed, "content_fingerprint": "new-task",
+                                   "transfer_example_en": "A different exercise."}) == {}
+
+
+def test_legacy_personal_deck_schedule_stays_out_of_ielts(review, monkeypatch):
+    path, advance, day = review
+    deck = decks.PERSONAL_ID
+    fp = "same-corpus-fingerprint"
+    card_id = oral_review._card_id("topic", "item", 0, fp)
+    en = "I set aside time for walks."
+    row = {"id": card_id, "card_id": card_id, "deck_id": deck, "deck_title": "我的真实口语本",
+           "topic_id": "topic", "item_id": "item", "unit_id": "unit-1", "sentence_index": 0,
+           "en": en, "zh": "我留时间散步。", "source_fingerprint": fp,
+           "chunk_in_sentence": "set aside time"}
+    book = {"id": deck, "units": [{"id": "unit-1", "cards": [row]}]}
+    monkeypatch.setattr(decks, "_personal_book", lambda: book)
+    monkeypatch.setattr(oral_review, "_reconcile", lambda *_: None)
+    monkeypatch.setattr(study, "get_material", lambda *_: {"status": "ready", "material": {
+        "source_fingerprint": fp, "sentences": [row]}})
+    decks.toggle(deck, True)
+    first = decks.grade(deck, card_id, fp, "easy", "first", False)
+    state = json.loads(path.read_bytes())
+    state["cards"][card_id]["card_kind"] = "ielts"
+    oral_review._write(state)
+    advance(date.fromisoformat(first["next_due_date"]))
+    assert oral_review.unified_due_cards("ielts") == []
+    assert oral_review.blitz_cards() == []
+    assert arcade.home_cards(source="ielts", include_pending=False)["cards"] == []
+    decks.toggle(deck, False)
+    assert decks.practice_rows(deck) == []
+    assert arcade.home_cards(source="all", include_pending=False)["cards"] == []
+    before = json.loads(path.read_bytes())["cards"][card_id]
+    assert not oral_review.grade_arcade("topic", "item", 0, fp, "good", "old-tab")[
+        "schedule_adjusted"]
+    assert json.loads(path.read_bytes())["cards"][card_id] == before
+    decks.toggle(deck, True)
+    assert decks.practice_rows(deck)[0]["card_kind"] == "deck"
+    delayed = decks.grade(deck, card_id, fp, "good", "recalled", False)
+    assert delayed["transfer_ready"]
+    transferred = decks.grade(deck, card_id, fp, "good", "transferred", True)
+    assert transferred["mastery_stage"] == "mastered"
+    assert json.loads(path.read_bytes())["cards"][card_id]["card_kind"] == "deck"
+
+
+def test_skipping_card_does_not_use_new_card_quota(review):
+    path, _, _ = review
+    book = "conversation-engine"
+    decks.toggle(book, True)
+    first = decks.practice_rows(book)[0]
+    result = decks.grade(
+        book, first["card_id"], first["source_fingerprint"], "suspend", "skip", False)
+    assert not result["schedule_adjusted"]
+    state = json.loads(path.read_bytes())
+    assert state["attempts"] == []
+    assert state["cards"][first["id"]]["paused"]
+    assert len(decks.practice_rows(book)) == 2
+    assert first["id"] not in [row["id"] for row in decks.practice_rows(book, warmup=True)]
 
 
 def test_legacy_upgrade_validates_whole_batch_and_keeps_existing_audio(tmp_path, monkeypatch):

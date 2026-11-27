@@ -1,5 +1,5 @@
 /* 页面和样式脚本优先读取本机服务，离线时回落到缓存。 */
-const CACHE = "ielts-pod-assets-v26";
+const CACHE = "ielts-pod-assets-v27";
 const STATIC_ASSETS = [
   "/",
   "/static/app.js",

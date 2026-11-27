@@ -253,7 +253,7 @@ def for_today(mode: str, partner: str, **options) -> dict:
     current = _targets(rows, 2)
     rows.clear()
     old = sorted((card for card in review["cards"].values()
-                  if oral_review._is_ielts(card) and not card.get("deck_id") and not card["paused"]
+                  if oral_review._is_ielts(card) and not card["paused"]
                   and not card.get("superseded")
                   and card["due_date"] <= today
                   and (card.get("last_reviewed") or card.get("learned_at") or "")[:10] != today),
@@ -295,7 +295,7 @@ def for_today(mode: str, partner: str, **options) -> dict:
             row = decks.get_card(deck_id, scheduled["id"].rsplit(":", 1)[-1])
         except (OSError, ValueError):
             continue
-        if decks._fingerprint(row) == scheduled["source_fingerprint"]:
+        if decks._schedule(review, row):
             deck_points.append({**row, "key_chunk": row["target_chunk"], "source_type": "deck"})
     points = _blend([ielts, groups["scene"], groups["snippet"], _targets(deck_points, 4)], 4)
     question = speaking_attempts[0].get("question", "") if speaking_attempts else ""
