@@ -77,11 +77,15 @@ async function home(token) {
     if (active(ctx)) document.getElementById("arcade-home-board").textContent = "病历榜读取失败，请刷新重试。";
   });
   const filters = $app.querySelector(".arcade-home-filters");
+  const card = document.getElementById("arcade-home-card");
   ctx.source = "all";
   ctx.load = async (source = ctx.source) => {
     if (!active(ctx) || ctx.busy || activeCapture) return;
     const attempt = (ctx.loadRevision || 0) + 1;
     ctx.loadRevision = attempt;
+    ctx.loadingCards = card.inert = true;
+    card.setAttribute("aria-busy", "true");
+    if (ctx.cards) note("正在读取练习来源…");
     try {
       const result = await api("GET", "/api/arcade/blitz?include_pending=true" +
         (source === "all" ? "" : `&source=${encodeURIComponent(source)}`));
@@ -100,12 +104,20 @@ async function home(token) {
         badge.hidden = !result.inbox_count;
         badge.textContent = result.inbox_count || "";
       }
+      note("");
       renderHomeCard(ctx);
     } catch (error) {
-      if (!active(ctx)) return;
-      document.getElementById("arcade-home-progress").textContent = "暂时无法读取练习材料";
-      ctx.showDraw();
+      if (!active(ctx) || attempt !== ctx.loadRevision) return;
+      if (!ctx.cards) {
+        document.getElementById("arcade-home-progress").textContent = "暂时无法读取练习材料";
+        ctx.showDraw();
+      }
       note(error.message);
+    } finally {
+      if (active(ctx) && attempt === ctx.loadRevision) {
+        ctx.loadingCards = card.inert = false;
+        card.removeAttribute("aria-busy");
+      }
     }
   };
   filters.onclick = event => {
@@ -241,26 +253,44 @@ async function blitz(token) {
   }
 }
 
-function pollMaterial(ctx) {
+function pollMaterial(ctx, failures = 0, delay = 1200) {
   clearTimeout(ctx.poll);
   ctx.poll = setTimeout(async () => {
     if (!active(ctx)) return;
     try {
-      ctx.data = await api("GET", ctx.url);
+      const updated = await api("GET", ctx.url);
       if (!active(ctx)) return;
-      if (ctx.data.status === "preparing") pollMaterial(ctx);
-      render(ctx);
+      ctx.data = updated;
+      if (updated.status === "preparing") {
+        const reason = document.getElementById("arcade-material-reason");
+        if (reason.textContent !== updated.reason) reason.textContent = updated.reason;
+        note("");
+        pollMaterial(ctx);
+      } else {
+        render(ctx);
+        if (updated.status === "coaching_ready" && updated.audio_job?.state === "running") {
+          pollAudio(ctx);
+        }
+      }
     } catch (error) {
-      if (active(ctx)) note(error.message);
+      if (!active(ctx)) return;
+      if (failures < 2) {
+        note("暂时无法读取逐句材料，正在重试…");
+        pollMaterial(ctx, failures + 1);
+      } else {
+        note(error.message);
+        document.getElementById("arcade-material-retry").hidden = false;
+      }
     }
-  }, 1200);
+  }, delay);
 }
 
 function reference(ctx) {
   const d = ctx.data;
   if (!["ready", "coaching_ready"].includes(d.status)) return `<section class="arcade-frame"><h2>准备本题的逐句材料</h2>
-    <p>${esc(d.reason)}</p><div class="arcade-controls">${d.audio_url ? button("demo", "播放完整问答") : ""}
+    <p id="arcade-material-reason">${esc(d.reason)}</p><div class="arcade-controls">${d.audio_url ? button("demo", "播放完整问答") : ""}
     ${d.audio_url && d.status !== "preparing" ? button("prepare", "准备逐句材料", "primary") : ""}
+    <button class="study-button" type="button" id="arcade-material-retry" data-arcade="retry-material-progress" hidden>重新读取进度</button>
     <a class="study-button" href="#/legacy-train/${esc(encodeURIComponent(ctx.tid))}/${esc(encodeURIComponent(ctx.iid))}">打开历史训练</a></div></section>`;
   const summary = d.coach_summary;
   const errors = d.sentences.filter(row => row.original_error);
@@ -833,9 +863,11 @@ function reveal(ctx, sound = true) {
 }
 
 async function grade(ctx, rating) {
-  if ((!ctx.revealed && rating !== "suspend") || ctx.busy || activeCapture) return;
-  ctx.busy = true;
   const row = currentRow(ctx);
+  if (!row || (!ctx.revealed && rating !== "suspend") || ctx.busy || ctx.loadingCards ||
+      activeCapture) return;
+  ctx.busy = true;
+  const round = ctx.cards;
   const review = isReview(ctx);
   const url = review ? `${itemPath(row.topic_id, row.item_id)}/arcade` : ctx.url;
   const payload = { sentence_index: review ? row.sentence_index : ctx.index,
@@ -844,7 +876,7 @@ async function grade(ctx, rating) {
   try {
     const result = await api("POST", row.card_kind === "capture" ?
       `/api/cards/${encodeURIComponent(row.id)}/grade` : `${url}/grade`, payload);
-    if (!active(ctx)) return;
+    if (!active(ctx) || ctx.cards !== round) return;
     stopAudio();
     ctx.altController?.abort();
     if (ctx.kind === "home") {
@@ -866,7 +898,7 @@ async function grade(ctx, rating) {
     if (ctx.kind === "home") { note(""); renderHomeCard(ctx); }
     else render(ctx);
   } catch (error) {
-    if (active(ctx)) note(error.message);
+    if (active(ctx) && ctx.cards === round) note(error.message);
   } finally { ctx.busy = false; }
 }
 
@@ -1033,10 +1065,15 @@ async function download(ctx) {
 }
 
 function action(ctx, name) {
-  if (!active(ctx)) return;
+  if (!active(ctx) || ctx.loadingCards) return;
   if (name === "demo" && ctx.data.audio_url) play(ctx, ctx.data.audio_url);
   if (name === "retry-audio") retryAudio(ctx);
   if (name === "prepare") prepare(ctx);
+  if (name === "retry-material-progress") {
+    document.getElementById("arcade-material-retry").hidden = true;
+    note("正在重新读取进度…");
+    pollMaterial(ctx, 0, 0);
+  }
   if (name === "next") {
     stopAudio();
     ctx.repairs ||= ctx.data.sentences.filter(row => row.original_error);
@@ -1098,7 +1135,8 @@ function reset() {
 
 document.addEventListener("keydown", event => {
   const ctx = session;
-  if (!ctx || !active(ctx) || event.repeat || event.ctrlKey || event.metaKey || event.altKey ||
+  if (!ctx || !active(ctx) || ctx.loadingCards || event.repeat || event.ctrlKey ||
+     event.metaKey || event.altKey ||
      event.target.closest("input,textarea,select,[contenteditable]")) return;
   let next;
   if (ctx.step === 1 && ctx.data?.status === "ready" && ["Space", "Enter"].includes(event.code)) {
@@ -1144,7 +1182,12 @@ function bindBlind(qid) {
   intent.addEventListener("input", () => {
     try { sessionStorage.setItem(intentKey, intent.value); } catch (_) {}
   });
-  if (stagedBlind.has(qid)) status.textContent = "英文盲答原声已保留。可编辑文字或重录。";
+  const recordLabel = () => stagedBlind.has(qid) ? "重录英文盲答" : "录制英文盲答";
+  if (stagedBlind.has(qid)) {
+    control.textContent = recordLabel();
+    status.textContent = "英文盲答原声已保留。可编辑文字或重录。";
+  }
+  let retryTake = null, started = false;
   const run = async take => {
     control.disabled = true;
     intentControl.disabled = true;
@@ -1155,7 +1198,9 @@ function bindBlind(qid) {
       const saved = await upload(`/api/arcade/transcribe-blind?language=en&duration_sec=${take.duration}`, take.data);
       if (!control.isConnected) return;
       stagedBlind.set(qid, saved.blind_token);
+      retryTake = null;
       await TrainingBaseline.keepRecording(null, key).catch(() => {});
+      control.textContent = recordLabel();
       if (!saved.transcript) {
         status.textContent = "录音已保留。没有识别到文字，可以输入回答后提交。";
         return;
@@ -1163,12 +1208,11 @@ function bindBlind(qid) {
       input.value = saved.transcript;
       input.dispatchEvent(new Event("input", { bubbles: true }));
       status.textContent = "原声已保留。可编辑文字、重录或补充中文意图。";
-      control.textContent = "重录英文盲答";
     } catch (error) {
       if (!control.isConnected) return;
+      retryTake = take;
       status.textContent = `${error.message}。录音保留，可重试转写。`;
       control.textContent = "重试转写";
-      control.onclick = () => run(take);
     } finally {
       end();
       control.disabled = false;
@@ -1176,18 +1220,24 @@ function bindBlind(qid) {
       if (submit.textContent === "一键生成并直接开练" || submit.textContent === "提交作答") submit.disabled = false;
     }
   };
-  control.onclick = async () => {
+  control.addEventListener("click", async () => {
     if (activeCapture) { activeCapture.stop(); return; }
-    intentControl.disabled = true;
-    submit.disabled = true;
+    started = true;
+    if (retryTake) { await run(retryTake); return; }
+    control.disabled = intentControl.disabled = submit.disabled = true;
     try {
-      await capture(180, sec => { control.textContent = `结束并转写 · ${fmtDur(sec)}`; submit.disabled = true; control.classList.add("arcade-recording"); },
+      await capture(180, sec => {
+        control.disabled = false;
+        control.textContent = `结束并转写 · ${fmtDur(sec)}`;
+        control.classList.add("arcade-recording");
+      },
         async (blob, duration) => {
+          control.disabled = true;
           control.classList.remove("arcade-recording");
-          control.textContent = "录制英文盲答";
+          control.textContent = recordLabel();
           if (!blob.size || duration < .25) {
             status.textContent = "录音太短，请再说一次。";
-            submit.disabled = intentControl.disabled = false;
+            control.disabled = submit.disabled = intentControl.disabled = false;
             return;
           }
           const take = { data: blob, duration, savePath: key };
@@ -1196,9 +1246,9 @@ function bindBlind(qid) {
         });
     } catch (error) {
       status.textContent = `无法录音。${error.message}`;
-      submit.disabled = intentControl.disabled = false;
+      control.disabled = submit.disabled = intentControl.disabled = false;
     }
-  };
+  });
   intentControl.onclick = async () => {
     if (activeCapture) { activeCapture.stop(); return; }
     const label = intentControl.textContent;
@@ -1239,11 +1289,10 @@ function bindBlind(qid) {
       restore();
     }
   };
-  const start = control.onclick;
   TrainingBaseline.recoverRecording(key).then(take => {
-    if (!take || !control.isConnected || control.onclick !== start || activeCapture) return;
+    if (!take || !control.isConnected || started || activeCapture) return;
+    retryTake = take;
     control.textContent = "转写上次盲答";
-    control.onclick = () => run(take);
   }).catch(() => {});
 }
 

@@ -67,10 +67,11 @@ function open(token) {
       <button type="button" class="study-button" data-cancel hidden>取消提炼</button>
     </div>
     <div id="capture-progress"></div><p id="capture-status" role="status"></p>
-    <div id="capture-body"></div>
+    <div id="capture-body"></div><div id="capture-import" hidden></div>
   </main>`;
   const root = $app.firstElementChild;
   const body = root.querySelector("#capture-body");
+  const importPanel = root.querySelector("#capture-import");
   const status = root.querySelector("#capture-status");
   const live = () => current === ctx && !viewStale(token);
   const notify = message => { if (live()) status.textContent = message; };
@@ -85,8 +86,11 @@ function open(token) {
     }
     root.querySelector("[data-agent]").disabled = !pending.length;
     root.querySelector("[data-distill]").disabled = ctx.busy || !pending.length;
+    body.hidden = ctx.tab === "import";
+    importPanel.hidden = !body.hidden;
     if (ctx.tab === "import") {
-      body.innerHTML = `<section class="arcade-frame capture-form">
+      if (importPanel.firstElementChild) return;
+      importPanel.innerHTML = `<section class="arcade-frame capture-form">
         <h2>随手摘录或粘贴截图</h2><form id="capture-snippet">
           <label>标题（可选）<input class="mg-input" name="title"></label>
           <label>英文摘录<textarea class="mg-input" name="text" rows="4" placeholder="粘贴你想学的表达，或用 Ctrl+V 添加截图"></textarea></label>
@@ -101,9 +105,9 @@ function open(token) {
           <label>看剧 JSON 备份<input id="scene-backup" type="file" accept=".json,application/json"></label>
           <p>想在看剧时直接发送？<a href="#/manage">在设置中获取本机配对码</a>。</p>
         </section>`;
-      const filePicker = body.querySelector("#scene-backup");
+      const filePicker = importPanel.querySelector("#scene-backup");
       filePicker.onchange = () => importBackup(filePicker.files[0]);
-      const form = body.querySelector("form");
+      const form = importPanel.querySelector("#capture-snippet");
       const thumbs = form.querySelector("#capture-images");
       const renderImages = () => {
         thumbs.innerHTML = ctx.images.map((image, index) =>
@@ -133,8 +137,12 @@ function open(token) {
         const data = Object.fromEntries(new FormData(form));
         try {
           await api("POST", "/api/captures/snippet", {...data, images: ctx.images});
+          if (!live()) return;
           ctx.images = [];
+          form.reset();
+          renderImages();
           ctx.tab = "inbox";
+          render();
           notify("素材已保存，可在收件箱提炼。");
           await refresh();
         } catch (error) { notify(error.message); }
@@ -218,9 +226,11 @@ function open(token) {
       await refresh();
     } catch (error) {
       notify(error.message);
-      const picker = body.querySelector("#scene-backup");
+    } finally {
+      ctx.importing = false;
+      const picker = importPanel.querySelector("#scene-backup");
       if (picker) picker.value = "";
-    } finally { ctx.importing = false; }
+    }
   }
 
   root.ondragover = event => {

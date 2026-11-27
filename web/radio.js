@@ -58,8 +58,10 @@ function renderEpisode(episode, output, autoplay) {
 async function open(token) {
   const params = new URLSearchParams(location.hash.split("?")[1]);
   const topic = params.get("topic"), item = params.get("item");
-  const capture = params.get("capture");
+  const capture = params.get("capture") || null;
   const itemScope = Boolean(topic && item && !capture);
+  const kind = capture ? "capture" : itemScope ? "item" : "daily";
+  const autoGenerate = itemScope && params.get("generate") === "1";
   const endpoint = capture ? `/api/captures/${encodeURIComponent(capture)}/teaching-podcast`
     : itemScope ? `/api/topics/${encodeURIComponent(topic)}/items/${encodeURIComponent(item)}/teaching-podcast`
     : "/api/teaching-podcasts/daily";
@@ -121,24 +123,42 @@ async function open(token) {
   };
   const host = $app.querySelector("#radio-progress");
   const cancel = $app.querySelector("#radio-cancel");
-  const generate = async () => {
+  const generate = async (restore = false) => {
     if (pending) return;
     pending = submit.disabled = language.disabled = true;
-    submit.classList.add("is-busy");
     describe();
-    status.textContent = "";
-    const progress = ExperienceUI.progressBar(host, "文本引擎正在编排双人播客…");
+    let progress;
     try {
-      const body = {language_mode: language.value, partner_voice: voice.value};
-      const {job_id: id} = await api("POST", endpoint, body);
+      let existing;
+      if (restore) {
+        const jobs = await api("GET", "/api/jobs").catch(() => []);
+        if (viewStale(token)) return;
+        existing = jobs.find(({state, radio_scope: scope}) => state === "running" &&
+          scope?.[0] === kind && scope[3] === (itemScope ? topic : null) &&
+          scope[4] === (itemScope ? item : null) && scope[5] === capture);
+        if (!existing && !autoGenerate) return;
+        if (existing) {
+          language.value = existing.radio_scope[1];
+          voice.value = existing.radio_scope[2];
+          describe();
+        }
+      }
+      submit.classList.add("is-busy");
+      status.textContent = existing?.cancel ? "正在取消…" : "";
+      progress = ExperienceUI.progressBar(host, "文本引擎正在编排双人播客…",
+        Date.parse(existing?.started_at) || Date.now());
+      const id = existing?.id || (await api("POST", endpoint, {
+        language_mode: language.value, partner_voice: voice.value,
+      })).job_id;
       if (viewStale(token)) return;
       const url = `/api/jobs/${encodeURIComponent(id)}`;
       cancel.hidden = false;
+      cancel.disabled = Boolean(existing?.cancel);
       cancel.onclick = async () => {
         cancel.disabled = true;
         try {
-          await api("POST", url + "/cancel");
-          status.textContent = "正在取消…";
+          const result = await api("POST", url + "/cancel");
+          if (result.cancelled && !viewStale(token) && cancel.onclick) status.textContent = "正在取消…";
         } catch (error) {
           cancel.disabled = false;
           status.textContent = error.message;
@@ -165,7 +185,7 @@ async function open(token) {
     } catch (error) {
       if (!viewStale(token)) status.textContent = error.message;
     } finally {
-      progress.stop();
+      progress?.stop();
       if (!viewStale(token)) {
         host.replaceChildren();
         cancel.hidden = true;
@@ -184,11 +204,11 @@ async function open(token) {
     historyRows();
     if (!itemScope && !selected && episodes.length) choose(episodes[0], false);
   }).catch(error => { if (!viewStale(token)) history.textContent = error.message; });
-  if (itemScope && params.get("generate") === "1") {
+  if (autoGenerate) {
     params.delete("generate");
     window.history.replaceState(null, "", `#/radio?${params}`);
-    generate();
   }
+  generate(true);
 }
 
 window.RadioUI = { open, reset, itemLink };

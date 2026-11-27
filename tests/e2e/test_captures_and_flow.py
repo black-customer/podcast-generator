@@ -159,6 +159,7 @@ def test_capture_inbox_and_micro_session():
         })
         expect(page.get_by_text("已导入 1 条，跳过 0 条重复记录。")).to_be_visible()
         assert imports == [backup]
+        expect(page.locator("#scene-backup")).to_be_empty()
         page.get_by_role("link", name="返回今日练习").click()
         expect(page.locator(".chunk-cloze")).to_contain_text("[p__]")
         page.get_by_role("button", name="看剧表达").click()

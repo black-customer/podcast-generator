@@ -1017,3 +1017,20 @@ HTML/product-ui.css/training.js通过HTTP读取后哈希与源码一致；不读
   和便携包隐私审计通过，单元测试跳过 1 项。系统浏览器缓存缺少所需版本，复跑显式
   使用项目内 `tmp/playwright-browsers`。脚本仓 `npm run check` 通过 74 项并重建
   两份产物，`npm run test:browser` 通过 16 项。
+
+### 桌面练习连续性修复（2026-11-27）
+
+- 修复盲答重试后的重录、切源时旧卡评分串入新局、素材表单切页丢字、材料查询断连、
+  电台回页恢复与窄窗返回今日练习。静态缓存升至 v23。
+- 新增 Playwright 回归在修复前出现 7 项预期失败，修复后 8 项通过。目视检查了 390px、
+  860px 和 1440px 的题库导航。截图位于 `tmp/desktop-continuity-final/`。
+- 隔离门禁的前两次分别遇到测试配置和 Python 启动器不完整、Ruff 启动器缺失。
+  补齐后 `bash scripts/check.sh --with-e2e` 的 Ruff、导入和启动冒烟通过，
+  单元/API 312 项通过、1 项跳过，浏览器 83 项通过、3 项失败。
+- 用修复前的 `6f2f9ee` 源码在同一隔离环境复跑，三项在同一断言处失败。题库用例找不到
+  已有音频行，离线包用例找不到题库行，播放器逐词同步用例显示基础同步。
+  隔离副本只有已跟踪素材，导出包依赖的完整 `data/question_bank.json` 未随副本带入。
+  按三次门禁红灯约定暂停提交和推送。完整日志见 `tmp/desktop-continuity-final/gate.log`。
+- 独立复验补齐同一批旧用例所需的本机题库与条目音频。隔离副本以 dry-run 运行
+  `bash scripts/check.sh --with-e2e` 全绿，312 项单元/API、86 项浏览器通过，1 项跳过。
+  日志见 `tmp/desktop-continuity-final/gate-independent.log`。

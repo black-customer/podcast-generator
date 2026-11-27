@@ -2238,7 +2238,8 @@ body:not(.player-route) .global-player { display: none !important; }
 .study-review-list strong { font-size: 20px; }
 .study-review-list span { color: var(--ink-soft); }
 @media (max-width: 860px) {
-  .desktop-study-nav, .study-entry-link { display: none !important; }
+  .desktop-study-nav:not(#nav-today), .study-entry-link,
+  body:is(.mobile-learning, .pack-mode, .app-shell) #nav-today { display: none !important; }
   .study-page { padding: 20px; }
   .study-steps { gap: 4px; }
   .study-step { flex-direction: column; font-size: 12px; }
